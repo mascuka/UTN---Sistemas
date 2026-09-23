@@ -16,3 +16,8 @@ En `videos`, agregá:
 
 ## Límites de GitHub
 Hasta 100 MB por archivo. Conviene que el repositorio no pase de ~1 GB.
+
+## Temas del parcial (introducción)
+Cada parcial puede tener un campo `temas` en `CURSO` (ver el 2º Parcial de ejemplo):
+`temas: { titulo: "...", pdf: "material/p2/temas.pdf", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
+Se muestra arriba de las tarjetas de Teórico/Práctico. Si el parcial no lo tiene, no aparece nada.

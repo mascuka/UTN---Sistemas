@@ -50,6 +50,16 @@
   .pill{font-size:.8rem;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg)}
   .pill:hover{border-color:var(--accent);color:var(--accent)}
 
+  /* Temas del parcial */
+  .temas{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:24px}
+  .temas-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .temas h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem}
+  .unidad{padding-top:14px}
+  .unidad + .unidad{margin-top:14px;border-top:1px solid var(--line)}
+  .unidad h3{font-size:1rem;color:var(--accent);margin-bottom:8px}
+  .unidad ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+  .unidad li{font-size:.92rem;line-height:1.5}
+
   .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:24px}
   .tab{padding:10px 16px;font-size:.93rem;border-bottom:2px solid transparent;color:var(--muted)}
   .tab:hover{color:var(--text)}
@@ -134,6 +144,41 @@ const CURSO = {
       id: "p2",
       titulo: "2º Parcial",
       descripcion: "El segundo parcial consta de una parte teórica y una parte práctica. En cada una vas a encontrar el material de lectura y los videos de las clases.",
+      temas: {
+        titulo: "Temas para el Parcial 2 (23/09/2026)",
+        pdf: "material/p2/temas-parcial-2.pdf",
+        unidades: [
+          {
+            titulo: "Unidad Nº 3: Capa de interred – Direccionamiento",
+            contenidos: [
+              "Direccionamiento IP: protocolo IPv4. Formato del datagrama. Direccionamiento IPv4.",
+              "Clases de direcciones. Máscara de red. Ejercitación de diseños de redes con IP.",
+              "Agotamiento de las direcciones IPv4. VLSM. CIDR.",
+              "Protocolo IPv6: características, ventajas con respecto a IPv4, formato del datagrama de IPv6.",
+              "ICMP: funcionamiento, tipos de mensajes.",
+              "ARP: funcionamiento, tablas ARP.",
+              "Direccionamiento estático. Direccionamiento dinámico.",
+              "BOOTP: características.",
+              "DHCP: características, funcionamiento, agente relay de DHCP."
+            ]
+          },
+          {
+            titulo: "Unidad Nº 4: Capa de interred – Encaminamiento y congestión",
+            contenidos: [
+              "Encaminamiento. Concepto. Algoritmos de encaminamiento. La ruta más corta. Inundación. Algoritmo jerárquico.",
+              "Vector de distancia: características, problema de conteo al infinito, horizonte dividido, actualizaciones por eventos.",
+              "Estado de enlace: características, funcionamiento. Análisis comparativo entre protocolos de vector de distancia y de estado de enlace.",
+              "Encaminamiento en la Internet. Sistemas autónomos. Protocolos de gateway interior.",
+              "RIP, OSPF y BGP: características, funcionamiento.",
+              "Routers: componentes, puertos, principio de funcionamiento, configuración básica. Enrutamiento entre VLANs.",
+              "Congestión. Algoritmos de control de congestión. Diferencia entre control de congestión y control de flujo. Principios generales del control de congestión. Políticas de prevención de congestión.",
+              "Calidad de servicio. Requerimientos. Técnicas para alcanzar buena calidad de servicio (sobreaprovisionamiento, almacenamiento en buffer, modelado de tráfico, algoritmo de cubeta con goteo, algoritmo de cubeta con tokens, reserva de recursos, control de admisión). MPLS.",
+              "Herramientas de administración de red. Comandos: arp, ping, pathping, tracert, ifconfig (linux), ipconfig, route print, netstat, nslookup, telnet, ssh, nmap.",
+              "Tabla de enrutamiento. Tabla de NAT/PAT."
+            ]
+          }
+        ]
+      },
       teorico: {
         material: [
           { nombre: "Apunte Unidad 3", tipo: "PDF",  url: "material/p2/teorico/apunte-unidad-3.pdf" },
@@ -243,11 +288,29 @@ function viewParcial(p){
     <div class="crumbs"><span data-go="inicio">Inicio</span> / ${esc(p.titulo)}</div>
     <h1>${esc(p.titulo)}</h1>
     <p class="lead">${esc(p.descripcion)}</p>
+    ${temasBox(p.temas)}
     <div class="grid">
       ${tarjeta("teorico",  "Material de lectura y videos de las clases teóricas.")}
       ${tarjeta("practico", "Guías de ejercicios y videos con las resoluciones.")}
 
     </div>`;
+}
+
+/* Temas que entran en el parcial (opcional: campo "temas" del parcial) */
+function temasBox(t){
+  if(!t || !t.unidades || !t.unidades.length) return "";
+  return `
+    <section class="temas">
+      <div class="temas-head">
+        <h2>${esc(t.titulo || "Temas que entran")}</h2>
+        ${t.pdf ? `<a class="pill" href="${esc(t.pdf)}" target="_blank" rel="noopener">📄 Ver PDF</a>` : ""}
+      </div>
+      ${t.unidades.map(u => `
+        <div class="unidad">
+          <h3>${esc(u.titulo)}</h3>
+          <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
+        </div>`).join("")}
+    </section>`;
 }
 
 function filesList(items){
