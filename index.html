@@ -136,6 +136,24 @@
   .marcar{cursor:pointer;margin:-2px 0 18px;font:inherit;font-size:.82rem;color:var(--text)}
   .marcar.on{background:var(--ok);border-color:var(--ok);color:#fff}
 
+  /* Guardado en GitHub */
+  .sync{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;font-size:.8rem;color:var(--muted);margin:-12px 0 20px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+  .dot.ok{background:var(--ok)}
+  .dot.err{background:#c0392b}
+  .linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  dialog#config{margin:auto;max-width:560px;width:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:var(--card);color:var(--text);font-size:.9rem;line-height:1.5}
+  dialog#config::backdrop{background:rgba(0,0,0,.4)}
+  dialog#config h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:8px}
+  dialog#config ol{padding-left:20px;margin:12px 0;display:flex;flex-direction:column;gap:6px}
+  dialog#config a{color:var(--accent);text-decoration:underline}
+  dialog#config code{font-size:.85em;background:var(--hover);padding:1px 5px;border-radius:4px}
+  #tokenInput{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}
+  .config-msg{min-height:1.4em;font-size:.82rem;color:var(--muted);margin:8px 0}
+  .config-btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .config-btns .pill{cursor:pointer;font:inherit;font-size:.82rem;color:var(--text)}
+  .pill.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
   /* Progreso */
   .progreso{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:22px}
   .progreso > div{background:var(--card);padding:16px 20px;display:flex;flex-direction:column;gap:6px}
@@ -207,6 +225,26 @@
   </div>
   <div id="app"></div>
 </main>
+
+<dialog id="config">
+  <h2>Guardar en GitHub</h2>
+  <p>Para que las materias que marcás queden guardadas en el repo (y se vean igual en la compu y en el celular), la página necesita una clave de GitHub. Se guarda solo en este navegador, nunca en el repo.</p>
+  <ol>
+    <li>Entrá a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → crear clave (fine-grained token)</a>.</li>
+    <li>Nombre: por ejemplo <i>pagina-isi</i>. Vencimiento: el que quieras.</li>
+    <li>En <b>Repository access</b> elegí <b>Only select repositories</b> y marcá <b>UTN---Sistemas</b>.</li>
+    <li>En <b>Permissions → Repository permissions → Contents</b> elegí <b>Read and write</b>.</li>
+    <li>Tocá <b>Generate token</b>, copiá la clave (empieza con <code>github_pat_</code>) y pegala acá.</li>
+  </ol>
+  <input id="tokenInput" type="password" placeholder="github_pat_..." autocomplete="off" spellcheck="false">
+  <p class="config-msg" id="configMsg"></p>
+  <div class="config-btns">
+    <button id="borrarToken" class="pill">Borrar clave de este navegador</button>
+    <span style="flex:1"></span>
+    <button id="cerrarConfig" class="pill">Cancelar</button>
+    <button id="guardarToken" class="pill primary">Guardar clave</button>
+  </div>
+</dialog>
 
 <script>
 /* =====================================================================
@@ -456,17 +494,147 @@ function renderSidebar(m){
   $("#sidebar").innerHTML = `${brand}${body}<div class="side-foot">${esc(CARRERA.plan)} · ${esc(CARRERA.pie)}</div>`;
 }
 
-/* ---------- Materias aprobadas (se guardan en este navegador) ---------- */
-const CLAVE_APROBADAS = "isi-aprobadas";
+/* ---------- Materias aprobadas ----------
+   Se guardan en el archivo aprobadas.json del repo (GitHub).
+   Para poder guardar hace falta una clave de GitHub (token), que queda
+   solo en tu navegador, nunca en el repo. Sin clave, la página muestra lo
+   que está guardado en GitHub pero no puede cambiarlo. */
+const GITHUB = { usuario: "mascuka", repo: "UTN---Sistemas", rama: "main", archivo: "aprobadas.json" };
+const CLAVE_APROBADAS = "isi-aprobadas";   // copia local, para mostrar rápido al abrir
+const CLAVE_TOKEN = "isi-github-token";
+const guardarLocal = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch(e){} };
+const leerLocal = k => { try { return localStorage.getItem(k); } catch(e){ return null; } };
+
 let aprobadas = new Set();
-try { aprobadas = new Set(JSON.parse(localStorage.getItem(CLAVE_APROBADAS)) || []); } catch(e){}
+try { aprobadas = new Set(JSON.parse(leerLocal(CLAVE_APROBADAS)) || []); } catch(e){}
 const idMat = m => "m" + m.n;
 const idElec = e => "e:" + e.nombre;
 const ok = id => aprobadas.has(id);
-function marcar(id){
-  aprobadas.has(id) ? aprobadas.delete(id) : aprobadas.add(id);
-  try { localStorage.setItem(CLAVE_APROBADAS, JSON.stringify([...aprobadas])); } catch(e){}
+
+let shaRemoto = null;       // versión del archivo en GitHub (hace falta para actualizarlo)
+let estadoSync = "cargando"; // cargando | ok | guardando | error | sin-clave
+let errorSync = "";
+let timerGuardar = null;
+
+const b64enc = s => { const b = new TextEncoder().encode(s); let t = ""; b.forEach(c => t += String.fromCharCode(c)); return btoa(t); };
+const b64dec = s => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, "")), c => c.charCodeAt(0)));
+const urlArchivo = () => `https://api.github.com/repos/${GITHUB.usuario}/${GITHUB.repo}/contents/${GITHUB.archivo}`;
+function headers(){
+  const h = { "Accept": "application/vnd.github+json" };
+  const t = leerLocal(CLAVE_TOKEN);
+  if(t) h.Authorization = "Bearer " + t;
+  return h;
 }
+
+async function leerRemoto(){
+  const r = await fetch(`${urlArchivo()}?ref=${GITHUB.rama}&t=${Date.now()}`, { headers: headers() });
+  if(r.status === 404) return { lista: [], sha: null };
+  if(!r.ok) throw new Error("GitHub respondió " + r.status);
+  const j = await r.json();
+  const datos = JSON.parse(b64dec(j.content) || "{}");
+  return { lista: datos.aprobadas || [], sha: j.sha };
+}
+
+async function cargarAprobadas(){
+  try {
+    const { lista, sha } = await leerRemoto();
+    shaRemoto = sha;
+    aprobadas = new Set(lista);
+    guardarLocal(CLAVE_APROBADAS, JSON.stringify(lista));
+    estadoSync = leerLocal(CLAVE_TOKEN) ? "ok" : "sin-clave";
+  } catch(e){
+    estadoSync = "error"; errorSync = "No se pudo leer de GitHub; se muestra la última copia guardada en este navegador.";
+  }
+  refrescar();
+}
+
+async function subirAprobadas(reintento = true){
+  estadoSync = "guardando"; pintarSync();
+  const lista = [...aprobadas].sort();
+  const cuerpo = {
+    message: "Actualizar materias aprobadas",
+    content: b64enc(JSON.stringify({ aprobadas: lista }, null, 2) + "\n"),
+    branch: GITHUB.rama
+  };
+  if(shaRemoto) cuerpo.sha = shaRemoto;
+  try {
+    const r = await fetch(urlArchivo(), { method: "PUT", headers: { ...headers(), "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+    if((r.status === 409 || r.status === 422) && reintento){
+      shaRemoto = (await leerRemoto()).sha;   // el archivo cambió en GitHub: tomo la versión nueva y reintento
+      return subirAprobadas(false);
+    }
+    if(r.status === 401 || r.status === 403) throw new Error("La clave no es válida o no tiene permiso para escribir en el repo.");
+    if(!r.ok) throw new Error("GitHub respondió " + r.status);
+    shaRemoto = (await r.json()).content.sha;
+    estadoSync = "ok";
+  } catch(e){
+    estadoSync = "error"; errorSync = e.message;
+  }
+  pintarSync();
+}
+
+function marcar(id){
+  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  aprobadas.has(id) ? aprobadas.delete(id) : aprobadas.add(id);
+  guardarLocal(CLAVE_APROBADAS, JSON.stringify([...aprobadas]));
+  estadoSync = "guardando";
+  clearTimeout(timerGuardar);
+  timerGuardar = setTimeout(() => subirAprobadas(), 1500);   // junta varios clicks en un solo guardado
+  return true;
+}
+
+function textoSync(){
+  switch(estadoSync){
+    case "cargando":  return `<span class="dot"></span>Leyendo de GitHub…`;
+    case "guardando": return `<span class="dot"></span>Guardando en GitHub…`;
+    case "ok":        return `<span class="dot ok"></span>Guardado en GitHub`;
+    case "sin-clave": return `<span class="dot"></span>Solo lectura: conectá tu clave de GitHub para marcar materias`;
+    default:          return `<span class="dot err"></span>${esc(errorSync)}`;
+  }
+}
+function pintarSync(){
+  const el = $("#sync");
+  if(el) el.innerHTML = `${textoSync()} <button class="linkbtn" data-config>${leerLocal(CLAVE_TOKEN) ? "Clave de GitHub" : "Conectar GitHub"}</button>`;
+}
+
+/* ---------- Ventana para cargar / borrar la clave ---------- */
+function abrirConfig(){
+  const d = $("#config");
+  $("#tokenInput").value = "";
+  $("#configMsg").textContent = leerLocal(CLAVE_TOKEN) ? "Ya hay una clave guardada en este navegador." : "";
+  $("#borrarToken").style.display = leerLocal(CLAVE_TOKEN) ? "" : "none";
+  d.showModal();
+}
+async function guardarToken(){
+  const t = $("#tokenInput").value.trim();
+  const msg = $("#configMsg");
+  if(!t){ msg.textContent = "Pegá la clave primero."; return; }
+  msg.textContent = "Probando la clave…";
+  try {
+    const r = await fetch(`https://api.github.com/repos/${GITHUB.usuario}/${GITHUB.repo}`, { headers: { "Accept": "application/vnd.github+json", "Authorization": "Bearer " + t } });
+    if(!r.ok) throw new Error();
+    const j = await r.json();
+    if(!(j.permissions && j.permissions.push)) throw new Error();
+  } catch(e){
+    msg.textContent = "La clave no funciona o no tiene permiso de escritura en este repo. Revisá los pasos.";
+    return;
+  }
+  guardarLocal(CLAVE_TOKEN, t);
+  $("#config").close();
+  // Si antes marcaste cosas solo en este navegador, las sumo a lo que hay en GitHub
+  const locales = [...aprobadas];
+  await cargarAprobadas();
+  const antes = aprobadas.size;
+  locales.forEach(id => aprobadas.add(id));
+  if(aprobadas.size !== antes || !shaRemoto){ refrescar(); subirAprobadas(); }
+}
+function borrarToken(){
+  guardarLocal(CLAVE_TOKEN, null);
+  estadoSync = "sin-clave";
+  $("#config").close();
+  pintarSync();
+}
+
 const MIN_CREDITOS = { 3: 4, 4: 6, 5: 10 };
 const TOTAL_CREDITOS = 20;
 
@@ -559,8 +727,9 @@ function viewInicio(){
     <h1>${esc(CARRERA.titulo)}</h1>
     <p class="lead">${esc(CARRERA.plan)}. ${esc(CARRERA.bienvenida)}</p>
     <div id="progreso">${panelProgreso()}</div>
+    <div class="sync" id="sync">${textoSync()}</div>
     <div class="legend">
-      <span><b>✓</b> marcá las materias y electivas que ya aprobaste (se guarda en este navegador)</span>
+      <span><b>✓</b> marcá las materias y electivas que ya aprobaste (se guarda en GitHub)</span>
       <span><b>CC:</b> se puede cursar contra cuatrimestre</span>
       <span><b>Regulares / Aprobadas:</b> números de las materias que necesitás para cursar; en <span class="num ok">verde</span> las que ya aprobaste</span>
     </div>
@@ -587,7 +756,10 @@ function viewInicio(){
 
 /* Marca/desmarca y vuelve a dibujar sin mover la pantalla */
 function toggleAprobada(id){
-  marcar(id);
+  if(marcar(id)) refrescar();
+}
+/* Vuelve a dibujar sin mover la pantalla */
+function refrescar(){
   const y = window.scrollY;
   render(false);
   window.scrollTo(0, y);
@@ -777,6 +949,7 @@ function render(arriba = true){
     app.innerHTML = viewInicio();
   }
   renderSidebar(m);
+  pintarSync();
   document.title = titulo;
   $("#topName").textContent = m ? m.nombre : CARRERA.nombre;
   $("#sidebar").classList.remove("open");
@@ -785,6 +958,7 @@ function render(arriba = true){
 
 /* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) o data-scroll */
 document.addEventListener("click", e => {
+  if(e.target.closest("[data-config]")){ abrirConfig(); return; }
   const k = e.target.closest("[data-chk]");
   if(k){
     e.preventDefault();
@@ -808,7 +982,12 @@ document.addEventListener("click", e => {
 window.addEventListener("hashchange", render);
 $("#menuBtn").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
 
+$("#guardarToken").addEventListener("click", guardarToken);
+$("#borrarToken").addEventListener("click", borrarToken);
+$("#cerrarConfig").addEventListener("click", () => $("#config").close());
+
 render();
+cargarAprobadas();
 </script>
 </body>
 </html>
