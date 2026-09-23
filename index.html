@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ingeniería en Sistemas de Información</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 447 447%22%3E%3Crect width=%22447%22 height=%22447%22 rx=%2280%22 fill=%22%23c96442%22/%3E%3Cg fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2233%22%3E%3Cpath d=%22M131.5 98A92.5 92.5 0 0 0 316.5 98%22/%3E%3Cpath d=%22M131.5 347A92.5 92.5 0 0 1 316.5 347%22/%3E%3C/g%3E%3Cg fill=%22%23fff%22%3E%3Crect x=%22207.5%22 y=%2298%22 width=%2233%22 height=%22249%22/%3E%3Crect x=%22115%22 y=%22205%22 width=%22218%22 height=%2235%22/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root{
     --bg:#faf9f5; --side:#f0eee6; --card:#ffffff; --text:#2b2a27; --muted:#6f6c64;
@@ -25,7 +26,8 @@
   /* ---------- Barra lateral ---------- */
   .sidebar{width:260px;background:var(--side);border-right:1px solid var(--line);padding:14px 10px;display:flex;flex-direction:column;gap:2px;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;transition:transform .25s;z-index:20}
   .brand{display:flex;align-items:center;gap:10px;padding:8px 10px 16px;font-family:Georgia,"Times New Roman",serif;font-size:1.2rem}
-  .brand .logo{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:.95rem}
+  .brand .logo{width:30px;height:30px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;flex-shrink:0}
+  .brand .logo svg{width:20px;height:20px}
   .section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:14px 10px 6px}
   .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:.93rem;color:var(--text)}
   .nav-item:hover{background:var(--hover)}
@@ -137,7 +139,9 @@
   .marcar.on{background:var(--ok);border-color:var(--ok);color:#fff}
 
   /* Guardado en GitHub */
-  .sync{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;font-size:.8rem;color:var(--muted);margin:-12px 0 20px}
+  .sync{font-size:.78rem;color:var(--muted);margin:0 0 18px 2px;line-height:1.6}
+  .sync .dot{margin-right:6px;vertical-align:1px}
+  .sync .linkbtn{margin-left:6px}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
   .dot.ok{background:var(--ok)}
   .dot.err{background:#c0392b}
@@ -155,15 +159,13 @@
   .pill.primary{background:var(--accent);border-color:var(--accent);color:#fff}
 
   /* Progreso */
-  .progreso{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:22px}
-  .progreso > div{background:var(--card);padding:16px 20px;display:flex;flex-direction:column;gap:6px}
-  .progreso small{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-  .progreso b{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
-  .progreso b span{font-size:.9rem;font-weight:500;color:var(--muted)}
-  .p-total b{font-size:2.2rem;color:var(--ok)}
-  .bar{height:6px;border-radius:99px;background:var(--hover);overflow:hidden}
+  .progreso{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;font-size:.82rem;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 14px;margin-bottom:10px}
+  .progreso b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .p-total{display:inline-flex;align-items:center;gap:8px}
+  .p-total b{color:var(--ok)}
+  .bar{display:inline-block;width:110px;height:5px;border-radius:99px;background:var(--hover);overflow:hidden}
   .bar i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .3s}
-  .progreso em{font-style:normal;font-size:.75rem;color:var(--muted);display:flex;gap:10px}
+  .progreso em{font-style:normal;font-size:.75rem}
   .progreso em .cumple{color:var(--ok);font-weight:600}
 
   /* Electivas del nivel (abajo de las materias) */
@@ -172,12 +174,6 @@
   .mrow.elec{border-style:dashed;background:var(--bg)}
   .mrow.elec .mnum{font-size:.7rem;color:var(--muted)}
   .mrow.elec .mname{font-weight:500}
-  .progreso b{white-space:nowrap}
-  @media (max-width:1000px){
-    .progreso{grid-template-columns:1fr 1fr}
-    .p-total,.progreso > div:last-child{grid-column:1 / -1}
-    .progreso em{flex-wrap:wrap}
-  }
   .abr{display:inline-block;min-width:46px;text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.02em;padding:2px 6px;margin-right:8px;border-radius:6px;background:var(--hover);color:var(--muted);vertical-align:1px;white-space:nowrap}
   .mname{display:flex;align-items:center}
   .mname .abr{flex:none;width:64px;min-width:0;padding:2px 4px;margin-right:12px}
@@ -291,8 +287,9 @@ const CARRERA = {
     { n: 21, nivel: 3, abr: "COM", nombre: "Comunicación de Datos",               mod: "A",  horas: 4, regular: [], aprobada: [3, 7] },
     { n: 22, nivel: 3, abr: "AN", nombre: "Análisis Numérico",                   mod: "2C", cc: true, horas: 3, regular: [9], aprobada: [1, 2] },
     { n: 23, nivel: 3, abr: "DSI", nombre: "Diseño de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [14, 16], aprobada: [4, 6, 8] },
-    { n: 99, nivel: 3, nombre: "Seminario Integrador (Analista)",     mod: "2C", horas: 4, regular: [16], aprobada: [6, 8, 13, 14],
-      nota: "Para rendirla hay que tener aprobadas todas las asignaturas previas (1 a 23). Da acceso al título de Analista Desarrollador/a Universitario/a de Sistemas de Información." },
+    // intermedio: título intermedio, no cuenta para Ingeniería (ni horas ni materias)
+    { n: 99, nivel: 3, nombre: "Seminario Integrador (Analista)",     intermedio: true, mod: "2C", horas: 4, regular: [16], aprobada: [6, 8, 13, 14],
+      nota: "Título intermedio: da el título de Analista Desarrollador/a Universitario/a de Sistemas de Información. No es necesaria para Ingeniería y no suma horas. Para rendirla hay que tener aprobadas todas las asignaturas previas (1 a 23)." },
 
     { n: 24, nivel: 4, abr: "LEG", nombre: "Legislación",                         mod: "2C", cc: true, horas: 2, regular: [11], aprobada: [] },
     { n: 25, nivel: 4, abr: "ICS", nombre: "Ingeniería y Calidad de Software",    mod: "2C", cc: true, horas: 3, regular: [19, 20, 23], aprobada: [13, 14] },
@@ -434,6 +431,7 @@ const MATERIAS = {
 /* ===================================================================== */
 
 const $ = s => document.querySelector(s);
+const LOGO = '<svg viewBox="95 78 257 289" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="33"><path d="M131.5 98A92.5 92.5 0 0 0 316.5 98"/><path d="M131.5 347A92.5 92.5 0 0 1 316.5 347"/></g><g fill="currentColor"><rect x="207.5" y="98" width="33" height="249"/><rect x="115" y="205" width="218" height="35"/></g></svg>';
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const NOMBRES = { teorico: "Teórico", practico: "Práctico" };
 const MOD = { "A": "Anual", "1C": "1º cuatrimestre", "2C": "2º cuatrimestre", "1C-2C": "1º o 2º cuatrimestre" };
@@ -462,7 +460,7 @@ function renderSidebar(m){
   const [a, b] = ruta.split("/");
   const item = (go, icon, label, on) =>
     `<div class="nav-item ${on ? "active" : ""}" data-go="${go}">${icon}<span>${label}</span></div>`;
-  const brand = `<div class="brand"><div class="logo">${esc(CARRERA.nombre.charAt(0))}</div><span>${esc(CARRERA.nombre)}</span></div>`;
+  const brand = `<div class="brand"><div class="logo">${LOGO}</div><span>${esc(CARRERA.nombre)}</span></div>`;
   let body;
 
   if(m){
@@ -631,7 +629,7 @@ const MIN_CREDITOS = { 3: 4, 4: 6, 5: 10 };
 const TOTAL_CREDITOS = 20;
 
 function progreso(){
-  const ms = CARRERA.materias;
+  const ms = CARRERA.materias.filter(m => !m.intermedio);
   const hechas = ms.filter(m => ok(idMat(m)));
   const creditos = CARRERA.electivas.filter(e => ok(idElec(e))).reduce((t, e) => t + e.creditos, 0);
   const porNivel = Object.keys(MIN_CREDITOS).map(n => ({
@@ -645,19 +643,13 @@ function progreso(){
 
 function panelProgreso(){
   const p = progreso();
-  const barra = (v, t) => `<div class="bar"><i style="width:${Math.min(100, t ? v / t * 100 : 0)}%"></i></div>`;
   return `
     <div class="progreso">
-      <div class="p-total">
-        <small>Avance de la carrera</small>
-        <b>${p.pct}%<span> / 100%</span></b>
-        ${barra(p.pct, 100)}
-      </div>
-      <div class="p-item"><small>Materias</small><b>${p.hechas.length}<span> / ${p.ms.length}</span></b>${barra(p.hechas.length, p.ms.length)}</div>
-      <div class="p-item"><small>Horas</small><b>${p.hsHechas}<span> / ${p.hsTotal} hs</span></b>${barra(p.hsHechas, p.hsTotal)}</div>
-      <div class="p-item"><small>Electivas</small><b>${p.creditos}P<span> / ${TOTAL_CREDITOS}P</span></b>${barra(p.creditos, TOTAL_CREDITOS)}
-        <em>${p.porNivel.map(x => `<span class="${x.tiene >= x.min ? "cumple" : ""}">${x.n}º: ${x.tiene}/${x.min}</span>`).join("")}</em>
-      </div>
+      <span class="p-total">Avance <b>${p.pct}%</b><span class="bar"><i style="width:${p.pct}%"></i></span></span>
+      <span>Materias <b>${p.hechas.length}/${p.ms.length}</b></span>
+      <span>Horas <b>${p.hsHechas}/${p.hsTotal} hs</b></span>
+      <span>Electivas <b>${p.creditos}P/${TOTAL_CREDITOS}P</b>
+        <em>(${p.porNivel.map(x => `<span class="${x.tiene >= x.min ? "cumple" : ""}">${x.n}º ${x.tiene}/${x.min}</span>`).join(" · ")})</em></span>
     </div>`;
 }
 
@@ -687,7 +679,7 @@ function encabezado(){
 function filaMateria(m){
   const has = !!MATERIAS[m.n];
   return `
-    <div class="mrow ${has ? "has" : ""} ${ok(idMat(m)) ? "done" : ""}" data-go="m${m.n}">
+    <div class="mrow ${has ? "has" : ""} ${m.intermedio ? "elec" : ""} ${ok(idMat(m)) ? "done" : ""}" data-go="m${m.n}">
       <span class="mnum">${m.n}</span>
       <span class="mname">${abr(m)}<span>${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}${has ? ` <span class="tag ok">Con material</span>` : ""}</span></span>
       <span class="c" data-l="Cursado">${MOD_CORTO[m.mod]}${m.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
@@ -723,7 +715,8 @@ function viewInicio(){
       <span><b>Regulares / Aprobadas:</b> números de las materias que necesitás para cursar; en <span class="num ok">verde</span> las que ya aprobaste</span>
     </div>
     ${niveles.map(n => {
-      const ms = CARRERA.materias.filter(m => m.nivel === n);
+      const ms = CARRERA.materias.filter(m => m.nivel === n && !m.intermedio);
+      const ti = CARRERA.materias.filter(m => m.nivel === n && m.intermedio);
       const el = CARRERA.electivas.filter(e => e.nivel === n);
       const hs = ms.reduce((t, m) => t + m.horas, 0);
       const cred = el.filter(e => ok(idElec(e))).reduce((t, e) => t + e.creditos, 0);
@@ -731,6 +724,9 @@ function viewInicio(){
         <section class="nivel" id="nivel-${n}">
           <div class="nivel-head"><h2>${n}º Nivel</h2><span>${ms.filter(m => ok(idMat(m))).length}/${ms.length} materias aprobadas · ${hs} hs semanales</span></div>
           <div class="mlist">${encabezado()}${ms.map(filaMateria).join("")}</div>
+          ${ti.length ? `
+            <div class="elist-head"><b>Título intermedio · Analista Universitario de Sistemas</b><span>No suma para Ingeniería</span></div>
+            <div class="mlist">${ti.map(filaMateria).join("")}</div>` : ""}
           ${el.length ? `
             <div class="elist-head"><b>Electivas de ${n}º nivel</b><span>${cred}/${MIN_CREDITOS[n]} P mínimos · ${el.length} para elegir</span></div>
             <div class="mlist">${el.map(filaElectiva).join("")}</div>` : ""}
