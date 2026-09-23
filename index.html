@@ -379,8 +379,9 @@ const MATERIAS = {
         id: "p1",
         titulo: "1º Parcial",
         descripcion: "El primer parcial consta de teórico y práctico.",
-        teorico:  { material: [], videos: [] },
-        practico: { material: [], videos: [] }
+        teorico:   { material: [], videos: [] },
+        practico:  { material: [], videos: [] },
+        parciales: { material: [], videos: [] }
       },
       {
         id: "p2",
@@ -448,14 +449,16 @@ const MATERIAS = {
             { titulo: "Resolución guía – parte 1", url: "" },
             { titulo: "Resolución guía – parte 2", url: "" }
           ]
-        }
+        },
+        parciales: { material: [], videos: [] }
       },
       {
         id: "p3",
         titulo: "3º Parcial",
         descripcion: "El tercer parcial consta de teórico y práctico.",
-        teorico:  { material: [], videos: [] },
-        practico: { material: [], videos: [] }
+        teorico:   { material: [], videos: [] },
+        practico:  { material: [], videos: [] },
+        parciales: { material: [], videos: [] }
       }
     ],
 
@@ -470,7 +473,16 @@ const MATERIAS = {
 const $ = s => document.querySelector(s);
 const LOGO = '<svg viewBox="95 78 257 289" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="33"><path d="M131.5 98A92.5 92.5 0 0 0 316.5 98"/><path d="M131.5 347A92.5 92.5 0 0 1 316.5 347"/></g><g fill="currentColor"><rect x="207.5" y="98" width="33" height="249"/><rect x="115" y="205" width="218" height="35"/></g></svg>';
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const NOMBRES = { teorico: "Teórico", practico: "Práctico" };
+/* Secciones de cada parcial (en todas las materias) */
+const SECCIONES = ["teorico", "practico", "parciales"];
+const NOMBRES = { teorico: "Teórico", practico: "Práctico", parciales: "Parciales" };
+const DESC_SECCION = {
+  teorico:   "Material de lectura y videos de las clases teóricas.",
+  practico:  "Guías de ejercicios y videos con las resoluciones.",
+  parciales: "Parciales de años anteriores y sus resoluciones."
+};
+/* Si una sección no está cargada en los datos, se muestra vacía */
+const seccion = (p, k) => p[k] || { material: [], videos: [] };
 const MOD = { "A": "Anual", "1C": "1º cuatrimestre", "2C": "2º cuatrimestre", "1C-2C": "1º o 2º cuatrimestre" };
 const MOD_CORTO = { "A": "Anual", "1C": "1º cuatr.", "2C": "2º cuatr.", "1C-2C": "1º o 2º cuatr." };
 const materia = n => CARRERA.materias.find(m => m.n === n);
@@ -856,14 +868,14 @@ function crumbs(m, ...rest){
 }
 
 function viewParcial(m, p){
-  const tarjeta = (k, desc) => `
+  const tarjeta = k => `
     <div class="card" data-go="m${m.n}/${p.id}/${k}/material">
-      <div class="icon">${k === "teorico" ? ICON_BOOK : ICON_PEN}</div>
+      <div class="icon">${k === "teorico" ? ICON_BOOK : k === "practico" ? ICON_PEN : ICON_CHECK}</div>
       <h3>${NOMBRES[k]}</h3>
-      <p>${desc}</p>
+      <p>${DESC_SECCION[k]}</p>
       <div class="links">
-        <span class="pill" data-go="m${m.n}/${p.id}/${k}/material">📄 Material (${cantArchivos(p[k].material)})</span>
-        <span class="pill" data-go="m${m.n}/${p.id}/${k}/videos">▶ Videos (${p[k].videos.length})</span>
+        <span class="pill" data-go="m${m.n}/${p.id}/${k}/material">📄 Material (${cantArchivos(seccion(p, k).material)})</span>
+        <span class="pill" data-go="m${m.n}/${p.id}/${k}/videos">▶ Videos (${seccion(p, k).videos.length})</span>
       </div>
     </div>`;
   return `
@@ -871,8 +883,7 @@ function viewParcial(m, p){
     <h1>${esc(p.titulo)}</h1>
     <p class="lead">${esc(p.descripcion)}</p>
     <div class="grid">
-      ${tarjeta("teorico",  "Material de lectura y videos de las clases teóricas.")}
-      ${tarjeta("practico", "Guías de ejercicios y videos con las resoluciones.")}
+      ${SECCIONES.map(tarjeta).join("")}
     </div>
     ${temasBox(p.temas)}`;
 }
@@ -914,14 +925,15 @@ function filesList(items){
 }
 
 function viewSeccion(m, p, k, tab){
-  const s = p[k];
-  const otra = k === "teorico" ? "practico" : "teorico";
+  const s = seccion(p, k);
   const base = `m${m.n}/${p.id}`;
+  const otras = SECCIONES.filter(x => x !== k)
+    .map(x => `<span class="pill" data-go="${base}/${x}/material" style="margin-left:6px">${NOMBRES[x]} →</span>`).join("");
   return `
     ${crumbs(m, `<span data-go="${base}">${esc(p.titulo)}</span>`, NOMBRES[k])}
     <h1>${NOMBRES[k]}</h1>
-    <p class="lead">${esc(p.titulo)} — material y videos de la parte ${NOMBRES[k].toLowerCase()}.
-      <span class="pill" data-go="${base}/${otra}/material" style="margin-left:6px">Ir a ${NOMBRES[otra]} →</span></p>
+    <p class="lead">${esc(p.titulo)} — ${DESC_SECCION[k].charAt(0).toLowerCase() + DESC_SECCION[k].slice(1)}
+      ${otras}</p>
     <div class="tabs">
       <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/${k}/material">Material (${cantArchivos(s.material)})</div>
       <div class="tab ${tab === "videos" ? "active" : ""}"   data-go="${base}/${k}/videos">Videos (${s.videos.length})</div>
@@ -978,11 +990,11 @@ function render(arriba = true){
   const p = cont && cont.parciales.find(x => x.id === b);
   let titulo = CARRERA.titulo;
 
-  if(p && (c === "teorico" || c === "practico")){
+  if(p && SECCIONES.includes(c)){
     d = d === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}/${d}`;
     app.innerHTML = viewSeccion(m, p, c, d);
-    if(d === "videos") mountPlayer(p[c].videos, `${p.titulo} · ${NOMBRES[c]}`);
+    if(d === "videos") mountPlayer(seccion(p, c).videos, `${p.titulo} · ${NOMBRES[c]}`);
     titulo = `${NOMBRES[c]} · ${p.titulo} · ${m.nombre}`;
   } else if(p){
     app.innerHTML = viewParcial(m, p);

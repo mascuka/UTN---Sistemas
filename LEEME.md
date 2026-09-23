@@ -21,6 +21,9 @@ Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el d
 2. En `index.html`, dentro de la materia en `MATERIAS`, agregá una línea en `material`:
    `{ nombre: "Apunte", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/apunte.pdf" }`
 
+## Secciones de cada parcial
+Cada parcial tiene tres secciones: `teorico`, `practico` y `parciales` (parciales de años anteriores). Todas se muestran aunque estén vacías; para cargar algo, agregá la sección en el parcial con `{ material: [...], videos: [...] }`.
+
 ## Agregar un video
 En `videos`, agregá:
 `{ titulo: "Clase 4", url: "https://www.youtube.com/watch?v=XXXXXXXXXXX" }`
