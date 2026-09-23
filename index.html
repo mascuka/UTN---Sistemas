@@ -141,9 +141,6 @@
   .chk:hover{border-color:var(--ok);color:var(--ok)}
   .chk.on{background:var(--ok);border-color:var(--ok);color:#fff}
   .mrow.done,.mrow.elec.done{background:var(--done);border-color:var(--done-line)}
-  .verde{color:var(--ok)}
-  .marcar{cursor:pointer;margin:-2px 0 18px;font:inherit;font-size:.82rem;color:var(--text)}
-  .marcar.on{background:var(--ok);border-color:var(--ok);color:#fff}
 
   /* Contraseña de entrada */
   body.locked > aside, body.locked > main{display:none}
@@ -214,11 +211,24 @@
   .notas b{color:var(--text)}
 
   /* Ficha de la materia */
-  .ficha{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:28px}
-  .ficha > div{background:var(--card);padding:12px 16px}
-  .ficha small{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px}
-  .ficha span{font-size:.9rem;line-height:1.45}
-  .aviso{font-size:.88rem;color:var(--muted);margin:-14px 0 24px;max-width:720px;line-height:1.5}
+  /* Comisiones de la materia */
+  .comis{margin-top:32px}
+  .comis h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:12px}
+  .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .comis-fila{display:grid;grid-template-columns:90px 200px 90px minmax(0,1fr) 230px;gap:16px;padding:14px 18px;font-size:.9rem;line-height:1.5;align-items:start}
+  .comis-fila + .comis-fila{border-top:1px solid var(--line)}
+  .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:10px 18px}
+  .comis-fila a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+  .reco{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:999px}
+  .reco.si{background:var(--ok-soft);color:var(--ok)}
+  .reco.no{background:#f7e1dc;color:#b03a2e}
+  .comis-fila small{display:block;color:var(--muted);font-size:.82rem;margin-top:4px}
+  @media (prefers-color-scheme: dark){ .reco.no{background:#3d2522;color:#f0a197} }
+  @media (max-width:900px){
+    .comis-head{display:none}
+    .comis-fila{grid-template-columns:1fr;gap:6px}
+    .comis-fila > span::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  }
   .back{color:var(--muted)}
 </style>
 </head>
@@ -373,7 +383,18 @@ const CARRERA = {
 /* Contenido de cada materia, por número de materia */
 const MATERIAS = {
   26: {
-    descripcion: "Material, videos y temas de cada parcial de la materia.",
+    // Comisiones: profesor, opinión y si la recomendás (recomendada: true / false)
+    comisiones: [
+      {
+        comision: "4K3",
+        profesor: "Gustavo Javier Villarreal",
+        perfil: "https://uv.frc.utn.edu.ar/user/profile.php?id=2619",
+        examen: "Escrito",
+        comentario: "Explica bien, es buen profesor. Los exámenes son siempre escritos. Son justos si estudiaste bien.",
+        recomendada: false,
+        motivo: "Otras comisiones toman examen multiple choice, lo que la hace mucho más fácil."
+      }
+    ],
     parciales: [
       {
         id: "p1",
@@ -819,19 +840,6 @@ function refrescar(){
 }
 
 /* ---------- Página de una materia ---------- */
-function ficha(m){
-  const lista = l => l.length ? l.map(n => `<span class="${materia(n) && ok(idMat(materia(n))) ? "verde" : ""}">${n}. ${esc(materia(n) ? materia(n).nombre : "")}${materia(n) && materia(n).abr ? ` (${esc(materia(n).abr)})` : ""}${materia(n) && ok(idMat(materia(n))) ? " ✓" : ""}</span>`).join("<br>") : "—";
-  return `
-    <div class="ficha">
-      <div><small>Nivel</small><span>${m.nivel}º Nivel</span></div>
-      <div><small>Cursado</small><span>${MOD[m.mod]}${m.cc ? " · se puede contra cuatrimestre" : ""}</span></div>
-      <div><small>Carga horaria</small><span>${m.horas} hs semanales</span></div>
-      <div><small>Regulares para cursar</small><span>${lista(m.regular)}</span></div>
-      <div><small>Aprobadas para cursar</small><span>${lista(m.aprobada)}</span></div>
-    </div>
-    ${m.nota ? `<p class="aviso">${esc(m.nota)}</p>` : ""}`;
-}
-
 function viewMateria(m){
   const c = MATERIAS[m.n];
   let contenido;
@@ -856,11 +864,28 @@ function viewMateria(m){
   }
   return `
     <div class="crumbs"><span data-go="inicio">Plan de estudios</span> / ${esc(m.nombre)}</div>
-    <h1>${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
-    <button class="pill marcar ${ok(idMat(m)) ? "on" : ""}" data-chk="${idMat(m)}">${ok(idMat(m)) ? "✓ Aprobada" : "Marcar como aprobada"}</button>
-    ${c && c.descripcion ? `<p class="lead">${esc(c.descripcion)}</p>` : `<div style="height:14px"></div>`}
-    ${ficha(m)}
-    ${contenido}`;
+    <h1 style="margin-bottom:22px">${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
+    ${contenido}
+    ${c && c.comisiones && c.comisiones.length ? comisiones(c.comisiones) : ""}`;
+}
+
+/* Cuadro de comisiones: profesor, examen, comentario y recomendación */
+function comisiones(lista){
+  return `
+    <section class="comis">
+      <h2>Comisiones</h2>
+      <div class="comis-tabla">
+        <div class="comis-fila comis-head"><span>Comisión</span><span>Profesor</span><span>Examen</span><span>Comentario</span><span>¿La recomiendo?</span></div>
+        ${lista.map(x => `
+          <div class="comis-fila">
+            <span data-l="Comisión"><b>${esc(x.comision)}</b></span>
+            <span data-l="Profesor">${x.perfil ? `<a href="${esc(x.perfil)}" target="_blank" rel="noopener">${esc(x.profesor)} ↗</a>` : esc(x.profesor)}</span>
+            <span data-l="Examen">${esc(x.examen || "—")}</span>
+            <span data-l="Comentario">${esc(x.comentario || "")}</span>
+            <span data-l="¿La recomiendo?"><span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
+          </div>`).join("")}
+      </div>
+    </section>`;
 }
 
 function crumbs(m, ...rest){
