@@ -111,20 +111,25 @@
   .nivel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px}
   .nivel-head h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.45rem}
   .nivel-head span{font-size:.82rem;color:var(--muted)}
-  .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-  .mcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;transition:border-color .15s,transform .15s}
-  .mcard[data-go]:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .mcard.has{border-left:3px solid var(--accent)}
-  .mtop{display:flex;align-items:center;gap:8px}
-  .mnum{font-size:.75rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-  .mcard h3{font-size:.98rem;line-height:1.3;font-weight:600}
-  .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-  .tag{font-size:.72rem;padding:3px 8px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
-  .tag.ok{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600;margin-left:auto}
-  .hs{font-size:.75rem;color:var(--muted);margin-left:auto}
-  .corr{font-size:.78rem;color:var(--muted);display:flex;flex-direction:column;gap:4px;border-top:1px dashed var(--line);padding-top:8px;margin-top:auto}
-  .corr div{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
-  .corr .lbl{min-width:72px}
+  .mlist{display:flex;flex-direction:column;gap:6px}
+  .mrow{display:grid;grid-template-columns:30px minmax(0,1fr) 168px 58px 124px 124px;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-size:.9rem}
+  .mrow[data-go]:hover{border-color:var(--accent)}
+  .mrow.has{box-shadow:inset 3px 0 0 var(--accent)}
+  .mhead{background:none;border:0;padding:0 17px 2px;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .mnum{font-size:.8rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  .mname{font-weight:600;line-height:1.35}
+  .mname .tag{font-weight:500;margin-left:4px;vertical-align:1px}
+  .mrow .c{color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+  .tag{font-size:.7rem;padding:2px 7px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+  .tag.ok{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
+  .nada{color:var(--line)}
+  @media (max-width:760px){
+    .mhead{display:none}
+    .mrow{grid-template-columns:28px minmax(0,1fr);gap:4px 10px;padding:10px 12px}
+    .mrow .c{grid-column:2;font-size:.8rem}
+    .mrow .c::before{content:attr(data-l) ":";min-width:74px}
+    .mrow .c.vacia{display:none}
+  }
   .num{font-size:.72rem;font-weight:600;padding:1px 6px;border-radius:5px;background:var(--hover);color:var(--text);cursor:help;font-variant-numeric:tabular-nums}
   .notas{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;font-size:.88rem;line-height:1.55;color:var(--muted)}
   .notas ul{padding-left:18px;display:flex;flex-direction:column;gap:6px}
@@ -403,37 +408,35 @@ function renderSidebar(m){
 function nums(list){
   return list.map(n => `<span class="num" title="${esc(materia(n) ? materia(n).nombre : "")}">${n}</span>`).join("");
 }
-function corrBlock(x){
-  if(!x.regular.length && !x.aprobada.length) return `<div class="corr">Sin correlativas</div>`;
-  return `<div class="corr">
-    ${x.regular.length  ? `<div><span class="lbl">Regulares</span>${nums(x.regular)}</div>` : ""}
-    ${x.aprobada.length ? `<div><span class="lbl">Aprobadas</span>${nums(x.aprobada)}</div>` : ""}
+function celdaCorr(list){
+  return list.length ? nums(list) : `<span class="nada">—</span>`;
+}
+function encabezado(tercera){
+  return `<div class="mrow mhead">
+    <span>Nº</span><span>Asignatura</span><span>Cursado</span><span>${tercera}</span><span>Regulares</span><span>Aprobadas</span>
   </div>`;
 }
-function tarjetaMateria(m){
+function filaMateria(m){
   const has = !!MATERIAS[m.n];
   return `
-    <div class="mcard ${has ? "has" : ""}" data-go="m${m.n}">
-      <div class="mtop"><span class="mnum">Nº ${m.n}</span>${has ? `<span class="tag ok">Con material</span>` : ""}</div>
-      <h3>${esc(m.nombre)}</h3>
-      <div class="meta">
-        <span class="tag">${MOD[m.mod]}</span>
-        ${m.cc ? `<span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}
-        ${m.integradora ? `<span class="tag">Integradora</span>` : ""}
-        <span class="hs">${m.horas} hs/sem</span>
-      </div>
-      ${corrBlock(m)}
+    <div class="mrow ${has ? "has" : ""}" data-go="m${m.n}">
+      <span class="mnum">${m.n}</span>
+      <span class="mname">${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}${has ? ` <span class="tag ok">Con material</span>` : ""}</span>
+      <span class="c" data-l="Cursado">${MOD[m.mod]}${m.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
+      <span class="c" data-l="Horas">${m.horas} hs</span>
+      <span class="c ${m.regular.length ? "" : "vacia"}" data-l="Regulares">${celdaCorr(m.regular)}</span>
+      <span class="c ${m.aprobada.length ? "" : "vacia"}" data-l="Aprobadas">${celdaCorr(m.aprobada)}</span>
     </div>`;
 }
-function tarjetaElectiva(e){
+function filaElectiva(e){
   return `
-    <div class="mcard">
-      <h3>${esc(e.nombre)}</h3>
-      <div class="meta">
-        <span class="tag">${MOD[e.mod]}</span>
-        <span class="hs">${e.creditos} créditos</span>
-      </div>
-      ${corrBlock(e)}
+    <div class="mrow">
+      <span class="mnum"></span>
+      <span class="mname">${esc(e.nombre)}</span>
+      <span class="c" data-l="Cursado">${MOD[e.mod]}</span>
+      <span class="c" data-l="Créditos">${e.creditos}</span>
+      <span class="c" data-l="Regulares">${celdaCorr(e.regular)}</span>
+      <span class="c" data-l="Aprobadas">${celdaCorr(e.aprobada)}</span>
     </div>`;
 }
 
@@ -454,14 +457,14 @@ function viewInicio(){
       return `
         <section class="nivel" id="nivel-${n}">
           <div class="nivel-head"><h2>${n}º Nivel</h2><span>${ms.length} materias · ${hs} hs semanales</span></div>
-          <div class="mgrid">${ms.map(tarjetaMateria).join("")}</div>
+          <div class="mlist">${encabezado("Horas")}${ms.map(filaMateria).join("")}</div>
         </section>`;
     }).join("")}
     <section class="nivel" id="electivas">
       <div class="nivel-head"><h2>Electivas</h2><span>Vigentes 2023 · mínimo 20 créditos</span></div>
       ${nivEl.map(n => `
         <div class="section-label" style="padding-left:0">${n}º Nivel</div>
-        <div class="mgrid">${CARRERA.electivas.filter(e => e.nivel === n).map(tarjetaElectiva).join("")}</div>`).join("")}
+        <div class="mlist">${encabezado("Créditos")}${CARRERA.electivas.filter(e => e.nivel === n).map(filaElectiva).join("")}</div>`).join("")}
     </section>
     <div class="notas"><ul>${CARRERA.notas.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
 }
