@@ -138,6 +138,18 @@
   .marcar{cursor:pointer;margin:-2px 0 18px;font:inherit;font-size:.82rem;color:var(--text)}
   .marcar.on{background:var(--ok);border-color:var(--ok);color:#fff}
 
+  /* Contraseña de entrada */
+  body.locked > aside, body.locked > main{display:none}
+  .lock{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);padding:16px;z-index:50}
+  .lock[hidden]{display:none}
+  .lock-box{width:100%;max-width:320px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+  .lock-logo{width:52px;height:52px;border-radius:12px;background:var(--accent);color:#fff;display:grid;place-items:center}
+  .lock-logo svg{width:34px;height:34px}
+  .lock-box h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem}
+  #lockPass{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;text-align:center}
+  .lock-msg{min-height:1.2em;font-size:.82rem;color:#c0392b}
+  .lock-box .pill{cursor:pointer;font:inherit;font-size:.88rem;padding:8px 22px}
+
   /* Guardado en GitHub */
   .sync{font-size:.78rem;color:var(--muted);margin:0 0 18px 2px;line-height:1.6}
   .sync .dot{margin-right:6px;vertical-align:1px}
@@ -203,6 +215,16 @@
 </style>
 </head>
 <body>
+
+<div class="lock" id="lock" hidden>
+  <form class="lock-box" id="lockForm">
+    <div class="lock-logo" id="lockLogo"></div>
+    <h2>Ingeniería en Sistemas</h2>
+    <input id="lockPass" type="password" placeholder="Contraseña" autocomplete="current-password" autofocus>
+    <p class="lock-msg" id="lockMsg"></p>
+    <button class="pill primary" type="submit">Entrar</button>
+  </form>
+</div>
 
 <aside class="sidebar" id="sidebar"></aside>
 
@@ -994,8 +1016,39 @@ $("#guardarToken").addEventListener("click", guardarToken);
 $("#borrarToken").addEventListener("click", borrarToken);
 $("#cerrarConfig").addEventListener("click", () => $("#config").close());
 
-render();
-cargarAprobadas();
+/* ---------- Contraseña de entrada ----------
+   Es solo para que no entre cualquiera por el link: el repo es público.
+   Se guarda el hash SHA-256 de la contraseña, no la contraseña. */
+const HASH_CLAVE = "b493d48364afe44d11c0165cf470a4164d1e2609911ef998be868d46ade3de4e";
+const CLAVE_ENTRADA = "isi-entrada";
+async function sha256(t){
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
+}
+function iniciar(){
+  document.body.classList.remove("locked");
+  $("#lock").hidden = true;
+  render();
+  cargarAprobadas();
+}
+if(leerLocal(CLAVE_ENTRADA) === HASH_CLAVE){
+  iniciar();
+} else {
+  document.body.classList.add("locked");
+  $("#lock").hidden = false;
+  $("#lockLogo").innerHTML = LOGO;
+  $("#lockPass").focus();
+  $("#lockForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    if(await sha256($("#lockPass").value) === HASH_CLAVE){
+      guardarLocal(CLAVE_ENTRADA, HASH_CLAVE);
+      iniciar();
+    } else {
+      $("#lockMsg").textContent = "Contraseña incorrecta.";
+      $("#lockPass").select();
+    }
+  });
+}
 </script>
 </body>
 </html>
