@@ -76,6 +76,12 @@
   .badge{font-size:.7rem;font-weight:700;padding:4px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);min-width:42px;text-align:center}
   .file .name{flex:1;font-size:.95rem}
   .file .go{color:var(--muted);font-size:.85rem}
+  .file .name small{display:block;font-size:.8rem;color:var(--muted);margin-top:2px}
+  .grupo + .grupo{margin-top:28px}
+  .grupo-head{margin-bottom:10px}
+  .grupo-head h3{font-size:1.02rem;font-weight:600}
+  .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
+  .grupo .empty{padding:22px}
 
   /* Videos estilo YouTube */
   .player-wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
@@ -413,16 +419,23 @@ const MATERIAS = {
           ]
         },
         teorico: {
+          // El material se puede dividir en partes: { grupo, descripcion, archivos: [...] }
           material: [
-            { nombre: "Apunte Unidad 3", tipo: "PDF",  url: "material/redes-de-datos/p2/teorico/apunte-unidad-3.pdf" },
-            { nombre: "Presentación de clase", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/presentacion.pdf" },
-            { nombre: "Lectura complementaria", tipo: "LINK", url: "https://es.wikipedia.org" }
+            {
+              grupo: "Para estudiar el parcial",
+              descripcion: "Con estos dos se cubre toda la teoría del parcial.",
+              archivos: [
+                { nombre: "Resumen del 2º parcial", detalle: "Resumen de todos los temas del parcial (Unidades 3 y 4)", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/resumen-parcial-2.pdf" },
+                { nombre: "Guía de estudio", detalle: "Preguntas orientadas para repasar y reforzar", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/guia-de-estudio-parcial-2.pdf" }
+              ]
+            },
+            {
+              grupo: "Material de clase",
+              descripcion: "Presentaciones y apuntes de las clases teóricas.",
+              archivos: []
+            }
           ],
-          videos: [
-            { titulo: "Clase 1 – Introducción",   url: "" },
-            { titulo: "Clase 2 – Desarrollo",     url: "" },
-            { titulo: "Clase 3 – Repaso teórico", url: "" }
-          ]
+          videos: []
         },
         practico: {
           material: [
@@ -851,7 +864,7 @@ function viewParcial(m, p){
       <h3>${NOMBRES[k]}</h3>
       <p>${desc}</p>
       <div class="links">
-        <span class="pill" data-go="m${m.n}/${p.id}/${k}/material">📄 Material (${p[k].material.length})</span>
+        <span class="pill" data-go="m${m.n}/${p.id}/${k}/material">📄 Material (${cantArchivos(p[k].material)})</span>
         <span class="pill" data-go="m${m.n}/${p.id}/${k}/videos">▶ Videos (${p[k].videos.length})</span>
       </div>
     </div>`;
@@ -882,12 +895,22 @@ function temasBox(t){
     </section>`;
 }
 
+/* Cantidad de archivos (el material puede venir dividido en grupos) */
+const cantArchivos = items => items.reduce((t, f) => t + (f.grupo ? f.archivos.length : 1), 0);
+
 function filesList(items){
+  if(items.some(f => f.grupo)){
+    return items.map(g => `
+      <section class="grupo">
+        <div class="grupo-head"><h3>${esc(g.grupo)}</h3>${g.descripcion ? `<p>${esc(g.descripcion)}</p>` : ""}</div>
+        ${filesList(g.archivos)}
+      </section>`).join("");
+  }
   if(!items.length) return `<div class="empty">Todavía no hay material cargado.</div>`;
   return `<div class="files">${items.map(f => `
     <a class="file" href="${esc(f.url)}" target="_blank" rel="noopener">
       <span class="badge">${esc(f.tipo || "LINK")}</span>
-      <span class="name">${esc(f.nombre)}</span>
+      <span class="name">${esc(f.nombre)}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
       <span class="go">Abrir ↗</span>
     </a>`).join("")}</div>`;
 }
@@ -902,7 +925,7 @@ function viewSeccion(m, p, k, tab){
     <p class="lead">${esc(p.titulo)} — material y videos de la parte ${NOMBRES[k].toLowerCase()}.
       <span class="pill" data-go="${base}/${otra}/material" style="margin-left:6px">Ir a ${NOMBRES[otra]} →</span></p>
     <div class="tabs">
-      <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/${k}/material">Material (${s.material.length})</div>
+      <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/${k}/material">Material (${cantArchivos(s.material)})</div>
       <div class="tab ${tab === "videos" ? "active" : ""}"   data-go="${base}/${k}/videos">Videos (${s.videos.length})</div>
     </div>
     <div id="tabBody">${tab === "material" ? filesList(s.material) : ""}</div>`;
