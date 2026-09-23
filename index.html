@@ -51,7 +51,7 @@
   .pill:hover{border-color:var(--accent);color:var(--accent)}
 
   /* Temas del parcial */
-  .temas{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:24px}
+  .temas{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-top:24px}
   .temas-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
   .temas h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem}
   .unidad{padding-top:14px}
@@ -145,8 +145,7 @@ const CURSO = {
       titulo: "2º Parcial",
       descripcion: "El segundo parcial consta de una parte teórica y una parte práctica. En cada una vas a encontrar el material de lectura y los videos de las clases.",
       temas: {
-        titulo: "Temas para el Parcial 2 (23/09/2026)",
-        pdf: "material/p2/temas-parcial-2.pdf",
+        titulo: "Temas que entran",
         unidades: [
           {
             titulo: "Unidad Nº 3: Capa de interred – Direccionamiento",
@@ -288,12 +287,11 @@ function viewParcial(p){
     <div class="crumbs"><span data-go="inicio">Inicio</span> / ${esc(p.titulo)}</div>
     <h1>${esc(p.titulo)}</h1>
     <p class="lead">${esc(p.descripcion)}</p>
-    ${temasBox(p.temas)}
     <div class="grid">
       ${tarjeta("teorico",  "Material de lectura y videos de las clases teóricas.")}
       ${tarjeta("practico", "Guías de ejercicios y videos con las resoluciones.")}
-
-    </div>`;
+    </div>
+    ${temasBox(p.temas)}`;
 }
 
 /* Temas que entran en el parcial (opcional: campo "temas" del parcial) */
@@ -303,7 +301,6 @@ function temasBox(t){
     <section class="temas">
       <div class="temas-head">
         <h2>${esc(t.titulo || "Temas que entran")}</h2>
-        ${t.pdf ? `<a class="pill" href="${esc(t.pdf)}" target="_blank" rel="noopener">📄 Ver PDF</a>` : ""}
       </div>
       ${t.unidades.map(u => `
         <div class="unidad">
