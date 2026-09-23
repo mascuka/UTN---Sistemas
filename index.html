@@ -123,6 +123,11 @@
   .tag{font-size:.7rem;padding:2px 7px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
   .tag.ok{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
   .nada{color:var(--line)}
+  .abr{display:inline-block;min-width:46px;text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.02em;padding:2px 6px;margin-right:8px;border-radius:6px;background:var(--accent-soft);color:var(--accent);vertical-align:1px;white-space:nowrap}
+  .mname{display:flex;align-items:center}
+  .mname .abr{flex:none;width:64px;min-width:0;padding:2px 4px;margin-right:12px}
+  .abr.vacio{background:none}
+  .abr-lg{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.9rem;padding:4px 10px;margin-right:12px;vertical-align:6px}
   @media (max-width:760px){
     .mhead{display:none}
     .mrow{grid-template-columns:28px minmax(0,1fr);gap:4px 10px;padding:10px 12px}
@@ -184,74 +189,74 @@ const CARRERA = {
 
   // mod: "A" anual, "1C" / "2C" cuatrimestral · cc: se puede cursar contra cuatrimestre
   materias: [
-    { n: 1,  nivel: 1, nombre: "Análisis Matemático 1",               mod: "A",  horas: 5, regular: [], aprobada: [] },
-    { n: 2,  nivel: 1, nombre: "Álgebra y Geometría Analítica",       mod: "A",  horas: 5, regular: [], aprobada: [] },
-    { n: 3,  nivel: 1, nombre: "Física 1",                            mod: "A",  horas: 5, regular: [], aprobada: [] },
-    { n: 4,  nivel: 1, nombre: "Inglés 1",                            mod: "A",  horas: 2, regular: [], aprobada: [] },
-    { n: 5,  nivel: 1, nombre: "Lógica y Estructuras Discretas",      mod: "1C", cc: true, horas: 3, regular: [], aprobada: [] },
-    { n: 6,  nivel: 1, nombre: "Algoritmos y Estructuras de Datos",   mod: "A",  horas: 5, regular: [], aprobada: [] },
-    { n: 7,  nivel: 1, nombre: "Arquitectura de Computadoras",        mod: "2C", cc: true, horas: 4, regular: [], aprobada: [] },
-    { n: 8,  nivel: 1, nombre: "Sistemas y Procesos de Negocio",      mod: "1C", cc: true, horas: 3, regular: [], aprobada: [] },
-    { n: 11, nivel: 1, nombre: "Ingeniería y Sociedad",               mod: "2C", cc: true, horas: 2, regular: [], aprobada: [] },
+    { n: 1,  nivel: 1, abr: "AMI", nombre: "Análisis Matemático 1",               mod: "A",  horas: 5, regular: [], aprobada: [] },
+    { n: 2,  nivel: 1, abr: "Algebra", nombre: "Álgebra y Geometría Analítica",       mod: "A",  horas: 5, regular: [], aprobada: [] },
+    { n: 3,  nivel: 1, abr: "Fisica I", nombre: "Física 1",                            mod: "A",  horas: 5, regular: [], aprobada: [] },
+    { n: 4,  nivel: 1, abr: "Ingles", nombre: "Inglés 1",                            mod: "A",  horas: 2, regular: [], aprobada: [] },
+    { n: 5,  nivel: 1, abr: "LED", nombre: "Lógica y Estructuras Discretas",      mod: "1C", cc: true, horas: 3, regular: [], aprobada: [] },
+    { n: 6,  nivel: 1, abr: "AED", nombre: "Algoritmos y Estructuras de Datos",   mod: "A",  horas: 5, regular: [], aprobada: [] },
+    { n: 7,  nivel: 1, abr: "ACO", nombre: "Arquitectura de Computadoras",        mod: "2C", cc: true, horas: 4, regular: [], aprobada: [] },
+    { n: 8,  nivel: 1, abr: "SPN", nombre: "Sistemas y Procesos de Negocio",      mod: "1C", cc: true, horas: 3, regular: [], aprobada: [] },
+    { n: 11, nivel: 1, abr: "Ing y Soc", nombre: "Ingeniería y Sociedad",               mod: "2C", cc: true, horas: 2, regular: [], aprobada: [] },
 
-    { n: 9,  nivel: 2, nombre: "Análisis Matemático 2",               mod: "A",  horas: 5, regular: [1, 2], aprobada: [] },
-    { n: 10, nivel: 2, nombre: "Física 2",                            mod: "A",  horas: 5, regular: [1, 3], aprobada: [] },
-    { n: 12, nivel: 2, nombre: "Inglés 2",                            mod: "A",  horas: 2, regular: [4], aprobada: [] },
-    { n: 13, nivel: 2, nombre: "Sintaxis y Semántica de los Lenguajes", mod: "1C", cc: true, horas: 4, regular: [5, 6], aprobada: [] },
-    { n: 14, nivel: 2, nombre: "Paradigmas de Programación",          mod: "2C", cc: true, horas: 4, regular: [5, 6], aprobada: [] },
-    { n: 15, nivel: 2, nombre: "Sistemas Operativos",                 mod: "A",  horas: 4, regular: [7], aprobada: [] },
-    { n: 16, nivel: 2, nombre: "Análisis de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [6, 8], aprobada: [] },
-    { n: 17, nivel: 2, nombre: "Probabilidad y Estadísticas",         mod: "1C", cc: true, horas: 3, regular: [1, 2], aprobada: [] },
+    { n: 9,  nivel: 2, abr: "AM2", nombre: "Análisis Matemático 2",               mod: "A",  horas: 5, regular: [1, 2], aprobada: [] },
+    { n: 10, nivel: 2, abr: "FISII", nombre: "Física 2",                            mod: "A",  horas: 5, regular: [1, 3], aprobada: [] },
+    { n: 12, nivel: 2, abr: "Ingles II", nombre: "Inglés 2",                            mod: "A",  horas: 2, regular: [4], aprobada: [] },
+    { n: 13, nivel: 2, abr: "SSL", nombre: "Sintaxis y Semántica de los Lenguajes", mod: "1C", cc: true, horas: 4, regular: [5, 6], aprobada: [] },
+    { n: 14, nivel: 2, abr: "PPR", nombre: "Paradigmas de Programación",          mod: "2C", cc: true, horas: 4, regular: [5, 6], aprobada: [] },
+    { n: 15, nivel: 2, abr: "SOP", nombre: "Sistemas Operativos",                 mod: "A",  horas: 4, regular: [7], aprobada: [] },
+    { n: 16, nivel: 2, abr: "ASI", nombre: "Análisis de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [6, 8], aprobada: [] },
+    { n: 17, nivel: 2, abr: "EST", nombre: "Probabilidad y Estadísticas",         mod: "1C", cc: true, horas: 3, regular: [1, 2], aprobada: [] },
 
-    { n: 18, nivel: 3, nombre: "Economía",                            mod: "2C", cc: true, horas: 3, regular: [], aprobada: [1, 2] },
-    { n: 19, nivel: 3, nombre: "Bases de Datos",                      mod: "1C", cc: true, horas: 4, regular: [13, 16], aprobada: [5, 6] },
-    { n: 20, nivel: 3, nombre: "Desarrollo de Software",              mod: "1C", cc: true, horas: 4, regular: [14, 16], aprobada: [5, 6] },
-    { n: 21, nivel: 3, nombre: "Comunicación de Datos",               mod: "A",  horas: 4, regular: [], aprobada: [3, 7] },
-    { n: 22, nivel: 3, nombre: "Análisis Numérico",                   mod: "2C", cc: true, horas: 3, regular: [9], aprobada: [1, 2] },
-    { n: 23, nivel: 3, nombre: "Diseño de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [14, 16], aprobada: [4, 6, 8] },
+    { n: 18, nivel: 3, abr: "ECO", nombre: "Economía",                            mod: "2C", cc: true, horas: 3, regular: [], aprobada: [1, 2] },
+    { n: 19, nivel: 3, abr: "BDD", nombre: "Bases de Datos",                      mod: "1C", cc: true, horas: 4, regular: [13, 16], aprobada: [5, 6] },
+    { n: 20, nivel: 3, abr: "DS", nombre: "Desarrollo de Software",              mod: "1C", cc: true, horas: 4, regular: [14, 16], aprobada: [5, 6] },
+    { n: 21, nivel: 3, abr: "COM", nombre: "Comunicación de Datos",               mod: "A",  horas: 4, regular: [], aprobada: [3, 7] },
+    { n: 22, nivel: 3, abr: "AN", nombre: "Análisis Numérico",                   mod: "2C", cc: true, horas: 3, regular: [9], aprobada: [1, 2] },
+    { n: 23, nivel: 3, abr: "DSI", nombre: "Diseño de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [14, 16], aprobada: [4, 6, 8] },
     { n: 99, nivel: 3, nombre: "Seminario Integrador (Analista)",     mod: "2C", horas: 4, regular: [16], aprobada: [6, 8, 13, 14],
       nota: "Para rendirla hay que tener aprobadas todas las asignaturas previas (1 a 23). Da acceso al título de Analista Desarrollador/a Universitario/a de Sistemas de Información." },
 
-    { n: 24, nivel: 4, nombre: "Legislación",                         mod: "2C", cc: true, horas: 2, regular: [11], aprobada: [] },
-    { n: 25, nivel: 4, nombre: "Ingeniería y Calidad de Software",    mod: "2C", cc: true, horas: 3, regular: [19, 20, 23], aprobada: [13, 14] },
-    { n: 26, nivel: 4, nombre: "Redes de Datos",                      mod: "A",  horas: 4, regular: [15, 21], aprobada: [] },
-    { n: 27, nivel: 4, nombre: "Investigación Operativa",             mod: "A",  horas: 4, regular: [17, 22], aprobada: [] },
-    { n: 28, nivel: 4, nombre: "Simulación",                          mod: "1C", cc: true, horas: 3, regular: [17], aprobada: [9] },
-    { n: 29, nivel: 4, nombre: "Tecnologías para la Automatización",  mod: "2C", cc: true, horas: 3, regular: [10, 22], aprobada: [9] },
-    { n: 30, nivel: 4, nombre: "Administración de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [18, 23], aprobada: [16] },
+    { n: 24, nivel: 4, abr: "LEG", nombre: "Legislación",                         mod: "2C", cc: true, horas: 2, regular: [11], aprobada: [] },
+    { n: 25, nivel: 4, abr: "ICS", nombre: "Ingeniería y Calidad de Software",    mod: "2C", cc: true, horas: 3, regular: [19, 20, 23], aprobada: [13, 14] },
+    { n: 26, nivel: 4, abr: "RED", nombre: "Redes de Datos",                      mod: "A",  horas: 4, regular: [15, 21], aprobada: [] },
+    { n: 27, nivel: 4, abr: "IOP", nombre: "Investigación Operativa",             mod: "A",  horas: 4, regular: [17, 22], aprobada: [] },
+    { n: 28, nivel: 4, abr: "SIM", nombre: "Simulación",                          mod: "1C", cc: true, horas: 3, regular: [17], aprobada: [9] },
+    { n: 29, nivel: 4, abr: "TPA", nombre: "Tecnologías para la Automatización",  mod: "2C", cc: true, horas: 3, regular: [10, 22], aprobada: [9] },
+    { n: 30, nivel: 4, abr: "ADSI", nombre: "Administración de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [18, 23], aprobada: [16] },
 
-    { n: 31, nivel: 5, nombre: "Inteligencia Artificial",             mod: "A",  horas: 3, regular: [28], aprobada: [17, 22] },
-    { n: 32, nivel: 5, nombre: "Ciencia de Datos",                    mod: "2C", cc: true, horas: 3, regular: [28], aprobada: [17, 19] },
-    { n: 33, nivel: 5, nombre: "Sistemas de Gestión",                 mod: "A",  horas: 4, regular: [18, 27], aprobada: [23] },
-    { n: 34, nivel: 5, nombre: "Gestión Gerencial",                   mod: "1C", cc: true, horas: 3, regular: [24, 30], aprobada: [18] },
-    { n: 35, nivel: 5, nombre: "Seguridad en los Sistemas de Información", mod: "1C", cc: true, horas: 3, regular: [26, 30], aprobada: [20, 21] },
-    { n: 36, nivel: 5, nombre: "Proyecto Final", integradora: true,   mod: "A",  horas: 6, regular: [25, 26, 30], aprobada: [12, 20, 23],
+    { n: 31, nivel: 5, abr: "IAR", nombre: "Inteligencia Artificial",             mod: "A",  horas: 3, regular: [28], aprobada: [17, 22] },
+    { n: 32, nivel: 5, abr: "CD", nombre: "Ciencia de Datos",                    mod: "2C", cc: true, horas: 3, regular: [28], aprobada: [17, 19] },
+    { n: 33, nivel: 5, abr: "SG", nombre: "Sistemas de Gestión",                 mod: "A",  horas: 4, regular: [18, 27], aprobada: [23] },
+    { n: 34, nivel: 5, abr: "GG", nombre: "Gestión Gerencial",                   mod: "1C", cc: true, horas: 3, regular: [24, 30], aprobada: [18] },
+    { n: 35, nivel: 5, abr: "SSI", nombre: "Seguridad en los Sistemas de Información", mod: "1C", cc: true, horas: 3, regular: [26, 30], aprobada: [20, 21] },
+    { n: 36, nivel: 5, abr: "PROY", nombre: "Proyecto Final", integradora: true,   mod: "A",  horas: 6, regular: [25, 26, 30], aprobada: [12, 20, 23],
       nota: "Para rendirla hay que tener aprobadas todas las asignaturas previas del plan de estudios." }
   ],
 
   // Electivas vigentes 2023 (correlativas con los números de las materias de arriba)
   electivas: [
-    { nivel: 3, nombre: "Backend de Aplicaciones",                    mod: "2C",    creditos: 4, regular: [14, 13], aprobada: [6] },
+    { nivel: 3, abr: "BDA", nombre: "Backend de Aplicaciones",                    mod: "2C",    creditos: 4, regular: [14, 13], aprobada: [6] },
 
-    { nivel: 4, nombre: "Green Software",                             mod: "1C-2C", creditos: 3, regular: [20, 19], aprobada: [14, 13] },
-    { nivel: 4, nombre: "Gestión Industrial de la Producción",        mod: "1C",    creditos: 3, regular: [19],     aprobada: [8, 16] },
-    { nivel: 4, nombre: "Gestión de la Mejora de los Procesos",       mod: "1C",    creditos: 3, regular: [19],     aprobada: [8, 16] },
-    { nivel: 4, nombre: "Desarrollo y Operaciones DevOps",            mod: "1C",    creditos: 3, regular: [19, 20], aprobada: [14, 13] },
-    { nivel: 4, nombre: "Desarrollo de Aplicaciones con Objetos",     mod: "2C",    creditos: 3, regular: [13],     aprobada: [6] },
-    { nivel: 4, nombre: "Comunicación Multimedial en el Desarrollo de Sistemas de Información", mod: "2C", creditos: 3, regular: [19], aprobada: [8, 16] },
+    { nivel: 4, abr: "GREEN", nombre: "Green Software",                             mod: "1C-2C", creditos: 3, regular: [20, 19], aprobada: [14, 13] },
+    { nivel: 4, abr: "GIP", nombre: "Gestión Industrial de la Producción",        mod: "1C",    creditos: 3, regular: [19],     aprobada: [8, 16] },
+    { nivel: 4, abr: "GMP", nombre: "Gestión de la Mejora de los Procesos",       mod: "1C",    creditos: 3, regular: [19],     aprobada: [8, 16] },
+    { nivel: 4, abr: "DevOps", nombre: "Desarrollo y Operaciones DevOps",            mod: "1C",    creditos: 3, regular: [19, 20], aprobada: [14, 13] },
+    { nivel: 4, abr: "DAO", nombre: "Desarrollo de Aplicaciones con Objetos",     mod: "2C",    creditos: 3, regular: [13],     aprobada: [6] },
+    { nivel: 4, abr: "CMD", nombre: "Comunicación Multimedial en el Desarrollo de Sistemas de Información", mod: "2C", creditos: 3, regular: [19], aprobada: [8, 16] },
     { nivel: 4, nombre: "Arquitectura de Software",                   mod: "1C",    creditos: 3, regular: [19, 20], aprobada: [14, 13] },
 
-    { nivel: 5, nombre: "Desarrollo de Tecnologías Blockchain",       mod: "1C",    creditos: 3, regular: [26, 19], aprobada: [14, 20] },
+    { nivel: 5, abr: "DTB", nombre: "Desarrollo de Tecnologías Blockchain",       mod: "1C",    creditos: 3, regular: [26, 19], aprobada: [14, 20] },
     { nivel: 5, nombre: "Creatividad e Innovación en Ingeniería",     mod: "1C-2C", creditos: 3, regular: [30],     aprobada: [20] },
     { nivel: 5, nombre: "Auditoría de SI/TI",                         mod: "1C",    creditos: 3, regular: [30],     aprobada: [20] },
-    { nivel: 5, nombre: "Gerenciamiento Estratégico",                 mod: "1C",    creditos: 3, regular: [30],     aprobada: [20] },
-    { nivel: 5, nombre: "Consultoría en Negocios Digitales",          mod: "2C",    creditos: 3, regular: [30],     aprobada: [20] },
-    { nivel: 5, nombre: "Emprendimientos Tecnológicos",               mod: "1C",    creditos: 3, regular: [30],     aprobada: [16, 19] },
-    { nivel: 5, nombre: "Decisiones en Escenarios Complejos",         mod: "1C",    creditos: 3, regular: [27],     aprobada: [19] },
-    { nivel: 5, nombre: "Testing de Software",                        mod: "2C",    creditos: 3, regular: [25],     aprobada: [19, 20] },
-    { nivel: 5, nombre: "Seguridad en el Desarrollo de Software",     mod: "2C",    creditos: 3, regular: [26, 19], aprobada: [20, 8] },
-    { nivel: 5, nombre: "Integración de Aplicaciones en Entorno Web", mod: "2C",    creditos: 3, regular: [26, 19], aprobada: [19, 20] },
-    { nivel: 5, nombre: "Ingeniería de Software de Fuentes Abiertas/Libres", mod: "2C", creditos: 3, regular: [20, 19, 26], aprobada: [13, 14] }
+    { nivel: 5, abr: "GEE", nombre: "Gerenciamiento Estratégico",                 mod: "1C",    creditos: 3, regular: [30],     aprobada: [20] },
+    { nivel: 5, abr: "CON", nombre: "Consultoría en Negocios Digitales",          mod: "2C",    creditos: 3, regular: [30],     aprobada: [20] },
+    { nivel: 5, abr: "ET", nombre: "Emprendimientos Tecnológicos",               mod: "1C",    creditos: 3, regular: [30],     aprobada: [16, 19] },
+    { nivel: 5, abr: "DEC", nombre: "Decisiones en Escenarios Complejos",         mod: "1C",    creditos: 3, regular: [27],     aprobada: [19] },
+    { nivel: 5, abr: "TSO", nombre: "Testing de Software",                        mod: "2C",    creditos: 3, regular: [25],     aprobada: [19, 20] },
+    { nivel: 5, abr: "SDS", nombre: "Seguridad en el Desarrollo de Software",     mod: "2C",    creditos: 3, regular: [26, 19], aprobada: [20, 8] },
+    { nivel: 5, abr: "IAW", nombre: "Integración de Aplicaciones en Entorno Web", mod: "2C",    creditos: 3, regular: [26, 19], aprobada: [19, 20] },
+    { nivel: 5, abr: "SWL", nombre: "Ingeniería de Software de Fuentes Abiertas/Libres", mod: "2C", creditos: 3, regular: [20, 19, 26], aprobada: [13, 14] }
   ],
 
   notas: [
@@ -406,7 +411,10 @@ function renderSidebar(m){
 
 /* ---------- Plan de estudios (inicio) ---------- */
 function nums(list){
-  return list.map(n => `<span class="num" title="${esc(materia(n) ? materia(n).nombre : "")}">${n}</span>`).join("");
+  return list.map(n => `<span class="num" title="${esc(materia(n) ? (materia(n).abr ? materia(n).abr + " · " : "") + materia(n).nombre : "")}">${n}</span>`).join("");
+}
+function abr(x){
+  return `<span class="abr ${x.abr ? "" : "vacio"}">${esc(x.abr || "")}</span>`;
 }
 function celdaCorr(list){
   return list.length ? nums(list) : `<span class="nada">—</span>`;
@@ -421,7 +429,7 @@ function filaMateria(m){
   return `
     <div class="mrow ${has ? "has" : ""}" data-go="m${m.n}">
       <span class="mnum">${m.n}</span>
-      <span class="mname">${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}${has ? ` <span class="tag ok">Con material</span>` : ""}</span>
+      <span class="mname">${abr(m)}<span>${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}${has ? ` <span class="tag ok">Con material</span>` : ""}</span></span>
       <span class="c" data-l="Cursado">${MOD[m.mod]}${m.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
       <span class="c" data-l="Horas">${m.horas} hs</span>
       <span class="c ${m.regular.length ? "" : "vacia"}" data-l="Regulares">${celdaCorr(m.regular)}</span>
@@ -432,7 +440,7 @@ function filaElectiva(e){
   return `
     <div class="mrow">
       <span class="mnum"></span>
-      <span class="mname">${esc(e.nombre)}</span>
+      <span class="mname">${abr(e)}<span>${esc(e.nombre)}</span></span>
       <span class="c" data-l="Cursado">${MOD[e.mod]}</span>
       <span class="c" data-l="Créditos">${e.creditos}</span>
       <span class="c" data-l="Regulares">${celdaCorr(e.regular)}</span>
@@ -471,7 +479,7 @@ function viewInicio(){
 
 /* ---------- Página de una materia ---------- */
 function ficha(m){
-  const lista = l => l.length ? l.map(n => `${n}. ${esc(materia(n) ? materia(n).nombre : "")}`).join("<br>") : "—";
+  const lista = l => l.length ? l.map(n => `${n}. ${esc(materia(n) ? materia(n).nombre : "")}${materia(n) && materia(n).abr ? ` (${esc(materia(n).abr)})` : ""}`).join("<br>") : "—";
   return `
     <div class="ficha">
       <div><small>Nivel</small><span>${m.nivel}º Nivel</span></div>
@@ -507,7 +515,7 @@ function viewMateria(m){
   }
   return `
     <div class="crumbs"><span data-go="inicio">Plan de estudios</span> / ${esc(m.nombre)}</div>
-    <h1>${esc(m.nombre)}</h1>
+    <h1>${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
     ${c && c.descripcion ? `<p class="lead">${esc(c.descripcion)}</p>` : `<div style="height:14px"></div>`}
     ${ficha(m)}
     ${contenido}`;
