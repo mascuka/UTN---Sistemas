@@ -225,7 +225,7 @@
   .comis{margin-top:32px}
   .comis h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .comis-fila{display:grid;grid-template-columns:70px 190px 120px minmax(0,1fr) 250px;gap:18px;padding:14px 18px;font-size:.9rem;line-height:1.5;align-items:start}
+  .comis-fila{display:grid;grid-template-columns:70px 190px 120px 120px minmax(0,1fr) 240px;gap:18px;padding:14px 18px;font-size:.9rem;line-height:1.5;align-items:start}
   .comis-fila + .comis-fila{border-top:1px solid var(--line)}
   .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:10px 18px}
   .comis-fila a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
@@ -402,6 +402,7 @@ const MATERIAS = {
         profesor: "Leonardo Ramón Ciceri",
         rol: "Práctico",
         examen: "Multiple choice",
+        asistencia: true,
         comentario: "Toma lo que da en las filminas.",
         recomendada: false,
         motivo: "Aunque el examen es multiple choice, las preguntas no son las que suelen circular."
@@ -411,6 +412,7 @@ const MATERIAS = {
         profesor: "Gustavo Javier Villarreal",
         rol: "Teórico",
         examen: "Escrito",
+        asistencia: false,
         comentario: "Explica bien, es buen profesor. Los exámenes son siempre escritos. Son justos si estudiaste bien.",
         recomendada: false,
         motivo: "Otras comisiones toman examen multiple choice, lo que la hace mucho más fácil."
@@ -918,12 +920,13 @@ function comisiones(lista){
     <section class="comis">
       <h2>Comisiones</h2>
       <div class="comis-tabla">
-        <div class="comis-fila comis-head"><span>Comisión</span><span class="c-prof">Profesor</span><span>Examen</span><span>Comentario</span><span>¿La recomiendo?</span></div>
+        <div class="comis-fila comis-head"><span>Comisión</span><span class="c-prof">Profesor</span><span>Examen</span><span>Asistencia</span><span>Comentario</span><span>¿La recomiendo?</span></div>
         ${lista.map(x => `
           <div class="comis-fila">
             <span data-l="Comisión"><b>${esc(x.comision)}</b></span>
             <span data-l="Profesor" class="c-prof">${esc(x.profesor)}${x.rol ? `<small>(${esc(x.rol)})</small>` : ""}</span>
             <span data-l="Examen">${esc(x.examen || "—")}</span>
+            <span data-l="Asistencia">${x.asistencia === undefined ? "—" : x.asistencia ? "Toma asistencia" : "No toma"}</span>
             <span data-l="Comentario">${esc(x.comentario || "")}</span>
             <span data-l="¿La recomiendo?"><span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
           </div>`).join("")}
