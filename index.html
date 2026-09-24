@@ -330,7 +330,6 @@ const CARRERA = {
     { n: 101, nivel: 0, nombre: "Matemática", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
     { n: 102, nivel: 0, nombre: "Física", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
     { n: 103, nivel: 0, nombre: "Introducción a la Vida Universitaria", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
-    { n: 0,   nivel: 0, nombre: "Videos del cursillo", ingreso: true, recurso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
 
     { n: 1,  nivel: 1, abr: "AMI", nombre: "Análisis Matemático 1",               mod: "A",  horas: 5, regular: [], aprobada: [] },
     { n: 2,  nivel: 1, abr: "AGA", nombre: "Álgebra y Geometría Analítica",       mod: "A",  horas: 5, regular: [], aprobada: [] },
@@ -412,10 +411,20 @@ const CARRERA = {
 
 /* Contenido de cada materia, por número de materia */
 const MATERIAS = {
-  0: {
-    // Playlist de YouTube: se muestra entera en la página (con todos sus videos)
-    playlist: "PLVK_FXx4QRyk",
-    parciales: []
+  // Cursillo de ingreso · Matemática: solo videos (se ven con la lista al costado)
+  101: {
+    parciales: [],
+    videos: [
+      { titulo: "Clase 1", url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
+      { titulo: "Clase 2", url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
+      { titulo: "Clase 3", url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
+      { titulo: "Clase 4", url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
+      { titulo: "Clase 5", url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
+      { titulo: "Clase 6", url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
+      { titulo: "Clase 7", url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
+      { titulo: "Clase 8", url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
+      { titulo: "Clase 9", url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" }
+    ]
   },
   26: {
     // Comisiones: profesor, opinión y si la recomendás (recomendada: true / false)
@@ -1028,6 +1037,9 @@ function viewMateria(m){
           </div>` : ""}
       </div>`;
   }
+  if(c && c.videos && c.videos.length){
+    contenido = `<div id="tabBody"></div>${c.parciales.length ? contenido : ""}`;
+  }
   if(c && c.playlist){
     contenido = `
       <div class="player"><iframe src="https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(c.playlist)}&rel=0" title="${esc(m.nombre)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
@@ -1210,6 +1222,7 @@ function render(arriba = true){
   } else if(m){
     ruta = a;
     app.innerHTML = viewMateria(m);
+    if(cont && cont.videos && cont.videos.length) mountPlayer(cont.videos, m.nombre);
     titulo = m.nombre;
   } else {
     ruta = "";
