@@ -418,14 +418,14 @@ const MATERIAS = {
   101: {
     parciales: [],
     videos: [
-      { titulo: "Clase 1", url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
-      { titulo: "Clase 2", url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
-      { titulo: "Clase 3", url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
-      { titulo: "Clase 4", url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
-      { titulo: "Clase 5", url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
-      { titulo: "Clase 6", url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
-      { titulo: "Clase 7", url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
-      { titulo: "Clase 8", url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
+      { titulo: "Clase 1 · Operaciones numéricas", url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
+      { titulo: "Clase 2 · Operaciones numéricas", url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
+      { titulo: "Clase 5 · Extracción de radicales", url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
+      { titulo: "Clase 6 · Racionalización", url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
+      { titulo: "Clase 4 · Radicación", url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
+      { titulo: "Clase 8 · Ecuaciones", url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
+      { titulo: "Clase 3", url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
+      { titulo: "Clase 7", url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
       { titulo: "Clase 9", url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" }
     ]
   },
@@ -1172,29 +1172,39 @@ async function tituloYT(id){
   } catch(e){} finally { clearTimeout(t); }
   return null;
 }
+const faltaTitulo = v => v.id && !v.titulo;
 /* Ordena por el número de "Clase N" si todos los títulos lo tienen */
 function ordenarPorClase(lista){
-  const num = v => { const m = /clase\s*(\d+)/i.exec(v.titulo); return m ? +m[1] : null; };
+  const num = v => { const m = /clase\s*(\d+)/i.exec(v.titulo || ""); return m ? +m[1] : null; };
   if(lista.every(v => num(v) !== null)) lista.sort((x, y) => num(x) - num(y));
   return lista;
 }
 
 /* Miniatura: si YouTube todavía no la generó (devuelve una imagen chica gris),
    se muestra el número del video */
+const TAMANIOS_MINI = ["hqdefault.jpg", "mqdefault.jpg", "sddefault.jpg", "maxresdefault.jpg", "hq720.jpg", "0.jpg"];
 function miniatura(img){
-  if(img.naturalWidth <= 120){ const d = img.parentNode; d.classList.add("sin-img"); img.remove(); }
+  if(img.naturalWidth > 120) return;
+  const k = +(img.dataset.k || 0) + 1;
+  if(k < TAMANIOS_MINI.length){
+    img.dataset.k = k;
+    img.src = `https://i.ytimg.com/vi/${img.dataset.id}/${TAMANIOS_MINI[k]}`;
+  } else {
+    const d = img.parentNode; d.classList.add("sin-img"); img.remove();
+  }
 }
 
 function mountPlayer(videos, titulo){
   const body = $("#tabBody");
   if(!videos.length){ body.innerHTML = `<div class="empty">Todavía no hay videos cargados.</div>`; return; }
-  let lista = videos.map(v => { const id = ytId(v.url); return { ...v, id, titulo: (id && titulosYT[id]) || v.titulo }; });
+  let lista = videos.map(v => { const id = ytId(v.url); return { ...v, id, titulo: v.titulo || (id && titulosYT[id]) || "" }; });
+  lista.forEach((v, j) => { if(!v.titulo && !faltaTitulo(v)) v.titulo = `Video ${j + 1}`; });
   ordenarPorClase(lista);
   let actual = lista[0].id || 0;
 
   const item = (v, i) => {
     const thumb = v.id
-      ? `<div class="pl-thumb" data-n="${i + 1}"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy" onload="miniatura(this)"></div>`
+      ? `<div class="pl-thumb" data-n="${i + 1}"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" data-id="${v.id}" alt="" loading="lazy" onload="miniatura(this)" onerror="this.naturalWidth || miniatura(this)"></div>`
       : `<div class="pl-thumb">▶</div>`;
     return `<div class="pl-item" data-i="${i}"><span class="pl-num">${i + 1}</span>${thumb}<div class="pl-title">${esc(v.titulo)}</div></div>`;
   };
@@ -1233,10 +1243,11 @@ function mountPlayer(videos, titulo){
   play(0);
 
   // Trae los títulos que falten y actualiza solo la lista (el video que se está viendo no se corta)
-  const faltan = lista.filter(v => v.id && !titulosYT[v.id]);
+  const faltan = lista.filter(v => v.id && !v.titulo && !titulosYT[v.id]);
   if(!faltan.length) return;
   Promise.all(faltan.map(v => tituloYT(v.id).then(t => { if(t) v.titulo = t; }))).then(() => {
     if(!document.body.contains(body)) return;
+    lista.forEach((v, j) => { if(!v.titulo) v.titulo = `Video ${j + 1}`; });
     ordenarPorClase(lista);
     const i = Math.max(0, lista.findIndex(v => (v.id || null) === actual));
     body.querySelector(".pl-list").innerHTML = lista.map(item).join("");
