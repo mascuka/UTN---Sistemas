@@ -403,7 +403,7 @@ const CARRERA = {
   ],
 
   notas: [
-    "<b>Electivas:</b> para Ingeniería en Sistemas se necesitan como mínimo 20 créditos: 4 de tercer nivel, 6 de cuarto nivel y 10 de quinto nivel (como mínimo 7 electivas: Backend, 2 de cuarto y 4 de quinto). Los créditos de más en un nivel no reemplazan el mínimo de otro. Para el título de Analista, un mínimo de 4 créditos de tercer nivel.",
+    "<b>Electivas:</b> para Ingeniería en Sistemas se necesitan como mínimo 20 créditos: 4 de tercer nivel, 6 de cuarto nivel y 10 de quinto nivel (como mínimo 7 electivas). Para el título de Analista, un mínimo de 4 créditos de tercer nivel.",
     "<b>Práctica Profesional Supervisada:</b> para iniciarla y acreditarla hay que cumplir los requisitos académicos exigidos para inscribirse a Proyecto Final.",
     "Las electivas son las vigentes al ciclo lectivo 2023. Para una versión actualizada, consultá en el Centro de Estudiantes Tecnológicos."
   ]
@@ -848,28 +848,22 @@ function borrarToken(){
   pintarSync();
 }
 
-const MIN_CREDITOS = { 3: 4, 4: 6, 5: 10 };
 const TOTAL_CREDITOS = 20;
 
-/* Cuántas electivas hacen falta: por nivel, las que ya hiciste más las que faltan
-   para llegar al mínimo de créditos (eligiendo las de más créditos primero). */
+/* Cuántas electivas hacen falta: las ya aprobadas más las que faltan para
+   llegar a los 20 puntos (eligiendo primero las de más créditos). */
 function planElectivas(){
-  const niveles = Object.keys(MIN_CREDITOS).map(n => {
-    const todas = CARRERA.electivas.filter(e => e.nivel === +n);
-    const hechas = todas.filter(e => ok(idElec(e)));
-    const tiene = hechas.reduce((t, e) => t + e.creditos, 0);
-    const libres = todas.filter(e => !ok(idElec(e))).map(e => e.creditos).sort((x, y) => y - x);
-    let faltan = 0, credFaltan = 0;
-    while(tiene + credFaltan < MIN_CREDITOS[n] && faltan < libres.length) credFaltan += libres[faltan++];
-    return { n, min: MIN_CREDITOS[n], tiene, hechas: hechas.length, faltan, credFaltan };
-  });
-  const sum = f => niveles.reduce((t, x) => t + f(x), 0);
+  const hechas = CARRERA.electivas.filter(e => ok(idElec(e)));
+  const creditos = hechas.reduce((t, e) => t + e.creditos, 0);
+  const libres = CARRERA.electivas.filter(e => !ok(idElec(e))).map(e => e.creditos).sort((x, y) => y - x);
+  let faltan = 0, credFaltan = 0;
+  while(creditos + credFaltan < TOTAL_CREDITOS && faltan < libres.length) credFaltan += libres[faltan++];
   return {
-    niveles,
-    hechas: sum(x => x.hechas),
-    necesarias: sum(x => x.hechas + x.faltan),
-    creditos: sum(x => x.tiene),
-    creditosPlan: Math.max(TOTAL_CREDITOS, sum(x => x.tiene + x.credFaltan))
+    hechas: hechas.length,
+    faltan,
+    necesarias: hechas.length + faltan,
+    creditos,
+    creditosPlan: Math.max(TOTAL_CREDITOS, creditos + credFaltan)
   };
 }
 
@@ -895,7 +889,7 @@ function panelProgreso(){
       <span title="${p.hechas.length} materias + ${p.el.hechas} electivas">Materias <b>${p.matHechas}/${p.matTotal}</b> <em>(${p.el.necesarias} electivas)</em></span>
       <span>Horas <b>${p.hsHechas}/${p.hsTotal} hs</b></span>
       <span>Electivas <b>${p.el.hechas}/${p.el.necesarias}</b> · <b>${p.el.creditos}P/${TOTAL_CREDITOS}P</b>
-        <em>(${p.el.niveles.map(x => `<span class="${x.tiene >= x.min ? "cumple" : ""}">${x.n}º ${x.tiene}/${x.min}</span>`).join(" · ")})</em></span>
+        <em>${p.el.faltan ? `(faltan ${p.el.faltan})` : `<span class="cumple">(completo)</span>`}</em></span>
     </div>`;
 }
 
@@ -948,10 +942,6 @@ function filaElectiva(e){
     </div>`;
 }
 
-function faltanTexto(n){
-  const x = planElectivas().niveles.find(v => +v.n === n);
-  return x.faltan ? `te ${x.faltan === 1 ? "falta 1 electiva" : `faltan ${x.faltan} electivas`}` : "mínimo cumplido";
-}
 function viewInicio(){
   const niveles = [...new Set(CARRERA.materias.map(m => m.nivel))];
   return `
@@ -971,7 +961,7 @@ function viewInicio(){
           <button class="nivel-head" data-nivel="${n}" aria-expanded="${abiertos.has(n)}">
             <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
             <h2>${nombreNivel(n)}</h2>
-            <span class="nivel-info">${ms.filter(m => ok(idMat(m))).length}/${ms.length} aprobadas${hs ? ` · ${hs} hs` : ""}${el.length ? ` · electivas ${cred}/${MIN_CREDITOS[n]} P` : ""}</span>
+            <span class="nivel-info">${ms.filter(m => ok(idMat(m))).length}/${ms.length} aprobadas${hs ? ` · ${hs} hs` : ""}${el.length && cred ? ` · electivas ${cred} P` : ""}</span>
             <span class="bar"><i style="width:${Math.round(ms.filter(m => ok(idMat(m))).length / ms.length * 100)}%"></i></span>
           </button>
           <div class="nivel-body">
@@ -980,7 +970,7 @@ function viewInicio(){
             <div class="elist-head"><b>Título intermedio · Analista Universitario de Sistemas</b><span>No suma para Ingeniería</span></div>
             <div class="mlist">${ti.map(filaMateria).join("")}</div>` : ""}
           ${el.length ? `
-            <div class="elist-head"><b>Electivas de ${n}º nivel</b><span>${cred}/${MIN_CREDITOS[n]} P mínimos · ${faltanTexto(n)}</span></div>
+            <div class="elist-head"><b>Electivas de ${n}º nivel</b><span>${cred} P aprobados · ${el.length} para elegir</span></div>
             <div class="mlist">${el.map(filaElectiva).join("")}</div>` : ""}
           </div>
         </section>`;
