@@ -118,10 +118,16 @@
   /* ---------- Plan de estudios (inicio) ---------- */
   .legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.82rem;color:var(--muted);margin:-10px 0 30px}
   .legend b{color:var(--text);font-weight:600}
-  .nivel{margin-bottom:34px;scroll-margin-top:20px}
-  .nivel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:14px}
-  .nivel-head h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.45rem}
-  .nivel-head span{font-size:.82rem;color:var(--muted)}
+  .nivel{margin-bottom:10px;scroll-margin-top:20px}
+  .nivel-head{width:100%;display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;cursor:pointer;font:inherit;color:inherit;text-align:left;transition:border-color .15s}
+  .nivel-head:hover{border-color:var(--accent)}
+  .nivel-head h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.35rem}
+  .nivel-head .chev{width:18px;height:18px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+  .nivel.abierto .nivel-head .chev{transform:rotate(90deg)}
+  .nivel-info{font-size:.82rem;color:var(--muted);margin-left:auto}
+  .nivel-head .bar{width:90px}
+  .nivel-body{display:none;padding:14px 0 18px}
+  .nivel.abierto .nivel-body{display:block}
   .mlist{display:flex;flex-direction:column;gap:6px}
   .mrow{display:grid;grid-template-columns:30px minmax(0,1fr) 118px 48px 112px 112px 30px;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-size:.9rem}
   .mrow[data-go]:hover{border-color:var(--accent)}
@@ -227,10 +233,12 @@
   .reco.si{background:var(--ok-soft);color:var(--ok)}
   .reco.no{background:#f7e1dc;color:#b03a2e}
   .comis-fila small{display:block;color:var(--muted);font-size:.82rem;margin-top:4px}
+  .c-prof{text-align:center}
   @media (prefers-color-scheme: dark){ .reco.no{background:#3d2522;color:#f0a197} }
   @media (max-width:900px){
     .comis-head{display:none}
     .comis-fila{grid-template-columns:1fr;gap:6px}
+    .c-prof{text-align:left}
     .comis-fila > span::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
   }
   .back{color:var(--muted)}
@@ -402,7 +410,6 @@ const MATERIAS = {
         comision: "4K3",
         profesor: "Gustavo Javier Villarreal",
         rol: "Teórico",
-        perfil: "https://uv.frc.utn.edu.ar/user/profile.php?id=2619",
         examen: "Escrito",
         comentario: "Explica bien, es buen profesor. Los exámenes son siempre escritos. Son justos si estudiaste bien.",
         recomendada: false,
@@ -828,8 +835,14 @@ function viewInicio(){
       const hs = ms.reduce((t, m) => t + m.horas, 0);
       const cred = el.filter(e => ok(idElec(e))).reduce((t, e) => t + e.creditos, 0);
       return `
-        <section class="nivel" id="nivel-${n}">
-          <div class="nivel-head"><h2>${n}º Nivel</h2><span>${ms.filter(m => ok(idMat(m))).length}/${ms.length} materias aprobadas · ${hs} hs semanales</span></div>
+        <section class="nivel ${abiertos.has(n) ? "abierto" : ""}" id="nivel-${n}">
+          <button class="nivel-head" data-nivel="${n}" aria-expanded="${abiertos.has(n)}">
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+            <h2>${n}º Nivel</h2>
+            <span class="nivel-info">${ms.filter(m => ok(idMat(m))).length}/${ms.length} aprobadas · ${hs} hs${el.length ? ` · electivas ${cred}/${MIN_CREDITOS[n]} P` : ""}</span>
+            <span class="bar"><i style="width:${Math.round(ms.filter(m => ok(idMat(m))).length / ms.length * 100)}%"></i></span>
+          </button>
+          <div class="nivel-body">
           <div class="mlist">${encabezado()}${ms.map(filaMateria).join("")}</div>
           ${ti.length ? `
             <div class="elist-head"><b>Título intermedio · Analista Universitario de Sistemas</b><span>No suma para Ingeniería</span></div>
@@ -837,9 +850,25 @@ function viewInicio(){
           ${el.length ? `
             <div class="elist-head"><b>Electivas de ${n}º nivel</b><span>${cred}/${MIN_CREDITOS[n]} P mínimos · ${faltanTexto(n)}</span></div>
             <div class="mlist">${el.map(filaElectiva).join("")}</div>` : ""}
+          </div>
         </section>`;
     }).join("")}
     <div class="notas"><ul>${CARRERA.notas.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
+}
+
+/* Niveles desplegados en el plan (se recuerda en este navegador) */
+const CLAVE_ABIERTOS = "isi-niveles-abiertos";
+let abiertos = new Set();
+try { abiertos = new Set(JSON.parse(leerLocal(CLAVE_ABIERTOS)) || []); } catch(e){}
+function toggleNivel(n, abrir){
+  const on = abrir === undefined ? !abiertos.has(n) : abrir;
+  on ? abiertos.add(n) : abiertos.delete(n);
+  guardarLocal(CLAVE_ABIERTOS, JSON.stringify([...abiertos]));
+  const sec = document.getElementById("nivel-" + n);
+  if(sec){
+    sec.classList.toggle("abierto", on);
+    sec.querySelector(".nivel-head").setAttribute("aria-expanded", on);
+  }
 }
 
 /* Marca/desmarca y vuelve a dibujar sin mover la pantalla */
@@ -889,11 +918,11 @@ function comisiones(lista){
     <section class="comis">
       <h2>Comisiones</h2>
       <div class="comis-tabla">
-        <div class="comis-fila comis-head"><span>Comisión</span><span>Profesor</span><span>Examen</span><span>Comentario</span><span>¿La recomiendo?</span></div>
+        <div class="comis-fila comis-head"><span>Comisión</span><span class="c-prof">Profesor</span><span>Examen</span><span>Comentario</span><span>¿La recomiendo?</span></div>
         ${lista.map(x => `
           <div class="comis-fila">
             <span data-l="Comisión"><b>${esc(x.comision)}</b></span>
-            <span data-l="Profesor">${x.perfil ? `<a href="${esc(x.perfil)}" target="_blank" rel="noopener">${esc(x.profesor)} ↗</a>` : esc(x.profesor)}${x.rol ? `<small>${esc(x.rol)}</small>` : ""}</span>
+            <span data-l="Profesor" class="c-prof">${esc(x.profesor)}${x.rol ? `<small>(${esc(x.rol)})</small>` : ""}</span>
             <span data-l="Examen">${esc(x.examen || "—")}</span>
             <span data-l="Comentario">${esc(x.comentario || "")}</span>
             <span data-l="¿La recomiendo?"><span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
@@ -1069,9 +1098,12 @@ document.addEventListener("click", e => {
     toggleAprobada(k.dataset.chk);
     return;
   }
+  const nv = e.target.closest("[data-nivel]");
+  if(nv){ toggleNivel(+nv.dataset.nivel); return; }
   const s = e.target.closest("[data-scroll]");
   if(s){
     $("#sidebar").classList.remove("open");
+    if(s.dataset.scroll.startsWith("nivel-")) toggleNivel(+s.dataset.scroll.slice(6), true);
     document.getElementById(s.dataset.scroll).scrollIntoView({ behavior: "smooth" });
     return;
   }
