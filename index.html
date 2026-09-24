@@ -160,8 +160,10 @@
   .chk{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:transparent;display:grid;place-items:center;cursor:pointer;padding:0;justify-self:center;transition:background .15s,border-color .15s,color .15s}
   .chk svg{width:15px;height:15px}
   .chk:hover{border-color:var(--ok);color:var(--ok)}
-  .chk.on{background:var(--ok);border-color:var(--ok);color:#fff}
-  .mrow.done,.mrow.elec.done{background:var(--done);border-color:var(--done-line)}
+  /* Aprobada: solo un tilde verde, sin recuadro ni fondo en la fila */
+  .chk.on{background:none;border-color:transparent;color:var(--ok)}
+  .chk.on svg{width:22px;height:22px;stroke-width:3.2}
+  .chk.on:hover{color:var(--muted)}
 
   /* Contraseña de entrada */
   body.locked > aside, body.locked > main{display:none}
@@ -925,7 +927,7 @@ function filaMateria(m){
   return `
     <div class="mrow ${has ? "has" : ""} ${m.intermedio ? "elec" : ""} ${ok(idMat(m)) ? "done" : ""}" data-go="m${m.n}">
       <span class="mnum">${m.ingreso ? "" : m.n}</span>
-      <span class="mname">${abr(m)}<span>${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}${has ? ` <span class="tag ok">Con material</span>` : ""}</span></span>
+      <span class="mname">${abr(m)}<span>${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}</span></span>
       <span class="c" data-l="Cursado">${MOD_CORTO[m.mod]}${m.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
       <span class="c" data-l="Horas">${m.horas ? `${m.horas} hs` : "—"}</span>
       <span class="c ${m.regular.length ? "" : "vacia"}" data-l="Regulares">${celdaCorr(m.regular)}</span>
