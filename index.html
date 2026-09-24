@@ -85,6 +85,9 @@
   .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
   .grupo .empty{padding:22px}
   .parte + .parte{margin-top:20px}
+  .aviso-lista{font-size:.85rem;color:var(--muted);margin:10px 0 24px}
+  .aviso-lista a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+  #app.angosto .player{max-width:900px}
   .otras{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
   .fnum{font-size:.85rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;min-width:20px;margin-right:-4px}
   @media (min-width:1100px){
@@ -323,6 +326,9 @@ const CARRERA = {
 
   // mod: "A" anual, "1C" / "2C" cuatrimestral · cc: se puede cursar contra cuatrimestre
   materias: [
+    // Nivel 0: ingreso (no cuenta para el avance de la carrera)
+    { n: 0,  nivel: 0, nombre: "Cursillo de ingreso", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
+
     { n: 1,  nivel: 1, abr: "AMI", nombre: "Análisis Matemático 1",               mod: "A",  horas: 5, regular: [], aprobada: [] },
     { n: 2,  nivel: 1, abr: "AGA", nombre: "Álgebra y Geometría Analítica",       mod: "A",  horas: 5, regular: [], aprobada: [] },
     { n: 3,  nivel: 1, abr: "Fisica I", nombre: "Física 1",                            mod: "A",  horas: 5, regular: [], aprobada: [] },
@@ -403,6 +409,11 @@ const CARRERA = {
 
 /* Contenido de cada materia, por número de materia */
 const MATERIAS = {
+  0: {
+    // Playlist de YouTube: se muestra entera en la página (con todos sus videos)
+    playlist: "PLVK_FXx4QRyk",
+    parciales: []
+  },
   26: {
     // Comisiones: profesor, opinión y si la recomendás (recomendada: true / false)
     comisiones: [
@@ -562,9 +573,10 @@ const DESC_SECCION = {
 };
 /* Si una sección no está cargada en los datos, se muestra vacía */
 const seccion = (p, k) => p[k] || { material: [], videos: [] };
-const MOD = { "A": "Anual", "1C": "1º cuatrimestre", "2C": "2º cuatrimestre", "1C-2C": "1º o 2º cuatrimestre" };
-const MOD_CORTO = { "A": "Anual", "1C": "1º cuatr.", "2C": "2º cuatr.", "1C-2C": "1º o 2º cuatr." };
+const MOD = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatrimestre", "2C": "2º cuatrimestre", "1C-2C": "1º o 2º cuatrimestre" };
+const MOD_CORTO = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatr.", "2C": "2º cuatr.", "1C-2C": "1º o 2º cuatr." };
 const materia = n => CARRERA.materias.find(m => m.n === n);
+const nombreNivel = n => n === 0 ? "Nivel 0 · Cursillo de ingreso" : `${n}º Nivel`;
 
 function ytId(url){
   if(!url) return null;
@@ -607,7 +619,7 @@ function renderSidebar(m){
       ${conContenido.length ? `<div class="section-label">Materias con material</div>
         ${conContenido.map(x => item(`m${x.n}`, ICON_BOOK, esc(x.nombre), false)).join("")}` : ""}
       <div class="section-label">Ir a</div>
-      ${niveles.map(n => `<div class="nav-item" data-scroll="nivel-${n}">${ICON_LAYER}<span>${n}º Nivel</span></div>`).join("")}`;
+      ${niveles.map(n => `<div class="nav-item" data-scroll="nivel-${n}">${ICON_LAYER}<span>${n === 0 ? "Ingreso" : `${n}º Nivel`}</span></div>`).join("")}`;
   }
   $("#sidebar").innerHTML = `${brand}${body}<div class="side-foot">${esc(CARRERA.plan)} · ${esc(CARRERA.pie)}</div>`;
 }
@@ -780,7 +792,7 @@ function planElectivas(){
 }
 
 function progreso(){
-  const ms = CARRERA.materias.filter(m => !m.intermedio);
+  const ms = CARRERA.materias.filter(m => !m.intermedio && !m.ingreso);
   const hechas = ms.filter(m => ok(idMat(m)));
   const el = planElectivas();
   // Las electivas cuentan como materias; sus horas son iguales a sus créditos
@@ -835,7 +847,7 @@ function filaMateria(m){
       <span class="mnum">${m.n}</span>
       <span class="mname">${abr(m)}<span>${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}${has ? ` <span class="tag ok">Con material</span>` : ""}</span></span>
       <span class="c" data-l="Cursado">${MOD_CORTO[m.mod]}${m.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
-      <span class="c" data-l="Horas">${m.horas} hs</span>
+      <span class="c" data-l="Horas">${m.horas ? `${m.horas} hs` : "—"}</span>
       <span class="c ${m.regular.length ? "" : "vacia"}" data-l="Regulares">${celdaCorr(m.regular)}</span>
       <span class="c ${m.aprobada.length ? "" : "vacia"}" data-l="Aprobadas">${celdaCorr(m.aprobada)}</span>
       ${check(idMat(m), m.nombre)}
@@ -875,8 +887,8 @@ function viewInicio(){
         <section class="nivel ${abiertos.has(n) ? "abierto" : ""}" id="nivel-${n}">
           <button class="nivel-head" data-nivel="${n}" aria-expanded="${abiertos.has(n)}">
             <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
-            <h2>${n}º Nivel</h2>
-            <span class="nivel-info">${ms.filter(m => ok(idMat(m))).length}/${ms.length} aprobadas · ${hs} hs${el.length ? ` · electivas ${cred}/${MIN_CREDITOS[n]} P` : ""}</span>
+            <h2>${nombreNivel(n)}</h2>
+            <span class="nivel-info">${ms.filter(m => ok(idMat(m))).length}/${ms.length} aprobadas${hs ? ` · ${hs} hs` : ""}${el.length ? ` · electivas ${cred}/${MIN_CREDITOS[n]} P` : ""}</span>
             <span class="bar"><i style="width:${Math.round(ms.filter(m => ok(idMat(m))).length / ms.length * 100)}%"></i></span>
           </button>
           <div class="nivel-body">
@@ -941,6 +953,13 @@ function viewMateria(m){
             <p>Trabajos prácticos y entregas.</p>
           </div>` : ""}
       </div>`;
+  }
+  if(c && c.playlist){
+    contenido = `
+      <div class="player"><iframe src="https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(c.playlist)}&rel=0" title="${esc(m.nombre)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      <p class="aviso-lista">Para ver la lista completa de videos, usá el ícono de lista arriba a la derecha del reproductor o
+        <a href="https://www.youtube.com/playlist?list=${encodeURIComponent(c.playlist)}" target="_blank" rel="noopener">abrí la playlist en YouTube ↗</a>.</p>
+      ${c.parciales.length ? contenido : ""}`;
   }
   return `
     <div class="crumbs"><span data-go="inicio">Plan de estudios</span> / ${esc(m.nombre)}</div>
