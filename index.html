@@ -414,19 +414,20 @@ const CARRERA = {
 
 /* Contenido de cada materia, por número de materia */
 const MATERIAS = {
-  // Cursillo de ingreso · Matemática: solo videos (se ven con la lista al costado)
+  // Cursillo de ingreso · Matemática: solo videos (se ven con la lista al costado).
+  // Sin "titulo", el nombre se trae de YouTube y se ordenan por "Clase N".
   101: {
     parciales: [],
     videos: [
-      { titulo: "Clase 1 · Operaciones numéricas", url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
-      { titulo: "Clase 2 · Operaciones numéricas", url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
-      { titulo: "Clase 5 · Extracción de radicales", url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
-      { titulo: "Clase 6 · Racionalización", url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
-      { titulo: "Clase 4 · Radicación", url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
-      { titulo: "Clase 8 · Ecuaciones", url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
-      { titulo: "Clase 3", url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
-      { titulo: "Clase 7", url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
-      { titulo: "Clase 9", url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" }
+      { url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
+      { url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
+      { url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
+      { url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
+      { url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
+      { url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
+      { url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
+      { url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
+      { url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" }
     ]
   },
   26: {
@@ -1158,21 +1159,28 @@ const CLAVE_TITULOS = "isi-yt-titulos";
 let titulosYT = {};
 try { titulosYT = JSON.parse(leerLocal(CLAVE_TITULOS)) || {}; } catch(e){}
 async function tituloYT(id){
-  if(titulosYT[id]) return titulosYT[id];
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 5000);
-  try {
-    const r = await fetch(`https://noembed.com/embed?url=${encodeURIComponent("https://www.youtube.com/watch?v=" + id)}`, { signal: ctrl.signal });
-    const j = await r.json();
-    if(j && j.title){
-      titulosYT[id] = j.title;
-      guardarLocal(CLAVE_TITULOS, JSON.stringify(titulosYT));
-      return j.title;
-    }
-  } catch(e){} finally { clearTimeout(t); }
-  return null;
+  const c = titulosYT[id];
+  if(c && c.t && Date.now() - c.f < 86400000) return c.t;   // se guarda por un día
+  const url = "https://www.youtube.com/watch?v=" + id;
+  const fuentes = [
+    `https://noembed.com/embed?url=${encodeURIComponent(url)}`,
+    `https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(url)}`
+  ];
+  for(const f of fuentes){
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 5000);
+    try {
+      const r = await fetch(f, { signal: ctrl.signal });
+      const j = await r.json();
+      if(j && j.title){
+        titulosYT[id] = { t: j.title, f: Date.now() };
+        guardarLocal(CLAVE_TITULOS, JSON.stringify(titulosYT));
+        return j.title;
+      }
+    } catch(e){} finally { clearTimeout(t); }
+  }
+  return c && c.t ? c.t : null;
 }
-const faltaTitulo = v => v.id && !v.titulo;
 /* Ordena por el número de "Clase N" si todos los títulos lo tienen */
 function ordenarPorClase(lista){
   const num = v => { const m = /clase\s*(\d+)/i.exec(v.titulo || ""); return m ? +m[1] : null; };
@@ -1197,8 +1205,9 @@ function miniatura(img){
 function mountPlayer(videos, titulo){
   const body = $("#tabBody");
   if(!videos.length){ body.innerHTML = `<div class="empty">Todavía no hay videos cargados.</div>`; return; }
-  let lista = videos.map(v => { const id = ytId(v.url); return { ...v, id, titulo: v.titulo || (id && titulosYT[id]) || "" }; });
-  lista.forEach((v, j) => { if(!v.titulo && !faltaTitulo(v)) v.titulo = `Video ${j + 1}`; });
+  const guardado = id => titulosYT[id] && titulosYT[id].t;
+  let lista = videos.map(v => { const id = ytId(v.url); return { ...v, id, fijo: !!v.titulo, titulo: v.titulo || (id && guardado(id)) || "" }; });
+  lista.forEach((v, j) => { if(!v.titulo) v.titulo = v.id ? "Cargando…" : `Video ${j + 1}`; });
   ordenarPorClase(lista);
   let actual = lista[0].id || 0;
 
@@ -1224,8 +1233,9 @@ function mountPlayer(videos, titulo){
           </div>
         </div>
       </div>`;
-    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => play(+el.dataset.i)));
+    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i); }));
   };
+  let elegido = false;
 
   const play = i => {
     const v = lista[i];
@@ -1243,15 +1253,18 @@ function mountPlayer(videos, titulo){
   play(0);
 
   // Trae los títulos que falten y actualiza solo la lista (el video que se está viendo no se corta)
-  const faltan = lista.filter(v => v.id && !v.titulo && !titulosYT[v.id]);
+  const c0 = id => titulosYT[id] && Date.now() - titulosYT[id].f < 86400000;
+  const faltan = lista.filter(v => v.id && !v.fijo && !c0(v.id));
   if(!faltan.length) return;
   Promise.all(faltan.map(v => tituloYT(v.id).then(t => { if(t) v.titulo = t; }))).then(() => {
     if(!document.body.contains(body)) return;
-    lista.forEach((v, j) => { if(!v.titulo) v.titulo = `Video ${j + 1}`; });
+    lista.forEach((v, j) => { if(!v.titulo || v.titulo === "Cargando…") v.titulo = `Video ${j + 1}`; });
     ordenarPorClase(lista);
+    // Si todavía no se eligió ningún video, se arranca por el primero de la lista ordenada
+    if(!elegido){ dibujar(); play(0); return; }
     const i = Math.max(0, lista.findIndex(v => (v.id || null) === actual));
     body.querySelector(".pl-list").innerHTML = lista.map(item).join("");
-    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => play(+el.dataset.i)));
+    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i); }));
     marcarActivo(i);
     $("#nowTitle").textContent = lista[i].titulo;
     $("#nowDesc").textContent = `Video ${i + 1} de ${lista.length}`;

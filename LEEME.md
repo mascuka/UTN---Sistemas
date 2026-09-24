@@ -26,7 +26,8 @@ Cada parcial tiene tres secciones: `teorico`, `practico` y `parciales` (parciale
 
 ## Agregar un video
 En `videos`, agregá:
-`{ titulo: "Clase 4", url: "https://www.youtube.com/watch?v=XXXXXXXXXXX" }`
+`{ url: "https://www.youtube.com/watch?v=XXXXXXXXXXX" }`
+Sin `titulo`, el nombre se trae de YouTube (el video tiene que estar publicado u oculto, no en borrador) y, si todos empiezan con "Clase N", se ordenan por número. Si ponés `titulo: "..."`, se usa ese.
 
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):
