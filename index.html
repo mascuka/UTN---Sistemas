@@ -157,13 +157,13 @@
   .nada{color:var(--line)}
   .num.ok{background:var(--ok-soft);color:var(--ok)}
   .hc{text-align:center}
-  .chk{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:transparent;display:grid;place-items:center;cursor:pointer;padding:0;justify-self:center;transition:background .15s,border-color .15s,color .15s}
+  .chk{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);color:transparent;display:grid;place-items:center;cursor:pointer;padding:0;justify-self:center;transition:background .15s,border-color .15s,color .15s}
   .chk svg{width:15px;height:15px}
   .chk:hover{border-color:var(--ok);color:var(--ok)}
-  /* Aprobada: solo un tilde verde, sin recuadro ni fondo en la fila */
-  .chk.on{background:none;border-color:transparent;color:var(--ok)}
-  .chk.on svg{width:22px;height:22px;stroke-width:3.2}
-  .chk.on:hover{color:var(--muted)}
+  /* Aprobada: círculo verde con tilde blanco (sin fondo en la fila) */
+  .chk.on{background:var(--ok);border-color:var(--ok);color:#fff;box-shadow:0 1px 3px rgba(46,125,79,.35)}
+  .chk.on svg{width:14px;height:14px;stroke-width:3.4}
+  .chk.on:hover{filter:brightness(1.1)}
 
   /* Contraseña de entrada */
   body.locked > aside, body.locked > main{display:none}
