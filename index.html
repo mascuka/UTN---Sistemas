@@ -327,7 +327,10 @@ const CARRERA = {
   // mod: "A" anual, "1C" / "2C" cuatrimestral · cc: se puede cursar contra cuatrimestre
   materias: [
     // Nivel 0: ingreso (no cuenta para el avance de la carrera)
-    { n: 0,  nivel: 0, nombre: "Cursillo de ingreso", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
+    { n: 101, nivel: 0, nombre: "Matemática", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
+    { n: 102, nivel: 0, nombre: "Física", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
+    { n: 103, nivel: 0, nombre: "Introducción a la Vida Universitaria", ingreso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
+    { n: 0,   nivel: 0, nombre: "Videos del cursillo", ingreso: true, recurso: true, mod: "ING", horas: 0, regular: [], aprobada: [] },
 
     { n: 1,  nivel: 1, abr: "AMI", nombre: "Análisis Matemático 1",               mod: "A",  horas: 5, regular: [], aprobada: [] },
     { n: 2,  nivel: 1, abr: "AGA", nombre: "Álgebra y Geometría Analítica",       mod: "A",  horas: 5, regular: [], aprobada: [] },
@@ -443,7 +446,77 @@ const MATERIAS = {
         id: "p1",
         titulo: "1º Parcial",
         descripcion: "El primer parcial consta de teórico y práctico.",
-        teorico:   { material: [], videos: [] },
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            {
+              titulo: "Unidad Nº 1: Arquitectura de redes",
+              contenidos: [
+                "Introducción. Concepto de red de telecomunicación. Clasificación de las redes.",
+                "Arquitectura de protocolos TCP/IP. Historia. Evolución.",
+                "Modelo de referencia TCP/IP: función de cada nivel. Conjunto de protocolos.",
+                "Encapsulamiento y desencapsulamiento. Ejemplos.",
+                "Internet: orígenes, características, servicios básicos. Arquitectura de Internet (niveles).",
+                "Organismos internacionales de normalización: ITU, ISO, IEEE. Estándares IETF: RFC."
+              ]
+            },
+            {
+              titulo: "Unidad Nº 2: Capa de acceso en redes locales",
+              contenidos: [
+                "Métodos de acceso al medio: CSMA/CD, CSMA/CA, Token Ring.",
+                "Dominio de colisión y dominio de broadcast.",
+                "Estándares IEEE 802.3: Ethernet, Fast Ethernet, Gigabit Ethernet, 10 Gigabit Ethernet.",
+                "Dispositivos: NIC, Hub, Bridge, Switch. IEEE 802.1D. Access Point.",
+                "Wireless LAN: IEEE 802.11."
+              ]
+            },
+            {
+              titulo: "Unidad Nº 3: Capa de interred – Direccionamiento (primera parte)",
+              contenidos: [
+                "Direccionamiento IP: protocolo IPv4. Formato del datagrama. Direccionamiento IPv4.",
+                "Clases de direcciones. Máscara de red. Ejercitación.",
+                "Direcciones privadas y públicas.",
+                "División de una red en subredes. Máscara de subred. Ejercitación.",
+                "VLANs. IEEE 802.1q."
+              ]
+            }
+          ]
+        },
+        teorico: {
+          material: [
+            {
+              grupo: "Material de clase",
+              descripcion: "Presentaciones de las clases teóricas, por unidad.",
+              partes: [
+                {
+                  titulo: "Unidad 1 · Arquitectura de redes",
+                  archivos: [
+                    { n: 2, nombre: "Arquitectura de redes", detalle: "Introducción a las redes de datos e Internet, modelo TCP/IP", tipo: "PDF", url: "material/redes-de-datos/p1/teorico/02-u1-arquitectura-de-redes.pdf" }
+                  ]
+                },
+                {
+                  titulo: "Unidad 2 · Capa de acceso en redes locales",
+                  archivos: [
+                    { n: 3, nombre: "Acceso al medio", detalle: "CSMA/CD, CSMA/CA, Token Ring, dominios de colisión y broadcast, Ethernet", tipo: "PDF", url: "material/redes-de-datos/p1/teorico/03-u2-acceso-al-medio.pdf" },
+                    { n: 4, nombre: "Dispositivos de comunicaciones", detalle: "NIC, Hub, Bridge, Switch, IEEE 802.1D y Access Point", tipo: "PDF", url: "material/redes-de-datos/p1/teorico/04-u2-dispositivos.pdf" },
+                    { n: 5, nombre: "Redes inalámbricas (WLAN)", detalle: "Estándar IEEE 802.11", tipo: "PDF", url: "material/redes-de-datos/p1/teorico/05-u2-wlan.pdf" }
+                  ]
+                },
+                {
+                  // Mismos archivos que en el 2º Parcial (no se duplican)
+                  titulo: "Unidad 3 · Capa de interred – Direccionamiento (primera parte)",
+                  archivos: [
+                    { n: 6, nombre: "Direcciones IPv4", detalle: "Estructura, clases, máscara, direcciones especiales y privadas", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/01-u3-direcciones-ipv4.pdf" },
+                    { n: 7, nombre: "Subredes", detalle: "Creación de subredes y cálculo de máscaras", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/02-u3-subredes.pdf" },
+                    { n: 8, nombre: "Protocolos IP y ARP", detalle: "Capa de red, datagrama IP, funcionamiento y tablas ARP", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/07-u3-ip-arp.pdf" },
+                    { n: 9, nombre: "VLSM y CIDR", detalle: "Máscaras de longitud variable y enrutamiento sin clases", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/03-u3-vlsm-cidr.pdf" }
+                  ]
+                }
+              ]
+            }
+          ],
+          videos: []
+        },
         practico:  { material: [], videos: [] },
         parciales: { material: [], videos: [] }
       },
@@ -844,13 +917,13 @@ function filaMateria(m){
   const has = !!MATERIAS[m.n];
   return `
     <div class="mrow ${has ? "has" : ""} ${m.intermedio ? "elec" : ""} ${ok(idMat(m)) ? "done" : ""}" data-go="m${m.n}">
-      <span class="mnum">${m.n}</span>
+      <span class="mnum">${m.ingreso ? "" : m.n}</span>
       <span class="mname">${abr(m)}<span>${esc(m.nombre)}${m.integradora ? ` <span class="tag">Integradora</span>` : ""}${has ? ` <span class="tag ok">Con material</span>` : ""}</span></span>
       <span class="c" data-l="Cursado">${MOD_CORTO[m.mod]}${m.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
       <span class="c" data-l="Horas">${m.horas ? `${m.horas} hs` : "—"}</span>
       <span class="c ${m.regular.length ? "" : "vacia"}" data-l="Regulares">${celdaCorr(m.regular)}</span>
       <span class="c ${m.aprobada.length ? "" : "vacia"}" data-l="Aprobadas">${celdaCorr(m.aprobada)}</span>
-      ${check(idMat(m), m.nombre)}
+      ${m.recurso ? "<span></span>" : check(idMat(m), m.nombre)}
     </div>`;
 }
 function filaElectiva(e){
@@ -878,7 +951,8 @@ function viewInicio(){
     <div id="progreso">${panelProgreso()}</div>
     <div class="sync" id="sync"></div>
     ${niveles.map(n => {
-      const ms = CARRERA.materias.filter(m => m.nivel === n && !m.intermedio);
+      const ms = CARRERA.materias.filter(m => m.nivel === n && !m.intermedio && !m.recurso);
+      const rec = CARRERA.materias.filter(m => m.nivel === n && m.recurso);
       const ti = CARRERA.materias.filter(m => m.nivel === n && m.intermedio);
       const el = CARRERA.electivas.filter(e => e.nivel === n);
       const hs = ms.reduce((t, m) => t + m.horas, 0);
@@ -892,7 +966,7 @@ function viewInicio(){
             <span class="bar"><i style="width:${Math.round(ms.filter(m => ok(idMat(m))).length / ms.length * 100)}%"></i></span>
           </button>
           <div class="nivel-body">
-          <div class="mlist">${encabezado()}${ms.map(filaMateria).join("")}</div>
+          <div class="mlist">${encabezado()}${ms.map(filaMateria).join("")}${rec.map(filaMateria).join("")}</div>
           ${ti.length ? `
             <div class="elist-head"><b>Título intermedio · Analista Universitario de Sistemas</b><span>No suma para Ingeniería</span></div>
             <div class="mlist">${ti.map(filaMateria).join("")}</div>` : ""}
