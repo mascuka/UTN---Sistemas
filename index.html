@@ -1330,7 +1330,12 @@ document.addEventListener("click", e => {
   const s = e.target.closest("[data-scroll]");
   if(s){
     $("#sidebar").classList.remove("open");
-    if(s.dataset.scroll.startsWith("nivel-")) toggleNivel(+s.dataset.scroll.slice(6), true);
+    if(s.dataset.scroll.startsWith("nivel-")){
+      // Desde el menú: queda abierto solo el nivel elegido
+      const elegido = +s.dataset.scroll.slice(6);
+      [...abiertos].forEach(n => { if(n !== elegido) toggleNivel(n, false); });
+      toggleNivel(elegido, true);
+    }
     document.getElementById(s.dataset.scroll).scrollIntoView({ behavior: "smooth" });
     return;
   }
