@@ -84,6 +84,14 @@
   .grupo-head h3{font-size:1.02rem;font-weight:600}
   .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
   .grupo .empty{padding:22px}
+  .parte + .parte{margin-top:20px}
+  .otras{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .fnum{font-size:.85rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;min-width:20px;margin-right:-4px}
+  @media (min-width:1100px){
+    .parte .files{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  }
+  .parte-head{display:flex;align-items:baseline;gap:10px;margin:0 0 8px 2px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+  .parte-head span{font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0}
 
   /* Videos estilo YouTube */
   .player-wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
@@ -479,18 +487,33 @@ const MATERIAS = {
             },
             {
               grupo: "Material de clase",
-              descripcion: "Presentaciones y apuntes de las clases teóricas.",
-              archivos: [
-                { nombre: "U3 · Direcciones IPv4", detalle: "Estructura, clases, máscara, direcciones especiales y privadas", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/01-u3-direcciones-ipv4.pdf" },
-                { nombre: "U3 · Subredes", detalle: "Creación de subredes y cálculo de máscaras", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/02-u3-subredes.pdf" },
-                { nombre: "U3 · VLSM y CIDR", detalle: "Máscaras de longitud variable y enrutamiento sin clases", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/03-u3-vlsm-cidr.pdf" },
-                { nombre: "U3 · Guía de direccionamiento IP", detalle: "Ejercicios de clasificación de direcciones y subredes", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/04-u3-guia-direccionamiento-ip.pdf" },
-                { nombre: "U3 · Introducción a IPv6", detalle: "Características, formato y direcciones IPv6", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/05-u3-ipv6.pdf" },
-                { nombre: "U3 · Configuración de direcciones IPv6", detalle: "Transición y convivencia IPv4/IPv6, configuración de direcciones", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/06-u3-direcciones-ipv6.pdf" },
-                { nombre: "U3 · Protocolos IP y ARP", detalle: "Capa de red, datagrama IP, funcionamiento y tablas ARP", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/07-u3-ip-arp.pdf" },
-                { nombre: "U3 · ICMP", detalle: "Funcionamiento y tipos de mensajes", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/08-u3-icmp.pdf" },
-                { nombre: "U3 · DHCP y BOOTP", detalle: "Diferencias, mecanismos de asignación y DHCP Relay", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/09-u3-dhcp-bootp.pdf" },
-                { nombre: "U3 · VLANs", detalle: "Necesidad, características y tipos de VLANs", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/10-u3-vlans.pdf" }
+              descripcion: "Presentaciones de las clases teóricas, por unidad.",
+              // Un grupo se puede dividir en partes: { titulo, archivos: [...] }
+              partes: [
+                {
+                  titulo: "Unidad 3 · Capa de interred – Direccionamiento",
+                  archivos: [
+                    { n: 1, nombre: "Direcciones IPv4", detalle: "Estructura, clases, máscara, direcciones especiales y privadas", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/01-u3-direcciones-ipv4.pdf" },
+                    { n: 2, nombre: "Subredes", detalle: "Creación de subredes y cálculo de máscaras", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/02-u3-subredes.pdf" },
+                    { n: 3, nombre: "VLSM y CIDR", detalle: "Máscaras de longitud variable y enrutamiento sin clases", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/03-u3-vlsm-cidr.pdf" },
+                    { n: 4, nombre: "Guía de direccionamiento IP", detalle: "Ejercicios de clasificación de direcciones y subredes", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/04-u3-guia-direccionamiento-ip.pdf" },
+                    { n: 5, nombre: "Introducción a IPv6", detalle: "Características, formato y direcciones IPv6", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/05-u3-ipv6.pdf" },
+                    { n: 6, nombre: "Configuración de direcciones IPv6", detalle: "Transición y convivencia IPv4/IPv6, configuración de direcciones", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/06-u3-direcciones-ipv6.pdf" },
+                    { n: 7, nombre: "Protocolos IP y ARP", detalle: "Capa de red, datagrama IP, funcionamiento y tablas ARP", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/07-u3-ip-arp.pdf" },
+                    { n: 8, nombre: "ICMP", detalle: "Funcionamiento y tipos de mensajes", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/08-u3-icmp.pdf" },
+                    { n: 9, nombre: "DHCP y BOOTP", detalle: "Diferencias, mecanismos de asignación y DHCP Relay", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/09-u3-dhcp-bootp.pdf" },
+                    { n: 10, nombre: "VLANs", detalle: "Necesidad, características y tipos de VLANs", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/10-u3-vlans.pdf" }
+                  ]
+                },
+                {
+                  titulo: "Unidad 4 · Capa de interred – Encaminamiento y congestión",
+                  archivos: [
+                    { n: 11, nombre: "Protocolos de enrutamiento", detalle: "Capa de red, algoritmos de enrutamiento, vector distancia y estado de enlace", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/11-u4-protocolos-enrutamiento.pdf" },
+                    { n: 12, nombre: "Enrutamiento en Internet", detalle: "Sistemas autónomos, RIP, OSPF y BGP", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/12-u4-enrutamiento-internet.pdf" },
+                    { n: 13, nombre: "Control de congestión", detalle: "Congestión, algoritmos y políticas de prevención", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/13-u4-control-congestion.pdf" },
+                    { n: 14, nombre: "Calidad de servicio (QoS) en Internet", detalle: "IntServ, RSVP, DiffServ, QoS en LANs y MPLS", tipo: "PDF", url: "material/redes-de-datos/p2/teorico/14-u4-calidad-de-servicio.pdf" }
+                  ]
+                }
               ]
             }
           ],
@@ -988,20 +1011,25 @@ function temasBox(t){
 }
 
 /* Cantidad de archivos (el material puede venir dividido en grupos) */
-const cantArchivos = items => items.reduce((t, f) => t + (f.grupo ? f.archivos.length : 1), 0);
+const cantArchivos = items => items.reduce((t, f) =>
+  t + (f.grupo ? (f.partes ? f.partes.reduce((u, p) => u + p.archivos.length, 0) : f.archivos.length) : 1), 0);
 
 function filesList(items){
   if(items.some(f => f.grupo)){
     return items.map(g => `
       <section class="grupo">
         <div class="grupo-head"><h3>${esc(g.grupo)}</h3>${g.descripcion ? `<p>${esc(g.descripcion)}</p>` : ""}</div>
-        ${filesList(g.archivos)}
+        ${g.partes ? g.partes.map(p => `
+          <div class="parte">
+            <div class="parte-head">${esc(p.titulo)}<span>${p.archivos.length} archivo${p.archivos.length === 1 ? "" : "s"}</span></div>
+            ${filesList(p.archivos)}
+          </div>`).join("") : filesList(g.archivos)}
       </section>`).join("");
   }
   if(!items.length) return `<div class="empty">Todavía no hay material cargado.</div>`;
   return `<div class="files">${items.map(f => `
     <a class="file" href="${esc(f.url)}" target="_blank" rel="noopener">
-      <span class="badge">${esc(f.tipo || "LINK")}</span>
+      ${f.n ? `<span class="fnum">${String(f.n).padStart(2, "0")}</span>` : ""}<span class="badge">${esc(f.tipo || "LINK")}</span>
       <span class="name">${esc(f.nombre)}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
       <span class="go">Abrir ↗</span>
     </a>`).join("")}</div>`;
@@ -1011,12 +1039,12 @@ function viewSeccion(m, p, k, tab){
   const s = seccion(p, k);
   const base = `m${m.n}/${p.id}`;
   const otras = SECCIONES.filter(x => x !== k)
-    .map(x => `<span class="pill" data-go="${base}/${x}/material" style="margin-left:6px">${NOMBRES[x]} →</span>`).join("");
+    .map(x => `<span class="pill" data-go="${base}/${x}/material">${NOMBRES[x]} →</span>`).join("");
   return `
     ${crumbs(m, `<span data-go="${base}">${esc(p.titulo)}</span>`, NOMBRES[k])}
     <h1>${NOMBRES[k]}</h1>
-    <p class="lead">${esc(p.titulo)} — ${DESC_SECCION[k].charAt(0).toLowerCase() + DESC_SECCION[k].slice(1)}
-      ${otras}</p>
+    <p class="lead" style="margin-bottom:10px">${esc(p.titulo)} — ${DESC_SECCION[k].charAt(0).toLowerCase() + DESC_SECCION[k].slice(1)}</p>
+    <div class="otras">${otras}</div>
     <div class="tabs">
       <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/${k}/material">Material (${cantArchivos(s.material)})</div>
       <div class="tab ${tab === "videos" ? "active" : ""}"   data-go="${base}/${k}/videos">Videos (${s.videos.length})</div>
