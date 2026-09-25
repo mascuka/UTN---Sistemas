@@ -242,7 +242,7 @@
   .comis{margin-top:32px}
   .comis h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .comis-fila{display:grid;grid-template-columns:70px 190px 120px 120px minmax(0,1fr) 240px;gap:18px;padding:14px 18px;font-size:.9rem;line-height:1.5;align-items:start}
+  .comis-fila{display:grid;grid-template-columns:62px 170px 110px 100px minmax(0,1fr) 200px;gap:18px;padding:14px 18px;font-size:.9rem;line-height:1.5;align-items:start}
   .comis-fila + .comis-fila{border-top:1px solid var(--line)}
   .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:10px 18px}
   .comis-fila a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
@@ -418,6 +418,23 @@ const CARRERA = {
 const MATERIAS = {
   // Análisis Matemático 1
   1: {
+    comisiones: [
+      {
+        comision: "1K13",
+        profesor: "Dante Omar Quinteros",
+        rol: "Teórico",
+        examen: "A desarrollar",
+        comentario: "Tiene buen material de clase y sus clases son iguales al material. No explica mal, pero te dormís. Los exámenes, ni fu ni fa: toma lo que está en el material, a desarrollar."
+      },
+      {
+        comision: "1K13",
+        profesor: "Carlos Kaloustian",
+        rol: "Práctico",
+        examen: "A desarrollar",
+        asistencia: false,
+        comentario: "No explica, no vale la pena ir. Los exámenes son muy fáciles, a desarrollar."
+      }
+    ],
     parciales: [
       {
         id: "p1",
@@ -1142,7 +1159,7 @@ function comisiones(lista){
             <span data-l="Examen">${esc(x.examen || "—")}</span>
             <span data-l="Asistencia">${x.asistencia === undefined ? "—" : x.asistencia ? "Toma asistencia" : "No toma"}</span>
             <span data-l="Comentario">${esc(x.comentario || "")}</span>
-            <span data-l="¿La recomiendo?"><span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
+            <span data-l="¿La recomiendo?">${x.recomendada === undefined ? "—" : `<span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>`}${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
           </div>`).join("")}
       </div>
     </section>`;
