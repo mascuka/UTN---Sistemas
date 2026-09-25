@@ -61,6 +61,11 @@
   .temas-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
   .temas h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem}
   .unidad{padding-top:14px}
+  /* Muchas unidades cortas (ej.: temas por fecha de final): en columnas */
+  .temas.muchas{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 28px}
+  .temas.muchas .temas-head{grid-column:1 / -1}
+  .temas.muchas .unidad + .unidad{margin-top:0;border-top:0}
+  .temas.muchas .unidad{padding:12px 0}
   .unidad + .unidad{margin-top:14px;border-top:1px solid var(--line)}
   .unidad h3{font-size:1rem;color:var(--accent);margin-bottom:8px}
   .unidad ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
@@ -566,6 +571,40 @@ const MATERIAS = {
               ]
             }
           ]
+        }
+      },
+      {
+        id: "final",
+        titulo: "Final",
+        descripcion: "El final tiene 3 partes: primero un examen multiple choice de 15 minutos; si lo aprobás, pasás al práctico (salvo que hayas promocionado), que son 3 ejercicios; y después el teórico, con 3 temas al azar.",
+        temas: {
+          titulo: "Temas del teórico tomados en finales anteriores",
+          unidades: [
+            { titulo: "2 de febrero", contenidos: ["Interpretación geométrica de la derivada", "Integrales impropias", "Condición necesaria y suficiente de máximos y mínimos"] },
+            { titulo: "16 de febrero", contenidos: ["Continuidad", "Diferencial", "Longitud de un arco"] },
+            { titulo: "2 de marzo", contenidos: ["Continuidad", "Derivación de funciones inversas (con ejemplo)", "Teorema fundamental del cálculo (con regla de Barrow)"] },
+            { titulo: "11 de mayo", contenidos: ["Definición y tipos de integrales impropias", "Diferencial de una función", "Concepto de límite de una función, incluyendo límites laterales"] },
+            { titulo: "27 de julio", contenidos: ["Una función para analizar: puntos críticos, discontinuidades y dominio", "Teorema del valor medio (derivadas): interpretación geométrica, gráfica y enunciado", "Integral definida: recinto y relación"] },
+            { titulo: "10 de agosto", contenidos: ["Límite", "Punto de inflexión", "Teorema del valor medio del cálculo integral"] },
+            { titulo: "30 de noviembre", contenidos: ["Longitud de arco", "Diferencial de una función", "Teorema de Lagrange"] },
+            { titulo: "7 de diciembre", contenidos: ["Los tres teoremas de continuidad", "Diferencial de la función", "Teorema del valor medio del cálculo integral"] },
+            { titulo: "21 de diciembre", contenidos: ["Continuidad y discontinuidad", "Integrales impropias", "Teoremas de Lagrange y de Rolle"] },
+            { titulo: "8 de febrero", contenidos: ["Concepto de imagen, condiciones de continuidad, clasificación de discontinuidades", "Diferencia entre integral definida e impropia, y su clasificación", "Condición suficiente de máximo y mínimo"] },
+            { titulo: "22 de febrero", contenidos: ["Límite notable sen(x)/x", "Derivada de log(a) o ln(x)", "Integrales definidas"] },
+            { titulo: "16 de mayo", contenidos: ["Analizar una función", "Condición necesaria y suficiente de máximos y mínimos", "Condición necesaria y suficiente de puntos de inflexión", "Tipos de discontinuidad"] }
+          ]
+        },
+        teorico: {
+          material: [
+            { nombre: "Banco de preguntas del multiple choice", detalle: "Preguntas del cuestionario previo a rendir, con la respuesta marcada", tipo: "PDF", url: "material/analisis-matematico-1/final/teorico/banco-de-preguntas-multiple-choice.pdf" }
+          ],
+          videos: []
+        },
+        parciales: {
+          material: [
+            { nombre: "Final teórico · Tema A", detalle: "Preguntas sobre un gráfico: límites, inflexión, concavidad, crecimiento y área", tipo: "PDF", url: "material/analisis-matematico-1/final/parciales/final-teorico-tema-a.pdf" }
+          ],
+          videos: []
         }
       }
     ]
@@ -1349,7 +1388,7 @@ function viewParcial(m, p){
 function temasBox(t){
   if(!t || !t.unidades || !t.unidades.length) return "";
   return `
-    <section class="temas">
+    <section class="temas ${t.unidades.length > 6 ? "muchas" : ""}">
       <div class="temas-head">
         <h2>${esc(t.titulo || "Temas que entran")}</h2>
       </div>
