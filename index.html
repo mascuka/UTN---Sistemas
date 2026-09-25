@@ -422,14 +422,27 @@ const MATERIAS = {
     parciales: [],
     videos: [
       { url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
-      { url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
       { url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
-      { url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
-      { url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
-      { url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
       { url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
+      { url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
+      { url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
+      { url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
+      { url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
+      { url: "https://www.youtube.com/watch?v=utksVyEFITQ" },
+      { url: "https://www.youtube.com/watch?v=2iNP5NQLRa4" },
+      { url: "https://www.youtube.com/watch?v=OC6JWKXAw6E" },
+      { url: "https://www.youtube.com/watch?v=zk4t3BDr_LM" },
+      { url: "https://www.youtube.com/watch?v=wEDZpgs_rXY" },
       { url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
-      { url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" }
+      { url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" },
+      { url: "https://www.youtube.com/watch?v=sdm7AOnAWu0" },
+      { url: "https://www.youtube.com/watch?v=8DITa_jDOcQ" },
+      { url: "https://www.youtube.com/watch?v=2vpATSL34I0" },
+      { url: "https://www.youtube.com/watch?v=QDtVoVzzq54" },
+      { url: "https://www.youtube.com/watch?v=NYTB38wLUaY" },
+      { url: "https://www.youtube.com/watch?v=PpvehErJVvw" },
+      { url: "https://www.youtube.com/watch?v=gxZaA6d9vdk" },
+      { url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
     ]
   },
   26: {
@@ -1183,10 +1196,11 @@ async function tituloYT(id){
   }
   return c && c.t ? c.t : null;
 }
-/* Ordena por el número de "Clase N" si todos los títulos lo tienen */
+/* Ordena por el número de "Clase N"; los que no tienen número quedan al final, en su orden */
 function ordenarPorClase(lista){
-  const num = v => { const m = /clase\s*(\d+)/i.exec(v.titulo || ""); return m ? +m[1] : null; };
-  if(lista.every(v => num(v) !== null)) lista.sort((x, y) => num(x) - num(y));
+  const num = v => { const m = /clase\s*(\d+)/i.exec(v.titulo || ""); return m ? +m[1] : Infinity; };
+  const orden = new Map(lista.map((v, i) => [v, i]));
+  lista.sort((x, y) => (num(x) - num(y)) || (orden.get(x) - orden.get(y)));
   return lista;
 }
 
