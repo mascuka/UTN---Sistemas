@@ -242,9 +242,14 @@
   .comis{margin-top:32px}
   .comis h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .comis-fila{display:grid;grid-template-columns:62px 170px 110px 100px minmax(0,1fr) 200px;gap:18px;padding:14px 18px;font-size:.9rem;line-height:1.5;align-items:start}
-  .comis-fila + .comis-fila{border-top:1px solid var(--line)}
-  .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:10px 18px}
+  /* Cada comisión es un grupo: el código a la izquierda y sus profesores al lado */
+  .comis-grupo{display:grid;grid-template-columns:62px minmax(0,1fr);gap:18px;padding:0 18px;font-size:.9rem;line-height:1.5}
+  .comis-grupo + .comis-grupo{border-top:1px solid var(--line)}
+  .comis-cod{display:flex;align-items:center;padding:14px 0}
+  .comis-fila{display:grid;grid-template-columns:170px 110px 100px minmax(0,1fr) 200px;gap:18px;padding:14px 0;align-items:start}
+  .comis-fila + .comis-fila{border-top:1px dashed var(--line)}
+  .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .comis-head .comis-cod,.comis-head .comis-fila{padding:10px 0}
   .comis-fila a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
   .reco{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:999px}
   .reco.si{background:var(--ok-soft);color:var(--ok)}
@@ -254,6 +259,9 @@
   @media (prefers-color-scheme: dark){ .reco.no{background:#3d2522;color:#f0a197} }
   @media (max-width:900px){
     .comis-head{display:none}
+    .comis-grupo{grid-template-columns:1fr;gap:0}
+    .comis-cod{padding:14px 0 0}
+    .comis-cod::before{content:"Comisión";font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:8px}
     .comis-fila{grid-template-columns:1fr;gap:6px}
     .c-prof{text-align:left}
     .comis-fila > span::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
@@ -424,6 +432,8 @@ const MATERIAS = {
         profesor: "Dante Omar Quinteros",
         rol: "Teórico",
         examen: "A desarrollar",
+        asistencia: false,
+        recomendada: true,
         comentario: "Tiene buen material de clase y sus clases son iguales al material. No explica mal, pero te dormís. Los exámenes, ni fu ni fa: toma lo que está en el material, a desarrollar."
       },
       {
@@ -432,6 +442,7 @@ const MATERIAS = {
         rol: "Práctico",
         examen: "A desarrollar",
         asistencia: false,
+        recomendada: true,
         comentario: "No explica, no vale la pena ir. Los exámenes son muy fáciles, a desarrollar."
       }
     ],
@@ -1147,19 +1158,32 @@ function viewMateria(m){
 
 /* Cuadro de comisiones: profesor, examen, comentario y recomendación */
 function comisiones(lista){
+  // Agrupa por comisión, respetando el orden en que se cargaron
+  const grupos = [];
+  lista.forEach(x => {
+    const g = grupos.find(g => g.comision === x.comision);
+    g ? g.profes.push(x) : grupos.push({ comision: x.comision, profes: [x] });
+  });
+  const fila = x => `
+    <div class="comis-fila">
+      <span data-l="Profesor" class="c-prof">${esc(x.profesor)}${x.rol ? `<small>(${esc(x.rol)})</small>` : ""}</span>
+      <span data-l="Examen">${esc(x.examen || "—")}</span>
+      <span data-l="Asistencia">${x.asistencia === undefined ? "—" : x.asistencia ? "Toma asistencia" : "No toma"}</span>
+      <span data-l="Comentario">${esc(x.comentario || "")}</span>
+      <span data-l="¿La recomiendo?">${x.recomendada === undefined ? "—" : `<span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>`}${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
+    </div>`;
   return `
     <section class="comis">
       <h2>Comisiones</h2>
       <div class="comis-tabla">
-        <div class="comis-fila comis-head"><span>Comisión</span><span class="c-prof">Profesor</span><span>Examen</span><span>Asistencia</span><span>Comentario</span><span>¿La recomiendo?</span></div>
-        ${lista.map(x => `
-          <div class="comis-fila">
-            <span data-l="Comisión"><b>${esc(x.comision)}</b></span>
-            <span data-l="Profesor" class="c-prof">${esc(x.profesor)}${x.rol ? `<small>(${esc(x.rol)})</small>` : ""}</span>
-            <span data-l="Examen">${esc(x.examen || "—")}</span>
-            <span data-l="Asistencia">${x.asistencia === undefined ? "—" : x.asistencia ? "Toma asistencia" : "No toma"}</span>
-            <span data-l="Comentario">${esc(x.comentario || "")}</span>
-            <span data-l="¿La recomiendo?">${x.recomendada === undefined ? "—" : `<span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>`}${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
+        <div class="comis-grupo comis-head">
+          <span class="comis-cod">Comisión</span>
+          <div class="comis-fila"><span class="c-prof">Profesor</span><span>Examen</span><span>Asistencia</span><span>Comentario</span><span>¿La recomiendo?</span></div>
+        </div>
+        ${grupos.map(g => `
+          <div class="comis-grupo">
+            <span class="comis-cod"><b>${esc(g.comision)}</b></span>
+            <div>${g.profes.map(fila).join("")}</div>
           </div>`).join("")}
       </div>
     </section>`;
