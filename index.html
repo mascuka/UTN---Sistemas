@@ -416,6 +416,13 @@ const CARRERA = {
 
 /* Contenido de cada materia, por número de materia */
 const MATERIAS = {
+  // Cursillo de ingreso · Introducción a la Vida Universitaria: solo un archivo
+  103: {
+    parciales: [],
+    material: [
+      { nombre: "Preguntas de parcial", detalle: "20 preguntas de opción múltiple con la respuesta marcada", tipo: "PDF", url: "material/cursillo/introduccion-vida-universitaria/preguntas-de-parcial.pdf" }
+    ]
+  },
   // Cursillo de ingreso · Matemática: solo videos (se ven con la lista al costado).
   // Sin "titulo", el nombre se trae de YouTube y se ordenan por "Clase N".
   101: {
@@ -1045,6 +1052,9 @@ function viewMateria(m){
             <p>Trabajos prácticos y entregas.</p>
           </div>` : ""}
       </div>`;
+  }
+  if(c && c.material && c.material.length){
+    contenido = `${filesList(c.material)}${c.parciales.length ? contenido : ""}`;
   }
   if(c && c.videos && c.videos.length){
     contenido = `<div id="tabBody"></div>${c.parciales.length ? contenido : ""}`;
