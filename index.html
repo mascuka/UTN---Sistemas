@@ -78,6 +78,7 @@
   .badge{font-size:.7rem;font-weight:700;padding:4px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);min-width:42px;text-align:center}
   .file .name{flex:1;font-size:.95rem}
   .file .go{color:var(--muted);font-size:.85rem}
+  .tag.nota{margin-left:6px;vertical-align:1px;background:#f7e1dc;border-color:transparent;color:#b03a2e;font-weight:600}
   .file .name small{display:block;font-size:.8rem;color:var(--muted);margin-top:2px}
   .grupo + .grupo{margin-top:28px}
   .grupo-head{margin-bottom:10px}
@@ -454,6 +455,7 @@ const MATERIAS = {
         descripcion: "Límites, continuidad, derivadas y sus aplicaciones.",
         teorico: {
           material: [
+            { nombre: "Unidad 0 · Conceptos básicos", nota: "No se toma", detalle: "Simbología, intervalos y conceptos previos · Prof. Quinteros", tipo: "PDF", url: "material/analisis-matematico-1/p1/teorico/u0-conceptos-basicos.pdf" },
             { nombre: "Apunte teórico completo del 1º parcial", detalle: "Todo el teórico en un solo archivo · Prof. Quinteros (libro págs. 9 a 77)", tipo: "PDF", url: "material/analisis-matematico-1/p1/teorico/apunte-teorico-1-parcial.pdf" }
           ],
           videos: []
@@ -1335,7 +1337,7 @@ function filesList(items){
   return `<div class="files">${items.map(f => `
     <a class="file" href="${esc(f.url)}" target="_blank" rel="noopener">
       ${f.n ? `<span class="fnum">${String(f.n).padStart(2, "0")}</span>` : ""}<span class="badge">${esc(f.tipo || "LINK")}</span>
-      <span class="name">${esc(f.nombre)}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
+      <span class="name">${esc(f.nombre)}${f.nota ? ` <span class="tag nota">${esc(f.nota)}</span>` : ""}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
       <span class="go">Abrir ↗</span>
     </a>`).join("")}</div>`;
 }
