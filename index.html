@@ -85,6 +85,7 @@
   .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
   .grupo .empty{padding:22px}
   .parte + .parte{margin-top:20px}
+  .separa{height:30px}
   .aviso-lista{font-size:.85rem;color:var(--muted);margin:10px 0 24px}
   .aviso-lista a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
   #app.angosto .player{max-width:900px}
@@ -499,9 +500,34 @@ const MATERIAS = {
       }
     ]
   },
-  // Sistemas y Procesos de Negocio: solo material teórico, por unidad
+  // Sistemas y Procesos de Negocio: material teórico por unidad y parciales anteriores
   8: {
-    parciales: [],
+    parciales: [
+      {
+        id: "p1",
+        titulo: "1º Parcial",
+        descripcion: "Parciales de años anteriores del primer parcial.",
+        parciales: {
+          material: [
+            { nombre: "Recuperatorio 1º parcial 2023 · Enunciado práctico", detalle: "Caso SEMYBAL SA (27/06/2023)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/parciales/2023-recuperatorio-1-parcial-enunciado.pdf" }
+          ],
+          videos: []
+        }
+      },
+      {
+        id: "p2",
+        titulo: "2º Parcial",
+        descripcion: "Parciales de años anteriores y un simulacro resuelto del segundo parcial.",
+        parciales: {
+          material: [
+            { nombre: "Simulacro tipo 2º parcial · Cómo resolverlo", detalle: "Caso La Esquina, con la resolución explicada", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/parciales/simulacro-2-parcial-como-resolverlo.pdf" },
+            { nombre: "Recuperatorio 2º parcial 2023 · Enunciado práctico", detalle: "Caso Todo Casa (27/06/2023)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/parciales/2023-recuperatorio-2-parcial-enunciado.pdf" },
+            { nombre: "2º parcial 2023 · Teórico-práctico del campus", detalle: "Preguntas del cuestionario con las respuestas correctas", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/parciales/2023-2-parcial-teorico-practico-resuelto.pdf" }
+          ],
+          videos: []
+        }
+      }
+    ],
     material: [
       {
         grupo: "Material teórico",
@@ -1172,7 +1198,7 @@ function viewMateria(m){
       </div>`;
   }
   if(c && c.material && c.material.length){
-    contenido = `${filesList(c.material)}${c.parciales.length ? contenido : ""}`;
+    contenido = `${c.parciales.length ? `${contenido}<div class="separa"></div>` : ""}${filesList(c.material)}`;
   }
   if(c && c.videos && c.videos.length){
     contenido = `<div id="tabBody"></div>${c.parciales.length ? contenido : ""}`;
