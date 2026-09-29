@@ -734,7 +734,7 @@ const MATERIAS = {
       {
         id: "p1",
         titulo: "1º Parcial",
-        descripcion: "Entra la introducción al backend y Java (plataforma, POO, colecciones, streams y ORM/JPA).",
+        descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones, streams y ORM/JPA).",
         secciones: ["teorico", "practico"],
         temas: {
           titulo: "Temas que entran",
@@ -784,13 +784,14 @@ const MATERIAS = {
         practico: { material: [], videos: [] }
       },
       {
-        id: "p2",
-        titulo: "2º Parcial",
-        descripcion: "Entra Spring, Spring Data, API Gateway y seguridad.",
+        id: "tpi",
+        titulo: "TPI",
+        descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más Spring, Spring Data, API Gateway y seguridad.",
         secciones: ["teorico", "practico"],
         temas: {
           titulo: "Temas que entran",
           unidades: [
+            { titulo: "Todo lo del 1º Parcial", contenidos: ["Es acumulativo: introducción al backend, Java, POO, colecciones, streams y ORM/JPA, más los temas nuevos de abajo"] },
             { titulo: "Spring", contenidos: ["Diseño de APIs REST: HTTP, verbos, idempotencia y códigos de respuesta", "Spring Container, inyección de dependencias y beans", "Spring Boot: controladores, servicios y repositorios", "ResponseEntity, validaciones, manejo global de errores y Swagger/OpenAPI"] },
             { titulo: "Spring Data", contenidos: ["JpaRepository y CrudRepository", "Consultas derivadas, @Query y repositorios personalizados"] },
             { titulo: "API Gateway", contenidos: ["Consumo de APIs externas y entre microservicios con RestClient", "API Gateway con Spring Cloud Gateway: ruteo y configuración"] },
@@ -801,34 +802,26 @@ const MATERIAS = {
           material: [
             { grupo: "Apuntes de clase", descripcion: "Apuntes teóricos de la cátedra, en orden y agrupados por tema.", partes: [
               { titulo: "Spring", archivos: [
-                { n: 14, nombre: "Apunte 14 · Diseño de APIs", detalle: "Protocolo HTTP, URI, principios REST, verbos, idempotencia, códigos de respuesta y documentación de APIs", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-14-diseno-de-apis.pdf" },
-                { n: 15, nombre: "Apunte 15 · Spring Framework", detalle: "Spring Container, inyección de dependencias, scope de los beans, Spring Boot, Hola Mundo API, servicios y repositorios", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-15-spring-framework.pdf" },
-                { n: 17, nombre: "Apunte 17 · Proyectos Spring: elementos transversales", detalle: "Capas, ResponseEntity, validaciones y errores globales, Swagger/OpenAPI y testing", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-17-proyectos-spring-elementos-transversales.pdf" },
-                { nombre: "Guía paso a paso · Spring y CRUD", nota: "Adicional", detalle: "De un proyecto de consola con Spring Initializr a una API REST con CRUD en memoria y con Spring Data JPA + H2", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/guia-paso-a-paso-spring-crud.pdf" }
+                { n: 14, nombre: "Apunte 14 · Diseño de APIs", detalle: "Protocolo HTTP, URI, principios REST, verbos, idempotencia, códigos de respuesta y documentación de APIs", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-14-diseno-de-apis.pdf" },
+                { n: 15, nombre: "Apunte 15 · Spring Framework", detalle: "Spring Container, inyección de dependencias, scope de los beans, Spring Boot, Hola Mundo API, servicios y repositorios", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-15-spring-framework.pdf" },
+                { n: 17, nombre: "Apunte 17 · Proyectos Spring: elementos transversales", detalle: "Capas, ResponseEntity, validaciones y errores globales, Swagger/OpenAPI y testing", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-17-proyectos-spring-elementos-transversales.pdf" },
+                { nombre: "Guía paso a paso · Spring y CRUD", nota: "Adicional", detalle: "De un proyecto de consola con Spring Initializr a una API REST con CRUD en memoria y con Spring Data JPA + H2", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/guia-paso-a-paso-spring-crud.pdf" }
               ] },
               { titulo: "Spring Data", archivos: [
-                { n: 16, nombre: "Apunte 16 · Spring Data", detalle: "Módulos de Spring Data, consultas dinámicas, @Query, JpaRepository vs CrudRepository y repositorios propios", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-16-spring-data.pdf" }
+                { n: 16, nombre: "Apunte 16 · Spring Data", detalle: "Módulos de Spring Data, consultas dinámicas, @Query, JpaRepository vs CrudRepository y repositorios propios", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-16-spring-data.pdf" }
               ] },
               { titulo: "API Gateway", archivos: [
-                { n: 18, nombre: "Apunte 18 · Consumo de APIs con RestClient", detalle: "Consumir APIs externas y entre microservicios propios desde Spring Boot, con manejo de errores", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-18-consumo-de-apis-con-restclient.pdf" },
-                { n: 19, nombre: "Apunte 19 · API Gateway", detalle: "Qué es y qué resuelve un API Gateway, implementación con Spring Cloud Gateway y otras alternativas", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-19-api-gateway.pdf" }
+                { n: 18, nombre: "Apunte 18 · Consumo de APIs con RestClient", detalle: "Consumir APIs externas y entre microservicios propios desde Spring Boot, con manejo de errores", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-18-consumo-de-apis-con-restclient.pdf" },
+                { n: 19, nombre: "Apunte 19 · API Gateway", detalle: "Qué es y qué resuelve un API Gateway, implementación con Spring Cloud Gateway y otras alternativas", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-19-api-gateway.pdf" }
               ] },
               { titulo: "Seguridad", archivos: [
-                { n: 20, nombre: "Apunte 20 · Seguridad en el backend", detalle: "Autenticación, autorización, codificación, encriptación, firma digital, HTTPS, OAuth2 y JWT", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-20-seguridad-en-el-backend.pdf" },
-                { n: 21, nombre: "Apunte 21 · Spring Security", detalle: "Spring Security en Spring Boot como Resource Server, con Keycloak y obtención de tokens", tipo: "PDF", url: "material/backend-de-aplicaciones/p2/teorico/apunte-21-spring-security.pdf" }
+                { n: 20, nombre: "Apunte 20 · Seguridad en el backend", detalle: "Autenticación, autorización, codificación, encriptación, firma digital, HTTPS, OAuth2 y JWT", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-20-seguridad-en-el-backend.pdf" },
+                { n: 21, nombre: "Apunte 21 · Spring Security", detalle: "Spring Security en Spring Boot como Resource Server, con Keycloak y obtención de tokens", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-21-spring-security.pdf" }
               ] }
             ] }
           ],
           videos: []
         },
-        practico: { material: [], videos: [] }
-      },
-      {
-        id: "tpi",
-        titulo: "TPI",
-        descripcion: "Trabajo práctico integrador: material teórico y práctico.",
-        secciones: ["teorico", "practico"],
-        teorico:  { material: [], videos: [] },
         practico: { material: [], videos: [] }
       }
     ],
