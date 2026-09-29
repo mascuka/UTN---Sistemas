@@ -734,9 +734,53 @@ const MATERIAS = {
       {
         id: "p1",
         titulo: "1º Parcial",
-        descripcion: "Material teórico y práctico del primer parcial.",
+        descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones, streams y ORM/JPA).",
         secciones: ["teorico", "practico"],
-        teorico:  { material: [], videos: [] },
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Introducción", contenidos: ["La capa de backend y el stack de desarrollo", "Microservicios", "Tecnologías que se usan en la materia"] },
+            { titulo: "Introducción a Java", contenidos: ["Plataforma Java: historia, versiones y la JVM", "Maven: proyectos, pom.xml, dependencias y ciclo de vida", "Sintaxis de Java"] },
+            { titulo: "Programación orientada a objetos", contenidos: ["Clases y objetos, Lombok y records", "Arreglos y excepciones", "Testing con JUnit", "Herencia, polimorfismo e interfaces"] },
+            { titulo: "Colecciones", contenidos: ["Generics, framework de colecciones e iteradores"] },
+            { titulo: "Streams", contenidos: ["Programación funcional, lambdas y Stream API", "Procesamiento de archivos CSV"] },
+            { titulo: "ORM y JPA", contenidos: ["JDBC", "ORM con JPA e Hibernate"] }
+          ]
+        },
+        teorico: {
+          material: [
+            { grupo: "Apuntes de clase", descripcion: "Apuntes teóricos de la cátedra, en orden y agrupados por tema.", partes: [
+              { titulo: "Introducción", archivos: [
+                { n: 1, nombre: "Apunte 01 · Introducción al backend", detalle: "Capa de backend, stack tecnológico, microservicios y tecnologías de la materia", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-01-introduccion-al-backend.pdf" }
+              ] },
+              { titulo: "Introducción a Java", archivos: [
+                { n: 2, nombre: "Apunte 02 · Plataforma Java", detalle: "Historia y versiones de Java, el lenguaje, Hola Mundo y la máquina virtual (JVM)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-02-plataforma-java.pdf" },
+                { n: 3, nombre: "Apunte 03 · Maven", detalle: "Estructura de proyectos, pom.xml, repositorios de dependencias y ciclo de vida de construcción", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-03-maven.pdf" },
+                { n: 4, nombre: "Apunte 04 · Sintaxis de Java", detalle: "Tipos, variables, operadores, entrada y salida, condicionales, ciclos y novedades de Java moderno", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-04-sintaxis-java.pdf" },
+                { nombre: "Instructivo · Instalación de Java JDK 21", nota: "Adicional", detalle: "Instalar y verificar el JDK en Windows, Linux y macOS, y configurar JAVA_HOME", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/instructivo-instalacion-java-jdk-21.pdf" },
+                { nombre: "Instructivo · Instalación de Maven", nota: "Adicional", detalle: "Instalar y verificar Maven en Windows, Linux y macOS, y configurar MAVEN_HOME", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/instructivo-instalacion-maven.pdf" }
+              ] },
+              { titulo: "Programación orientada a objetos", archivos: [
+                { n: 5, nombre: "Apunte 05 · Programación orientada a objetos", detalle: "Clases, modificadores de acceso, referencias, getters y setters, Lombok y records", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-05-programacion-orientada-a-objetos.pdf" },
+                { n: 6, nombre: "Apunte 06 · Arreglos y excepciones", detalle: "Vectores y matrices, manejo de excepciones con try/catch, throws y throw", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-06-arreglos-y-excepciones.pdf" },
+                { n: 7, nombre: "Apunte 07 · Testing con JUnit", detalle: "Unit tests, comprobaciones, ejecución de tests y mocking, con ejemplo completo", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-07-testing-junit.pdf" },
+                { n: 8, nombre: "Apunte 08 · Herencia y polimorfismo", detalle: "Herencia, polimorfismo, static/final/abstract, interfaces, String y StringBuilder", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-08-herencia-y-polimorfismo.pdf" }
+              ] },
+              { titulo: "Colecciones", archivos: [
+                { n: 9, nombre: "Apunte 09 · Iteradores y colecciones", detalle: "Generics, framework de colecciones de Java y el patrón Iterador", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-09-iteradores-y-colecciones.pdf" }
+              ] },
+              { titulo: "Streams", archivos: [
+                { n: 10, nombre: "Apunte 10 · Programación funcional y Streams", detalle: "Lambdas, interfaces funcionales, Stream API (operaciones intermedias y terminales) y referencias a métodos", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-10-programacion-funcional-y-streams.pdf" },
+                { n: 11, nombre: "Apunte 11 · Procesamiento de archivos CSV", detalle: "Lectura con Scanner, BufferedReader y OpenCSV, y procesamiento con Streams y Collectors", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-11-procesamiento-de-archivos-csv.pdf" }
+              ] },
+              { titulo: "ORM y JPA", archivos: [
+                { n: 12, nombre: "Apunte 12 · JDBC", detalle: "Bases de datos con H2, API JDBC, statements SQL, PostgreSQL en Docker y pool de conexiones", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-12-jdbc.pdf" },
+                { n: 13, nombre: "Apunte 13 · ORM con JPA", detalle: "ORM, JPA con Hibernate, mapeo de entidades, EntityManager, CRUD, JPQL y patrón Repositorio", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-13-orm-con-jpa.pdf" }
+              ] }
+            ] }
+          ],
+          videos: []
+        },
         practico: { material: [], videos: [] }
       },
       {
