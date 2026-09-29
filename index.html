@@ -268,6 +268,10 @@
   .comis-grupo{display:grid;grid-template-columns:62px minmax(0,1fr);gap:18px;padding:0 18px;font-size:.9rem;line-height:1.5}
   .comis-grupo + .comis-grupo{border-top:1px solid var(--line)}
   .comis-cod{display:flex;align-items:center;padding:14px 0}
+  .comis-cod small{color:var(--muted);font-size:.78rem;line-height:1.3}
+  .con-horario .comis-grupo{grid-template-columns:132px minmax(0,1fr)}
+  .con-horario .comis-cod{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
+  .comis-nota{font-size:.88rem;color:var(--muted);margin:-4px 0 12px}
   .comis-fila{display:grid;grid-template-columns:170px 110px 100px minmax(0,1fr) 200px;gap:18px;padding:14px 0;align-items:start}
   .comis-fila + .comis-fila{border-top:1px dashed var(--line)}
   .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
@@ -281,7 +285,8 @@
   @media (prefers-color-scheme: dark){ .reco.no{background:#3d2522;color:#f0a197} }
   @media (max-width:900px){
     .comis-head{display:none}
-    .comis-grupo{grid-template-columns:1fr;gap:0}
+    .comis-grupo,.con-horario .comis-grupo{grid-template-columns:1fr;gap:0}
+    .con-horario .comis-cod{flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:0 8px}
     .comis-cod{padding:14px 0 0}
     .comis-cod::before{content:"Comisión";font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:8px}
     .comis-fila{grid-template-columns:1fr;gap:6px}
@@ -698,6 +703,33 @@ const MATERIAS = {
         { titulo: "TPI · Trabajo Práctico Integrador", detalle: "Entrega inicial con corrección de pares, y entrega final con coloquio. Hay que sacar 6 o más entre la rúbrica y el coloquio (o en la re-entrega). Las entregas anteriores pueden descontar puntos." }
       ]
     },
+    // Comisiones: todos los profesores dan teórico y práctico; el horario va en el primer profesor de cada comisión
+    comisionesNota: "Todos los profesores dan teórico y práctico.",
+    comisiones: [
+      { comision: "3K1", horario: "Mar y Mié · Mañana", profesor: "German Romani", asistencia: true },
+      { comision: "3K1", profesor: "Valentin Martini", asistencia: true },
+      { comision: "3K1", profesor: "Gaspar Arrigo", asistencia: true },
+      { comision: "3K1BA", horario: "Mar y Mié · Noche", profesor: "Federico Ortalda", asistencia: true },
+      { comision: "3K2", horario: "Mar y Jue · Mañana", profesor: "Felipe Steffolani", asistencia: true },
+      { comision: "3K2", profesor: "German Romani", asistencia: true },
+      { comision: "3K2", profesor: "Rodrigo Diaz", asistencia: true },
+      { comision: "3K3", horario: "Mar y Vie · Tarde", profesor: "Franco Pesci", asistencia: true },
+      { comision: "3K3", profesor: "José Martinoli", asistencia: true },
+      { comision: "3K3", profesor: "Diego Serrano", asistencia: true },
+      { comision: "3K3B", horario: "Lun y Jue · Tarde", profesor: "Ivo Parún Rua", asistencia: true },
+      { comision: "3K3B", profesor: "Diego Scarafía", asistencia: true },
+      { comision: "3K3B", profesor: "Martín Casatti", asistencia: true },
+      { comision: "3K3B", profesor: "José Martinoli", asistencia: true },
+      { comision: "3K4", horario: "Mar y Mié · Noche", profesor: "Ivo Parún Rua", asistencia: true },
+      { comision: "3K4", profesor: "Franco Pesci", asistencia: true },
+      { comision: "3K4", profesor: "Federico Bett", asistencia: true },
+      { comision: "3K7", horario: "Mar y Vie · Tarde", profesor: "Rodrigo Diaz", asistencia: true },
+      { comision: "3K7", profesor: "Gaspar Arrigo", asistencia: true },
+      { comision: "3K7", profesor: "Jorge Harach", asistencia: true },
+      { comision: "3K8", horario: "Lun y Jue · Noche", profesor: "German Romani", asistencia: true },
+      { comision: "3K8", profesor: "Leonel Bendezú", asistencia: true },
+      { comision: "3K8", profesor: "Valentin Martini (ayudante)", asistencia: true }
+    ],
     parciales: [
       {
         id: "p1",
@@ -1390,7 +1422,7 @@ function viewMateria(m){
     <h1 style="margin-bottom:22px">${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
     ${contenido}
     ${c && c.condiciones ? condiciones(c.condiciones) : ""}
-    ${c && c.comisiones && c.comisiones.length ? comisiones(c.comisiones) : ""}`;
+    ${c && c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : ""}`;
 }
 
 /* Condiciones de aprobación: notas de aprobación directa y regularidad, y qué hay que aprobar */
@@ -1420,12 +1452,12 @@ function condiciones(x){
 }
 
 /* Cuadro de comisiones: profesor, examen, comentario y recomendación */
-function comisiones(lista){
+function comisiones(lista, nota){
   // Agrupa por comisión, respetando el orden en que se cargaron
   const grupos = [];
   lista.forEach(x => {
     const g = grupos.find(g => g.comision === x.comision);
-    g ? g.profes.push(x) : grupos.push({ comision: x.comision, profes: [x] });
+    g ? g.profes.push(x) : grupos.push({ comision: x.comision, horario: x.horario, profes: [x] });
   });
   const fila = x => `
     <div class="comis-fila">
@@ -1438,14 +1470,15 @@ function comisiones(lista){
   return `
     <section class="comis">
       <h2>Comisiones</h2>
-      <div class="comis-tabla">
+      ${nota ? `<p class="comis-nota">${esc(nota)}</p>` : ""}
+      <div class="comis-tabla${grupos.some(g => g.horario) ? " con-horario" : ""}">
         <div class="comis-grupo comis-head">
           <span class="comis-cod">Comisión</span>
           <div class="comis-fila"><span class="c-prof">Profesor</span><span>Examen</span><span>Asistencia</span><span>Comentario</span><span>¿La recomiendo?</span></div>
         </div>
         ${grupos.map(g => `
           <div class="comis-grupo">
-            <span class="comis-cod"><b>${esc(g.comision)}</b></span>
+            <span class="comis-cod"><b>${esc(g.comision)}</b>${g.horario ? `<small>${esc(g.horario)}</small>` : ""}</span>
             <div>${g.profes.map(fila).join("")}</div>
           </div>`).join("")}
       </div>
