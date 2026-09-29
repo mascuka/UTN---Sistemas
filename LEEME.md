@@ -34,5 +34,14 @@ Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos)
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
 Se muestra abajo de las tarjetas de Teórico/Práctico. Si el parcial no lo tiene, no aparece nada.
 
+## Secciones de un parcial a medida
+Si un parcial no necesita las tres tarjetas, se puede limitar con `secciones` (ej.: Backend, 1º Parcial y TPI):
+`secciones: ["teorico", "practico"]`
+
+## Condiciones de aprobación
+Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra en la página de la materia, antes de las comisiones:
+`condiciones: { directa: 6, regular: 4, aclaracion: "...", requisitos: [ { titulo: "Parcial", detalle: "6 o más" } ] }`
+Si `regular` es `null`, aparece "No tiene" (electivas, que solo se aprueban de forma directa). La asistencia no va acá: se indica en la columna de cada profesor en las comisiones.
+
 ## Límites de GitHub
 Hasta 100 MB por archivo. Conviene que el repositorio no pase de ~1 GB.

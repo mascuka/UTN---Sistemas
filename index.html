@@ -247,6 +247,21 @@
 
   /* Comisiones de la materia */
   .comis{margin-top:32px}
+  /* Condiciones de aprobación */
+  .cond-caja{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .cond-notas{display:flex;gap:12px;flex-wrap:wrap}
+  .cond-nota{display:flex;align-items:baseline;gap:10px;padding:10px 16px;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
+  .cond-nota span{font-size:.88rem;font-weight:600}
+  .cond-nota b{font-size:1.5rem;line-height:1}
+  .cond-nota small{font-size:.75rem;opacity:.8}
+  .cond-nota.no{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+  .cond-nota.no b{font-size:1rem}
+  .cond-aclara{font-size:.86rem;color:var(--muted);margin-top:10px}
+  .cond-caja h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:18px 0 8px}
+  .cond-req{list-style:none;display:flex;flex-direction:column}
+  .cond-req li{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;padding:10px 0;font-size:.9rem;line-height:1.5}
+  .cond-req li + li{border-top:1px dashed var(--line)}
+  @media (max-width:700px){ .cond-req li{grid-template-columns:1fr;gap:2px} }
   .comis h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
   /* Cada comisión es un grupo: el código a la izquierda y sus profesores al lado */
@@ -672,6 +687,17 @@ const MATERIAS = {
   },
   // Backend de Aplicaciones (electiva): 1º Parcial y TPI (con teórico y práctico) + cuestionarios
   201: {
+    // Condiciones de aprobación: nota para aprobar directo, nota para regularizar (null = no tiene) y qué hay que aprobar
+    condiciones: {
+      directa: 6,
+      regular: null,
+      aclaracion: "Es electiva: solo se aprueba de forma directa, no tiene regularidad.",
+      requisitos: [
+        { titulo: "NAP · Nota de Actividades Prácticas", detalle: "Promedio de 6 o más entre los cuestionarios y los desafíos." },
+        { titulo: "Parcial Único", detalle: "6 o más. Si no llegás, 6 o más en el recuperatorio." },
+        { titulo: "TPI · Trabajo Práctico Integrador", detalle: "Entrega inicial con corrección de pares, y entrega final con coloquio. Hay que sacar 6 o más entre la rúbrica y el coloquio (o en la re-entrega). Las entregas anteriores pueden descontar puntos." }
+      ]
+    },
     parciales: [
       {
         id: "p1",
@@ -1363,7 +1389,34 @@ function viewMateria(m){
     <div class="crumbs"><span data-go="inicio">Plan de estudios</span> / ${esc(m.nombre)}</div>
     <h1 style="margin-bottom:22px">${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
     ${contenido}
+    ${c && c.condiciones ? condiciones(c.condiciones) : ""}
     ${c && c.comisiones && c.comisiones.length ? comisiones(c.comisiones) : ""}`;
+}
+
+/* Condiciones de aprobación: notas de aprobación directa y regularidad, y qué hay que aprobar */
+function condiciones(x){
+  const nota = (t, v, extra) => `
+    <div class="cond-nota${v == null ? " no" : ""}">
+      <span>${t}</span>
+      <b>${v == null ? "No tiene" : esc(String(v))}</b>
+      ${extra ? `<small>${extra}</small>` : ""}
+    </div>`;
+  return `
+    <section class="comis cond">
+      <h2>Condiciones de aprobación</h2>
+      <div class="cond-caja">
+        <div class="cond-notas">
+          ${nota("Aprobación directa", x.directa, x.directa != null ? "nota mínima" : "")}
+          ${nota("Regularidad", x.regular, x.regular != null ? "nota mínima" : "")}
+        </div>
+        ${x.aclaracion ? `<p class="cond-aclara">${esc(x.aclaracion)}</p>` : ""}
+        ${x.requisitos && x.requisitos.length ? `
+          <h3>Qué hay que aprobar</h3>
+          <ul class="cond-req">
+            ${x.requisitos.map(r => `<li><b>${esc(r.titulo)}</b><span>${esc(r.detalle || "")}</span></li>`).join("")}
+          </ul>` : ""}
+      </div>
+    </section>`;
 }
 
 /* Cuadro de comisiones: profesor, examen, comentario y recomendación */
