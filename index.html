@@ -735,7 +735,7 @@ const MATERIAS = {
       {
         id: "p1",
         titulo: "1º Parcial",
-        descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones, streams y ORM/JPA).",
+        descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones y streams).",
         secciones: ["teorico", "practico"],
         temas: {
           titulo: "Temas que entran",
@@ -744,8 +744,7 @@ const MATERIAS = {
             { titulo: "Introducción a Java", contenidos: ["Plataforma Java: compilación, bytecode y JVM", "Maven: pom.xml, dependencias y ciclo de vida", "Sintaxis: tipos, condicionales, ciclos, Scanner, switch -> y bloques de texto"] },
             { titulo: "Programación orientada a objetos", contenidos: ["Clases, modificadores de acceso, Lombok y records", "Arreglos y excepciones (try/catch, throws, throw)", "Testing con JUnit y mocking", "Herencia, polimorfismo, clases abstractas e interfaces"] },
             { titulo: "Colecciones", contenidos: ["Generics, iteradores y framework de colecciones (List, Set, Map)"] },
-            { titulo: "Streams", contenidos: ["Lambdas e interfaces funcionales", "Stream API: filter, map, sorted, collect y Collectors", "Procesamiento de archivos CSV con OpenCSV y Streams"] },
-            { titulo: "ORM y JPA", contenidos: ["JDBC: conexión, PreparedStatement y pool de conexiones", "JPA con Hibernate: entidades, EntityManager, CRUD, JPQL y patrón Repositorio"] }
+            { titulo: "Streams", contenidos: ["Lambdas e interfaces funcionales", "Stream API: filter, map, sorted, collect y Collectors", "Procesamiento de archivos CSV con OpenCSV y Streams"] }
           ]
         },
         teorico: {
@@ -773,10 +772,6 @@ const MATERIAS = {
               { titulo: "Streams", archivos: [
                 { n: 10, nombre: "Apunte 10 · Programación funcional y Streams", detalle: "Lambdas, interfaces funcionales, Stream API (operaciones intermedias y terminales) y referencias a métodos", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-10-programacion-funcional-y-streams.pdf" },
                 { n: 11, nombre: "Apunte 11 · Procesamiento de archivos CSV", detalle: "Lectura con Scanner, BufferedReader y OpenCSV, y procesamiento con Streams y Collectors", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-11-procesamiento-de-archivos-csv.pdf" }
-              ] },
-              { titulo: "ORM y JPA", archivos: [
-                { n: 12, nombre: "Apunte 12 · JDBC", detalle: "Bases de datos con H2, API JDBC, statements SQL, PostgreSQL en Docker y pool de conexiones", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-12-jdbc.pdf" },
-                { n: 13, nombre: "Apunte 13 · ORM con JPA", detalle: "ORM, JPA con Hibernate, mapeo de entidades, EntityManager, CRUD, JPQL y patrón Repositorio", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-13-orm-con-jpa.pdf" }
               ] }
             ] }
           ],
@@ -842,20 +837,7 @@ const MATERIAS = {
             { bloque: "Streams · Apunte 10", titulo: "Referencia a métodos (::)", detalle: "Function, BiFunction, Runnable y referencias a constructores", url: "https://www.youtube.com/watch?v=UxLmCplQBWg" },
             { bloque: "Streams · Apunte 10", titulo: "Java Streams", detalle: "Operaciones intermedias y terminales, filter", url: "https://www.youtube.com/watch?v=OX_NRjRqoWM" },
             { bloque: "Streams · Apunte 10", titulo: "Stream Collectors", detalle: "toList, toSet, joining, counting, partitioningBy", url: "https://www.youtube.com/watch?v=AxlwkGaM-DE" },
-            { bloque: "Streams · Apunte 10", titulo: "Ejercicio integrador Optionals + Lambdas + Streams", detalle: "Práctica", url: "https://www.youtube.com/watch?v=lQwF4fI9TgI" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es Docker?", detalle: "Para entender PostgreSQL en un contenedor (Apunte 12)", url: "https://www.youtube.com/watch?v=OEvHEeDpg_o" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Cómo instalar Docker?", detalle: "Apunte 12", url: "https://www.youtube.com/watch?v=cWuirzMOwwg" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relaciones entre clases 1 a 1 y 1 a N", detalle: "Relaciones entre objetos antes de mapearlas", url: "https://www.youtube.com/watch?v=XKk5k9OrAUg" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es JPA?", detalle: "ORM y proveedores: Hibernate, EclipseLink", url: "https://www.youtube.com/watch?v=ppDv4N5A31E" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Hibernate y JPA, ¿son lo mismo?", url: "https://www.youtube.com/watch?v=cT5sII1NuVU" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "JPA: conexión MySQL + Persistence Unit", detalle: "persistence.xml y driver agregado con Maven", url: "https://www.youtube.com/watch?v=KGzOP__3GjA" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es ORM? + anotaciones de JPA", detalle: "@Entity, @Id, @GeneratedValue, @Temporal", url: "https://www.youtube.com/watch?v=qocxxWNvHg4" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "JPA Controllers", detalle: "EntityManagerFactory; de clases a tablas", url: "https://www.youtube.com/watch?v=Z0BOz4wh1zg" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: create", detalle: "Alta pasando por las capas", url: "https://www.youtube.com/watch?v=TPysm6EXOuM" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: destroy y edit", detalle: "Baja y modificación", url: "https://www.youtube.com/watch?v=QwM6KHjCunk" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: find y findEntities", detalle: "Buscar uno y traer todos", url: "https://www.youtube.com/watch?v=sPlR5zzBNr8" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relación OneToOne", url: "https://www.youtube.com/watch?v=tWboE7JVCPI" },
-            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relación OneToMany", detalle: "mappedBy y relación bidireccional", url: "https://www.youtube.com/watch?v=IT7AI5_9K_M" }
+            { bloque: "Streams · Apunte 10", titulo: "Ejercicio integrador Optionals + Lambdas + Streams", detalle: "Práctica", url: "https://www.youtube.com/watch?v=lQwF4fI9TgI" }
           ]
         },
         practico: { material: [], videos: [] }
@@ -863,12 +845,13 @@ const MATERIAS = {
       {
         id: "tpi",
         titulo: "TPI",
-        descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más Spring, Spring Data, API Gateway y seguridad.",
+        descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway y seguridad.",
         secciones: ["teorico", "practico"],
         temas: {
           titulo: "Temas que entran",
           unidades: [
-            { titulo: "Todo lo del 1º Parcial", contenidos: ["Es acumulativo: introducción al backend, Java, POO, colecciones, streams y ORM/JPA, más los temas nuevos de abajo"] },
+            { titulo: "Todo lo del 1º Parcial", contenidos: ["Es acumulativo: introducción al backend, Java, POO, colecciones y streams, más los temas nuevos de abajo"] },
+            { titulo: "ORM y JPA", contenidos: ["JDBC: conexión, PreparedStatement y pool de conexiones", "JPA con Hibernate: entidades, EntityManager, CRUD, JPQL y patrón Repositorio"] },
             { titulo: "Spring", contenidos: ["Diseño de APIs REST: HTTP, verbos, idempotencia y códigos de respuesta", "Spring Container, inyección de dependencias y beans", "Spring Boot: controladores, servicios y repositorios", "ResponseEntity, validaciones, manejo global de errores y Swagger/OpenAPI"] },
             { titulo: "Spring Data", contenidos: ["JpaRepository y CrudRepository", "Consultas derivadas, @Query y repositorios personalizados"] },
             { titulo: "API Gateway", contenidos: ["Consumo de APIs externas y entre microservicios con RestClient", "API Gateway con Spring Cloud Gateway: ruteo y configuración"] },
@@ -878,6 +861,10 @@ const MATERIAS = {
         teorico: {
           material: [
             { grupo: "Apuntes de clase", descripcion: "Apuntes teóricos de la cátedra, en orden y agrupados por tema.", partes: [
+              { titulo: "ORM y JPA", archivos: [
+                { n: 12, nombre: "Apunte 12 · JDBC", detalle: "Bases de datos con H2, API JDBC, statements SQL, PostgreSQL en Docker y pool de conexiones", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-12-jdbc.pdf" },
+                { n: 13, nombre: "Apunte 13 · ORM con JPA", detalle: "ORM, JPA con Hibernate, mapeo de entidades, EntityManager, CRUD, JPQL y patrón Repositorio", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-13-orm-con-jpa.pdf" }
+              ] },
               { titulo: "Spring", archivos: [
                 { n: 14, nombre: "Apunte 14 · Diseño de APIs", detalle: "Protocolo HTTP, URI, principios REST, verbos, idempotencia, códigos de respuesta y documentación de APIs", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-14-diseno-de-apis.pdf" },
                 { n: 15, nombre: "Apunte 15 · Spring Framework", detalle: "Spring Container, inyección de dependencias, scope de los beans, Spring Boot, Hola Mundo API, servicios y repositorios", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-15-spring-framework.pdf" },
