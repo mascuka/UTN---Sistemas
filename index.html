@@ -114,6 +114,7 @@
   .pl-head b{display:block;font-size:1rem}
   .pl-head span{font-size:.8rem;color:var(--muted)}
   .pl-list{max-height:460px;overflow-y:auto}
+  .pl-bloque{position:sticky;top:0;z-index:1;padding:8px 12px 6px;background:var(--card);border-bottom:1px solid var(--line);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
   .pl-item{display:flex;gap:10px;padding:8px 12px;cursor:pointer;align-items:center}
   .pl-item:hover{background:var(--hover)}
   .pl-item.active{background:var(--accent-soft)}
@@ -779,7 +780,83 @@ const MATERIAS = {
               ] }
             ] }
           ],
-          videos: []
+          // Videos de TodoCode (YouTube), en orden de estudio y agrupados por bloque. "t=" en el link = arranca en ese minuto
+          videos: [
+            { bloque: "Introducción · Apunte 01", titulo: "¿Qué son las APIs?", detalle: "Qué es una API y cómo se consume", url: "https://www.youtube.com/watch?v=IwnIxk8DdHs" },
+            { bloque: "Introducción · Apunte 01", titulo: "Protocolo HTTP: GET, POST, PUT, PATCH, DELETE", detalle: "Requests, responses y códigos de estado: la base de los endpoints REST", url: "https://www.youtube.com/watch?v=l2MihYAj0Iw" },
+            { bloque: "Introducción · Apunte 01", titulo: "Arquitectura cliente-servidor", detalle: "Cliente, servidor, URL y dominio", url: "https://www.youtube.com/watch?v=lC6JOQLIgp0" },
+            { bloque: "Introducción · Apunte 01", titulo: "Modelo de capas: IGU, lógica y persistencia", detalle: "Capas del backend; los videos de JPA usan esta estructura", url: "https://www.youtube.com/watch?v=C6J0TOlCieM" },
+            { bloque: "Introducción · Apunte 01", titulo: "Microservicios vs monolitos", detalle: "Qué son y cuándo conviene cada uno", url: "https://www.youtube.com/watch?v=snr9kptJPLs" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Java para principiantes #1", detalle: "Características de Java, JRE/JDK, primer proyecto y System.out.println", url: "https://www.youtube.com/watch?v=6q7wHs6cH6Y" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Curso Java: versiones, IDE y herramientas", detalle: "Java SE vs EE, qué es un IDE, JRE y JDK · ver de 07:20 a 15:37", url: "https://www.youtube.com/watch?v=qxXcI56NfnE&t=440s" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "¿Qué es la JVM?", detalle: "Por qué Java es multiplataforma", url: "https://www.youtube.com/watch?v=GQWJVe7xaKY" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "¿Qué es el JDK?", detalle: "JDK y versiones de Java", url: "https://www.youtube.com/watch?v=mSf7DiijbbU" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Instalar IntelliJ IDEA + JDK 25", detalle: "Instructivo de instalación; la cátedra pide JDK 21, el proceso es igual", url: "https://www.youtube.com/watch?v=qF5vr6tNBCQ" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "¿Qué es Maven? Maven vs Gradle", detalle: "Gestor de dependencias, pom.xml, groupId y cómo agregar una dependencia", url: "https://www.youtube.com/watch?v=rE7zLuQv2IU" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Tipos de datos y variables", detalle: "Declaración y asignación", url: "https://www.youtube.com/watch?v=l2mLP7P3jx4" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Operadores aritméticos", detalle: "Aritméticos, relacionales y concatenación", url: "https://www.youtube.com/watch?v=Fswl6scN9cY" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Convertir tipos de datos (casting)", detalle: "Casting y parseInt/parseDouble", url: "https://www.youtube.com/watch?v=C-SZqtyDeuU" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Condicional if", url: "https://www.youtube.com/watch?v=tE-a1tH-Iq4" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "If + else", url: "https://www.youtube.com/watch?v=wMSKQb6-iEk" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Condicionales anidados", url: "https://www.youtube.com/watch?v=B-VmHBBS0W0" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Switch", detalle: "Switch clásico con break", url: "https://www.youtube.com/watch?v=HEOdd2RnAko" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Ejercicio integrador de condicionales", detalle: "Acá aparece Scanner para leer del teclado", url: "https://www.youtube.com/watch?v=0fcO3VE_VwE" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Operador ternario", url: "https://www.youtube.com/watch?v=n1Tw6sB_6KY" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "While", detalle: "Contador y centinela", url: "https://www.youtube.com/watch?v=Vl9asbaZFZg" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Bucles infinitos", url: "https://www.youtube.com/watch?v=TmIg27se2yk" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "For", detalle: "Incremento y decremento", url: "https://www.youtube.com/watch?v=V7U96RG6MPE" },
+            { bloque: "Introducción a Java · Apuntes 02 a 04", titulo: "Bucle do-while", detalle: "Capítulo de un video largo · arranca en 03:29:05", url: "https://www.youtube.com/watch?v=qxXcI56NfnE&t=12545s" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "¿Qué es la POO?", detalle: "Abstracción, pilares y UML", url: "https://www.youtube.com/watch?v=tcza2FEz4u4" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Clases", detalle: "Clase como molde, atributos y paquetes", url: "https://www.youtube.com/watch?v=q9gZ9fjKIC0" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Métodos", detalle: "Parámetros y tipo de retorno", url: "https://www.youtube.com/watch?v=pXX3c8BloY0" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Constructores y objetos", detalle: "new, this, constructor vacío y con parámetros", url: "https://www.youtube.com/watch?v=fdfXkiuVHp4" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Getters y setters", url: "https://www.youtube.com/watch?v=ZHK0t5gocjA" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Encapsulamiento", detalle: "public, private y protected", url: "https://www.youtube.com/watch?v=4pnG1h2-fC8" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Vectores: declaración", url: "https://www.youtube.com/watch?v=Oie_y3Fp-N0" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Vectores: recorrido y carga", detalle: "Recorrido con for y carga con Scanner", url: "https://www.youtube.com/watch?v=DEK-tiJLa4Y" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Matrices: declaración", url: "https://www.youtube.com/watch?v=eP89Ay-rktw" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Matrices: recorrido y carga", url: "https://www.youtube.com/watch?v=Dpni7eA3Eiw" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Ejercicio vectores + if + for", detalle: "Práctica", url: "https://www.youtube.com/watch?v=C5u72RuvrY4" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Excepciones: try y catch", detalle: "try/catch/finally, throw, throws y excepciones propias", url: "https://www.youtube.com/watch?v=VHy6xFXJ1Rw" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Test automation con JUnit", detalle: "Qué es un test automatizado, con un ejemplo en JUnit", url: "https://www.youtube.com/watch?v=vIXMawS9WJQ" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "¿Qué es un mock?", detalle: "La idea detrás de Mockito", url: "https://www.youtube.com/watch?v=_khiRyGZfJg" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Herencia", detalle: "extends y super en constructores", url: "https://www.youtube.com/watch?v=2hYhpRZFuns" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Polimorfismo", detalle: "Arreglo de objetos de distintas clases", url: "https://www.youtube.com/watch?v=2jX22t4Bh4k" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Sobrescritura y sobrecarga", detalle: "@Override y overload", url: "https://www.youtube.com/watch?v=H9KE1HmFmTM" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Clases abstractas", url: "https://www.youtube.com/watch?v=I4o7fvSQvBA" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Interfaces", detalle: "implements y varias interfaces a la vez", url: "https://www.youtube.com/watch?v=hfwtzjOhvKk" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Ejercicio integrador Pokémon", detalle: "Práctica de clases abstractas e interfaces", url: "https://www.youtube.com/watch?v=O3hKxRLkLVU" },
+            { bloque: "POO · Apuntes 05 a 08", titulo: "Comparar Strings con equals", detalle: "Por qué no usar == con String · arranca en 04:05:48", url: "https://www.youtube.com/watch?v=qxXcI56NfnE&t=14748s" },
+            { bloque: "Colecciones · Apunte 09", titulo: "¿Qué son las Collections?", detalle: "List, Set, Queue y Map", url: "https://www.youtube.com/watch?v=mE1vnyn_QgU" },
+            { bloque: "Colecciones · Apunte 09", titulo: "ArrayList", detalle: "Recorrer con for por índice y con for-each", url: "https://www.youtube.com/watch?v=D0VH50zFVIA" },
+            { bloque: "Colecciones · Apunte 09", titulo: "LinkedList", url: "https://www.youtube.com/watch?v=FIm34V6A4C4" },
+            { bloque: "Colecciones · Apunte 09", titulo: "ArrayList vs LinkedList", detalle: "remove, size, clear, getFirst/getLast", url: "https://www.youtube.com/watch?v=tLTbR9zkUfg" },
+            { bloque: "Colecciones · Apunte 09", titulo: "Stacks (pilas)", detalle: "push, pop, peek; clases wrapper", url: "https://www.youtube.com/watch?v=HB5ksj6Op8c" },
+            { bloque: "Colecciones · Apunte 09", titulo: "HashMap", detalle: "put, get, containsKey, remove", url: "https://www.youtube.com/watch?v=jT0gnObfFls" },
+            { bloque: "Colecciones · Apunte 09", titulo: "Generics", detalle: "Clases parametrizadas <T> y <K, V>", url: "https://www.youtube.com/watch?v=1Z3sCAf98a4" },
+            { bloque: "Colecciones · Apunte 09", titulo: "Clases anónimas", detalle: "Curso de Programación Funcional #2", url: "https://www.youtube.com/watch?v=GwUoya7Il2U" },
+            { bloque: "Colecciones · Apunte 09", titulo: "Ejercicio integrador videojuegos", detalle: "Lista de objetos, for-each, equals y toString", url: "https://www.youtube.com/watch?v=cqNBEeoIgXI" },
+            { bloque: "Streams · Apunte 10", titulo: "¿Qué es la programación funcional?", url: "https://www.youtube.com/watch?v=ftbSQnCSjXg" },
+            { bloque: "Streams · Apunte 10", titulo: "Expresiones lambda e interfaces funcionales", url: "https://www.youtube.com/watch?v=Z9Z_umK4bJc" },
+            { bloque: "Streams · Apunte 10", titulo: "Lambdas vs clases anónimas", url: "https://www.youtube.com/watch?v=uSpqI47u9Xs" },
+            { bloque: "Streams · Apunte 10", titulo: "Referencia a métodos (::)", detalle: "Function, BiFunction, Runnable y referencias a constructores", url: "https://www.youtube.com/watch?v=UxLmCplQBWg" },
+            { bloque: "Streams · Apunte 10", titulo: "Java Streams", detalle: "Operaciones intermedias y terminales, filter", url: "https://www.youtube.com/watch?v=OX_NRjRqoWM" },
+            { bloque: "Streams · Apunte 10", titulo: "Stream Collectors", detalle: "toList, toSet, joining, counting, partitioningBy", url: "https://www.youtube.com/watch?v=AxlwkGaM-DE" },
+            { bloque: "Streams · Apunte 10", titulo: "Ejercicio integrador Optionals + Lambdas + Streams", detalle: "Práctica", url: "https://www.youtube.com/watch?v=lQwF4fI9TgI" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es Docker?", detalle: "Para entender PostgreSQL en un contenedor (Apunte 12)", url: "https://www.youtube.com/watch?v=OEvHEeDpg_o" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Cómo instalar Docker?", detalle: "Apunte 12", url: "https://www.youtube.com/watch?v=cWuirzMOwwg" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relaciones entre clases 1 a 1 y 1 a N", detalle: "Relaciones entre objetos antes de mapearlas", url: "https://www.youtube.com/watch?v=XKk5k9OrAUg" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es JPA?", detalle: "ORM y proveedores: Hibernate, EclipseLink", url: "https://www.youtube.com/watch?v=ppDv4N5A31E" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Hibernate y JPA, ¿son lo mismo?", url: "https://www.youtube.com/watch?v=cT5sII1NuVU" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "JPA: conexión MySQL + Persistence Unit", detalle: "persistence.xml y driver agregado con Maven", url: "https://www.youtube.com/watch?v=KGzOP__3GjA" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es ORM? + anotaciones de JPA", detalle: "@Entity, @Id, @GeneratedValue, @Temporal", url: "https://www.youtube.com/watch?v=qocxxWNvHg4" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "JPA Controllers", detalle: "EntityManagerFactory; de clases a tablas", url: "https://www.youtube.com/watch?v=Z0BOz4wh1zg" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: create", detalle: "Alta pasando por las capas", url: "https://www.youtube.com/watch?v=TPysm6EXOuM" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: destroy y edit", detalle: "Baja y modificación", url: "https://www.youtube.com/watch?v=QwM6KHjCunk" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: find y findEntities", detalle: "Buscar uno y traer todos", url: "https://www.youtube.com/watch?v=sPlR5zzBNr8" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relación OneToOne", url: "https://www.youtube.com/watch?v=tWboE7JVCPI" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relación OneToMany", detalle: "mappedBy y relación bidireccional", url: "https://www.youtube.com/watch?v=IT7AI5_9K_M" }
+          ]
         },
         practico: { material: [], videos: [] }
       },
@@ -1104,6 +1181,15 @@ const MOD = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatrimestre", "2C": "2
 const MOD_CORTO = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatr.", "2C": "2º cuatr.", "1C-2C": "1º o 2º cuatr." };
 const materia = n => CARRERA.materias.find(m => m.n === n) || CARRERA.electivas.find(e => e.n === n);
 const nombreNivel = n => n === 0 ? "Nivel 0 · Cursillo de ingreso" : `${n}º Nivel`;
+
+/* Segundo de inicio del link (t=440s, t=440, t=1h2m3s); 0 si no tiene */
+function ytInicio(url){
+  const m = /[?&#]t=([\dhms]+)/.exec(url || "");
+  if(!m) return 0;
+  if(/^\d+s?$/.test(m[1])) return parseInt(m[1], 10);
+  const p = /(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/.exec(m[1]);
+  return (+p[1] || 0) * 3600 + (+p[2] || 0) * 60 + (+p[3] || 0);
+}
 
 function ytId(url){
   if(!url) return null;
@@ -1731,7 +1817,8 @@ function mountPlayer(videos, titulo){
     const thumb = v.id
       ? `<div class="pl-thumb" data-n="${i + 1}"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" data-id="${v.id}" alt="" loading="lazy" onload="miniatura(this)" onerror="this.naturalWidth || miniatura(this)"></div>`
       : `<div class="pl-thumb">▶</div>`;
-    return `<div class="pl-item" data-i="${i}"><span class="pl-num">${i + 1}</span>${thumb}<div class="pl-title">${esc(v.titulo)}</div></div>`;
+    const bloque = v.bloque && (i === 0 || lista[i - 1].bloque !== v.bloque) ? `<div class="pl-bloque">${esc(v.bloque)}</div>` : "";
+    return `${bloque}<div class="pl-item" data-i="${i}"><span class="pl-num">${i + 1}</span>${thumb}<div class="pl-title">${esc(v.titulo)}</div></div>`;
   };
   const marcarActivo = i => body.querySelectorAll(".pl-item").forEach(el => el.classList.toggle("active", +el.dataset.i === i));
   const dibujar = () => {
@@ -1757,10 +1844,10 @@ function mountPlayer(videos, titulo){
     const v = lista[i];
     actual = v.id || i;
     $("#player").innerHTML = v.id
-      ? `<iframe src="https://www.youtube.com/embed/${v.id}?rel=0" title="${esc(v.titulo)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+      ? `<iframe src="https://www.youtube.com/embed/${v.id}?rel=0${ytInicio(v.url) ? `&start=${ytInicio(v.url)}` : ""}" title="${esc(v.titulo)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
       : `<div style="height:100%;display:grid;place-items:center;color:#aaa;text-align:center;padding:20px">Este video todavía no tiene link.<br>Pegá la URL de YouTube en el código.</div>`;
     $("#nowTitle").textContent = v.titulo;
-    $("#nowDesc").textContent = `Video ${i + 1} de ${lista.length}`;
+    $("#nowDesc").textContent = [v.bloque, `Video ${i + 1} de ${lista.length}`, v.detalle].filter(Boolean).join(" · ");
     $("#plCount").textContent = `${i + 1} / ${lista.length}`;
     marcarActivo(i);
   };
@@ -1783,7 +1870,7 @@ function mountPlayer(videos, titulo){
     body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i); }));
     marcarActivo(i);
     $("#nowTitle").textContent = lista[i].titulo;
-    $("#nowDesc").textContent = `Video ${i + 1} de ${lista.length}`;
+    $("#nowDesc").textContent = [lista[i].bloque, `Video ${i + 1} de ${lista.length}`, lista[i].detalle].filter(Boolean).join(" · ");
     $("#plCount").textContent = `${i + 1} / ${lista.length}`;
   });
 }

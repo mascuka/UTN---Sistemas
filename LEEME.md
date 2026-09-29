@@ -29,6 +29,8 @@ En `videos`, agregá:
 `{ url: "https://www.youtube.com/watch?v=XXXXXXXXXXX" }`
 Sin `titulo`, el nombre se trae de YouTube (el video tiene que estar publicado u oculto, no en borrador) y, si todos empiezan con "Clase N", se ordenan por número. Si ponés `titulo: "..."`, se usa ese.
 
+Opcionales en cada video: `bloque: "..."` agrupa la lista con un título por bloque (ver Backend, 1º Parcial), `detalle: "..."` se muestra debajo del video, y si el link tiene `&t=440s` el video arranca en ese segundo.
+
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
