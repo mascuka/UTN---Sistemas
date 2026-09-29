@@ -1168,6 +1168,37 @@ const MATERIAS = {
         id: "p3",
         titulo: "3º Parcial",
         descripcion: "El tercer parcial consta de teórico y práctico.",
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            {
+              titulo: "Unidad Nº 5: Capa de transporte y capa de aplicación",
+              contenidos: [
+                "Capa de transporte: servicios orientados a conexión y sin conexión.",
+                "Protocolo TCP: características, funcionamiento, formato del segmento. Establecimiento y liberación de una conexión.",
+                "Protocolo UDP: características, formato del encabezado. Puertos. Aplicaciones de TCP y UDP.",
+                "Traducción de direcciones de red (NAT): características, NAT estática, NAT dinámica, PAT.",
+                "DNS: funcionamiento, espacio de nombres, registros de recursos, servidores de nombres.",
+                "FTP y TFTP: características y aplicaciones.",
+                "SNMP: modelo (componentes), funcionamiento, MIB, protocolo SNMP.",
+                "Correo electrónico: arquitectura y servicios, agente de usuario, formatos de mensaje, transferencia de mensajes. Protocolos SMTP y MIME.",
+                "WWW: arquitectura, URL, localización de información en la Web. HTTP y HTTPS.",
+                "Voz sobre IP: estándar H.323, estándares de codificación de voz, protocolos RTP y SIP."
+              ]
+            },
+            {
+              titulo: "Unidad Nº 6: Seguridad",
+              contenidos: [
+                "Concepto de seguridad. Políticas de seguridad informática en una red.",
+                "Confidencialidad, autenticación, integridad y disponibilidad.",
+                "Firmas digitales: concepto, implementación. Firmas de clave simétrica y de clave pública.",
+                "Firewalls: características, tipos. Servidor proxy. Filtrado de paquetes. Aplicaciones.",
+                "Seguridad en la capa de red: IPSec. Seguridad en la Web: SSL y TLS.",
+                "VPN: características y aplicaciones."
+              ]
+            }
+          ]
+        },
         teorico:   { material: [], videos: [] },
         practico:  { material: [], videos: [] },
         parciales: { material: [], videos: [] }
