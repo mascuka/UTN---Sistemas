@@ -897,7 +897,45 @@ const MATERIAS = {
               ] }
             ] }
           ],
-          videos: []
+          // Videos de TodoCode (YouTube), en orden de estudio y agrupados por bloque. "t=" en el link = arranca en ese minuto
+          videos: [
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es Docker?", detalle: "Para entender PostgreSQL en un contenedor (Apunte 12)", url: "https://www.youtube.com/watch?v=OEvHEeDpg_o" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Cómo instalar Docker?", detalle: "Apunte 12", url: "https://www.youtube.com/watch?v=cWuirzMOwwg" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relaciones entre clases 1 a 1 y 1 a N", detalle: "Relaciones entre objetos antes de mapearlas", url: "https://www.youtube.com/watch?v=XKk5k9OrAUg" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es JPA?", detalle: "ORM y proveedores: Hibernate, EclipseLink", url: "https://www.youtube.com/watch?v=ppDv4N5A31E" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Hibernate y JPA, ¿son lo mismo?", url: "https://www.youtube.com/watch?v=cT5sII1NuVU" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "JPA: conexión MySQL + Persistence Unit", detalle: "persistence.xml y driver agregado con Maven", url: "https://www.youtube.com/watch?v=KGzOP__3GjA" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "¿Qué es ORM? + anotaciones de JPA", detalle: "@Entity, @Id, @GeneratedValue, @Temporal", url: "https://www.youtube.com/watch?v=qocxxWNvHg4" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "JPA Controllers", detalle: "EntityManagerFactory; de clases a tablas", url: "https://www.youtube.com/watch?v=Z0BOz4wh1zg" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: create", detalle: "Alta pasando por las capas", url: "https://www.youtube.com/watch?v=TPysm6EXOuM" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: destroy y edit", detalle: "Baja y modificación", url: "https://www.youtube.com/watch?v=QwM6KHjCunk" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "CRUD: find y findEntities", detalle: "Buscar uno y traer todos", url: "https://www.youtube.com/watch?v=sPlR5zzBNr8" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relación OneToOne", url: "https://www.youtube.com/watch?v=tWboE7JVCPI" },
+            { bloque: "ORM y JPA · Apuntes 12 y 13", titulo: "Relación OneToMany", detalle: "mappedBy y relación bidireccional", url: "https://www.youtube.com/watch?v=IT7AI5_9K_M" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "APIs en 1 minuto", detalle: "Cliente, API y servidor con una analogía", url: "https://www.youtube.com/watch?v=yN6ELwckPwM" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "Métodos HTTP en 1 minuto", detalle: "GET, POST, PUT, PATCH y DELETE", url: "https://www.youtube.com/watch?v=amIr2SPxQqE" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "Status codes en la vida real", detalle: "200, 403, 404, 500", url: "https://www.youtube.com/watch?v=TtYLv8COtJk" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "Status codes en la vida real, parte 2", detalle: "401, 502, 503", url: "https://www.youtube.com/watch?v=O6NBNUHlcw4" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "¿Qué es JSON?", detalle: "Sintaxis, objetos y listas: el formato de las respuestas REST", url: "https://www.youtube.com/watch?v=RhxOTqFbI5Q" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "¿Qué es Spring Framework?", detalle: "Spring como conjunto de proyectos", url: "https://www.youtube.com/watch?v=Oo-vujT74ek" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "Master class de Spring Boot", detalle: "Spring vs Spring Boot, Initializr, Spring Web, @RestController, @GetMapping y @PathVariable · arranca en 20:26", url: "https://www.youtube.com/watch?v=8X2acANBuLk&t=1226s" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "Spring Boot en IntelliJ Community", detalle: "Crear el proyecto con Initializr, estructura y primera ejecución", url: "https://www.youtube.com/watch?v=vVhv7oBbxuY" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "@Controller vs @RestController", detalle: "Vista HTML vs respuesta JSON · arranca en 08:54", url: "https://www.youtube.com/watch?v=JsbAcn_-TdA&t=534s" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "Instalar Postman", detalle: "Tu primera request para probar endpoints", url: "https://www.youtube.com/watch?v=laZv3I9XN0w" },
+            { bloque: "Spring · Apuntes 14, 15 y 17", titulo: "Prueba técnica de Spring Boot resuelta", detalle: "El video central (3 h): API completa por capas con DTO, JpaRepository, H2, excepciones propias, ResponseEntity y Postman. Capítulos: estructura 21:17 · DTO 38:37 · Service 1:00:13 · excepciones 1:36:21 · Controller 2:17:58 · Postman 2:39:33", url: "https://www.youtube.com/watch?v=l-Bl45I6UEY" },
+            { bloque: "Spring Data · Apunte 16", titulo: "Prueba técnica · capa Repository con JpaRepository", detalle: "Capítulo del video de la prueba técnica · arranca en 46:49", url: "https://www.youtube.com/watch?v=l-Bl45I6UEY&t=2809s" },
+            { bloque: "Spring Data · Apunte 16", titulo: "Prueba técnica · base de datos H2 en application.properties", detalle: "Capítulo del video de la prueba técnica · arranca en 56:22", url: "https://www.youtube.com/watch?v=l-Bl45I6UEY&t=3382s" },
+            { bloque: "API Gateway · Apuntes 18 y 19", titulo: "Integrar IA gratis en tus APIs (OpenRouter)", detalle: "Una API de Spring Boot que consume una API externa con un cliente REST; API key en variables de entorno", url: "https://www.youtube.com/watch?v=VgRwdg2IS5g" },
+            { bloque: "API Gateway · Apuntes 18 y 19", titulo: "Spring Boot 4: resiliencia y clientes HTTP declarativos", detalle: "Tolerancia a fallos, retry, Resilience4j y consumir otros microservicios · arranca en 09:18", url: "https://www.youtube.com/watch?v=spMIGVcJPuw&t=558s" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "Autenticación vs autorización", url: "https://www.youtube.com/watch?v=f4Q_naeVliA" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "Aplicaciones stateful vs stateless", detalle: "Seguridad con sesiones vs con tokens", url: "https://www.youtube.com/watch?v=W-eaXCBHvxM" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "¿Qué es un token?", url: "https://www.youtube.com/watch?v=0AkGyPpJgaU" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "¿Qué es JWT?", detalle: "Header, payload y firma; claims; jwt.io", url: "https://www.youtube.com/watch?v=P8i2ily6tyE" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "Ciclo de vida de JWT", detalle: "Emisión, envío en la cabecera, validación de la firma, expiración y renovación", url: "https://www.youtube.com/watch?v=capnr5ULxGQ" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "Usuarios, roles y permisos", detalle: "La base para proteger endpoints por rol", url: "https://www.youtube.com/watch?v=X1CIHh0XzkU" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "¿Qué es Spring Security?", detalle: "Filtros, proveedores de autenticación y UserDetailsService", url: "https://www.youtube.com/watch?v=fmKkU5uuNr0" },
+            { bloque: "Seguridad · Apuntes 20 y 21", titulo: "Arquitectura de Spring Security", detalle: "SecurityFilterChain, AuthenticationManager, AuthenticationProvider y SecurityContextHolder", url: "https://www.youtube.com/watch?v=2eWunG4z4jo" }
+          ]
         },
         practico: { material: [], videos: [] }
       }
