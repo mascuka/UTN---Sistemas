@@ -266,14 +266,17 @@
   .comis h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
   /* Cada comisión es un grupo: el código a la izquierda y sus profesores al lado */
-  .comis-grupo{display:grid;grid-template-columns:62px minmax(0,1fr);gap:18px;padding:0 18px;font-size:.9rem;line-height:1.5}
+  .comis-grupo{display:grid;grid-template-columns:62px minmax(0,1fr) 120px 170px;gap:18px;padding:0 18px;font-size:.9rem;line-height:1.5}
   .comis-grupo + .comis-grupo{border-top:1px solid var(--line)}
   .comis-cod{display:flex;align-items:center;padding:14px 0}
   .comis-cod small{color:var(--muted);font-size:.78rem;line-height:1.3}
-  .con-horario .comis-grupo{grid-template-columns:132px minmax(0,1fr)}
+  .con-horario .comis-grupo{grid-template-columns:132px minmax(0,1fr) 120px 170px}
+  .comis-reco{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:14px 0}
+  .comis-reco small{display:block;color:var(--muted);font-size:.82rem;margin-top:4px}
+  .comis-head .comis-reco{padding:10px 0;justify-content:center}
   .con-horario .comis-cod{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
   .comis-nota{font-size:.88rem;color:var(--muted);margin:-4px 0 12px}
-  .comis-fila{display:grid;grid-template-columns:170px 110px 100px minmax(0,1fr) 200px;gap:18px;padding:14px 0;align-items:start}
+  .comis-fila{display:grid;grid-template-columns:170px 100px minmax(0,1fr);gap:18px;padding:14px 0;align-items:start}
   .comis-fila + .comis-fila{border-top:1px dashed var(--line)}
   .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
   .comis-head .comis-cod,.comis-head .comis-fila{padding:10px 0}
@@ -292,7 +295,8 @@
     .comis-cod::before{content:"Comisión";font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:8px}
     .comis-fila{grid-template-columns:1fr;gap:6px}
     .c-prof{text-align:left}
-    .comis-fila > span::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+    .comis-reco{padding:0 0 14px}
+    .comis-fila > span::before,.comis-reco::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
   }
   .back{color:var(--muted)}
 </style>
@@ -469,9 +473,7 @@ const MATERIAS = {
         comision: "1K13",
         profesor: "Carlos Kaloustian",
         rol: "Práctico",
-        examen: "A desarrollar",
         asistencia: false,
-        recomendada: true,
         comentario: "No explica, no vale la pena ir. Los exámenes son muy fáciles, a desarrollar."
       }
     ],
@@ -708,20 +710,20 @@ const MATERIAS = {
     comisionesNota: "Todos los profesores dan teórico y práctico.",
     comisiones: [
       { comision: "3K1", horario: "Mar y Mié · Mañana", profesor: "German Romani", examen: "En laboratorio", asistencia: true, recomendada: false },
-      { comision: "3K1", profesor: "Valentin Martini", examen: "En laboratorio", asistencia: true, recomendada: false },
+      { comision: "3K1", profesor: "Valentin Martini", asistencia: true },
       { comision: "3K1BA", horario: "Mar y Mié · Noche", profesor: "Federico Ortalda", examen: "En laboratorio", asistencia: true, recomendada: false },
       { comision: "3K2", horario: "Mar y Jue · Mañana", profesor: "Felipe Steffolani", examen: "En laboratorio", asistencia: true, recomendada: false },
-      { comision: "3K2", profesor: "German Romani", examen: "En laboratorio", asistencia: true, recomendada: false },
+      { comision: "3K2", profesor: "German Romani", asistencia: true },
       { comision: "3K3", horario: "Mar y Vie · Tarde", profesor: "Franco Pesci", examen: "En laboratorio", asistencia: true, recomendada: false },
-      { comision: "3K3", profesor: "Diego Serrano", examen: "En laboratorio", asistencia: true, recomendada: false },
+      { comision: "3K3", profesor: "Diego Serrano", asistencia: true },
       { comision: "3K3B", horario: "Lun y Jue · Tarde", profesor: "Ivo Parún Rua", examen: "En laboratorio", asistencia: true, recomendada: false },
-      { comision: "3K3B", profesor: "Martín Casatti", examen: "En laboratorio", asistencia: true, recomendada: false },
+      { comision: "3K3B", profesor: "Martín Casatti", asistencia: true },
       { comision: "3K4", horario: "Mar y Mié · Noche", profesor: "Ivo Parún Rua", examen: "En laboratorio", asistencia: true, recomendada: false },
-      { comision: "3K4", profesor: "Federico Bett", examen: "En laboratorio", asistencia: true, recomendada: false },
+      { comision: "3K4", profesor: "Federico Bett", asistencia: true },
       { comision: "3K7", horario: "Mar y Vie · Tarde", profesor: "Rodrigo Diaz", examen: "En laboratorio", asistencia: true, recomendada: false },
-      { comision: "3K7", profesor: "Jorge Harach", examen: "En laboratorio", asistencia: true, recomendada: false },
+      { comision: "3K7", profesor: "Jorge Harach", asistencia: true },
       { comision: "3K8", horario: "Lun y Jue · Noche", profesor: "German Romani", examen: "En laboratorio", asistencia: true, recomendada: false },
-      { comision: "3K8", profesor: "Leonel Bendezú", examen: "En laboratorio", asistencia: true, recomendada: false }
+      { comision: "3K8", profesor: "Leonel Bendezú", asistencia: true }
     ],
     parciales: [
       {
@@ -1635,19 +1637,24 @@ function condiciones(x){
 
 /* Cuadro de comisiones: profesor, examen, comentario y recomendación */
 function comisiones(lista, nota){
-  // Agrupa por comisión, respetando el orden en que se cargaron
+  // Agrupa por comisión, respetando el orden en que se cargaron.
+  // El examen y la recomendación son de la comisión: se toma el primero que aparezca en sus profesores.
   const grupos = [];
   lista.forEach(x => {
     const g = grupos.find(g => g.comision === x.comision);
     g ? g.profes.push(x) : grupos.push({ comision: x.comision, horario: x.horario, profes: [x] });
   });
+  const examen = g => `<span class="comis-reco" data-l="Examen">${esc((g.profes.find(p => p.examen) || {}).examen || "—")}</span>`;
+  const reco = g => {
+    const x = g.profes.find(p => p.recomendada !== undefined) || {};
+    const motivo = (g.profes.find(p => p.motivo) || {}).motivo;
+    return `<span class="comis-reco" data-l="¿La recomiendo?">${x.recomendada === undefined ? "—" : `<span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>`}${motivo ? `<small>${esc(motivo)}</small>` : ""}</span>`;
+  };
   const fila = x => `
     <div class="comis-fila">
       <span data-l="Profesor" class="c-prof">${esc(x.profesor)}${x.rol ? `<small>(${esc(x.rol)})</small>` : ""}</span>
-      <span data-l="Examen">${esc(x.examen || "—")}</span>
       <span data-l="Asistencia">${x.asistencia === undefined ? "—" : x.asistencia ? "Toma asistencia" : "No toma"}</span>
       <span data-l="Comentario">${esc(x.comentario || "")}</span>
-      <span data-l="¿La recomiendo?">${x.recomendada === undefined ? "—" : `<span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>`}${x.motivo ? `<small>${esc(x.motivo)}</small>` : ""}</span>
     </div>`;
   return `
     <section class="comis">
@@ -1656,12 +1663,16 @@ function comisiones(lista, nota){
       <div class="comis-tabla${grupos.some(g => g.horario) ? " con-horario" : ""}">
         <div class="comis-grupo comis-head">
           <span class="comis-cod">Comisión</span>
-          <div class="comis-fila"><span class="c-prof">Profesor</span><span>Examen</span><span>Asistencia</span><span>Comentario</span><span>¿La recomiendo?</span></div>
+          <div class="comis-fila"><span class="c-prof">Profesor</span><span>Asistencia</span><span>Comentario</span></div>
+          <span class="comis-reco">Examen</span>
+          <span class="comis-reco">¿La recomiendo?</span>
         </div>
         ${grupos.map(g => `
           <div class="comis-grupo">
             <span class="comis-cod"><b>${esc(g.comision)}</b>${g.horario ? `<small>${esc(g.horario)}</small>` : ""}</span>
             <div>${g.profes.map(fila).join("")}</div>
+            ${examen(g)}
+            ${reco(g)}
           </div>`).join("")}
       </div>
     </section>`;

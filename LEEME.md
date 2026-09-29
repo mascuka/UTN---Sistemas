@@ -40,6 +40,9 @@ Se muestra abajo de las tarjetas de Teórico/Práctico. Si el parcial no lo tien
 Si un parcial no necesita las tres tarjetas, se puede limitar con `secciones` (ej.: Backend, 1º Parcial y TPI):
 `secciones: ["teorico", "practico"]`
 
+## Comisiones
+Cada profesor es una fila con `comision`, `profesor`, `rol`, `asistencia` y `comentario`. El examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero.
+
 ## Condiciones de aprobación
 Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra en la página de la materia, antes de las comisiones:
 `condiciones: { directa: 6, regular: 4, aclaracion: "...", requisitos: [ { titulo: "Parcial", detalle: "6 o más" } ] }`
