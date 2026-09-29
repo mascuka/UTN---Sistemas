@@ -1064,9 +1064,35 @@ const MATERIAS = {
               ]
             }
           ],
-          videos: []
+          // Videos de las clases (playlist RIN - 4K1), agrupados por unidad
+          videos: [
+            { bloque: "Unidad 1 · Arquitectura de redes", titulo: "Presentación de la materia y repaso de redes", detalle: "Clase del 19/3 · 1 h 27 min · Concepto y clasificación de redes, TCP/IP e Internet", url: "https://www.youtube.com/watch?v=96HJ0E7Ivqw" },
+            { bloque: "Unidad 1 · Arquitectura de redes", titulo: "Encapsulamiento y desencapsulamiento", detalle: "Clase del 30/4 · 1 h 12 min · Cómo viajan los datos por las capas", url: "https://www.youtube.com/watch?v=uBRtnRKKsw4" },
+            { bloque: "Unidad 2 · Redes locales", titulo: "Ethernet y Token Ring", detalle: "Clase del 23/4 · 1 h 18 min · CSMA/CD, IEEE 802.3 y Token Ring", url: "https://www.youtube.com/watch?v=GSEulrhro_0" },
+            { bloque: "Unidad 2 · Redes locales", titulo: "STP y dispositivos (bridge y switch)", detalle: "Clase del 7/5 · 1 h 22 min · Bridges, switches e IEEE 802.1D", url: "https://www.youtube.com/watch?v=5H3JdNefgTA" },
+            { bloque: "Unidad 2 · Redes locales", titulo: "Redes inalámbricas (WLAN)", detalle: "Clase del 14/5 · 1 h 32 min · IEEE 802.11, CSMA/CA y Access Point", url: "https://www.youtube.com/watch?v=f3Hn_KORFZM" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Direccionamiento IPv4 · Parte 1", detalle: "Clase del 26/3 · 1 h 23 min · IPv4, formato del datagrama y clases", url: "https://www.youtube.com/watch?v=0N9mUbvsSM4" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Direccionamiento IPv4 · Parte 2", detalle: "Clase del 9/4 · 1 h 28 min · Máscara de red", url: "https://www.youtube.com/watch?v=U2TXhOBu0ho" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Direccionamiento IPv4 · Parte 3", detalle: "Clase del 16/4 · 1 h 11 min · Subredes", url: "https://www.youtube.com/watch?v=e8fRLbclVp4" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "VLANs", detalle: "Clase del 28/5 · 1 h 26 min · VLANs e IEEE 802.1q · para este parcial alcanza con la parte de VLANs (la primera parte es IPv6)", url: "https://www.youtube.com/watch?v=UjxOVfQZ6M0" }
+          ]
         },
-        practico:  { material: [], videos: [] },
+        practico: {
+          material: [],
+          videos: [
+            { bloque: "Unidad 1 · Arquitectura de redes", titulo: "Prácticos 1 y 2", detalle: "Clase del 23/3 · 1 h 30 min · Ejercicios de la Unidad 1", url: "https://www.youtube.com/watch?v=MG5075WlxJo" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Ejercicios de direccionamiento IPv4", detalle: "Clase del 6/4 · 56 min · Clasificación de direcciones IPv4", url: "https://www.youtube.com/watch?v=kY_egyqI1SA" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Ejercitación de subredes", detalle: "Clase del 13/4 · 48 min · Primeros ejercicios de subredes", url: "https://www.youtube.com/watch?v=0VXAkDUGcpM" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Subredes", detalle: "Clase del 20/4 · 45 min · Más ejercicios de subredes", url: "https://www.youtube.com/watch?v=60_2L7e4T-o" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Resolución de ejercicios de subredes · Parte 1", detalle: "Clase del 4/5 · 1 h 31 min · Resolución paso a paso", url: "https://www.youtube.com/watch?v=YPoIznV6pss" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Resolución de ejercicios de subredes · Parte 2", detalle: "Clase del 11/5 · 45 min · Resolución paso a paso", url: "https://www.youtube.com/watch?v=msfKaBhaMGA" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Configuración de VLAN trunk", detalle: "Clase del 22/6 · 1 h 36 min · Extra recomendado: trunk y 802.1q en el simulador", url: "https://www.youtube.com/watch?v=gSFBbskqRlM" },
+            { bloque: "Simulador de redes (herramienta)", titulo: "Introducción al simulador de redes virtuales (LabSis)", detalle: "Clase del 30/3 · 1 h 31 min · Cómo usar la herramienta", url: "https://www.youtube.com/watch?v=tKMjOMD6mV8" },
+            { bloque: "Simulador de redes (herramienta)", titulo: "Uso del simulador", detalle: "Clase del 27/4 · 1 h 34 min · Práctica con la herramienta", url: "https://www.youtube.com/watch?v=ag1RWtuqGMo" },
+            { bloque: "Opcionales · TP y presentaciones", titulo: "Presentación de la materia y TP de análisis", detalle: "Clase del 16/3 · 1 h 19 min · Presentación del práctico y consigna del TP", url: "https://www.youtube.com/watch?v=Wt9lGR5lz0M" },
+            { bloque: "Opcionales · TP y presentaciones", titulo: "Presentación del TPI", detalle: "Clase del 18/5 · 44 min · Consigna del trabajo práctico integrador", url: "https://www.youtube.com/watch?v=1sq3PRcuFOU" }
+          ]
+        },
         parciales: { material: [], videos: [] }
       },
       {
@@ -1150,16 +1176,40 @@ const MATERIAS = {
               ]
             }
           ],
-          videos: []
+          // Videos de las clases (playlist RIN - 4K1), agrupados por unidad
+          videos: [
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "IPv6", detalle: "Clase del 21/5 · 1 h 34 min · Características, ventajas frente a IPv4 y formato del datagrama", url: "https://www.youtube.com/watch?v=QHo2Iiwg5Yk" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Continuación de IPv6", detalle: "Clase del 28/5 · 1 h 26 min · IPv6 en la primera parte del video (después sigue VLANs)", url: "https://www.youtube.com/watch?v=UjxOVfQZ6M0" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Agotamiento de direcciones IPv4, VLSM y CIDR", detalle: "Clase del 11/6 · 1 h 18 min · Por qué se agotó IPv4 y cómo se resolvió", url: "https://www.youtube.com/watch?v=ok7txcbb6IQ" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Protocolo ICMP", detalle: "Clase del 18/6 · 1 h 30 min · Funcionamiento y tipos de mensajes", url: "https://www.youtube.com/watch?v=8Cf6oC0uMUg" },
+            { bloque: "Unidad 3 · Direccionamiento", titulo: "Protocolo ARP", detalle: "Clase del 25/6 · 1 h 24 min · Funcionamiento y tablas ARP", url: "https://www.youtube.com/watch?v=XRniG1TsgL8" },
+            { bloque: "Unidad 4 · Encaminamiento y congestión", titulo: "Encaminamiento · Parte 1", detalle: "Clase del 2/7 · 1 h 10 min · Concepto de encaminamiento y algoritmos", url: "https://www.youtube.com/watch?v=nJy3_WXO9Z8" },
+            { bloque: "Unidad 4 · Encaminamiento y congestión", titulo: "Encaminamiento · Parte 2", detalle: "Clase del 6/8 · 1 h 16 min · Algoritmos de encaminamiento", url: "https://www.youtube.com/watch?v=N8O2xUNpQbc" },
+            { bloque: "Unidad 4 · Encaminamiento y congestión", titulo: "Encaminamiento · Parte 3", detalle: "Clase del 13/8 · 1 h 25 min · Continuación", url: "https://www.youtube.com/watch?v=h4Bl7r2KpEA" },
+            { bloque: "Unidad 4 · Encaminamiento y congestión", titulo: "Protocolo OSPF", detalle: "Clase del 20/8 · 1 h 27 min · OSPF y encaminamiento en Internet", url: "https://www.youtube.com/watch?v=lvE-3EBiK5w" },
+            { bloque: "Unidad 4 · Encaminamiento y congestión", titulo: "Control de congestión", detalle: "Clase del 27/8 · 1 h 14 min · Congestión, algoritmos y prevención", url: "https://www.youtube.com/watch?v=CX4DhjDDZ2c" },
+            { bloque: "Unidad 4 · Encaminamiento y congestión", titulo: "Calidad de servicio (QoS)", detalle: "Clase del 3/9 · 1 h 26 min · QoS y MPLS", url: "https://www.youtube.com/watch?v=WwBghuWeDbM" },
+            { bloque: "Repaso del 1º Parcial · IPv4", titulo: "Direccionamiento IPv4 · Parte 1", detalle: "Clase del 26/3 · 1 h 23 min · Repaso: IPv4, datagrama y clases", url: "https://www.youtube.com/watch?v=0N9mUbvsSM4" },
+            { bloque: "Repaso del 1º Parcial · IPv4", titulo: "Direccionamiento IPv4 · Parte 2", detalle: "Clase del 9/4 · 1 h 28 min · Repaso: máscara de red", url: "https://www.youtube.com/watch?v=U2TXhOBu0ho" },
+            { bloque: "Repaso del 1º Parcial · IPv4", titulo: "Direccionamiento IPv4 · Parte 3", detalle: "Clase del 16/4 · 1 h 11 min · Repaso: subredes", url: "https://www.youtube.com/watch?v=e8fRLbclVp4" }
+          ]
         },
         practico: {
-          material: [
-            { nombre: "Guía de ejercicios", tipo: "PDF", url: "material/redes-de-datos/p2/practico/guia.pdf" },
-            { nombre: "Ejercicios resueltos", tipo: "PDF", url: "material/redes-de-datos/p2/practico/resueltos.pdf" }
-          ],
+          material: [],
           videos: [
-            { titulo: "Resolución guía – parte 1", url: "" },
-            { titulo: "Resolución guía – parte 2", url: "" }
+            { bloque: "Simulador RVL", titulo: "Práctica con el simulador RVL · Parte 1", detalle: "Clase del 1/6 · 1 h 27 min · Armado y prueba de redes en el simulador", url: "https://www.youtube.com/watch?v=qTByyQjNeGQ" },
+            { bloque: "Simulador RVL", titulo: "Práctica con el simulador RVL · Parte 2", detalle: "Clase del 8/6 · 1 h 17 min · Armado y prueba de redes en el simulador", url: "https://www.youtube.com/watch?v=EH91ibPAN1Q" },
+            { bloque: "Simulador RVL", titulo: "Práctica con el simulador RVL · Parte 3", detalle: "Clase del 15/6 · 1 h 29 min · Armado y prueba de redes en el simulador", url: "https://www.youtube.com/watch?v=4wouz1mlxnw" },
+            { bloque: "Routers y enrutamiento", titulo: "Enrutamiento entre VLANs", detalle: "Clase del 3/8 · 19 min · Ruteo entre VLANs", url: "https://www.youtube.com/watch?v=RsKrhOfexGs" },
+            { bloque: "Routers y enrutamiento", titulo: "Routers", detalle: "Clase del 17/8 · 1 h 28 min · Componentes y configuración básica", url: "https://www.youtube.com/watch?v=0Wx2-2UJXPM" },
+            { bloque: "Routers y enrutamiento", titulo: "TP de enrutamiento dinámico con RIP", detalle: "Clase del 24/8 · 1 h 29 min · Consigna y resolución del TP", url: "https://www.youtube.com/watch?v=TFl9mwUQf4Y" },
+            { bloque: "Routers y enrutamiento", titulo: "Configuración de enrutamiento dinámico con RIP", detalle: "Clase del 7/9 · 1 h 27 min · Configuración paso a paso", url: "https://www.youtube.com/watch?v=-K5fikMkh5E" },
+            { bloque: "Diagnóstico de red", titulo: "Comandos de diagnóstico", detalle: "Clase del 14/9 · 1 h 27 min · ping, tracert, arp, netstat, nslookup y otros", url: "https://www.youtube.com/watch?v=Qed_vbNRE54" },
+            { bloque: "Repaso del 1º Parcial · Subredes", titulo: "Ejercicios de direccionamiento IPv4", detalle: "Clase del 6/4 · 56 min · Repaso", url: "https://www.youtube.com/watch?v=kY_egyqI1SA" },
+            { bloque: "Repaso del 1º Parcial · Subredes", titulo: "Ejercitación de subredes", detalle: "Clase del 13/4 · 48 min · Repaso", url: "https://www.youtube.com/watch?v=0VXAkDUGcpM" },
+            { bloque: "Repaso del 1º Parcial · Subredes", titulo: "Subredes", detalle: "Clase del 20/4 · 45 min · Repaso", url: "https://www.youtube.com/watch?v=60_2L7e4T-o" },
+            { bloque: "Repaso del 1º Parcial · Subredes", titulo: "Resolución de ejercicios de subredes · Parte 1", detalle: "Clase del 4/5 · 1 h 31 min · Repaso", url: "https://www.youtube.com/watch?v=YPoIznV6pss" },
+            { bloque: "Repaso del 1º Parcial · Subredes", titulo: "Resolución de ejercicios de subredes · Parte 2", detalle: "Clase del 11/5 · 45 min · Repaso", url: "https://www.youtube.com/watch?v=msfKaBhaMGA" }
           ]
         },
         parciales: { material: [], videos: [] }
@@ -1199,8 +1249,29 @@ const MATERIAS = {
             }
           ]
         },
-        teorico:   { material: [], videos: [] },
-        practico:  { material: [], videos: [] },
+        teorico: {
+          material: [],
+          // Videos de las clases (playlist RIN - 4K1), agrupados por unidad
+          videos: [
+            { bloque: "Unidad 5 · Transporte y aplicación", titulo: "Capa de transporte", detalle: "Clase del 17/9 · 1 h 19 min · Servicios de la capa de transporte", url: "https://www.youtube.com/watch?v=gfku3FSoPCc" },
+            { bloque: "Unidad 5 · Transporte y aplicación", titulo: "TCP y UDP", detalle: "Clase del 24/9 · 1 h 09 min · Protocolos TCP y UDP y puertos", url: "https://www.youtube.com/watch?v=BhnlRqqjMl8" },
+            { bloque: "Unidad 5 · Transporte y aplicación", titulo: "Traducción de direcciones de red (NAT)", detalle: "Clase del 1/10 · 1 h 24 min · NAT estática, NAT dinámica y PAT", url: "https://www.youtube.com/watch?v=tv_CCjBLqFw" },
+            { bloque: "Unidad 5 · Transporte y aplicación", titulo: "DNS y protocolos de aplicación", detalle: "Clase del 15/10 · 1 h 26 min · Funcionamiento de DNS", url: "https://www.youtube.com/watch?v=Idyf_vD7rvc" },
+            { bloque: "Unidad 5 · Transporte y aplicación", titulo: "Correo electrónico, FTP y TFTP", detalle: "Clase del 22/10 · 1 h 28 min · SMTP, MIME, FTP y TFTP", url: "https://www.youtube.com/watch?v=cuZW43OSHsg" },
+            { bloque: "Unidad 6 · Seguridad", titulo: "Seguridad", detalle: "Clase del 29/10 · 1 h 31 min · Firmas digitales, IPSec, SSL/TLS y VPN", url: "https://www.youtube.com/watch?v=LfrOkRDdlxI" },
+            { bloque: "Opcional", titulo: "TCP y UDP (otra grabación)", detalle: "Clase del 24/9 · 1 h 20 min · Parece otra grabación de la clase de TCP y UDP; miralo solo si el otro no te alcanza", url: "https://www.youtube.com/watch?v=tG0Ucmiu5bE" }
+          ]
+        },
+        practico: {
+          material: [],
+          videos: [
+            { bloque: "Unidad 6 · Seguridad", titulo: "Seguridad en redes", detalle: "Clase del 5/10 · 1 h 32 min · Conceptos de seguridad aplicados", url: "https://www.youtube.com/watch?v=3mZzIFiyo5Y" },
+            { bloque: "Unidad 6 · Seguridad", titulo: "Firewall, servidor proxy y filtrado de paquetes", detalle: "Clase del 12/10 · 1 h 24 min · Firewalls, proxy y otros conceptos", url: "https://www.youtube.com/watch?v=oXFW7aGq4ec" },
+            { bloque: "Opcionales · TP y presentaciones", titulo: "Trabajo práctico", detalle: "Clase del 28/9 · 1 h 29 min · Consigna del TP", url: "https://www.youtube.com/watch?v=J-jtfsUCSLs" },
+            { bloque: "Opcionales · TP y presentaciones", titulo: "Última entrega del TPI", detalle: "Clase del 19/10 · 28 min · Explicación de la última entrega y TP de tarea", url: "https://www.youtube.com/watch?v=oZXdDrmGsqs" },
+            { bloque: "Opcionales · TP y presentaciones", titulo: "TP nuevo", detalle: "Clase del 26/10 · 43 min · Consigna del TP nuevo", url: "https://www.youtube.com/watch?v=LdinPaZpfVY" }
+          ]
+        },
         parciales: { material: [], videos: [] }
       }
     ],
