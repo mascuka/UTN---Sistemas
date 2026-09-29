@@ -670,18 +670,31 @@ const MATERIAS = {
       }
     ]
   },
-  // Backend de Aplicaciones (electiva): secciones propias de la materia
+  // Backend de Aplicaciones (electiva): 1º Parcial y TPI (con teórico y práctico) + cuestionarios
   201: {
-    parciales: [],
+    parciales: [
+      {
+        id: "p1",
+        titulo: "1º Parcial",
+        descripcion: "Material teórico y práctico del primer parcial.",
+        secciones: ["teorico", "practico"],
+        teorico:  { material: [], videos: [] },
+        practico: { material: [], videos: [] }
+      },
+      {
+        id: "tpi",
+        titulo: "TPI",
+        descripcion: "Trabajo práctico integrador: material teórico y práctico.",
+        secciones: ["teorico", "practico"],
+        teorico:  { material: [], videos: [] },
+        practico: { material: [], videos: [] }
+      }
+    ],
     secciones: [
-      { id: "teorico", titulo: "Teórico", descripcion: "Material de las clases teóricas.", material: [] },
-      { id: "practico", titulo: "Práctico", descripcion: "Guías y ejercicios de práctica.", material: [] },
-      { id: "parcial", titulo: "1º Parcial", descripcion: "Material y parciales anteriores.", material: [] },
       { id: "cuestionarios", titulo: "Cuestionarios", descripcion: "Cuestionarios semanales de autoevaluación, resueltos.", material: [
         { n: 5, nombre: "Cuestionario 05 · Streams", detalle: "Preguntas de verdadero/falso y opción múltiple resueltas sobre Streams de Java", tipo: "PDF", url: "material/backend-de-aplicaciones/cuestionarios/cuestionario-05-streams.pdf" },
         { n: 6, nombre: "Cuestionario 06 · ORM y JPA", detalle: "Preguntas de opción múltiple resueltas (JDBC, ORM, JPA)", tipo: "PDF", url: "material/backend-de-aplicaciones/cuestionarios/cuestionario-06-orm-jpa.pdf" }
-      ] },
-      { id: "tpi", titulo: "TPI", descripcion: "Trabajo práctico integrador.", material: [] }
+      ] }
     ]
   },
   // Cursillo de ingreso · Introducción a la Vida Universitaria: solo un archivo
@@ -941,6 +954,7 @@ const LOGO = '<svg viewBox="95 78 257 289" aria-hidden="true"><g fill="none" str
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 /* Secciones de cada parcial (en todas las materias) */
 const SECCIONES = ["teorico", "practico", "parciales"];
+const seccionesDe = p => p.secciones || SECCIONES;
 const NOMBRES = { teorico: "Teórico", practico: "Práctico", parciales: "Parciales" };
 const DESC_SECCION = {
   teorico:   "Material de lectura y videos de las clases teóricas.",
@@ -985,8 +999,8 @@ function renderSidebar(m){
       ${item("inicio", ICON_BACK, "Plan de estudios", false)}
       <div class="section-label">${esc(m.nombre)}</div>
       ${item(a, ICON_HOME, "Inicio de la materia", !b)}
+      ${c ? c.parciales.map(p => item(`${a}/${p.id}`, iconoSeccion(p.id), esc(p.titulo), b === p.id)).join("") : ""}
       ${c && c.secciones ? c.secciones.map(x => item(`${a}/${x.id}`, iconoSeccion(x.id), esc(x.titulo), b === x.id)).join("") : ""}
-      ${c ? c.parciales.map(p => item(`${a}/${p.id}`, ICON_DOC, esc(p.titulo), b === p.id)).join("") : ""}
       ${c && c.actividades ? item(`${a}/actividades`, ICON_CHECK, "Actividades", b === "actividades") : ""}`;
   } else {
     const niveles = [...new Set(CARRERA.materias.map(x => x.nivel))];
@@ -1310,22 +1324,11 @@ function viewMateria(m){
       <div class="grid">
         ${c.parciales.map(p => `
           <div class="card compacta" data-go="m${m.n}/${p.id}">
-            <div class="icon">${ICON_DOC}</div>
+            <div class="icon">${iconoSeccion(p.id)}</div>
             <h3>${esc(p.titulo)}</h3>
             <p>${esc(p.descripcion)}</p>
           </div>`).join("")}
-        ${c.actividades ? `
-          <div class="card compacta" data-go="m${m.n}/actividades">
-            <div class="icon">${ICON_CHECK}</div>
-            <h3>Actividades</h3>
-            <p>Trabajos prácticos y entregas.</p>
-          </div>` : ""}
-      </div>`;
-  }
-  if(c && c.secciones){
-    contenido = `
-      <div class="grid">
-        ${c.secciones.map(x => `
+        ${(c.secciones || []).map(x => `
           <div class="card compacta" data-go="m${m.n}/${x.id}">
             <div class="icon">${iconoSeccion(x.id)}</div>
             <h3>${esc(x.titulo)}</h3>
@@ -1335,6 +1338,12 @@ function viewMateria(m){
               ${x.videos ? `<span class="pill" data-go="m${m.n}/${x.id}/videos">▶ Videos (${x.videos.length})</span>` : ""}
             </div>
           </div>`).join("")}
+        ${c.actividades ? `
+          <div class="card compacta" data-go="m${m.n}/actividades">
+            <div class="icon">${ICON_CHECK}</div>
+            <h3>Actividades</h3>
+            <p>Trabajos prácticos y entregas.</p>
+          </div>` : ""}
       </div>`;
   }
   if(c && c.material && c.material.length){
@@ -1410,7 +1419,7 @@ function viewParcial(m, p){
     <h1>${esc(p.titulo)}</h1>
     <p class="lead">${esc(p.descripcion)}</p>
     <div class="grid">
-      ${SECCIONES.map(tarjeta).join("")}
+      ${seccionesDe(p).map(tarjeta).join("")}
     </div>
     ${temasBox(p.temas)}`;
 }
@@ -1478,7 +1487,7 @@ function filesList(items){
 function viewSeccion(m, p, k, tab){
   const s = seccion(p, k);
   const base = `m${m.n}/${p.id}`;
-  const otras = SECCIONES.filter(x => x !== k)
+  const otras = seccionesDe(p).filter(x => x !== k)
     .map(x => `<span class="pill" data-go="${base}/${x}/material">${NOMBRES[x]} →</span>`).join("");
   return `
     ${crumbs(m, `<span data-go="${base}">${esc(p.titulo)}</span>`, NOMBRES[k])}
@@ -1625,7 +1634,7 @@ function render(arriba = true){
   const sec = cont && cont.secciones && cont.secciones.find(x => x.id === b);
   let titulo = CARRERA.titulo;
 
-  if(p && SECCIONES.includes(c)){
+  if(p && seccionesDe(p).includes(c)){
     d = d === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}/${d}`;
     app.innerHTML = viewSeccion(m, p, c, d);
