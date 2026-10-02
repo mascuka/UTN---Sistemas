@@ -1070,33 +1070,33 @@ const MATERIAS = {
   // Sin "titulo", el nombre se trae de YouTube y se ordenan por "Clase N".
   101: {
     parciales: [],
-    // Títulos fijos en el orden de estudio (los de factoreo van después de división de polinomios)
+    // Sin "titulo": el nombre se trae de YouTube ("Clase N - Tema") y se ordenan por número de clase
     videos: [
-      { titulo: "Clase 1 · Operaciones numéricas (parte 1)", url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
-      { titulo: "Clase 2 · Operaciones numéricas (parte 2)", url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
-      { titulo: "Clase 3", url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
-      { titulo: "Clase 4 · Radicación", url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
-      { titulo: "Clase 5 · Extracción de radicales", url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
-      { titulo: "Clase 6 · Racionalización", url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
-      { titulo: "Clase 8 · Ecuaciones", url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
-      { titulo: "Clase 9 · Ecuaciones de segundo grado", url: "https://www.youtube.com/watch?v=utksVyEFITQ" },
-      { titulo: "Clase 10 · Ecuaciones", url: "https://www.youtube.com/watch?v=2iNP5NQLRa4" },
-      { titulo: "Clase 11 · División de polinomios", url: "https://www.youtube.com/watch?v=OC6JWKXAw6E" },
-      { titulo: "Casos de factoreo · Parte 1", url: "https://www.youtube.com/watch?v=Zu11P4pXFUY" },
-      { titulo: "Casos de factoreo · Parte 2", url: "https://www.youtube.com/watch?v=jAedHWuBjWA" },
-      { titulo: "Casos de factoreo · Parte 3", url: "https://www.youtube.com/watch?v=cC-hYQxD7fU" },
-      { titulo: "Clase 12", url: "https://www.youtube.com/watch?v=zk4t3BDr_LM" },
-      { titulo: "Clase 13", url: "https://www.youtube.com/watch?v=wEDZpgs_rXY" },
-      { titulo: "Clase 14", url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
-      { titulo: "Clase 15", url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" },
-      { titulo: "Clase 17", url: "https://www.youtube.com/watch?v=sdm7AOnAWu0" },
-      { titulo: "Clase 18", url: "https://www.youtube.com/watch?v=8DITa_jDOcQ" },
-      { titulo: "Clase 19 · Sistemas de ecuaciones", url: "https://www.youtube.com/watch?v=2vpATSL34I0" },
-      { titulo: "Clase 20", url: "https://www.youtube.com/watch?v=QDtVoVzzq54" },
-      { titulo: "Clase 21 · Función homográfica", url: "https://www.youtube.com/watch?v=NYTB38wLUaY" },
-      { titulo: "Clase 22", url: "https://www.youtube.com/watch?v=PpvehErJVvw" },
-      { titulo: "Clase 23", url: "https://www.youtube.com/watch?v=gxZaA6d9vdk" },
-      { titulo: "Resolución de examen", url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
+      { url: "https://www.youtube.com/watch?v=Zu11P4pXFUY" },
+      { url: "https://www.youtube.com/watch?v=jAedHWuBjWA" },
+      { url: "https://www.youtube.com/watch?v=cC-hYQxD7fU" },
+      { url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
+      { url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
+      { url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
+      { url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
+      { url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
+      { url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
+      { url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
+      { url: "https://www.youtube.com/watch?v=utksVyEFITQ" },
+      { url: "https://www.youtube.com/watch?v=2iNP5NQLRa4" },
+      { url: "https://www.youtube.com/watch?v=OC6JWKXAw6E" },
+      { url: "https://www.youtube.com/watch?v=zk4t3BDr_LM" },
+      { url: "https://www.youtube.com/watch?v=wEDZpgs_rXY" },
+      { url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
+      { url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" },
+      { url: "https://www.youtube.com/watch?v=sdm7AOnAWu0" },
+      { url: "https://www.youtube.com/watch?v=8DITa_jDOcQ" },
+      { url: "https://www.youtube.com/watch?v=2vpATSL34I0" },
+      { url: "https://www.youtube.com/watch?v=QDtVoVzzq54" },
+      { url: "https://www.youtube.com/watch?v=NYTB38wLUaY" },
+      { url: "https://www.youtube.com/watch?v=PpvehErJVvw" },
+      { url: "https://www.youtube.com/watch?v=gxZaA6d9vdk" },
+      { url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
     ]
   },
   26: {
@@ -2026,7 +2026,7 @@ function viewSeccion(m, p, k, tab){
 /* Títulos de YouTube: se piden desde el navegador (noembed.com) y se guardan
    en este navegador para no pedirlos cada vez. Si no se pueden obtener,
    queda el título escrito en los datos. */
-const CLAVE_TITULOS = "isi-yt-titulos";
+const CLAVE_TITULOS = "isi-yt-titulos-2"; // se cambia la clave para volver a traer los títulos cuando se renombran videos
 let titulosYT = {};
 try { titulosYT = JSON.parse(leerLocal(CLAVE_TITULOS)) || {}; } catch(e){}
 async function tituloYT(id){
