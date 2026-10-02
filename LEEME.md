@@ -43,6 +43,9 @@ Si un parcial no necesita las tres tarjetas, se puede limitar con `secciones` (e
 ## Comisiones
 Cada profesor es una fila con `comision`, `profesor`, `rol`, `asistencia` y `comentario`. El examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero.
 
+## Parcial o TPI en una sola página
+Con `secciones: []` el parcial no muestra las tarjetas de Teórico/Práctico y muestra todo en su página (ver los TPI de Green Software, `202`): `actividad` (mismo formato que `temas`, se ve arriba), `material` (grupos de archivos) y `videos`.
+
 ## Condiciones de aprobación
 Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra en la página de la materia, antes de las comisiones:
 `condiciones: { directa: 6, regular: 4, aclaracion: "...", requisitos: [ { titulo: "Parcial", detalle: "6 o más" } ] }`

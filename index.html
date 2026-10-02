@@ -86,6 +86,8 @@
   .tag.nota{margin-left:6px;vertical-align:1px;background:#f7e1dc;border-color:transparent;color:#b03a2e;font-weight:600}
   .file .name small{display:block;font-size:.8rem;color:var(--muted);margin-top:2px}
   .grupo + .grupo{margin-top:28px}
+  .parcial-archivos{margin-top:28px}
+  .parcial-videos{margin-top:28px}
   .grupo-head{margin-bottom:10px}
   .grupo-head h3{font-size:1.02rem;font-weight:600}
   .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
@@ -930,17 +932,231 @@ const MATERIAS = {
       ] }
     ]
   },
-  // Green Software (electiva): evaluación final (charla retrospectiva) + secciones del aula + TPs por profe
+  // Green Software (electiva): la materia son 3 TPI. Cada TPI tiene la actividad, el enunciado y nuestro trabajo resuelto, y abajo la información del tema
   // Archivos del campus en material/green-software/. Las presentaciones de los talleres están en el Drive de la cátedra
   202: {
-    comisionesNota: "Es una sola aula para todo 4K1, con una sección por profe: Franco y Luis (talleres y TP de huella de carbono), Vane (TPI de 4K1A) e Inés (TPI de 4K1B).",
+    comisionesNota: "Es una sola aula para todo 4K1: Franco y Luis dan los talleres; Vane (4K1A) e Inés (4K1B) llevan los TPI.",
     comisiones: [
-      { comision: "4K1", profesor: "Franco Mana", rol: "Talleres" },
-      { comision: "4K1", profesor: "Luis Kunz", rol: "Talleres" },
-      { comision: "4K1A", profesor: "Vanesa Verónica Moya", rol: "TPI" },
-      { comision: "4K1B", profesor: "Inés Luz Gimenez Zens", rol: "TPI" }
+      { comision: "4K1", profesor: "Franco Mana", examen: "Defensa de TPI", asistencia: false, recomendada: true, comentario: "Los profes son buenos y es difícil desaprobar. Se enojan si faltás, pero no toman asistencia y no te van a dejar libre. La materia es muy fácil." },
+      { comision: "4K1", profesor: "Luis Kunz", asistencia: false },
+      { comision: "4K1A", profesor: "Vanesa Verónica Moya", examen: "Defensa de TPI", asistencia: false, recomendada: true, comentario: "Los profes son buenos y es difícil desaprobar. Se enojan si faltás, pero no toman asistencia y no te van a dejar libre. La materia es muy fácil." },
+      { comision: "4K1B", profesor: "Inés Luz Gimenez Zens", examen: "Defensa de TPI", asistencia: false, recomendada: true, comentario: "Los profes son buenos y es difícil desaprobar. Se enojan si faltás, pero no toman asistencia y no te van a dejar libre. La materia es muy fácil." }
     ],
     parciales: [
+      {
+        id: "tpi1",
+        titulo: "TPI 1 · Sustentabilidad en ingeniería de sistemas",
+        descripcion: "Informe grupal sobre la sustentabilidad en la ingeniería de sistemas, con un caso de empresa y el uso de IA. Nuestro tema: el impacto ambiental de la IA y el consumo energético.",
+        secciones: [],
+        actividad: {
+          titulo: "La actividad",
+          unidades: [
+            { titulo: "Qué hay que hacer", contenidos: [
+              "Un informe grupal de 5 a 10 páginas (sin contar portada, índice y referencias) sobre la sustentabilidad en la ingeniería de sistemas.",
+              "Tiene que relacionar 16 conceptos: sostenibilidad, normas y modelos, políticas sostenibles, procedimientos de gestión, carbono neutralidad, huella de carbono, problemática ambiental, perfil del ingeniero, consumo energético, concientización, mitigación y adaptación, plan de compensación, organizaciones verdes, net zero, digitalización y desafío global.",
+              "Dentro del desarrollo hay que analizar un caso real o simulado de una empresa de software que aplique prácticas sostenibles.",
+              "Hay que usar IA para investigar y agregar como anexo las herramientas y las preguntas (prompts) que se usaron.",
+              "Después, cada grupo audita el informe de otro grupo (peer review) con una rúbrica."
+            ] },
+            { titulo: "Estructura del informe", contenidos: [
+              "Portada (logo de la UTN FRC, materia, profesor, título, integrantes, e-mails, legajos y fecha) e índice.",
+              "Resumen de hasta 200 palabras.",
+              "Introducción: contexto y justificación, objetivos y alcance.",
+              "Desarrollo, con el caso de la empresa.",
+              "Conclusiones: síntesis, reflexión final y una propuesta innovadora de sustentabilidad.",
+              "Referencias (normas APA) y anexo con el uso de IA."
+            ] },
+            { titulo: "Entrega", contenidos: [
+              "4K1A (Vane): 14/4.",
+              "4K1B (Inés): 23/4, con el peer review en clase el 24/4."
+            ] }
+          ]
+        },
+          material: [
+            { grupo: "El TPI", descripcion: "Los enunciados de cada comisión y nuestro trabajo como ejemplo.", archivos: [
+              { nombre: "Enunciado del TPI 1 · 4K1A (Vane)", detalle: "Informe sobre sustentabilidad en ingeniería de sistemas, con auditoría cruzada entre grupos · entrega 14/4", tipo: "DOC", url: "https://docs.google.com/document/d/1b3Sm3hRIVWGklsJSqGynUcGhhJXh6NK6/edit?usp=sharing" },
+              { nombre: "Enunciado del TPI 1 · 4K1B (Inés)", detalle: "El mismo informe, con peer review usando una rúbrica · entrega 23/4", tipo: "PDF", url: "material/green-software/actividades/4k1b-tpi-1-informe-de-sostenibilidad.pdf" },
+              { nombre: "Nuestro TPI 1 · Impacto ambiental de la IA y el consumo energético", nota: "Resuelto", detalle: "Calor, agua y energía de los data centers, huella de carbono y net zero, normas, mitigación y compensación, el caso Microsoft y la propuesta Green AI Dev (4K1A, 11 págs.)", tipo: "PDF", url: "material/green-software/tpi-1/tpi-1-impacto-ambiental-de-la-ia-resuelto.pdf" }
+            ] },
+            { grupo: "Tareas de los talleres sobre el tema", descripcion: "Las actividades de Franco y Luis que trabajan los mismos conceptos.", archivos: [
+              { nombre: "Tarea 4K1 · ¿Cuándo Google será net cero?", detalle: "Preguntarle al NotebookLM del informe de sustentabilidad 2025 de Google, interpretar la respuesta y consultar los términos que no se entienden (máx. 300 palabras) · del 17/3 al 21/6", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/mod/assign/view.php?id=574684" },
+              { nombre: "NotebookLM del informe de sustentabilidad de Google", nota: "Para la tarea", detalle: "El cuaderno de NotebookLM que hay que usar", tipo: "LINK", url: "https://notebooklm.google.com/notebook/62e5c8db-3dd2-407c-8d19-32ae4ae799db" },
+              { nombre: "Nuestra tarea · ¿Cuándo Google será net cero?", nota: "Resuelta", detalle: "La respuesta del NotebookLM interpretada y los términos consultados: net cero, infraestructura operativa, energía limpia y más (3 págs.)", tipo: "PDF", url: "material/green-software/tpi-1/tarea-1-cuando-google-sera-net-cero-resuelta.pdf" },
+              { nombre: "TP 1 · Medición de la huella de carbono", detalle: "V1: medir el consumo de tu notebook, calcular los kg de CO2eq por año con el factor de emisión de Argentina y los árboles para compensarlos (300 kg CO2/año por árbol). V2: medir un código en Python con CodeCarbon y calcular las horas que compensa un árbol recién plantado (30 kg CO2/año) · del 10/4 al 28/4", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/mod/assign/view.php?id=597953" },
+              { nombre: "Trabajo de investigación · Caso de estudio AIS", detalle: "Informe estratégico (paper) para la startup AI Soft Solutions: norma o protocolo, enfoque sistémico, horizonte de carbono neutralidad, medición por alcances, reducción y compensación", tipo: "DOC", url: "https://docs.google.com/document/d/13hIVIrs7EMmrAA7cEAX1RwR10fSc5x7gR7uWTrbBEvc/edit?usp=sharing" },
+              { nombre: "Actividades áulicas grupales", detalle: "Link a un documento compartido con las actividades hechas en clase en grupo (integrantes y fecha)", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/mod/assign/view.php?id=597892" }
+            ] },
+            { grupo: "Información sobre el tema · presentaciones", descripcion: "Las clases donde se explican los conceptos del informe.", archivos: [
+              { nombre: "Green Software · presentación general", detalle: "Energía, net zero, huella de carbono, compensación, alcances, green cloud y niveles de sustentabilidad", tipo: "PPT", url: "https://drive.google.com/file/d/1UeP2aggbiE7buH3DrSI7bWpwaIoc9P1I/view" },
+              { nombre: "Taller 5.1 · Infraestructura de IA", detalle: "GPUs, TPUs, chips de frontera, memoria HBM y racks de servidores", tipo: "PPT", url: "https://drive.google.com/file/d/1r0aUC9ASbWOj-bvEXRL9mMxr8YgfsJGA/view" },
+              { n: 5, nombre: "Taller de prompts", detalle: "Presentación interactiva en Mentimeter", tipo: "LINK", url: "https://www.mentimeter.com/app/presentation/albyj17j1zqbgrncdxnmwbk1zo3w4j66/edit?source=share-modal" }
+            ] },
+            { grupo: "Cambio climático y net zero", archivos: [
+              { nombre: "Espiral de avance de la temperatura", detalle: "Animación del aumento de la temperatura global año a año", tipo: "VIDEO", url: "material/green-software/contexto/espiral-de-avance-de-la-temperatura.mp4" },
+              { nombre: "Espiral 2022", detalle: "La espiral actualizada a 2022 (video de Facebook)", tipo: "VIDEO", url: "https://fb.watch/j1zD2waY6f/" },
+              { nombre: "Límites planetarios", detalle: "Los 9 límites que definió el Stockholm Resilience Centre en 2009 para mantener la salud del planeta; varios ya fueron traspasados", tipo: "LINK", url: "https://www.stockholmresilience.org/research/planetary-boundaries.html" },
+              { nombre: "Glosario Net Zero · Oxford", detalle: "Qué significa net zero y los términos relacionados", tipo: "LINK", url: "https://netzeroclimate.org/what-is-net-zero/" },
+              { nombre: "Video · polos magnéticos", detalle: "Reel de Facebook (estaba en la sección Medir del aula)", tipo: "VIDEO", url: "https://www.facebook.com/reel/917063276079278" }
+            ] },
+            { grupo: "Normas, protocolos y reportes", descripcion: "Para la parte de normas, modelos y procedimientos de gestión.", archivos: [
+              { nombre: "GHG Protocol", detalle: "El estándar más usado para medir emisiones; de acá salen los alcances 1, 2 y 3", tipo: "LINK", url: "https://ghgprotocol.org/" },
+              { nombre: "Guía ISO 14064", detalle: "Guía de Ihobe para hacer el inventario de gases de efecto invernadero de una organización con la UNE-ISO 14064-1 (106 págs.)", tipo: "PDF", url: "material/green-software/normas/guia-iso-14064.pdf" },
+              { nombre: "Normativa internacional · estándares de sustentabilidad", detalle: "Mecanismos de reporte (GHG Protocol, ISO/UNDP 53002, GRI, SBTi, ISO 26000) y certificaciones (ISO 14001, B Corp, ISO 50001) · 2 págs.", tipo: "PDF", url: "material/green-software/normas/estandares-de-sustentabilidad.pdf" },
+              { nombre: "CDP", detalle: "Plataforma donde empresas y ciudades reportan su impacto ambiental", tipo: "LINK", url: "https://la-es.cdp.net/" },
+              { nombre: "Estrategia nacional para el uso de los mercados de carbono", detalle: "Ministerio de Ambiente de la Nación (2023)", tipo: "PDF", url: "https://www.argentina.gob.ar/sites/default/files/2025/09/2023_estrategia_nacional_para_el_uso_de_los_mercados_de_carbono_en_argentina.pdf" },
+              { nombre: "Preguntas frecuentes sobre mercados de carbono", detalle: "Ministerio de Ambiente de la Nación (2024)", tipo: "PDF", url: "https://www.argentina.gob.ar/sites/default/files/2025/09/2024_12_preguntas_frecuentes_mercados_de_carbon_v3.pdf" }
+            ] },
+            { grupo: "Medir la huella", archivos: [
+              { nombre: "The Carbon Sink · calculadora de huella", detalle: "Calculá tu huella de carbono personal (versión Argentina)", tipo: "LINK", url: "https://thecarbonsink.com/ar/#huella" },
+              { nombre: "CodeCarbon", detalle: "Librería de Python para medir la energía y el CO2eq que emite un código (TP 1 V2)", tipo: "LINK", url: "https://github.com/mlco2/codecarbon#quickstart-" },
+              { nombre: "Landscape de herramientas de green software", detalle: "Mapa de herramientas para medir código, de la Bundesverband Green Software", tipo: "LINK", url: "https://landscape.bundesverband-green-software.de/" },
+              { nombre: "Electricity Maps · Argentina", detalle: "Matriz energética e intensidad de carbono de la red en tiempo real", tipo: "LINK", url: "https://app.electricitymaps.com/zone/AR?lang=es" },
+              { nombre: "Factor de emisión de la red eléctrica argentina", detalle: "Secretaría de Energía · el FE para pasar de kWh a CO2eq", tipo: "LINK", url: "http://datos.minem.gob.ar/dataset/calculo-del-factor-de-emision-de-co2-de-la-red-argentina-de-energia-electrica" }
+            ] },
+            { grupo: "Mitigar: guías para reducir emisiones", descripcion: "Fundación Avina: principales impactos y medidas de mitigación.", archivos: [
+              { nombre: "Electricidad y compra de equipos informáticos", detalle: "Energía de fuentes renovables, eficiencia en oficinas y hogares, y el impacto de comprar equipos", tipo: "IMG", url: "material/green-software/actuar/electricidad.jpg" },
+              { nombre: "Traslados terrestres", detalle: "Home office, bici, transporte público y apps de viaje que compensan emisiones", tipo: "IMG", url: "material/green-software/actuar/traslados.jpg" },
+              { nombre: "Eventos", detalle: "Agua de la canilla, comida de origen vegetal y menos residuos", tipo: "IMG", url: "material/green-software/actuar/eventos.jpg" },
+              { nombre: "Hospedaje", detalle: "Hoteles con prácticas sustentables, ahorro de agua y energía, y economía local", tipo: "IMG", url: "material/green-software/actuar/hospedaje.jpg" }
+            ] },
+            { grupo: "Lecturas y datos", descripcion: "Casos de empresas y datos para el informe.", archivos: [
+              { nombre: "Microsoft, la IA y las centrales nucleares", detalle: "Artículo de Xataka sobre la energía que necesitan los servidores de IA", tipo: "LINK", url: "https://www.xataka.com/robotica-e-ia/microsoft-necesita-cantidad-descomunal-energia-para-sus-servidores-ia-su-solucion-centrales-nucleares" },
+              { nombre: "Plan Carbono Neutralidad UTN", detalle: "El plan de la UTN para llegar a emisiones netas cero en 2030 (7 diapositivas)", tipo: "PPT", url: "material/green-software/biblioteca/plan-carbono-neutralidad-utn.pptx" },
+              { nombre: "Emisiones de alcance 3 y la responsabilidad del sector digital", detalle: "Artículo de Wholegrain Digital (en inglés)", tipo: "LINK", url: "https://www.wholegraindigital.com/blog/scope_3_emissions/" },
+              { nombre: "Sustentabilidad · McKinsey", detalle: "Artículos de McKinsey sobre sustentabilidad", tipo: "LINK", url: "https://www.mckinsey.com/business-functions/sustainability/our-insights" },
+              { nombre: "¿Qué es la COP? · McKinsey", detalle: "Qué son las conferencias de la ONU sobre cambio climático", tipo: "LINK", url: "https://www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-cop" },
+              { nombre: "Coldplay · informe de sustentabilidad de la gira", detalle: "Las medidas de la gira Music of the Spheres para bajar sus emisiones", tipo: "LINK", url: "https://hypebeast.com/2023/6/coldplay-music-of-the-spheres-tour-sustainability-efforts-report" },
+              { nombre: "La huella de carbono de los alimentos", detalle: "Statista: kg de CO2 equivalente por kilo de cada alimento", tipo: "IMG", url: "material/green-software/biblioteca/huella-de-carbono-de-los-alimentos.jpg" },
+              { nombre: "¿Es importante el medio ambiente en tu país?", detalle: "Encuestados que creen que la protección del medio ambiente es una de las cuestiones más importantes", tipo: "LINK", url: "https://es.statista.com/grafico/30002/encuestados-que-creen-que-la-proteccion-del-medio-ambiente-es-una-de-las-cuestiones-mas-importantes-en-su-pais/" },
+              { nombre: "Países con compromisos net zero", detalle: "Países con leyes o documentos para lograr la neutralidad de carbono", tipo: "LINK", url: "https://es.statista.com/grafico/26091/paises-con-leyes-o-documentos-politicos-concretos-para-lograr-la-neutralidad-de-carbono/" },
+              { nombre: "Países que más contaminan", detalle: "Países y regiones con mayor volumen de emisiones de CO2", tipo: "LINK", url: "https://es.statista.com/grafico/23395/paises-regiones-con-mayor-volumen-de-emisiones-de-dioxido-de-carbono/" },
+              { nombre: "Producción de plásticos", detalle: "Producción mundial de residuos plásticos por tipo", tipo: "LINK", url: "https://es.statista.com/grafico/30051/produccion-mundial-de-residuos-plasticos-por-tipo/" }
+            ] }
+          ],
+          videos: [
+            { bloque: "Conferencias de la cátedra", titulo: "Energía y criptomonedas", detalle: "Conferencia de Franco Mana con Fundación Avina", url: "https://www.youtube.com/watch?v=BFnzcma4CEE" },
+            { bloque: "Conferencias de la cátedra", titulo: "Conferencia Green Software · Mediciones", detalle: "Conferencia de Franco Mana", url: "https://www.youtube.com/watch?v=vky1TLX2ss0" },
+            { bloque: "Huella de carbono y alcances", titulo: "Cómo tratar las emisiones de alcance 3", detalle: "Creara · el alcance 3 en el cálculo de la huella de carbono", url: "https://www.youtube.com/watch?v=T3DJn6xLg80" },
+            { bloque: "Huella de carbono y alcances", titulo: "Cálculos de viajes, agua y residuos (con factores de emisión)", detalle: "Capítulo del video anterior · arranca en 35:22", url: "https://www.youtube.com/watch?v=T3DJn6xLg80&t=2122s" },
+            { bloque: "Huella de carbono y alcances", titulo: "Google · un futuro libre de carbono", detalle: "Huella de carbono corporativa: el ejemplo de Google (de la presentación general)", url: "https://www.youtube.com/watch?v=rOZaxdPYP7U" },
+            { bloque: "Energía y carbono neutralidad", titulo: "Energía renovable y carbono neutralidad", detalle: "Google Cloud · lo más importante para saber sobre energía renovable y carbono neutralidad", url: "https://www.youtube.com/watch?v=fNZFwmYM5ks" }
+          ]
+      },
+      {
+        id: "tpi2",
+        titulo: "TPI 2 · Técnicas de análisis aplicadas a Green IT",
+        descripcion: "Aplicar una técnica de análisis y resolución de problemas (FODA, Ishikawa, PESTEL…) a un desafío de Green IT, Green Software o Green Hardware. Nosotros usamos FODA.",
+        secciones: [],
+        actividad: {
+          titulo: "La actividad",
+          unidades: [
+            { titulo: "Qué hay que hacer", contenidos: [
+              "Estudio preliminar: investigar Green IT, Green Software y Green Hardware, y por qué importa la sustentabilidad en la tecnología.",
+              "Elegir una técnica de análisis y resolución de problemas e investigarla: mapas mentales, FODA, seis sombreros para pensar, Ishikawa, PDCA, RPR, matrices de prioridad, PESTEL, RCA u otra (consultándolo con el docente).",
+              "Plantear una pregunta de encuadre: un problema o desafío dentro de esos temas.",
+              "Aplicar la técnica para desglosar el problema y proponer soluciones o ideas innovadoras."
+            ] },
+            { titulo: "Entrega y exposición", contenidos: [
+              "Un PDF con la técnica: conceptos, aplicación y resultados.",
+              "Exposición en dos partes, cada una a cargo de un integrante elegido por sorteo: primero se explica la técnica y después cómo se aplicó al problema.",
+              "4K1A (Vane): entrega 12/5 y exposición 13/5.",
+              "4K1B (Inés): entrega 28/5 y exposiciones 29/5 y 5/6."
+            ] }
+          ]
+        },
+          material: [
+            { grupo: "El TPI", descripcion: "Los enunciados de cada comisión y nuestro trabajo como ejemplo.", archivos: [
+              { nombre: "Enunciado del TPI 2 · 4K1A (Vane)", detalle: "Técnicas de análisis y resolución de problemas aplicadas a una pregunta de encuadre · entrega 12/5, exposición 13/5", tipo: "DOC", url: "https://docs.google.com/document/d/15PPdAmsn8ohiKvY_Hawv8NzKrFNEhis-/edit?usp=sharing" },
+              { nombre: "Enunciado del TPI 2 · 4K1B (Inés)", detalle: "El mismo trabajo, con la lista de técnicas sugeridas · entrega 28/5", tipo: "PDF", url: "material/green-software/actividades/4k1b-tpi-2-tecnicas-de-resolucion-de-problemas.pdf" },
+              { nombre: "Nuestro TPI 2 · FODA sobre Green IT en la educación", nota: "Resuelto", detalle: "Conceptos de Green IT, software y hardware, la técnica FODA y su aplicación a cómo enseñar sustentabilidad tecnológica en la escuela, con un plan de acción para Argentina (4K1A, 23 págs.)", tipo: "PDF", url: "material/green-software/tpi-2/tpi-2-foda-green-it-en-la-educacion-resuelto.pdf" }
+            ] },
+            { grupo: "Información sobre el tema · Green IT, software y hardware", descripcion: "Los conceptos del estudio preliminar.", archivos: [
+              { nombre: "Taller 3 · Green hardware", detalle: "Emisiones de un servidor, carbono incorporado, proporcionalidad energética e intensidad de carbono", tipo: "PPT", url: "https://drive.google.com/file/d/1PhGSs7t4D6-t4j1MOQzvEM2KY9SAA8oM/view" },
+              { nombre: "Green in Software Engineering · Springer 2015", detalle: "Libro editado por Coral Calero y Mario Piattini", tipo: "PDF", url: "https://drive.google.com/file/d/1Tj6k_MfP3G5e-FlTit_yQ84pIWYLOXa4/view" },
+              { nombre: "¿Cómo pueden los ingenieros hacer que la TI sea más sostenible?", detalle: "White paper traducido: la mirada holística, qué y cómo medir, casos de TI verde y próximos pasos (44 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/it-sustainability.pdf" },
+              { nombre: "The green IT revolution · McKinsey", detalle: "Dónde se generan las emisiones de la TI de una empresa: los dispositivos de los usuarios emiten de 1,5 a 2 veces más que los data centers (2022, 8 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/mckinsey-the-green-it-revolution.pdf" },
+              { nombre: "Informe Green Software Foundation 2022", detalle: "Presentación del informe de la Green Software Foundation (16 diapositivas)", tipo: "PPT", url: "material/green-software/biblioteca/informe-green-software-foundation-2022.pptx" },
+              { nombre: "Green Software Foundation", detalle: "La fundación que define estándares y buenas prácticas de green software", tipo: "LINK", url: "https://greensoftware.foundation/" },
+              { nombre: "Los mayores productores de litio", detalle: "Statista: producción y reservas de litio por país (2021)", tipo: "IMG", url: "material/green-software/biblioteca/mayores-productores-de-litio.jpg" }
+            ] },
+            { grupo: "Green cloud y datos", archivos: [
+              { nombre: "Green Cloud Optimization (AWS)", detalle: "Cloud Carbon Footprint de Thoughtworks: medir y reducir las emisiones de la nube, con un checklist de buenas prácticas (6 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/green-cloud-optimization-aws.pdf" },
+              { nombre: "Cloud Carbon Footprint · demo", detalle: "Demo de la herramienta open source para medir las emisiones de la nube", tipo: "LINK", url: "https://demo.cloudcarbonfootprint.org/" },
+              { nombre: "Climate Engine", detalle: "Datasets climáticos y satelitales (sobre Google Earth Engine)", tipo: "LINK", url: "https://climateengine.com/" }
+            ] },
+            { grupo: "Software consciente del carbono", descripcion: "Ejecutar el software cuando y donde la energía es más limpia.", archivos: [
+              { nombre: "Carbon Aware SDK · Green Software Foundation", detalle: "SDK para que el software se ejecute en el momento o en la región con la electricidad más limpia", tipo: "LINK", url: "https://github.com/Green-Software-Foundation/carbon-aware-sdk" },
+              { nombre: "Carbon Aware SDK · Getting started", detalle: "Cómo empezar a usarlo", tipo: "LINK", url: "https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/GettingStarted.md" },
+              { nombre: "Carbon Aware API (Swagger)", detalle: "La API REST del SDK", tipo: "LINK", url: "https://carbon-aware-api.azurewebsites.net/swagger/index.html" },
+              { nombre: "Extensión de Intel para scikit-learn", detalle: "Machine learning más eficiente (greener ML) con la extensión de Intel, en Anaconda", tipo: "LINK", url: "https://anaconda.cloud/greener-ml-intel" }
+            ] },
+            { grupo: "Cursos gratuitos", archivos: [
+              { nombre: "Green Software Practitioner · Green Software Foundation", detalle: "Curso introductorio de la GSF", tipo: "LINK", url: "https://learn.greensoftware.foundation/" },
+              { nombre: "Green Software for Practitioners (LFC131) · Linux Foundation", detalle: "El mismo contenido, con certificado de la Linux Foundation", tipo: "LINK", url: "https://trainingportal.linuxfoundation.org/courses/green-software-for-practitioners-lfc131" },
+              { nombre: "Sustainable IT Decoded · Google", detalle: "Curso de Google sobre TI sustentable", tipo: "LINK", url: "https://sustainableitdecoded.withgoogle.com/" },
+              { nombre: "Libros y cursos · W3C Sustainable Web", detalle: "Lista de referencias del grupo de la W3C", tipo: "LINK", url: "https://www.w3.org/community/sustyweb/wiki/References#Books" }
+            ] }
+          ],
+          videos: [
+            { bloque: "Green hardware y green cloud", titulo: "Data centers más sustentables", detalle: "NTT · cómo se diseñan los servidores en la nube para ser sustentables (de la presentación general) · arranca en 3:34", url: "https://www.youtube.com/watch?v=KNCpf_9MAKI&t=214s" },
+            { bloque: "Green software", titulo: "CarbonHack22", detalle: "Green Software Foundation · presentación del hackatón del Carbon Aware SDK", url: "https://www.youtube.com/watch?v=tI8-sBqA_Ps" }
+          ]
+      },
+      {
+        id: "tpi3",
+        titulo: "TPI 3 · Pensamiento sistémico aplicado al software",
+        descripcion: "Actividad integradora: pensamiento sistémico sobre una fase del ciclo de vida del software para detectar la falta de sustentabilidad y proponer soluciones. Nosotros analizamos la caída de Autogestión en las inscripciones.",
+        secciones: [],
+        actividad: {
+          titulo: "La actividad",
+          unidades: [
+            { titulo: "Qué hay que hacer", contenidos: [
+              "En grupo, elegir una fase del ciclo de vida del desarrollo de software y, con pensamiento sistémico, modelar su complejidad: objetivos, componentes, interrelaciones y procesos.",
+              "Detectar la falta de sustentabilidad en esos procesos y su origen.",
+              "Proponer soluciones (puntos de apalancamiento) alineadas con los estándares internacionales de sustentabilidad."
+            ] },
+            { titulo: "Qué tiene que tener", contenidos: [
+              "Estrella guía, estrella provisional y pregunta de encuadre.",
+              "Mapeo de fuerzas, con su detalle.",
+              "Análisis SAT: estructural, actitudinal y transaccional.",
+              "Modelo de la complejidad sistémica (actores y relaciones) hecho en Kumu.",
+              "Al menos 10 estrategias de apalancamiento, priorizando las 3 de mayor impacto."
+            ] },
+            { titulo: "Entrega y defensa", contenidos: [
+              "Un PDF de al menos 15 páginas (unas 10 de introducción, desarrollo y conclusión), con conclusión individual y grupal.",
+              "Defensa oral del trabajo; los hallazgos también se usan en la evaluación final.",
+              "4K1A (Vane): desde el 2/6. 4K1B (Inés): 26/6."
+            ] }
+          ]
+        },
+          material: [
+            { grupo: "El TPI", descripcion: "Los enunciados de cada comisión y nuestro trabajo como ejemplo.", archivos: [
+              { nombre: "Enunciado del TPI 3 · 4K1A (Vane)", detalle: "Pensamiento sistémico sobre una fase del ciclo de vida del software, con defensa oral · desde el 2/6", tipo: "DOC", url: "https://docs.google.com/document/d/16Qfc03CRTkfFZQ_KUaeuPgj-_ttX6OX2/edit?usp=sharing" },
+              { nombre: "Enunciado del TPI 3 · 4K1B (Inés)", detalle: "La misma actividad integradora, con los criterios de evaluación · entrega 26/6", tipo: "PDF", url: "material/green-software/actividades/4k1b-tpi-3-pensamiento-sistemico.pdf" },
+              { nombre: "Nuestro TPI 3 · Autogestión 4 en las inscripciones", nota: "Resuelto", detalle: "Por qué se cae Autogestión en las inscripciones, analizado desde la fase de diseño: interrelaciones, procesos, pregunta de encuadre, estrategias de apalancamiento, mapeo de fuerzas y análisis SAT (4K1A, 19 págs.)", tipo: "PDF", url: "material/green-software/tpi-3/tpi-3-pensamiento-sistemico-autogestion-resuelto.pdf" }
+            ] },
+            { grupo: "Información sobre el tema · pensamiento sistémico", descripcion: "El manual y las clases con el paso a paso del TPI.", archivos: [
+              { nombre: "Manual · Pensamiento sistémico para el desarrollo del Green Software", detalle: "El paso a paso que se usa en el TPI 3 (15 págs.)", tipo: "PDF", url: "material/green-software/talleres/pensamiento-sistemico-para-green-software.pdf" },
+              { nombre: "Taller 2 · Pensamiento sistémico", detalle: "Pregunta de encuadre, estrellas, mapeo de fuerzas, análisis SAT, modelado y apalancamiento", tipo: "PPT", url: "https://drive.google.com/file/d/19sGl-1YbNDMj3EjzTWFpjxXPTh5-0dDK/view" },
+              { nombre: "Taller 2.1 · Sistemas complejos", detalle: "Complejidad, puntos de inflexión, bucles de retroalimentación y los 12 puntos de apalancamiento", tipo: "PPT", url: "https://drive.google.com/file/d/1MuoORtY-W917vqZ4HJ9wf-mIllDMzU1b/view" },
+              { nombre: "Systems Practice Workbook · The Omidyar Group", nota: "Adicional", detalle: "El manual original, en inglés, en el que se basa el de la cátedra", tipo: "PDF", url: "https://drive.google.com/file/d/1uZfzNJl9Gp0kZjh0PTWeo7WVPcvefump/view" },
+              { nombre: "Systems Practice Workbook · OECD OPSI", nota: "Adicional", detalle: "Observatorio de Innovación en el Sector Público", tipo: "LINK", url: "https://oecd-opsi.org/toolkits/systems-practice-workbook/" }
+            ] },
+            { grupo: "Kumu: el modelo del sistema", descripcion: "Con Kumu se dibujan los actores y las relaciones.", archivos: [
+              { nombre: "Kumu", detalle: "Herramienta para dibujar el modelo del sistema (actores y relaciones) del TPI 3", tipo: "LINK", url: "https://kumu.io/" },
+              { nombre: "Kumu · Práctica de sistemas", nota: "Adicional", detalle: "Guía de Kumu para la práctica de sistemas", tipo: "LINK", url: "https://docs.kumu.io/disciplines/systems-practice" },
+              { nombre: "Kumu · Mapeo de sistemas", nota: "Adicional", detalle: "Guía de Kumu para el mapeo de sistemas", tipo: "LINK", url: "https://docs.kumu.io/disciplines/system-mapping" }
+            ] },
+            { grupo: "Estándares para las soluciones", descripcion: "Las estrategias tienen que estar en línea con estándares internacionales.", archivos: [
+              { nombre: "ISO/IEC TS 20125-1:2026", detalle: "Ecodiseño de servicios digitales: buenas prácticas para cada etapa del ciclo de vida · vista previa de la norma (en inglés)", tipo: "PDF", url: "https://cdn.standards.iteh.ai/samples/iso/iso-iec-ts-20125-1-2026/29820b12fcb74aaf9e4560bbbc23e379/iso-iec-ts-20125-1-2026.pdf" },
+              { nombre: "Normativa internacional · estándares de sustentabilidad", detalle: "Mecanismos de reporte (GHG Protocol, ISO/UNDP 53002, GRI, SBTi, ISO 26000) y certificaciones (ISO 14001, B Corp, ISO 50001) · 2 págs.", tipo: "PDF", url: "material/green-software/normas/estandares-de-sustentabilidad.pdf" }
+            ] }
+          ],
+          videos: [
+            { bloque: "Pensamiento sistémico", titulo: "Complex Systems Thinking", detalle: "Brady Heywood · puntos de inflexión en sistemas complejos (del Taller 2.1) · arranca en 32:41", url: "https://www.youtube.com/watch?v=0-CSs1UEbFQ&t=1961s" },
+            { bloque: "Pensamiento sistémico", titulo: "Intro to Systems Mapping", detalle: "Kumu · webinar de mapeo de sistemas con Jeff Mohr (del TPI 3 de 4K1B)", url: "https://www.youtube.com/watch?v=wrBDy91M7-0" }
+          ]
+      },
       {
         id: "final",
         titulo: "Evaluación final",
@@ -986,135 +1202,6 @@ const MATERIAS = {
           videos: []
         }
       }
-    ],
-    secciones: [
-      { id: "talleres", titulo: "Talleres", descripcion: "Las clases de Franco y Luis y el material de pensamiento sistémico.", material: [
-        { grupo: "Presentaciones de los talleres", descripcion: "En el orden de la cursada. Están en el Drive de la cátedra.", archivos: [
-          { n: 1, nombre: "Green Software · presentación general", detalle: "La presentación de toda la materia: energía y efecto invernadero, net zero, huella de carbono (cálculo, factores de emisión y ámbitos), compensación y créditos de carbono, alcances 1 a 4, green cloud, niveles de sustentabilidad y eficiencia", tipo: "PPT", url: "https://drive.google.com/file/d/1UeP2aggbiE7buH3DrSI7bWpwaIoc9P1I/view" },
-          { n: 2, nombre: "Taller 2 · Pensamiento sistémico", detalle: "Cómo abordar un desafío complejo: pregunta de encuadre, estrella guía, mapeo de fuerzas, análisis SAT, modelado y apalancamiento (caso: aulas verdes en la UTN)", tipo: "PPT", url: "https://drive.google.com/file/d/19sGl-1YbNDMj3EjzTWFpjxXPTh5-0dDK/view" },
-          { n: 3, nombre: "Taller 2.1 · Sistemas complejos", detalle: "Complejidad y emergencia, puntos de inflexión, bucles de retroalimentación y los 12 puntos de apalancamiento de Meadows", tipo: "PPT", url: "https://drive.google.com/file/d/1MuoORtY-W917vqZ4HJ9wf-mIllDMzU1b/view" },
-          { n: 4, nombre: "Taller 3 · Green hardware", detalle: "De qué dependen las emisiones de un servidor, carbono incorporado, vida útil del hardware, proporcionalidad energética e intensidad de carbono", tipo: "PPT", url: "https://drive.google.com/file/d/1PhGSs7t4D6-t4j1MOQzvEM2KY9SAA8oM/view" },
-          { n: 5, nombre: "Taller de prompts", detalle: "Presentación interactiva en Mentimeter", tipo: "LINK", url: "https://www.mentimeter.com/app/presentation/albyj17j1zqbgrncdxnmwbk1zo3w4j66/edit?source=share-modal" },
-          { n: 6, nombre: "Taller 5.1 · Infraestructura de IA", detalle: "GPUs, TPUs, chips H100 y B200, memoria HBM, empaquetado CoWoS y racks GB200: qué son, para qué sirven y cuánto cuestan", tipo: "PPT", url: "https://drive.google.com/file/d/1r0aUC9ASbWOj-bvEXRL9mMxr8YgfsJGA/view" }
-        ] },
-        { grupo: "Pensamiento sistémico", descripcion: "El manual de la cátedra y las herramientas para el TPI 3.", archivos: [
-          { nombre: "Manual · Pensamiento sistémico para el desarrollo del Green Software", detalle: "Manual de la cátedra basado en System Thinking de Omidyar: ganar claridad, estrella guía, mapeo de fuerzas, análisis SAT, modelado y apalancamiento (15 págs.)", tipo: "PDF", url: "material/green-software/talleres/pensamiento-sistemico-para-green-software.pdf" },
-          { nombre: "Systems Practice Workbook · The Omidyar Group", nota: "Adicional", detalle: "El manual original, en inglés, en el que se basa el de la cátedra", tipo: "PDF", url: "https://drive.google.com/file/d/1uZfzNJl9Gp0kZjh0PTWeo7WVPcvefump/view" },
-          { nombre: "Kumu", detalle: "Herramienta para dibujar el modelo del sistema (actores y relaciones) del TPI 3", tipo: "LINK", url: "https://kumu.io/" },
-          { nombre: "Kumu · Práctica de sistemas", nota: "Adicional", detalle: "Guía de Kumu para la práctica de sistemas", tipo: "LINK", url: "https://docs.kumu.io/disciplines/systems-practice" },
-          { nombre: "Kumu · Mapeo de sistemas", nota: "Adicional", detalle: "Guía de Kumu para el mapeo de sistemas", tipo: "LINK", url: "https://docs.kumu.io/disciplines/system-mapping" },
-          { nombre: "Systems Practice Workbook · OECD OPSI", nota: "Adicional", detalle: "Observatorio de Innovación en el Sector Público", tipo: "LINK", url: "https://oecd-opsi.org/toolkits/systems-practice-workbook/" }
-        ] }
-      ] },
-      { id: "contexto", titulo: "Contexto", descripcion: "Cambio climático, límites planetarios y net zero: el porqué de la materia.", material: [
-        { grupo: "Cambio climático", archivos: [
-          { nombre: "Espiral de avance de la temperatura", detalle: "Animación del aumento de la temperatura global año a año", tipo: "VIDEO", url: "material/green-software/contexto/espiral-de-avance-de-la-temperatura.mp4" },
-          { nombre: "Espiral 2022", detalle: "La espiral actualizada a 2022 (video de Facebook)", tipo: "VIDEO", url: "https://fb.watch/j1zD2waY6f/" },
-          { nombre: "Límites planetarios", detalle: "Los 9 límites que definió el Stockholm Resilience Centre en 2009 para mantener la salud del planeta; varios ya fueron traspasados", tipo: "LINK", url: "https://www.stockholmresilience.org/research/planetary-boundaries.html" },
-          { nombre: "Glosario Net Zero · Oxford", detalle: "Qué significa net zero y los términos relacionados", tipo: "LINK", url: "https://netzeroclimate.org/what-is-net-zero/" },
-          { nombre: "Video · polos magnéticos", detalle: "Reel de Facebook (estaba en la sección Medir del aula)", tipo: "VIDEO", url: "https://www.facebook.com/reel/917063276079278" }
-        ] },
-        { grupo: "Contexto y datos", descripcion: "Gráficos de Statista.", archivos: [
-          { nombre: "¿Es importante el medio ambiente en tu país?", detalle: "Encuestados que creen que la protección del medio ambiente es una de las cuestiones más importantes", tipo: "LINK", url: "https://es.statista.com/grafico/30002/encuestados-que-creen-que-la-proteccion-del-medio-ambiente-es-una-de-las-cuestiones-mas-importantes-en-su-pais/" },
-          { nombre: "Países con compromisos net zero", detalle: "Países con leyes o documentos para lograr la neutralidad de carbono", tipo: "LINK", url: "https://es.statista.com/grafico/26091/paises-con-leyes-o-documentos-politicos-concretos-para-lograr-la-neutralidad-de-carbono/" },
-          { nombre: "Países que más contaminan", detalle: "Países y regiones con mayor volumen de emisiones de CO2", tipo: "LINK", url: "https://es.statista.com/grafico/23395/paises-regiones-con-mayor-volumen-de-emisiones-de-dioxido-de-carbono/" },
-          { nombre: "Producción de plásticos", detalle: "Producción mundial de residuos plásticos por tipo", tipo: "LINK", url: "https://es.statista.com/grafico/30051/produccion-mundial-de-residuos-plasticos-por-tipo/" }
-        ] }
-      ] },
-      { id: "biblioteca", titulo: "Biblioteca y videoteca", descripcion: "Libro, informes, cursos gratuitos y videos de conferencias.", material: [
-        { grupo: "Libros e informes", archivos: [
-          { nombre: "Green in Software Engineering · Springer 2015", detalle: "Libro editado por Coral Calero y Mario Piattini", tipo: "PDF", url: "https://drive.google.com/file/d/1Tj6k_MfP3G5e-FlTit_yQ84pIWYLOXa4/view" },
-          { nombre: "Informe Green Software Foundation 2022", detalle: "Presentación del informe de la Green Software Foundation (16 diapositivas)", tipo: "PPT", url: "material/green-software/biblioteca/informe-green-software-foundation-2022.pptx" },
-          { nombre: "The green IT revolution · McKinsey", detalle: "Dónde se generan las emisiones de la TI de una empresa: los dispositivos de los usuarios emiten de 1,5 a 2 veces más que los data centers (2022, 8 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/mckinsey-the-green-it-revolution.pdf" },
-          { nombre: "¿Cómo pueden los ingenieros hacer que la TI sea más sostenible?", detalle: "White paper traducido: la mirada holística, qué y cómo medir, casos de TI verde y próximos pasos (44 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/it-sustainability.pdf" },
-          { nombre: "Plan Carbono Neutralidad UTN", detalle: "El plan de la UTN para llegar a emisiones netas cero en 2030 (7 diapositivas)", tipo: "PPT", url: "material/green-software/biblioteca/plan-carbono-neutralidad-utn.pptx" },
-          { nombre: "Emisiones de alcance 3 y la responsabilidad del sector digital", detalle: "Artículo de Wholegrain Digital (en inglés)", tipo: "LINK", url: "https://www.wholegraindigital.com/blog/scope_3_emissions/" },
-          { nombre: "Sustentabilidad · McKinsey", detalle: "Artículos de McKinsey sobre sustentabilidad", tipo: "LINK", url: "https://www.mckinsey.com/business-functions/sustainability/our-insights" },
-          { nombre: "¿Qué es la COP? · McKinsey", detalle: "Qué son las conferencias de la ONU sobre cambio climático", tipo: "LINK", url: "https://www.mckinsey.com/featured-insights/mckinsey-explainers/what-is-cop" },
-          { nombre: "Green Software Foundation", detalle: "La fundación que define estándares y buenas prácticas de green software", tipo: "LINK", url: "https://greensoftware.foundation/" }
-        ] },
-        { grupo: "Cursos gratuitos", archivos: [
-          { nombre: "Green Software Practitioner · Green Software Foundation", detalle: "Curso introductorio de la GSF", tipo: "LINK", url: "https://learn.greensoftware.foundation/" },
-          { nombre: "Green Software for Practitioners (LFC131) · Linux Foundation", detalle: "El mismo contenido, con certificado de la Linux Foundation", tipo: "LINK", url: "https://trainingportal.linuxfoundation.org/courses/green-software-for-practitioners-lfc131" },
-          { nombre: "Sustainable IT Decoded · Google", detalle: "Curso de Google sobre TI sustentable", tipo: "LINK", url: "https://sustainableitdecoded.withgoogle.com/" },
-          { nombre: "Libros y cursos · W3C Sustainable Web", detalle: "Lista de referencias del grupo de la W3C", tipo: "LINK", url: "https://www.w3.org/community/sustyweb/wiki/References#Books" }
-        ] },
-        { grupo: "Cloud y datos", archivos: [
-          { nombre: "Green Cloud Optimization (AWS)", detalle: "Cloud Carbon Footprint de Thoughtworks: medir y reducir las emisiones de la nube, con un checklist de buenas prácticas (6 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/green-cloud-optimization-aws.pdf" },
-          { nombre: "Cloud Carbon Footprint · demo", detalle: "Demo de la herramienta open source para medir las emisiones de la nube", tipo: "LINK", url: "https://demo.cloudcarbonfootprint.org/" },
-          { nombre: "Climate Engine", detalle: "Datasets climáticos y satelitales (sobre Google Earth Engine)", tipo: "LINK", url: "https://climateengine.com/" }
-        ] },
-        { grupo: "Info interesante", archivos: [
-          { nombre: "Los mayores productores de litio", detalle: "Statista: producción y reservas de litio por país (2021)", tipo: "IMG", url: "material/green-software/biblioteca/mayores-productores-de-litio.jpg" },
-          { nombre: "La huella de carbono de los alimentos", detalle: "Statista: kg de CO2 equivalente por kilo de cada alimento", tipo: "IMG", url: "material/green-software/biblioteca/huella-de-carbono-de-los-alimentos.jpg" },
-          { nombre: "Coldplay · informe de sustentabilidad de la gira", detalle: "Las medidas de la gira Music of the Spheres para bajar sus emisiones", tipo: "LINK", url: "https://hypebeast.com/2023/6/coldplay-music-of-the-spheres-tour-sustainability-efforts-report" },
-          { nombre: "Microsoft, la IA y las centrales nucleares", detalle: "Artículo de Xataka sobre la energía que necesitan los servidores de IA", tipo: "LINK", url: "https://www.xataka.com/robotica-e-ia/microsoft-necesita-cantidad-descomunal-energia-para-sus-servidores-ia-su-solucion-centrales-nucleares" }
-        ] }
-      ], videos: [
-        { bloque: "Conferencias de la cátedra", titulo: "Energía y criptomonedas", detalle: "Conferencia de Franco Mana con Fundación Avina", url: "https://www.youtube.com/watch?v=BFnzcma4CEE" },
-        { bloque: "Conferencias de la cátedra", titulo: "Conferencia Green Software · Mediciones", detalle: "Conferencia de Franco Mana", url: "https://www.youtube.com/watch?v=vky1TLX2ss0" },
-        { bloque: "Huella de carbono y alcances", titulo: "Cómo tratar las emisiones de alcance 3", detalle: "Creara · el alcance 3 en el cálculo de la huella de carbono", url: "https://www.youtube.com/watch?v=T3DJn6xLg80" },
-        { bloque: "Huella de carbono y alcances", titulo: "Cálculos de viajes, agua y residuos (con factores de emisión)", detalle: "Capítulo del video anterior · arranca en 35:22", url: "https://www.youtube.com/watch?v=T3DJn6xLg80&t=2122s" },
-        { bloque: "Huella de carbono y alcances", titulo: "Google · un futuro libre de carbono", detalle: "Huella de carbono corporativa: el ejemplo de Google (de la presentación general)", url: "https://www.youtube.com/watch?v=rOZaxdPYP7U" },
-        { bloque: "Energía y green cloud", titulo: "Energía renovable y carbono neutralidad", detalle: "Google Cloud · lo más importante para saber sobre energía renovable y carbono neutralidad", url: "https://www.youtube.com/watch?v=fNZFwmYM5ks" },
-        { bloque: "Energía y green cloud", titulo: "Data centers más sustentables", detalle: "NTT · cómo se diseñan los servidores en la nube para ser sustentables (de la presentación general) · arranca en 3:34", url: "https://www.youtube.com/watch?v=KNCpf_9MAKI&t=214s" },
-        { bloque: "Energía y green cloud", titulo: "CarbonHack22", detalle: "Green Software Foundation · presentación del hackatón del Carbon Aware SDK", url: "https://www.youtube.com/watch?v=tI8-sBqA_Ps" },
-        { bloque: "Pensamiento sistémico", titulo: "Complex Systems Thinking", detalle: "Brady Heywood · puntos de inflexión en sistemas complejos (del Taller 2.1) · arranca en 32:41", url: "https://www.youtube.com/watch?v=0-CSs1UEbFQ&t=1961s" },
-        { bloque: "Pensamiento sistémico", titulo: "Intro to Systems Mapping", detalle: "Kumu · webinar de mapeo de sistemas con Jeff Mohr (del TPI 3 de 4K1B)", url: "https://www.youtube.com/watch?v=wrBDy91M7-0" }
-      ] },
-      { id: "normas", titulo: "Normas y estándares", descripcion: "GHG Protocol, ISO 14064, estándares de reporte y mercados de carbono.", material: [
-        { grupo: "Normas, protocolos y reportes", archivos: [
-          { nombre: "GHG Protocol", detalle: "El estándar más usado para medir emisiones; de acá salen los alcances 1, 2 y 3", tipo: "LINK", url: "https://ghgprotocol.org/" },
-          { nombre: "Guía ISO 14064", detalle: "Guía de Ihobe para hacer el inventario de gases de efecto invernadero de una organización con la UNE-ISO 14064-1 (106 págs.)", tipo: "PDF", url: "material/green-software/normas/guia-iso-14064.pdf" },
-          { nombre: "Normativa internacional · estándares de sustentabilidad", detalle: "Mecanismos de reporte (GHG Protocol, ISO/UNDP 53002, GRI, SBTi, ISO 26000) y certificaciones (ISO 14001, B Corp, ISO 50001) · 2 págs.", tipo: "PDF", url: "material/green-software/normas/estandares-de-sustentabilidad.pdf" },
-          { nombre: "CDP", detalle: "Plataforma donde empresas y ciudades reportan su impacto ambiental", tipo: "LINK", url: "https://la-es.cdp.net/" },
-          { nombre: "ISO/IEC TS 20125-1:2026", detalle: "Ecodiseño de servicios digitales · vista previa de la norma", tipo: "PDF", url: "https://cdn.standards.iteh.ai/samples/iso/iso-iec-ts-20125-1-2026/29820b12fcb74aaf9e4560bbbc23e379/iso-iec-ts-20125-1-2026.pdf" }
-        ] },
-        { grupo: "Mercados de carbono en Argentina", descripcion: "Los documentos que se ven en la presentación general.", archivos: [
-          { nombre: "Estrategia nacional para el uso de los mercados de carbono", detalle: "Ministerio de Ambiente de la Nación (2023)", tipo: "PDF", url: "https://www.argentina.gob.ar/sites/default/files/2025/09/2023_estrategia_nacional_para_el_uso_de_los_mercados_de_carbono_en_argentina.pdf" },
-          { nombre: "Preguntas frecuentes sobre mercados de carbono", detalle: "Ministerio de Ambiente de la Nación (2024)", tipo: "PDF", url: "https://www.argentina.gob.ar/sites/default/files/2025/09/2024_12_preguntas_frecuentes_mercados_de_carbon_v3.pdf" }
-        ] }
-      ] },
-      { id: "medir", titulo: "Medir y actuar", descripcion: "Herramientas para medir la huella y guías para reducir emisiones.", material: [
-        { grupo: "Medir la huella", archivos: [
-          { nombre: "The Carbon Sink · calculadora de huella", detalle: "Calculá tu huella de carbono personal (versión Argentina)", tipo: "LINK", url: "https://thecarbonsink.com/ar/#huella" },
-          { nombre: "CodeCarbon", detalle: "Librería de Python para medir la energía y el CO2eq que emite un código (TP 1 V2)", tipo: "LINK", url: "https://github.com/mlco2/codecarbon#quickstart-" },
-          { nombre: "Landscape de herramientas de green software", detalle: "Mapa de herramientas para medir código, de la Bundesverband Green Software", tipo: "LINK", url: "https://landscape.bundesverband-green-software.de/" },
-          { nombre: "Electricity Maps · Argentina", detalle: "Matriz energética e intensidad de carbono de la red en tiempo real", tipo: "LINK", url: "https://app.electricitymaps.com/zone/AR?lang=es" },
-          { nombre: "Factor de emisión de la red eléctrica argentina", detalle: "Secretaría de Energía · el FE para pasar de kWh a CO2eq", tipo: "LINK", url: "http://datos.minem.gob.ar/dataset/calculo-del-factor-de-emision-de-co2-de-la-red-argentina-de-energia-electrica" }
-        ] },
-        { grupo: "Software consciente del carbono", descripcion: "Ejecutar el software cuando y donde la energía es más limpia.", archivos: [
-          { nombre: "Carbon Aware SDK · Green Software Foundation", detalle: "SDK para que el software se ejecute en el momento o en la región con la electricidad más limpia", tipo: "LINK", url: "https://github.com/Green-Software-Foundation/carbon-aware-sdk" },
-          { nombre: "Carbon Aware SDK · Getting started", detalle: "Cómo empezar a usarlo", tipo: "LINK", url: "https://github.com/Green-Software-Foundation/carbon-aware-sdk/blob/dev/GettingStarted.md" },
-          { nombre: "Carbon Aware API (Swagger)", detalle: "La API REST del SDK", tipo: "LINK", url: "https://carbon-aware-api.azurewebsites.net/swagger/index.html" },
-          { nombre: "Extensión de Intel para scikit-learn", detalle: "Machine learning más eficiente (greener ML) con la extensión de Intel, en Anaconda", tipo: "LINK", url: "https://anaconda.cloud/greener-ml-intel" }
-        ] },
-        { grupo: "Actuar: guías para reducir emisiones", descripcion: "Fundación Avina: principales impactos y medidas de mitigación.", archivos: [
-          { nombre: "Electricidad y compra de equipos informáticos", detalle: "Energía de fuentes renovables, eficiencia en oficinas y hogares, y el impacto de comprar equipos", tipo: "IMG", url: "material/green-software/actuar/electricidad.jpg" },
-          { nombre: "Traslados terrestres", detalle: "Home office, bici, transporte público y apps de viaje que compensan emisiones", tipo: "IMG", url: "material/green-software/actuar/traslados.jpg" },
-          { nombre: "Eventos", detalle: "Agua de la canilla, comida de origen vegetal y menos residuos", tipo: "IMG", url: "material/green-software/actuar/eventos.jpg" },
-          { nombre: "Hospedaje", detalle: "Hoteles con prácticas sustentables, ahorro de agua y energía, y economía local", tipo: "IMG", url: "material/green-software/actuar/hospedaje.jpg" }
-        ] }
-      ] }
-    ],
-    actividades: [
-      { grupo: "Franco y Luis · 4K1", descripcion: "La tarea con NotebookLM y el TP de medición de huella de carbono. Las consignas están en el campus.", archivos: [
-        { nombre: "Tarea 4K1 · ¿Cuándo Google será net cero?", detalle: "Preguntarle al NotebookLM del informe de sustentabilidad 2025 de Google, interpretar la respuesta y consultar los términos que no se entienden (máx. 300 palabras) · del 17/3 al 21/6", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/mod/assign/view.php?id=574684" },
-        { nombre: "NotebookLM del informe de sustentabilidad de Google", nota: "Para la tarea", detalle: "El cuaderno de NotebookLM que hay que usar", tipo: "LINK", url: "https://notebooklm.google.com/notebook/62e5c8db-3dd2-407c-8d19-32ae4ae799db" },
-        { nombre: "TP 1 · Medición de la huella de carbono", detalle: "V1: medir el consumo de tu notebook, calcular los kg de CO2eq por año con el factor de emisión de Argentina y los árboles para compensarlos (300 kg CO2/año por árbol). V2: medir un código en Python con CodeCarbon y calcular las horas que compensa un árbol recién plantado (30 kg CO2/año) · del 10/4 al 28/4", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/mod/assign/view.php?id=597953" }
-      ] },
-      { grupo: "Vane · 4K1A", descripcion: "Enunciados de los TPI (Google Docs) y el trabajo de investigación.", archivos: [
-        { n: 1, nombre: "TPI 1 · Informe sobre sustentabilidad en ingeniería de sistemas", detalle: "Informe grupal de 5 a 10 páginas que relacione 16 conceptos (huella de carbono, net zero, compensación, etc.), con un caso de empresa de software y un anexo con las preguntas a la IA; después, auditoría cruzada entre grupos · entrega 14/4", tipo: "DOC", url: "https://docs.google.com/document/d/1b3Sm3hRIVWGklsJSqGynUcGhhJXh6NK6/edit?usp=sharing" },
-        { n: 2, nombre: "TPI 2 · Técnicas de análisis y resolución de problemas", detalle: "Elegir una técnica (FODA, Ishikawa, seis sombreros, PDCA, PESTEL, etc.) y aplicarla a una pregunta de encuadre sobre green IT, software o hardware; exposición en dos partes, con integrantes por sorteo · entrega 12/5, exposición 13/5", tipo: "DOC", url: "https://docs.google.com/document/d/15PPdAmsn8ohiKvY_Hawv8NzKrFNEhis-/edit?usp=sharing" },
-        { n: 3, nombre: "TPI 3 · Conciencia, sistema de información y software", detalle: "Pensamiento sistémico sobre las fases del ciclo de vida del software: estrellas y pregunta de encuadre, mapeo de fuerzas, análisis SAT, modelo en Kumu y 10 estrategias de apalancamiento; defensa oral · desde el 2/6", tipo: "DOC", url: "https://docs.google.com/document/d/16Qfc03CRTkfFZQ_KUaeuPgj-_ttX6OX2/edit?usp=sharing" },
-        { nombre: "Trabajo de investigación · Caso de estudio AIS", detalle: "Informe estratégico (paper) para la startup AI Soft Solutions: norma o protocolo, enfoque sistémico, horizonte de carbono neutralidad, medición por alcances, reducción y compensación", tipo: "DOC", url: "https://docs.google.com/document/d/13hIVIrs7EMmrAA7cEAX1RwR10fSc5x7gR7uWTrbBEvc/edit?usp=sharing" }
-      ] },
-      { grupo: "Inés · 4K1B", descripcion: "Enunciados de los TPI y las actividades áulicas.", archivos: [
-        { n: 1, nombre: "TPI 1 · Informe de sostenibilidad en ingeniería de sistemas", detalle: "El mismo informe de 5 a 10 páginas, con peer review entre grupos usando una rúbrica · entrega 23/4, peer review 24/4", tipo: "PDF", url: "material/green-software/actividades/4k1b-tpi-1-informe-de-sostenibilidad.pdf" },
-        { n: 2, nombre: "TPI 2 · Técnicas de resolución de problemas aplicadas", detalle: "Elegir una técnica (también RCA) y aplicarla a un desafío; exposición en dos partes, con integrantes por sorteo · entrega 28/5, exposiciones 29/5 y 5/6", tipo: "PDF", url: "material/green-software/actividades/4k1b-tpi-2-tecnicas-de-resolucion-de-problemas.pdf" },
-        { n: 3, nombre: "TPI 3 · Pensamiento sistémico", detalle: "Una fase del ciclo de vida del software con pensamiento sistémico, mapa en Kumu y 10 estrategias de apalancamiento; mínimo 15 páginas · entrega 26/6", tipo: "PDF", url: "material/green-software/actividades/4k1b-tpi-3-pensamiento-sistemico.pdf" },
-        { nombre: "Actividades áulicas grupales", detalle: "Link a un documento compartido con las actividades hechas en clase en grupo (integrantes y fecha)", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/mod/assign/view.php?id=597892" }
-      ] }
     ]
   },
   // Cursillo de ingreso · Introducción a la Vida Universitaria: solo un archivo
@@ -1986,15 +2073,16 @@ function viewParcial(m, p){
     ${crumbs(m, esc(p.titulo))}
     <h1>${esc(p.titulo)}</h1>
     <p class="lead">${esc(p.descripcion)}</p>
-    <div class="grid">
-      ${seccionesDe(p).map(tarjeta).join("")}
-    </div>
+    ${seccionesDe(p).length ? `<div class="grid">${seccionesDe(p).map(tarjeta).join("")}</div>` : ""}
+    ${temasBox(p.actividad)}
+    ${p.material ? `<div class="parcial-archivos">${filesList(p.material)}</div>` : ""}
+    ${p.videos && p.videos.length ? `<section class="grupo parcial-videos"><div class="grupo-head"><h3>Videos</h3><p>Conferencias y videos sobre el tema.</p></div><div id="tabBody"></div></section>` : ""}
     ${temasBox(p.temas)}`;
 }
 
 /* Secciones propias de una materia (ej.: Teórico, Práctico, Cuestionarios, TPI) */
 function iconoSeccion(id){
-  return { teorico: ICON_BOOK, practico: ICON_PEN, cuestionarios: ICON_CHECK, tpi: ICON_LAYER, talleres: ICON_PEN, contexto: ICON_LAYER, biblioteca: ICON_BOOK }[id] || ICON_DOC;
+  return { teorico: ICON_BOOK, practico: ICON_PEN, cuestionarios: ICON_CHECK, tpi: ICON_LAYER, tpi1: ICON_PEN, tpi2: ICON_PEN, tpi3: ICON_PEN, final: ICON_CHECK, talleres: ICON_PEN, contexto: ICON_LAYER, biblioteca: ICON_BOOK }[id] || ICON_DOC;
 }
 function viewSeccionMateria(m, x, tab){
   const base = `m${m.n}/${x.id}`;
@@ -2217,6 +2305,7 @@ function render(arriba = true){
     titulo = `${sec.titulo} · ${m.nombre}`;
   } else if(p){
     app.innerHTML = viewParcial(m, p);
+    if(p.videos && p.videos.length) mountPlayer(p.videos, p.titulo);
     titulo = `${p.titulo} · ${m.nombre}`;
   } else if(cont && b === "actividades" && cont.actividades){
     app.innerHTML = `${crumbs(m, "Actividades")}
