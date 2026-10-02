@@ -1070,33 +1070,33 @@ const MATERIAS = {
   // Sin "titulo", el nombre se trae de YouTube y se ordenan por "Clase N".
   101: {
     parciales: [],
+    // Títulos fijos en el orden de estudio (los de factoreo van después de división de polinomios)
     videos: [
-      { url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
-      { url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
-      { url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
-      { url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
-      { url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
-      { url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
-      { url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
-      { url: "https://www.youtube.com/watch?v=utksVyEFITQ" },
-      { url: "https://www.youtube.com/watch?v=2iNP5NQLRa4" },
-      { url: "https://www.youtube.com/watch?v=OC6JWKXAw6E" },
-      { url: "https://www.youtube.com/watch?v=zk4t3BDr_LM" },
-      { url: "https://www.youtube.com/watch?v=wEDZpgs_rXY" },
-      { url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
-      { url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" },
-      { url: "https://www.youtube.com/watch?v=sdm7AOnAWu0" },
-      { url: "https://www.youtube.com/watch?v=8DITa_jDOcQ" },
-      { url: "https://www.youtube.com/watch?v=2vpATSL34I0" },
-      { url: "https://www.youtube.com/watch?v=QDtVoVzzq54" },
-      { url: "https://www.youtube.com/watch?v=NYTB38wLUaY" },
-      { url: "https://www.youtube.com/watch?v=PpvehErJVvw" },
-      { url: "https://www.youtube.com/watch?v=gxZaA6d9vdk" },
-      { url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" },
-      // Introductorios de factoreo (van antes de la clase de factoreo; por ahora al final)
+      { titulo: "Clase 1 · Operaciones numéricas (parte 1)", url: "https://www.youtube.com/watch?v=jxWkgyHIPw4" },
+      { titulo: "Clase 2 · Operaciones numéricas (parte 2)", url: "https://www.youtube.com/watch?v=gxESSZlF09k" },
+      { titulo: "Clase 3", url: "https://www.youtube.com/watch?v=tEZL6hYDw2E" },
+      { titulo: "Clase 4 · Radicación", url: "https://www.youtube.com/watch?v=fokG6ojfvrc" },
+      { titulo: "Clase 5 · Extracción de radicales", url: "https://www.youtube.com/watch?v=kkyKpVeLGBU" },
+      { titulo: "Clase 6 · Racionalización", url: "https://www.youtube.com/watch?v=ewkEaZyKWJY" },
+      { titulo: "Clase 8 · Ecuaciones", url: "https://www.youtube.com/watch?v=kpHCiwr7s20" },
+      { titulo: "Clase 9 · Ecuaciones de segundo grado", url: "https://www.youtube.com/watch?v=utksVyEFITQ" },
+      { titulo: "Clase 10 · Ecuaciones", url: "https://www.youtube.com/watch?v=2iNP5NQLRa4" },
+      { titulo: "Clase 11 · División de polinomios", url: "https://www.youtube.com/watch?v=OC6JWKXAw6E" },
       { titulo: "Casos de factoreo · Parte 1", url: "https://www.youtube.com/watch?v=Zu11P4pXFUY" },
       { titulo: "Casos de factoreo · Parte 2", url: "https://www.youtube.com/watch?v=jAedHWuBjWA" },
-      { titulo: "Casos de factoreo · Parte 3", url: "https://www.youtube.com/watch?v=cC-hYQxD7fU" }
+      { titulo: "Casos de factoreo · Parte 3", url: "https://www.youtube.com/watch?v=cC-hYQxD7fU" },
+      { titulo: "Clase 12", url: "https://www.youtube.com/watch?v=zk4t3BDr_LM" },
+      { titulo: "Clase 13", url: "https://www.youtube.com/watch?v=wEDZpgs_rXY" },
+      { titulo: "Clase 14", url: "https://www.youtube.com/watch?v=ZwdGCb3Kvtg" },
+      { titulo: "Clase 15", url: "https://www.youtube.com/watch?v=j-f9QMYpY4o" },
+      { titulo: "Clase 17", url: "https://www.youtube.com/watch?v=sdm7AOnAWu0" },
+      { titulo: "Clase 18", url: "https://www.youtube.com/watch?v=8DITa_jDOcQ" },
+      { titulo: "Clase 19 · Sistemas de ecuaciones", url: "https://www.youtube.com/watch?v=2vpATSL34I0" },
+      { titulo: "Clase 20", url: "https://www.youtube.com/watch?v=QDtVoVzzq54" },
+      { titulo: "Clase 21 · Función homográfica", url: "https://www.youtube.com/watch?v=NYTB38wLUaY" },
+      { titulo: "Clase 22", url: "https://www.youtube.com/watch?v=PpvehErJVvw" },
+      { titulo: "Clase 23", url: "https://www.youtube.com/watch?v=gxZaA6d9vdk" },
+      { titulo: "Resolución de examen", url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
     ]
   },
   26: {
@@ -2080,7 +2080,9 @@ function mountPlayer(videos, titulo){
   const guardado = id => titulosYT[id] && titulosYT[id].t;
   let lista = videos.map(v => { const id = ytId(v.url); return { ...v, id, fijo: !!v.titulo, titulo: v.titulo || (id && guardado(id)) || "" }; });
   lista.forEach((v, j) => { if(!v.titulo) v.titulo = v.id ? "Cargando…" : `Video ${j + 1}`; });
-  ordenarPorClase(lista);
+  // Si todos los videos tienen título fijo, se respeta el orden en que se cargaron
+  const ordenar = lista.some(v => !v.fijo);
+  if(ordenar) ordenarPorClase(lista);
   let actual = lista[0].id || 0;
 
   const item = (v, i) => {
@@ -2132,7 +2134,7 @@ function mountPlayer(videos, titulo){
   Promise.all(faltan.map(v => tituloYT(v.id).then(t => { if(t) v.titulo = t; }))).then(() => {
     if(!document.body.contains(body)) return;
     lista.forEach((v, j) => { if(!v.titulo || v.titulo === "Cargando…") v.titulo = `Video ${j + 1}`; });
-    ordenarPorClase(lista);
+    if(ordenar) ordenarPorClase(lista);
     // Si todavía no se eligió ningún video, se arranca por el primero de la lista ordenada
     if(!elegido){ dibujar(); play(0); return; }
     const i = Math.max(0, lista.findIndex(v => (v.id || null) === actual));
