@@ -31,6 +31,8 @@ Sin `titulo`, el nombre se trae de YouTube (el video tiene que estar publicado u
 
 Opcionales en cada video: `bloque: "..."` agrupa la lista con un título por bloque (ver Backend, 1º Parcial), `detalle: "..."` se muestra debajo del video, y si el link tiene `&t=440s` el video arranca en ese segundo.
 
+Los archivos con `tipo: "ZIP"` o `tipo: "INO"` se descargan (botón "Descargar ↓") en vez de abrirse en otra pestaña.
+
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
@@ -44,7 +46,7 @@ Si un parcial no necesita las tres tarjetas, se puede limitar con `secciones` (e
 Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia`. El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero.
 
 ## Parcial o TPI en una sola página
-Con `secciones: []` el parcial no tiene tarjetas de Teórico/Práctico: su página muestra directamente las pestañas Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`).
+Con `secciones: []` el parcial no tiene tarjetas de Teórico/Práctico: su página muestra directamente las pestañas Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`). Si además tiene `temas`, se muestran debajo del material (ver Tecnologías para la Automatización, `29`).
 
 ## Condiciones de aprobación
 Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra en la página de la materia, antes de las comisiones:
