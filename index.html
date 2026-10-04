@@ -1062,6 +1062,19 @@ const MATERIAS = {
   // Tecnologías para la Automatización: 2 parciales de robótica, 1 de IoT y el TP con la ESP32.
   // Cada parcial tiene solo Material y Videos (secciones: []).
   29: {
+    // Sin "regular": no se sabe la nota de regularidad, así que no se muestra
+    condiciones: {
+      directa: 8,
+      aclaracion: "Todas las actividades de evaluación aprobadas con nota no menor a 7, con promedio no menor a 8.",
+      requisitos: [
+        { titulo: "Cada evaluación", detalle: "1º y 2º Parcial de Robótica, 3º Parcial de IoT y TP con la ESP32: cada uno con 7 o más." },
+        { titulo: "Promedio", detalle: "8 o más." }
+      ]
+    },
+    comisiones: [
+      { comision: "4K3", profesor: "Sergio Oscar Laboret", examen: "Multiple choice, en casa", asistencia: false, comentario: "Explica mal, pero te regala el parcial: multiple choice en tu casa. Está a punto de jubilarse." },
+      { comision: "4K3", profesor: "Sandra Mónica Olariaga", asistencia: false, comentario: "Básicamente no explica: lee las filminas." }
+    ],
     parciales: [
       {
         id: "p1",
@@ -2070,7 +2083,7 @@ function condiciones(x){
       <div class="cond-caja">
         <div class="cond-notas">
           ${nota("Aprobación directa", x.directa, x.directa != null ? "nota mínima" : "")}
-          ${nota("Regularidad", x.regular, x.regular != null ? "nota mínima" : "")}
+          ${"regular" in x ? nota("Regularidad", x.regular, x.regular != null ? "nota mínima" : "") : ""}
         </div>
         ${x.aclaracion ? `<p class="cond-aclara">${esc(x.aclaracion)}</p>` : ""}
         ${x.requisitos && x.requisitos.length ? `
