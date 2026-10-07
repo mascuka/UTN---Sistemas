@@ -85,7 +85,7 @@
   .file .go{color:var(--muted);font-size:.85rem}
   .tag.nota{margin-left:6px;vertical-align:1px;background:#f7e1dc;border-color:transparent;color:#b03a2e;font-weight:600}
   .file .name small{display:block;font-size:.8rem;color:var(--muted);margin-top:2px}
-  .grupo + .grupo{margin-top:28px}
+  .grupo + .grupo{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
   .grupo-head{margin-bottom:10px}
   .grupo-head h3{font-size:1.02rem;font-weight:600}
   .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
@@ -925,11 +925,15 @@ const MATERIAS = {
     ],
     secciones: [
       { id: "cuestionarios", titulo: "Cuestionarios", descripcion: "Cuestionarios semanales de autoevaluación, resueltos.", material: [
+        { grupo: "Hasta el 1º Parcial", descripcion: "Introducción, Java, POO, Colecciones y Streams: estas preguntas pueden aparecer en el parcial.", archivos: [
         { n: 1, nombre: "Cuestionario 01 · Introducción al backend", detalle: "15 preguntas de opción múltiple resueltas (capas, arquitectura de microservicios, APIs REST y arquitectura hexagonal)", tipo: "PDF", url: "material/backend-de-aplicaciones/cuestionarios/cuestionario-01-introduccion.pdf" },
         { n: 2, nombre: "Cuestionario 02 · Java y Maven", detalle: "10 preguntas de opción múltiple y verdadero/falso resueltas (sintaxis básica de Java, estructura de proyecto y dependencias con Maven)", tipo: "PDF", url: "material/backend-de-aplicaciones/cuestionarios/cuestionario-02-java-maven.pdf" },
         { n: 5, nombre: "Cuestionario 05 · Streams", detalle: "Preguntas de verdadero/falso y opción múltiple resueltas sobre Streams de Java", tipo: "PDF", url: "material/backend-de-aplicaciones/cuestionarios/cuestionario-05-streams.pdf" },
+        ] },
+        { grupo: "Después del 1º Parcial (TPI)", descripcion: "ORM/JPA, Spring y lo que sigue: temas del TPI.", archivos: [
         { n: 6, nombre: "Cuestionario 06 · ORM y JPA", detalle: "Preguntas de opción múltiple resueltas (JDBC, ORM, JPA)", tipo: "PDF", url: "material/backend-de-aplicaciones/cuestionarios/cuestionario-06-orm-jpa.pdf" },
         { n: 7, nombre: "Cuestionario 07 · Spring", detalle: "15 preguntas resueltas (scopes de los beans, contenedor e inyección de dependencias, módulos de Spring Boot, verbos HTTP y URI)", tipo: "PDF", url: "material/backend-de-aplicaciones/cuestionarios/cuestionario-07-spring.pdf" }
+        ] }
       ] }
     ]
   },
