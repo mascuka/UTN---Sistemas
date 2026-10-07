@@ -920,7 +920,19 @@ const MATERIAS = {
             { bloque: "Seguridad · Apuntes 20 y 21", titulo: "Arquitectura de Spring Security", detalle: "SecurityFilterChain, AuthenticationManager, AuthenticationProvider y SecurityContextHolder", url: "https://www.youtube.com/watch?v=2eWunG4z4jo" }
           ]
         },
-        practico: { material: [], videos: [] }
+        practico: {
+          material: [
+            { grupo: "El enunciado", descripcion: "Versión preliminar del TPI 2026: lineamientos generales y dominios para elegir.", archivos: [
+              { n: 1, nombre: "Enunciado preliminar del TPI", nota: "Empezá por acá", detalle: "Microservicios con API Gateway, Keycloak, una API pública externa, persistencia, documentación y despliegue con Docker; diagramas C1 y C2 con C4 Model (9 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/01-enunciado-preliminar-tpi.pdf" },
+              { n: 2, nombre: "Anexo · Dominios sugeridos", detalle: "10 dominios para elegir o reinterpretar: refugios de animales, competencias deportivas, servicios técnicos, entregas de última milla, turismo, incidentes urbanos, agro, energía, reservas y eventos (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/02-anexo-dominios-sugeridos.pdf" }
+            ] },
+            { grupo: "Guías para la API externa", descripcion: "Tutoriales de la cátedra (2025) para calcular distancias entre ubicaciones desde un microservicio Spring Boot.", archivos: [
+              { n: 3, nombre: "Google Maps Distance Matrix con RestClient", detalle: "Microservicio paso a paso que recibe dos coordenadas y devuelve la distancia usando la API de Google (necesita API key de Google Cloud) (7 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/03-google-maps-distance-matrix.pdf" },
+              { n: 4, nombre: "OSRM · rutas y distancias en Argentina", detalle: "Alternativa gratis y offline: OSRM en Docker con el mapa de Argentina de OpenStreetMap y su endpoint HTTP (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/04-osrm-rutas-argentina.pdf" }
+            ] }
+          ],
+          videos: []
+        }
       }
     ],
     secciones: [
