@@ -226,6 +226,14 @@
   .mname{display:flex;align-items:center}
   .mname .abr{flex:none;width:64px;min-width:0;padding:2px 4px;margin-right:12px}
   .abr.vacio{background:none}
+  /* Cabecera de materia con el botón de descarga */
+  .mat-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .mat-head h1{margin-bottom:0}
+  .zip-btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font:inherit;font-size:.88rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid transparent;border-radius:999px;padding:9px 16px;white-space:nowrap;margin-top:4px}
+  .zip-btn:hover{border-color:var(--accent)}
+  .zip-btn:disabled{cursor:progress;opacity:.85}
+  .zip-btn svg{width:17px;height:17px;flex-shrink:0}
+  .zip-btn small{font-weight:400;color:var(--muted)}
   .abr-lg{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.9rem;padding:4px 10px;margin-right:12px;vertical-align:6px}
   @media (max-width:760px){
     .mhead{display:none}
@@ -1705,6 +1713,7 @@ const ICON_DOC  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const ICON_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></svg>';
 const ICON_PEN  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
 const ICON_CHECK= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>';
+const ICON_DL   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>';
 const ICON_BACK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>';
 const ICON_LAYER= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>';
 
@@ -2085,9 +2094,13 @@ function viewMateria(m){
         <a href="https://www.youtube.com/playlist?list=${encodeURIComponent(c.playlist)}" target="_blank" rel="noopener">abrí la playlist en YouTube ↗</a>.</p>
       ${c.parciales.length ? contenido : ""}`;
   }
+  const nZip = c ? archivosZip(c).length : 0;
   return `
     <div class="crumbs"><span data-go="inicio">Plan de estudios</span> / ${esc(m.nombre)}</div>
-    <h1 style="margin-bottom:22px">${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
+    <div class="mat-head">
+      <h1>${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
+      ${nZip ? `<button class="zip-btn" data-zip="${m.n}" title="Todos los PDF y archivos de la materia, en carpetas con el mismo orden que la página (sin videos)">${ICON_DL}<span>Descargar todo (ZIP)</span><small>${nZip} archivos</small></button>` : ""}
+    </div>
     ${contenido}
     ${c && c.condiciones ? condiciones(c.condiciones) : ""}
     ${c && c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : ""}`;
@@ -2228,6 +2241,125 @@ function temasBox(t){
           <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
         </div>`).join("")}
     </section>`;
+}
+
+/* ---------- Descarga de toda la materia en un ZIP ----------
+   Se arma en el navegador con los archivos del repo (material/...), en carpetas
+   con el mismo orden que la página: parcial → teórico/práctico → grupo → parte.
+   Los videos no van; los links externos (Drive, webs) van en un "Enlaces.txt". */
+const nombreArchivo = t => t.replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, " ").trim().replace(/[. ]+$/, "").slice(0, 120);
+function arbolZip(c){
+  const nodo = nombre => ({ nombre, hijos: [], archivos: [], enlaces: [] });
+  const raiz = nodo("");
+  const archivos = (dest, lista) => (lista || []).forEach(f => {
+    if(!f || !f.url) return;
+    if(f.url.startsWith("material/")) dest.archivos.push(f);
+    else if(/^https?:/.test(f.url)) dest.enlaces.push(f);
+  });
+  const items = (dest, lista) => {
+    lista = lista || [];
+    if(lista.some(f => f.grupo)){
+      lista.forEach(g => {
+        const ng = nodo(g.grupo || "Material");
+        if(g.partes) g.partes.forEach(pt => { const np = nodo(pt.titulo); archivos(np, pt.archivos); ng.hijos.push(np); });
+        else archivos(ng, g.archivos);
+        dest.hijos.push(ng);
+      });
+    } else archivos(dest, lista);
+  };
+  (c.parciales || []).forEach(p => {
+    const np = nodo(p.titulo);
+    if(p.secciones && !p.secciones.length) items(np, p.material);
+    else seccionesDe(p).forEach(k => { const ns = nodo(NOMBRES[k]); items(ns, seccion(p, k).material); np.hijos.push(ns); });
+    raiz.hijos.push(np);
+  });
+  (c.secciones || []).forEach(x => { const nx = nodo(x.titulo); items(nx, x.material); raiz.hijos.push(nx); });
+  items(raiz, c.material);
+  if(c.actividades){ const na = nodo("Actividades"); archivos(na, c.actividades); raiz.hijos.push(na); }
+  // Se sacan las carpetas vacías y se numeran las que quedan para que respeten el orden
+  const podar = n => { n.hijos = n.hijos.filter(podar); return n.hijos.length || n.archivos.length || n.enlaces.length; };
+  podar(raiz);
+  return raiz;
+}
+/* Entradas del ZIP en el orden de la página: archivos ({ruta, url}) y "Enlaces.txt" ({ruta, texto}) */
+function entradasZip(c, base){
+  const out = [];
+  const usados = new Set();
+  const recorrer = (n, ruta) => {
+    n.archivos.forEach(f => {
+      const ext = (decodeURIComponent(f.url.split("?")[0]).match(/\.[a-z0-9]+$/i) || [""])[0];
+      const nom = nombreArchivo((f.n ? String(f.n).padStart(2, "0") + " - " : "") + f.nombre);
+      let ruta2 = ruta + nom + ext, i = 2;
+      while(usados.has(ruta2.toLowerCase())) ruta2 = ruta + nom + ` (${i++})` + ext;
+      usados.add(ruta2.toLowerCase());
+      out.push({ ruta: ruta2, url: f.url });
+    });
+    if(n.enlaces.length) out.push({ ruta: ruta + "Enlaces.txt", texto: n.enlaces.map(f => `${f.nombre}${f.detalle ? " (" + f.detalle + ")" : ""}\n${f.url}\n`).join("\n") });
+    const conNumero = n.hijos.length > 1;
+    n.hijos.forEach((h, i) => recorrer(h, ruta + nombreArchivo((conNumero ? `${i + 1}. ` : "") + h.nombre) + "/"));
+  };
+  recorrer(arbolZip(c), base);
+  return out;
+}
+const archivosZip = c => entradasZip(c, "").filter(x => x.url);
+function cargarJSZip(){
+  if(window.JSZip) return Promise.resolve(window.JSZip);
+  return new Promise((ok, mal) => {
+    const sc = document.createElement("script");
+    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
+    sc.onload = () => ok(window.JSZip);
+    sc.onerror = () => mal(new Error("No se pudo cargar JSZip"));
+    document.head.appendChild(sc);
+  });
+}
+async function descargarZip(btn){
+  const m = materia(+btn.dataset.zip), c = MATERIAS[m.n];
+  if(!c || btn.disabled) return;
+  const lbl = btn.querySelector("span"), chico = btn.querySelector("small");
+  const original = [lbl.textContent, chico.textContent];
+  btn.disabled = true;
+  try{
+    lbl.textContent = "Preparando…";
+    const JSZip = await cargarJSZip();
+    const zip = new JSZip();
+    const raiz = nombreArchivo(m.nombre);
+    const todo = entradasZip(c, raiz + "/");
+    const bajar = todo.filter(x => x.url);
+    const faltan = [], blobs = [];
+    let hechos = 0, sig = 0;
+    const trabajar = async () => {
+      while(sig < bajar.length){
+        const i = sig++, x = bajar[i];
+        try{
+          const r = await fetch(encodeURI(x.url));
+          if(!r.ok) throw new Error(r.status);
+          blobs[i] = await r.blob();
+        } catch(e){ faltan.push(x.ruta); }
+        hechos++;
+        lbl.textContent = `Descargando ${hechos} de ${bajar.length}…`;
+        chico.textContent = "";
+      }
+    };
+    await Promise.all([trabajar(), trabajar(), trabajar(), trabajar()]);
+    // Se agregan en el orden de la página (se bajaron de a 4 en paralelo)
+    todo.forEach(x => {
+      if(x.texto) zip.file(x.ruta, x.texto);
+      else { const b = blobs[bajar.indexOf(x)]; if(b) zip.file(x.ruta, b); }
+    });
+    if(faltan.length) zip.file(raiz + "/No se pudieron descargar.txt", faltan.join("\n"));
+    lbl.textContent = "Armando el ZIP…";
+    const blob = await zip.generateAsync({ type: "blob", compression: "STORE" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = raiz.normalize("NFD").replace(/[\u0300-\u036f]/g, "") + ".zip";   // sin tildes: algunos navegadores los cambian por "download"
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+    lbl.textContent = "¡Listo!";
+    setTimeout(() => { [lbl.textContent, chico.textContent] = original; btn.disabled = false; }, 2500);
+  } catch(e){
+    lbl.textContent = "No se pudo descargar";
+    setTimeout(() => { [lbl.textContent, chico.textContent] = original; btn.disabled = false; }, 3000);
+  }
 }
 
 /* Cantidad de archivos (el material puede venir dividido en grupos) */
@@ -2449,6 +2581,8 @@ function render(arriba = true){
 /* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) o data-scroll */
 document.addEventListener("click", e => {
   if(e.target.closest("[data-config]")){ abrirConfig(); return; }
+  const z = e.target.closest("[data-zip]");
+  if(z){ descargarZip(z); return; }
   const k = e.target.closest("[data-chk]");
   if(k){
     e.preventDefault();

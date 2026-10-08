@@ -53,5 +53,8 @@ Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se 
 `condiciones: { directa: 6, regular: 4, aclaracion: "...", requisitos: [ { titulo: "Parcial", detalle: "6 o más" } ] }`
 Si `regular` es `null`, aparece "No tiene" (electivas, que solo se aprueban de forma directa). La asistencia no va acá: se indica en la columna de cada profesor en las comisiones.
 
+## Descargar toda la materia (ZIP)
+En la página de cada materia aparece el botón "Descargar todo (ZIP)" si tiene archivos propios (`material/...`). El ZIP se arma en el navegador, sin copias en el repo: una carpeta por parcial y sección (Teórico, Práctico…), y adentro una por grupo y parte, numeradas en el orden de la página. Los archivos se llaman como en la página ("01 - Nombre.pdf"). Los videos no van, y los links externos (Drive, webs) quedan en un `Enlaces.txt` dentro de su carpeta.
+
 ## Límites de GitHub
 Hasta 100 MB por archivo. Conviene que el repositorio no pase de ~1 GB.
