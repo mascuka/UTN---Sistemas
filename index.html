@@ -71,36 +71,6 @@
   .unidad ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
   .unidad li{font-size:.92rem;line-height:1.5}
 
-  /* Mapa del parcial */
-  .mapa{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px 20px;margin:0 0 24px}
-  .mapa-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
-  .mapa-cab h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.15rem}
-  .mapa-cab span{font-size:.8rem;color:var(--muted)}
-  .mapa-lienzo{position:relative}
-  .mapa-lineas{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
-  .mapa-centro{position:relative;margin:2px auto 40px;width:max-content;max-width:100%;text-align:center;background:var(--text);color:var(--card);font-weight:700;font-size:.92rem;padding:8px 18px;border-radius:999px}
-  .mapa-ramas{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:20px 14px}
-  .mapa-rama{flex:1 1 140px;max-width:220px;display:flex;flex-direction:column;align-items:center}
-  .mapa-nodo{background:var(--card);border:2px solid var(--c);color:var(--c);font-weight:700;font-size:.86rem;line-height:1.25;padding:6px 14px;border-radius:999px;text-align:center}
-  .mapa-nodo[data-unidad]{cursor:pointer}
-  .mapa-nodo[data-unidad]:hover,.mapa-nodo[data-unidad]:focus-visible{background:color-mix(in srgb, var(--c) 12%, var(--card));outline:none}
-  .mapa-rama ul{list-style:none;position:relative;margin-top:10px;display:flex;flex-direction:column;gap:6px;width:100%}
-  .mapa-rama ul::before{content:"";position:absolute;left:50%;top:-10px;bottom:10px;border-left:2px solid var(--c);opacity:.3}
-  .mapa-rama li{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:.78rem;line-height:1.3;text-align:center}
-  @media (prefers-color-scheme: dark){ .mapa-nodo{color:color-mix(in srgb, var(--c) 55%, #fff);border-color:color-mix(in srgb, var(--c) 70%, #fff)} }
-  .unidad.flash{animation:flash 1.8s ease-out}
-  @keyframes flash{0%,30%{background:var(--accent-soft);box-shadow:0 0 0 10px var(--accent-soft)}100%{background:transparent;box-shadow:0 0 0 10px transparent}}
-  @media (max-width:600px){
-    .mapa{padding:14px}
-    .mapa-lineas{display:none}
-    .mapa-centro{margin-bottom:14px}
-    .mapa-ramas{flex-direction:column;gap:12px}
-    .mapa-rama{max-width:none;flex:none;align-items:stretch;border-left:3px solid var(--c);padding-left:10px}
-    .mapa-nodo{align-self:flex-start}
-    .mapa-rama ul{flex-direction:row;flex-wrap:wrap;margin-top:6px}
-    .mapa-rama ul::before{display:none}
-  }
-
   /* Practicá: accesos al quiz y a las herramientas */
   .practica{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
   .pr-t{width:100%;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
@@ -174,6 +144,109 @@
   .hx-est.procesada{background:var(--ok-soft);color:var(--ok)} .hx-est.descartada{background:var(--hover);color:var(--muted)} .hx-est.invalida{background:#f7e1dc;color:#b03a2e}
   @media (prefers-color-scheme: dark){ .hx-alerta,.hx-est.invalida{background:#3d2522;color:#f0a197} .bn{color:#4cc3d3} .bh{color:#f59e5b} }
   @media (max-width:900px){ .hx-grid{grid-template-columns:1fr} }
+  /* Explicaciones paso a paso (CSV y Streams) */
+  .cv-vista{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:18px}
+  .cv-tabla{border-collapse:separate;border-spacing:4px;font-size:.84rem;width:100%;min-width:760px}
+  .cv-tabla th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;text-align:left;padding:4px 6px}
+  .cv-tabla tr[data-forma] th{text-transform:none;letter-spacing:0;font-size:.86rem;color:var(--text);white-space:nowrap;cursor:pointer}
+  .cv-tabla td{padding:6px 8px;border-radius:8px;line-height:1.35;vertical-align:top}
+  .cv-tabla td.lib{background:var(--accent-soft);color:var(--accent)}
+  .cv-tabla td.vos{background:#fdebd8;color:#9a3f0b}
+  .cv-tabla td small{opacity:.8}
+  .cv-tabla tr[data-forma]{cursor:pointer}
+  .cv-tabla tr[data-forma]:hover th,.cv-tabla tr.on th{color:var(--accent)}
+  .cv-tabla tr.on td{box-shadow:inset 0 0 0 2px currentColor}
+  .cv-ley{font-size:.78rem;color:var(--muted);margin-top:8px}
+  .cv-ley .lib{color:var(--accent)} .cv-ley .vos{color:#c2410c}
+  .cv-formas{flex-wrap:wrap;margin:6px 0 14px}
+  .cv-main{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);gap:16px;align-items:start}
+  .cv-diag{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .cv-der{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .cv-caja{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);transition:opacity .25s,border-color .25s,box-shadow .25s}
+  .cv-caja.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .cv-caja.fut,.cv-flecha.fut{opacity:.2}
+  .cv-tit{font-size:.72rem;font-weight:800;color:var(--muted);margin-bottom:6px;font-family:ui-monospace,Menlo,monospace}
+  .cv-arch{font-family:ui-monospace,Menlo,monospace;font-size:.78rem;line-height:1.7;overflow-x:auto;white-space:nowrap}
+  .cv-arch > div,.cv-chips > code{border-radius:4px;padding:0 4px;transition:background .25s}
+  .cv-arch > div:first-child{color:var(--muted)}
+  .cv-arch > .on,.cv-chips > code.on{background:#fde68a;color:#3d2b0b}
+  .cv-str{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;overflow-wrap:anywhere;display:block}
+  .cv-arr{display:flex;flex-wrap:wrap;gap:4px}
+  .cv-celda{display:flex;flex-direction:column;align-items:center;border:1px solid var(--line);border-radius:6px;background:var(--card);padding:3px 7px;transition:background .25s}
+  .cv-celda span{font-size:.66rem;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+  .cv-celda b{font-family:ui-monospace,Menlo,monospace;font-size:.78rem;font-weight:600}
+  .cv-celda.on{background:#fde68a;border-color:#e0b93b;color:#3d2b0b}
+  .cv-celda.roto{background:#f7e1dc;border-color:#e6a397}
+  .cv-map{display:flex;flex-direction:column;gap:3px;font-size:.78rem}
+  .cv-map > div{display:flex;gap:8px;align-items:center;border-radius:4px;padding:1px 4px}
+  .cv-map > div.on{background:#fde68a;color:#3d2b0b}
+  .cv-map code{font-family:ui-monospace,Menlo,monospace;min-width:110px}
+  .cv-map b{font-family:ui-monospace,Menlo,monospace;font-weight:600}
+  .cv-map span,.cv-conv span{color:var(--muted)}
+  .cv-conv{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:ui-monospace,Menlo,monospace;font-size:.85rem}
+  .cv-conv b{color:var(--ok)}
+  .cv-ojo{font-size:.74rem;color:#b03a2e;margin-top:6px}
+  .cv-obj .cv-campos{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;font-size:.78rem;font-family:ui-monospace,Menlo,monospace}
+  .cv-obj .cv-campos b{font-weight:700;color:var(--ok)}
+  .cv-chips{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+  .cv-chips > code{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;background:var(--card);border:1px solid var(--line)}
+  .cv-mini{font-size:.76rem;font-weight:600;border:1px solid var(--line);border-radius:6px;background:var(--card);padding:3px 8px}
+  .cv-flecha{display:flex;align-items:center;gap:8px;padding:5px 0 5px 16px;color:var(--accent);transition:opacity .25s}
+  .cv-flecha span{font-size:1.1rem;font-weight:700}
+  .cv-flecha code{font-family:ui-monospace,Menlo,monospace;font-size:.76rem;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:2px 8px;overflow-wrap:anywhere}
+  .cv-paso{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .cv-num{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+  .cv-txt{font-size:.95rem;line-height:1.55;margin:6px 0 12px;min-height:4.6em}
+  .cv-txt code,.cv-siempre code,.cv-comillas code,.op-card code{font-family:ui-monospace,Menlo,monospace;font-size:.86em;background:var(--hover);padding:1px 5px;border-radius:4px}
+  .cv-ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .cv-puntos{display:flex;gap:6px;flex:1;justify-content:center}
+  .cv-punto{width:9px;height:9px;border-radius:50%;border:0;background:var(--line);cursor:pointer;padding:0}
+  .cv-punto.on{background:var(--accent)}
+  .cv-chipsf{display:flex;flex-wrap:wrap;gap:6px}
+  .cv-code{background:#1f1e1d;border-radius:12px;padding:10px 0;overflow-x:auto}
+  .cv-l{display:flex;gap:10px;padding:1px 12px 1px 0;border-left:3px solid transparent;transition:background .2s}
+  .cv-l.on{background:rgba(253,230,138,.16);border-left-color:#fbbf24}
+  .cv-n{min-width:26px;text-align:right;color:#6f6c64;font-family:ui-monospace,Menlo,monospace;font-size:.74rem;line-height:1.75;user-select:none}
+  .cv-l code{font-family:ui-monospace,Menlo,monospace;font-size:.78rem;line-height:1.75;color:#ece9e1;white-space:pre}
+  .cv-l.on code{color:#fff}
+  .cv-l code i{color:#8fbf8f;font-style:normal}
+  .cv-siempre,.cv-comillas{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-top:16px}
+  .cv-siempre ul{padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:.9rem;line-height:1.5}
+  .cv-der .cv-siempre{margin-top:0}
+  .cv-comp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0 6px}
+  .cv-ct{font-size:.82rem;font-weight:700;margin-bottom:6px}
+  .cv-ct.mal{color:#c0392b} .cv-ct.bien{color:var(--ok)}
+  /* Streams: chips de servidores (color = región) */
+  .sv{display:inline-flex;align-items:center;gap:5px;font-family:ui-monospace,Menlo,monospace;font-size:.76rem;font-weight:700;border-radius:7px;padding:3px 8px;background:color-mix(in srgb, var(--c, #8a867b) 14%, var(--card));color:var(--c, var(--text));border:1px solid color-mix(in srgb, var(--c, #8a867b) 40%, transparent);transition:opacity .25s}
+  .sv small{font-size:.7rem;background:var(--c);color:#fff;border-radius:4px;padding:0 4px}
+  .sv.fuera{opacity:.3;text-decoration:line-through}
+  .sv.num,.sv.lista{--c:#2e7d4f}
+  .op-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .op-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+  .op-ancha{margin-top:14px}
+  .op-tit{display:flex;flex-direction:column;gap:2px}
+  .op-tit b{font-family:ui-monospace,Menlo,monospace;font-size:1rem;color:var(--accent)}
+  .op-tit span{font-size:.8rem;color:var(--muted)}
+  .op-ad{display:flex;flex-direction:column;gap:6px}
+  .op-fl{color:var(--accent);font-weight:700;font-size:.9rem}
+  .op-fl code{font-weight:400}
+  .op-cod{display:block;font-size:.78rem;overflow-wrap:anywhere;padding:6px 8px !important}
+  .op-sep{font-family:ui-monospace,Menlo,monospace;font-size:.74rem;color:var(--muted);margin:0 4px}
+  .op-grupos{display:flex;flex-wrap:wrap;gap:10px}
+  .op-grupo{border:1.5px dashed var(--c);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+  .op-grupo > b{font-size:.76rem;color:var(--c);font-family:ui-monospace,Menlo,monospace}
+  .op-res{display:flex;flex-direction:column;gap:6px;font-size:.84rem}
+  .op-term td{vertical-align:middle}
+  .op-card code,.op-res .sv{overflow-wrap:anywhere;white-space:normal}
+  @media (max-width:760px){ .op-term tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px;padding:8px 0;border-bottom:1px solid var(--line)} .op-term td{border:0;padding:0} .op-term td:nth-child(3){grid-column:1 / -1;font-size:.8rem;color:var(--muted)} }
+  @media (prefers-color-scheme: dark){ .cv-tabla td.vos{background:#3d2a1a;color:#f5b47a} .cv-arch > .on,.cv-chips > code.on,.cv-celda.on,.cv-map > div.on{background:#5a4a12;color:#fde68a;border-color:#8a6d1a} .cv-celda.roto{background:#3d2522} }
+  @media (max-width:900px){
+    .cv-main{display:flex;flex-direction:column;align-items:stretch}
+    .cv-der{display:contents}
+    .cv-chipsf{order:1} .cv-paso{order:2;position:sticky;top:0;z-index:5;box-shadow:0 6px 16px rgba(0,0,0,.08)} .cv-diag{order:3} .cv-code{order:4} .cv-der .cv-siempre{order:5}
+    .cv-txt{min-height:0;font-size:.9rem}
+    .cv-comp{grid-template-columns:1fr}
+  }
   @media (max-width:760px){ .hx-paso select.hx-in{max-width:100px} .hx-paso .hx-in.chico{width:52px} .hx-panel{padding:14px} .hx-etapa{grid-template-columns:1fr;gap:4px} }
   /* Quiz */
   .qz-ini,.qz-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;max-width:820px}
@@ -184,6 +257,11 @@
   .qz-sec.on{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:600}
   .qz-sec small{margin-left:6px;opacity:.75;font-weight:400}
   .qz-chk{font-size:.9rem;display:flex;gap:8px;align-items:center;cursor:pointer}
+  .qz-cant{display:flex;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;width:max-content;max-width:100%}
+  .qz-c{font:inherit;font-size:.9rem;font-weight:600;border:0;border-right:1px solid var(--line);background:var(--bg);color:var(--muted);padding:8px 18px;cursor:pointer}
+  .qz-c:last-child{border-right:0}
+  .qz-c.on{background:var(--accent);color:#fff}
+  .qz-lbl .qz-todos{font:inherit;font-size:.72rem;text-transform:none;letter-spacing:0;font-weight:600;color:var(--accent);background:none;border:0;cursor:pointer;margin-left:8px;text-decoration:underline;text-underline-offset:2px}
   .qz-btn{font:inherit;font-size:.9rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:9px 16px;cursor:pointer}
   .qz-btn:hover:not(:disabled){border-color:var(--accent)}
   .qz-btn.primario{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -772,12 +850,6 @@ const MATERIAS = {
           ],
           videos: []
         },
-        mapa: [
-          { t: "Límites", h: ["Intervalos y entornos", "Límites laterales", "Límites notables", "Infinitésimos"] },
-          { t: "Continuidad", h: ["Tipos de discontinuidad", "Función compuesta", "Bolzano · Weierstrass"] },
-          { t: "Derivada", h: ["Interpretación geométrica", "Reglas de derivación", "Derivación logarítmica", "Diferencial"] },
-          { t: "Aplicaciones", h: ["Recta tangente y normal", "Crecimiento", "Rolle · Lagrange · Cauchy"] }
-        ],
         temas: {
           titulo: "Temas que entran en el teórico",
           unidades: [
@@ -836,12 +908,6 @@ const MATERIAS = {
           ],
           videos: []
         },
-        mapa: [
-          { t: "Extremos", h: ["Regla de L'Hôpital", "Máximos y mínimos", "Puntos de inflexión"] },
-          { t: "Integral indefinida", h: ["Propiedades", "Sustitución · partes", "Racionales · irracionales", "Trigonométricas"] },
-          { t: "Integral definida", h: ["Riemann–Darboux", "Teorema de la media", "Teorema fundamental", "Regla de Barrow"] },
-          { t: "Impropias y aplicaciones", h: ["Integrales impropias", "Longitud de arco", "Superficie y volumen de revolución"] }
-        ],
         temas: {
           titulo: "Temas que entran en el teórico",
           unidades: [
@@ -868,12 +934,6 @@ const MATERIAS = {
         id: "final",
         titulo: "Final",
         descripcion: "El final tiene 3 partes: primero un examen multiple choice de 15 minutos; si lo aprobás, pasás al práctico (salvo que hayas promocionado), que son 3 ejercicios; y después el teórico, con 3 temas al azar.",
-        mapa: [
-          { t: "Límites y continuidad", h: ["Concepto de límite", "Límite notable sen x / x", "Tipos de discontinuidad", "Teoremas de continuidad"] },
-          { t: "Derivadas", h: ["Interpretación geométrica", "Diferencial", "Derivada de la inversa", "Rolle · Lagrange"] },
-          { t: "Estudio de funciones", h: ["Máximos y mínimos", "Puntos de inflexión", "Análisis completo"] },
-          { t: "Integrales", h: ["Definida e impropia", "Teorema de la media", "Teorema fundamental · Barrow", "Longitud de arco"] }
-        ],
         temas: {
           titulo: "Temas del teórico tomados en finales anteriores",
           unidades: [
@@ -1003,17 +1063,10 @@ const MATERIAS = {
         id: "p1",
         titulo: "1º Parcial",
         quiz: "quiz/backend-1er-parcial.json",
-        herramientas: ["streams", "csv"],
+        herramientas: ["csv", "streams"],
         descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones y streams).",
         secciones: ["teorico", "parcial"],
         nombres: { parcial: "1º Parcial" },
-        mapa: [
-          { t: "Backend", h: ["Capas", "Microservicios y APIs REST"], u: 0 },
-          { t: "Java", h: ["JVM y bytecode", "Maven", "Sintaxis"], u: 1 },
-          { t: "POO", h: ["Clases y records", "Excepciones", "JUnit", "Herencia y polimorfismo"], u: 2 },
-          { t: "Colecciones", h: ["Generics", "List · Set · Map"], u: 3 },
-          { t: "Streams", h: ["Lambdas", "filter · map · collect", "Procesar un CSV"], u: 4 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1142,14 +1195,6 @@ const MATERIAS = {
         titulo: "TPI",
         descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway y seguridad.",
         secciones: ["teorico", "tpi"],
-        mapa: [
-          { t: "1º Parcial", h: ["Java, POO y streams"], u: 0 },
-          { t: "ORM y JPA", h: ["JDBC", "Entidades y JPQL"], u: 1 },
-          { t: "Spring", h: ["APIs REST", "Inyección de dependencias", "Controller · Service · Repository"], u: 2 },
-          { t: "Spring Data", h: ["JpaRepository", "@Query"], u: 3 },
-          { t: "API Gateway", h: ["RestClient", "Spring Cloud Gateway"], u: 4 },
-          { t: "Seguridad", h: ["OAuth2 y JWT", "Keycloak"], u: 5 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1341,13 +1386,6 @@ const MATERIAS = {
         titulo: "Evaluación final",
         descripcion: "Charla retrospectiva con el docente: preguntas grupales e individuales sobre los temas de los talleres y los hallazgos del TPI 3.",
         secciones: ["teorico"],
-        mapa: [
-          { t: "Huella de carbono", h: ["Energía y eficiencia", "HC = potencia × factor", "Créditos de carbono", "Carbono neutralidad"], u: 0 },
-          { t: "Alcances", h: ["Alcances 1, 2, 3 y 4"], u: 1 },
-          { t: "Green hardware", h: ["Data centers", "Green IA"], u: 2 },
-          { t: "Pensamiento sistémico", h: ["Niveles de sustentabilidad", "Causas y efectos", "Puntos de apalancamiento"], u: 3 },
-          { t: "TPI 3", h: ["Hallazgos y metodología"], u: 4 }
-        ],
         temas: {
           titulo: "Temas posibles de la charla",
           unidades: [
@@ -1415,11 +1453,6 @@ const MATERIAS = {
         herramientas: ["rotaciones"],
         descripcion: "Robots y sus partes, ubicación espacial, matrices de rotación y homogéneas, composición de transformaciones y Denavit–Hartenberg. Se rinde en el campus resolviendo con Octave/Matlab.",
         secciones: [],
-        mapa: [
-          { t: "Definiciones", h: ["Partes del robot", "Grados de libertad", "Tipos de robots"], u: 0 },
-          { t: "Ubicación espacial", h: ["Rotaciones en X, Y, Z", "Matrices homogéneas", "Fijo: se premultiplica", "Móvil: se posmultiplica", "Matriz inversa"], u: 1 },
-          { t: "Cinemática directa", h: ["Tabla DH (θ, d, a, α)", "Matriz A de cada articulación", "T = A1·A2·…·An"], u: 2 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1487,11 +1520,6 @@ const MATERIAS = {
         herramientas: ["robot2r"],
         descripcion: "Martes 6/10, online. Tres ejercicios: cinemática inversa geométrica de un robot RRR, cinemática inversa numérica (DLS) de un robot cilíndrico de hasta 4 GDL con resultados a completar, y generación de trayectorias respondida con código.",
         secciones: [],
-        mapa: [
-          { t: "CI geométrica", h: ["Robot 2R y RRR", "atan2 + ley del coseno", "Codo arriba / abajo"], u: 0 },
-          { t: "CI numérica (DLS)", h: ["Jacobiano", "λ, tolerancia y semilla", "Robot cilíndrico"], u: 1 },
-          { t: "Trayectorias", h: ["Articular sincronizada", "Recta · círculo · cuadrado", "Gráficos y animación"], u: 2 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1551,11 +1579,6 @@ const MATERIAS = {
         quiz: "quiz/tpa-3er-parcial.json",
         descripcion: "Internet de las cosas con la ESP32: arquitectura, entradas y salidas, sensores, protocolos de comunicación, WiFi y la nube. Es un cuestionario en el campus.",
         secciones: [],
-        mapa: [
-          { t: "La ESP32", h: ["Sistema IoT", "Arquitectura y pines", "GPIO · ADC · PWM", "Sensores y actuadores"], u: 0 },
-          { t: "Programación", h: ["setup() y loop()", "millis() vs. delay()", "map()"], u: 1 },
-          { t: "Comunicaciones", h: ["UART · I2C · SPI", "WiFi · Bluetooth · MQTT", "ThingSpeak · Telegram"], u: 2 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1711,11 +1734,6 @@ const MATERIAS = {
         titulo: "1º Parcial",
         herramientas: ["subredes"],
         descripcion: "El primer parcial consta de teórico y práctico.",
-        mapa: [
-          { t: "Arquitectura de redes", h: ["Clasificación de redes", "Modelo TCP/IP", "Encapsulamiento", "ITU · ISO · IEEE · IETF"], u: 0 },
-          { t: "Acceso en LAN", h: ["CSMA/CD · CSMA/CA", "Colisión y broadcast", "Ethernet 802.3", "Hub · switch · AP", "WiFi 802.11"], u: 1 },
-          { t: "Direccionamiento IPv4", h: ["Datagrama IPv4", "Clases y máscara", "Privadas y públicas", "Subredes", "VLANs 802.1q"], u: 2 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1821,12 +1839,6 @@ const MATERIAS = {
         titulo: "2º Parcial",
         herramientas: ["subredes"],
         descripcion: "El segundo parcial consta de una parte teórica y una parte práctica. En cada una vas a encontrar el material de lectura y los videos de las clases.",
-        mapa: [
-          { t: "Direccionamiento", h: ["VLSM y CIDR", "IPv6", "ICMP · ARP", "DHCP · BOOTP"], u: 0 },
-          { t: "Encaminamiento", h: ["Vector distancia", "Estado de enlace", "RIP · OSPF · BGP", "Routers y VLANs"], u: 1 },
-          { t: "Congestión y QoS", h: ["Control de congestión", "Cubeta con goteo y con tokens", "MPLS"], u: 1 },
-          { t: "Administración", h: ["ping · tracert · netstat", "Tabla de enrutamiento", "NAT / PAT"], u: 1 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1948,11 +1960,6 @@ const MATERIAS = {
         id: "p3",
         titulo: "3º Parcial",
         descripcion: "El tercer parcial consta de teórico y práctico.",
-        mapa: [
-          { t: "Transporte", h: ["TCP y la conexión", "UDP y puertos", "NAT · PAT"], u: 0 },
-          { t: "Aplicación", h: ["DNS", "FTP · TFTP · SNMP", "Correo: SMTP · MIME", "HTTP · HTTPS", "VoIP: RTP · SIP"], u: 0 },
-          { t: "Seguridad", h: ["Confidencialidad e integridad", "Firmas digitales", "Firewalls y proxy", "IPSec · SSL/TLS", "VPN"], u: 1 }
-        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -2544,7 +2551,6 @@ function viewParcial(m, p){
     ${crumbs(m, esc(p.titulo))}
     <h1>${esc(p.titulo)}</h1>
     <p class="lead">${esc(p.descripcion)}</p>
-    ${mapaBox(p)}
     ${practicaBox(m, p)}
     <div class="grid">
       ${seccionesDe(p).map(tarjeta).join("")}
@@ -2563,7 +2569,7 @@ function viewSeccionMateria(m, x, tab){
     ${crumbs(m, esc(x.titulo))}
     <h1>${esc(x.titulo)}</h1>
     ${x.descripcion ? `<p class="lead">${esc(x.descripcion)}</p>` : ""}
-    ${tab === "material" || !conVideos ? mapaBox(x) + practicaBox(m, x) : ""}
+    ${tab === "material" || !conVideos ? practicaBox(m, x) : ""}
     ${conVideos ? `
     <div class="tabs">
       <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/material">Material (${cantArchivos(x.material || [])})</div>
@@ -2571,47 +2577,6 @@ function viewSeccionMateria(m, x, tab){
     </div>` : ""}
     <div id="tabBody">${tab === "material" || !conVideos ? filesList(x.material || []) : ""}</div>
     ${tab === "material" || !conVideos ? temasBox(x.temas) : ""}`;
-}
-
-/* Mapa del parcial (campo "mapa"): el parcial al centro, sus grandes temas (t) y lo que entra en cada uno (h).
-   "u" es la unidad de "Temas que entran" a la que lleva el tema al tocarlo. Las líneas se dibujan después, con dibujarMapa(). */
-const COLORES_MAPA = ["#0a8497", "#7c3aed", "#c2410c", "#2563eb", "#2e7d4f", "#be185d"];
-function mapaBox(p){
-  if(!p.mapa || !p.mapa.length) return "";
-  return `
-    <section class="mapa" data-mapa>
-      <div class="mapa-cab"><h2>Mapa del parcial</h2>${p.mapa.some(r => r.u != null) ? `<span>Tocá un tema para ver el detalle</span>` : ""}</div>
-      <div class="mapa-lienzo">
-        <svg class="mapa-lineas" aria-hidden="true"></svg>
-        <div class="mapa-centro">${esc(p.titulo)}</div>
-        <div class="mapa-ramas">
-          ${p.mapa.map((r, i) => `
-            <div class="mapa-rama" style="--c:${COLORES_MAPA[i % COLORES_MAPA.length]}">
-              <div class="mapa-nodo"${r.u != null ? ` data-unidad="${r.u}" role="button" tabindex="0"` : ""}>${esc(r.t)}</div>
-              <ul>${r.h.map(h => `<li>${esc(h)}</li>`).join("")}</ul>
-            </div>`).join("")}
-        </div>
-      </div>
-    </section>`;
-}
-function dibujarMapa(){
-  document.querySelectorAll("[data-mapa]").forEach(m => {
-    const svg = m.querySelector(".mapa-lineas"), lienzo = m.querySelector(".mapa-lienzo");
-    const b = lienzo.getBoundingClientRect(), c = m.querySelector(".mapa-centro").getBoundingClientRect();
-    const x0 = c.left + c.width / 2 - b.left, y0 = c.bottom - b.top;
-    svg.setAttribute("viewBox", `0 0 ${b.width} ${b.height}`);
-    svg.innerHTML = [...m.querySelectorAll(".mapa-rama")].map(r => {
-      const n = r.querySelector(".mapa-nodo").getBoundingClientRect();
-      const x1 = n.left + n.width / 2 - b.left, y1 = n.top - b.top, ym = (y0 + y1) / 2;
-      return `<path d="M${x0},${y0} C${x0},${ym} ${x1},${ym} ${x1},${y1}" fill="none" stroke="${getComputedStyle(r).getPropertyValue("--c")}" stroke-width="2" opacity=".55"/>`;
-    }).join("");
-  });
-}
-function irAUnidad(i){
-  const u = document.getElementById("unidad-" + i);
-  if(!u) return;
-  u.scrollIntoView({ behavior: "smooth", block: "center" });
-  u.classList.remove("flash"); void u.offsetWidth; u.classList.add("flash");
 }
 
 /* Temas que entran en el parcial (opcional: campo "temas" del parcial) */
@@ -2622,8 +2587,8 @@ function temasBox(t){
       <div class="temas-head">
         <h2>${esc(t.titulo || "Temas que entran")}</h2>
       </div>
-      ${t.unidades.map((u, i) => `
-        <div class="unidad" id="unidad-${i}">
+      ${t.unidades.map(u => `
+        <div class="unidad">
           <h3>${esc(u.titulo)}</h3>
           <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
         </div>`).join("")}
@@ -2996,7 +2961,7 @@ function practicaBox(m, p){
   if(!p.quiz && !hs.length) return "";
   return `
     <div class="practica">
-      <span class="pr-t">Practicá</span>
+      <span class="pr-t">Practicá y entendé</span>
       ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
       ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
     </div>`;
@@ -3018,7 +2983,7 @@ async function montarQuiz(m, p){
     if(!quizCache[p.quiz]) quizCache[p.quiz] = fetch(p.quiz).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); });
     const d = await quizCache[p.quiz];
     if(!caja.isConnected) return;
-    qz = { d, m, p, secs: new Set(d.secciones.map((_, i) => i)), mezclar: true, soloReales: false };
+    qz = { d, m, p, secs: new Set(d.secciones.map((_, i) => i)), cant: 10, soloReales: false, vistas: new Set() };
     quizInicio();
   } catch(e){
     delete quizCache[p.quiz];
@@ -3033,26 +2998,32 @@ function quizElegidas(){
   return out;
 }
 function quizInicio(){
-  const d = qz.d, n = quizElegidas().length;
+  const d = qz.d, n = quizElegidas().length, van = qz.cant ? Math.min(qz.cant, n) : n;
+  const todas = qz.secs.size === d.secciones.length;
   const hayPractica = d.secciones.some(s => s.preguntas.some(q => q.practica));
   $("#quiz").innerHTML = `
     <p class="lead">${esc(d.descripcion)}</p>
     <div class="qz-ini">
-      <div class="qz-lbl">Elegí los temas</div>
+      <div class="qz-lbl">¿Cuántas preguntas?</div>
+      <div class="qz-cant">${[10, 20, 0].map(c => `<button class="qz-c${qz.cant === c ? " on" : ""}" data-qcant="${c}">${c || `Todas (${n})`}</button>`).join("")}</div>
+      <div class="qz-lbl">Temas <button class="qz-todos" data-qtodos>${todas ? "Ninguno" : "Todos"}</button></div>
       <div class="qz-secs">${d.secciones.map((s, i) => `<button class="qz-sec${qz.secs.has(i) ? " on" : ""}" data-qsec="${i}">${esc(s.titulo)}<small>${s.preguntas.length}</small></button>`).join("")}</div>
-      <label class="qz-chk"><input type="checkbox" data-qmez${qz.mezclar ? " checked" : ""}> Mezclar el orden</label>
       ${hayPractica ? `<label class="qz-chk"><input type="checkbox" data-qreal${qz.soloReales ? " checked" : ""}> Solo las que salieron en parciales</label>` : ""}
-      <div><button class="qz-btn primario" data-qempezar${n ? "" : " disabled"}>Empezar · ${n} pregunta${n === 1 ? "" : "s"}</button></div>
+      <div><button class="qz-btn primario" data-qempezar${n ? "" : " disabled"}>${n ? `Empezar · ${van} pregunta${van === 1 ? "" : "s"}` : "Elegí al menos un tema"}</button></div>
     </div>`;
 }
-function quizEmpezar(lista){
-  if(qz.mezclar) mezclar(lista);
-  Object.assign(qz, { cola: lista, i: 0, bien: 0, mal: 0, erradas: [], sel: new Set(), hecho: false });
+/* Arma una tanda al azar; primero las que todavía no salieron en esta visita */
+function quizEmpezar(lista, cant = qz.cant){
+  mezclar(lista);
+  const nuevas = lista.filter(x => !qz.vistas.has(x.q)), vistas = lista.filter(x => qz.vistas.has(x.q));
+  const cola = [...nuevas, ...vistas].slice(0, cant || lista.length);
+  Object.assign(qz, { cola, i: 0, bien: 0, mal: 0, erradas: [], sel: new Set(), hecho: false });
   quizPregunta();
 }
 function quizPregunta(){
   const { q, s } = qz.cola[qz.i];
   qz.sel = new Set(); qz.hecho = false;
+  qz.vistas.add(q);
   const abierta = q.tipo === "num" || q.tipo === "modelo";
   $("#quiz").innerHTML = `
     <div class="qz-top">
@@ -3118,6 +3089,7 @@ function quizFin(){
       <p>${frase}</p>
       <div class="qz-acc">
         ${qz.erradas.length ? `<button class="qz-btn primario" data-qrepasar>Repasar las que erré (${qz.erradas.length})</button>` : ""}
+        ${qz.cant && quizElegidas().length > qz.cant ? `<button class="qz-btn${qz.erradas.length ? "" : " primario"}" data-qmas>Otras ${qz.cant}</button>` : ""}
         <button class="qz-btn" data-qotra>Elegir otros temas</button>
         <button class="qz-btn" data-go="m${qz.m.n}/${qz.p.id}">Volver al parcial</button>
       </div>
@@ -3125,11 +3097,13 @@ function quizFin(){
 }
 function clicQuiz(e){
   const t = e.target;
-  const el = t.closest("[data-qsec],[data-qempezar],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra]");
+  const el = t.closest("[data-qsec],[data-qcant],[data-qtodos],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra]");
   if(!el) return false;
   const ds = el.dataset;
   if("qsec" in ds){ const i = +ds.qsec; qz.secs.has(i) ? qz.secs.delete(i) : qz.secs.add(i); quizInicio(); }
-  else if("qempezar" in ds) quizEmpezar(quizElegidas());
+  else if("qcant" in ds){ qz.cant = +ds.qcant; quizInicio(); }
+  else if("qtodos" in ds){ qz.secs = qz.secs.size === qz.d.secciones.length ? new Set() : new Set(qz.d.secciones.map((_, i) => i)); quizInicio(); }
+  else if("qempezar" in ds || "qmas" in ds) quizEmpezar(quizElegidas());
   else if("qop" in ds && !qz.hecho){
     const { q } = qz.cola[qz.i], k = +ds.qop;
     if(q.tipo === "varias"){
@@ -3142,13 +3116,12 @@ function clicQuiz(e){
   else if("qver" in ds) quizDevolucion(null);
   else if("qauto" in ds){ if(ds.qauto === "1") qz.bien++; else { qz.mal++; qz.erradas.push(qz.cola[qz.i]); } quizSiguiente(); }
   else if("qsig" in ds) quizSiguiente();
-  else if("qrepasar" in ds) quizEmpezar([...qz.erradas]);
+  else if("qrepasar" in ds) quizEmpezar([...qz.erradas], 0);
   else if("qsalir" in ds || "qotra" in ds) quizInicio();
   return true;
 }
 document.addEventListener("change", e => {
   if(!qz || !e.target.closest("#quiz")) return;
-  if("qmez" in e.target.dataset) qz.mezclar = e.target.checked;
   if("qreal" in e.target.dataset){ qz.soloReales = e.target.checked; quizInicio(); }
 });
 /* Con el teclado: 1, 2, 3… eligen la opción y Enter responde o pasa a la siguiente */
@@ -3458,189 +3431,356 @@ HERRAMIENTAS.subredes = {
   }
 };
 
-/* 4 · Streams paso a paso (Backend · 1º Parcial) */
-HERRAMIENTAS.streams = {
-  titulo: "Streams paso a paso",
-  corto: "filter, map, sorted… y qué queda en cada paso",
-  desc: "Armá un pipeline de Stream con las operaciones de la materia y mirá qué valores quedan después de cada una, el código Java equivalente y el resultado de la operación terminal.",
+/* ---- Explicaciones paso a paso (Backend): diagrama con flechas + código resaltado ----
+   Cada paso marca líneas de código (l), partes del dibujo (e) y hasta qué etapa se ve (o). */
+function bloqueCodigo(codigo){
+  return `<div class="cv-code">${codigo.split("\n").map((t, i) => {
+    const k = t.indexOf("//");
+    const cod = k < 0 ? t : t.slice(0, k), com = k < 0 ? "" : t.slice(k);
+    return `<div class="cv-l" data-l="${i + 1}"><span class="cv-n">${i + 1}</span><code>${esc(cod)}${com ? `<i>${esc(com)}</i>` : ""}</code></div>`;
+  }).join("")}</div>`;
+}
+function flecha(txt, o){ return `<div class="cv-flecha" data-o="${o}"><span>↓</span>${txt ? `<code>${esc(txt)}</code>` : ""}</div>`; }
+/* Avanzar y retroceder por los pasos de una explicación */
+function pasoAPaso(raiz, pasos, alCambiar){
+  let i = 0;
+  const pintar = mover => {
+    const p = pasos[i];
+    raiz.querySelectorAll("[data-l]").forEach(x => x.classList.toggle("on", p.l.includes(+x.dataset.l)));
+    raiz.querySelectorAll("[data-e]").forEach(x => x.classList.toggle("on", p.e.includes(x.dataset.e)));
+    raiz.querySelectorAll("[data-o]").forEach(x => x.classList.toggle("fut", +x.dataset.o > p.o));
+    raiz.querySelector(".cv-txt").innerHTML = p.t;
+    raiz.querySelector(".cv-num").textContent = `Paso ${i + 1} de ${pasos.length}`;
+    raiz.querySelector("[data-pv='-1']").disabled = i === 0;
+    raiz.querySelector("[data-pv='1']").disabled = i === pasos.length - 1;
+    raiz.querySelectorAll(".cv-punto").forEach((d, k) => d.classList.toggle("on", k === i));
+    if(alCambiar) alCambiar(i);
+    // En el celular el dibujo queda abajo: se lo acerca para ver qué cambió
+    if(mover && innerWidth < 900){ const x = raiz.querySelector(".cv-diag .on"); if(x) x.scrollIntoView({ behavior: "smooth", block: "center" }); }
+  };
+  raiz.querySelector(".cv-ctl").innerHTML = `
+    <button class="qz-btn" data-pv="-1">← Anterior</button>
+    <span class="cv-puntos">${pasos.map((_, k) => `<button class="cv-punto" data-pk="${k}" aria-label="Paso ${k + 1}"></button>`).join("")}</span>
+    <button class="qz-btn primario" data-pv="1">Siguiente →</button>`;
+  raiz.querySelector(".cv-ctl").addEventListener("click", e => {
+    const b = e.target.closest("[data-pv],[data-pk]");
+    if(!b) return;
+    i = "pk" in b.dataset ? +b.dataset.pk : Math.max(0, Math.min(pasos.length - 1, i + +b.dataset.pv));
+    pintar(true);
+  });
+  pintar();
+}
+const PASO_HTML = `<div class="cv-paso"><div class="cv-num"></div><div class="cv-txt"></div><div class="cv-ctl"></div></div>`;
+
+/* Leer un CSV en Java: las formas del apunte 11 (más Files.lines del apunte 10) */
+HERRAMIENTAS.csv = {
+  titulo: "Leer un CSV en Java",
+  corto: "Las distintas formas, paso a paso, con flechas y el código",
+  desc: "Leer el archivo es la base del parcial. Hay varias formas de hacerlo: arriba ves qué resuelve cada una y abajo elegís una y avanzás paso a paso, desde el archivo hasta el objeto, con la línea de código que hace cada cosa.",
   montar(el){
-    const st = { lista: "3, 8, 5, 12, 8, 1", ops: [{ op: "filter", f: "gt", n: 4 }, { op: "map", f: "mul", n: 2 }, { op: "sorted", f: "asc" }], term: "toList" };
-    const OPS = {
-      filter: { fs: { gt: ["x > n", (x, n) => x > n], lt: ["x < n", (x, n) => x < n], ge: ["x >= n", (x, n) => x >= n], par: ["x % 2 == 0", x => x % 2 === 0], impar: ["x % 2 != 0", x => x % 2 !== 0], eq: ["x == n", (x, n) => x === n] } },
-      map: { fs: { mul: ["x * n", (x, n) => x * n], add: ["x + n", (x, n) => x + n], sub: ["x - n", (x, n) => x - n], cuad: ["x * x", x => x * x], div: ["x / n", (x, n) => n ? Math.trunc(x / n) : NaN] } },
-      sorted: { fs: { asc: ["natural", null], desc: ["Comparator.reverseOrder()", null] } },
-      distinct: { fs: { _: ["", null] } }, limit: { fs: { _: ["n", null] } }, skip: { fs: { _: ["n", null] } }
+    const CAB = "id,region,porcentajeCPU,usoMemoria,estado";
+    const F1 = ["srv-0044", "US-WEST-2", "67", "13", "ALERTA"], F2 = "srv-0021,US-EAST-1,64,18,ALERTA";
+    const COLS = CAB.split(",");
+    /* Etapas del dibujo */
+    const E = {
+      archivo: o => `<div class="cv-caja" data-o="${o}" data-e="archivo"><div class="cv-tit">datos/datos.csv</div><div class="cv-arch"><div data-e="cab">${CAB}</div><div data-e="fila">${F1.join(",")}</div><div>${F2}</div></div></div>`,
+      linea: o => `<div class="cv-caja" data-o="${o}" data-e="linea"><div class="cv-tit">String linea</div><code class="cv-str">"${F1.join(",")}"</code></div>`,
+      stream: o => `<div class="cv-caja" data-o="${o}" data-e="stream"><div class="cv-tit">Stream&lt;String&gt; lineas</div><div class="cv-chips"><code data-e="cab">"${CAB}"</code><code>"${F1.join(",")}"</code><code>"${F2}"</code></div></div>`,
+      partes: o => `<div class="cv-caja" data-o="${o}" data-e="partes"><div class="cv-tit">String[] campos</div><div class="cv-arr">${F1.map((v, i) => `<div class="cv-celda" data-e="c${i}"><span>[${i}]</span><b>"${v}"</b></div>`).join("")}</div></div>`,
+      mapa: o => `<div class="cv-caja" data-o="${o}" data-e="mapa"><div class="cv-tit">Map&lt;String, String&gt; fila</div><div class="cv-map">${COLS.map((c, i) => `<div data-e="k${i}"><code>"${c}"</code><span>→</span><b>"${F1[i]}"</b></div>`).join("")}</div></div>`,
+      bean: o => `<div class="cv-caja" data-o="${o}" data-e="bean"><div class="cv-tit">Columnas → atributos (@CsvBindByName)</div><div class="cv-map">${COLS.map((c, i) => `<div><code>${c}</code><span>→</span><b>${["id", "region", "cpu", "memoria", "estado"][i]}</b></div>`).join("")}</div></div>`,
+      convertir: (o, auto) => `<div class="cv-caja" data-o="${o}" data-e="convertir"><div class="cv-tit">${auto ? "Convierte solo (por el tipo del atributo)" : "Integer.parseInt(texto)"}</div><div class="cv-conv"><div><code>"67"</code><span>→</span><b>67</b></div><div><code>"13"</code><span>→</span><b>13</b></div></div><div class="cv-ojo">Si viene <code>"abc"</code> o vacío: NumberFormatException</div></div>`,
+      objeto: o => `<div class="cv-caja cv-obj" data-o="${o}" data-e="objeto"><div class="cv-tit">Servidor</div><div class="cv-campos"><span>id = <b>"srv-0044"</b></span><span>region = <b>"US-WEST-2"</b></span><span>cpu = <b>67</b></span><span>memoria = <b>13</b></span><span>estado = <b>"ALERTA"</b></span></div></div>`,
+      lista: o => `<div class="cv-caja" data-o="${o}" data-e="lista"><div class="cv-tit">List&lt;Servidor&gt; servidores</div><div class="cv-chips"><span class="cv-mini">Servidor srv-0044</span><span class="cv-mini">Servidor srv-0021</span></div></div>`
     };
-    const TERM = { toList: "toList()", count: "count()", sum: "mapToInt(Integer::intValue).sum()", max: "max(Integer::compare)", min: "min(Integer::compare)", average: "mapToInt(Integer::intValue).average()", findFirst: "findFirst()" };
-    const usaN = o => o.op === "limit" || o.op === "skip" || /^(gt|lt|ge|eq|mul|add|sub|div)$/.test(o.f);
-    const java = o => {
-      const n = o.n;
-      if(o.op === "filter" || o.op === "map") return `.${o.op}(x -> ${OPS[o.op].fs[o.f][0].replace("n", n)})`;
-      if(o.op === "sorted") return o.f === "desc" ? ".sorted(Comparator.reverseOrder())" : ".sorted()";
-      if(o.op === "distinct") return ".distinct()";
-      return `.${o.op}(${n})`;
+    const FORMAS = [
+      { t: "Scanner + split", dep: "JDK",
+        etapas: [["archivo"], ["linea", "sc.nextLine()"], ["partes", 'linea.split(",")'], ["convertir", "Integer.parseInt(...)"], ["objeto", "new Servidor(...)"], ["lista", "servidores.add(...)"]],
+        codigo: `Path csv = Path.of("datos/datos.csv");
+try (Scanner sc = new Scanner(Files.newBufferedReader(csv))) {
+    sc.nextLine();                    // encabezado: se descarta
+    while (sc.hasNextLine()) {
+        String linea = sc.nextLine();
+        String[] campos = linea.split(",");
+        int cpu = Integer.parseInt(campos[2].strip());
+        int memoria = Integer.parseInt(campos[3].strip());
+        servidores.add(new Servidor(campos[0], campos[1],
+                cpu, memoria, campos[4]));
+    }
+}`,
+        pasos: [
+          { l: [1, 2], e: ["archivo"], o: 0, t: "Se abre el archivo. El <code>try (…)</code> lo cierra solo al terminar, aunque haya un error." },
+          { l: [3], e: ["cab"], o: 0, t: "La primera línea es el <b>encabezado</b>: se lee y no se usa." },
+          { l: [4, 5], e: ["fila", "linea"], o: 1, t: "En cada vuelta del <code>while</code> se lee <b>una fila entera</b>: queda un solo String con todo." },
+          { l: [6], e: ["partes"], o: 2, t: "<code>split(\",\")</code> corta el String en cada coma. Queda un <b>arreglo</b>: cada columna en una posición, empezando en <b>0</b>." },
+          { l: [7, 8], e: ["c2", "c3", "convertir"], o: 3, t: "Todo lo que se lee es <b>texto</b>: <code>\"67\"</code> no es el número 67. Se convierte con <code>Integer.parseInt</code> (antes <code>strip()</code> saca los espacios)." },
+          { l: [9, 10], e: ["objeto", "lista"], o: 5, t: "Con los datos ya convertidos se crea el objeto y se agrega a la lista. El <code>while</code> repite todo con la fila siguiente." }
+        ] },
+      { t: "BufferedReader + split", dep: "JDK", nota: "Es la que usa el preparcial",
+        etapas: [["archivo"], ["linea", "br.readLine()"], ["partes", 'linea.split(",", -1)'], ["convertir", "Integer.parseInt(...)"], ["objeto", "new Servidor(...)"], ["lista", "servidores.add(...)"]],
+        codigo: `Path csv = Path.of("datos/datos.csv");
+try (BufferedReader br = Files.newBufferedReader(csv,
+        StandardCharsets.UTF_8)) {
+    br.readLine();                    // encabezado
+    String linea;
+    while ((linea = br.readLine()) != null) {   // null = fin
+        String[] campos = linea.split(",", -1);
+        int cpu = Integer.parseInt(campos[2].strip());
+        int memoria = Integer.parseInt(campos[3].strip());
+        servidores.add(new Servidor(campos[0], campos[1],
+                cpu, memoria, campos[4]));
+    }
+}`,
+        pasos: [
+          { l: [1, 2, 3], e: ["archivo"], o: 0, t: "Como Scanner, pero con más control: se elige el <b>charset</b> (UTF-8, para que no se rompan los acentos). Es la forma del preparcial." },
+          { l: [4], e: ["cab"], o: 0, t: "Se lee el encabezado y se descarta (en el preparcial, además, se compara con el esperado)." },
+          { l: [5, 6], e: ["fila", "linea"], o: 1, t: "<code>readLine()</code> devuelve la fila como String, o <b>null</b> cuando se terminó el archivo: ahí corta el <code>while</code>." },
+          { l: [7], e: ["partes"], o: 2, t: "<code>split(\",\", -1)</code>: el <b>-1</b> hace que no se pierdan los campos vacíos del final (por ejemplo <code>…,ESTABLE,</code>)." },
+          { l: [8, 9], e: ["c2", "c3", "convertir"], o: 3, t: "Los números llegan como texto y se convierten con <code>Integer.parseInt</code>." },
+          { l: [10, 11], e: ["objeto", "lista"], o: 5, t: "Se crea el objeto y va a la lista. En el preparcial esto está dentro de un <code>try/catch</code>: si una fila falla, se anota el error y se sigue con la próxima." }
+        ] },
+      { t: "Files.lines + Stream", dep: "JDK",
+        etapas: [["archivo"], ["stream", "Files.lines(...)"], ["partes", '.map(linea -> linea.split(","))'], ["convertir", ".map(c -> new Servidor(...))"], ["objeto", ""], ["lista", ".toList()"]],
+        codigo: `Path csv = Path.of("datos/datos.csv");
+try (Stream<String> lineas = Files.lines(csv)) {
+    List<Servidor> servidores = lineas
+        .skip(1)                          // encabezado
+        .map(linea -> linea.split(","))   // String → String[]
+        .map(c -> new Servidor(c[0], c[1],
+                Integer.parseInt(c[2].strip()),
+                Integer.parseInt(c[3].strip()), c[4]))
+        .toList();
+}`,
+        pasos: [
+          { l: [1, 2], e: ["stream"], o: 1, t: "<code>Files.lines</code> da un <b>Stream&lt;String&gt;</b>: cada fila del archivo es un elemento del flujo." },
+          { l: [5], e: ["cab"], o: 1, t: "<code>skip(1)</code> saltea el primer elemento: el encabezado." },
+          { l: [4], e: ["partes"], o: 2, t: "Un <code>map</code> transforma cada String en su <code>String[]</code> con <code>split</code>." },
+          { l: [6, 7, 8], e: ["c2", "c3", "convertir", "objeto"], o: 4, t: "Otro <code>map</code> convierte los números y crea el <code>Servidor</code>." },
+          { l: [9], e: ["lista"], o: 5, t: "<code>toList()</code> junta todo en la lista. <b>Ojo:</b> si una fila trae un número mal, <code>parseInt</code> corta todo el stream. Por eso para el parcial conviene el <code>while</code> con <code>try/catch</code>, que sigue con la fila siguiente." }
+        ] },
+      { t: "OpenCSV · CSVReader", dep: "OpenCSV",
+        etapas: [["archivo"], ["partes", "reader.readNext()"], ["convertir", "Integer.parseInt(...)"], ["objeto", "new Servidor(...)"], ["lista", "servidores.add(...)"]],
+        codigo: `// pom.xml: dependencia com.opencsv:opencsv
+try (CSVReader reader = new CSVReader(
+        Files.newBufferedReader(Path.of("datos/datos.csv")))) {
+    reader.skip(1);                   // encabezado
+    String[] campos;
+    while ((campos = reader.readNext()) != null) {
+        int cpu = Integer.parseInt(campos[2].strip());
+        int memoria = Integer.parseInt(campos[3].strip());
+        servidores.add(new Servidor(campos[0], campos[1],
+                cpu, memoria, campos[4]));
+    }
+}`,
+        comillas: true,
+        pasos: [
+          { l: [1, 2, 3], e: ["archivo"], o: 0, t: "Es una <b>librería</b>: hay que agregar OpenCSV en el <code>pom.xml</code>. Se le pasa el mismo lector del archivo." },
+          { l: [4], e: ["cab"], o: 0, t: "<code>skip(1)</code> saltea el encabezado." },
+          { l: [5, 6], e: ["fila", "partes"], o: 1, t: "<code>readNext()</code> lee la fila y la devuelve <b>ya separada</b> en un <code>String[]</code>: no hace falta <code>split</code>. Y entiende las comillas (mirá abajo)." },
+          { l: [7, 8], e: ["c2", "c3", "convertir"], o: 2, t: "Igual que antes: los valores siguen siendo texto y se buscan <b>por posición</b>." },
+          { l: [9, 10], e: ["objeto", "lista"], o: 4, t: "Se crea el objeto y va a la lista." }
+        ] },
+      { t: "OpenCSV · CSVReaderHeaderAware", dep: "OpenCSV",
+        etapas: [["archivo"], ["mapa", "reader.readMap()"], ["convertir", 'Integer.parseInt(fila.get("..."))'], ["objeto", "new Servidor(...)"], ["lista", "servidores.add(...)"]],
+        codigo: `try (CSVReaderHeaderAware reader = new CSVReaderHeaderAware(
+        Files.newBufferedReader(Path.of("datos/datos.csv")))) {
+    Map<String, String> fila;
+    while ((fila = reader.readMap()) != null) {
+        int cpu = Integer.parseInt(fila.get("porcentajeCPU").strip());
+        int memoria = Integer.parseInt(fila.get("usoMemoria").strip());
+        servidores.add(new Servidor(fila.get("id"), fila.get("region"),
+                cpu, memoria, fila.get("estado")));
+    }
+}`,
+        pasos: [
+          { l: [1, 2], e: ["cab"], o: 0, t: "<b>Usa el encabezado</b>: lo lee solo y guarda los nombres de las columnas." },
+          { l: [3, 4], e: ["fila", "mapa"], o: 1, t: "<code>readMap()</code> devuelve la fila como un <b>Map</b>: nombre de la columna → su valor." },
+          { l: [5, 6], e: ["k2", "k3", "convertir"], o: 2, t: "Cada dato se pide <b>por nombre</b>: <code>fila.get(\"porcentajeCPU\")</code>. Si cambian el orden de las columnas, el código sigue andando." },
+          { l: [7, 8], e: ["objeto", "lista"], o: 4, t: "Se crea el objeto y va a la lista." }
+        ] },
+      { t: "OpenCSV · CsvToBean", dep: "OpenCSV",
+        etapas: [["archivo"], ["bean", "@CsvBindByName"], ["convertir", ""], ["objeto", ".parse()"], ["lista", ""]], auto: true,
+        codigo: `@Data @NoArgsConstructor                    // Lombok
+public class Servidor {
+    @CsvBindByName(column = "id")            private String id;
+    @CsvBindByName(column = "region")        private String region;
+    @CsvBindByName(column = "porcentajeCPU") private int cpu;
+    @CsvBindByName(column = "usoMemoria")    private int memoria;
+    @CsvBindByName(column = "estado")        private String estado;
+}
+
+Path csv = Path.of("datos/datos.csv");
+try (Reader r = Files.newBufferedReader(csv)) {
+    List<Servidor> servidores = new CsvToBeanBuilder<Servidor>(r)
+        .withType(Servidor.class)
+        .withIgnoreLeadingWhiteSpace(true)
+        .build()
+        .parse();                         // la lista de objetos
+}`,
+        pasos: [
+          { l: [1, 2, 3, 4, 5, 6, 7, 8], e: ["bean"], o: 1, t: "En la clase se marca con <code>@CsvBindByName</code> qué <b>columna</b> va en cada <b>atributo</b>." },
+          { l: [10, 11, 12, 13], e: ["cab"], o: 1, t: "<code>CsvToBean</code> lee el archivo y usa el encabezado para encontrar cada columna." },
+          { l: [15, 16], e: ["convertir", "objeto", "lista"], o: 4, t: "<code>parse()</code> hace todo junto: separa, busca por nombre, <b>convierte</b> <code>\"67\"</code> a <code>int</code> (por el tipo del atributo) y crea los objetos. Devuelve la lista." }
+        ] }
+    ];
+    const VOS = (t) => `<td class="vos">${t}</td>`, LIB = (t) => `<td class="lib">${t}</td>`;
+    const tabla = `
+      <div class="cv-vista">
+        <div class="hx-lbl">Las formas en un vistazo: qué hace Java o la librería y qué programás vos</div>
+        <div class="hx-scroll"><table class="cv-tabla">
+          <tr><th></th><th>Leer las filas</th><th>Separar las columnas</th><th>Encontrar cada dato</th><th>Convertir los números</th><th>Crear el objeto</th><th>Necesita</th></tr>
+          <tr data-forma="0"><th>Scanner + split</th>${LIB("Scanner")}${VOS("split(\",\")")}${VOS("por posición<br><code>campos[2]</code>")}${VOS("parseInt")}${VOS("new Servidor")}<td>JDK</td></tr>
+          <tr data-forma="1"><th>BufferedReader + split</th>${LIB("BufferedReader")}${VOS("split(\",\")")}${VOS("por posición")}${VOS("parseInt")}${VOS("new Servidor")}<td>JDK</td></tr>
+          <tr data-forma="2"><th>Files.lines + Stream</th>${LIB("Files.lines")}${VOS("map + split")}${VOS("por posición")}${VOS("parseInt")}${VOS("map + new")}<td>JDK</td></tr>
+          <tr data-forma="3"><th>CSVReader</th>${LIB("OpenCSV")}${LIB("OpenCSV<br><small>entiende comillas</small>")}${VOS("por posición")}${VOS("parseInt")}${VOS("new Servidor")}<td>OpenCSV</td></tr>
+          <tr data-forma="4"><th>CSVReaderHeaderAware</th>${LIB("OpenCSV")}${LIB("OpenCSV")}${LIB("por nombre<br><code>fila.get(\"…\")</code>")}${VOS("parseInt")}${VOS("new Servidor")}<td>OpenCSV</td></tr>
+          <tr data-forma="5"><th>CsvToBean</th>${LIB("OpenCSV")}${LIB("OpenCSV")}${LIB("por nombre<br><small>anotaciones</small>")}${LIB("OpenCSV")}${LIB("OpenCSV")}<td>OpenCSV</td></tr>
+        </table></div>
+        <div class="cv-ley"><span class="lib">■</span> lo hace Java o la librería <span class="vos">■</span> lo programás vos · Tocá una fila para verla paso a paso</div>
+      </div>`;
+    const siempre = `
+      <div class="cv-siempre">
+        <div class="hx-lbl">Con cualquier forma, siempre</div>
+        <ul>
+          <li><b>Cerrar el archivo</b>: <code>try (…)</code> lo hace solo.</li>
+          <li><b>El encabezado</b> no es un dato: se saltea o se usa para los nombres.</li>
+          <li><b>strip() antes de convertir</b>: <code>" 1110 "</code> con espacios hace fallar a <code>parseInt</code>.</li>
+          <li><b>Validar</b> cada dato (rangos, estados) y crear el objeto solo si está todo bien.</li>
+          <li><b>Una fila mala no corta la carga</b>: el <code>try/catch</code> va adentro del <code>while</code>.</li>
+        </ul>
+      </div>`;
+    const comillas = `
+      <div class="cv-comillas">
+        <div class="hx-lbl">¿Por qué usar OpenCSV? Las comillas</div>
+        <code class="cv-str">srv-0099,"US-EAST-1, Virginia",67,13,ALERTA</code>
+        <div class="cv-comp">
+          <div><div class="cv-ct mal">split(",") → 6 partes ✗</div><div class="cv-arr">${['srv-0099', '"US-EAST-1', ' Virginia"', '67', '13', 'ALERTA'].map((v, i) => `<div class="cv-celda${i === 1 || i === 2 ? " roto" : ""}"><span>[${i}]</span><b>${esc(v)}</b></div>`).join("")}</div></div>
+          <div><div class="cv-ct bien">reader.readNext() → 5 partes ✓</div><div class="cv-arr">${['srv-0099', 'US-EAST-1, Virginia', '67', '13', 'ALERTA'].map((v, i) => `<div class="cv-celda"><span>[${i}]</span><b>${esc(v)}</b></div>`).join("")}</div></div>
+        </div>
+        <p class="hx-nota">La coma dentro de las comillas es parte del dato. <code>split</code> no lo sabe y corre todas las columnas; OpenCSV sí. En el preparcial no pasa porque el contrato dice que no hay comillas.</p>
+      </div>`;
+    let actual = 0;
+    el.innerHTML = `${tabla}<div class="hx-tabs cv-formas">${FORMAS.map((f, i) => `<button class="hx-tab" data-f="${i}">${esc(f.t)}</button>`).join("")}</div><div id="cvForma"></div>${siempre}`;
+    const pintarForma = () => {
+      const f = FORMAS[actual];
+      el.querySelectorAll("[data-f]").forEach(b => b.classList.toggle("on", +b.dataset.f === actual));
+      el.querySelectorAll("tr[data-forma]").forEach(r => r.classList.toggle("on", +r.dataset.forma === actual));
+      const diag = f.etapas.map(([id, txt], o) => (o ? flecha(txt, o) : "") + E[id](o, f.auto)).join("");
+      const caja = el.querySelector("#cvForma");
+      caja.innerHTML = `
+        <div class="cv-main">
+          <div class="cv-diag">${diag}</div>
+          <div class="cv-der">
+            <div class="cv-chipsf"><span class="cc fuerte">${f.dep === "JDK" ? "Solo el JDK, sin dependencias" : "Necesita OpenCSV en el pom.xml"}</span>${f.nota ? `<span class="cc">${f.nota}</span>` : ""}</div>
+            ${PASO_HTML}
+            ${bloqueCodigo(f.codigo)}
+          </div>
+        </div>
+        ${f.comillas ? comillas : ""}`;
+      pasoAPaso(caja, f.pasos);
     };
-    el.innerHTML = `<div class="hx-grid"><div class="hx-panel" id="stCtl"></div><div class="hx-panel" id="stOut"></div></div>`;
-    const ctl = el.querySelector("#stCtl"), out = el.querySelector("#stOut");
-    function controles(){
-      ctl.innerHTML = `
-        <div class="hx-lbl">La lista (números separados por coma)</div>
-        <input class="hx-in ancho" data-k="lista" value="${esc(st.lista)}" inputmode="numeric">
-        <div class="hx-lbl">Operaciones intermedias</div>
-        ${st.ops.map((o, i) => `
-          <div class="hx-paso">
-            <span class="hx-n">${i + 1}</span>
-            <select class="hx-in" data-op="${i}">${Object.keys(OPS).map(k => `<option${o.op === k ? " selected" : ""}>${k}</option>`).join("")}</select>
-            ${Object.keys(OPS[o.op].fs).length > 1 ? `<select class="hx-in" data-f="${i}">${Object.entries(OPS[o.op].fs).map(([k, [t]]) => `<option value="${k}"${o.f === k ? " selected" : ""}>${t}</option>`).join("")}</select>` : ""}
-            ${usaN(o) ? `<input class="hx-in chico" data-n="${i}" value="${o.n}" inputmode="numeric" title="n">` : ""}
-            <button class="hx-x" data-quitar="${i}" title="Quitar">✕</button>
-          </div>`).join("")}
-        <button class="hx-btn" data-mas>+ Operación</button>
-        <div class="hx-lbl">Operación terminal</div>
-        <select class="hx-in" data-term>${Object.entries(TERM).map(([k, t]) => `<option value="${k}"${st.term === k ? " selected" : ""}>${t}</option>`).join("")}</select>
-        <p class="hx-nota">Las intermedias devuelven otro Stream y no hacen nada hasta que aparece la terminal (son <i>lazy</i>).</p>`;
-    }
-    function calcular(){
-      let v = st.lista.split(/[,;\s]+/).filter(Boolean).map(Number).filter(x => !isNaN(x));
-      const etapas = [{ t: `List.of(${v.join(", ")}).stream()`, v: [...v] }];
-      st.ops.forEach(o => {
-        const n = Number(o.n) || 0;
-        if(o.op === "filter") v = v.filter(x => OPS.filter.fs[o.f][1](x, n));
-        if(o.op === "map") v = v.map(x => OPS.map.fs[o.f][1](x, n));
-        if(o.op === "sorted") v = [...v].sort((a, b) => o.f === "desc" ? b - a : a - b);
-        if(o.op === "distinct") v = [...new Set(v)];
-        if(o.op === "limit") v = v.slice(0, Math.max(0, n));
-        if(o.op === "skip") v = v.slice(Math.max(0, n));
-        etapas.push({ t: java(o), v: [...v] });
-      });
-      const r = { toList: `[${v.join(", ")}]`, count: `${v.length}`, sum: `${v.reduce((a, b) => a + b, 0)}`,
-        max: v.length ? `Optional[${Math.max(...v)}]` : "Optional.empty", min: v.length ? `Optional[${Math.min(...v)}]` : "Optional.empty",
-        average: v.length ? `OptionalDouble[${(v.reduce((a, b) => a + b, 0) / v.length).toString()}]` : "OptionalDouble.empty",
-        findFirst: v.length ? `Optional[${v[0]}]` : "Optional.empty" }[st.term];
-      const tipo = { toList: "List<Integer>", count: "long", sum: "int", max: "Optional<Integer>", min: "Optional<Integer>", average: "OptionalDouble", findFirst: "Optional<Integer>" }[st.term];
-      out.innerHTML = `
-        <div class="hx-lbl">Qué queda en cada paso</div>
-        ${etapas.map((e, i) => `<div class="hx-etapa"><code>${esc(e.t)}</code><div>${e.v.length ? e.v.map(x => `<span class="hx-chip c${i % 4}">${esc(String(x))}</span>`).join("") : `<span class="hx-vacio">vacío</span>`}</div></div>`).join("")}
-        <div class="hx-etapa"><code>.${esc(TERM[st.term])}</code><div class="hx-res">${caja(esc(r))}</div></div>
-        <div class="hx-lbl">En Java</div>
-        <pre class="hx-code">${esc(`${tipo} resultado = List.of(${etapas[0].v.join(", ")}).stream()\n${etapas.slice(1).map(e => "        " + e.t).join("\n")}${etapas.length > 1 ? "\n" : ""}        .${TERM[st.term]};`)}</pre>`;
-    }
-    el.addEventListener("input", e => {
-      const ds = e.target.dataset;
-      if("k" in ds) st.lista = e.target.value;
-      else if("n" in ds) st.ops[+ds.n].n = e.target.value;
-      else return;
-      calcular();
-    });
-    el.addEventListener("change", e => {
-      const ds = e.target.dataset;
-      if("op" in ds){ const o = st.ops[+ds.op]; o.op = e.target.value; o.f = Object.keys(OPS[o.op].fs)[0]; o.n = o.n ?? 2; controles(); }
-      else if("f" in ds){ st.ops[+ds.f].f = e.target.value; controles(); }
-      else if("term" in ds) st.term = e.target.value;
-      else return;
-      calcular();
-    });
     el.addEventListener("click", e => {
-      const b = e.target.closest("[data-mas],[data-quitar]");
+      const b = e.target.closest("[data-f],tr[data-forma]");
       if(!b) return;
-      if("mas" in b.dataset) st.ops.push({ op: "distinct", f: "_", n: 2 }); else st.ops.splice(+b.dataset.quitar, 1);
-      controles(); calcular();
+      actual = +(b.dataset.f ?? b.dataset.forma);
+      pintarForma();
+      if(b.dataset.forma != null) el.querySelector(".cv-formas").scrollIntoView({ behavior: "smooth", block: "start" });
     });
-    controles(); calcular();
+    pintarForma();
   }
 };
 
-/* 5 · Clasificador del CSV del preparcial Cloud Center (Backend · 1º Parcial) */
-HERRAMIENTAS.csv = {
-  titulo: "Clasificador del CSV (Cloud Center)",
-  corto: "Pegá filas y mirá cuáles se procesan, descartan o son inválidas",
-  desc: "Aplica las mismas reglas que el código del preparcial (y las del parcial, con la columna de ingresos según la solución propuesta). Sirve para las preguntas de “¿cuántas leídas, procesadas, descartadas e inválidas?”: cada fila dice qué le pasa y por qué.",
+/* Streams y Collectors: un recorrido guiado y cada operación sola, con los servidores del preparcial */
+HERRAMIENTAS.streams = {
+  titulo: "Streams y Collectors",
+  corto: "Cada operación por separado: qué recibe, qué devuelve y el código",
+  desc: "Primero un recorrido paso a paso por un stream completo, con lo que queda después de cada operación. Abajo, cada operación sola con un antes y un después. Los datos son servidores como los del preparcial.",
   montar(el){
-    const EJ = {
-      pre: "id,region,porcentajeCPU,usoMemoria,estado\nS2,S1,101,9,ALERTA\ns7,U2,54,40,ALERTA\nS7,U2,20,19,ESTABLE\nsrv-0012,US-EAST-1,97,16310,CRITICO\nsrv-0004,US-EAST-1,56,4,MANTENIMIENTO\nsrv-0044,US-WEST-2,67,13,ALERTA",
-      par: "id,region,porcentajeCPU,usoMemoria,estado,ingresos\nsrv-0054,SA-EAST-1,59,59,ALERTA,  1110\nsrv-0027,SA-EAST-1,98,17934,CRITICO,   1679\nsrv-0123,US-WEST-2,56,47,ALERTA,   1253\nsrv-0062,US-WEST-2,7,3,ESTABLE,\nsrv-0021,US-WEST-2,50,18,ALERTA,",
-      p2: "id,region,porcentajeCPU,usoMemoria,estado,ingresos\nS1,R1,56,4500,ESTABLE,\nS2,R1,56,4500,CRITICO,1200\nS2,R1,56,34500,CRITICO,1200"
-    };
-    const st = { txt: EJ.pre, reglas: "pre" };
-    const CAB = "id,region,porcentajeCPU,usoMemoria,estado";
-    const entero = t => /^[+-]?\d+$/.test(t) && Math.abs(+t) <= 2147483647 ? +t : null;
-    function procesar(){
-      const lineas = st.txt.split(/\r?\n/);
-      if(lineas.length && lineas[lineas.length - 1] === "") lineas.pop();
-      const cab = lineas.shift();
-      const cols = cab === CAB ? 5 : (st.reglas === "par" && cab === CAB + ",ingresos") ? 6 : 0;
-      if(!cols) return { error: `La primera línea no es el encabezado esperado (${st.reglas === "par" ? `<code>${CAB}</code> o <code>${CAB},ingresos</code>` : `<code>${CAB}</code>`}): se corta la carga con <code>IllegalArgumentException("encabezado incorrecto")</code>.` };
-      const filas = [], servs = [];
-      lineas.forEach((l, i) => {
-        const nro = i + 2, tk = l.split(",").map(t => t.trim());
-        const f = { nro, id: tk[0] || "", estado: "" };
-        const inval = m => { f.estado = "invalida"; f.motivo = m; };
-        if(tk.length !== cols) inval(`tiene ${tk.length} campo${tk.length === 1 ? "" : "s"} y el encabezado pide ${cols}`);
-        else if(tk[4] === "ESTABLE"){ f.estado = "descartada"; f.motivo = "ESTABLE: se descarta sin validar el resto"; }
-        else if(!["ALERTA", "CRITICO"].includes(tk[4])) inval(`estado desconocido: ${tk[4]}`);
-        else {
-          const cpu = entero(tk[2]), mem = entero(tk[3]);
-          if(cpu === null) inval(`CPU "${tk[2]}" no es un entero (NumberFormatException)`);
-          else if(mem === null) inval(`memoria "${tk[3]}" no es un entero (NumberFormatException)`);
-          else if(cpu < 1 || cpu > 100) inval(`uso del cpu fuera de rango (${cpu}; va de 1 a 100)`);
-          else if(mem < 1 || mem > 24576) inval(`uso de memoria fuera de rango (${mem}; va de 1 a 24576)`);
-          else {
-            const bruto = cpu * 0.7 + mem * 0.3, ind = Math.trunc(bruto);
-            const cuenta = `índice = (int)(${cpu}·0,7 + ${mem}·0,3) = (int)${fmt(bruto, 2)} = ${ind}`;
-            const ing = cols === 6 ? entero(tk[5]) : 1000;
-            if(ing === null) inval(`ingresos "${tk[5]}" no es un entero (NumberFormatException)`);
-            else if(!tk[0] || !tk[1]) inval("el id y la región son obligatorios");
-            else if(ind < 1 || ind > 70) inval(`${cuenta}: fuera de 1 a 70`);
-            else if(cols === 6 && (ing < 1000 || ing >= 1900)) inval(`ingresos ${ing} fuera de rango (1000 a 1899)`);
-            else {
-              const costo = Math.trunc(ing * ind / 100);
-              f.estado = "procesada"; f.motivo = `${cuenta} → costo = ${ing}·${ind}/100 = ${costo}`;
-              servs.push({ region: tk[1], ind, costo });
-            }
-          }
-        }
-        filas.push(f);
-      });
-      return { filas, servs };
-    }
-    el.innerHTML = `
-      <div class="hx-panel">
-        <div class="hx-fila"><span class="hx-lbl">Ejemplos:</span><button class="hx-btn" data-ej="pre">Preparcial</button><button class="hx-btn" data-ej="par">Parcial (con ingresos)</button><button class="hx-btn" data-ej="p2">Pregunta 2 del parcial</button></div>
-        <textarea class="hx-in hx-area" data-k="txt" spellcheck="false" rows="8"></textarea>
-        <label class="hx-radio"><input type="radio" name="csvR" value="pre" checked> Reglas del preparcial (5 columnas)</label>
-        <label class="hx-radio"><input type="radio" name="csvR" value="par"> Reglas del parcial (5 o 6 columnas, con ingresos)</label>
+    const COL = { "US-EAST-1": "#0a8497", "SA-EAST-1": "#7c3aed", "US-WEST-2": "#c2410c" };
+    const S = [
+      { id: "srv-01", region: "US-EAST-1", ind: 46, costo: 460 }, { id: "srv-02", region: "SA-EAST-1", ind: 62, costo: 620 },
+      { id: "srv-03", region: "US-EAST-1", ind: 35, costo: 350 }, { id: "srv-04", region: "US-WEST-2", ind: 50, costo: 500 },
+      { id: "srv-05", region: "SA-EAST-1", ind: 28, costo: 280 }];
+    const chip = (s, fuera) => `<span class="sv${fuera ? " fuera" : ""}" style="--c:${COL[s.region]}">${s.id}<small>${s.ind}</small></span>`;
+    const txt = t => `<span class="sv txt" style="--c:${COL[t] || "#8a867b"}">"${t}"</span>`;
+    const num = n => `<span class="sv num">${n}</span>`;
+    const caja = (tit, cont, o) => `<div class="cv-caja" data-o="${o}" data-e="e${o}"><div class="cv-tit">${tit}</div><div class="cv-chips">${cont}</div></div>`;
+    const filtrados = S.filter(s => s.ind < 50);
+    const regiones = filtrados.map(s => s.region);
+    const sinRep = [...new Set(regiones)];
+    const diag = [
+      caja("List&lt;Servidor&gt; servidores", S.map(s => chip(s)).join(""), 0),
+      flecha(".stream()", 1) + caja("Stream&lt;Servidor&gt;", S.map(s => chip(s)).join(""), 1),
+      flecha(".filter(s -> s.getIndiceCarga() < 50)", 2) + caja("Pasan los que dan true", S.map(s => chip(s, s.ind >= 50)).join(""), 2),
+      flecha(".map(Servidor::getRegion)", 3) + caja("Stream&lt;String&gt;", regiones.map(txt).join(""), 3),
+      flecha(".distinct()", 4) + caja("Sin repetidos", sinRep.map(txt).join(""), 4),
+      flecha(".toList()", 5) + caja("List&lt;String&gt; regiones", `<span class="sv lista">[${sinRep.join(", ")}]</span>`, 5)
+    ].join("");
+    const codigo = `List<String> regiones = servidores.stream()  // fuente
+        .filter(s -> s.getIndiceCarga() < 50)  // intermedia
+        .map(Servidor::getRegion)              // intermedia
+        .distinct()                            // intermedia
+        .toList();                             // terminal`;
+    const pasos = [
+      { l: [1], e: ["e0", "e1"], o: 1, t: "La <b>fuente</b>: una lista de 5 servidores (el número es el índice de carga). <code>.stream()</code> la convierte en un <b>flujo</b>: los elementos pasan de a uno por las operaciones." },
+      { l: [2], e: ["e2"], o: 2, t: "<b>filter</b> recibe una condición (un <code>Predicate</code>: devuelve true o false) y deja pasar solo los que dan <b>true</b>. srv-04 tiene 50 justo: <b>no</b> es menor a 50, no pasa." },
+      { l: [3], e: ["e3"], o: 3, t: "<b>map</b> transforma cada elemento en otra cosa (una <code>Function</code>): de cada Servidor queda su región. Entran 3, salen 3. <code>Servidor::getRegion</code> es lo mismo que <code>s -> s.getRegion()</code>." },
+      { l: [4], e: ["e4"], o: 4, t: "<b>distinct</b> saca los repetidos: US-EAST-1 estaba dos veces." },
+      { l: [5], e: ["e5"], o: 5, t: "<b>toList()</b> es la operación <b>terminal</b>: recién ahí se ejecuta todo (las intermedias son <i>lazy</i>, no hacen nada solas) y sale el resultado. Después ese stream ya no se puede volver a usar." }
+    ];
+    const tarjeta = (tit, recibe, antes, despues, cod, nota) => `
+      <div class="op-card">
+        <div class="op-tit"><b>${tit}</b>${recibe ? `<span>${recibe}</span>` : ""}</div>
+        <div class="op-ad"><div class="cv-chips">${antes}</div><div class="op-fl">↓</div><div class="cv-chips">${despues}</div></div>
+        <code class="op-cod">${esc(cod)}</code>
+        ${nota ? `<p class="hx-nota">${nota}</p>` : ""}
+      </div>`;
+    const todos = S.map(s => chip(s)).join("");
+    const grupo = (r, cont) => `<div class="op-grupo" style="--c:${COL[r]}"><b>${r}</b><div class="cv-chips">${cont}</div></div>`;
+    const regs = Object.keys(COL).sort();
+    const ops = `
+      <div class="hx-lbl" style="margin-top:28px">Cada operación sola</div>
+      <div class="op-grid">
+        ${tarjeta("filter", "recibe un Predicate · devuelve un Stream con menos elementos", todos, S.map(s => chip(s, s.ind >= 50)).join(""), ".filter(s -> s.getIndiceCarga() < 50)", "Quedan los que cumplen la condición.")}
+        ${tarjeta("map · mapToInt", "recibe una Function · mismo tamaño", todos, S.map(s => num(s.costo)).join(""), ".mapToInt(Servidor::costoRiesgoOperativo)", "Cada servidor se transforma en su costo. <code>mapToInt</code> da un <code>IntStream</code>, que tiene <code>sum()</code> y <code>average()</code>.")}
+        ${tarjeta("sorted", "recibe un Comparator (opcional)", todos, [...S].sort((a, b) => a.ind - b.ind).map(s => chip(s)).join(""), ".sorted(Comparator.comparing(Servidor::getIndiceCarga))", "De menor a mayor índice. Con <code>.reversed()</code>, al revés.")}
+        ${tarjeta("limit · skip", "reciben un número", todos, S.slice(0, 2).map(s => chip(s)).join("") + `<span class="op-sep">skip(2) →</span>` + S.slice(2).map(s => chip(s)).join(""), ".limit(2)   /   .skip(2)", "<code>limit(2)</code> deja los 2 primeros; <code>skip(2)</code> saltea los 2 primeros.")}
       </div>
-      <div class="hx-panel" id="csvOut"></div>`;
-    const area = el.querySelector("textarea"), out = el.querySelector("#csvOut");
-    area.value = st.txt;
-    function calcular(){
-      const r = procesar();
-      if(r.error){ out.innerHTML = `<p class="hx-alerta">${r.error}</p>`; return; }
-      const c = k => r.filas.filter(f => f.estado === k).length;
-      const reg = {};
-      r.servs.forEach(s => { reg[s.region] = (reg[s.region] || 0) + s.costo; });
-      const total = r.servs.reduce((a, s) => a + s.costo, 0);
-      const ETQ = { procesada: "Procesada", descartada: "Descartada", invalida: "Inválida" };
-      out.innerHTML = `
-        <div class="hx-scroll"><table class="hx-tab2"><tr><th>Línea</th><th>id</th><th>Resultado</th><th>Por qué</th></tr>
-        ${r.filas.map(f => `<tr><td>${f.nro}</td><td><code>${esc(f.id)}</code></td><td><span class="hx-est ${f.estado}">${ETQ[f.estado]}</span></td><td>${esc(f.motivo)}</td></tr>`).join("")}
-        </table></div>
-        <div class="hx-lbl">resultado.informe()</div>
-        <pre class="hx-code">Leídas: ${r.filas.length} | procesadas: ${c("procesada")} | descartadas: ${c("descartada")} | inválidas: ${c("invalida")} | objetos: ${c("procesada")}</pre>
-        <div class="hx-lbl">colector.panorama()</div>
-        <pre class="hx-code">Total: ${total} | Por Region: {${Object.keys(reg).sort().map(k => `${esc(k)}=${reg[k]}`).join(", ")}} | indice menores a 50: ${r.servs.filter(s => s.ind < 50).length}</pre>`;
-    }
-    el.addEventListener("input", e => { if(e.target === area){ st.txt = area.value; calcular(); } });
-    el.addEventListener("change", e => { if(e.target.name === "csvR"){ st.reglas = e.target.value; calcular(); } });
-    el.addEventListener("click", e => {
-      const b = e.target.closest("[data-ej]");
-      if(!b) return;
-      st.txt = area.value = EJ[b.dataset.ej];
-      st.reglas = b.dataset.ej === "pre" ? "pre" : "par";
-      el.querySelector(`input[name="csvR"][value="${st.reglas}"]`).checked = true;
-      calcular();
-    });
-    calcular();
+      <div class="op-card op-ancha">
+        <div class="op-tit"><b>Terminales</b><span>cierran el stream y dan el resultado</span></div>
+        <table class="hx-tab2 op-term">
+          <tr><td><code>.count()</code></td><td>${num(5)}</td><td>cuántos elementos (un <code>long</code>)</td></tr>
+          <tr><td><code>.mapToInt(Servidor::costoRiesgoOperativo).sum()</code></td><td>${num(2210)}</td><td>la suma: es <code>total()</code> del preparcial</td></tr>
+          <tr><td><code>.mapToInt(Servidor::costoRiesgoOperativo).average()</code></td><td>${num("OptionalDouble[442.0]")}</td><td>el promedio (puede no haber: Optional)</td></tr>
+          <tr><td><code>.toList()</code></td><td>${num("List (5)")}</td><td>una lista nueva e inmodificable</td></tr>
+          <tr><td><code>.forEach(System.out::println)</code></td><td>${num("nada")}</td><td>hace algo con cada uno y no devuelve nada (<code>void</code>)</td></tr>
+        </table>
+      </div>
+      <div class="op-card op-ancha">
+        <div class="op-tit"><b>collect(Collectors.groupingBy(…))</b><span>arma un Map agrupando por una clave</span></div>
+        <div class="op-ad">
+          <div class="cv-chips">${todos}</div>
+          <div class="op-fl">↓ <code>groupingBy(Servidor::getRegion)</code></div>
+          <div class="op-grupos">${regs.map(r => grupo(r, S.filter(s => s.region === r).map(s => chip(s)).join(""))).join("")}</div>
+          <div class="op-fl">↓ y con cada grupo se hace algo (el segundo parámetro)</div>
+          <div class="op-res">
+            <div><code>Collectors.counting()</code> → ${num(`{${regs.map(r => `${r}=${S.filter(s => s.region === r).length}`).join(", ")}}`)}</div>
+            <div><code>Collectors.summingInt(Servidor::costoRiesgoOperativo)</code> → ${num(`{${regs.map(r => `${r}=${S.filter(s => s.region === r).reduce((a, s) => a + s.costo, 0)}`).join(", ")}}`)}</div>
+          </div>
+        </div>
+        <code class="op-cod">${esc("servidores.stream().collect(Collectors.groupingBy(Servidor::getRegion, Collectors.summingInt(Servidor::costoRiesgoOperativo)))")}</code>
+        <p class="hx-nota">La segunda es <code>totalesPorRegion()</code> del preparcial, y con <code>counting()</code> sale el conteo por estado que pedía el parcial. <code>groupingBy</code> devuelve un HashMap (sin orden): por eso <code>panorama()</code> lo pasa a un <code>TreeMap</code>, que ordena las claves.</p>
+      </div>`;
+    el.innerHTML = `
+      <div class="hx-lbl">Un stream completo, paso a paso</div>
+      <div class="cv-main"><div class="cv-diag">${diag}</div><div class="cv-der">${PASO_HTML}${bloqueCodigo(codigo)}
+        <div class="cv-siempre"><ul>
+          <li><b>Fuente</b>: <code>lista.stream()</code></li>
+          <li><b>Intermedias</b> (0 o más): devuelven otro Stream y no hacen nada hasta la terminal.</li>
+          <li><b>Terminal</b> (una sola, al final): da el resultado y cierra el stream.</li>
+        </ul></div></div></div>
+      ${ops}`;
+    pasoAPaso(el.querySelector(".cv-main"), pasos);
   }
 };
 
@@ -3711,7 +3851,6 @@ function render(arriba = true){
   $("#topName").textContent = m ? m.nombre : CARRERA.nombre;
   $("#sidebar").classList.remove("open");
   pintarAbajo(m);
-  requestAnimationFrame(dibujarMapa);
   if(arriba) window.scrollTo(0, 0);
 }
 
@@ -3750,8 +3889,6 @@ document.addEventListener("click", e => {
     return;
   }
   if(e.target.closest("#quiz") && clicQuiz(e)) return;
-  const un = e.target.closest("[data-unidad]");
-  if(un){ irAUnidad(+un.dataset.unidad); return; }
   const nv = e.target.closest("[data-nivel]");
   if(nv){ toggleNivel(+nv.dataset.nivel); return; }
   const s = e.target.closest("[data-scroll]");
@@ -3774,9 +3911,6 @@ document.addEventListener("click", e => {
   if(go === ruta) render(); else location.hash = "#/" + go;
 });
 window.addEventListener("hashchange", render);
-let esperaMapa;
-window.addEventListener("resize", () => { clearTimeout(esperaMapa); esperaMapa = setTimeout(dibujarMapa, 120); });
-document.addEventListener("keydown", e => { const n = e.target.closest && e.target.closest("[data-unidad]"); if(n && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); irAUnidad(+n.dataset.unidad); } });
 $("#menuBtn").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
 $("#abajoMenu").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
 $("#abajo [data-up]").addEventListener("click", () => { location.hash = "#/" + rutaPadre(ruta); });

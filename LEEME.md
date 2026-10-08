@@ -43,15 +43,15 @@ Cada grupo de material puede llevar `nivel: "esencial"`, `"profundizar"` o `"ext
 Cada PDF del repo muestra su primera página en la lista y, en la compu, se abre en un visor dentro de la página (con anterior/siguiente). En el celular se abre como siempre. Las tapas están en `miniaturas/` (misma ruta que en `material/`, en .jpg). Cuando subas PDFs nuevos, corré desde la raíz del repo:
 `python3 herramientas/miniaturas.py` (necesita `pip install pymupdf`). Crea las que faltan y borra las que ya no tienen PDF. Si un PDF no tiene tapa, se ve el cartel "PDF" como antes.
 
-## Mapa del parcial
-Un parcial puede tener `mapa`: el parcial va al centro y cada tema con lo que entra. `u` es la unidad de "Temas que entran" (empezando en 0) a la que lleva al tocar el tema:
-`mapa: [ { t: "CI geométrica", h: ["Robot 2R y RRR", "atan2 + ley del coseno"], u: 0 }, ... ]`
-
 ## Quiz
-Con `quiz: "quiz/archivo.json"` en el parcial aparece "Practicá → Quiz" (ruta `#/m201/p1/quiz`). El JSON tiene `titulo`, `descripcion` y `secciones: [ { titulo, preguntas: [...] } ]`. Cada pregunta: `tipo` (`una`, `varias`, `vf`, `num` o `modelo`), `en` (enunciado, acepta HTML), `op: [["texto", true/false], ...]` para las de opciones, `num` o `modelo` (la respuesta, para las que se resuelven y después se mira), y opcionales `ex` (por qué), `mal` (aviso, por ejemplo una clave del campus equivocada), `fuente`, `code`, `img` y `practica: true` (no salió en un parcial). No se guarda nada de quien lo hace.
+Con `quiz: "quiz/archivo.json"` en el parcial aparece "Practicá → Quiz" (ruta `#/m201/p1/quiz`). El JSON tiene `titulo`, `descripcion` y `secciones: [ { titulo, preguntas: [...] } ]`. Cada pregunta: `tipo` (`una`, `varias`, `vf`, `num` o `modelo`), `en` (enunciado, acepta HTML), `op: [["texto", true/false], ...]` para las de opciones, `num` o `modelo` (la respuesta, para las que se resuelven y después se mira), y opcionales `ex` (por qué), `mal` (aviso, por ejemplo una clave del campus equivocada), `fuente`, `code`, `img` y `practica: true` (no salió en un parcial). Se elige la cantidad (10, 20 o todas) y los temas: cada sección del JSON es un tema. Las preguntas salen al azar y "Otras 10" trae las que todavía no salieron. No se guarda nada de quien lo hace.
 
-## Herramientas visuales
-Con `herramientas: ["streams", "csv"]` en el parcial aparecen en "Practicá" (ruta `#/m201/p1/h/streams`). Hay: `rotaciones` (rotaciones y traslaciones, TPA), `robot2r` (robot 2R directa e inversa, TPA), `subredes` (subredes y VLSM, Redes), `streams` (Stream API paso a paso, Backend) y `csv` (clasificador del CSV del preparcial Cloud Center, Backend). Están en `HERRAMIENTAS`, en el código de la página.
+## Herramientas y explicaciones
+Con `herramientas: ["csv", "streams"]` en el parcial aparecen en "Practicá y entendé" (ruta `#/m201/p1/h/csv`). Hay:
+- `csv`: cómo se lee un CSV en Java. Las formas del apunte 11 (Scanner, BufferedReader, Files.lines, CSVReader, CSVReaderHeaderAware y CsvToBean) con un cuadro de qué hace cada una y, para cada forma, un paso a paso con dibujo y el código resaltado.
+- `streams`: Streams y Collectors, con un stream recorrido paso a paso y cada operación sola (filter, map, sorted, limit, terminales y groupingBy).
+- `rotaciones` (rotaciones y traslaciones, TPA), `robot2r` (robot 2R directa e inversa, TPA) y `subredes` (subredes y VLSM, Redes).
+Están en `HERRAMIENTAS`, en el código de la página.
 
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):

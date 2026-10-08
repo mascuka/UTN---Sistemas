@@ -1,6 +1,6 @@
 {
  "titulo": "Backend · 1º Parcial",
- "descripcion": "El parcial real 3K1 (tal cual salió), preguntas del proyecto del preparcial, el Cuestionario 05, teoría y los simulacros.",
+ "descripcion": "El parcial real 3K1 (tal cual salió), el proyecto del preparcial, el Cuestionario 05, la teoría de los apuntes y los simulacros.",
  "secciones": [
   {
    "titulo": "El parcial real (3K1)",
@@ -456,7 +456,7 @@
    ]
   },
   {
-   "titulo": "Stream API (Cuestionario 05)",
+   "titulo": "Streams, lambdas y Collectors",
    "preguntas": [
     {
      "tipo": "varias",
@@ -758,168 +758,229 @@
        false
       ]
      ]
+    },
+    {
+     "tipo": "una",
+     "en": "Al analizar la inicialización del mapa <code>tiposFormateados</code> mediante el siguiente fragmento de código, ¿cuál afirmación es correcta?",
+     "code": "Map tiposFormateados = maximaTasaInteresPorTipo().entrySet().stream()\n    .collect(Collectors.toMap(\n        Map.Entry::getKey,\n        e -> String.format(\"%.2f\", e.getValue()),\n        (newKey, newValue) -> newKey,\n        LinkedHashMap::new));",
+     "ex": "<code>toMap</code> con 4 argumentos: clave, valor, <b>función de fusión</b> (qué hacer si se repite una clave; acá se queda con el primero, aunque el parámetro se llame <code>newKey</code>) y la <b>fábrica</b> del mapa. Como hay función de fusión, no hay excepción por duplicados. <code>collect</code> siempre crea un mapa nuevo y no toca el original.",
+     "fuente": "Preguntas posibles · 3K1 fintech",
+     "op": [
+      [
+       "El código arrojará una excepción en tiempo de ejecución si el método maximaTasaInteresPorTipo() devuelve claves duplicadas, ya que la función de fusión (merge function) ignora los nuevos valores ingresados.",
+       false
+      ],
+      [
+       "El código altera directamente el estado interno del mapa devuelto por maximaTasaInteresPorTipo(), formateando sus elementos in-place sin reservar espacio adicional en memoria.",
+       false
+      ],
+      [
+       "El código transforma los valores numéricos a cadenas con dos decimales, conserva de forma segura el valor existente en caso de colisión de claves y garantiza que se mantenga el orden de inserción original al estructurar el resultado en un LinkedHashMap.",
+       true
+      ],
+      [
+       "La expresión (newKey, newValue) -&gt; newKey actúa como un filtro que elimina automáticamente cualquier clave que no sea de tipo String durante el proceso de recolección.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Asumiendo que se procesaron y almacenaron en la CarteraCreditos 4 SolicitudCredito con la siguiente estructura (solo tipo y score): [(\"PREMIUM\", 65), (\"REGULAR\", 85), (\"PREMIUM\", 75), (\"PREMIUM\", 65)]. ¿Cuál sería la salida esperada del método <code>maximaTasaInteresPorTipo()</code>?",
+     "code": "public double getTasaInteresAnual() {          // en SolicitudCredito\n    return TASA_BASE + (100 - this.scoreFinanciero) * 0.8;   // TASA_BASE = 40\n}\n// CarteraCreditos: groupingBy(tipo, mapping(getTasaInteresAnual, maxBy(naturalOrder())))",
+     "ex": "Con el código del simulacro: REGULAR (score 85) da 40 + 15·0,8 = <b>52</b>. En PREMIUM, la tasa <b>máxima</b> sale del score <b>mínimo</b> (65): 40 + 35·0,8 = 68. La única opción con REGULAR = 52 es la b.",
+     "mal": "La b dice PREMIUM = 76, pero con este código da 68 (76 saldría con un score de 55). Se elige la b por descarte. Lo importante es entender que la tasa máxima corresponde al score más bajo.",
+     "fuente": "Preguntas posibles · 3K1 fintech",
+     "op": [
+      [
+       "{REGULAR=76, PREMIUM=52}",
+       false
+      ],
+      [
+       "{REGULAR=52, PREMIUM=76}",
+       true
+      ],
+      [
+       "{REGULAR=105, PREMIUM=90}",
+       false
+      ],
+      [
+       "{REGULAR=118.80, PREMIUM=119.69}",
+       false
+      ]
+     ]
     }
    ]
   },
   {
-   "titulo": "Teoría",
+   "titulo": "Lectura de CSV",
    "preguntas": [
     {
      "tipo": "una",
-     "en": "¿Qué implica cuando hablamos de “Manejo de la lógica de negocio” en el desarrollo backend?",
-     "ex": "El apunte 01 lo define en una sola frase que junta b, d y e: “implica la implementación y gestión de la lógica de negocio de una aplicación, es decir, las reglas y procesos que definen cómo funcionará el sistema y cómo se llevarán a cabo las operaciones”. En el Cuestionario 01 aparece lo mismo con los otros desafíos: escalabilidad, seguridad, rendimiento e integración con sistemas externos.",
-     "fuente": "Simulacro (campus)",
+     "en": "¿Cuáles son las dos formas de leer un CSV línea por línea solo con el JDK, sin dependencias externas?",
+     "ex": "OpenCSV es una dependencia que se agrega al pom. El preparcial usa BufferedReader y split.",
+     "fuente": "Apunte 11 · CSV",
      "op": [
       [
-       "Todas son correctas.",
+       "Scanner + split, y BufferedReader (Files.newBufferedReader) + split",
        true
       ],
       [
-       "Implica la implementación y gestión de la lógica de negocio de una aplicación.",
+       "OpenCSV CSVReader y CsvToBean",
        false
       ],
       [
-       "Ninguna es correcta.",
+       "CSVReaderHeaderAware y Jackson CSV",
        false
       ],
       [
-       "Implica cómo se llevarán a cabo las operaciones.",
+       "JDBC y ResultSet",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "¿Qué ventaja da BufferedReader sobre Scanner para leer un CSV?",
+     "modelo": "Da más control sobre el <b>charset</b> (en el proyecto, <code>Files.newBufferedReader(archivo, StandardCharsets.UTF_8)</code>, para que no se rompan los acentos), sobre el manejo de las excepciones de E/S (<code>IOException</code>) y sobre el cierre del recurso con try-with-resources. Scanner es más corto de escribir, pero da menos control.",
+     "fuente": "Apunte 11 · CSV",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El apunte recomienda hacer <code>trim()</code>/<code>strip()</code> y controlar vacíos antes de convertir un campo a número. ¿Qué excepción se busca evitar?",
+     "ex": "<code>Integer.parseInt(\" 1110 \")</code> falla por los espacios; por eso el parser hace <code>map(String::strip)</code>. Un campo vacío también falla (la línea 128 del parcial).",
+     "fuente": "Apuntes 06 y 11",
+     "op": [
+      [
+       "NumberFormatException",
+       true
+      ],
+      [
+       "ClassCastException",
        false
       ],
       [
-       "Implica definir las reglas y procesos que definen cómo funcionará el sistema.",
+       "ArrayIndexOutOfBoundsException",
+       false
+      ],
+      [
+       "UnsupportedOperationException",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "Explique brevemente (4-6 líneas) qué responsabilidades corresponden a JuegoCooperativo y al ParserJuegos cuando se procesa una fila de tipo “Cooperativo” con una dificultad inválida (ej: 15). Indique qué sucede con el resumen del procesamiento y si el parser continúa con la siguiente fila.",
+     "modelo": "<b>JuegoCooperativo</b> protege su invariante: en su constructor (o en su <code>desdeCampos</code>) valida la dificultad y, si es 15, tira <code>IllegalArgumentException</code>. El objeto inválido <b>nunca llega a existir</b>. El <b>ParserJuegos</b> no repite esa regla: captura la excepción dentro del while, registra la línea y el motivo en los errores (sube <b>inválidas</b>, no se agrega el juego) y <b>sigue con la próxima fila</b>. Así las validaciones del dato quedan “cerca del objeto”, como pide el preenunciado, y el parser se ocupa de leer, clasificar y contar.",
+     "fuente": "Simulacro (campus) · 3K4 juegos"
+    },
+    {
+     "tipo": "una",
+     "en": "Se procesa un archivo con el siguiente contenido (incluyendo encabezado). El parser está configurado para descartar si el rating es menor a 1.0 y marcar como inválida si hay errores de formato o rating &gt; 10.0. ¿Qué valores contiene el ResultadoParseo?",
+     "code": "id;nombre;anio;min;max;dur;rating;peso;cat;dificultad\nJ1;Cascadia;2021;1;4;45;8.4;2.1;Familiar;\nJ2;Error;2020;1;4;30;ocho;2.0;Estrategia;\nJ3;Fuera;2022;2;5;60;12.0;3.0;Estrategia;",
+     "ex": "J1 tiene rating 8,4 → procesada. J2: “ocho” no es número → inválida (<code>NumberFormatException</code>). J3: 12,0 &gt; 10 → inválida. Ninguna tiene rating menor a 1, así que no hay descartadas.",
+     "fuente": "Simulacro (campus) · 3K4 juegos",
+     "op": [
+      [
+       "Leídas: 3, Procesadas: 2, Inválidas: 1",
+       false
+      ],
+      [
+       "Leídas: 3, Procesadas: 1, Inválidas: 2",
+       true
+      ],
+      [
+       "Leídas: 3, Procesadas: 1, Descartadas: 2",
+       false
+      ],
+      [
+       "El procesamiento se detiene en J2 y lanza una excepción al Main.",
        false
       ]
      ]
     },
     {
      "tipo": "una",
-     "en": "¿Qué responsabilidad principal tiene la subcapa de servicio en una aplicación backend modular?",
-     "ex": "Servicio = lógica de negocio. En el proyecto, los cálculos están en <code>Servidor</code> y <code>Cloud</code>, no en <code>App</code>.",
-     "fuente": "Preguntas posibles · Cuestionario 01",
+     "en": "Se procesa este archivo del formato original. El Consumo solo se agrega después de construirse correctamente. ¿Qué valores tiene el resumen?",
+     "code": "id,rubro,importeCentavos,bonificacionCentavos,estado\nA,Alimentos,0,0,ANULADO\nB,Alimentos,mil,0,APROBADO\nC,Alimentos,110000,10000,APROBADO",
+     "ex": "A está ANULADO → descartada sin validar los montos (como ESTABLE en el preparcial). B: “mil” no es número → inválida, y la carga sigue. C es válida → procesada.",
+     "fuente": "Preguntas posibles · 3K7 tarjetas",
      "op": [
       [
-       "Ejecutar las validaciones de formularios del frontend.",
+       "Leídas 3, procesadas 1, descartadas 0, inválidas 2: A tiene monto inválido.",
        false
       ],
       [
-       "Gestionar las configuraciones del servidor web.",
+       "La carga termina en B y no hay un resultado de parseo.",
        false
       ],
       [
-       "Generar las vistas HTML enviadas al cliente.",
+       "Leídas 3, procesadas 2, descartadas 1, inválidas 0: procesar incluye intentar convertir.",
        false
       ],
       [
-       "Implementar la lógica de negocio asociada a la funcionalidad.",
+       "Leídas 3, procesadas 1, descartadas 1, inválidas 1: C se incorpora después del error de B.",
        true
       ]
      ]
     },
     {
      "tipo": "una",
-     "en": "La liquidación recibe altas desde una web, una aplicación de mostrador y una importación CSV ejecutada en el backend. La web ya calcula el neto y muestra una comisión estimada. Al cambiar una tarifa, los tres caminos deben aceptar los mismos montos y registrar la misma comisión, incluso si un cliente todavía usa la tarifa anterior. ¿Qué organización satisface mejor ese requisito?",
-     "ex": "Una sola fuente de verdad: si la regla está copiada en varios lugares, cuando cambia la tarifa alguna copia queda vieja. El cliente puede mostrar estimaciones, pero lo que vale es lo que calcula el backend. Salió dos veces con las opciones en otro orden.",
-     "fuente": "Preguntas posibles",
+     "en": "Se comparan cuatro formas de procesar el archivo de juegos: 1) Scanner y split(\";\") con índices manuales. 2) OpenCSV, que maneja la sintaxis pero devuelve String[]. 3) Mapas basados en los nombres de encabezados. 4) Mapeo directo a objetos (Beans) por nombre de columna. ¿Qué mejora fundamental aporta el paso del nivel 2 al nivel 3?",
+     "ex": "Con <code>String[]</code> se accede por posición (<code>tokens[2]</code>); con <code>Map</code>, por nombre (<code>fila.get(\"rating\")</code>). La conversión de tipos recién la automatiza el nivel 4 (beans).",
+     "fuente": "Preguntas posibles · 3K4 juegos",
      "op": [
       [
-       "Concentrar validación y cálculo en una operación del backend utilizada por las altas de ambos clientes y por el importador; las pantallas pueden anticipar controles y mostrar estimaciones.",
+       "Elimina la dependencia de la posición (índice) de las columnas, permitiendo reordenar el CSV si se mantienen los nombres.",
        true
       ],
       [
-       "Validar y calcular en cada endpoint del backend y repetir esas reglas en el importador; mantener iguales las copias mediante una especificación común.",
+       "Garantiza que no existan filas con datos nulos o vacíos en el archivo.",
        false
       ],
       [
-       "Validar los montos en una operación compartida del backend, pero registrar la comisión calculada por cada cliente o importador para conservar lo que vio el operador.",
+       "Permite procesar archivos con diferentes separadores automáticamente.",
        false
       ],
       [
-       "Publicar montos y tarifas en la API para que cada cliente valide y calcule; el backend registra los valores recibidos y el importador aplica su propia copia de las reglas.",
+       "Automatiza la conversión de tipos sin intervención del programador.",
        false
       ]
      ]
     },
     {
      "tipo": "una",
-     "en": "El sistema de juegos expone un catálogo mediante un endpoint <code>GET /juegos</code>. Actualmente, los juegos se cargan desde el CSV a una lista en memoria al iniciar el servidor. Se requiere que si un administrador agrega un juego manualmente, este persista tras un reinicio del servidor y siga disponible para la App móvil. ¿Qué cambio técnico cumple este objetivo manteniendo el contrato de la API?",
-     "ex": "La memoria se pierde al reiniciar, haya la RAM que haya. La persistencia es responsabilidad del backend (capa de datos). “Mantener el contrato” quiere decir que el endpoint sigue igual: el cliente no se entera de cómo se guarda.",
-     "fuente": "Simulacro (campus)",
+     "en": "Una sucursal intercambia el orden de importeCentavos y bonificacionCentavos, conservando sus encabezados. Se comparan cuatro estrategias: 1) Scanner y posiciones. 2) OpenCSV con arreglos y posiciones. 3) Mapas encabezado → campo. 4) Beans por nombre de encabezado con conversión a números. Se deben seguir calculando el neto y las reglas de aceptación. ¿Qué análisis es correcto?",
+     "ex": "Ninguna biblioteca de lectura hace la <b>lógica de negocio</b>: el neto y las reglas de aceptación siempre las programás vos. Solo cambia quién separa los campos (2), cómo se los busca (3: por nombre) y quién los convierte (4).",
+     "fuente": "Preguntas posibles · 3K7 tarjetas",
      "op": [
       [
-       "Hacer que la App móvil guarde una copia local del catálogo y la envíe al backend cada vez que el servidor se reinicie.",
+       "El paso 3 a 4 permite trabajar con objetos, pero vuelve obligatorio el orden original de columnas: las propiedades numéricas de un bean solo pueden asociarse por posición.",
        false
       ],
       [
-       "Almacenar los juegos en un sistema de persistencia duradera (como una base de datos) en el backend y recuperarlos al iniciar; mantener el endpoint de la API idéntico.",
+       "El paso 1 a 2 delega la interpretación de la sintaxis, pero conserva accesos posicionales; 3 usa nombres y 4 delega además el mapeo y las conversiones configuradas. Calcular el neto y validar las reglas del negocio sigue siendo necesario.",
        true
       ],
       [
-       "Aumentar la memoria RAM del servidor para que la lista en memoria no se pierda durante los reinicios programados.",
+       "El paso 2 a 3 evita depender del orden; por eso el mapa también convierte los montos a números y garantiza que la bonificación sea menor al importe, sin controles adicionales.",
        false
       ],
       [
-       "Eliminar el endpoint GET /juegos y permitir que los clientes lean directamente el archivo CSV desde el servidor de archivos.",
+       "El paso 1 a 2 elimina tanto la separación manual como la dependencia del orden: al devolver un arreglo, OpenCSV identifica qué posición corresponde a cada nombre de columna.",
        false
       ]
      ]
-    },
-    {
-     "tipo": "varias",
-     "en": "Indica cuál/cuáles es/son características principales del Lenguaje de Programación Java",
-     "ex": "Apunte 02: Java es de <b>alto nivel</b>, <b>orientado a objetos</b> y “compilado <b>e</b> interpretado”: se compila a bytecode y la JVM lo ejecuta. Por eso no es “solo” una cosa ni la otra. Es <b>independiente</b> de la plataforma: la JVM es la que depende del sistema operativo.",
-     "fuente": "Simulacro (campus)",
-     "op": [
-      [
-       "Alto nivel",
-       true
-      ],
-      [
-       "Todas son características de java",
-       false
-      ],
-      [
-       "Solo compilado",
-       false
-      ],
-      [
-       "Dependiente de la plataforma",
-       false
-      ],
-      [
-       "Orientado a objetos",
-       true
-      ],
-      [
-       "Solo interpretado",
-       false
-      ],
-      [
-       "Ninguna es característica de Java",
-       false
-      ]
-     ]
-    },
-    {
-     "tipo": "una",
-     "en": "El lenguaje de Programación Java es",
-     "ex": "Desde Java 8 tiene lambdas y streams, pero su paradigma es la POO.",
-     "fuente": "Preguntas posibles",
-     "op": [
-      [
-       "Funcional",
-       false
-      ],
-      [
-       "Orientado a objetos",
-       true
-      ],
-      [
-       "Lógico",
-       false
-      ]
-     ]
-    },
+    }
+   ]
+  },
+  {
+   "titulo": "POO: herencia, polimorfismo y sobrecarga",
+   "preguntas": [
     {
      "tipo": "vf",
      "en": "Para sobrecargar un método es necesario cambiar ya sea su cantidad de parámetros, los tipos de dichos parámetros o ambos.",
@@ -989,22 +1050,6 @@
      ]
     },
     {
-     "tipo": "vf",
-     "en": "Al definir el método main, se lo define como static, esto quiere decir que este no puede invocar otros métodos de su misma clase que a su vez no sean estáticos y por eso es que todos los métodos dentro de main deben de ser declarados estáticos",
-     "ex": "Desde <code>main</code> se puede usar cualquier método de instancia creando un objeto: <code>new ParserServidores().leer(archivo)</code> es justo eso.",
-     "fuente": "Preguntas posibles",
-     "op": [
-      [
-       "Verdadero",
-       false
-      ],
-      [
-       "Falso",
-       true
-      ]
-     ]
-    },
-    {
      "tipo": "una",
      "en": "Seleccione el modificador al que corresponde la definición. “Esta función de la clase X es accesible para todas las clases externas y por sí misma.”",
      "ex": "<code>public</code>: todas. <code>protected</code>: el paquete y las subclases. <i>default</i> (sin modificador): solo el paquete. <code>private</code>: solo la clase.",
@@ -1025,6 +1070,115 @@
       [
        "protected",
        false
+      ]
+     ]
+    },
+    {
+     "tipo": "modelo",
+     "en": "Analice el siguiente fragmento del constructor de ServicioJuegos y explique qué valor devuelve <code>calcularSumaPuntuacionAjustada()</code> al final. Justifique comparando qué pasaría si se usara <code>this.juegos = lista</code> en lugar de <code>List.copyOf(lista)</code>.",
+     "code": "var lista = new ArrayList();\nlista.add(new JuegoMesa(\"J1\", \"A\", 2020, 1, 4, 60, 8.0, 2.0, \"Cat\")); // Puntuación 16.0\nvar servicio = new ServicioJuegos(lista);\nlista.clear();\ndouble total = servicio.calcularSumaPuntuacionAjustada();",
+     "modelo": "Con <code>List.copyOf(lista)</code>, ServicioJuegos guarda su propia copia <b>antes</b> del <code>clear()</code>, así que <b>total = 16.0</b>. Con <code>this.juegos = lista</code>, las dos variables apuntan a la misma lista: el <code>clear()</code> de afuera también vacía la del servicio y <b>total = 0.0</b>. La copia defensiva protege el encapsulamiento. <i>Salió igual con la fintech: CarteraCreditos con una SolicitudCredito PREMIUM de score 45. Con copyOf el promedio es 40 + 55·0,8 = 84,0; sin copia, la lista queda vacía y <code>average().orElse(0)</code> da 0,0. El enunciado de esa versión dice <code>new CentralEnvios(entrada)</code>, pero es un error de copiado: quiere decir CarteraCreditos.</i>",
+     "fuente": "Simulacro (campus) · 3K4 juegos"
+    },
+    {
+     "tipo": "una",
+     "en": "Suponga que JuegoCooperativo extiende de JuegoMesa y sobrescribe <code>getPuntuacionAjustada()</code>. Se ejecuta el siguiente código. ¿Qué valor imprime la consola?",
+     "code": "List lista = List.of(\n    new JuegoMesa(\"J1\", \"Normal\", 2020, 1, 4, 60, 8.0, 2.5, \"E\"),          // Puntuación: 20.0\n    new JuegoCooperativo(\"J2\", \"Coop\", 2021, 2, 5, 90, 8.0, 2.5, \"C\", 6) // Puntuación: 23.0\n);\nSystem.out.println(lista.stream().mapToDouble(JuegoMesa::getPuntuacionAjustada).sum());",
+     "ex": "<b>Enlace dinámico</b>: aunque la referencia diga <code>JuegoMesa::</code>, cada objeto ejecuta su versión. J1 da 20,0 y J2 (cooperativo) da 23,0: suma 43,0. Es lo mismo que <code>Servidor::costoRiesgoOperativo</code> con <code>ServidorConIngresos</code> en el parcial.",
+     "fuente": "Simulacro (campus) · 3K4 juegos",
+     "op": [
+      [
+       "Error de compilación porque JuegoMesa::getPuntuacionAjustada no conoce la dificultad.",
+       false
+      ],
+      [
+       "40.0 (ignora el cálculo extra del juego cooperativo)",
+       false
+      ],
+      [
+       "46.0 (aplica el cálculo de cooperativo a ambos objetos)",
+       false
+      ],
+      [
+       "43.0",
+       true
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "titulo": "Java: plataforma y sintaxis",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "Indica cuál/cuáles es/son características principales del Lenguaje de Programación Java",
+     "ex": "Apunte 02: Java es de <b>alto nivel</b>, <b>orientado a objetos</b> y “compilado <b>e</b> interpretado”: se compila a bytecode y la JVM lo ejecuta. Por eso no es “solo” una cosa ni la otra. Es <b>independiente</b> de la plataforma: la JVM es la que depende del sistema operativo.",
+     "fuente": "Simulacro (campus)",
+     "op": [
+      [
+       "Alto nivel",
+       true
+      ],
+      [
+       "Todas son características de java",
+       false
+      ],
+      [
+       "Solo compilado",
+       false
+      ],
+      [
+       "Dependiente de la plataforma",
+       false
+      ],
+      [
+       "Orientado a objetos",
+       true
+      ],
+      [
+       "Solo interpretado",
+       false
+      ],
+      [
+       "Ninguna es característica de Java",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El lenguaje de Programación Java es",
+     "ex": "Desde Java 8 tiene lambdas y streams, pero su paradigma es la POO.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Funcional",
+       false
+      ],
+      [
+       "Orientado a objetos",
+       true
+      ],
+      [
+       "Lógico",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "Al definir el método main, se lo define como static, esto quiere decir que este no puede invocar otros métodos de su misma clase que a su vez no sean estáticos y por eso es que todos los métodos dentro de main deben de ser declarados estáticos",
+     "ex": "Desde <code>main</code> se puede usar cualquier método de instancia creando un objeto: <code>new ParserServidores().leer(archivo)</code> es justo eso.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
       ]
      ]
     },
@@ -1071,7 +1225,12 @@
        true
       ]
      ]
-    },
+    }
+   ]
+  },
+  {
+   "titulo": "Maven y JUnit",
+   "preguntas": [
     {
      "tipo": "una",
      "en": "¿Qué es un archetype en Maven?",
@@ -1179,6 +1338,86 @@
      ],
      "practica": true
     },
+    {
+     "tipo": "una",
+     "en": "¿Qué diferencia hay entre @BeforeEach y @BeforeAll?",
+     "ex": "@BeforeAll va en un método <code>static</code>.",
+     "fuente": "Apunte 07 · JUnit",
+     "op": [
+      [
+       "@BeforeEach corre antes de cada test; @BeforeAll una sola vez antes de todos",
+       true
+      ],
+      [
+       "Son sinónimos",
+       false
+      ],
+      [
+       "Es al revés",
+       false
+      ],
+      [
+       "@BeforeEach es solo para tests parametrizados",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué método se usa para comprobar que un código lanza una excepción de un tipo dado?",
+     "ex": "Así están escritos los tests del preparcial: <code>assertThrows(IllegalArgumentException.class, () -&gt; new Servidor(null, \"W1\", 60))</code>.",
+     "fuente": "Apunte 07 · JUnit",
+     "op": [
+      [
+       "assertThrows(Clase.class, () -&gt; codigo())",
+       true
+      ],
+      [
+       "assertEquals(Clase.class, codigo())",
+       false
+      ],
+      [
+       "assertTrue(codigo() instanceof Clase)",
+       false
+      ],
+      [
+       "assertNotNull(codigo())",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué ventaja tiene agrupar comprobaciones en <code>assertAll(...)</code>?",
+     "ex": "Con <code>assertEquals</code> sueltos, el primero que falla corta el test.",
+     "fuente": "Apunte 07 · JUnit",
+     "op": [
+      [
+       "Ejecuta todas aunque alguna falle y reporta todos los fallos juntos",
+       true
+      ],
+      [
+       "Es más rápido",
+       false
+      ],
+      [
+       "Reemplaza a @Test",
+       false
+      ],
+      [
+       "Ninguna",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Excepciones y arreglos",
+   "preguntas": [
     {
      "tipo": "una",
      "en": "Un arreglo <code>int[] v = new int[6];</code> tiene índices válidos de:",
@@ -1303,327 +1542,108 @@
       ]
      ],
      "practica": true
-    },
-    {
-     "tipo": "una",
-     "en": "¿Qué diferencia hay entre @BeforeEach y @BeforeAll?",
-     "ex": "@BeforeAll va en un método <code>static</code>.",
-     "fuente": "Apunte 07 · JUnit",
-     "op": [
-      [
-       "@BeforeEach corre antes de cada test; @BeforeAll una sola vez antes de todos",
-       true
-      ],
-      [
-       "Son sinónimos",
-       false
-      ],
-      [
-       "Es al revés",
-       false
-      ],
-      [
-       "@BeforeEach es solo para tests parametrizados",
-       false
-      ]
-     ],
-     "practica": true
-    },
-    {
-     "tipo": "una",
-     "en": "¿Qué método se usa para comprobar que un código lanza una excepción de un tipo dado?",
-     "ex": "Así están escritos los tests del preparcial: <code>assertThrows(IllegalArgumentException.class, () -&gt; new Servidor(null, \"W1\", 60))</code>.",
-     "fuente": "Apunte 07 · JUnit",
-     "op": [
-      [
-       "assertThrows(Clase.class, () -&gt; codigo())",
-       true
-      ],
-      [
-       "assertEquals(Clase.class, codigo())",
-       false
-      ],
-      [
-       "assertTrue(codigo() instanceof Clase)",
-       false
-      ],
-      [
-       "assertNotNull(codigo())",
-       false
-      ]
-     ],
-     "practica": true
-    },
-    {
-     "tipo": "una",
-     "en": "¿Qué ventaja tiene agrupar comprobaciones en <code>assertAll(...)</code>?",
-     "ex": "Con <code>assertEquals</code> sueltos, el primero que falla corta el test.",
-     "fuente": "Apunte 07 · JUnit",
-     "op": [
-      [
-       "Ejecuta todas aunque alguna falle y reporta todos los fallos juntos",
-       true
-      ],
-      [
-       "Es más rápido",
-       false
-      ],
-      [
-       "Reemplaza a @Test",
-       false
-      ],
-      [
-       "Ninguna",
-       false
-      ]
-     ],
-     "practica": true
-    },
-    {
-     "tipo": "una",
-     "en": "¿Cuáles son las dos formas de leer un CSV línea por línea solo con el JDK, sin dependencias externas?",
-     "ex": "OpenCSV es una dependencia que se agrega al pom. El preparcial usa BufferedReader y split.",
-     "fuente": "Apunte 11 · CSV",
-     "op": [
-      [
-       "Scanner + split, y BufferedReader (Files.newBufferedReader) + split",
-       true
-      ],
-      [
-       "OpenCSV CSVReader y CsvToBean",
-       false
-      ],
-      [
-       "CSVReaderHeaderAware y Jackson CSV",
-       false
-      ],
-      [
-       "JDBC y ResultSet",
-       false
-      ]
-     ],
-     "practica": true
-    },
-    {
-     "tipo": "modelo",
-     "en": "¿Qué ventaja da BufferedReader sobre Scanner para leer un CSV?",
-     "modelo": "Da más control sobre el <b>charset</b> (en el proyecto, <code>Files.newBufferedReader(archivo, StandardCharsets.UTF_8)</code>, para que no se rompan los acentos), sobre el manejo de las excepciones de E/S (<code>IOException</code>) y sobre el cierre del recurso con try-with-resources. Scanner es más corto de escribir, pero da menos control.",
-     "fuente": "Apunte 11 · CSV",
-     "practica": true
-    },
-    {
-     "tipo": "una",
-     "en": "El apunte recomienda hacer <code>trim()</code>/<code>strip()</code> y controlar vacíos antes de convertir un campo a número. ¿Qué excepción se busca evitar?",
-     "ex": "<code>Integer.parseInt(\" 1110 \")</code> falla por los espacios; por eso el parser hace <code>map(String::strip)</code>. Un campo vacío también falla (la línea 128 del parcial).",
-     "fuente": "Apuntes 06 y 11",
-     "op": [
-      [
-       "NumberFormatException",
-       true
-      ],
-      [
-       "ClassCastException",
-       false
-      ],
-      [
-       "ArrayIndexOutOfBoundsException",
-       false
-      ],
-      [
-       "UnsupportedOperationException",
-       false
-      ]
-     ],
-     "practica": true
     }
    ]
   },
   {
-   "titulo": "Simulacros",
+   "titulo": "Backend y arquitectura",
    "preguntas": [
     {
      "tipo": "una",
-     "en": "Al analizar la inicialización del mapa <code>tiposFormateados</code> mediante el siguiente fragmento de código, ¿cuál afirmación es correcta?",
-     "code": "Map tiposFormateados = maximaTasaInteresPorTipo().entrySet().stream()\n    .collect(Collectors.toMap(\n        Map.Entry::getKey,\n        e -> String.format(\"%.2f\", e.getValue()),\n        (newKey, newValue) -> newKey,\n        LinkedHashMap::new));",
-     "ex": "<code>toMap</code> con 4 argumentos: clave, valor, <b>función de fusión</b> (qué hacer si se repite una clave; acá se queda con el primero, aunque el parámetro se llame <code>newKey</code>) y la <b>fábrica</b> del mapa. Como hay función de fusión, no hay excepción por duplicados. <code>collect</code> siempre crea un mapa nuevo y no toca el original.",
-     "fuente": "Preguntas posibles · 3K1 fintech",
+     "en": "¿Qué implica cuando hablamos de “Manejo de la lógica de negocio” en el desarrollo backend?",
+     "ex": "El apunte 01 lo define en una sola frase que junta b, d y e: “implica la implementación y gestión de la lógica de negocio de una aplicación, es decir, las reglas y procesos que definen cómo funcionará el sistema y cómo se llevarán a cabo las operaciones”. En el Cuestionario 01 aparece lo mismo con los otros desafíos: escalabilidad, seguridad, rendimiento e integración con sistemas externos.",
+     "fuente": "Simulacro (campus)",
      "op": [
       [
-       "El código arrojará una excepción en tiempo de ejecución si el método maximaTasaInteresPorTipo() devuelve claves duplicadas, ya que la función de fusión (merge function) ignora los nuevos valores ingresados.",
-       false
-      ],
-      [
-       "El código altera directamente el estado interno del mapa devuelto por maximaTasaInteresPorTipo(), formateando sus elementos in-place sin reservar espacio adicional en memoria.",
-       false
-      ],
-      [
-       "El código transforma los valores numéricos a cadenas con dos decimales, conserva de forma segura el valor existente en caso de colisión de claves y garantiza que se mantenga el orden de inserción original al estructurar el resultado en un LinkedHashMap.",
+       "Todas son correctas.",
        true
       ],
       [
-       "La expresión (newKey, newValue) -&gt; newKey actúa como un filtro que elimina automáticamente cualquier clave que no sea de tipo String durante el proceso de recolección.",
+       "Implica la implementación y gestión de la lógica de negocio de una aplicación.",
+       false
+      ],
+      [
+       "Ninguna es correcta.",
+       false
+      ],
+      [
+       "Implica cómo se llevarán a cabo las operaciones.",
+       false
+      ],
+      [
+       "Implica definir las reglas y procesos que definen cómo funcionará el sistema.",
        false
       ]
      ]
     },
     {
      "tipo": "una",
-     "en": "Asumiendo que se procesaron y almacenaron en la CarteraCreditos 4 SolicitudCredito con la siguiente estructura (solo tipo y score): [(\"PREMIUM\", 65), (\"REGULAR\", 85), (\"PREMIUM\", 75), (\"PREMIUM\", 65)]. ¿Cuál sería la salida esperada del método <code>maximaTasaInteresPorTipo()</code>?",
-     "code": "public double getTasaInteresAnual() {          // en SolicitudCredito\n    return TASA_BASE + (100 - this.scoreFinanciero) * 0.8;   // TASA_BASE = 40\n}\n// CarteraCreditos: groupingBy(tipo, mapping(getTasaInteresAnual, maxBy(naturalOrder())))",
-     "ex": "Con el código del simulacro: REGULAR (score 85) da 40 + 15·0,8 = <b>52</b>. En PREMIUM, la tasa <b>máxima</b> sale del score <b>mínimo</b> (65): 40 + 35·0,8 = 68. La única opción con REGULAR = 52 es la b.",
-     "mal": "La b dice PREMIUM = 76, pero con este código da 68 (76 saldría con un score de 55). Se elige la b por descarte. Lo importante es entender que la tasa máxima corresponde al score más bajo.",
-     "fuente": "Preguntas posibles · 3K1 fintech",
+     "en": "¿Qué responsabilidad principal tiene la subcapa de servicio en una aplicación backend modular?",
+     "ex": "Servicio = lógica de negocio. En el proyecto, los cálculos están en <code>Servidor</code> y <code>Cloud</code>, no en <code>App</code>.",
+     "fuente": "Preguntas posibles · Cuestionario 01",
      "op": [
       [
-       "{REGULAR=76, PREMIUM=52}",
+       "Ejecutar las validaciones de formularios del frontend.",
        false
       ],
       [
-       "{REGULAR=52, PREMIUM=76}",
-       true
-      ],
-      [
-       "{REGULAR=105, PREMIUM=90}",
+       "Gestionar las configuraciones del servidor web.",
        false
       ],
       [
-       "{REGULAR=118.80, PREMIUM=119.69}",
-       false
-      ]
-     ]
-    },
-    {
-     "tipo": "modelo",
-     "en": "Analice el siguiente fragmento del constructor de ServicioJuegos y explique qué valor devuelve <code>calcularSumaPuntuacionAjustada()</code> al final. Justifique comparando qué pasaría si se usara <code>this.juegos = lista</code> en lugar de <code>List.copyOf(lista)</code>.",
-     "code": "var lista = new ArrayList();\nlista.add(new JuegoMesa(\"J1\", \"A\", 2020, 1, 4, 60, 8.0, 2.0, \"Cat\")); // Puntuación 16.0\nvar servicio = new ServicioJuegos(lista);\nlista.clear();\ndouble total = servicio.calcularSumaPuntuacionAjustada();",
-     "modelo": "Con <code>List.copyOf(lista)</code>, ServicioJuegos guarda su propia copia <b>antes</b> del <code>clear()</code>, así que <b>total = 16.0</b>. Con <code>this.juegos = lista</code>, las dos variables apuntan a la misma lista: el <code>clear()</code> de afuera también vacía la del servicio y <b>total = 0.0</b>. La copia defensiva protege el encapsulamiento. <i>Salió igual con la fintech: CarteraCreditos con una SolicitudCredito PREMIUM de score 45. Con copyOf el promedio es 40 + 55·0,8 = 84,0; sin copia, la lista queda vacía y <code>average().orElse(0)</code> da 0,0. El enunciado de esa versión dice <code>new CentralEnvios(entrada)</code>, pero es un error de copiado: quiere decir CarteraCreditos.</i>",
-     "fuente": "Simulacro (campus) · 3K4 juegos"
-    },
-    {
-     "tipo": "una",
-     "en": "Suponga que JuegoCooperativo extiende de JuegoMesa y sobrescribe <code>getPuntuacionAjustada()</code>. Se ejecuta el siguiente código. ¿Qué valor imprime la consola?",
-     "code": "List lista = List.of(\n    new JuegoMesa(\"J1\", \"Normal\", 2020, 1, 4, 60, 8.0, 2.5, \"E\"),          // Puntuación: 20.0\n    new JuegoCooperativo(\"J2\", \"Coop\", 2021, 2, 5, 90, 8.0, 2.5, \"C\", 6) // Puntuación: 23.0\n);\nSystem.out.println(lista.stream().mapToDouble(JuegoMesa::getPuntuacionAjustada).sum());",
-     "ex": "<b>Enlace dinámico</b>: aunque la referencia diga <code>JuegoMesa::</code>, cada objeto ejecuta su versión. J1 da 20,0 y J2 (cooperativo) da 23,0: suma 43,0. Es lo mismo que <code>Servidor::costoRiesgoOperativo</code> con <code>ServidorConIngresos</code> en el parcial.",
-     "fuente": "Simulacro (campus) · 3K4 juegos",
-     "op": [
-      [
-       "Error de compilación porque JuegoMesa::getPuntuacionAjustada no conoce la dificultad.",
+       "Generar las vistas HTML enviadas al cliente.",
        false
       ],
       [
-       "40.0 (ignora el cálculo extra del juego cooperativo)",
-       false
-      ],
-      [
-       "46.0 (aplica el cálculo de cooperativo a ambos objetos)",
-       false
-      ],
-      [
-       "43.0",
-       true
-      ]
-     ]
-    },
-    {
-     "tipo": "modelo",
-     "en": "Explique brevemente (4-6 líneas) qué responsabilidades corresponden a JuegoCooperativo y al ParserJuegos cuando se procesa una fila de tipo “Cooperativo” con una dificultad inválida (ej: 15). Indique qué sucede con el resumen del procesamiento y si el parser continúa con la siguiente fila.",
-     "modelo": "<b>JuegoCooperativo</b> protege su invariante: en su constructor (o en su <code>desdeCampos</code>) valida la dificultad y, si es 15, tira <code>IllegalArgumentException</code>. El objeto inválido <b>nunca llega a existir</b>. El <b>ParserJuegos</b> no repite esa regla: captura la excepción dentro del while, registra la línea y el motivo en los errores (sube <b>inválidas</b>, no se agrega el juego) y <b>sigue con la próxima fila</b>. Así las validaciones del dato quedan “cerca del objeto”, como pide el preenunciado, y el parser se ocupa de leer, clasificar y contar.",
-     "fuente": "Simulacro (campus) · 3K4 juegos"
-    },
-    {
-     "tipo": "una",
-     "en": "Se procesa un archivo con el siguiente contenido (incluyendo encabezado). El parser está configurado para descartar si el rating es menor a 1.0 y marcar como inválida si hay errores de formato o rating &gt; 10.0. ¿Qué valores contiene el ResultadoParseo?",
-     "code": "id;nombre;anio;min;max;dur;rating;peso;cat;dificultad\nJ1;Cascadia;2021;1;4;45;8.4;2.1;Familiar;\nJ2;Error;2020;1;4;30;ocho;2.0;Estrategia;\nJ3;Fuera;2022;2;5;60;12.0;3.0;Estrategia;",
-     "ex": "J1 tiene rating 8,4 → procesada. J2: “ocho” no es número → inválida (<code>NumberFormatException</code>). J3: 12,0 &gt; 10 → inválida. Ninguna tiene rating menor a 1, así que no hay descartadas.",
-     "fuente": "Simulacro (campus) · 3K4 juegos",
-     "op": [
-      [
-       "Leídas: 3, Procesadas: 2, Inválidas: 1",
-       false
-      ],
-      [
-       "Leídas: 3, Procesadas: 1, Inválidas: 2",
-       true
-      ],
-      [
-       "Leídas: 3, Procesadas: 1, Descartadas: 2",
-       false
-      ],
-      [
-       "El procesamiento se detiene en J2 y lanza una excepción al Main.",
-       false
-      ]
-     ]
-    },
-    {
-     "tipo": "una",
-     "en": "Se procesa este archivo del formato original. El Consumo solo se agrega después de construirse correctamente. ¿Qué valores tiene el resumen?",
-     "code": "id,rubro,importeCentavos,bonificacionCentavos,estado\nA,Alimentos,0,0,ANULADO\nB,Alimentos,mil,0,APROBADO\nC,Alimentos,110000,10000,APROBADO",
-     "ex": "A está ANULADO → descartada sin validar los montos (como ESTABLE en el preparcial). B: “mil” no es número → inválida, y la carga sigue. C es válida → procesada.",
-     "fuente": "Preguntas posibles · 3K7 tarjetas",
-     "op": [
-      [
-       "Leídas 3, procesadas 1, descartadas 0, inválidas 2: A tiene monto inválido.",
-       false
-      ],
-      [
-       "La carga termina en B y no hay un resultado de parseo.",
-       false
-      ],
-      [
-       "Leídas 3, procesadas 2, descartadas 1, inválidas 0: procesar incluye intentar convertir.",
-       false
-      ],
-      [
-       "Leídas 3, procesadas 1, descartadas 1, inválidas 1: C se incorpora después del error de B.",
+       "Implementar la lógica de negocio asociada a la funcionalidad.",
        true
       ]
      ]
     },
     {
      "tipo": "una",
-     "en": "Se comparan cuatro formas de procesar el archivo de juegos: 1) Scanner y split(\";\") con índices manuales. 2) OpenCSV, que maneja la sintaxis pero devuelve String[]. 3) Mapas basados en los nombres de encabezados. 4) Mapeo directo a objetos (Beans) por nombre de columna. ¿Qué mejora fundamental aporta el paso del nivel 2 al nivel 3?",
-     "ex": "Con <code>String[]</code> se accede por posición (<code>tokens[2]</code>); con <code>Map</code>, por nombre (<code>fila.get(\"rating\")</code>). La conversión de tipos recién la automatiza el nivel 4 (beans).",
-     "fuente": "Preguntas posibles · 3K4 juegos",
+     "en": "La liquidación recibe altas desde una web, una aplicación de mostrador y una importación CSV ejecutada en el backend. La web ya calcula el neto y muestra una comisión estimada. Al cambiar una tarifa, los tres caminos deben aceptar los mismos montos y registrar la misma comisión, incluso si un cliente todavía usa la tarifa anterior. ¿Qué organización satisface mejor ese requisito?",
+     "ex": "Una sola fuente de verdad: si la regla está copiada en varios lugares, cuando cambia la tarifa alguna copia queda vieja. El cliente puede mostrar estimaciones, pero lo que vale es lo que calcula el backend. Salió dos veces con las opciones en otro orden.",
+     "fuente": "Preguntas posibles",
      "op": [
       [
-       "Elimina la dependencia de la posición (índice) de las columnas, permitiendo reordenar el CSV si se mantienen los nombres.",
+       "Concentrar validación y cálculo en una operación del backend utilizada por las altas de ambos clientes y por el importador; las pantallas pueden anticipar controles y mostrar estimaciones.",
        true
       ],
       [
-       "Garantiza que no existan filas con datos nulos o vacíos en el archivo.",
+       "Validar y calcular en cada endpoint del backend y repetir esas reglas en el importador; mantener iguales las copias mediante una especificación común.",
        false
       ],
       [
-       "Permite procesar archivos con diferentes separadores automáticamente.",
+       "Validar los montos en una operación compartida del backend, pero registrar la comisión calculada por cada cliente o importador para conservar lo que vio el operador.",
        false
       ],
       [
-       "Automatiza la conversión de tipos sin intervención del programador.",
+       "Publicar montos y tarifas en la API para que cada cliente valide y calcule; el backend registra los valores recibidos y el importador aplica su propia copia de las reglas.",
        false
       ]
      ]
     },
     {
      "tipo": "una",
-     "en": "Una sucursal intercambia el orden de importeCentavos y bonificacionCentavos, conservando sus encabezados. Se comparan cuatro estrategias: 1) Scanner y posiciones. 2) OpenCSV con arreglos y posiciones. 3) Mapas encabezado → campo. 4) Beans por nombre de encabezado con conversión a números. Se deben seguir calculando el neto y las reglas de aceptación. ¿Qué análisis es correcto?",
-     "ex": "Ninguna biblioteca de lectura hace la <b>lógica de negocio</b>: el neto y las reglas de aceptación siempre las programás vos. Solo cambia quién separa los campos (2), cómo se los busca (3: por nombre) y quién los convierte (4).",
-     "fuente": "Preguntas posibles · 3K7 tarjetas",
+     "en": "El sistema de juegos expone un catálogo mediante un endpoint <code>GET /juegos</code>. Actualmente, los juegos se cargan desde el CSV a una lista en memoria al iniciar el servidor. Se requiere que si un administrador agrega un juego manualmente, este persista tras un reinicio del servidor y siga disponible para la App móvil. ¿Qué cambio técnico cumple este objetivo manteniendo el contrato de la API?",
+     "ex": "La memoria se pierde al reiniciar, haya la RAM que haya. La persistencia es responsabilidad del backend (capa de datos). “Mantener el contrato” quiere decir que el endpoint sigue igual: el cliente no se entera de cómo se guarda.",
+     "fuente": "Simulacro (campus)",
      "op": [
       [
-       "El paso 3 a 4 permite trabajar con objetos, pero vuelve obligatorio el orden original de columnas: las propiedades numéricas de un bean solo pueden asociarse por posición.",
+       "Hacer que la App móvil guarde una copia local del catálogo y la envíe al backend cada vez que el servidor se reinicie.",
        false
       ],
       [
-       "El paso 1 a 2 delega la interpretación de la sintaxis, pero conserva accesos posicionales; 3 usa nombres y 4 delega además el mapeo y las conversiones configuradas. Calcular el neto y validar las reglas del negocio sigue siendo necesario.",
+       "Almacenar los juegos en un sistema de persistencia duradera (como una base de datos) en el backend y recuperarlos al iniciar; mantener el endpoint de la API idéntico.",
        true
       ],
       [
-       "El paso 2 a 3 evita depender del orden; por eso el mapa también convierte los montos a números y garantiza que la bonificación sea menor al importe, sin controles adicionales.",
+       "Aumentar la memoria RAM del servidor para que la lista en memoria no se pierda durante los reinicios programados.",
        false
       ],
       [
-       "El paso 1 a 2 elimina tanto la separación manual como la dependencia del orden: al devolver un arreglo, OpenCSV identifica qué posición corresponde a cada nombre de columna.",
+       "Eliminar el endpoint GET /juegos y permitir que los clientes lean directamente el archivo CSV desde el servidor de archivos.",
        false
       ]
      ]
