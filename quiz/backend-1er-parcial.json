@@ -1,0 +1,1634 @@
+{
+ "titulo": "Backend · 1º Parcial",
+ "descripcion": "El parcial real 3K1 (tal cual salió), preguntas del proyecto del preparcial, el Cuestionario 05, teoría y los simulacros.",
+ "secciones": [
+  {
+   "titulo": "El parcial real (3K1)",
+   "preguntas": [
+    {
+     "tipo": "modelo",
+     "en": "Partiendo de la base que se importa en nuevo formato y las lineas que se importan son (\"S1\", \"R1\", 56, 4500, \"ESTABLE\"), (\"S2\", \"R1\", 56, 4500, \"CRITICO\", 1200), (\"S2\", \"R1\", 56, 34500, \"CRITICO\", 1200). Cuantas lineas cual seria el resultado esperado de la clase ResultadoParseo al ivocar al metodo informe?<br><br>a. Leídas: 3 | procesadas: 1 | descartadas: 1 | inválidas: 1 | objetos: 1<br>b. Leídas: 3 | procesadas: 1 | descartadas: 2 | inválidas: 0 | objetos: 1<br>c. Leídas: 3 | procesadas: 0 | descartadas: 1 | inválidas: 1 | objetos: 0<br>d. Leídas: 3 | procesadas: 2 | descartadas: 0 | inválidas: 1 | objetos: 2",
+     "modelo": "Ninguna opción es correcta. Da <b>Leídas: 3 | procesadas: 0 | descartadas: 1 | inválidas: 2 | objetos: 0</b>.",
+     "ex": "(1) ESTABLE → descartada. (2) CPU 56 y memoria 4500 pasan sus rangos, pero el índice es (int)(56·0,7 + 4500·0,3) = 1389 y el constructor exige 1 a 70 → inválida. (3) memoria 34500 &gt; 24576 → inválida.",
+     "mal": "El campus marca la a: se olvidó de que el índice de la segunda fila se va de rango.",
+     "fuente": "Parcial 3K1 · 19/09/2026"
+    },
+    {
+     "tipo": "una",
+     "en": "Para el calculo del costo total por region se tiene el siguiente codigo. ¿Cual seria el Collectors correcto si quisiera obtener el costo promedio por region?",
+     "code": "this.servidores.stream()\n        .collect(Collectors.groupingBy(Servidor::getRegion,\n                Collectors.summingInt(Servidor::costoRiesgoOperativo)));",
+     "ex": "<code>costoRiesgoOperativo()</code> devuelve <code>int</code>: el colector justo es <code>averagingInt</code> (devuelve el promedio como Double). <code>summarizingInt</code> también tiene el promedio, pero trae además cantidad, suma, mínimo y máximo.",
+     "fuente": "Parcial 3K1 · 19/09/2026",
+     "op": [
+      [
+       "Collectors.averagingInt",
+       true
+      ],
+      [
+       "Collectors.summarizingInt",
+       false
+      ],
+      [
+       "Collectors.summarizingDouble",
+       false
+      ],
+      [
+       "Collectors.averagingDouble",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "En base a sus conocientos, Por qué el uso de la línea <code>this.servidores = List.copyOf(servidores);</code> dentro del constructor de una clase se considera una de las mejores prácticas de programación en Java",
+     "ex": "La copia es <b>superficial</b> (copia referencias, no clona cada objeto) e inmodificable: si después alguien vacía la lista original, el objeto no se entera.",
+     "fuente": "Parcial 3K1 · 19/09/2026",
+     "op": [
+      [
+       "Porque crea una copia defensiva e inmutable de la lista original, impidiendo que cambios externos sobre la colección original alteren el estado interno del objeto.",
+       true
+      ],
+      [
+       "Porque permite ordenar automáticamente los elementos de la colección al momento de asignarla, mejorando el rendimiento de las búsquedas posteriores.",
+       false
+      ],
+      [
+       "Porque convierte la lista en un arreglo primitivo dinámico de menor tamaño, reduciendo drásticamente el consumo de memoria en la máquina virtual (JVM)",
+       false
+      ],
+      [
+       "Porque realiza una copia profunda (deep copy) de cada uno de los objetos individuales contenidos dentro de la lista, clonando sus atributos de forma recursiva.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué ventaja aporta la arquitectura hexagonal respecto a una arquitectura en capas tradicional?",
+     "ex": "Puertos y adaptadores: el núcleo con la lógica de negocio no depende de la base de datos ni del framework. Es la misma pregunta del Cuestionario 01.",
+     "fuente": "Parcial 3K1 · 19/09/2026",
+     "op": [
+      [
+       "Fusiona todos los componentes en una única interfaz.",
+       false
+      ],
+      [
+       "Separa el dominio de la aplicación de las dependencias externas.",
+       true
+      ],
+      [
+       "Se enfoca únicamente en la persistencia de datos.",
+       false
+      ],
+      [
+       "Permite escribir menos código en el backend.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "El lenguaje de Programacion Java tiene un recolector de basura que se encarga de liberar la memoria ocupada por los objetos que no estan siendo utilizados",
+     "ex": "El garbage collector de la JVM libera los objetos sin referencias: en Java no se libera memoria a mano.",
+     "fuente": "Parcial 3K1 · 19/09/2026",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Que significa que sobrecarguemos un constructor?",
+     "ex": "Mismo nombre, distinta lista de parámetros.",
+     "fuente": "Parcial 3K1 · 19/09/2026",
+     "op": [
+      [
+       "Significa que el constructor haga mas que solo construir la clase.",
+       false
+      ],
+      [
+       "Significa que hagamos multiples constructores para una misma clase.",
+       true
+      ],
+      [
+       "Significa que el constructor tenga todos los parametros que puede tener.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "Al usar el modificador final en una clase estamos diciendo que dicha clase no puede ser derivada y que al intentarlo nos sera entregado un error de compilacion",
+     "ex": "Una clase <code>final</code> no se puede heredar (por ejemplo, <code>String</code>).",
+     "fuente": "Parcial 3K1 · 19/09/2026",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Seleccione las opciones correctas respecto a la operacion intermedia distinct?",
+     "ex": "Las operaciones intermedias devuelven otro flujo, no una lista.",
+     "fuente": "Parcial 3K1 · 19/09/2026",
+     "op": [
+      [
+       "Ninguna es correcta",
+       false
+      ],
+      [
+       "Retorna un nuevo flujo con los mismos datos del flujo original pero eliminando repetidos",
+       true
+      ],
+      [
+       "Retorna una nueva lista con los mismos datos del flujo original pero eliminando repetidos",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "modelo",
+     "en": "Explique brevemente la ejecución del método costoRiesgoOperativo(). Teniendo en cuenta que podria existir una jerarquía de herencia simple compuesta por la clase base Servidor (que maneja atributos como CPU, memoria e índice de carga) y la subclase ServidorConIngresos (que extiende la base agregando un sexto campo numérico para los ingresos del servidor en estados de ALERTA o CRITICO).",
+     "modelo": "El costo se define una sola vez en <b>Servidor</b>: (ingreso por hora × índice) / 100 en enteros, con ingreso 1000. <b>ServidorConIngresos</b> llama a <code>super(...)</code>, valida 1000 ≤ ingresos &lt; 1900 y <b>redefine</b> el ingreso por hora. Cuando <code>Cloud</code> hace <code>mapToInt(Servidor::costoRiesgoOperativo)</code>, por <b>enlace dinámico</b> cada objeto usa su versión: por ejemplo índice 59 e ingresos 1110 → 654. Así <code>total()</code>, los filtros y los totales por región toman la regla nueva sin cambiar Cloud.",
+     "fuente": "Parcial 3K1 · 19/09/2026"
+    }
+   ]
+  },
+  {
+   "titulo": "El proyecto del preparcial",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "¿Qué imprime este fragmento, sabiendo que Cloud copia la lista recibida con <code>List.copyOf</code> en su constructor?",
+     "code": "var lista = new ArrayList<Servidor>();\nlista.add(new Servidor(\"S1\", \"W1\", 45));\nvar c = new Cloud(lista);\nlista.clear();\nSystem.out.println(c.total());",
+     "ex": "Cloud guardó su propia copia antes del <code>clear()</code>, que vacía solo la lista original. El costo de un servidor con índice 45 es 1000·45/100 = 450. Es el test <code>copiaDefensiva</code> de CloudTest.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "0",
+       false
+      ],
+      [
+       "450",
+       true
+      ],
+      [
+       "Lanza NullPointerException",
+       false
+      ],
+      [
+       "Compila pero el resultado es indeterminado",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Después de leer un archivo con ParserServidores se ejecuta <code>resultado.getServidores().add(new Servidor(\"X\",\"R\",10))</code>. ¿Qué ocurre?",
+     "ex": "ResultadoParseo guarda sus tres listas con <code>List.copyOf</code>, que son inmodificables: <code>add</code>, <code>clear</code> o <code>remove</code> tiran <code>UnsupportedOperationException</code>. Lo prueba <code>resultadosYCopiasDefensivas</code>.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "Se agrega sin problemas a la lista interna de ResultadoParseo",
+       false
+      ],
+      [
+       "Lanza UnsupportedOperationException",
+       true
+      ],
+      [
+       "Lanza IllegalArgumentException",
+       false
+      ],
+      [
+       "Lanza ConcurrentModificationException",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "¿En qué línea del proyecto se define el separador de columnas del CSV? Si hubiera que soportar archivos separados por <code>;</code>, ¿qué habría que cambiar?",
+     "code": "String[] tokens = Arrays.stream(linea.split(\",\", -1))\n        .map(String::strip)\n        .toArray(String[]::new);",
+     "modelo": "En <code>ParserServidores.leer()</code>, en <code>linea.split(\",\", -1)</code>: es el único lugar donde está el separador. Para usar <code>;</code> hay que cambiar ese literal y también la constante <code>CABECERA</code>, que se compara con <code>equals</code> contra la primera línea (si el encabezado viene con <code>;</code>, tiene que coincidir). El <code>-1</code> de <code>split</code> conserva los campos vacíos del final. Sin él, una fila como <code>srv-1,R,5,5,</code> perdería la última columna y cambiaría el conteo de columnas.",
+     "fuente": "Preparcial · Cloud Center",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Para la fila <code>srv-0012,US-EAST-1,97,16310,CRITICO</code> (CPU y memoria dentro de sus rangos), ¿qué ocurre?",
+     "code": "int indiceCarga = (int) ((usoCpu * 0.7) + (usoMemoria * 0.3));\n// (int)(67.9 + 4893.0) = 4960\nreturn new Servidor(tokens[0], tokens[1], indiceCarga);   // exige 1 <= indice <= 70",
+     "ex": "Cada campo pasa su validación, pero el valor <b>derivado</b> no: el constructor tira “El indice de carga es un valor fuera del rango permitido” y el parser la registra como inválida. Es la misma trampa de la pregunta 2 del parcial real.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "Se procesa normalmente porque CPU y memoria son válidos",
+       false
+      ],
+      [
+       "Lanza IllegalArgumentException porque el índice calculado (4960) queda fuera de 1–70, y la fila queda inválida",
+       true
+      ],
+      [
+       "Se descarta como si fuera ESTABLE",
+       false
+      ],
+      [
+       "Lanza NumberFormatException al convertir la memoria",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Una fila trae estado ESTABLE pero datos absurdos: <code>srv-0099,ZZ,999,999999,ESTABLE</code>. ¿Qué hace el parser?",
+     "ex": "El chequeo de ESTABLE va antes de <code>desdeCampos</code>, que es donde se validan CPU y memoria. Por eso el preenunciado dice “con ancho correcto, ESTABLE se descarta sin validar los restantes datos”. Si la fila tuviera 4 o 6 campos, sí sería inválida, porque el ancho se controla primero.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "La descarta sin excepción: ESTABLE se revisa y se hace continue antes de validar CPU y memoria",
+       true
+      ],
+      [
+       "Lanza IllegalArgumentException por el CPU fuera de rango",
+       false
+      ],
+      [
+       "La marca como inválida por memoria fuera de rango",
+       false
+      ],
+      [
+       "Lanza NumberFormatException",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "En <code>leer()</code> se hace <code>leidas++</code> y luego <code>int numero = leidas + 1</code>. ¿Por qué se suma 1?",
+     "modelo": "<code>leidas</code> cuenta solo filas de datos, pero el encabezado ocupa la línea física 1 y no cuenta como leída. La primera fila de datos está en la línea 2: cuando <code>leidas</code> vale 1, <code>numero</code> vale 2. Así los mensajes muestran la línea real del archivo, por ejemplo “Linea 7: uso del cpu esta fuera de rango”, que es lo que controla el test.",
+     "fuente": "Preparcial · Cloud Center",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En <code>panorama()</code> el resultado de <code>totalesPorRegion()</code> (un <code>groupingBy</code>) se envuelve en <code>new TreeMap&lt;&gt;(...)</code>. ¿Para qué?",
+     "ex": "<code>groupingBy</code> devuelve un <code>HashMap</code>, que no garantiza ningún orden. <code>TreeMap</code> ordena por clave: “{SA-EAST-1=5400, US-EAST-1=6790, US-WEST-2=2980}”. Si querés que el orden venga ya desde el colector: <code>groupingBy(clave, TreeMap::new, downstream)</code>.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "Para que las regiones salgan siempre en el mismo orden (alfabético), porque el Map de groupingBy no garantiza orden",
+       true
+      ],
+      [
+       "Es redundante: groupingBy ya devuelve un TreeMap",
+       false
+      ],
+      [
+       "Para eliminar regiones duplicadas",
+       false
+      ],
+      [
+       "Para convertir los valores Integer en String",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué recibe <code>Cloud.filtrar()</code> y qué da <code>cloud.filtrar(s -&gt; s.getIndiceCarga() &lt; 50).size()</code> con <code>datos.csv</code>?",
+     "code": "public List<Servidor> filtrar(Predicate<Servidor> criterio) {\n    return this.servidores.stream().filter(criterio).toList();\n}",
+     "ex": "<code>Predicate&lt;T&gt;</code> es la interfaz funcional de una condición booleana. 16 de los 30 servidores procesados tienen índice menor a 50 (lo imprime el programa). Además, <code>toList()</code> devuelve una lista inmodificable.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "Un Predicate&lt;Servidor&gt; (boolean test(T)); da 16",
+       true
+      ],
+      [
+       "Un Function&lt;Servidor,Boolean&gt;; da 30",
+       false
+      ],
+      [
+       "Un Consumer&lt;Servidor&gt;; da 0",
+       false
+      ],
+      [
+       "Un Predicate&lt;Servidor&gt;; da 60",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "<code>costoRiesgoOperativo()</code> calcula <code>(INGRESO_PROMEDIO * indiceCarga) / 100</code>: multiplica primero y divide después. ¿Por qué conviene ese orden en aritmética entera? ¿Cambiaría algo acá si fuera <code>(INGRESO_PROMEDIO / 100) * indiceCarga</code>?",
+     "modelo": "En enteros, dividir primero trunca y ese error se arrastra; por eso se multiplica antes. Acá no cambia nada porque 1000/100 = 10 es exacto. <b>Pero en el parcial sí cambia</b>: con ingresos 1110 e índice 59, <code>(1110 * 59) / 100</code> = 654, en cambio <code>(1110 / 100) * 59</code> = 11·59 = 649. Eso hace fallar el test del profe.",
+     "fuente": "Preparcial · Cloud Center",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es el índice de carga de srv-0044 (CPU 67, memoria 13)?",
+     "code": "int indiceCarga = (int) ((usoCpu * 0.7) + (usoMemoria * 0.3));\n// 46.9 + 3.9 = 50.8",
+     "ex": "El cast <code>(int)</code> <b>trunca</b>, no redondea: 50,8 queda en 50. Es un caso testigo del preenunciado. Compila porque el cast explícito convierte el double a int.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "50",
+       true
+      ],
+      [
+       "51",
+       false
+      ],
+      [
+       "50.8",
+       false
+      ],
+      [
+       "No compila porque mezcla int y double",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué excepción sale si el archivo no existe, y cuál si la primera línea no es el encabezado esperado?",
+     "ex": "<code>Files.newBufferedReader</code> propaga <code>IOException</code> (el método la declara con <code>throws</code>). El encabezado incorrecto tira <code>IllegalArgumentException(\"encabezado incorrecto\")</code> y corta la carga. Lo prueba <code>soloCabeceraYErroresDeArchivo</code>.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "IOException / IllegalArgumentException",
+       true
+      ],
+      [
+       "FileNotFoundException / RuntimeException genérica",
+       false
+      ],
+      [
+       "IllegalArgumentException / IOException",
+       false
+      ],
+      [
+       "IOException en los dos casos",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Se procesa este archivo. ¿Cuántas leídas, procesadas, descartadas e inválidas hay?",
+     "code": "id,region,porcentajeCPU,usoMemoria,estado\nS2,S1,101,9,ALERTA\ns7,U2,54,40,ALERTA\nS7,U2,20,19,ESTABLE",
+     "ex": "S2: CPU 101 &gt; 100 → inválida. s7: índice (int)(37,8 + 12) = 49 → procesada. S7: ESTABLE → descartada. El encabezado no cuenta como leída. Es el test <code>estructuraYContinuacion</code>.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "3 / 2 / 1 / 0",
+       false
+      ],
+      [
+       "3 / 1 / 1 / 1",
+       true
+      ],
+      [
+       "3 / 0 / 1 / 2",
+       false
+      ],
+      [
+       "4 / 1 / 1 / 2",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "¿Por qué el try/catch de cada fila está <b>dentro</b> del while y no rodeando todo <code>leer()</code>?",
+     "modelo": "Porque una fila mala no tiene que cortar la carga: se registra el error con su número de línea y se sigue con la próxima. Si el try envolviera todo el método, la primera excepción sacaría del while y se perderían todas las filas siguientes. Fijate que se captura <code>IllegalArgumentException</code>, que también atrapa <code>NumberFormatException</code> (es subclase), y que la <code>IOException</code> no se captura: un fallo de lectura sí aborta.",
+     "fuente": "Preparcial · Cloud Center",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Con <code>datos.csv</code>, ¿qué imprime exactamente <code>colector.panorama()</code>?",
+     "ex": "La c es la salida de <code>resultado.informe()</code>, no de <code>panorama()</code>. La d tiene los números bien pero el orden mal: con <code>TreeMap</code> las regiones salen en orden alfabético.",
+     "fuente": "Preparcial · Cloud Center",
+     "op": [
+      [
+       "Total: 15170 | Por Region: {SA-EAST-1=5400, US-EAST-1=6790, US-WEST-2=2980} | indice menores a 50: 16",
+       true
+      ],
+      [
+       "Total: 30 | Por Region: {} | indice menores a 50: 60",
+       false
+      ],
+      [
+       "Leídas: 60 | procesadas: 30 | descartadas: 21 | inválidas: 9 | objetos: 30",
+       false
+      ],
+      [
+       "Total: 15170 | Por Region: {US-WEST-2=2980, US-EAST-1=6790, SA-EAST-1=5400} | indice menores a 50: 16",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Stream API (Cuestionario 05)",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "Seleccione la/las opción/es correcta/as referido a Stream API",
+     "ex": "El apunte 10 lo dice casi textual: “sobre esa secuencia el programador introduce operaciones que manipulen cada dato individualmente, <b>eliminándolo de la responsabilidad de recorrerlos</b>”. Por eso la c también va. La b es lo que hacen las <b>colecciones</b>, no los streams.",
+     "mal": "La guía de repaso que circula marca solo la primera. Pero en los dos intentos del cuestionario, quien marcó solo esa sacó 0,5 de 1: falta otra correcta, y la única posible es la c.",
+     "fuente": "Cuestionario 05 · también en el simulacro",
+     "op": [
+      [
+       "Sobre la secuencia de datos se introducen operaciones que manipulan cada dato individualmente.",
+       true
+      ],
+      [
+       "Stream mantiene todos los datos almacenados en memoria y los recorre.",
+       false
+      ],
+      [
+       "Una de las razones por las que se usa stream es para evitar recorrer arrays.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "Seleccione la/las opción/es correcta/as referido a Stream API",
+     "ex": "Apunte 10: “Las operaciones intermedias no recorren el conjunto de datos ni ejecutan nada hasta que no se ejecuta una operación terminal”.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Un stream es una secuencia de datos que van transcurriendo sin estar almacenados todos juntos.",
+       true
+      ],
+      [
+       "No recorre los datos inmediatamente, las operaciones intermedias son perezosas (lazy) y esperan a la operación final para ejecutarse.",
+       true
+      ],
+      [
+       "Stream procesa todos los datos al mismo tiempo",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cómo se denominan los métodos o funciones de orden superior?",
+     "ex": "Reciben y/o devuelven funciones. <code>filter</code>, <code>map</code> y <code>sorted</code> son de orden superior porque reciben una lambda.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Son los métodos que poseen parámetros o retorno de tipo función",
+       true
+      ],
+      [
+       "Son los métodos que poseen parámetros o retorno de tipo primitivo",
+       false
+      ],
+      [
+       "Son los métodos que solo retornan tipo función y poseen parámetros tipo primitivo",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "La operación terminal forEach recibe como parámetro el dato y no retorna nada",
+     "ex": "<code>forEach</code> es <code>void</code>. También sale al revés (“…y retorna cada uno de los elementos del flujo”): ahí es <b>Falso</b>.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "No hay que programar una clase nueva por cada expresión lambda creada",
+     "ex": "La lambda implementa la interfaz funcional sin declarar una clase. También sale al revés (“Hay que programar una clase nueva…”): ahí es <b>Falso</b>.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "Limit recibe un número entero y genera una nueva lista que contiene como máximo la cantidad indicada",
+     "ex": "<code>limit</code> genera un nuevo <b>flujo</b>, no una lista. La misma frase con “flujo” sale como otra pregunta, y ahí es <b>Verdadero</b>. Fijate siempre si dice lista o flujo.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Seleccione las opciones correctas respecto a la operación intermedia map?",
+     "ex": "<code>map</code> transforma cada elemento en otro (1 a 1). No arma pares clave-valor (eso es un Map) ni elimina repetidos (eso es <code>distinct</code>).",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Recibe como parámetro una instancia de la interfaz funcional Function y mapea con clave -&gt; valor una serie de elementos",
+       false
+      ],
+      [
+       "Retorna un nuevo flujo con los mismos datos del flujo original pero eliminando los repetidos",
+       false
+      ],
+      [
+       "Recibe como parámetro una instancia de la interfaz funcional Function y genera un nuevo valor a partir de cada uno de los elementos del flujo",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Seleccione la opción correcta respecto a las operaciones terminales",
+     "ex": "Apunte 10: “toda manipulación de un flujo debe finalizar siempre con una operación terminal”. Las que devuelven otro flujo son las intermedias.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Toda manipulación de flujo puede no tener una operación terminal",
+       false
+      ],
+      [
+       "Retornan un nuevo flujo",
+       false
+      ],
+      [
+       "Recolectan todos los elementos de un flujo y los procesan",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "La operación intermedia llamada sorted retorna un nuevo flujo con los mismos elementos que el original pero",
+     "ex": "Por orden natural o con el <code>Comparator</code> que se le pase.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "desordenados",
+       false
+      ],
+      [
+       "limitados",
+       false
+      ],
+      [
+       "ordenados",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "Con respecto a la operación collector(): Su función principal es acumular, combinar y finalizar los datos procesados en el stream, permitiendo producir colecciones, resúmenes o agrupaciones",
+     "ex": "Es la definición de <code>collect</code> con <code>Collectors</code>: <code>toList</code>, <code>toMap</code>, <code>groupingBy</code>, <code>counting</code>, <code>averagingInt</code>…",
+     "fuente": "Cuestionario 05 · también en el simulacro",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cómo funcionan las expresiones Lambda?",
+     "ex": "La lambda implementa sola el único método abstracto de la interfaz funcional. El campus da por buena la c aunque use corchetes. En Java se escribe con paréntesis: <code>(a, b) -&gt; { ... }</code>.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Ofrecen la posibilidad de escribir únicamente el bloque de código del método directamente en el lugar de la declaración de la variable, haciendo automáticamente la sobreescritura del método.",
+       true
+      ],
+      [
+       "Ofrecen la posibilidad de escribir únicamente el bloque de código del método directamente en el lugar de la declaración de la variable, aunque se tenga que hacer la sobreescritura del método de forma manual.",
+       false
+      ],
+      [
+       "La forma de escritura de una expresión lambda es [parámetros]-&gt;{cuerpo}",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Seleccione la opción correcta respecto a los Collectors",
+     "ex": "<code>Collectors</code> ya trae las implementaciones listas para usar.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Es una clase que define cómo mostrar los elementos de un flujo.",
+       false
+      ],
+      [
+       "Es un objeto que define cómo transformar los elementos de un flujo en un resultado final",
+       true
+      ],
+      [
+       "La clase Collectors no provee implementaciones de las colecciones y hay que sobreescribirlas.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Cómo se escribe correctamente un stream collector habiendo definido previamente una Lista llamada lista.",
+     "ex": "Primero <code>.stream()</code> y después <code>.collect(...)</code>, encadenados. Una <code>List</code> no tiene <code>collect</code>.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "List lista = nombres.stream().collect(Collectors.toList());",
+       true
+      ],
+      [
+       "List lista = nombres.collect(Collectors.toList());",
+       false
+      ],
+      [
+       "List lista = nombres.stream(collect(Collectors.toList()));",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "La operación terminal count retorna la ___ de elementos del flujo",
+     "ex": "Devuelve un <code>long</code>.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "cantidad",
+       true
+      ],
+      [
+       "lista",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "Seleccione las opciones correctas respecto a la operación intermedia filter?",
+     "ex": "<code>filter</code> recibe un <code>Predicate</code>: un elemento entra, sale un boolean.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Se escribe de la siguiente manera arrayList.stream().filter(x-&gt; x%2==0)",
+       true
+      ],
+      [
+       "Recibe como parámetro una función lambda que recibe un parámetro y retorna una lista",
+       false
+      ],
+      [
+       "Recibe como parámetro una función lambda que recibe un parámetro y retorna un boolean.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Para qué sirve la anotación @FunctionalInterface?",
+     "ex": "El compilador da error si la interfaz no tiene exactamente un método abstracto.",
+     "fuente": "Cuestionario 05",
+     "op": [
+      [
+       "Para establecer a una interfaz como funcional y asegurarse de que tenga solo un método.",
+       true
+      ],
+      [
+       "Para sobrecargar un método funcional",
+       false
+      ],
+      [
+       "Para sobreescribir un método",
+       false
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "titulo": "Teoría",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "¿Qué implica cuando hablamos de “Manejo de la lógica de negocio” en el desarrollo backend?",
+     "ex": "El apunte 01 lo define en una sola frase que junta b, d y e: “implica la implementación y gestión de la lógica de negocio de una aplicación, es decir, las reglas y procesos que definen cómo funcionará el sistema y cómo se llevarán a cabo las operaciones”. En el Cuestionario 01 aparece lo mismo con los otros desafíos: escalabilidad, seguridad, rendimiento e integración con sistemas externos.",
+     "fuente": "Simulacro (campus)",
+     "op": [
+      [
+       "Todas son correctas.",
+       true
+      ],
+      [
+       "Implica la implementación y gestión de la lógica de negocio de una aplicación.",
+       false
+      ],
+      [
+       "Ninguna es correcta.",
+       false
+      ],
+      [
+       "Implica cómo se llevarán a cabo las operaciones.",
+       false
+      ],
+      [
+       "Implica definir las reglas y procesos que definen cómo funcionará el sistema.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué responsabilidad principal tiene la subcapa de servicio en una aplicación backend modular?",
+     "ex": "Servicio = lógica de negocio. En el proyecto, los cálculos están en <code>Servidor</code> y <code>Cloud</code>, no en <code>App</code>.",
+     "fuente": "Preguntas posibles · Cuestionario 01",
+     "op": [
+      [
+       "Ejecutar las validaciones de formularios del frontend.",
+       false
+      ],
+      [
+       "Gestionar las configuraciones del servidor web.",
+       false
+      ],
+      [
+       "Generar las vistas HTML enviadas al cliente.",
+       false
+      ],
+      [
+       "Implementar la lógica de negocio asociada a la funcionalidad.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "La liquidación recibe altas desde una web, una aplicación de mostrador y una importación CSV ejecutada en el backend. La web ya calcula el neto y muestra una comisión estimada. Al cambiar una tarifa, los tres caminos deben aceptar los mismos montos y registrar la misma comisión, incluso si un cliente todavía usa la tarifa anterior. ¿Qué organización satisface mejor ese requisito?",
+     "ex": "Una sola fuente de verdad: si la regla está copiada en varios lugares, cuando cambia la tarifa alguna copia queda vieja. El cliente puede mostrar estimaciones, pero lo que vale es lo que calcula el backend. Salió dos veces con las opciones en otro orden.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Concentrar validación y cálculo en una operación del backend utilizada por las altas de ambos clientes y por el importador; las pantallas pueden anticipar controles y mostrar estimaciones.",
+       true
+      ],
+      [
+       "Validar y calcular en cada endpoint del backend y repetir esas reglas en el importador; mantener iguales las copias mediante una especificación común.",
+       false
+      ],
+      [
+       "Validar los montos en una operación compartida del backend, pero registrar la comisión calculada por cada cliente o importador para conservar lo que vio el operador.",
+       false
+      ],
+      [
+       "Publicar montos y tarifas en la API para que cada cliente valide y calcule; el backend registra los valores recibidos y el importador aplica su propia copia de las reglas.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El sistema de juegos expone un catálogo mediante un endpoint <code>GET /juegos</code>. Actualmente, los juegos se cargan desde el CSV a una lista en memoria al iniciar el servidor. Se requiere que si un administrador agrega un juego manualmente, este persista tras un reinicio del servidor y siga disponible para la App móvil. ¿Qué cambio técnico cumple este objetivo manteniendo el contrato de la API?",
+     "ex": "La memoria se pierde al reiniciar, haya la RAM que haya. La persistencia es responsabilidad del backend (capa de datos). “Mantener el contrato” quiere decir que el endpoint sigue igual: el cliente no se entera de cómo se guarda.",
+     "fuente": "Simulacro (campus)",
+     "op": [
+      [
+       "Hacer que la App móvil guarde una copia local del catálogo y la envíe al backend cada vez que el servidor se reinicie.",
+       false
+      ],
+      [
+       "Almacenar los juegos en un sistema de persistencia duradera (como una base de datos) en el backend y recuperarlos al iniciar; mantener el endpoint de la API idéntico.",
+       true
+      ],
+      [
+       "Aumentar la memoria RAM del servidor para que la lista en memoria no se pierda durante los reinicios programados.",
+       false
+      ],
+      [
+       "Eliminar el endpoint GET /juegos y permitir que los clientes lean directamente el archivo CSV desde el servidor de archivos.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "Indica cuál/cuáles es/son características principales del Lenguaje de Programación Java",
+     "ex": "Apunte 02: Java es de <b>alto nivel</b>, <b>orientado a objetos</b> y “compilado <b>e</b> interpretado”: se compila a bytecode y la JVM lo ejecuta. Por eso no es “solo” una cosa ni la otra. Es <b>independiente</b> de la plataforma: la JVM es la que depende del sistema operativo.",
+     "fuente": "Simulacro (campus)",
+     "op": [
+      [
+       "Alto nivel",
+       true
+      ],
+      [
+       "Todas son características de java",
+       false
+      ],
+      [
+       "Solo compilado",
+       false
+      ],
+      [
+       "Dependiente de la plataforma",
+       false
+      ],
+      [
+       "Orientado a objetos",
+       true
+      ],
+      [
+       "Solo interpretado",
+       false
+      ],
+      [
+       "Ninguna es característica de Java",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El lenguaje de Programación Java es",
+     "ex": "Desde Java 8 tiene lambdas y streams, pero su paradigma es la POO.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Funcional",
+       false
+      ],
+      [
+       "Orientado a objetos",
+       true
+      ],
+      [
+       "Lógico",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "Para sobrecargar un método es necesario cambiar ya sea su cantidad de parámetros, los tipos de dichos parámetros o ambos.",
+     "ex": "Apunte 08: se mantiene el nombre y se modifica la lista de parámetros.",
+     "fuente": "Simulacro (campus)",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "El compilador distingue entre las diversas sobrecargas de un método por la forma del tipo de retorno de la función",
+     "ex": "Solo por los parámetros (cantidad, tipo, orden). Dos métodos que solo difieren en el retorno no compilan.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "Redefinir un método es la acción de volver a definir en una clase derivada un método heredado de la superclase cuando su implementación no es adecuada para la clase derivada.",
+     "ex": "Es el <code>@Override</code>: misma firma que en la superclase. Con eso funciona el polimorfismo (pregunta 10 del parcial). No confundir: <b>sobrecargar</b> = mismo nombre y otros parámetros; <b>redefinir</b> = misma firma en la subclase.",
+     "fuente": "Simulacro (campus)",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es la regla de la herencia múltiple?",
+     "ex": "Java tiene herencia <b>simple</b>: un solo <code>extends</code>. Sí puede implementar varias interfaces.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "A nivel gráfico UML no existe más de una flecha que parte desde la clase derivada hacia alguna super clase",
+       false
+      ],
+      [
+       "Una clase puede tener solo una super clase directa",
+       true
+      ],
+      [
+       "Una clase puede tener tantas super clases directas como se desee",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "vf",
+     "en": "Al definir el método main, se lo define como static, esto quiere decir que este no puede invocar otros métodos de su misma clase que a su vez no sean estáticos y por eso es que todos los métodos dentro de main deben de ser declarados estáticos",
+     "ex": "Desde <code>main</code> se puede usar cualquier método de instancia creando un objeto: <code>new ParserServidores().leer(archivo)</code> es justo eso.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Seleccione el modificador al que corresponde la definición. “Esta función de la clase X es accesible para todas las clases externas y por sí misma.”",
+     "ex": "<code>public</code>: todas. <code>protected</code>: el paquete y las subclases. <i>default</i> (sin modificador): solo el paquete. <code>private</code>: solo la clase.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "default",
+       false
+      ],
+      [
+       "public",
+       true
+      ],
+      [
+       "private",
+       false
+      ],
+      [
+       "protected",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "Indique cuáles son las ventajas de usar var como tipo de dato",
+     "ex": "La a es una <b>desventaja</b>. <code>var</code> solo se usa en variables locales con inicialización: el tipo lo infiere el compilador y sigue siendo estático.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Reduce la claridad si se usa de manera excesiva o en contextos donde el tipo no es obvio.",
+       false
+      ],
+      [
+       "Facilita el mantenimiento del código al cambiar los tipos de variables sin necesidad de modificar las declaraciones de tipo",
+       true
+      ],
+      [
+       "Reduce la repetición de tipos verbosos",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "Seleccione las clases de envoltorio (wrapper classes) de cada tipo primitivo",
+     "ex": "Los wrappers son Byte, Short, Integer, Long, Float, Double, Character y Boolean. “integer” en minúscula no existe y String no envuelve a ningún primitivo.",
+     "fuente": "Preguntas posibles",
+     "op": [
+      [
+       "Byte",
+       true
+      ],
+      [
+       "integer",
+       false
+      ],
+      [
+       "String",
+       false
+      ],
+      [
+       "Integer",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué es un archetype en Maven?",
+     "ex": "<code>mvn archetype:generate</code> arma las carpetas <code>src/main/java</code>, <code>src/test/java</code> y el <code>pom.xml</code>.",
+     "fuente": "Apunte 03 · Maven",
+     "op": [
+      [
+       "Una plantilla que genera la estructura inicial del proyecto (por ejemplo, maven-archetype-quickstart)",
+       true
+      ],
+      [
+       "El archivo pom.xml ya compilado",
+       false
+      ],
+      [
+       "Un plugin que ejecuta los tests",
+       false
+      ],
+      [
+       "El repositorio remoto donde se guardan las dependencias",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Para generar un proyecto con <code>mvn archetype:generate</code>, ¿qué datos del proyecto son obligatorios?",
+     "ex": "Las “coordenadas” Maven: groupId (organización, al revés: <code>ar.edu.utn</code>), artifactId (el proyecto) y version.",
+     "fuente": "Apunte 03 · Maven",
+     "op": [
+      [
+       "groupId",
+       true
+      ],
+      [
+       "artifactId",
+       true
+      ],
+      [
+       "version",
+       true
+      ],
+      [
+       "El nombre del autor",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es el orden de las fases principales del ciclo de vida de Maven?",
+     "ex": "Cada fase ejecuta las anteriores: <code>mvn package</code> también valida, compila y corre los tests. <code>install</code> copia el jar al repositorio local (<code>~/.m2</code>).",
+     "fuente": "Apunte 03 · Maven",
+     "op": [
+      [
+       "validate → compile → test → package → install → deploy",
+       true
+      ],
+      [
+       "compile → validate → package → test → deploy → install",
+       false
+      ],
+      [
+       "test → compile → validate → install → package → deploy",
+       false
+      ],
+      [
+       "package → compile → test → validate → deploy → install",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "Al declarar JUnit en el pom se pone <code>&lt;scope&gt;test&lt;/scope&gt;</code>. ¿Qué efecto tiene y por qué tiene sentido?",
+     "modelo": "La dependencia está disponible solo para compilar y correr los tests (<code>src/test</code>). No va en el artefacto final ni en la ejecución real. JUnit sirve para probar durante el desarrollo, y el programa entregado no la necesita. El preenunciado lo dice: “JUnit 5 es la única dependencia y se usa solamente en tests”.",
+     "fuente": "Apuntes 03 y 07",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Según la convención de Maven, ¿dónde van las clases de test y qué implica?",
+     "ex": "En el parcial había que copiar <code>tests-nuevos/ar</code> a <code>src/test/java/ar</code>. <code>target/</code> lo genera Maven, por eso no se entrega en el ZIP.",
+     "fuente": "Apuntes 03 y 07",
+     "op": [
+      [
+       "En src/test/java; se compilan para correr los tests y no forman parte del jar",
+       true
+      ],
+      [
+       "En src/main/java junto con el código; se empaquetan igual",
+       false
+      ],
+      [
+       "En la raíz del proyecto, fuera de src",
+       false
+      ],
+      [
+       "En target/test, que se genera a mano",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un arreglo <code>int[] v = new int[6];</code> tiene índices válidos de:",
+     "ex": "De 0 a N−1. <code>v[6]</code> tira <code>ArrayIndexOutOfBoundsException</code>.",
+     "fuente": "Apunte 06 · Arreglos",
+     "op": [
+      [
+       "0 a 5",
+       true
+      ],
+      [
+       "1 a 6",
+       false
+      ],
+      [
+       "0 a 6",
+       false
+      ],
+      [
+       "1 a 5",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cómo se obtiene la cantidad de elementos de un arreglo <code>v</code>?",
+     "ex": "En arreglos es <code>length</code> sin paréntesis. En String es <code>length()</code> y en colecciones <code>size()</code>.",
+     "fuente": "Apunte 06 · Arreglos",
+     "op": [
+      [
+       "v.length (atributo)",
+       true
+      ],
+      [
+       "v.length() (método)",
+       false
+      ],
+      [
+       "v.size()",
+       false
+      ],
+      [
+       "length(v)",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuáles son excepciones NO chequeadas (unchecked)?",
+     "ex": "El compilador no obliga a tratarlas. <code>IOException</code> es chequeada: por eso <code>leer()</code> tiene <code>throws IOException</code>. <code>IllegalArgumentException</code> y <code>NumberFormatException</code> no son chequeadas.",
+     "fuente": "Apunte 06 · Excepciones",
+     "op": [
+      [
+       "Error y las que heredan de RuntimeException (NullPointerException, IllegalArgumentException…)",
+       true
+      ],
+      [
+       "Todas las que heredan de Exception",
+       false
+      ],
+      [
+       "Solo IOException",
+       false
+      ],
+      [
+       "Ninguna: en Java todas son chequeadas",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Si un try puede lanzar IOException y también Exception, ¿en qué orden van los catch?",
+     "ex": "Si el general va primero, el específico nunca se alcanza y el proyecto <b>no compila</b>.",
+     "fuente": "Apunte 06 · Excepciones",
+     "op": [
+      [
+       "Primero el más específico (IOException) y después el general (Exception)",
+       true
+      ],
+      [
+       "No importa el orden",
+       false
+      ],
+      [
+       "Primero el general y después el específico",
+       false
+      ],
+      [
+       "Tienen que ir en un único catch(Exception e)",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿En qué situación un bloque finally NO se ejecuta?",
+     "ex": "Fuera de eso, siempre se ejecuta. El try-with-resources (el del parser) cierra el archivo solo, como si fuera un finally.",
+     "fuente": "Apunte 06 · Excepciones",
+     "op": [
+      [
+       "Cuando se llama a System.exit() dentro del try o del catch",
+       true
+      ],
+      [
+       "Cuando no hay excepción",
+       false
+      ],
+      [
+       "Cuando la excepción es unchecked",
+       false
+      ],
+      [
+       "Siempre que haya un catch",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué diferencia hay entre @BeforeEach y @BeforeAll?",
+     "ex": "@BeforeAll va en un método <code>static</code>.",
+     "fuente": "Apunte 07 · JUnit",
+     "op": [
+      [
+       "@BeforeEach corre antes de cada test; @BeforeAll una sola vez antes de todos",
+       true
+      ],
+      [
+       "Son sinónimos",
+       false
+      ],
+      [
+       "Es al revés",
+       false
+      ],
+      [
+       "@BeforeEach es solo para tests parametrizados",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué método se usa para comprobar que un código lanza una excepción de un tipo dado?",
+     "ex": "Así están escritos los tests del preparcial: <code>assertThrows(IllegalArgumentException.class, () -&gt; new Servidor(null, \"W1\", 60))</code>.",
+     "fuente": "Apunte 07 · JUnit",
+     "op": [
+      [
+       "assertThrows(Clase.class, () -&gt; codigo())",
+       true
+      ],
+      [
+       "assertEquals(Clase.class, codigo())",
+       false
+      ],
+      [
+       "assertTrue(codigo() instanceof Clase)",
+       false
+      ],
+      [
+       "assertNotNull(codigo())",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué ventaja tiene agrupar comprobaciones en <code>assertAll(...)</code>?",
+     "ex": "Con <code>assertEquals</code> sueltos, el primero que falla corta el test.",
+     "fuente": "Apunte 07 · JUnit",
+     "op": [
+      [
+       "Ejecuta todas aunque alguna falle y reporta todos los fallos juntos",
+       true
+      ],
+      [
+       "Es más rápido",
+       false
+      ],
+      [
+       "Reemplaza a @Test",
+       false
+      ],
+      [
+       "Ninguna",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuáles son las dos formas de leer un CSV línea por línea solo con el JDK, sin dependencias externas?",
+     "ex": "OpenCSV es una dependencia que se agrega al pom. El preparcial usa BufferedReader y split.",
+     "fuente": "Apunte 11 · CSV",
+     "op": [
+      [
+       "Scanner + split, y BufferedReader (Files.newBufferedReader) + split",
+       true
+      ],
+      [
+       "OpenCSV CSVReader y CsvToBean",
+       false
+      ],
+      [
+       "CSVReaderHeaderAware y Jackson CSV",
+       false
+      ],
+      [
+       "JDBC y ResultSet",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "modelo",
+     "en": "¿Qué ventaja da BufferedReader sobre Scanner para leer un CSV?",
+     "modelo": "Da más control sobre el <b>charset</b> (en el proyecto, <code>Files.newBufferedReader(archivo, StandardCharsets.UTF_8)</code>, para que no se rompan los acentos), sobre el manejo de las excepciones de E/S (<code>IOException</code>) y sobre el cierre del recurso con try-with-resources. Scanner es más corto de escribir, pero da menos control.",
+     "fuente": "Apunte 11 · CSV",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El apunte recomienda hacer <code>trim()</code>/<code>strip()</code> y controlar vacíos antes de convertir un campo a número. ¿Qué excepción se busca evitar?",
+     "ex": "<code>Integer.parseInt(\" 1110 \")</code> falla por los espacios; por eso el parser hace <code>map(String::strip)</code>. Un campo vacío también falla (la línea 128 del parcial).",
+     "fuente": "Apuntes 06 y 11",
+     "op": [
+      [
+       "NumberFormatException",
+       true
+      ],
+      [
+       "ClassCastException",
+       false
+      ],
+      [
+       "ArrayIndexOutOfBoundsException",
+       false
+      ],
+      [
+       "UnsupportedOperationException",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Simulacros",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "Al analizar la inicialización del mapa <code>tiposFormateados</code> mediante el siguiente fragmento de código, ¿cuál afirmación es correcta?",
+     "code": "Map tiposFormateados = maximaTasaInteresPorTipo().entrySet().stream()\n    .collect(Collectors.toMap(\n        Map.Entry::getKey,\n        e -> String.format(\"%.2f\", e.getValue()),\n        (newKey, newValue) -> newKey,\n        LinkedHashMap::new));",
+     "ex": "<code>toMap</code> con 4 argumentos: clave, valor, <b>función de fusión</b> (qué hacer si se repite una clave; acá se queda con el primero, aunque el parámetro se llame <code>newKey</code>) y la <b>fábrica</b> del mapa. Como hay función de fusión, no hay excepción por duplicados. <code>collect</code> siempre crea un mapa nuevo y no toca el original.",
+     "fuente": "Preguntas posibles · 3K1 fintech",
+     "op": [
+      [
+       "El código arrojará una excepción en tiempo de ejecución si el método maximaTasaInteresPorTipo() devuelve claves duplicadas, ya que la función de fusión (merge function) ignora los nuevos valores ingresados.",
+       false
+      ],
+      [
+       "El código altera directamente el estado interno del mapa devuelto por maximaTasaInteresPorTipo(), formateando sus elementos in-place sin reservar espacio adicional en memoria.",
+       false
+      ],
+      [
+       "El código transforma los valores numéricos a cadenas con dos decimales, conserva de forma segura el valor existente en caso de colisión de claves y garantiza que se mantenga el orden de inserción original al estructurar el resultado en un LinkedHashMap.",
+       true
+      ],
+      [
+       "La expresión (newKey, newValue) -&gt; newKey actúa como un filtro que elimina automáticamente cualquier clave que no sea de tipo String durante el proceso de recolección.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Asumiendo que se procesaron y almacenaron en la CarteraCreditos 4 SolicitudCredito con la siguiente estructura (solo tipo y score): [(\"PREMIUM\", 65), (\"REGULAR\", 85), (\"PREMIUM\", 75), (\"PREMIUM\", 65)]. ¿Cuál sería la salida esperada del método <code>maximaTasaInteresPorTipo()</code>?",
+     "code": "public double getTasaInteresAnual() {          // en SolicitudCredito\n    return TASA_BASE + (100 - this.scoreFinanciero) * 0.8;   // TASA_BASE = 40\n}\n// CarteraCreditos: groupingBy(tipo, mapping(getTasaInteresAnual, maxBy(naturalOrder())))",
+     "ex": "Con el código del simulacro: REGULAR (score 85) da 40 + 15·0,8 = <b>52</b>. En PREMIUM, la tasa <b>máxima</b> sale del score <b>mínimo</b> (65): 40 + 35·0,8 = 68. La única opción con REGULAR = 52 es la b.",
+     "mal": "La b dice PREMIUM = 76, pero con este código da 68 (76 saldría con un score de 55). Se elige la b por descarte. Lo importante es entender que la tasa máxima corresponde al score más bajo.",
+     "fuente": "Preguntas posibles · 3K1 fintech",
+     "op": [
+      [
+       "{REGULAR=76, PREMIUM=52}",
+       false
+      ],
+      [
+       "{REGULAR=52, PREMIUM=76}",
+       true
+      ],
+      [
+       "{REGULAR=105, PREMIUM=90}",
+       false
+      ],
+      [
+       "{REGULAR=118.80, PREMIUM=119.69}",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "modelo",
+     "en": "Analice el siguiente fragmento del constructor de ServicioJuegos y explique qué valor devuelve <code>calcularSumaPuntuacionAjustada()</code> al final. Justifique comparando qué pasaría si se usara <code>this.juegos = lista</code> en lugar de <code>List.copyOf(lista)</code>.",
+     "code": "var lista = new ArrayList();\nlista.add(new JuegoMesa(\"J1\", \"A\", 2020, 1, 4, 60, 8.0, 2.0, \"Cat\")); // Puntuación 16.0\nvar servicio = new ServicioJuegos(lista);\nlista.clear();\ndouble total = servicio.calcularSumaPuntuacionAjustada();",
+     "modelo": "Con <code>List.copyOf(lista)</code>, ServicioJuegos guarda su propia copia <b>antes</b> del <code>clear()</code>, así que <b>total = 16.0</b>. Con <code>this.juegos = lista</code>, las dos variables apuntan a la misma lista: el <code>clear()</code> de afuera también vacía la del servicio y <b>total = 0.0</b>. La copia defensiva protege el encapsulamiento. <i>Salió igual con la fintech: CarteraCreditos con una SolicitudCredito PREMIUM de score 45. Con copyOf el promedio es 40 + 55·0,8 = 84,0; sin copia, la lista queda vacía y <code>average().orElse(0)</code> da 0,0. El enunciado de esa versión dice <code>new CentralEnvios(entrada)</code>, pero es un error de copiado: quiere decir CarteraCreditos.</i>",
+     "fuente": "Simulacro (campus) · 3K4 juegos"
+    },
+    {
+     "tipo": "una",
+     "en": "Suponga que JuegoCooperativo extiende de JuegoMesa y sobrescribe <code>getPuntuacionAjustada()</code>. Se ejecuta el siguiente código. ¿Qué valor imprime la consola?",
+     "code": "List lista = List.of(\n    new JuegoMesa(\"J1\", \"Normal\", 2020, 1, 4, 60, 8.0, 2.5, \"E\"),          // Puntuación: 20.0\n    new JuegoCooperativo(\"J2\", \"Coop\", 2021, 2, 5, 90, 8.0, 2.5, \"C\", 6) // Puntuación: 23.0\n);\nSystem.out.println(lista.stream().mapToDouble(JuegoMesa::getPuntuacionAjustada).sum());",
+     "ex": "<b>Enlace dinámico</b>: aunque la referencia diga <code>JuegoMesa::</code>, cada objeto ejecuta su versión. J1 da 20,0 y J2 (cooperativo) da 23,0: suma 43,0. Es lo mismo que <code>Servidor::costoRiesgoOperativo</code> con <code>ServidorConIngresos</code> en el parcial.",
+     "fuente": "Simulacro (campus) · 3K4 juegos",
+     "op": [
+      [
+       "Error de compilación porque JuegoMesa::getPuntuacionAjustada no conoce la dificultad.",
+       false
+      ],
+      [
+       "40.0 (ignora el cálculo extra del juego cooperativo)",
+       false
+      ],
+      [
+       "46.0 (aplica el cálculo de cooperativo a ambos objetos)",
+       false
+      ],
+      [
+       "43.0",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "modelo",
+     "en": "Explique brevemente (4-6 líneas) qué responsabilidades corresponden a JuegoCooperativo y al ParserJuegos cuando se procesa una fila de tipo “Cooperativo” con una dificultad inválida (ej: 15). Indique qué sucede con el resumen del procesamiento y si el parser continúa con la siguiente fila.",
+     "modelo": "<b>JuegoCooperativo</b> protege su invariante: en su constructor (o en su <code>desdeCampos</code>) valida la dificultad y, si es 15, tira <code>IllegalArgumentException</code>. El objeto inválido <b>nunca llega a existir</b>. El <b>ParserJuegos</b> no repite esa regla: captura la excepción dentro del while, registra la línea y el motivo en los errores (sube <b>inválidas</b>, no se agrega el juego) y <b>sigue con la próxima fila</b>. Así las validaciones del dato quedan “cerca del objeto”, como pide el preenunciado, y el parser se ocupa de leer, clasificar y contar.",
+     "fuente": "Simulacro (campus) · 3K4 juegos"
+    },
+    {
+     "tipo": "una",
+     "en": "Se procesa un archivo con el siguiente contenido (incluyendo encabezado). El parser está configurado para descartar si el rating es menor a 1.0 y marcar como inválida si hay errores de formato o rating &gt; 10.0. ¿Qué valores contiene el ResultadoParseo?",
+     "code": "id;nombre;anio;min;max;dur;rating;peso;cat;dificultad\nJ1;Cascadia;2021;1;4;45;8.4;2.1;Familiar;\nJ2;Error;2020;1;4;30;ocho;2.0;Estrategia;\nJ3;Fuera;2022;2;5;60;12.0;3.0;Estrategia;",
+     "ex": "J1 tiene rating 8,4 → procesada. J2: “ocho” no es número → inválida (<code>NumberFormatException</code>). J3: 12,0 &gt; 10 → inválida. Ninguna tiene rating menor a 1, así que no hay descartadas.",
+     "fuente": "Simulacro (campus) · 3K4 juegos",
+     "op": [
+      [
+       "Leídas: 3, Procesadas: 2, Inválidas: 1",
+       false
+      ],
+      [
+       "Leídas: 3, Procesadas: 1, Inválidas: 2",
+       true
+      ],
+      [
+       "Leídas: 3, Procesadas: 1, Descartadas: 2",
+       false
+      ],
+      [
+       "El procesamiento se detiene en J2 y lanza una excepción al Main.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Se procesa este archivo del formato original. El Consumo solo se agrega después de construirse correctamente. ¿Qué valores tiene el resumen?",
+     "code": "id,rubro,importeCentavos,bonificacionCentavos,estado\nA,Alimentos,0,0,ANULADO\nB,Alimentos,mil,0,APROBADO\nC,Alimentos,110000,10000,APROBADO",
+     "ex": "A está ANULADO → descartada sin validar los montos (como ESTABLE en el preparcial). B: “mil” no es número → inválida, y la carga sigue. C es válida → procesada.",
+     "fuente": "Preguntas posibles · 3K7 tarjetas",
+     "op": [
+      [
+       "Leídas 3, procesadas 1, descartadas 0, inválidas 2: A tiene monto inválido.",
+       false
+      ],
+      [
+       "La carga termina en B y no hay un resultado de parseo.",
+       false
+      ],
+      [
+       "Leídas 3, procesadas 2, descartadas 1, inválidas 0: procesar incluye intentar convertir.",
+       false
+      ],
+      [
+       "Leídas 3, procesadas 1, descartadas 1, inválidas 1: C se incorpora después del error de B.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Se comparan cuatro formas de procesar el archivo de juegos: 1) Scanner y split(\";\") con índices manuales. 2) OpenCSV, que maneja la sintaxis pero devuelve String[]. 3) Mapas basados en los nombres de encabezados. 4) Mapeo directo a objetos (Beans) por nombre de columna. ¿Qué mejora fundamental aporta el paso del nivel 2 al nivel 3?",
+     "ex": "Con <code>String[]</code> se accede por posición (<code>tokens[2]</code>); con <code>Map</code>, por nombre (<code>fila.get(\"rating\")</code>). La conversión de tipos recién la automatiza el nivel 4 (beans).",
+     "fuente": "Preguntas posibles · 3K4 juegos",
+     "op": [
+      [
+       "Elimina la dependencia de la posición (índice) de las columnas, permitiendo reordenar el CSV si se mantienen los nombres.",
+       true
+      ],
+      [
+       "Garantiza que no existan filas con datos nulos o vacíos en el archivo.",
+       false
+      ],
+      [
+       "Permite procesar archivos con diferentes separadores automáticamente.",
+       false
+      ],
+      [
+       "Automatiza la conversión de tipos sin intervención del programador.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Una sucursal intercambia el orden de importeCentavos y bonificacionCentavos, conservando sus encabezados. Se comparan cuatro estrategias: 1) Scanner y posiciones. 2) OpenCSV con arreglos y posiciones. 3) Mapas encabezado → campo. 4) Beans por nombre de encabezado con conversión a números. Se deben seguir calculando el neto y las reglas de aceptación. ¿Qué análisis es correcto?",
+     "ex": "Ninguna biblioteca de lectura hace la <b>lógica de negocio</b>: el neto y las reglas de aceptación siempre las programás vos. Solo cambia quién separa los campos (2), cómo se los busca (3: por nombre) y quién los convierte (4).",
+     "fuente": "Preguntas posibles · 3K7 tarjetas",
+     "op": [
+      [
+       "El paso 3 a 4 permite trabajar con objetos, pero vuelve obligatorio el orden original de columnas: las propiedades numéricas de un bean solo pueden asociarse por posición.",
+       false
+      ],
+      [
+       "El paso 1 a 2 delega la interpretación de la sintaxis, pero conserva accesos posicionales; 3 usa nombres y 4 delega además el mapeo y las conversiones configuradas. Calcular el neto y validar las reglas del negocio sigue siendo necesario.",
+       true
+      ],
+      [
+       "El paso 2 a 3 evita depender del orden; por eso el mapa también convierte los montos a números y garantiza que la bonificación sea menor al importe, sin controles adicionales.",
+       false
+      ],
+      [
+       "El paso 1 a 2 elimina tanto la separación manual como la dependencia del orden: al devolver un arreglo, OpenCSV identifica qué posición corresponde a cada nombre de columna.",
+       false
+      ]
+     ]
+    }
+   ]
+  }
+ ]
+}

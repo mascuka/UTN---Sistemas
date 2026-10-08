@@ -1,0 +1,551 @@
+{
+ "titulo": "TPA · 1º Parcial · Robótica",
+ "descripcion": "Los ejercicios de los parciales 2023–2026 con la respuesta verificada en Octave y la teoría de opción múltiple.",
+ "secciones": [
+  {
+   "titulo": "Rotaciones y traslaciones",
+   "preguntas": [
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido girado 12.00º alrededor del eje 0Y, luego ha sido girado -28.00º alrededor del eje 0X, y finalmente ha sido girado 133.00º alrededor del eje 0Z. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (-6.00, 9.00, -10.00).",
+     "num": "rx = <span class=\"resp\">2,5390</span> &nbsp; ry = <span class=\"resp\">-8,4999</span> &nbsp; rz = <span class=\"resp\">-11,7603</span>",
+     "ex": "Todas las transformaciones son <b>respecto del sistema fijo 0XYZ</b> → se <b>premultiplica</b>: la primera transformación queda pegada al vector (a la derecha) y la última a la izquierda. Orden de giros: Y, X, Z → <code>Rz·Rx·Ry</code>. El 1 al final del vector es para poder multiplicar por matrices 4×4.<pre style=\"margin:6px 0 2px\">r = Rotz(133) * Rotx(-28) * Roty(12) * [-6; 9; -10; 1]</pre>",
+     "fuente": "1º Parcial 2026 (4K3)"
+    },
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido girado 136.00º alrededor del eje 0X, y posteriormente trasladado un vector p1 = (-9.00, -9.00, -8.00), y luego ha sido girado 97.00º alrededor del eje 0Y y trasladado un vector p2 = (-2.00, -5.00, -7.00) con respecto al sistema 0XYZ. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (0.00, -6.00, -5.00).",
+     "num": "rx = <span class=\"resp\">-9,4105</span> &nbsp; ry = <span class=\"resp\">-6,2107</span> &nbsp; rz = <span class=\"resp\">2,9775</span>",
+     "ex": "Todas las transformaciones son <b>respecto del sistema fijo 0XYZ</b> → se <b>premultiplica</b>: la primera transformación queda pegada al vector (a la derecha) y la última a la izquierda. Secuencia: Rx(136) → T(p1) → Ry(97) → T(p2), así que se escribe al revés.<pre style=\"margin:6px 0 2px\">r = Traslacion([-2 -5 -7]) * Roty(97) * Traslacion([-9 -9 -8]) * Rotx(136) * [0; -6; -5; 1]</pre>",
+     "fuente": "1º Parcial 2026 (4K3)"
+    },
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido girado 39.00º alrededor del eje 0X, y posteriormente trasladado un vector p1 = (-2.00, -7.00, 0.00), y luego ha sido girado -110.00º alrededor del eje 0Y y trasladado un vector p2 = (-7.00, -2.00, -8.00) con respecto al sistema 0XYZ. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (-7.00, -9.00, -4.00).",
+     "num": "rx = <span class=\"resp\">4,3216</span> &nbsp; ry = <span class=\"resp\">-13,4770</span> &nbsp; rz = <span class=\"resp\">-13,4569</span>",
+     "ex": "Todas las transformaciones son <b>respecto del sistema fijo 0XYZ</b> → se <b>premultiplica</b>: la primera transformación queda pegada al vector (a la derecha) y la última a la izquierda. En 2024 un alumno multiplicó <code>T1*T2</code> (al revés) y le dio (-2,8471; -7,2354; -17,188): el profe lo marcó mal con el comentario “Se deben premultiplicar”.<pre style=\"margin:6px 0 2px\">r = Traslacion([-7 -2 -8]) * Roty(-110) * Traslacion([-2 -7 0]) * Rotx(39) * [-7; -9; -4; 1]\n% o, sin matrices 4x4:  r = p2 + Ry*(Rx*ruvw + p1)</pre>",
+     "fuente": "Parciales 2023, 2024 y 2025 (se repitió 3 años)"
+    },
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido girado -58.00º alrededor del eje 0Y, y posteriormente trasladado un vector p1 = (-2.00, -6.00, -4.00), y luego ha sido girado -121.00º alrededor del eje 0X y trasladado un vector p2 = (-8.00, -3.00, -7.00) con respecto al sistema 0XYZ. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (-3.00, -3.00, -2.00).",
+     "num": "rx = <span class=\"resp\">-9,8937</span> &nbsp; ry = <span class=\"resp\">-4,8825</span> &nbsp; rz = <span class=\"resp\">4,6308</span>",
+     "ex": "Todas las transformaciones son <b>respecto del sistema fijo 0XYZ</b> → se <b>premultiplica</b>: la primera transformación queda pegada al vector (a la derecha) y la última a la izquierda.<pre style=\"margin:6px 0 2px\">r = Traslacion([-8 -3 -7]) * Rotx(-121) * Traslacion([-2 -6 -4]) * Roty(-58) * [-3; -3; -2; 1]</pre>",
+     "fuente": "Recuperatorio 2024"
+    },
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido girado -7.00º alrededor del eje 0Z, y posteriormente trasladado un vector p1 = (-4.00, -3.00, -4.00), y luego ha sido girado 51.00º alrededor del eje 0Y y trasladado un vector p2 = (-2.00, -4.00, 0.00) con respecto al sistema 0XYZ. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (-7.00, -8.00, -8.00).",
+     "num": "rx = <span class=\"resp\">-18,8290</span> &nbsp; ry = <span class=\"resp\">-14,0873</span> &nbsp; rz = <span class=\"resp\">1,7139</span>",
+     "ex": "Todas las transformaciones son <b>respecto del sistema fijo 0XYZ</b> → se <b>premultiplica</b>: la primera transformación queda pegada al vector (a la derecha) y la última a la izquierda.<pre style=\"margin:6px 0 2px\">r = Traslacion([-2 -4 0]) * Roty(51) * Traslacion([-4 -3 -4]) * Rotz(-7) * [-7; -8; -8; 1]</pre>",
+     "fuente": "Parcial 2024"
+    },
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido trasladado un vector p = (0.00, -3.00, -3.00) con respecto al sistema 0XYZ, y posteriormente girado -7.00º alrededor del eje 0Y. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (-1.00, -1.00, -4.00).",
+     "num": "rx = <span class=\"resp\">-0,1395</span> &nbsp; ry = <span class=\"resp\">-4</span> &nbsp; rz = <span class=\"resp\">-7,0697</span>",
+     "ex": "¡Ojo con el orden! Acá <b>primero se traslada y después se gira</b>, así que la composición es <b>R·T</b> (no T·R). Es la corrección textual del profe: “primero se traslada el sistema y luego se lo rota. La composición de matrices es R * T”. Con T·R da (-0,505; -4; -7,092), parecido porque el ángulo es chico, pero está mal.<pre style=\"margin:6px 0 2px\">r = Roty(-7) * Traslacion([0 -3 -3]) * [-1; -1; -4; 1]</pre>",
+     "fuente": "Recuperatorio 2024"
+    },
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido girado -50.00º alrededor del eje 0Z, y posteriormente trasladado un vector p = (-2.00, -6.00, -3.00) con respecto al sistema 0XYZ. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (-2.00, -5.00, -9.00).",
+     "num": "rx = <span class=\"resp\">-7,1158</span> &nbsp; ry = <span class=\"resp\">-7,6818</span> &nbsp; rz = <span class=\"resp\">-12</span>",
+     "ex": "Primero gira y después se traslada → <code>T·R</code>. Como el giro es alrededor de Z, la coordenada z no cambia con la rotación: rz = -9 + (-3) = -12.<pre style=\"margin:6px 0 2px\">r = Traslacion([-2 -6 -3]) * Rotz(-50) * [-2; -5; -9; 1]</pre>",
+     "fuente": "Parcial 2025"
+    },
+    {
+     "tipo": "num",
+     "en": "Un sistema OUVW ha sido girado 62.00º alrededor del eje 0X, y posteriormente trasladado un vector p = (-5.00, -1.00, -2.00) con respecto al sistema 0XYZ. Calcular las coordenadas (rx, ry, rz) del vector r con coordenadas r<sub>uvw</sub> = (-8.00, -1.00, 0.00).",
+     "num": "rx = <span class=\"resp\">-13</span> &nbsp; ry = <span class=\"resp\">-1,4695</span> &nbsp; rz = <span class=\"resp\">-2,8829</span>",
+     "ex": "T·R. Girar alrededor de X no cambia la x: rx = -8 + (-5) = -13.<pre style=\"margin:6px 0 2px\">r = Traslacion([-5 -1 -2]) * Rotx(62) * [-8; -1; 0; 1]</pre>",
+     "fuente": "Parcial 2023"
+    }
+   ]
+  },
+  {
+   "titulo": "Denavit–Hartenberg",
+   "preguntas": [
+    {
+     "tipo": "num",
+     "en": "Dado el robot RPR (codo extendido) de la figura, determinar los parámetros de Denavit–Hartenberg (convención clásica). El estado de reposo es el de la figura (x<sub>1</sub> coincide con x<sub>2</sub> y el brazo está totalmente extendido). La tercera fila usa el corrimiento q<sub>2</sub> − 90°. Datos: A = 7.00 cm, B = 4.00 cm. Configuración: q<sub>1</sub> = -90°, d = 2.00 cm, q<sub>2</sub> = 45°. Parte A: tabla DH. Parte B: posición del efector final.",
+     "num": "<table class=\"dh\" style=\"margin:6px 0;font-size:9pt\"><tr><th></th><th>Art 1</th><th>Art 2</th><th>Art 3</th></tr><tr><td><b>θ</b></td><td>q1</td><td>-90</td><td>q2 − 90</td></tr><tr><td><b>d</b></td><td>A</td><td>d</td><td>0</td></tr><tr><td><b>a</b></td><td>0</td><td>0</td><td>B</td></tr><tr><td><b>α</b></td><td>-90</td><td>-90</td><td>0</td></tr></table>px = <span class=\"resp\">4,8284</span> &nbsp; py = <span class=\"resp\">0</span> &nbsp; pz = <span class=\"resp\">9,8284</span>",
+     "ex": "Con la tabla se arma una matriz por fila y se multiplican en orden. En 2023 salió el mismo robot con A = 2, B = 6, q1 = π/4, q2 = −π/4, d = 5 → p = (-6,5355; 6,5355; -2,2426).<pre style=\"margin:6px 0 2px\">A1 = matrizDenavitHartenberg(q1,      A, 0, -90);\nA2 = matrizDenavitHartenberg(-90,     d, 0, -90);\nA3 = matrizDenavitHartenberg(q2 - 90, 0, B,   0);\nT  = A1 * A2 * A3;   p = T(1:3,4)</pre>",
+     "fuente": "1º Parcial 2026 (4K3) · también 2023",
+     "img": "quiz/img/tpa-1er-parcial-008_p5_0.png"
+    },
+    {
+     "tipo": "num",
+     "en": "Dado el robot cilíndrico de la figura, determinar los parámetros de Denavit–Hartenberg (convención clásica). Datos: l<sub>1</sub> = 5.00 cm, l<sub>4</sub> = 1.00 cm. Configuración: θ<sub>1</sub> = -90°, d<sub>2</sub> = 6.00 cm, d<sub>3</sub> = 7.00 cm, θ<sub>4</sub> = 45°. Parte A: tabla DH. Parte B: posición del efector final.",
+     "num": "<table class=\"dh\" style=\"margin:6px 0;font-size:9pt\"><tr><th></th><th>Art 1</th><th>Art 2</th><th>Art 3</th><th>Art 4</th></tr><tr><td><b>θ</b></td><td>q1</td><td>90</td><td>0</td><td>q4</td></tr><tr><td><b>d</b></td><td>l1</td><td>d2</td><td>d3</td><td>l4</td></tr><tr><td><b>a</b></td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td><b>α</b></td><td>0</td><td>90</td><td>0</td><td>0</td></tr></table>px = <span class=\"resp\">0</span> &nbsp; py = <span class=\"resp\">-8</span> &nbsp; pz = <span class=\"resp\">11</span>",
+     "ex": "Es el robot cilíndrico del libro de Barrientos (el mismo del 2º parcial). Control rápido: x = (d3 + l4)·cos θ1 = 8·cos(-90°) = 0; y = 8·sen(-90°) = -8; z = l1 + d2 = 11.<pre style=\"margin:6px 0 2px\">A1 = matrizDenavitHartenberg(t1, l1, 0,  0);\nA2 = matrizDenavitHartenberg(90, d2, 0, 90);\nA3 = matrizDenavitHartenberg(0,  d3, 0,  0);\nA4 = matrizDenavitHartenberg(t4, l4, 0,  0);\nT = A1*A2*A3*A4;   p = T(1:3,4)</pre>",
+     "fuente": "1º Parcial 2026 (4K3)",
+     "img": "quiz/img/tpa-1er-parcial-008_p7_1.png"
+    },
+    {
+     "tipo": "num",
+     "en": "Determinar los parámetros de Denavit–Hartenberg del robot de la figura (el estado de reposo es el de la figura). Si L1 = 10.00 cm, L2 = 5.00 cm, L4 = 1.00 cm, determinar la posición del efector final para q1 = π/2 rad, q2 = π/4 rad, d3 = 8.00 cm, q4 = π/4 rad, q5 = -π/4 rad.",
+     "num": "<table class=\"dh\" style=\"margin:6px 0;font-size:9pt\"><tr><th></th><th>Art 1</th><th>Art 2</th><th>Art 3</th><th>Art 4</th><th>Art 5</th></tr><tr><td><b>θ</b></td><td>q1</td><td>q2 + π/2</td><td>0</td><td>q4</td><td>q5</td></tr><tr><td><b>d</b></td><td>L1</td><td>L2</td><td>d3</td><td>0</td><td>L4</td></tr><tr><td><b>a</b></td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td><b>α</b></td><td>π/2</td><td>π/2</td><td>-π/2</td><td>π/2</td><td>0</td></tr></table>px = <span class=\"resp\">5</span> &nbsp; py = <span class=\"resp\">5,6569</span> &nbsp; pz = <span class=\"resp\">16,6569</span>",
+     "ex": "Si los ángulos te los dan en radianes, o trabajás todo en grados (90, 45+90…) o le pasás <code>'rad'</code> a la función. No mezcles.<pre style=\"margin:6px 0 2px\">T = matrizDenavitHartenberg(90,10,0,90) * matrizDenavitHartenberg(45+90,5,0,90) * ...\n    matrizDenavitHartenberg(0,8,0,-90) * matrizDenavitHartenberg(45,0,0,90) * ...\n    matrizDenavitHartenberg(-45,1,0,0);\np = T(1:3,4)</pre>",
+     "fuente": "Parcial 2024",
+     "img": "quiz/img/tpa-1er-parcial-022_p2_0.png"
+    },
+    {
+     "tipo": "num",
+     "en": "Determinar los parámetros de Denavit–Hartenberg del robot de la figura (estado de reposo el de la figura). Luego determinar la posición del efector final considerando l1 = 7.10, l2 = 4.50, l3 = 4.20, l4 = 3.00, q1 = 22.50°, q2 = 45.00°, q3 = 90.00°, d4 = 1.00, q5 = -45.00°, q6 = 22.50°.",
+     "num": "<table class=\"dh\" style=\"margin:6px 0;font-size:9pt\"><tr><th></th><th>Art 1</th><th>Art 2</th><th>Art 3</th><th>Art 4</th><th>Art 5</th><th>Art 6</th></tr><tr><td><b>θ</b></td><td>q1</td><td>q2</td><td>q3</td><td>0</td><td>q5</td><td>q6</td></tr><tr><td><b>d</b></td><td>l1</td><td>0</td><td>0</td><td>l3 + d4</td><td>0</td><td>l4</td></tr><tr><td><b>a</b></td><td>0</td><td>l2</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td><b>α</b></td><td>-π/2</td><td>0</td><td>π/2</td><td>-π/2</td><td>π/2</td><td>0</td></tr></table>px = <span class=\"resp\">9,1085</span> &nbsp; py = <span class=\"resp\">3,7729</span> &nbsp; pz = <span class=\"resp\">0,2411</span>",
+     "ex": "La articulación 4 es prismática: su variable va en <b>d</b> (l3 + d4) y su θ es fijo (0). La 2 tiene el eslabón l2 en <b>a</b> porque va a lo largo de x.<pre style=\"margin:6px 0 2px\">th = [22.5 45 90 0 -45 22.5];  d = [7.1 0 0 4.2+1 0 3];\na  = [0 4.5 0 0 0 0];          al = [-90 0 90 -90 90 0];\nT = cinematica_directa(th, d, a, al, 'deg');   p = T(1:3,4)</pre>",
+     "fuente": "Parcial 2025",
+     "img": "quiz/img/tpa-1er-parcial-107_p3_0.png"
+    }
+   ]
+  },
+  {
+   "titulo": "Teoría",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "El efector final de un robot es:",
+     "ex": "Es la herramienta o pinza: lo que interactúa con el entorno.",
+     "fuente": "Pailos 2023 y 2024",
+     "op": [
+      [
+       "La articulación más cerca del medio del robot.",
+       false
+      ],
+      [
+       "La articulación rotativa más cerca del efector final.",
+       false
+      ],
+      [
+       "La parte que actúa con el medio.",
+       true
+      ],
+      [
+       "El eslabón más largo.",
+       false
+      ],
+      [
+       "La base del robot.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El Método de Denavit Hartenberg permite:",
+     "ex": "DH es para la <b>directa</b> y da posición <b>y</b> orientación (la matriz T completa), con articulaciones R y/o P.",
+     "fuente": "Pailos 2023 y 2024",
+     "op": [
+      [
+       "Calcular la cinemática inversa de un robot de varios grados de libertad cuyas articulaciones sean solo rotativas.",
+       false
+      ],
+      [
+       "Calcular la cinemática inversa de un robot de varios grados de libertad cuyas articulaciones sean solo prismáticas.",
+       false
+      ],
+      [
+       "Calcular la cinemática directa de un robot de varios grados de libertad dando solo la posición del efector final.",
+       false
+      ],
+      [
+       "Calcular la cinemática directa de un robot de varios grados de libertad dando solo la orientación del efector final.",
+       false
+      ],
+      [
+       "Calcular la cinemática directa de un robot de varios grados de libertad cuyas articulaciones sean prismáticas y / o Rotativas.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "La cinemática Directa de un robot:",
+     "ex": "Directa: articulaciones → posición y orientación del efector.",
+     "fuente": "Pailos 2023",
+     "op": [
+      [
+       "Son un conjunto de ecuaciones que dados los valores de las articulaciones, nos dan los valores reales de los parámetros del robot.",
+       false
+      ],
+      [
+       "Son un conjunto de ecuaciones que dada la ubicación en el espacio del efector final, pueden calcular los valores de las articulaciones para llegar a esa ubicación.",
+       false
+      ],
+      [
+       "Son un conjunto de ecuaciones que dados los parámetros del robot nos dan los valores reales de las articulaciones.",
+       false
+      ],
+      [
+       "Son un conjunto de ecuaciones que dados los valores de los parámetros y de las articulaciones nos dan la posición y la orientación del efector final del robot.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "La cinemática Inversa de un robot:",
+     "ex": "Inversa: posición deseada → valores de las articulaciones.",
+     "fuente": "Pailos 2023 y 2024",
+     "op": [
+      [
+       "Son un conjunto de ecuaciones que dada la ubicación en el espacio del efector final, pueden calcular los valores de las articulaciones para llegar a esa ubicación.",
+       true
+      ],
+      [
+       "Son un conjunto de ecuaciones que dados los parámetros del robot nos dan los valores reales de las articulaciones.",
+       false
+      ],
+      [
+       "Son un conjunto de ecuaciones que dados los valores de las articulaciones, nos dan los valores reales de los parámetros del robot.",
+       false
+      ],
+      [
+       "Son un conjunto de ecuaciones que dados los valores de los parámetros y de las articulaciones nos dan la posición y la orientación del robot.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El nombre del robot industrial de la figura se llama:",
+     "ex": "Tres prismáticas perpendiculares (x, y, z): cartesiano (o pórtico).",
+     "fuente": "Pailos 2023",
+     "img": "quiz/img/tpa-1er-parcial-109_p2_0.png",
+     "op": [
+      [
+       "Cilíndrico",
+       false
+      ],
+      [
+       "Messiano",
+       false
+      ],
+      [
+       "Cartesiano",
+       true
+      ],
+      [
+       "Antropomorfo",
+       false
+      ],
+      [
+       "Esférico",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El nombre del robot industrial de la figura se llama:",
+     "ex": "Dos rotaciones (θ y β) + una prismática: su espacio de trabajo es una esfera (también se llama polar).",
+     "fuente": "Pailos 2023 y 2024",
+     "img": "quiz/img/tpa-1er-parcial-121_p2_0.png",
+     "op": [
+      [
+       "Cartesiano",
+       false
+      ],
+      [
+       "Cilíndrico",
+       false
+      ],
+      [
+       "Antropomorfo",
+       false
+      ],
+      [
+       "Esférico",
+       true
+      ],
+      [
+       "Messiano",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El nombre del robot industrial de la figura se llama:",
+     "ex": "Robot paralelo de tres brazos unidos a una plataforma: muy rápido para “pick and place”.",
+     "fuente": "Pailos 2024",
+     "img": "quiz/img/tpa-1er-parcial-121_p4_2.png",
+     "op": [
+      [
+       "Delta",
+       true
+      ],
+      [
+       "Cilíndrico",
+       false
+      ],
+      [
+       "Messiano",
+       false
+      ],
+      [
+       "Antropomorfo",
+       false
+      ],
+      [
+       "Esférico",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "La matriz a continuación representa:",
+     "ex": "La fila y la columna del eje que no cambia (Y) tienen el 1. Y en Rot<sub>y</sub> el seno <b>positivo</b> está arriba a la derecha (al revés que en X y Z). No es traslación: la última columna es 0.",
+     "fuente": "Pailos 2023 y 2024",
+     "img": "quiz/img/tpa-1er-parcial-121_p3_1.png",
+     "op": [
+      [
+       "Una rotación según el eje X.",
+       false
+      ],
+      [
+       "Una traslación pura según el eje Y.",
+       false
+      ],
+      [
+       "Una rotación según el eje Y.",
+       true
+      ],
+      [
+       "Una rotación según el eje Z.",
+       false
+      ],
+      [
+       "Una traslación pura según el eje Z.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "La regla del tirabuzón o de la mano derecha sirve para:",
+     "ex": "Da el sentido del tercer eje (y el sentido positivo de los giros).",
+     "fuente": "Pailos 2023 y 2024",
+     "op": [
+      [
+       "Ubicar el condensador de fusión.",
+       false
+      ],
+      [
+       "Ubicar los motores del robot en cuadratura inversa.",
+       false
+      ],
+      [
+       "Ubicar los ejes X,Y,Z en el espacio.",
+       true
+      ],
+      [
+       "Ubicar los sensores del robot.",
+       false
+      ],
+      [
+       "Ubicar a dónde apunta el driver de potencia.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Los motores en los robots usan reductores de velocidad porque:",
+     "ex": "Los motores giran rápido y con poco torque; el reductor baja la velocidad y aumenta el torque en la articulación.",
+     "fuente": "Pailos 2023",
+     "op": [
+      [
+       "La velocidad de una articulación debe ir más rápido que la velocidad del motor que la mueve.",
+       false
+      ],
+      [
+       "Se necesita más velocidad en la base del robot.",
+       false
+      ],
+      [
+       "El eslabón asociado a la articulación debe ir más rápido que el motor que la mueve.",
+       false
+      ],
+      [
+       "Los motores en general son lentos.",
+       false
+      ],
+      [
+       "La velocidad de una articulación debe ir más lento que la velocidad del motor que la mueve.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "En un aeropuerto la torre de control tiene un sistema considerado fijo (X,Y,Z). El sistema del avión (u,v,w) está a 4000 m según X, 6000 m según Y y 300 m según Z de la torre, y además está rotado según el eje Z en un ángulo de π. ¿En qué valores se encuentra la torre de control con respecto al avión, según los ejes (u,v,w)?",
+     "ex": "Hay que ver el origen de XYZ desde el avión: <b>T⁻¹</b>. Primero restás la posición: (-4000, -6000, -300); después el giro de π alrededor de Z cambia el signo de x e y: (4000, 6000, -300). Es el ejercicio del avión de clase (script <code>punto_en_sistemas.m</code>).<pre style=\"margin:6px 0 2px\">T = Traslacion([4000 6000 300]) * Rotz(180);\ntorre = inv(T) * [0; 0; 0; 1]</pre>",
+     "fuente": "Pailos 2024",
+     "op": [
+      [
+       "u = 4000, v = 6000, w = -300",
+       true
+      ],
+      [
+       "u = -4000, v = -6000, w = 300",
+       false
+      ],
+      [
+       "u = -4000, v = 6000, w = -300",
+       false
+      ],
+      [
+       "u = -4000, v = -6000, w = -300",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "En el robot de la figura, donde L1 = 3 m y L2 = 1.5 m, con q1 = π/6 y q2 = π/7: ¿cuáles son las componentes del versor j′ con respecto a los versores i, j, k de la base?",
+     "ex": "La orientación del extremo es un giro total de q1 + q2 = π/6 + π/7 ≈ 55,7° alrededor de Z. El versor j′ es la 2ª columna de Rot<sub>z</sub>: (-sen 55,7°; cos 55,7°; 0) = (-0,8262; 0,5633; 0). Las longitudes no importan para la orientación.",
+     "fuente": "Pailos 2024",
+     "img": "quiz/img/tpa-1er-parcial-121_p7_4.png",
+     "op": [
+      [
+       "aproximadamente i = 0.8262, j = -0.5633, k = 0",
+       false
+      ],
+      [
+       "aproximadamente i = 0.8262, j = 0.5633, k = 0",
+       false
+      ],
+      [
+       "aproximadamente i = -0.8262, j = -0.5633, k = 0",
+       false
+      ],
+      [
+       "aproximadamente i = 0.5633, j = -0.8262, k = 0",
+       false
+      ],
+      [
+       "aproximadamente i = -0.8262, j = 0.5633, k = 0",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El robot de dos grados de libertad, con ambas articulaciones rotativas y cuyos enlaces miden 0,70 m y 0,30 m, se encuentra en el punto X = 0,7562, Y = 0,6098, Z = 0 m. ¿Qué valores deben tener las articulaciones para posicionarlo en ese punto?",
+     "ex": "La forma más rápida: probá las opciones con la directa. x = 0,7·cos 30° + 0,3·cos 60° = 0,7562 ✓, y = 0,7·sen 30° + 0,3·sen 60° = 0,6098 ✓. (La otra solución, codo arriba, es q1 = 47,8°, q2 = -30°, pero no está entre las opciones.)",
+     "fuente": "Pailos 2024",
+     "op": [
+      [
+       "Aproximadamente q1 = -100 grados y q2 = -30 grados",
+       false
+      ],
+      [
+       "Aproximadamente q1 = -30 grados y q2 = 60 grados",
+       false
+      ],
+      [
+       "Aproximadamente q1 = 30 grados y q2 = 30 grados",
+       true
+      ],
+      [
+       "Aproximadamente q1 = 60 y q2 = -60 grados",
+       false
+      ],
+      [
+       "Aproximadamente q1 = -75 grados y q2 = 60 grados",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "El robot de dos grados de libertad, con ambas articulaciones rotativas y cuyos enlaces miden 0,70 m y 0,30 m, se encuentra en el punto X = 0,50 m, Y = 0,50 m, Z = 0 m. ¿Qué valores deben tener las articulaciones para posicionarlo en ese punto?",
+     "ex": "Ley del coseno: cos q2 = (0,5² + 0,5² − 0,7² − 0,3²)/(2·0,7·0,3) = -0,1905 → q2 = ±100,98°. Con q2 = -100,98°: q1 = atan2(0,5; 0,5) − atan2(0,3·sen q2; 0,7 + 0,3·cos q2) = 45° + 24,61° = 69,61°. (La otra solución es q1 = 20,39°, q2 = 100,98°.)",
+     "fuente": "Pailos 2023",
+     "op": [
+      [
+       "Aproximadamente q1 = 100,97 grados y q2 = 100,97 grados",
+       false
+      ],
+      [
+       "Aproximadamente q1 = -100,97 grados y q2 = 61,97 grados",
+       false
+      ],
+      [
+       "Aproximadamente q1 = 69,61 grados y q2 = -100,97 grados",
+       true
+      ],
+      [
+       "Aproximadamente q1 = 61,69 grados y q2 = 100,97 grados",
+       false
+      ],
+      [
+       "Aproximadamente q1 = 61,69 grados y q2 = -61,97 grados",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "En el robot tiene un enlace fijo L = 0.70 m, una primera articulación rotativa θ que puede variar de 0 a π/2 y otra articulación prismática d que puede ir de 0 a 0.30 m. Se desean saber los valores de θ y de d cuando el robot está posicionado en el punto X = 0,7361, Y = 0,425, Z = 0.",
+     "ex": "d sale seguro: √(0,7361² + 0,425²) = 0,85 = L + d → <b>d = 0,15</b>. Con esos números atan2(0,425; 0,7361) da 30°, pero no hay esa opción: en el enunciado X e Y están invertidos (con θ = 60° la punta queda en X = 0,425, Y = 0,7361, como en la figura). La que el campus da por correcta es la de <b>60° y 0,15</b>.",
+     "fuente": "Pailos 2024",
+     "img": "quiz/img/tpa-1er-parcial-121_p5_3.png",
+     "op": [
+      [
+       "aproximadamente θ = 75° (1.3090 rad), d = 0.05 m",
+       false
+      ],
+      [
+       "aproximadamente θ = 50° (0.872 rad), d = 0.10 m",
+       false
+      ],
+      [
+       "aproximadamente θ = 60° (1.0472 rad), d = 0.15 m",
+       true
+      ],
+      [
+       "aproximadamente θ = 70° (1.2217 rad), d = 0.10 m",
+       false
+      ],
+      [
+       "aproximadamente θ = 50° (0.872 rad), d = 0.15 m",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Al punto p de coordenadas p = (3, 3, 3, 1) se le aplica primero una traslación según el eje X = -4 y luego una rotación según el eje X = +π. El punto se encontrará ahora en:",
+     "ex": "<b>Atención: la clave del campus tiene un error.</b> La cuenta da (-1, -3, -3, 1): trasladar da (-1, 3, 3) y girar π alrededor de X cambia el signo de y <b>y</b> de z. Pero el campus marca como correcta (-1, -3, 3, 1) (en 2024 hizo lo mismo con p = (0,5; 1; 0,5): marcó (-3,5; -1; 0,5; 1) en vez de (-3,5; -1; -0,5; 1)). Si te toca, marcá la opción que cambia el signo solo de y.<pre style=\"margin:6px 0 2px\">Rotx(180) * Traslacion([-4 0 0]) * [3; 3; 3; 1]   % da (-1, -3, -3, 1)</pre>",
+     "fuente": "Pailos 2023 y 2024",
+     "op": [
+      [
+       "P′ = (-1, -3, 3, 1)",
+       true
+      ],
+      [
+       "P′ = (-1, -3, -3, 1)",
+       false
+      ],
+      [
+       "P′ = (1, 3, 3, 1)",
+       false
+      ],
+      [
+       "P′ = (1, -3, -3, 1)",
+       false
+      ],
+      [
+       "P′ = (-1, 3, 3, 1)",
+       false
+      ]
+     ]
+    }
+   ]
+  }
+ ]
+}

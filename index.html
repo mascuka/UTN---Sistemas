@@ -71,6 +71,165 @@
   .unidad ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
   .unidad li{font-size:.92rem;line-height:1.5}
 
+  /* Mapa del parcial */
+  .mapa{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px 20px;margin:0 0 24px}
+  .mapa-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .mapa-cab h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.15rem}
+  .mapa-cab span{font-size:.8rem;color:var(--muted)}
+  .mapa-lienzo{position:relative}
+  .mapa-lineas{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+  .mapa-centro{position:relative;margin:2px auto 40px;width:max-content;max-width:100%;text-align:center;background:var(--text);color:var(--card);font-weight:700;font-size:.92rem;padding:8px 18px;border-radius:999px}
+  .mapa-ramas{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:20px 14px}
+  .mapa-rama{flex:1 1 140px;max-width:220px;display:flex;flex-direction:column;align-items:center}
+  .mapa-nodo{background:var(--card);border:2px solid var(--c);color:var(--c);font-weight:700;font-size:.86rem;line-height:1.25;padding:6px 14px;border-radius:999px;text-align:center}
+  .mapa-nodo[data-unidad]{cursor:pointer}
+  .mapa-nodo[data-unidad]:hover,.mapa-nodo[data-unidad]:focus-visible{background:color-mix(in srgb, var(--c) 12%, var(--card));outline:none}
+  .mapa-rama ul{list-style:none;position:relative;margin-top:10px;display:flex;flex-direction:column;gap:6px;width:100%}
+  .mapa-rama ul::before{content:"";position:absolute;left:50%;top:-10px;bottom:10px;border-left:2px solid var(--c);opacity:.3}
+  .mapa-rama li{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:.78rem;line-height:1.3;text-align:center}
+  @media (prefers-color-scheme: dark){ .mapa-nodo{color:color-mix(in srgb, var(--c) 55%, #fff);border-color:color-mix(in srgb, var(--c) 70%, #fff)} }
+  .unidad.flash{animation:flash 1.8s ease-out}
+  @keyframes flash{0%,30%{background:var(--accent-soft);box-shadow:0 0 0 10px var(--accent-soft)}100%{background:transparent;box-shadow:0 0 0 10px transparent}}
+  @media (max-width:600px){
+    .mapa{padding:14px}
+    .mapa-lineas{display:none}
+    .mapa-centro{margin-bottom:14px}
+    .mapa-ramas{flex-direction:column;gap:12px}
+    .mapa-rama{max-width:none;flex:none;align-items:stretch;border-left:3px solid var(--c);padding-left:10px}
+    .mapa-nodo{align-self:flex-start}
+    .mapa-rama ul{flex-direction:row;flex-wrap:wrap;margin-top:6px}
+    .mapa-rama ul::before{display:none}
+  }
+
+  /* Practicá: accesos al quiz y a las herramientas */
+  .practica{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
+  .pr-t{width:100%;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .pr-btn{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 16px;cursor:pointer;flex:1 1 230px;max-width:360px}
+  .pr-btn:hover{border-color:var(--accent)}
+  .pr-btn > svg{width:24px;height:24px;color:var(--accent);flex-shrink:0}
+  .pr-btn b{display:block;font-size:.95rem}
+  .pr-btn small{display:block;color:var(--muted);font-size:.8rem;line-height:1.35}
+  .herr-otras{margin-top:34px}
+  /* Herramientas visuales */
+  .hx-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px;align-items:start}
+  .hx-panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+  .hx-panel + .hx-panel{margin-top:16px}
+  .hx-grid .hx-panel + .hx-panel{margin-top:0}
+  .hx-lbl{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 0 8px}
+  .hx-panel > .hx-lbl:first-child{margin-top:0}
+  .hx-fila{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+  .hx-fila label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;color:var(--muted);font-weight:600}
+  .hx-fila label.ancho{flex:1 1 220px}
+  .hx-in{font:inherit;font-size:.92rem;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0;width:100px}
+  .hx-in:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  .hx-in.chico{width:72px}
+  .hx-in.ancho,.hx-fila label.ancho .hx-in{width:100%}
+  select.hx-in{width:auto;cursor:pointer}
+  .hx-area{width:100%;font-family:ui-monospace,Menlo,monospace;font-size:.84rem;line-height:1.5;resize:vertical;margin:10px 0}
+  .hx-paso{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+  .hx-paso select.hx-in{max-width:132px;padding:7px 6px}
+  .hx-paso .hx-in.chico{width:62px}
+  .hx-n{width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:.75rem;font-weight:700;display:grid;place-items:center;flex-shrink:0}
+  .hx-u{font-size:.85rem;color:var(--muted)}
+  .hx-x{font:inherit;background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px;border-radius:6px}
+  .hx-x:hover{color:#c0392b;background:var(--hover)}
+  .hx-btn{font:inherit;font-size:.84rem;font-weight:600;border:1px dashed var(--line);background:var(--bg);color:var(--accent);border-radius:8px;padding:6px 12px;cursor:pointer}
+  .hx-btn:hover{border-color:var(--accent)}
+  .hx-radio{display:flex;gap:8px;align-items:center;font-size:.88rem;margin:5px 0;cursor:pointer}
+  .hx-slider{display:grid;grid-template-columns:28px 1fr 52px;gap:10px;align-items:center;font-size:.88rem;font-weight:600;margin:8px 0}
+  .hx-slider input{width:100%;accent-color:var(--accent)}
+  .hx-slider b{text-align:right;font-variant-numeric:tabular-nums}
+  .hx-tabs{display:flex;gap:4px;margin-bottom:12px}
+  .hx-tab{font:inherit;font-size:.86rem;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:6px 14px;cursor:pointer}
+  .hx-tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .hx-code{background:#1f1e1d;color:#ece9e1;border-radius:10px;padding:10px 12px;font-family:ui-monospace,Menlo,monospace;font-size:.8rem;line-height:1.5;overflow-x:auto;white-space:pre;margin:6px 0}
+  .hx-nota{font-size:.84rem;color:var(--muted);margin:6px 0;line-height:1.5}
+  .hx-alerta{font-size:.88rem;background:#f7e1dc;color:#9b2c20;border-radius:10px;padding:10px 12px;margin:8px 0}
+  .hx-res{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:.95rem;margin:10px 0}
+  .hx-resp{display:inline-block;border:1.5px solid var(--ok);background:var(--ok-soft);color:var(--ok);border-radius:6px;padding:1px 8px;font-family:ui-monospace,Menlo,monospace;font-weight:700}
+  .hx-dos{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .hx-mat{border-collapse:collapse;font-family:ui-monospace,Menlo,monospace;font-size:.78rem;border-left:2px solid var(--text);border-right:2px solid var(--text)}
+  .hx-mat td{padding:3px 8px;text-align:right}
+  .hx-svg{width:100%;max-width:330px;height:auto;display:block;color:var(--muted)}
+  .hx-svg.robot{max-width:360px;margin:0 auto 6px;touch-action:none;cursor:crosshair}
+  .hx-tab2{border-collapse:collapse;font-size:.85rem;width:100%;margin:6px 0}
+  .hx-tab2 th,.hx-tab2 td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+  .hx-tab2 th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700}
+  .hx-datos th{text-transform:none;letter-spacing:0;font-size:.85rem;width:150px}
+  .hx-datos td{font-family:ui-monospace,Menlo,monospace}
+  .hx-scroll{overflow-x:auto}
+  .hx-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+  .hx-bits{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:12px 0;overflow-x:auto}
+  .hx-bits > div{display:flex;align-items:center;gap:10px;margin:3px 0;white-space:nowrap}
+  .hx-bits code{font-family:ui-monospace,Menlo,monospace;font-size:.82rem;letter-spacing:.04em}
+  .hx-bl{width:62px;font-size:.75rem;color:var(--muted);font-weight:700}
+  .bn{color:#0a8497;font-weight:700} .bh{color:#c2410c} .hx-pt{color:var(--muted)}
+  .hx-ley{font-size:.78rem;color:var(--muted);gap:6px !important}
+  .hx-etapa{display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .hx-etapa code{font-family:ui-monospace,Menlo,monospace;font-size:.78rem;color:var(--muted);overflow-wrap:anywhere}
+  .hx-chip{display:inline-block;min-width:26px;text-align:center;border-radius:6px;padding:2px 6px;margin:2px;font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:.82rem;color:#fff}
+  .hx-chip.c0{background:#8a867b} .hx-chip.c1{background:#0a8497} .hx-chip.c2{background:#7c3aed} .hx-chip.c3{background:#c2410c}
+  .hx-vacio{font-size:.8rem;color:var(--muted);font-style:italic}
+  .hx-est{display:inline-block;font-size:.75rem;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+  .hx-est.procesada{background:var(--ok-soft);color:var(--ok)} .hx-est.descartada{background:var(--hover);color:var(--muted)} .hx-est.invalida{background:#f7e1dc;color:#b03a2e}
+  @media (prefers-color-scheme: dark){ .hx-alerta,.hx-est.invalida{background:#3d2522;color:#f0a197} .bn{color:#4cc3d3} .bh{color:#f59e5b} }
+  @media (max-width:900px){ .hx-grid{grid-template-columns:1fr} }
+  @media (max-width:760px){ .hx-paso select.hx-in{max-width:100px} .hx-paso .hx-in.chico{width:52px} .hx-panel{padding:14px} .hx-etapa{grid-template-columns:1fr;gap:4px} }
+  /* Quiz */
+  .qz-ini,.qz-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;max-width:820px}
+  .qz-ini{display:flex;flex-direction:column;gap:14px}
+  .qz-lbl{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .qz-secs{display:flex;flex-wrap:wrap;gap:8px}
+  .qz-sec{font:inherit;font-size:.86rem;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:6px 13px;cursor:pointer}
+  .qz-sec.on{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:600}
+  .qz-sec small{margin-left:6px;opacity:.75;font-weight:400}
+  .qz-chk{font-size:.9rem;display:flex;gap:8px;align-items:center;cursor:pointer}
+  .qz-btn{font:inherit;font-size:.9rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:9px 16px;cursor:pointer}
+  .qz-btn:hover:not(:disabled){border-color:var(--accent)}
+  .qz-btn.primario{background:var(--accent);border-color:var(--accent);color:#fff}
+  .qz-btn.si{color:var(--ok);border-color:var(--ok)}
+  .qz-btn.no{color:#c0392b;border-color:#c0392b}
+  .qz-btn:disabled{opacity:.45;cursor:default}
+  .qz-top{display:flex;align-items:center;gap:12px;max-width:820px;margin-bottom:12px;font-size:.86rem;color:var(--muted)}
+  .qz-barra{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+  .qz-barra i{display:block;height:100%;background:var(--accent);transition:width .3s}
+  .qz-barra.grande{height:10px;border-radius:5px;max-width:320px;margin:14px auto}
+  .qz-score .si{color:var(--ok)} .qz-score .no{color:#c0392b}
+  .qz-salir{font:inherit;font-size:.82rem;background:none;border:0;color:var(--muted);cursor:pointer;text-decoration:underline}
+  .qz-meta{font-size:.78rem;color:var(--muted);margin-bottom:8px}
+  .qz-en{font-size:1.02rem;line-height:1.55}
+  .quiz code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:var(--hover);padding:1px 5px;border-radius:4px}
+  .quiz pre{background:#1f1e1d;color:#ece9e1;border-radius:10px;padding:12px 14px;font-size:.8rem;line-height:1.5;overflow-x:auto;margin:12px 0;white-space:pre}
+  .quiz pre code{background:none;padding:0}
+  .qz-img{max-width:100%;max-height:340px;display:block;margin:14px auto;border-radius:8px;border:1px solid var(--line);background:#fff}
+  .qz-ayuda{font-size:.8rem;color:var(--muted);margin:14px 0 6px}
+  .qz-ops{display:flex;flex-direction:column;gap:8px}
+  .qz-op{display:flex;gap:12px;align-items:flex-start;text-align:left;font:inherit;font-size:.95rem;line-height:1.45;color:var(--text);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}
+  .qz-op:hover:not(:disabled){border-color:var(--accent)}
+  .qz-op.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .qz-op.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .qz-op.mal{border-color:#c0392b;background:#f7e1dc}
+  .qz-op:disabled{cursor:default}
+  .qz-l{font-weight:700;color:var(--muted);min-width:14px}
+  .qz-op.ok .qz-l{color:var(--ok)} .qz-op.mal .qz-l{color:#c0392b}
+  .qz-acc{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+  .qz-acc:empty{display:none}
+  .qz-tip{font-size:.84rem;color:var(--muted)}
+  .qz-veredicto{font-weight:800;font-size:1.05rem;margin-top:18px}
+  .qz-veredicto.bien{color:var(--ok)} .qz-veredicto.mal{color:#c0392b}
+  .qz-resp{margin-top:12px;background:var(--ok-soft);border-radius:10px;padding:10px 14px;font-size:.93rem;line-height:1.6;overflow-x:auto}
+  .qz-resp .resp{display:inline-block;border:1.5px solid var(--ok);border-radius:5px;padding:0 7px;font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--ok)}
+  .qz-resp table.dh{border-collapse:collapse;margin:8px 0 !important;font-size:.85rem !important;background:var(--card)}
+  .qz-resp table.dh th,.qz-resp table.dh td{border:1px solid var(--line);padding:3px 10px;text-align:center}
+  .qz-ex{margin-top:10px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.92rem;line-height:1.55}
+  .qz-ojo{margin-top:10px;background:#f7e1dc;border-radius:10px;padding:10px 14px;font-size:.9rem;line-height:1.5}
+  .qz-fin{text-align:center;padding:30px 22px}
+  .qz-nota{font-size:3.2rem;font-weight:800;line-height:1}
+  .qz-nota small{font-size:1.2rem;color:var(--muted);font-weight:500}
+  .qz-fin .qz-acc{justify-content:center}
+  @media (prefers-color-scheme: dark){ .qz-op.mal,.qz-ojo{background:#3d2522} .qz-img{background:#fff} }
+  @media (max-width:760px){ .qz-card,.qz-ini{padding:16px} .qz-en{font-size:.97rem} .qz-op{font-size:.92rem;padding:10px 12px} .pr-btn{max-width:none} }
+
   .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:24px}
   .tab{padding:10px 16px;font-size:.93rem;border-bottom:2px solid transparent;color:var(--muted)}
   .tab:hover{color:var(--text)}
@@ -80,7 +239,8 @@
   .files{display:flex;flex-direction:column;gap:8px}
   .file{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
   .file:hover{border-color:var(--accent)}
-  .badge{font-size:.7rem;font-weight:700;padding:4px 7px;border-radius:6px;background:var(--accent-soft);color:var(--accent);min-width:42px;text-align:center}
+  .badge{font-size:.7rem;font-weight:700;padding:4px 5px;border-radius:6px;background:var(--accent-soft);color:var(--accent);min-width:38px;text-align:center;flex-shrink:0}
+  .file .mini{width:38px;height:50px;object-fit:cover;object-position:top;border-radius:4px;border:1px solid var(--line);background:#fff;flex-shrink:0;margin:-5px 0}
   .file .name{flex:1;font-size:.95rem}
   .file .go{color:var(--muted);font-size:.85rem}
   .tag.nota{margin-left:6px;vertical-align:1px;background:#f7e1dc;border-color:transparent;color:#b03a2e;font-weight:600}
@@ -91,6 +251,34 @@
   .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
   .grupo .empty{padding:22px}
   .parte + .parte{margin-top:20px}
+  /* Niveles del material: esencial, para profundizar y extra (plegado) */
+  .nivel{--nv:var(--ok);border-left:3px solid var(--nv);padding-left:18px}
+  .nivel + .nivel{margin-top:30px}
+  .nivel.profundizar{--nv:#3b6fd1}
+  .nivel.extra{--nv:#b9b5aa}
+  .nv-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .nv-t{font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--nv)}
+  .nv-s{font-size:.8rem;color:var(--muted)}
+  .nivel.extra summary{display:flex;align-items:baseline;gap:10px;cursor:pointer;list-style:none;padding:6px 0}
+  .nivel.extra summary::-webkit-details-marker{display:none}
+  .nivel.extra summary::before{content:"▸";color:var(--muted);font-size:.85rem}
+  .nivel.extra[open] summary{margin-bottom:12px}
+  .nivel.extra[open] summary::before{content:"▾"}
+  .nivel.extra summary:hover .nv-s{color:var(--text)}
+  .nivel .grupo + .grupo{margin-top:22px;padding-top:18px}
+  @media (prefers-color-scheme: dark){ .nivel.profundizar{--nv:#7fa6ee} .nivel.extra{--nv:#6f6c64} }
+  /* Visor de PDF */
+  dialog.visor{margin:auto;width:min(1240px,95vw);height:94vh;max-width:none;max-height:none;border:0;border-radius:14px;padding:0;background:#525659;overflow:hidden;color:var(--text)}
+  dialog.visor[open]{display:flex;flex-direction:column}
+  dialog.visor::backdrop{background:rgba(20,18,14,.65)}
+  .visor-bar{display:flex;align-items:center;gap:12px;padding:8px 10px 8px 18px;background:var(--card);border-bottom:1px solid var(--line)}
+  .visor-bar b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .visor-bar .vnum{color:var(--muted);font-size:.85rem;white-space:nowrap}
+  .visor-acc{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .visor-acc button,.visor-acc a{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:8px;padding:6px 11px;cursor:pointer;white-space:nowrap}
+  .visor-acc button:hover:not(:disabled),.visor-acc a:hover{border-color:var(--accent);color:var(--accent)}
+  .visor-acc button:disabled{opacity:.4;cursor:default}
+  dialog.visor iframe{flex:1;border:0;width:100%;display:block}
   .separa{height:30px}
   .aviso-lista{font-size:.85rem;color:var(--muted);margin:10px 0 24px}
   .aviso-lista a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
@@ -128,6 +316,35 @@
   .empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
 
   @media (max-width:1000px){ .player-wrap{grid-template-columns:1fr} }
+  /* Barra de abajo: solo en el celular */
+  .abajo{display:none}
+  @media (max-width:760px){
+    body{padding-bottom:64px}
+    .abajo{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding:4px 6px calc(4px + env(safe-area-inset-bottom))}
+    .abajo button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;font-size:.68rem;color:var(--muted);background:none;border:0;border-radius:10px;padding:6px 0;cursor:pointer}
+    .abajo button svg{width:21px;height:21px}
+    .abajo button.on{color:var(--accent);font-weight:700}
+    .abajo button:disabled{opacity:.35}
+    .topbar .menu-btn{display:none}
+    /* Material compacto: la fila entera se toca, sin el texto "Abrir" */
+    .file{gap:10px;padding:10px 12px;border-radius:12px}
+    .file .name{font-size:.9rem;line-height:1.3}
+    .file .name small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.76rem}
+    .file .go{font-size:1rem}
+    .file .go-t{display:none}
+    .file .mini{width:32px;height:42px;margin:-3px 0}
+    .badge{min-width:32px;font-size:.62rem;padding:3px 4px}
+    .fnum{font-size:.75rem;min-width:16px}
+    .nivel{padding-left:12px}
+    .lead{font-size:.95rem;margin-bottom:18px}
+    .tabs{margin-bottom:18px}
+    .tab{flex:1;text-align:center;padding:10px 6px}
+    .grupo + .grupo{margin-top:20px;padding-top:16px}
+    .cond-linea summary{padding:10px 12px;gap:6px}
+    .cc{font-size:.78rem;padding:3px 9px}
+    .cond-mas{margin-left:0}
+    .cond-req li{grid-template-columns:1fr;gap:2px}
+  }
   @media (max-width:760px){
     .sidebar{transform:translateX(-100%)}
     .sidebar.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.3)}
@@ -174,7 +391,7 @@
   .chk.on:hover{filter:brightness(1.1)}
 
   /* Contraseña de entrada */
-  body.locked > aside, body.locked > main{display:none}
+  body.locked > aside, body.locked > main, body.locked > .abajo{display:none}
   .lock{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);padding:16px;z-index:50}
   .lock[hidden]{display:none}
   .lock-box{width:100%;max-width:320px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
@@ -256,17 +473,19 @@
 
   /* Comisiones de la materia */
   .comis{margin-top:32px}
-  /* Condiciones de aprobación */
-  .cond-caja{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
-  .cond-notas{display:flex;gap:12px;flex-wrap:wrap}
-  .cond-nota{display:flex;align-items:baseline;gap:10px;padding:10px 16px;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
-  .cond-nota span{font-size:.88rem;font-weight:600}
-  .cond-nota b{font-size:1.5rem;line-height:1}
-  .cond-nota small{font-size:.75rem;opacity:.8}
-  .cond-nota.no{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
-  .cond-nota.no b{font-size:1rem}
+  /* Condiciones de aprobación: una línea que se despliega */
+  .cond-linea{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:-4px 0 22px}
+  .cond-linea summary{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 16px;cursor:pointer;list-style:none}
+  .cond-linea summary::-webkit-details-marker{display:none}
+  .cond-tit{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:4px}
+  .cc{font-size:.84rem;font-weight:600;padding:4px 11px;border-radius:999px;background:var(--bg);border:1px solid var(--line);white-space:nowrap}
+  .cc.fuerte{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+  .cond-mas{margin-left:auto;font-size:.8rem;color:var(--muted);white-space:nowrap}
+  .cond-mas::after{content:" ▾"}
+  .cond-linea[open] .cond-mas::after{content:" ▴"}
+  .cond-linea summary:hover .cond-mas{color:var(--accent)}
+  .cond-det{padding:4px 16px 12px;border-top:1px dashed var(--line)}
   .cond-aclara{font-size:.86rem;color:var(--muted);margin-top:10px}
-  .cond-caja h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:18px 0 8px}
   .cond-req{list-style:none;display:flex;flex-direction:column}
   .cond-req li{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;padding:10px 0;font-size:.9rem;line-height:1.5}
   .cond-req li + li{border-top:1px dashed var(--line)}
@@ -333,6 +552,14 @@
   <div id="app"></div>
 </main>
 
+<!-- En el celular: barra abajo para moverse con el pulgar -->
+<nav class="abajo" id="abajo">
+  <button data-up><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg><span>Atrás</span></button>
+  <button data-go="inicio" id="abajoPlan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg><span>Plan</span></button>
+  <button id="abajoMat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></svg><span>Materia</span></button>
+  <button id="abajoMenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menú</span></button>
+</nav>
+
 <dialog id="config">
   <h2>Guardar en GitHub</h2>
   <p>Para que las materias que marcás queden guardadas en el repo (y se vean igual en la compu y en el celular), la página necesita una clave de GitHub. Se guarda solo en este navegador, nunca en el repo.</p>
@@ -351,6 +578,20 @@
     <button id="cerrarConfig" class="pill">Cancelar</button>
     <button id="guardarToken" class="pill primary">Guardar clave</button>
   </div>
+</dialog>
+
+<dialog id="visor" class="visor" aria-label="Visor de PDF">
+  <div class="visor-bar">
+    <b id="visorTit"></b><span class="vnum" id="visorNum"></span>
+    <span class="visor-acc">
+      <button id="visorAnt" title="Anterior (←)">‹ Anterior</button>
+      <button id="visorSig" title="Siguiente (→)">Siguiente ›</button>
+      <a id="visorAbrir" target="_blank" rel="noopener">Abrir en otra pestaña ↗</a>
+      <a id="visorBajar" download>Descargar ↓</a>
+      <button id="visorCerrar" title="Cerrar (Esc)">✕</button>
+    </span>
+  </div>
+  <iframe id="visorFrame" title="PDF"></iframe>
 </dialog>
 
 <script>
@@ -502,7 +743,7 @@ const MATERIAS = {
         },
         teorico: {
           material: [
-            { nombre: "Unidad 0 · Conceptos básicos", nota: "No se toma", detalle: "Simbología, intervalos y conceptos previos · Prof. Quinteros", tipo: "PDF", url: "material/analisis-matematico-1/p1/teorico/u0-conceptos-basicos.pdf" },
+            { nivel: "extra", nombre: "Unidad 0 · Conceptos básicos", nota: "No se toma", detalle: "Simbología, intervalos y conceptos previos · Prof. Quinteros", tipo: "PDF", url: "material/analisis-matematico-1/p1/teorico/u0-conceptos-basicos.pdf" },
             { nombre: "Apunte teórico completo del 1º parcial", detalle: "Todo el teórico en un solo archivo · Prof. Quinteros (libro págs. 9 a 77)", tipo: "PDF", url: "material/analisis-matematico-1/p1/teorico/apunte-teorico-1-parcial.pdf" }
           ],
           videos: []
@@ -510,6 +751,7 @@ const MATERIAS = {
         practico: {
           material: [
             {
+              nivel: "esencial",
               grupo: "General",
               descripcion: "Ejemplos resueltos de todo el práctico del parcial.",
               archivos: [
@@ -517,6 +759,7 @@ const MATERIAS = {
               ]
             },
             {
+              nivel: "profundizar",
               grupo: "Ejercicios resueltos por el profesor",
               descripcion: "Un archivo por tema, con los ejercicios en orden.",
               archivos: [
@@ -529,6 +772,12 @@ const MATERIAS = {
           ],
           videos: []
         },
+        mapa: [
+          { t: "Límites", h: ["Intervalos y entornos", "Límites laterales", "Límites notables", "Infinitésimos"] },
+          { t: "Continuidad", h: ["Tipos de discontinuidad", "Función compuesta", "Bolzano · Weierstrass"] },
+          { t: "Derivada", h: ["Interpretación geométrica", "Reglas de derivación", "Derivación logarítmica", "Diferencial"] },
+          { t: "Aplicaciones", h: ["Recta tangente y normal", "Crecimiento", "Rolle · Lagrange · Cauchy"] }
+        ],
         temas: {
           titulo: "Temas que entran en el teórico",
           unidades: [
@@ -562,6 +811,7 @@ const MATERIAS = {
         practico: {
           material: [
             {
+              nivel: "esencial",
               grupo: "General",
               descripcion: "Ejemplos resueltos de todo el práctico del parcial.",
               archivos: [
@@ -569,6 +819,7 @@ const MATERIAS = {
               ]
             },
             {
+              nivel: "profundizar",
               grupo: "Ejercicios resueltos por el profesor",
               descripcion: "Un archivo por tema, con los ejercicios en orden.",
               archivos: [
@@ -585,6 +836,12 @@ const MATERIAS = {
           ],
           videos: []
         },
+        mapa: [
+          { t: "Extremos", h: ["Regla de L'Hôpital", "Máximos y mínimos", "Puntos de inflexión"] },
+          { t: "Integral indefinida", h: ["Propiedades", "Sustitución · partes", "Racionales · irracionales", "Trigonométricas"] },
+          { t: "Integral definida", h: ["Riemann–Darboux", "Teorema de la media", "Teorema fundamental", "Regla de Barrow"] },
+          { t: "Impropias y aplicaciones", h: ["Integrales impropias", "Longitud de arco", "Superficie y volumen de revolución"] }
+        ],
         temas: {
           titulo: "Temas que entran en el teórico",
           unidades: [
@@ -611,6 +868,12 @@ const MATERIAS = {
         id: "final",
         titulo: "Final",
         descripcion: "El final tiene 3 partes: primero un examen multiple choice de 15 minutos; si lo aprobás, pasás al práctico (salvo que hayas promocionado), que son 3 ejercicios; y después el teórico, con 3 temas al azar.",
+        mapa: [
+          { t: "Límites y continuidad", h: ["Concepto de límite", "Límite notable sen x / x", "Tipos de discontinuidad", "Teoremas de continuidad"] },
+          { t: "Derivadas", h: ["Interpretación geométrica", "Diferencial", "Derivada de la inversa", "Rolle · Lagrange"] },
+          { t: "Estudio de funciones", h: ["Máximos y mínimos", "Puntos de inflexión", "Análisis completo"] },
+          { t: "Integrales", h: ["Definida e impropia", "Teorema de la media", "Teorema fundamental · Barrow", "Longitud de arco"] }
+        ],
         temas: {
           titulo: "Temas del teórico tomados en finales anteriores",
           unidades: [
@@ -711,9 +974,9 @@ const MATERIAS = {
       regular: null,
       aclaracion: "Es electiva: solo se aprueba de forma directa, no tiene regularidad.",
       requisitos: [
-        { titulo: "NAP · Nota de Actividades Prácticas", detalle: "Promedio de 6 o más entre los cuestionarios y los desafíos." },
-        { titulo: "Parcial Único", detalle: "6 o más. Si no llegás, 6 o más en el recuperatorio." },
-        { titulo: "TPI · Trabajo Práctico Integrador", detalle: "Entrega inicial con corrección de pares, y entrega final con coloquio. Hay que sacar 6 o más entre la rúbrica y el coloquio (o en la re-entrega). Las entregas anteriores pueden descontar puntos." }
+        { titulo: "NAP · Nota de Actividades Prácticas", corto: "NAP ≥ 6", detalle: "Promedio de 6 o más entre los cuestionarios y los desafíos." },
+        { titulo: "Parcial Único", corto: "Parcial ≥ 6", detalle: "6 o más. Si no llegás, 6 o más en el recuperatorio." },
+        { titulo: "TPI · Trabajo Práctico Integrador", corto: "TPI ≥ 6", detalle: "Entrega inicial con corrección de pares, y entrega final con coloquio. Hay que sacar 6 o más entre la rúbrica y el coloquio (o en la re-entrega). Las entregas anteriores pueden descontar puntos." }
       ]
     },
     // Comisiones: solo profesores (sin ayudantes), uno por día; todos dan teórico y práctico. El horario va en el primero de cada comisión
@@ -739,9 +1002,18 @@ const MATERIAS = {
       {
         id: "p1",
         titulo: "1º Parcial",
+        quiz: "quiz/backend-1er-parcial.json",
+        herramientas: ["streams", "csv"],
         descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones y streams).",
         secciones: ["teorico", "parcial"],
         nombres: { parcial: "1º Parcial" },
+        mapa: [
+          { t: "Backend", h: ["Capas", "Microservicios y APIs REST"], u: 0 },
+          { t: "Java", h: ["JVM y bytecode", "Maven", "Sintaxis"], u: 1 },
+          { t: "POO", h: ["Clases y records", "Excepciones", "JUnit", "Herencia y polimorfismo"], u: 2 },
+          { t: "Colecciones", h: ["Generics", "List · Set · Map"], u: 3 },
+          { t: "Streams", h: ["Lambdas", "filter · map · collect", "Procesar un CSV"], u: 4 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -754,7 +1026,7 @@ const MATERIAS = {
         },
         teorico: {
           material: [
-            { grupo: "Apuntes de clase", descripcion: "Apuntes teóricos de la cátedra, en orden y agrupados por tema.", partes: [
+            { nivel: "esencial", grupo: "Apuntes de clase", descripcion: "Apuntes teóricos de la cátedra, en orden y agrupados por tema.", partes: [
               { titulo: "Introducción", archivos: [
                 { n: 1, nombre: "Apunte 01 · Introducción al backend", detalle: "Capa de backend, stack tecnológico, microservicios y tecnologías de la materia", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-01-introduccion-al-backend.pdf" }
               ] },
@@ -762,8 +1034,8 @@ const MATERIAS = {
                 { n: 2, nombre: "Apunte 02 · Plataforma Java", detalle: "Historia y versiones de Java, el lenguaje, Hola Mundo y la máquina virtual (JVM)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-02-plataforma-java.pdf" },
                 { n: 3, nombre: "Apunte 03 · Maven", detalle: "Estructura de proyectos, pom.xml, repositorios de dependencias y ciclo de vida de construcción", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-03-maven.pdf" },
                 { n: 4, nombre: "Apunte 04 · Sintaxis de Java", detalle: "Tipos, variables, operadores, entrada y salida, condicionales, ciclos y novedades de Java moderno", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-04-sintaxis-java.pdf" },
-                { nombre: "Instructivo · Instalación de Java JDK 21", nota: "Adicional", detalle: "Instalar y verificar el JDK en Windows, Linux y macOS, y configurar JAVA_HOME", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/instructivo-instalacion-java-jdk-21.pdf" },
-                { nombre: "Instructivo · Instalación de Maven", nota: "Adicional", detalle: "Instalar y verificar Maven en Windows, Linux y macOS, y configurar MAVEN_HOME", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/instructivo-instalacion-maven.pdf" }
+                { nombre: "Instructivo · Instalación de Java JDK 21", nivel: "extra", detalle: "Instalar y verificar el JDK en Windows, Linux y macOS, y configurar JAVA_HOME", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/instructivo-instalacion-java-jdk-21.pdf" },
+                { nombre: "Instructivo · Instalación de Maven", nivel: "extra", detalle: "Instalar y verificar Maven en Windows, Linux y macOS, y configurar MAVEN_HOME", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/instructivo-instalacion-maven.pdf" }
               ] },
               { titulo: "Programación orientada a objetos", archivos: [
                 { n: 5, nombre: "Apunte 05 · Programación orientada a objetos", detalle: "Clases, modificadores de acceso, referencias, getters y setters, Lombok y records", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/teorico/apunte-05-programacion-orientada-a-objetos.pdf" },
@@ -847,15 +1119,15 @@ const MATERIAS = {
         },
         parcial: {
           material: [
-            { grupo: "Para estudiar", descripcion: "Todas las preguntas del parcial, el preparcial, los cuestionarios y los simulacros en un solo archivo, sin repetidas.", archivos: [
+            { nivel: "esencial", grupo: "Para estudiar", descripcion: "Todas las preguntas del parcial, el preparcial, los cuestionarios y los simulacros en un solo archivo, sin repetidas.", archivos: [
               { n: 1, nombre: "Guía única del 1º parcial", nota: "Empezá por acá", detalle: "El parcial real tal cual salió y cómo se resolvía, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (34 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
             ] },
-            { grupo: "Parcial tomado · 3K1 · 19/09/2026", descripcion: "El día anterior se da el preenunciado con el proyecto para estudiar; el día del parcial, el enunciado con el cambio a programar (45 min) y un cuestionario en el campus.", archivos: [
+            { nivel: "esencial", grupo: "Parcial tomado · 3K1 · 19/09/2026", descripcion: "El día anterior se da el preenunciado con el proyecto para estudiar; el día del parcial, el enunciado con el cambio a programar (45 min) y un cuestionario en el campus.", archivos: [
               { n: 2, nombre: "Preenunciado", detalle: "Cloud Center (telemetría de servidores): el preenunciado en PDF y el proyecto 01-modelo-inicial para estudiar y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
               { n: 3, nombre: "Enunciado", detalle: "Ingreso promedio por servidor: el enunciado en PDF, el CSV del parcial y el test nuevo", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
               { n: 4, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia y probada con los 12 tests (los viejos y los nuevos). Está explicada en la guía", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
             ] },
-            { grupo: "Simulacros", descripcion: "Cada ZIP trae todo el simulacro: el preenunciado con el proyecto y el enunciado con el CSV y los tests nuevos. Para practicar, hacé cada uno en 45 minutos.", archivos: [
+            { nivel: "profundizar", grupo: "Simulacros", descripcion: "Cada ZIP trae todo el simulacro: el preenunciado con el proyecto y el enunciado con el CSV y los tests nuevos. Para practicar, hacé cada uno en 45 minutos.", archivos: [
               { n: 5, nombre: "Simulacro 1", detalle: "3K1 · Fintech: solicitudes de crédito, score financiero y tasa de interés; en el parcial se agrega el nivel de morosidad", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
               { n: 6, nombre: "Simulacro 2", detalle: "3K3 · Taller de reparaciones: órdenes de reparación; en el parcial se agregan las reparaciones EXPRESS, la garantía y los repuestos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
               { n: 7, nombre: "Simulacro 3", detalle: "3K4 · Juegos de mesa: catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
@@ -870,6 +1142,14 @@ const MATERIAS = {
         titulo: "TPI",
         descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway y seguridad.",
         secciones: ["teorico", "tpi"],
+        mapa: [
+          { t: "1º Parcial", h: ["Java, POO y streams"], u: 0 },
+          { t: "ORM y JPA", h: ["JDBC", "Entidades y JPQL"], u: 1 },
+          { t: "Spring", h: ["APIs REST", "Inyección de dependencias", "Controller · Service · Repository"], u: 2 },
+          { t: "Spring Data", h: ["JpaRepository", "@Query"], u: 3 },
+          { t: "API Gateway", h: ["RestClient", "Spring Cloud Gateway"], u: 4 },
+          { t: "Seguridad", h: ["OAuth2 y JWT", "Keycloak"], u: 5 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -883,7 +1163,7 @@ const MATERIAS = {
         },
         teorico: {
           material: [
-            { grupo: "Apuntes de clase", descripcion: "Apuntes teóricos de la cátedra, en orden y agrupados por tema.", partes: [
+            { nivel: "esencial", grupo: "Apuntes de clase", descripcion: "Apuntes teóricos de la cátedra, en orden y agrupados por tema.", partes: [
               { titulo: "ORM y JPA", archivos: [
                 { n: 12, nombre: "Apunte 12 · JDBC", detalle: "Bases de datos con H2, API JDBC, statements SQL, PostgreSQL en Docker y pool de conexiones", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-12-jdbc.pdf" },
                 { n: 13, nombre: "Apunte 13 · ORM con JPA", detalle: "ORM, JPA con Hibernate, mapeo de entidades, EntityManager, CRUD, JPQL y patrón Repositorio", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-13-orm-con-jpa.pdf" }
@@ -892,7 +1172,7 @@ const MATERIAS = {
                 { n: 14, nombre: "Apunte 14 · Diseño de APIs", detalle: "Protocolo HTTP, URI, principios REST, verbos, idempotencia, códigos de respuesta y documentación de APIs", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-14-diseno-de-apis.pdf" },
                 { n: 15, nombre: "Apunte 15 · Spring Framework", detalle: "Spring Container, inyección de dependencias, scope de los beans, Spring Boot, Hola Mundo API, servicios y repositorios", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-15-spring-framework.pdf" },
                 { n: 17, nombre: "Apunte 17 · Proyectos Spring: elementos transversales", detalle: "Capas, ResponseEntity, validaciones y errores globales, Swagger/OpenAPI y testing", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-17-proyectos-spring-elementos-transversales.pdf" },
-                { nombre: "Guía paso a paso · Spring y CRUD", nota: "Adicional", detalle: "De un proyecto de consola con Spring Initializr a una API REST con CRUD en memoria y con Spring Data JPA + H2", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/guia-paso-a-paso-spring-crud.pdf" }
+                { nombre: "Guía paso a paso · Spring y CRUD", nivel: "extra", detalle: "De un proyecto de consola con Spring Initializr a una API REST con CRUD en memoria y con Spring Data JPA + H2", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/guia-paso-a-paso-spring-crud.pdf" }
               ] },
               { titulo: "Spring Data", archivos: [
                 { n: 16, nombre: "Apunte 16 · Spring Data", detalle: "Módulos de Spring Data, consultas dinámicas, @Query, JpaRepository vs CrudRepository y repositorios propios", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-16-spring-data.pdf" }
@@ -949,11 +1229,11 @@ const MATERIAS = {
         },
         tpi: {
           material: [
-            { grupo: "El enunciado", descripcion: "Versión preliminar del TPI 2026: lineamientos generales y dominios para elegir.", archivos: [
+            { nivel: "esencial", grupo: "El enunciado", descripcion: "Versión preliminar del TPI 2026: lineamientos generales y dominios para elegir.", archivos: [
               { n: 1, nombre: "Enunciado preliminar del TPI", nota: "Empezá por acá", detalle: "Microservicios con API Gateway, Keycloak, una API pública externa, persistencia, documentación y despliegue con Docker; diagramas C1 y C2 con C4 Model (9 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/01-enunciado-preliminar-tpi.pdf" },
               { n: 2, nombre: "Anexo · Dominios sugeridos", detalle: "10 dominios para elegir o reinterpretar: refugios de animales, competencias deportivas, servicios técnicos, entregas de última milla, turismo, incidentes urbanos, agro, energía, reservas y eventos (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/02-anexo-dominios-sugeridos.pdf" }
             ] },
-            { grupo: "Guías para la API externa", descripcion: "Tutoriales de la cátedra (2025) para calcular distancias entre ubicaciones desde un microservicio Spring Boot.", archivos: [
+            { nivel: "profundizar", grupo: "Guías para la API externa", descripcion: "Tutoriales de la cátedra (2025) para calcular distancias entre ubicaciones desde un microservicio Spring Boot.", archivos: [
               { n: 3, nombre: "Google Maps Distance Matrix con RestClient", detalle: "Microservicio paso a paso que recibe dos coordenadas y devuelve la distancia usando la API de Google (necesita API key de Google Cloud) (7 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/03-google-maps-distance-matrix.pdf" },
               { n: 4, nombre: "OSRM · rutas y distancias en Argentina", detalle: "Alternativa gratis y offline: OSRM en Docker con el mapa de Argentina de OpenStreetMap y su endpoint HTTP (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/04-osrm-rutas-argentina.pdf" }
             ] }
@@ -993,11 +1273,11 @@ const MATERIAS = {
         descripcion: "Informe grupal sobre sustentabilidad en la ingeniería de sistemas. Nuestro tema: el impacto ambiental de la IA y el consumo energético.",
         secciones: [],
         material: [
-            { grupo: "El TP 1", descripcion: "El enunciado de nuestra comisión (4K1A, Vane) y nuestro trabajo resuelto.", archivos: [
+            { nivel: "esencial", grupo: "El TP 1", descripcion: "El enunciado de nuestra comisión (4K1A, Vane) y nuestro trabajo resuelto.", archivos: [
               { nombre: "TP 1 · Enunciado", detalle: "Informe grupal de 5 a 10 págs. que relacione 16 conceptos (huella de carbono, net zero, compensación, normas, mitigación…), con un caso de empresa de software y un anexo con las preguntas a la IA; después, auditoría cruzada entre grupos · entrega 14/4", tipo: "DOC", url: "https://docs.google.com/document/d/1b3Sm3hRIVWGklsJSqGynUcGhhJXh6NK6/edit?usp=sharing" },
               { nombre: "TP 1 · Resuelto", detalle: "Impacto ambiental de la IA y el consumo energético: data centers, huella de carbono y net zero, normas, mitigación y compensación, el caso Microsoft y la propuesta Green AI Dev (11 págs.)", tipo: "PDF", url: "material/green-software/tpi-1/tpi-1-impacto-ambiental-de-la-ia-resuelto.pdf" }
             ] },
-            { grupo: "Material de clase", descripcion: "Los conceptos que pide el informe.", archivos: [
+            { nivel: "profundizar", grupo: "Material de clase", descripcion: "Los conceptos que pide el informe.", archivos: [
               { nombre: "Green Software · presentación general", detalle: "Energía, net zero, huella de carbono, compensación, alcances, green cloud y niveles de sustentabilidad", tipo: "PPT", url: "https://drive.google.com/file/d/1UeP2aggbiE7buH3DrSI7bWpwaIoc9P1I/view" },
               { nombre: "Glosario Net Zero · Oxford", detalle: "Qué significa net zero y los términos relacionados", tipo: "LINK", url: "https://netzeroclimate.org/what-is-net-zero/" },
               { nombre: "GHG Protocol", detalle: "El estándar más usado para medir emisiones; de acá salen los alcances 1, 2 y 3", tipo: "LINK", url: "https://ghgprotocol.org/" },
@@ -1019,11 +1299,11 @@ const MATERIAS = {
         descripcion: "Aplicar una técnica de análisis y resolución de problemas a un desafío de Green IT, Green Software o Green Hardware. Nosotros usamos FODA.",
         secciones: [],
         material: [
-            { grupo: "El TP 2", descripcion: "El enunciado de nuestra comisión (4K1A, Vane) y nuestro trabajo resuelto.", archivos: [
+            { nivel: "esencial", grupo: "El TP 2", descripcion: "El enunciado de nuestra comisión (4K1A, Vane) y nuestro trabajo resuelto.", archivos: [
               { nombre: "TP 2 · Enunciado", detalle: "Elegir una técnica de análisis (FODA, Ishikawa, seis sombreros, PDCA, PESTEL…) y aplicarla a una pregunta de encuadre sobre Green IT, software o hardware; exposición en dos partes con integrantes por sorteo · entrega 12/5, exposición 13/5", tipo: "DOC", url: "https://docs.google.com/document/d/15PPdAmsn8ohiKvY_Hawv8NzKrFNEhis-/edit?usp=sharing" },
               { nombre: "TP 2 · Resuelto", detalle: "FODA sobre Green IT en la educación: conceptos de Green IT, software y hardware, la técnica y su aplicación a cómo enseñar sustentabilidad tecnológica en la escuela, con un plan de acción para Argentina (23 págs.)", tipo: "PDF", url: "material/green-software/tpi-2/tpi-2-foda-green-it-en-la-educacion-resuelto.pdf" }
             ] },
-            { grupo: "Material de clase", descripcion: "Green IT, Green Software y Green Hardware: el estudio preliminar del TP.", archivos: [
+            { nivel: "profundizar", grupo: "Material de clase", descripcion: "Green IT, Green Software y Green Hardware: el estudio preliminar del TP.", archivos: [
               { nombre: "Taller 3 · Green hardware", detalle: "Emisiones de un servidor, carbono incorporado, proporcionalidad energética e intensidad de carbono", tipo: "PPT", url: "https://drive.google.com/file/d/1PhGSs7t4D6-t4j1MOQzvEM2KY9SAA8oM/view" },
               { nombre: "¿Cómo pueden los ingenieros hacer que la TI sea más sostenible?", detalle: "White paper traducido: la mirada holística, qué y cómo medir, casos de TI verde y próximos pasos (44 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/it-sustainability.pdf" },
               { nombre: "The green IT revolution · McKinsey", detalle: "Dónde se generan las emisiones de la TI de una empresa: los dispositivos de los usuarios emiten de 1,5 a 2 veces más que los data centers (2022, 8 págs.)", tipo: "PDF", url: "material/green-software/biblioteca/mckinsey-the-green-it-revolution.pdf" },
@@ -1040,11 +1320,11 @@ const MATERIAS = {
         descripcion: "Pensamiento sistémico sobre una fase del ciclo de vida del software para detectar la falta de sustentabilidad y proponer soluciones. Nosotros analizamos la caída de Autogestión en las inscripciones.",
         secciones: [],
         material: [
-            { grupo: "El TP 3", descripcion: "El enunciado de nuestra comisión (4K1A, Vane) y nuestro trabajo resuelto.", archivos: [
+            { nivel: "esencial", grupo: "El TP 3", descripcion: "El enunciado de nuestra comisión (4K1A, Vane) y nuestro trabajo resuelto.", archivos: [
               { nombre: "TP 3 · Enunciado", detalle: "Pensamiento sistémico sobre una fase del ciclo de vida del software: estrellas y pregunta de encuadre, mapeo de fuerzas, análisis SAT, modelo en Kumu y 10 estrategias de apalancamiento; defensa oral · desde el 2/6", tipo: "DOC", url: "https://docs.google.com/document/d/16Qfc03CRTkfFZQ_KUaeuPgj-_ttX6OX2/edit?usp=sharing" },
               { nombre: "TP 3 · Resuelto", detalle: "Autogestión 4 en las inscripciones, analizado desde la fase de diseño: interrelaciones, procesos, pregunta de encuadre, estrategias de apalancamiento, mapeo de fuerzas y análisis SAT (19 págs.)", tipo: "PDF", url: "material/green-software/tpi-3/tpi-3-pensamiento-sistemico-autogestion-resuelto.pdf" }
             ] },
-            { grupo: "Material de clase", descripcion: "El paso a paso del pensamiento sistémico que pide el TP.", archivos: [
+            { nivel: "profundizar", grupo: "Material de clase", descripcion: "El paso a paso del pensamiento sistémico que pide el TP.", archivos: [
               { nombre: "Manual · Pensamiento sistémico para el desarrollo del Green Software", detalle: "El paso a paso que se usa en el TPI 3 (15 págs.)", tipo: "PDF", url: "material/green-software/talleres/pensamiento-sistemico-para-green-software.pdf" },
               { nombre: "Taller 2 · Pensamiento sistémico", detalle: "Pregunta de encuadre, estrellas, mapeo de fuerzas, análisis SAT, modelado y apalancamiento", tipo: "PPT", url: "https://drive.google.com/file/d/19sGl-1YbNDMj3EjzTWFpjxXPTh5-0dDK/view" },
               { nombre: "Taller 2.1 · Sistemas complejos", detalle: "Complejidad, puntos de inflexión, bucles de retroalimentación y los 12 puntos de apalancamiento", tipo: "PPT", url: "https://drive.google.com/file/d/1MuoORtY-W917vqZ4HJ9wf-mIllDMzU1b/view" },
@@ -1061,6 +1341,13 @@ const MATERIAS = {
         titulo: "Evaluación final",
         descripcion: "Charla retrospectiva con el docente: preguntas grupales e individuales sobre los temas de los talleres y los hallazgos del TPI 3.",
         secciones: ["teorico"],
+        mapa: [
+          { t: "Huella de carbono", h: ["Energía y eficiencia", "HC = potencia × factor", "Créditos de carbono", "Carbono neutralidad"], u: 0 },
+          { t: "Alcances", h: ["Alcances 1, 2, 3 y 4"], u: 1 },
+          { t: "Green hardware", h: ["Data centers", "Green IA"], u: 2 },
+          { t: "Pensamiento sistémico", h: ["Niveles de sustentabilidad", "Causas y efectos", "Puntos de apalancamiento"], u: 3 },
+          { t: "TPI 3", h: ["Hallazgos y metodología"], u: 4 }
+        ],
         temas: {
           titulo: "Temas posibles de la charla",
           unidades: [
@@ -1111,8 +1398,8 @@ const MATERIAS = {
       directa: 8,
       aclaracion: "Todas las actividades de evaluación aprobadas con nota no menor a 7, con promedio no menor a 8.",
       requisitos: [
-        { titulo: "Cada evaluación", detalle: "1º y 2º Parcial de Robótica, 3º Parcial de IoT y TP con la ESP32: cada uno con 7 o más." },
-        { titulo: "Promedio", detalle: "8 o más." }
+        { titulo: "Cada evaluación", corto: "Cada evaluación ≥ 7", detalle: "1º y 2º Parcial de Robótica, 3º Parcial de IoT y TP con la ESP32: cada uno con 7 o más." },
+        { titulo: "Promedio", corto: "Promedio ≥ 8", detalle: "8 o más." }
       ]
     },
     comisiones: [
@@ -1124,8 +1411,15 @@ const MATERIAS = {
       {
         id: "p1",
         titulo: "1º Parcial · Robótica",
+        quiz: "quiz/tpa-1er-parcial.json",
+        herramientas: ["rotaciones"],
         descripcion: "Robots y sus partes, ubicación espacial, matrices de rotación y homogéneas, composición de transformaciones y Denavit–Hartenberg. Se rinde en el campus resolviendo con Octave/Matlab.",
         secciones: [],
+        mapa: [
+          { t: "Definiciones", h: ["Partes del robot", "Grados de libertad", "Tipos de robots"], u: 0 },
+          { t: "Ubicación espacial", h: ["Rotaciones en X, Y, Z", "Matrices homogéneas", "Fijo: se premultiplica", "Móvil: se posmultiplica", "Matriz inversa"], u: 1 },
+          { t: "Cinemática directa", h: ["Tabla DH (θ, d, a, α)", "Matriz A de cada articulación", "T = A1·A2·…·An"], u: 2 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1146,16 +1440,16 @@ const MATERIAS = {
           ]
         },
         material: [
-          { grupo: "Para estudiar", descripcion: "Empezá por acá: la teoría justa, ejercicios modelo paso a paso y todas las preguntas de los parciales anteriores resueltas.", archivos: [
+          { nivel: "esencial", grupo: "Para estudiar", descripcion: "Empezá por acá: la teoría justa, ejercicios modelo paso a paso y todas las preguntas de los parciales anteriores resueltas.", archivos: [
             { n: 1, nombre: "Resumen y ejercicios modelo", nota: "Empezá por acá", detalle: "Definiciones, rotaciones, matrices homogéneas, composición (fijo vs. móvil), Denavit–Hartenberg y 5 ejercicios tipo parcial resueltos con Octave (7 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/01-resumen-y-ejercicios-modelo-1er-parcial.pdf" },
             { n: 2, nombre: "Banco de preguntas", detalle: "Los ejercicios de los parciales 2023–2026 como en el campus: 8 de rotaciones, 4 de DH con figura y 16 de opción múltiple, con la respuesta, el porqué y el código (16 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/02-banco-de-preguntas-1er-parcial.pdf" }
           ] },
-          { grupo: "Material del profe", descripcion: "Las presentaciones de 2026: con estas tres se cubre la teoría.", archivos: [
+          { nivel: "profundizar", grupo: "Material del profe", descripcion: "Las presentaciones de 2026: con estas tres se cubre la teoría.", archivos: [
             { n: 3, nombre: "Definiciones", detalle: "Robot, partes, grados de libertad y tipos de robots (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/03-definiciones-2026.pdf" },
             { n: 4, nombre: "Herramientas matemáticas", detalle: "Rotaciones, traslaciones, matrices homogéneas y composición (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/04-herramientas-matematicas-2026.pdf" },
             { n: 5, nombre: "Denavit–Hartenberg", detalle: "El algoritmo paso a paso y la cinemática directa (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/05-denavit-hartenberg-2026.pdf" }
           ] },
-          { grupo: "Ejemplos resueltos", descripcion: "Para practicar lo que se toma: robots, sistemas y tablas DH.", archivos: [
+          { nivel: "profundizar", grupo: "Ejemplos resueltos", descripcion: "Para practicar lo que se toma: robots, sistemas y tablas DH.", archivos: [
             { n: 6, nombre: "Partes y tipos de robots", detalle: "Con las figuras de cada tipo de robot (sirve para las preguntas de “cómo se llama el robot de la figura”)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/06-partes-y-tipos-de-robots.pdf" },
             { n: 7, nombre: "Denavit–Hartenberg · teoría y robot cilíndrico", detalle: "Las reglas del algoritmo y el ejemplo del robot cilíndrico de 4 GDL", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/07-denavit-hartenberg-teoria-y-robot-cilindrico.pdf" },
             { n: 8, nombre: "Denavit–Hartenberg · ejemplo robot 2R", detalle: "Ubicación de los sistemas y tabla, paso a paso", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/08-denavit-hartenberg-ejemplo-robot-2r.pdf" },
@@ -1164,11 +1458,11 @@ const MATERIAS = {
             { n: 11, nombre: "El problema del avión", detalle: "Ver un punto desde distintos sistemas de referencia", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/11-problema-del-avion.pdf" },
             { n: 12, nombre: "Guía de ejercicios resueltos con código", detalle: "Los ejercicios de parcial resueltos en Octave, con las funciones de rotación y traslación (hecha por alumnos)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/12-guia-de-ejercicios-resueltos-con-codigo.pdf" }
           ] },
-          { grupo: "Octave / Matlab", descripcion: "Instalá Octave y tené estas funciones en la carpeta de trabajo durante el parcial.", archivos: [
+          { nivel: "esencial", grupo: "Octave / Matlab", descripcion: "Instalá Octave y tené estas funciones en la carpeta de trabajo durante el parcial.", archivos: [
             { nombre: "Descargar Octave", detalle: "Gratis. Alternativa a Matlab: corre las mismas funciones", tipo: "LINK", url: "https://octave.org/download" },
             { nombre: "Funciones del 1º parcial", detalle: "Rotx, Roty, Rotz, Traslacion, matrizDenavitHartenberg, DibujarEjes y dibujarOrigen + los scripts de clase", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p1/funciones-octave-1er-parcial.zip" }
           ] },
-          { grupo: "Adicional", descripcion: "Solo si querés profundizar.", archivos: [
+          { nivel: "extra", grupo: "Adicional", descripcion: "Solo si querés profundizar.", archivos: [
             { n: 13, nombre: "Apunte de la cátedra · Herramientas matemáticas para la robótica", detalle: "El apunte largo de años anteriores (mismos temas que las presentaciones)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/13-apunte-catedra-herramientas-matematicas.pdf" }
           ] }
         ],
@@ -1190,8 +1484,14 @@ const MATERIAS = {
       {
         id: "p2",
         titulo: "2º Parcial · Robótica",
+        herramientas: ["robot2r"],
         descripcion: "Martes 6/10, online. Tres ejercicios: cinemática inversa geométrica de un robot RRR, cinemática inversa numérica (DLS) de un robot cilíndrico de hasta 4 GDL con resultados a completar, y generación de trayectorias respondida con código.",
         secciones: [],
+        mapa: [
+          { t: "CI geométrica", h: ["Robot 2R y RRR", "atan2 + ley del coseno", "Codo arriba / abajo"], u: 0 },
+          { t: "CI numérica (DLS)", h: ["Jacobiano", "λ, tolerancia y semilla", "Robot cilíndrico"], u: 1 },
+          { t: "Trayectorias", h: ["Articular sincronizada", "Recta · círculo · cuadrado", "Gráficos y animación"], u: 2 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1213,17 +1513,17 @@ const MATERIAS = {
           ]
         },
         material: [
-          { grupo: "Para estudiar", descripcion: "Empezá por acá: la teoría justa y los 3 ejercicios del parcial resueltos paso a paso.", archivos: [
+          { nivel: "esencial", grupo: "Para estudiar", descripcion: "Empezá por acá: la teoría justa y los 3 ejercicios del parcial resueltos paso a paso.", archivos: [
             { n: 1, nombre: "Resumen y ejercicios modelo", nota: "Empezá por acá", detalle: "Teoría resumida, los 3 ejercicios tipo parcial resueltos con las funciones del profe, ejercicios para practicar con respuesta y errores típicos (14 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/01-resumen-y-ejercicios-modelo-2do-parcial.pdf" },
             { n: 2, nombre: "El parcial 2026 resuelto", nota: "Enunciados reales", detalle: "Los 5 ejercicios del 6/10 como salieron en el campus (capturas tal cual): cilíndrico, RPR, RPP e IRB2400 para completar la tabla, y la trayectoria circular con código. Respuestas verificadas en Octave (9 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/02-parcial-2026-resuelto.pdf" },
             { nombre: "Funciones del 2º parcial + ejercicios modelo", detalle: "Las funciones del profe (cinemática directa e inversa, jacobianos, trayectorias, animación), los 3 scripts del resumen y los del parcial 2026 (IRB2400 y círculo)", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p2/funciones-octave-2do-parcial.zip" }
           ] },
-          { grupo: "Material del profe", descripcion: "Para profundizar un tema puntual.", archivos: [
+          { nivel: "profundizar", grupo: "Material del profe", descripcion: "Para profundizar un tema puntual.", archivos: [
             { n: 3, nombre: "Guías del profe · robot 3R", detalle: "Las 7 guías de clase unidas: 3R, rectas, círculo, cuadrado, Jacobiano, CI numérica y DLS (35 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/03-guias-del-profe-robot-3r.pdf" },
             { n: 4, nombre: "Cinemática · métodos geométricos", detalle: "Presentación 2026: directa e inversa del robot 2R, con código Octave", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/04-cinematica-metodos-geometricos-2026.pdf" },
             { nombre: "Scripts de las clases 4 a 9", detalle: "Robot 2R, robot 3R, rectas, círculo, cuadrado y CI numérica", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p2/scripts-de-clase-robot-3r.zip" }
           ] },
-          { grupo: "Adicional", descripcion: "TPs de robótica de la comisión 4K1: un robot RRR que dibuja una figura (sirven para practicar el ejercicio 1).", archivos: [
+          { nivel: "extra", grupo: "Adicional", descripcion: "TPs de robótica de la comisión 4K1: un robot RRR que dibuja una figura (sirven para practicar el ejercicio 1).", archivos: [
             { nombre: "Grupo 7 · Pac-Man", detalle: "Google Drive · archivos de Matlab y presentación (el video está en la pestaña Videos)", tipo: "LINK", url: "https://drive.google.com/drive/folders/1FpaZFuejbIwEwrou9kXIN-7LV-60-itD" },
             { nombre: "Grupo 9 · Helado", detalle: "Google Drive · archivos de Matlab y presentación", tipo: "LINK", url: "https://drive.google.com/drive/folders/1j49I03Oz7oHyBZxDb4DIsfouaXyN-RSB?usp=drive_link" }
           ] }
@@ -1248,8 +1548,14 @@ const MATERIAS = {
       {
         id: "p3",
         titulo: "3º Parcial · IoT",
+        quiz: "quiz/tpa-3er-parcial.json",
         descripcion: "Internet de las cosas con la ESP32: arquitectura, entradas y salidas, sensores, protocolos de comunicación, WiFi y la nube. Es un cuestionario en el campus.",
         secciones: [],
+        mapa: [
+          { t: "La ESP32", h: ["Sistema IoT", "Arquitectura y pines", "GPIO · ADC · PWM", "Sensores y actuadores"], u: 0 },
+          { t: "Programación", h: ["setup() y loop()", "millis() vs. delay()", "map()"], u: 1 },
+          { t: "Comunicaciones", h: ["UART · I2C · SPI", "WiFi · Bluetooth · MQTT", "ThingSpeak · Telegram"], u: 2 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1270,12 +1576,12 @@ const MATERIAS = {
           ]
         },
         material: [
-          { grupo: "Para estudiar", descripcion: "Empezá por acá: el resumen y todas las preguntas que ya salieron, resueltas.", archivos: [
+          { nivel: "esencial", grupo: "Para estudiar", descripcion: "Empezá por acá: el resumen y todas las preguntas que ya salieron, resueltas.", archivos: [
             { n: 1, nombre: "Resumen de IoT", nota: "Empezá por acá", detalle: "La ESP32 en números, qué se conecta dónde, PWM, ADC y DAC, millis vs. delay, UART/I2C/SPI, WiFi, MQTT y la nube, y los sketches de los prácticos (6 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/01-resumen-iot.pdf" },
             { n: 2, nombre: "Banco de preguntas", detalle: "Las 20 preguntas de los parciales de IoT 2025 como en el campus, con la respuesta y el porqué, más 33 de práctica del apunte 2026 (19 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/02-banco-de-preguntas-iot.pdf" },
             { n: 3, nombre: "Apunte IoT 2026", detalle: "El apunte completo del profe (51 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/03-apunte-iot-2026.pdf" }
           ] },
-          { grupo: "Material de clase", descripcion: "Presentaciones y apuntes cortos de las clases de IoT.", archivos: [
+          { nivel: "profundizar", grupo: "Material de clase", descripcion: "Presentaciones y apuntes cortos de las clases de IoT.", archivos: [
             { n: 4, nombre: "Clase 1 · Presentación de la ESP32", detalle: "Qué es IoT, la placa, sus pines y periféricos", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/04-clase-1-presentacion-de-la-esp32.pdf" },
             { n: 5, nombre: "Clase 2 · Introducción a C++", detalle: "Lo básico del lenguaje para programar la ESP32", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/05-clase-2-introduccion-a-cpp.pdf" },
             { n: 6, nombre: "Diferencia entre I2C y SPI", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/06-diferencia-entre-i2c-y-spi.pdf" },
@@ -1284,7 +1590,7 @@ const MATERIAS = {
             { n: 9, nombre: "Instructivo MQTT", detalle: "Broker Mosquitto y dos ESP32 que se mandan mensajes", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/09-instructivo-mqtt.pdf" },
             { nombre: "Sketch de conexión MQTT", detalle: "El código del instructivo", tipo: "INO", url: "material/tecnologias-para-la-automatizacion/p3-iot/conexion-mqtt.ino" }
           ] },
-          { grupo: "Adicional", descripcion: "Presentaciones de otro profe de la cátedra, por si querés repasar con otras explicaciones.", archivos: [
+          { nivel: "extra", grupo: "Adicional", descripcion: "Presentaciones de otro profe de la cátedra, por si querés repasar con otras explicaciones.", archivos: [
             { n: 10, nombre: "ESP32 · características", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/10-esp32-caracteristicas.pdf" },
             { n: 11, nombre: "ESP32 · periféricos", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/11-esp32-perifericos.pdf" },
             { n: 12, nombre: "LEDs", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/12-leds.pdf" }
@@ -1308,16 +1614,16 @@ const MATERIAS = {
         descripcion: "Los casos prácticos con la ESP32, con la placa real o simulada en Wokwi: instalación, los prácticos y videos para resolverlos.",
         secciones: [],
         material: [
-          { grupo: "Instalación (en este orden)", descripcion: "Para programar la placa real desde la PC.", archivos: [
+          { nivel: "esencial", grupo: "Instalación (en este orden)", descripcion: "Para programar la placa real desde la PC.", archivos: [
             { n: 1, nombre: "Arduino IDE 2 · instalación y primeros pasos", detalle: "Guía oficial de Arduino", tipo: "LINK", url: "https://docs.arduino.cc/software/ide-v2/tutorials/getting-started-ide-v2/" },
             { n: 2, nombre: "Agregar la placa ESP32 al Arduino IDE", detalle: "Random Nerd Tutorials · paso a paso en Windows", tipo: "LINK", url: "https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/" },
             { n: 3, nombre: "Driver USB CP210x", detalle: "Silicon Labs · instalalo si la PC no reconoce la placa por USB", tipo: "LINK", url: "https://www.silabs.com/software-and-tools/usb-to-uart-bridge-vcp-drivers?tab=overview" }
           ] },
-          { grupo: "Sin placa: simulador Wokwi", descripcion: "Para probar el código sin hardware, desde VS Code.", archivos: [
+          { nivel: "extra", grupo: "Sin placa: simulador Wokwi", descripcion: "Para probar el código sin hardware, desde VS Code.", archivos: [
             { n: 4, nombre: "Wokwi en VS Code", detalle: "Instalar la extensión, sacar la licencia gratis y simular con PlatformIO", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/02-wokwi-en-vscode.pdf" },
             { nombre: "Plantilla de proyecto PlatformIO + Wokwi", detalle: "Proyecto listo para abrir: LED que parpadea en el GPIO 26", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/tp-esp32/plantilla-platformio-wokwi.zip" }
           ] },
-          { grupo: "Los prácticos", descripcion: "Los casos a resolver y los tutoriales que piden.", archivos: [
+          { nivel: "esencial", grupo: "Los prácticos", descripcion: "Los casos a resolver y los tutoriales que piden.", archivos: [
             { n: 5, nombre: "Prácticos 2026", detalle: "Los casos prácticos: LEDs, potenciómetro, relay, OLED, DHT22, servidor web, Arduino Cloud, ThingSpeak y Telegram", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf" },
             { n: 6, nombre: "Tutorial ThingSpeak", detalle: "Campus UV · hay que tener la sesión iniciada", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/pluginfile.php/1302650/mod_resource/content/3/Tutorial%20Thingspeak.pdf" },
             { n: 7, nombre: "Tutorial Arduino", detalle: "Campus UV · hay que tener la sesión iniciada", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/pluginfile.php/1302651/mod_resource/content/3/Tutorial%20Arduino.pdf" },
@@ -1403,7 +1709,13 @@ const MATERIAS = {
       {
         id: "p1",
         titulo: "1º Parcial",
+        herramientas: ["subredes"],
         descripcion: "El primer parcial consta de teórico y práctico.",
+        mapa: [
+          { t: "Arquitectura de redes", h: ["Clasificación de redes", "Modelo TCP/IP", "Encapsulamiento", "ITU · ISO · IEEE · IETF"], u: 0 },
+          { t: "Acceso en LAN", h: ["CSMA/CD · CSMA/CA", "Colisión y broadcast", "Ethernet 802.3", "Hub · switch · AP", "WiFi 802.11"], u: 1 },
+          { t: "Direccionamiento IPv4", h: ["Datagrama IPv4", "Clases y máscara", "Privadas y públicas", "Subredes", "VLANs 802.1q"], u: 2 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1507,7 +1819,14 @@ const MATERIAS = {
       {
         id: "p2",
         titulo: "2º Parcial",
+        herramientas: ["subredes"],
         descripcion: "El segundo parcial consta de una parte teórica y una parte práctica. En cada una vas a encontrar el material de lectura y los videos de las clases.",
+        mapa: [
+          { t: "Direccionamiento", h: ["VLSM y CIDR", "IPv6", "ICMP · ARP", "DHCP · BOOTP"], u: 0 },
+          { t: "Encaminamiento", h: ["Vector distancia", "Estado de enlace", "RIP · OSPF · BGP", "Routers y VLANs"], u: 1 },
+          { t: "Congestión y QoS", h: ["Control de congestión", "Cubeta con goteo y con tokens", "MPLS"], u: 1 },
+          { t: "Administración", h: ["ping · tracert · netstat", "Tabla de enrutamiento", "NAT / PAT"], u: 1 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -1546,6 +1865,7 @@ const MATERIAS = {
           // El material se puede dividir en partes: { grupo, descripcion, archivos: [...] }
           material: [
             {
+              nivel: "esencial",
               grupo: "Para estudiar el parcial",
               descripcion: "Con estos dos se cubre toda la teoría del parcial.",
               archivos: [
@@ -1554,6 +1874,7 @@ const MATERIAS = {
               ]
             },
             {
+              nivel: "profundizar",
               grupo: "Material de clase",
               descripcion: "Presentaciones de las clases teóricas, por unidad.",
               // Un grupo se puede dividir en partes: { titulo, archivos: [...] }
@@ -1627,6 +1948,11 @@ const MATERIAS = {
         id: "p3",
         titulo: "3º Parcial",
         descripcion: "El tercer parcial consta de teórico y práctico.",
+        mapa: [
+          { t: "Transporte", h: ["TCP y la conexión", "UDP y puertos", "NAT · PAT"], u: 0 },
+          { t: "Aplicación", h: ["DNS", "FTP · TFTP · SNMP", "Correo: SMTP · MIME", "HTTP · HTTPS", "VoIP: RTP · SIP"], u: 0 },
+          { t: "Seguridad", h: ["Confidencialidad e integridad", "Firmas digitales", "Firewalls y proxy", "IPSec · SSL/TLS", "VPN"], u: 1 }
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -2126,35 +2452,27 @@ function viewMateria(m){
       <h1>${m.abr ? `<span class="abr abr-lg">${esc(m.abr)}</span>` : ""}${esc(m.nombre)}</h1>
       ${nZip ? `<button class="zip-btn" data-zip="${m.n}" title="Todos los PDF y archivos de la materia, en carpetas con el mismo orden que la página (sin videos)">${ICON_DL}<span>Descargar todo (ZIP)</span><small>${nZip} archivos</small></button>` : ""}
     </div>
-    ${contenido}
     ${c && c.condiciones ? condiciones(c.condiciones) : ""}
+    ${contenido}
     ${c && c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : ""}`;
 }
 
-/* Condiciones de aprobación: notas de aprobación directa y regularidad, y qué hay que aprobar */
+/* Condiciones de aprobación en una línea: directa, regularidad y lo que hay que aprobar ("corto").
+   Al tocarla se despliega el detalle de cada requisito. */
 function condiciones(x){
-  const nota = (t, v, extra) => `
-    <div class="cond-nota${v == null ? " no" : ""}">
-      <span>${t}</span>
-      <b>${v == null ? "No tiene" : esc(String(v))}</b>
-      ${extra ? `<small>${extra}</small>` : ""}
-    </div>`;
+  const chips = [];
+  if(x.directa != null) chips.push(`<span class="cc fuerte">Directa con ${esc(String(x.directa))}</span>`);
+  if("regular" in x) chips.push(`<span class="cc">${x.regular == null ? "Sin regularidad" : `Regular con ${esc(String(x.regular))}`}</span>`);
+  (x.requisitos || []).forEach(r => chips.push(`<span class="cc">${esc(r.corto || r.titulo)}</span>`));
+  const hayDetalle = x.aclaracion || (x.requisitos && x.requisitos.length);
   return `
-    <section class="comis cond">
-      <h2>Condiciones de aprobación</h2>
-      <div class="cond-caja">
-        <div class="cond-notas">
-          ${nota("Aprobación directa", x.directa, x.directa != null ? "nota mínima" : "")}
-          ${"regular" in x ? nota("Regularidad", x.regular, x.regular != null ? "nota mínima" : "") : ""}
-        </div>
+    <details class="cond-linea">
+      <summary><span class="cond-tit">Para aprobar</span>${chips.join("")}${hayDetalle ? `<span class="cond-mas">Ver detalle</span>` : ""}</summary>
+      ${hayDetalle ? `<div class="cond-det">
         ${x.aclaracion ? `<p class="cond-aclara">${esc(x.aclaracion)}</p>` : ""}
-        ${x.requisitos && x.requisitos.length ? `
-          <h3>Qué hay que aprobar</h3>
-          <ul class="cond-req">
-            ${x.requisitos.map(r => `<li><b>${esc(r.titulo)}</b><span>${esc(r.detalle || "")}</span></li>`).join("")}
-          </ul>` : ""}
-      </div>
-    </section>`;
+        ${x.requisitos && x.requisitos.length ? `<ul class="cond-req">${x.requisitos.map(r => `<li><b>${esc(r.titulo)}</b><span>${esc(r.detalle || "")}</span></li>`).join("")}</ul>` : ""}
+      </div>` : ""}
+    </details>`;
 }
 
 /* Cuadro de comisiones: profesor, examen, comentario y recomendación */
@@ -2226,6 +2544,8 @@ function viewParcial(m, p){
     ${crumbs(m, esc(p.titulo))}
     <h1>${esc(p.titulo)}</h1>
     <p class="lead">${esc(p.descripcion)}</p>
+    ${mapaBox(p)}
+    ${practicaBox(m, p)}
     <div class="grid">
       ${seccionesDe(p).map(tarjeta).join("")}
     </div>
@@ -2243,6 +2563,7 @@ function viewSeccionMateria(m, x, tab){
     ${crumbs(m, esc(x.titulo))}
     <h1>${esc(x.titulo)}</h1>
     ${x.descripcion ? `<p class="lead">${esc(x.descripcion)}</p>` : ""}
+    ${tab === "material" || !conVideos ? mapaBox(x) + practicaBox(m, x) : ""}
     ${conVideos ? `
     <div class="tabs">
       <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/material">Material (${cantArchivos(x.material || [])})</div>
@@ -2250,6 +2571,47 @@ function viewSeccionMateria(m, x, tab){
     </div>` : ""}
     <div id="tabBody">${tab === "material" || !conVideos ? filesList(x.material || []) : ""}</div>
     ${tab === "material" || !conVideos ? temasBox(x.temas) : ""}`;
+}
+
+/* Mapa del parcial (campo "mapa"): el parcial al centro, sus grandes temas (t) y lo que entra en cada uno (h).
+   "u" es la unidad de "Temas que entran" a la que lleva el tema al tocarlo. Las líneas se dibujan después, con dibujarMapa(). */
+const COLORES_MAPA = ["#0a8497", "#7c3aed", "#c2410c", "#2563eb", "#2e7d4f", "#be185d"];
+function mapaBox(p){
+  if(!p.mapa || !p.mapa.length) return "";
+  return `
+    <section class="mapa" data-mapa>
+      <div class="mapa-cab"><h2>Mapa del parcial</h2>${p.mapa.some(r => r.u != null) ? `<span>Tocá un tema para ver el detalle</span>` : ""}</div>
+      <div class="mapa-lienzo">
+        <svg class="mapa-lineas" aria-hidden="true"></svg>
+        <div class="mapa-centro">${esc(p.titulo)}</div>
+        <div class="mapa-ramas">
+          ${p.mapa.map((r, i) => `
+            <div class="mapa-rama" style="--c:${COLORES_MAPA[i % COLORES_MAPA.length]}">
+              <div class="mapa-nodo"${r.u != null ? ` data-unidad="${r.u}" role="button" tabindex="0"` : ""}>${esc(r.t)}</div>
+              <ul>${r.h.map(h => `<li>${esc(h)}</li>`).join("")}</ul>
+            </div>`).join("")}
+        </div>
+      </div>
+    </section>`;
+}
+function dibujarMapa(){
+  document.querySelectorAll("[data-mapa]").forEach(m => {
+    const svg = m.querySelector(".mapa-lineas"), lienzo = m.querySelector(".mapa-lienzo");
+    const b = lienzo.getBoundingClientRect(), c = m.querySelector(".mapa-centro").getBoundingClientRect();
+    const x0 = c.left + c.width / 2 - b.left, y0 = c.bottom - b.top;
+    svg.setAttribute("viewBox", `0 0 ${b.width} ${b.height}`);
+    svg.innerHTML = [...m.querySelectorAll(".mapa-rama")].map(r => {
+      const n = r.querySelector(".mapa-nodo").getBoundingClientRect();
+      const x1 = n.left + n.width / 2 - b.left, y1 = n.top - b.top, ym = (y0 + y1) / 2;
+      return `<path d="M${x0},${y0} C${x0},${ym} ${x1},${ym} ${x1},${y1}" fill="none" stroke="${getComputedStyle(r).getPropertyValue("--c")}" stroke-width="2" opacity=".55"/>`;
+    }).join("");
+  });
+}
+function irAUnidad(i){
+  const u = document.getElementById("unidad-" + i);
+  if(!u) return;
+  u.scrollIntoView({ behavior: "smooth", block: "center" });
+  u.classList.remove("flash"); void u.offsetWidth; u.classList.add("flash");
 }
 
 /* Temas que entran en el parcial (opcional: campo "temas" del parcial) */
@@ -2260,8 +2622,8 @@ function temasBox(t){
       <div class="temas-head">
         <h2>${esc(t.titulo || "Temas que entran")}</h2>
       </div>
-      ${t.unidades.map(u => `
-        <div class="unidad">
+      ${t.unidades.map((u, i) => `
+        <div class="unidad" id="unidad-${i}">
           <h3>${esc(u.titulo)}</h3>
           <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
         </div>`).join("")}
@@ -2391,7 +2753,40 @@ async function descargarZip(btn){
 const cantArchivos = items => items.reduce((t, f) =>
   t + (f.grupo ? (f.partes ? f.partes.reduce((u, p) => u + p.archivos.length, 0) : f.archivos.length) : 1), 0);
 
+/* Niveles del material: cada grupo (o archivo suelto) puede llevar nivel "esencial", "profundizar" o "extra".
+   Si una lista no usa niveles se muestra como siempre; si los usa, se ordena por nivel y lo extra queda plegado. */
+const NIVELES = [
+  { k: "esencial",    t: "Esencial",         s: "Lo que tenés que ver sí o sí" },
+  { k: "profundizar", t: "Para profundizar", s: "Más detalle y más práctica" },
+  { k: "extra",       t: "Extra",            s: "Opcional" }
+];
+const archivosDe = g => g.archivos || (g.partes || []).flatMap(p => p.archivos);
 function filesList(items){
+  const nivelDe = (f, g) => f.nivel || (g && g.nivel) || "esencial";
+  const conNivel = items.some(x => x.nivel || (x.grupo && archivosDe(x).some(f => f.nivel)));
+  if(!conNivel) return listaArchivos(items);
+  const vistos = new Set();
+  return NIVELES.map(nv => {
+    const ok = g => f => nivelDe(f, g) === nv.k;
+    const parte = items.some(x => x.grupo)
+      ? items.map(g => {
+          const r = g.partes
+            ? { ...g, partes: g.partes.map(p => ({ ...p, archivos: p.archivos.filter(ok(g)) })).filter(p => p.archivos.length) }
+            : { ...g, archivos: g.archivos.filter(ok(g)) };
+          if(!archivosDe(r).length) return null;
+          if(vistos.has(g)) r.descripcion = "";      // el grupo ya apareció en un nivel anterior
+          vistos.add(g);
+          return r;
+        }).filter(Boolean)
+      : items.filter(ok(null));
+    if(!parte.length) return "";
+    const n = cantArchivos(parte);
+    return nv.k === "extra"
+      ? `<details class="nivel extra"><summary><span class="nv-t">${nv.t}</span><span class="nv-s">${n} archivo${n === 1 ? "" : "s"} más · ${nv.s.toLowerCase()}</span></summary>${listaArchivos(parte)}</details>`
+      : `<section class="nivel ${nv.k}"><div class="nv-head"><span class="nv-t">${nv.t}</span><span class="nv-s">${nv.s}</span></div>${listaArchivos(parte)}</section>`;
+  }).join("");
+}
+function listaArchivos(items){
   if(items.some(f => f.grupo)){
     return items.map(g => `
       <section class="grupo">
@@ -2399,17 +2794,55 @@ function filesList(items){
         ${g.partes ? g.partes.map(p => `
           <div class="parte">
             <div class="parte-head">${esc(p.titulo)}<span>${p.archivos.length} archivo${p.archivos.length === 1 ? "" : "s"}</span></div>
-            ${filesList(p.archivos)}
-          </div>`).join("") : filesList(g.archivos)}
+            ${listaArchivos(p.archivos)}
+          </div>`).join("") : listaArchivos(g.archivos)}
       </section>`).join("");
   }
   if(!items.length) return `<div class="empty">Todavía no hay material cargado.</div>`;
-  return `<div class="files">${items.map(f => `
-    <a class="file" href="${esc(f.url)}" ${/^(ZIP|INO)$/.test(f.tipo) ? "download" : `target="_blank" rel="noopener"`}>
-      ${f.n ? `<span class="fnum">${String(f.n).padStart(2, "0")}</span>` : ""}<span class="badge">${esc(f.tipo || "LINK")}</span>
+  const conNum = items.some(f => f.n);
+  return `<div class="files">${items.map(f => filaArchivo(f, conNum)).join("")}</div>`;
+}
+/* Los PDF del repo muestran la tapa (miniaturas/…, la genera herramientas/miniaturas.py) y en la compu se abren en el visor */
+const esPdfLocal = f => /^material\/.+\.pdf$/i.test(f.url || "");
+const miniDe = url => "miniaturas/" + url.slice(9).replace(/\.pdf$/i, ".jpg");
+function sinMini(img){ img.replaceWith(Object.assign(document.createElement("span"), { className: "badge", textContent: "PDF" })); }
+function filaArchivo(f, conNum){
+  const bajar = /^(ZIP|INO)$/.test(f.tipo);
+  const pdf = esPdfLocal(f);
+  return `
+    <a class="file" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>
+      ${f.n || conNum ? `<span class="fnum">${f.n ? String(f.n).padStart(2, "0") : ""}</span>` : ""}${pdf
+        ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onerror="sinMini(this)">`
+        : `<span class="badge">${esc(f.tipo || "LINK")}</span>`}
       <span class="name">${esc(f.nombre)}${f.nota ? ` <span class="tag nota">${esc(f.nota)}</span>` : ""}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
-      <span class="go">${/^(ZIP|INO)$/.test(f.tipo) ? "Descargar ↓" : "Abrir ↗"}</span>
-    </a>`).join("")}</div>`;
+      <span class="go">${bajar ? `<span class="go-t">Descargar </span>↓` : `<span class="go-t">Abrir </span>↗`}</span>
+    </a>`;
+}
+
+/* ---------- Visor de PDF dentro de la página (solo en la compu: en el celular se abre como siempre) ---------- */
+let visorLista = [], visorPos = 0;
+const puedeVisor = () => navigator.pdfViewerEnabled && matchMedia("(min-width: 900px) and (pointer: fine)").matches;
+function abrirVisor(a){
+  visorLista = [...document.querySelectorAll("#app a.file[data-pdf]")];
+  visorPos = Math.max(0, visorLista.indexOf(a));
+  mostrarVisor();
+  $("#visor").showModal();
+}
+function mostrarVisor(){
+  const a = visorLista[visorPos], url = a.getAttribute("href");
+  $("#visorTit").textContent = a.dataset.pdf;
+  $("#visorNum").textContent = visorLista.length > 1 ? `${visorPos + 1} de ${visorLista.length}` : "";
+  $("#visorAbrir").href = url;
+  $("#visorBajar").href = url;
+  $("#visorAnt").disabled = visorPos === 0;
+  $("#visorSig").disabled = visorPos === visorLista.length - 1;
+  $("#visorFrame").src = url + "#view=FitH";
+}
+function moverVisor(d){
+  const i = visorPos + d;
+  if(i < 0 || i >= visorLista.length) return;
+  visorPos = i;
+  mostrarVisor();
 }
 
 function viewSeccion(m, p, k, tab){
@@ -2555,6 +2988,672 @@ function mountPlayer(videos, titulo){
   });
 }
 
+/* ---------- Practicá: quiz y herramientas de cada parcial ---------- */
+const ICON_QUIZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/><path d="M12 17.5v.5"/></svg>';
+const ICON_TOOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>';
+function practicaBox(m, p){
+  const hs = (p.herramientas || []).filter(h => HERRAMIENTAS[h]);
+  if(!p.quiz && !hs.length) return "";
+  return `
+    <div class="practica">
+      <span class="pr-t">Practicá</span>
+      ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
+      ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
+    </div>`;
+}
+
+/* ---------- Quiz (campo "quiz" del parcial: un JSON en quiz/, armado con los bancos de preguntas) ---------- */
+const quizCache = {};
+let qz = null;   // el quiz abierto: datos, preguntas elegidas, posición y puntaje (no se guarda nada)
+const mezclar = a => { for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function viewQuiz(m, p){
+  return `
+    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, "Quiz")}
+    <h1>Quiz · ${esc(p.titulo)}</h1>
+    <div id="quiz" class="quiz"><div class="empty">Cargando preguntas…</div></div>`;
+}
+async function montarQuiz(m, p){
+  const caja = $("#quiz");
+  try {
+    if(!quizCache[p.quiz]) quizCache[p.quiz] = fetch(p.quiz).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); });
+    const d = await quizCache[p.quiz];
+    if(!caja.isConnected) return;
+    qz = { d, m, p, secs: new Set(d.secciones.map((_, i) => i)), mezclar: true, soloReales: false };
+    quizInicio();
+  } catch(e){
+    delete quizCache[p.quiz];
+    caja.innerHTML = `<div class="empty">No se pudieron cargar las preguntas. Probá de nuevo en un rato.</div>`;
+  }
+}
+function quizElegidas(){
+  const out = [];
+  qz.d.secciones.forEach((s, i) => {
+    if(qz.secs.has(i)) s.preguntas.forEach(q => { if(!(qz.soloReales && q.practica)) out.push({ q, s: s.titulo }); });
+  });
+  return out;
+}
+function quizInicio(){
+  const d = qz.d, n = quizElegidas().length;
+  const hayPractica = d.secciones.some(s => s.preguntas.some(q => q.practica));
+  $("#quiz").innerHTML = `
+    <p class="lead">${esc(d.descripcion)}</p>
+    <div class="qz-ini">
+      <div class="qz-lbl">Elegí los temas</div>
+      <div class="qz-secs">${d.secciones.map((s, i) => `<button class="qz-sec${qz.secs.has(i) ? " on" : ""}" data-qsec="${i}">${esc(s.titulo)}<small>${s.preguntas.length}</small></button>`).join("")}</div>
+      <label class="qz-chk"><input type="checkbox" data-qmez${qz.mezclar ? " checked" : ""}> Mezclar el orden</label>
+      ${hayPractica ? `<label class="qz-chk"><input type="checkbox" data-qreal${qz.soloReales ? " checked" : ""}> Solo las que salieron en parciales</label>` : ""}
+      <div><button class="qz-btn primario" data-qempezar${n ? "" : " disabled"}>Empezar · ${n} pregunta${n === 1 ? "" : "s"}</button></div>
+    </div>`;
+}
+function quizEmpezar(lista){
+  if(qz.mezclar) mezclar(lista);
+  Object.assign(qz, { cola: lista, i: 0, bien: 0, mal: 0, erradas: [], sel: new Set(), hecho: false });
+  quizPregunta();
+}
+function quizPregunta(){
+  const { q, s } = qz.cola[qz.i];
+  qz.sel = new Set(); qz.hecho = false;
+  const abierta = q.tipo === "num" || q.tipo === "modelo";
+  $("#quiz").innerHTML = `
+    <div class="qz-top">
+      <div class="qz-barra"><i style="width:${qz.i / qz.cola.length * 100}%"></i></div>
+      <span>${qz.i + 1} de ${qz.cola.length}</span>
+      <span class="qz-score"><b class="si">✓ ${qz.bien}</b> <b class="no">✗ ${qz.mal}</b></span>
+      <button class="qz-salir" data-qsalir>Salir</button>
+    </div>
+    <div class="qz-card">
+      <div class="qz-meta">${esc(s)}${q.fuente ? ` · ${esc(q.fuente)}` : ""}${q.practica ? ` <span class="tag nota">De práctica</span>` : ""}</div>
+      <div class="qz-en">${q.en}</div>
+      ${q.img ? `<img class="qz-img" src="${esc(q.img)}" alt="">` : ""}
+      ${q.code ? `<pre>${esc(q.code)}</pre>` : ""}
+      ${q.op ? `
+        <div class="qz-ayuda">${q.tipo === "varias" ? "Hay más de una correcta: marcalas y tocá Responder" : "Tocá la opción correcta"}</div>
+        <div class="qz-ops">${q.op.map((o, k) => `<button class="qz-op" data-qop="${k}"><span class="qz-l">${String.fromCharCode(97 + k)}</span><span>${o[0]}</span></button>`).join("")}</div>` : ""}
+      <div class="qz-acc">${abierta
+        ? `<button class="qz-btn primario" data-qver>Ver respuesta</button><span class="qz-tip">Resolvelo primero y después mirá</span>`
+        : q.tipo === "varias" ? `<button class="qz-btn primario" data-qresp disabled>Responder</button>` : ""}</div>
+      <div id="qzRes"></div>
+    </div>`;
+}
+function quizResponder(){
+  const { q } = qz.cola[qz.i];
+  qz.hecho = true;
+  const correctas = q.op.map((o, k) => o[1] ? k : -1).filter(k => k >= 0);
+  const ok = correctas.length === qz.sel.size && correctas.every(k => qz.sel.has(k));
+  document.querySelectorAll(".qz-op").forEach(b => {
+    const k = +b.dataset.qop;
+    b.disabled = true;
+    b.classList.remove("sel");
+    if(q.op[k][1]) b.classList.add("ok"); else if(qz.sel.has(k)) b.classList.add("mal");
+  });
+  if(ok) qz.bien++; else { qz.mal++; qz.erradas.push(qz.cola[qz.i]); }
+  quizDevolucion(ok ? "bien" : "mal");
+}
+function quizDevolucion(estado){
+  const { q } = qz.cola[qz.i];
+  const ult = qz.i === qz.cola.length - 1;
+  $("#quiz .qz-card > .qz-acc").innerHTML = "";
+  $("#qzRes").innerHTML = `
+    ${estado ? `<div class="qz-veredicto ${estado}">${estado === "bien" ? "¡Bien!" : "No era esa"}</div>` : ""}
+    ${q.num ? `<div class="qz-resp"><b>Respuesta:</b> ${q.num}</div>` : ""}
+    ${q.modelo ? `<div class="qz-resp"><b>Respuesta:</b> ${q.modelo}</div>` : ""}
+    ${q.ex ? `<div class="qz-ex"><b>Por qué:</b> ${q.ex}</div>` : ""}
+    ${q.mal ? `<div class="qz-ojo"><b>Ojo:</b> ${q.mal}</div>` : ""}
+    <div class="qz-acc">${estado
+      ? `<button class="qz-btn primario" data-qsig>${ult ? "Ver el resultado" : "Siguiente →"}</button>`
+      : `<span class="qz-tip">¿Te salió?</span><button class="qz-btn si" data-qauto="1">✓ Sí</button><button class="qz-btn no" data-qauto="0">✗ No</button>`}</div>`;
+  $("#qzRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function quizSiguiente(){
+  if(qz.i < qz.cola.length - 1){ qz.i++; quizPregunta(); $("#app").scrollIntoView({ block: "start" }); }
+  else quizFin();
+}
+function quizFin(){
+  const n = qz.cola.length, b = qz.bien, pct = Math.round(b / n * 100);
+  const frase = pct >= 80 ? "¡Muy bien! Estás para el parcial." : pct >= 60 ? "Bien. Repasá las que erraste y volvé a intentar." : "Todavía falta: repasá el material y las que erraste.";
+  $("#quiz").innerHTML = `
+    <div class="qz-card qz-fin">
+      <div class="qz-nota">${b}<small> de ${n}</small></div>
+      <div class="qz-barra grande"><i style="width:${pct}%"></i></div>
+      <p>${frase}</p>
+      <div class="qz-acc">
+        ${qz.erradas.length ? `<button class="qz-btn primario" data-qrepasar>Repasar las que erré (${qz.erradas.length})</button>` : ""}
+        <button class="qz-btn" data-qotra>Elegir otros temas</button>
+        <button class="qz-btn" data-go="m${qz.m.n}/${qz.p.id}">Volver al parcial</button>
+      </div>
+    </div>`;
+}
+function clicQuiz(e){
+  const t = e.target;
+  const el = t.closest("[data-qsec],[data-qempezar],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra]");
+  if(!el) return false;
+  const ds = el.dataset;
+  if("qsec" in ds){ const i = +ds.qsec; qz.secs.has(i) ? qz.secs.delete(i) : qz.secs.add(i); quizInicio(); }
+  else if("qempezar" in ds) quizEmpezar(quizElegidas());
+  else if("qop" in ds && !qz.hecho){
+    const { q } = qz.cola[qz.i], k = +ds.qop;
+    if(q.tipo === "varias"){
+      qz.sel.has(k) ? qz.sel.delete(k) : qz.sel.add(k);
+      el.classList.toggle("sel", qz.sel.has(k));
+      $("[data-qresp]").disabled = !qz.sel.size;
+    } else { qz.sel = new Set([k]); quizResponder(); }
+  }
+  else if("qresp" in ds && !qz.hecho) quizResponder();
+  else if("qver" in ds) quizDevolucion(null);
+  else if("qauto" in ds){ if(ds.qauto === "1") qz.bien++; else { qz.mal++; qz.erradas.push(qz.cola[qz.i]); } quizSiguiente(); }
+  else if("qsig" in ds) quizSiguiente();
+  else if("qrepasar" in ds) quizEmpezar([...qz.erradas]);
+  else if("qsalir" in ds || "qotra" in ds) quizInicio();
+  return true;
+}
+document.addEventListener("change", e => {
+  if(!qz || !e.target.closest("#quiz")) return;
+  if("qmez" in e.target.dataset) qz.mezclar = e.target.checked;
+  if("qreal" in e.target.dataset){ qz.soloReales = e.target.checked; quizInicio(); }
+});
+/* Con el teclado: 1, 2, 3… eligen la opción y Enter responde o pasa a la siguiente */
+document.addEventListener("keydown", e => {
+  if(!$("#quiz .qz-card") || e.target.closest("input,textarea,select") || e.ctrlKey || e.metaKey || e.altKey) return;
+  const n = parseInt(e.key, 10);
+  if(n >= 1 && n <= 9){ const b = document.querySelectorAll("#quiz .qz-op")[n - 1]; if(b && !b.disabled){ b.click(); e.preventDefault(); } }
+  if(e.key === "Enter"){ const b = $("#quiz [data-qsig]") || $("#quiz [data-qresp]:not(:disabled)") || $("#quiz [data-qver]"); if(b){ b.click(); e.preventDefault(); } }
+});
+
+/* ---------- Herramientas visuales (campo "herramientas" del parcial) ---------- */
+const HERRAMIENTAS = {};
+/* Números como en el campus: coma decimal y sin "-0" */
+const fmt = (x, d = 4) => (Math.abs(x) < 0.5 * 10 ** -d ? 0 : x).toFixed(d).replace(".", ",");
+const leerNum = v => { const n = parseFloat(String(v).replace(",", ".")); return isNaN(n) ? 0 : n; };
+const caja = v => `<span class="hx-resp">${v}</span>`;
+const corto = x => fmt(x, 2).replace(/,?0+$/, "");
+
+/* 1 · Rotaciones y traslaciones (TPA · 1º Parcial) */
+HERRAMIENTAS.rotaciones = {
+  titulo: "Rotaciones y traslaciones",
+  corto: "Armá la secuencia y mirá en qué orden se multiplica",
+  desc: "Cargá los giros y traslaciones en el orden en que los dice el enunciado. Se arma la cuenta (respecto del sistema fijo se premultiplica), sale la matriz, el vector r y el dibujo de los dos sistemas.",
+  montar(el){
+    const st = { r: [-6, 9, -10], fijo: true, pasos: [{ t: "ry", v: 12 }, { t: "rx", v: -28 }, { t: "rz", v: 133 }] };
+    const NOM = { rx: "Rotx", ry: "Roty", rz: "Rotz", tr: "Traslacion" };
+    const nombre = p => p.t === "tr" ? `Traslacion([${corto(p.x)} ${corto(p.y)} ${corto(p.z)}])` : `${NOM[p.t]}(${corto(p.v)})`;
+    const mat = p => {
+      const a = p.v * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+      if(p.t === "rx") return [[1, 0, 0, 0], [0, c, -s, 0], [0, s, c, 0], [0, 0, 0, 1]];
+      if(p.t === "ry") return [[c, 0, s, 0], [0, 1, 0, 0], [-s, 0, c, 0], [0, 0, 0, 1]];
+      if(p.t === "rz") return [[c, -s, 0, 0], [s, c, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
+      return [[1, 0, 0, p.x], [0, 1, 0, p.y], [0, 0, 1, p.z], [0, 0, 0, 1]];
+    };
+    const mul = (A, B) => A.map((f, i) => B[0].map((_, j) => f.reduce((t, _, k) => t + A[i][k] * B[k][j], 0)));
+    const ap = (T, v) => [0, 1, 2].map(i => T[i][0] * v[0] + T[i][1] * v[1] + T[i][2] * v[2] + T[i][3]);
+    el.innerHTML = `<div class="hx-grid"><div class="hx-panel" id="rtCtl"></div><div class="hx-panel" id="rtOut"></div></div>`;
+    const ctl = el.querySelector("#rtCtl"), out = el.querySelector("#rtOut");
+    function controles(){
+      ctl.innerHTML = `
+        <div class="hx-lbl">Vector en el sistema que se mueve (r<sub>uvw</sub>)</div>
+        <div class="hx-fila">${st.r.map((v, i) => `<label>${"uvw"[i]}<input class="hx-in" data-r="${i}" value="${corto(v)}" inputmode="decimal"></label>`).join("")}</div>
+        <div class="hx-lbl">Transformaciones, en el orden en que pasan</div>
+        ${st.pasos.map((p, i) => `
+          <div class="hx-paso">
+            <span class="hx-n">${i + 1}</span>
+            <select class="hx-in" data-t="${i}">${Object.entries({ rx: "Gira en X", ry: "Gira en Y", rz: "Gira en Z", tr: "Traslada" }).map(([k, t]) => `<option value="${k}"${p.t === k ? " selected" : ""}>${t}</option>`).join("")}</select>
+            ${p.t === "tr"
+              ? ["x", "y", "z"].map(k => `<input class="hx-in chico" data-p="${i}" data-k="${k}" value="${corto(p[k])}" inputmode="decimal" title="${k}">`).join("")
+              : `<input class="hx-in chico" data-p="${i}" data-k="v" value="${corto(p.v)}" inputmode="decimal"><span class="hx-u">°</span>`}
+            <button class="hx-x" data-quitar="${i}" title="Quitar">✕</button>
+          </div>`).join("")}
+        <div class="hx-fila"><button class="hx-btn" data-mas="rz">+ Giro</button><button class="hx-btn" data-mas="tr">+ Traslación</button></div>
+        <div class="hx-lbl">Las transformaciones son respecto del…</div>
+        <label class="hx-radio"><input type="radio" name="rtRef" value="1"${st.fijo ? " checked" : ""}> sistema fijo OXYZ → se <b>premultiplica</b></label>
+        <label class="hx-radio"><input type="radio" name="rtRef" value="0"${st.fijo ? "" : " checked"}> sistema móvil OUVW → se <b>posmultiplica</b></label>`;
+    }
+    function calcular(){
+      const ms = st.pasos.map(mat);
+      const T = st.fijo ? ms.reduce((acc, M) => mul(M, acc), [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+                        : ms.reduce((acc, M) => mul(acc, M), [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]);
+      const r = ap(T, st.r);
+      const orden = st.fijo ? [...st.pasos].reverse() : st.pasos;
+      out.innerHTML = `
+        <div class="hx-lbl">La cuenta</div>
+        <pre class="hx-code">r = ${orden.map(nombre).join(" * ")}${orden.length ? " * " : ""}[${st.r.map(corto).join("; ")}; 1]</pre>
+        <p class="hx-nota">${st.fijo ? "Respecto del fijo: la primera transformación queda pegada al vector y la última a la izquierda." : "Respecto del móvil: se multiplica en el mismo orden en que pasan."}</p>
+        <div class="hx-res">rx = ${caja(fmt(r[0]))} ry = ${caja(fmt(r[1]))} rz = ${caja(fmt(r[2]))}</div>
+        <div class="hx-dos">
+          <table class="hx-mat">${T.map(f => `<tr>${f.map(v => `<td>${fmt(v)}</td>`).join("")}</tr>`).join("")}</table>
+          ${dibujo(T, r)}
+        </div>`;
+    }
+    function dibujo(T, r){
+      const L = Math.max(4, ...st.r.map(Math.abs), ...r.map(Math.abs)) * 0.75;
+      const o2 = ap(T, [0, 0, 0]), ejes2 = [[L * .7, 0, 0], [0, L * .7, 0], [0, 0, L * .7]].map(v => ap(T, v));
+      const pts = [[0, 0, 0], [L, 0, 0], [0, L, 0], [0, 0, L], o2, ...ejes2, r];
+      const P = ([x, y, z]) => [(y - x) * 0.866, (x + y) * 0.5 - z];
+      const xs = pts.map(p => P(p)[0]), ys = pts.map(p => P(p)[1]);
+      const W = 300, H = 240, pad = 22, minX = Math.min(...xs), minY = Math.min(...ys);
+      const k = Math.min((W - 2 * pad) / (Math.max(...xs) - minX || 1), (H - 2 * pad) / (Math.max(...ys) - minY || 1));
+      const S = p => { const [a, b] = P(p); return [pad + (a - minX) * k, pad + (b - minY) * k]; };
+      const lin = (a, b, c, ext = "") => { const [x1, y1] = S(a), [x2, y2] = S(b); return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2" ${ext}/>`; };
+      const txt = (p, t, c) => { const [x, y] = S(p); return `<text x="${x + 4}" y="${y - 4}" fill="${c}" font-size="12" font-weight="700">${t}</text>`; };
+      const col = ["#c0392b", "#2e7d4f", "#2563eb"];
+      return `<svg class="hx-svg" viewBox="0 0 ${W} ${H}">
+        ${[0, 1, 2].map(i => lin([0, 0, 0], pts[i + 1], col[i], 'opacity=".55"') + txt(pts[i + 1], "XYZ"[i], col[i])).join("")}
+        ${[0, 1, 2].map(i => lin(o2, ejes2[i], col[i], 'stroke-dasharray="5 3"') + txt(ejes2[i], "uvw"[i], col[i])).join("")}
+        ${lin(o2, r, "#7c3aed", 'stroke-dasharray="2 3"')}
+        <circle cx="${S(r)[0]}" cy="${S(r)[1]}" r="5" fill="#7c3aed"/>${txt(r, "r", "#7c3aed")}
+        <circle cx="${S([0, 0, 0])[0]}" cy="${S([0, 0, 0])[1]}" r="3" fill="currentColor"/>
+      </svg>`;
+    }
+    el.addEventListener("input", e => {
+      const t = e.target, ds = t.dataset;
+      if("r" in ds) st.r[+ds.r] = leerNum(t.value);
+      else if("p" in ds) st.pasos[+ds.p][ds.k] = leerNum(t.value);
+      else return;
+      calcular();
+    });
+    el.addEventListener("change", e => {
+      const t = e.target;
+      if("t" in t.dataset){ const p = st.pasos[+t.dataset.t]; p.t = t.value; if(t.value === "tr"){ p.x = p.x || 0; p.y = p.y || 0; p.z = p.z || 0; } else p.v = p.v || 0; controles(); calcular(); }
+      if(t.name === "rtRef"){ st.fijo = t.value === "1"; calcular(); }
+    });
+    el.addEventListener("click", e => {
+      const b = e.target.closest("[data-mas],[data-quitar]");
+      if(!b) return;
+      if(b.dataset.mas) st.pasos.push(b.dataset.mas === "tr" ? { t: "tr", x: 0, y: 0, z: 0 } : { t: "rz", v: 0 });
+      else st.pasos.splice(+b.dataset.quitar, 1);
+      controles(); calcular();
+    });
+    controles(); calcular();
+  }
+};
+
+/* 2 · Robot 2R plano: directa e inversa con las dos soluciones (TPA · 2º Parcial) */
+HERRAMIENTAS.robot2r = {
+  titulo: "Robot 2R: directa e inversa",
+  corto: "Mové el brazo o tocá un punto y mirá las dos soluciones",
+  desc: "Un robot plano de dos articulaciones rotativas. En <b>directa</b> movés los ángulos y ves dónde queda la punta. En <b>inversa</b> tocás (o arrastrás) un punto y aparecen las dos soluciones: codo arriba y codo abajo, con la ley del coseno.",
+  montar(el){
+    const st = { L1: 0.7, L2: 0.3, q1: 30, q2: 30, x: 0.7562, y: 0.6098, modo: "inversa" };
+    const R = Math.PI / 180;
+    el.innerHTML = `<div class="hx-grid"><div class="hx-panel" id="rbCtl"></div><div class="hx-panel" id="rbOut"></div></div>`;
+    const ctl = el.querySelector("#rbCtl"), out = el.querySelector("#rbOut");
+    const inversa = () => {
+      const c = (st.x ** 2 + st.y ** 2 - st.L1 ** 2 - st.L2 ** 2) / (2 * st.L1 * st.L2);
+      if(Math.abs(c) > 1 + 1e-9) return { c, sol: [] };
+      const sol = [1, -1].map(sg => {
+        const q2 = sg * Math.acos(Math.max(-1, Math.min(1, c)));
+        const q1 = Math.atan2(st.y, st.x) - Math.atan2(st.L2 * Math.sin(q2), st.L1 + st.L2 * Math.cos(q2));
+        return { q1: q1 / R, q2: q2 / R };
+      });
+      return { c, sol };
+    };
+    function controles(){
+      ctl.innerHTML = `
+        <div class="hx-tabs"><button class="hx-tab${st.modo === "directa" ? " on" : ""}" data-modo="directa">Directa</button><button class="hx-tab${st.modo === "inversa" ? " on" : ""}" data-modo="inversa">Inversa</button></div>
+        <div class="hx-lbl">Largo de los eslabones (m)</div>
+        <div class="hx-fila"><label>L1<input class="hx-in" data-k="L1" value="${fmt(st.L1, 2)}" inputmode="decimal"></label><label>L2<input class="hx-in" data-k="L2" value="${fmt(st.L2, 2)}" inputmode="decimal"></label></div>
+        ${st.modo === "directa" ? `
+          <div class="hx-lbl">Ángulos</div>
+          <label class="hx-slider">q1 <input type="range" min="-180" max="180" step="1" data-k="q1" value="${st.q1}"><b id="rbQ1">${fmt(st.q1, 0)}°</b></label>
+          <label class="hx-slider">q2 <input type="range" min="-180" max="180" step="1" data-k="q2" value="${st.q2}"><b id="rbQ2">${fmt(st.q2, 0)}°</b></label>` : `
+          <div class="hx-lbl">Punto al que tiene que llegar (o tocá el dibujo)</div>
+          <div class="hx-fila"><label>x<input class="hx-in" data-k="x" value="${fmt(st.x)}" inputmode="decimal"></label><label>y<input class="hx-in" data-k="y" value="${fmt(st.y)}" inputmode="decimal"></label></div>`}`;
+    }
+    function calcular(){
+      const esc2 = 130 / (st.L1 + st.L2), cx = 160, cy = 160;
+      const P = (x, y) => [cx + x * esc2, cy - y * esc2];
+      const brazo = (q1, q2, color, dash) => {
+        const a = [st.L1 * Math.cos(q1 * R), st.L1 * Math.sin(q1 * R)];
+        const b = [a[0] + st.L2 * Math.cos((q1 + q2) * R), a[1] + st.L2 * Math.sin((q1 + q2) * R)];
+        const [x0, y0] = P(0, 0), [x1, y1] = P(...a), [x2, y2] = P(...b);
+        return { b, svg: `<polyline points="${x0},${y0} ${x1},${y1} ${x2},${y2}" fill="none" stroke="${color}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" ${dash ? 'stroke-dasharray="2 9"' : ""}/>
+          <circle cx="${x1}" cy="${y1}" r="5" fill="var(--card)" stroke="${color}" stroke-width="2.5"/>` };
+      };
+      const anillo = `<circle cx="${cx}" cy="${cy}" r="${(st.L1 + st.L2) * esc2}" fill="var(--accent-soft)" opacity=".55"/><circle cx="${cx}" cy="${cy}" r="${Math.abs(st.L1 - st.L2) * esc2}" fill="var(--card)"/>`;
+      const ejes = `<line x1="10" y1="${cy}" x2="310" y2="${cy}" stroke="var(--line)"/><line x1="${cx}" y1="10" x2="${cx}" y2="310" stroke="var(--line)"/><rect x="${cx - 10}" y="${cy}" width="20" height="8" fill="var(--muted)"/>`;
+      let dibujo = "", texto = "";
+      if(st.modo === "directa"){
+        const a = brazo(st.q1, st.q2, "#0a8497");
+        const [px, py] = P(...a.b);
+        dibujo = a.svg + `<circle cx="${px}" cy="${py}" r="5" fill="#c0392b"/>`;
+        texto = `
+          <div class="hx-res">x = ${caja(fmt(a.b[0]))} y = ${caja(fmt(a.b[1]))}</div>
+          <pre class="hx-code">x = L1·cos(q1) + L2·cos(q1 + q2)
+y = L1·sen(q1) + L2·sen(q1 + q2)</pre>`;
+      } else {
+        const { c, sol } = inversa();
+        const [tx, ty] = P(st.x, st.y);
+        dibujo = sol.map((s, i) => brazo(s.q1, s.q2, i ? "#c2410c" : "#0a8497", i === 1).svg).join("") + `<circle cx="${tx}" cy="${ty}" r="6" fill="#c0392b"/>`;
+        texto = sol.length ? `
+          <p class="hx-nota">cos q2 = (x² + y² − L1² − L2²) / (2·L1·L2) = <b>${fmt(c)}</b></p>
+          <table class="hx-tab2"><tr><th></th><th>q1</th><th>q2</th></tr>
+            <tr><td><span class="hx-dot" style="background:#0a8497"></span>Codo abajo (q2 &gt; 0)</td><td>${fmt(sol[0].q1, 2)}°</td><td>${fmt(sol[0].q2, 2)}°</td></tr>
+            <tr><td><span class="hx-dot" style="background:#c2410c"></span>Codo arriba (q2 &lt; 0)</td><td>${fmt(sol[1].q1, 2)}°</td><td>${fmt(sol[1].q2, 2)}°</td></tr></table>
+          <pre class="hx-code">q2 = ± acos(cos q2)
+q1 = atan2(y, x) − atan2(L2·sen q2, L1 + L2·cos q2)</pre>`
+          : `<p class="hx-alerta">Fuera de alcance: cos q2 = ${fmt(c)} (tiene que estar entre −1 y 1). El punto tiene que estar en la zona sombreada.</p>`;
+      }
+      out.innerHTML = `<svg class="hx-svg robot" viewBox="0 0 320 320" data-lienzo>${anillo}${ejes}${dibujo}</svg>${texto}`;
+    }
+    const tocar = e => {
+      if(st.modo !== "inversa") return;
+      const svg = out.querySelector("[data-lienzo]"), b = svg.getBoundingClientRect();
+      const esc2 = 130 / (st.L1 + st.L2);
+      st.x = ((e.clientX - b.left) * 320 / b.width - 160) / esc2;
+      st.y = -((e.clientY - b.top) * 320 / b.height - 160) / esc2;
+      controles(); calcular();
+    };
+    let arrastra = false;
+    out.addEventListener("pointerdown", e => { if(e.target.closest("[data-lienzo]")){ arrastra = true; tocar(e); } });
+    out.addEventListener("pointermove", e => { if(arrastra) tocar(e); });
+    ["pointerup", "pointerleave", "pointercancel"].forEach(t => out.addEventListener(t, () => { arrastra = false; }));
+    el.addEventListener("input", e => {
+      const k = e.target.dataset.k;
+      if(!k) return;
+      st[k] = k === "q1" || k === "q2" ? +e.target.value : leerNum(e.target.value);
+      if(k === "q1") el.querySelector("#rbQ1").textContent = st.q1 + "°";
+      if(k === "q2") el.querySelector("#rbQ2").textContent = st.q2 + "°";
+      if(st.L1 > 0 && st.L2 > 0) calcular();
+    });
+    el.addEventListener("click", e => { const b = e.target.closest("[data-modo]"); if(b){ st.modo = b.dataset.modo; controles(); calcular(); } });
+    controles(); calcular();
+  }
+};
+
+/* 3 · Subredes y VLSM (Redes de Datos) */
+HERRAMIENTAS.subredes = {
+  titulo: "Calculadora de subredes y VLSM",
+  corto: "Red, broadcast, hosts, bits y diseño VLSM",
+  desc: "Escribí una dirección con su prefijo (por ejemplo <code>192.168.10.77/26</code>) y sale la red, el broadcast, el rango de hosts y los bits de red y de host. En <b>VLSM</b> ponés la red y los hosts que necesita cada subred, y se asignan de la más grande a la más chica.",
+  montar(el){
+    const st = { modo: "red", ip: "192.168.10.77/26", partes: 4, base: "192.168.1.0/24", hosts: "60, 30, 12, 2" };
+    const aNum = s => s.split(".").reduce((a, o) => a * 256 + +o, 0);
+    const aIp = n => [24, 16, 8, 0].map(b => Math.floor(n / 2 ** b) % 256).join(".");
+    const mascara = pre => pre === 0 ? 0 : (2 ** 32 - 2 ** (32 - pre));
+    const leer = txt => {
+      const m = txt.trim().match(/^(\d{1,3}(?:\.\d{1,3}){3})\s*(?:\/\s*(\d{1,2})|\s+(\d{1,3}(?:\.\d{1,3}){3}))$/);
+      if(!m || m[1].split(".").some(o => +o > 255)) return null;
+      let pre;
+      if(m[2] != null) pre = +m[2];
+      else {
+        const mk = aNum(m[3]), bits = mk.toString(2).padStart(32, "0");
+        if(!/^1*0*$/.test(bits)) return null;
+        pre = bits.indexOf("0") < 0 ? 32 : bits.indexOf("0");
+      }
+      if(pre > 32) return null;
+      return { ip: aNum(m[1]), pre };
+    };
+    const red = (ip, pre) => { const tam = 2 ** (32 - pre); const r = Math.floor(ip / tam) * tam; return { red: r, bc: r + tam - 1, tam }; };
+    const hostsUtiles = pre => pre >= 31 ? 2 ** (32 - pre) : 2 ** (32 - pre) - 2;
+    const clase = ip => { const o = Math.floor(ip / 2 ** 24); return o < 128 ? "A" : o < 192 ? "B" : o < 224 ? "C" : o < 240 ? "D (multicast)" : "E"; };
+    const privada = ip => { const o1 = Math.floor(ip / 2 ** 24), o2 = Math.floor(ip / 2 ** 16) % 256; return o1 === 10 || (o1 === 172 && o2 >= 16 && o2 <= 31) || (o1 === 192 && o2 === 168); };
+    const bits = (n, pre) => n.toString(2).padStart(32, "0").split("").map((b, i) => `${i && i % 8 === 0 ? `<span class="hx-pt">.</span>` : ""}<span class="${i < pre ? "bn" : "bh"}">${b}</span>`).join("");
+    el.innerHTML = `<div class="hx-tabs"><button class="hx-tab" data-modo="red">Una red</button><button class="hx-tab" data-modo="vlsm">VLSM</button></div><div id="snOut"></div>`;
+    const out = el.querySelector("#snOut");
+    function pintar(){
+      el.querySelectorAll("[data-modo]").forEach(b => b.classList.toggle("on", b.dataset.modo === st.modo));
+      out.innerHTML = st.modo === "red" ? `
+        <div class="hx-panel">
+          <div class="hx-fila"><label class="ancho">Dirección y prefijo<input class="hx-in" data-k="ip" value="${esc(st.ip)}" spellcheck="false"></label>
+          <label>Dividir en<input class="hx-in chico" data-k="partes" value="${st.partes}" inputmode="numeric"></label><span class="hx-u">subredes</span></div>
+          <div id="snRes"></div>
+        </div>` : `
+        <div class="hx-panel">
+          <div class="hx-fila"><label class="ancho">Red disponible<input class="hx-in" data-k="base" value="${esc(st.base)}" spellcheck="false"></label>
+          <label class="ancho">Hosts que necesita cada subred<input class="hx-in" data-k="hosts" value="${esc(st.hosts)}" spellcheck="false"></label></div>
+          <div id="snRes"></div>
+        </div>`;
+      calcular();
+    }
+    function calcular(){
+      const res = el.querySelector("#snRes");
+      if(st.modo === "red"){
+        const x = leer(st.ip);
+        if(!x){ res.innerHTML = `<p class="hx-alerta">Escribila así: <code>192.168.10.77/26</code> o <code>192.168.10.77 255.255.255.192</code></p>`; return; }
+        const r = red(x.ip, x.pre), mk = mascara(x.pre);
+        const filas = [["Máscara", `${aIp(mk)} (/${x.pre})`], ["Wildcard", aIp(2 ** 32 - 1 - mk)], ["Red", aIp(r.red)], ["Broadcast", aIp(r.bc)],
+          ["Primer host", x.pre >= 31 ? aIp(r.red) : aIp(r.red + 1)], ["Último host", x.pre >= 31 ? aIp(r.bc) : aIp(r.bc - 1)],
+          ["Hosts utilizables", `${hostsUtiles(x.pre).toLocaleString("es-AR")}  (2<sup>${32 - x.pre}</sup> − 2)`], ["Clase", clase(x.ip)], ["Tipo", privada(x.ip) ? "Privada (RFC 1918)" : "Pública"]];
+        const n = Math.max(1, Math.min(4096, Math.round(leerNum(st.partes)) || 1));
+        const extra = Math.ceil(Math.log2(n)), pre2 = x.pre + extra;
+        let sub = "";
+        if(n > 1){
+          if(pre2 > 30) sub = `<p class="hx-alerta">No alcanza: para ${n} subredes harían falta ${extra} bits más (/${pre2}).</p>`;
+          else {
+            const tam = 2 ** (32 - pre2), cant = 2 ** extra, ver = Math.min(cant, 64);
+            sub = `<div class="hx-lbl">Dividida en ${cant} subredes /${pre2} (${extra} bit${extra === 1 ? "" : "s"} prestado${extra === 1 ? "" : "s"}) · ${hostsUtiles(pre2)} hosts cada una · máscara ${aIp(mascara(pre2))}</div>
+              <div class="hx-scroll"><table class="hx-tab2"><tr><th>#</th><th>Red</th><th>Hosts</th><th>Broadcast</th></tr>
+              ${Array.from({ length: ver }, (_, i) => { const a = r.red + i * tam; return `<tr><td>${i + 1}</td><td>${aIp(a)}/${pre2}</td><td>${aIp(a + 1)} – ${aIp(a + tam - 2)}</td><td>${aIp(a + tam - 1)}</td></tr>`; }).join("")}
+              </table></div>${cant > ver ? `<p class="hx-nota">Se muestran las primeras ${ver} de ${cant}.</p>` : ""}`;
+          }
+        }
+        res.innerHTML = `
+          <div class="hx-bits"><div><span class="hx-bl">IP</span><code>${bits(x.ip, x.pre)}</code></div><div><span class="hx-bl">Máscara</span><code>${bits(mk, x.pre)}</code></div>
+          <div class="hx-ley"><span class="bn">■</span> red (${x.pre} bits) <span class="bh">■</span> host (${32 - x.pre} bits)</div></div>
+          <table class="hx-tab2 hx-datos">${filas.map(([a, b]) => `<tr><th>${a}</th><td>${b}</td></tr>`).join("")}</table>${sub}`;
+      } else {
+        const b = leer(st.base);
+        const pedidos = st.hosts.split(/[,;\s]+/).map(v => parseInt(v, 10)).filter(v => v > 0);
+        if(!b || !pedidos.length){ res.innerHTML = `<p class="hx-alerta">Poné la red (ej. <code>192.168.1.0/24</code>) y los hosts separados por comas.</p>`; return; }
+        const r0 = red(b.ip, b.pre);
+        let ptr = r0.red, error = "";
+        const filas = pedidos.map((h, i) => ({ h, i })).sort((a, c) => c.h - a.h).map(({ h, i }) => {
+          const tam = 2 ** Math.ceil(Math.log2(h + 2)), pre = 32 - Math.log2(tam);
+          ptr = Math.ceil(ptr / tam) * tam;
+          const fila = { i, h, tam, pre, red: ptr };
+          if(ptr + tam - 1 > r0.bc) error = `No entran todas en /${b.pre}: hacen falta más direcciones.`;
+          ptr += tam;
+          return fila;
+        });
+        const usadas = ptr - r0.red;
+        res.innerHTML = `
+          <p class="hx-nota">Se ordenan de la que más hosts necesita a la que menos; cada una usa el bloque de 2<sup>n</sup> que alcanza (hosts + red + broadcast).</p>
+          <div class="hx-scroll"><table class="hx-tab2"><tr><th>Subred</th><th>Pide</th><th>Bloque</th><th>Red</th><th>Máscara</th><th>Hosts</th><th>Broadcast</th></tr>
+          ${filas.map(f => `<tr><td>${f.i + 1}</td><td>${f.h}</td><td>${f.tam} (${f.tam - 2} útiles)</td><td>${aIp(f.red)}/${f.pre}</td><td>${aIp(mascara(f.pre))}</td><td>${aIp(f.red + 1)} – ${aIp(f.red + f.tam - 2)}</td><td>${aIp(f.red + f.tam - 1)}</td></tr>`).join("")}
+          </table></div>
+          ${error ? `<p class="hx-alerta">${error}</p>` : `<p class="hx-nota">Usa ${usadas} de ${r0.tam} direcciones de ${aIp(r0.red)}/${b.pre}. Quedan libres desde ${aIp(r0.red + usadas)}.</p>`}`;
+      }
+    }
+    el.addEventListener("input", e => { const k = e.target.dataset.k; if(k){ st[k] = e.target.value; calcular(); } });
+    el.addEventListener("click", e => { const b = e.target.closest("[data-modo]"); if(b){ st.modo = b.dataset.modo; pintar(); } });
+    pintar();
+  }
+};
+
+/* 4 · Streams paso a paso (Backend · 1º Parcial) */
+HERRAMIENTAS.streams = {
+  titulo: "Streams paso a paso",
+  corto: "filter, map, sorted… y qué queda en cada paso",
+  desc: "Armá un pipeline de Stream con las operaciones de la materia y mirá qué valores quedan después de cada una, el código Java equivalente y el resultado de la operación terminal.",
+  montar(el){
+    const st = { lista: "3, 8, 5, 12, 8, 1", ops: [{ op: "filter", f: "gt", n: 4 }, { op: "map", f: "mul", n: 2 }, { op: "sorted", f: "asc" }], term: "toList" };
+    const OPS = {
+      filter: { fs: { gt: ["x > n", (x, n) => x > n], lt: ["x < n", (x, n) => x < n], ge: ["x >= n", (x, n) => x >= n], par: ["x % 2 == 0", x => x % 2 === 0], impar: ["x % 2 != 0", x => x % 2 !== 0], eq: ["x == n", (x, n) => x === n] } },
+      map: { fs: { mul: ["x * n", (x, n) => x * n], add: ["x + n", (x, n) => x + n], sub: ["x - n", (x, n) => x - n], cuad: ["x * x", x => x * x], div: ["x / n", (x, n) => n ? Math.trunc(x / n) : NaN] } },
+      sorted: { fs: { asc: ["natural", null], desc: ["Comparator.reverseOrder()", null] } },
+      distinct: { fs: { _: ["", null] } }, limit: { fs: { _: ["n", null] } }, skip: { fs: { _: ["n", null] } }
+    };
+    const TERM = { toList: "toList()", count: "count()", sum: "mapToInt(Integer::intValue).sum()", max: "max(Integer::compare)", min: "min(Integer::compare)", average: "mapToInt(Integer::intValue).average()", findFirst: "findFirst()" };
+    const usaN = o => o.op === "limit" || o.op === "skip" || /^(gt|lt|ge|eq|mul|add|sub|div)$/.test(o.f);
+    const java = o => {
+      const n = o.n;
+      if(o.op === "filter" || o.op === "map") return `.${o.op}(x -> ${OPS[o.op].fs[o.f][0].replace("n", n)})`;
+      if(o.op === "sorted") return o.f === "desc" ? ".sorted(Comparator.reverseOrder())" : ".sorted()";
+      if(o.op === "distinct") return ".distinct()";
+      return `.${o.op}(${n})`;
+    };
+    el.innerHTML = `<div class="hx-grid"><div class="hx-panel" id="stCtl"></div><div class="hx-panel" id="stOut"></div></div>`;
+    const ctl = el.querySelector("#stCtl"), out = el.querySelector("#stOut");
+    function controles(){
+      ctl.innerHTML = `
+        <div class="hx-lbl">La lista (números separados por coma)</div>
+        <input class="hx-in ancho" data-k="lista" value="${esc(st.lista)}" inputmode="numeric">
+        <div class="hx-lbl">Operaciones intermedias</div>
+        ${st.ops.map((o, i) => `
+          <div class="hx-paso">
+            <span class="hx-n">${i + 1}</span>
+            <select class="hx-in" data-op="${i}">${Object.keys(OPS).map(k => `<option${o.op === k ? " selected" : ""}>${k}</option>`).join("")}</select>
+            ${Object.keys(OPS[o.op].fs).length > 1 ? `<select class="hx-in" data-f="${i}">${Object.entries(OPS[o.op].fs).map(([k, [t]]) => `<option value="${k}"${o.f === k ? " selected" : ""}>${t}</option>`).join("")}</select>` : ""}
+            ${usaN(o) ? `<input class="hx-in chico" data-n="${i}" value="${o.n}" inputmode="numeric" title="n">` : ""}
+            <button class="hx-x" data-quitar="${i}" title="Quitar">✕</button>
+          </div>`).join("")}
+        <button class="hx-btn" data-mas>+ Operación</button>
+        <div class="hx-lbl">Operación terminal</div>
+        <select class="hx-in" data-term>${Object.entries(TERM).map(([k, t]) => `<option value="${k}"${st.term === k ? " selected" : ""}>${t}</option>`).join("")}</select>
+        <p class="hx-nota">Las intermedias devuelven otro Stream y no hacen nada hasta que aparece la terminal (son <i>lazy</i>).</p>`;
+    }
+    function calcular(){
+      let v = st.lista.split(/[,;\s]+/).filter(Boolean).map(Number).filter(x => !isNaN(x));
+      const etapas = [{ t: `List.of(${v.join(", ")}).stream()`, v: [...v] }];
+      st.ops.forEach(o => {
+        const n = Number(o.n) || 0;
+        if(o.op === "filter") v = v.filter(x => OPS.filter.fs[o.f][1](x, n));
+        if(o.op === "map") v = v.map(x => OPS.map.fs[o.f][1](x, n));
+        if(o.op === "sorted") v = [...v].sort((a, b) => o.f === "desc" ? b - a : a - b);
+        if(o.op === "distinct") v = [...new Set(v)];
+        if(o.op === "limit") v = v.slice(0, Math.max(0, n));
+        if(o.op === "skip") v = v.slice(Math.max(0, n));
+        etapas.push({ t: java(o), v: [...v] });
+      });
+      const r = { toList: `[${v.join(", ")}]`, count: `${v.length}`, sum: `${v.reduce((a, b) => a + b, 0)}`,
+        max: v.length ? `Optional[${Math.max(...v)}]` : "Optional.empty", min: v.length ? `Optional[${Math.min(...v)}]` : "Optional.empty",
+        average: v.length ? `OptionalDouble[${(v.reduce((a, b) => a + b, 0) / v.length).toString()}]` : "OptionalDouble.empty",
+        findFirst: v.length ? `Optional[${v[0]}]` : "Optional.empty" }[st.term];
+      const tipo = { toList: "List<Integer>", count: "long", sum: "int", max: "Optional<Integer>", min: "Optional<Integer>", average: "OptionalDouble", findFirst: "Optional<Integer>" }[st.term];
+      out.innerHTML = `
+        <div class="hx-lbl">Qué queda en cada paso</div>
+        ${etapas.map((e, i) => `<div class="hx-etapa"><code>${esc(e.t)}</code><div>${e.v.length ? e.v.map(x => `<span class="hx-chip c${i % 4}">${esc(String(x))}</span>`).join("") : `<span class="hx-vacio">vacío</span>`}</div></div>`).join("")}
+        <div class="hx-etapa"><code>.${esc(TERM[st.term])}</code><div class="hx-res">${caja(esc(r))}</div></div>
+        <div class="hx-lbl">En Java</div>
+        <pre class="hx-code">${esc(`${tipo} resultado = List.of(${etapas[0].v.join(", ")}).stream()\n${etapas.slice(1).map(e => "        " + e.t).join("\n")}${etapas.length > 1 ? "\n" : ""}        .${TERM[st.term]};`)}</pre>`;
+    }
+    el.addEventListener("input", e => {
+      const ds = e.target.dataset;
+      if("k" in ds) st.lista = e.target.value;
+      else if("n" in ds) st.ops[+ds.n].n = e.target.value;
+      else return;
+      calcular();
+    });
+    el.addEventListener("change", e => {
+      const ds = e.target.dataset;
+      if("op" in ds){ const o = st.ops[+ds.op]; o.op = e.target.value; o.f = Object.keys(OPS[o.op].fs)[0]; o.n = o.n ?? 2; controles(); }
+      else if("f" in ds){ st.ops[+ds.f].f = e.target.value; controles(); }
+      else if("term" in ds) st.term = e.target.value;
+      else return;
+      calcular();
+    });
+    el.addEventListener("click", e => {
+      const b = e.target.closest("[data-mas],[data-quitar]");
+      if(!b) return;
+      if("mas" in b.dataset) st.ops.push({ op: "distinct", f: "_", n: 2 }); else st.ops.splice(+b.dataset.quitar, 1);
+      controles(); calcular();
+    });
+    controles(); calcular();
+  }
+};
+
+/* 5 · Clasificador del CSV del preparcial Cloud Center (Backend · 1º Parcial) */
+HERRAMIENTAS.csv = {
+  titulo: "Clasificador del CSV (Cloud Center)",
+  corto: "Pegá filas y mirá cuáles se procesan, descartan o son inválidas",
+  desc: "Aplica las mismas reglas que el código del preparcial (y las del parcial, con la columna de ingresos según la solución propuesta). Sirve para las preguntas de “¿cuántas leídas, procesadas, descartadas e inválidas?”: cada fila dice qué le pasa y por qué.",
+  montar(el){
+    const EJ = {
+      pre: "id,region,porcentajeCPU,usoMemoria,estado\nS2,S1,101,9,ALERTA\ns7,U2,54,40,ALERTA\nS7,U2,20,19,ESTABLE\nsrv-0012,US-EAST-1,97,16310,CRITICO\nsrv-0004,US-EAST-1,56,4,MANTENIMIENTO\nsrv-0044,US-WEST-2,67,13,ALERTA",
+      par: "id,region,porcentajeCPU,usoMemoria,estado,ingresos\nsrv-0054,SA-EAST-1,59,59,ALERTA,  1110\nsrv-0027,SA-EAST-1,98,17934,CRITICO,   1679\nsrv-0123,US-WEST-2,56,47,ALERTA,   1253\nsrv-0062,US-WEST-2,7,3,ESTABLE,\nsrv-0021,US-WEST-2,50,18,ALERTA,",
+      p2: "id,region,porcentajeCPU,usoMemoria,estado,ingresos\nS1,R1,56,4500,ESTABLE,\nS2,R1,56,4500,CRITICO,1200\nS2,R1,56,34500,CRITICO,1200"
+    };
+    const st = { txt: EJ.pre, reglas: "pre" };
+    const CAB = "id,region,porcentajeCPU,usoMemoria,estado";
+    const entero = t => /^[+-]?\d+$/.test(t) && Math.abs(+t) <= 2147483647 ? +t : null;
+    function procesar(){
+      const lineas = st.txt.split(/\r?\n/);
+      if(lineas.length && lineas[lineas.length - 1] === "") lineas.pop();
+      const cab = lineas.shift();
+      const cols = cab === CAB ? 5 : (st.reglas === "par" && cab === CAB + ",ingresos") ? 6 : 0;
+      if(!cols) return { error: `La primera línea no es el encabezado esperado (${st.reglas === "par" ? `<code>${CAB}</code> o <code>${CAB},ingresos</code>` : `<code>${CAB}</code>`}): se corta la carga con <code>IllegalArgumentException("encabezado incorrecto")</code>.` };
+      const filas = [], servs = [];
+      lineas.forEach((l, i) => {
+        const nro = i + 2, tk = l.split(",").map(t => t.trim());
+        const f = { nro, id: tk[0] || "", estado: "" };
+        const inval = m => { f.estado = "invalida"; f.motivo = m; };
+        if(tk.length !== cols) inval(`tiene ${tk.length} campo${tk.length === 1 ? "" : "s"} y el encabezado pide ${cols}`);
+        else if(tk[4] === "ESTABLE"){ f.estado = "descartada"; f.motivo = "ESTABLE: se descarta sin validar el resto"; }
+        else if(!["ALERTA", "CRITICO"].includes(tk[4])) inval(`estado desconocido: ${tk[4]}`);
+        else {
+          const cpu = entero(tk[2]), mem = entero(tk[3]);
+          if(cpu === null) inval(`CPU "${tk[2]}" no es un entero (NumberFormatException)`);
+          else if(mem === null) inval(`memoria "${tk[3]}" no es un entero (NumberFormatException)`);
+          else if(cpu < 1 || cpu > 100) inval(`uso del cpu fuera de rango (${cpu}; va de 1 a 100)`);
+          else if(mem < 1 || mem > 24576) inval(`uso de memoria fuera de rango (${mem}; va de 1 a 24576)`);
+          else {
+            const bruto = cpu * 0.7 + mem * 0.3, ind = Math.trunc(bruto);
+            const cuenta = `índice = (int)(${cpu}·0,7 + ${mem}·0,3) = (int)${fmt(bruto, 2)} = ${ind}`;
+            const ing = cols === 6 ? entero(tk[5]) : 1000;
+            if(ing === null) inval(`ingresos "${tk[5]}" no es un entero (NumberFormatException)`);
+            else if(!tk[0] || !tk[1]) inval("el id y la región son obligatorios");
+            else if(ind < 1 || ind > 70) inval(`${cuenta}: fuera de 1 a 70`);
+            else if(cols === 6 && (ing < 1000 || ing >= 1900)) inval(`ingresos ${ing} fuera de rango (1000 a 1899)`);
+            else {
+              const costo = Math.trunc(ing * ind / 100);
+              f.estado = "procesada"; f.motivo = `${cuenta} → costo = ${ing}·${ind}/100 = ${costo}`;
+              servs.push({ region: tk[1], ind, costo });
+            }
+          }
+        }
+        filas.push(f);
+      });
+      return { filas, servs };
+    }
+    el.innerHTML = `
+      <div class="hx-panel">
+        <div class="hx-fila"><span class="hx-lbl">Ejemplos:</span><button class="hx-btn" data-ej="pre">Preparcial</button><button class="hx-btn" data-ej="par">Parcial (con ingresos)</button><button class="hx-btn" data-ej="p2">Pregunta 2 del parcial</button></div>
+        <textarea class="hx-in hx-area" data-k="txt" spellcheck="false" rows="8"></textarea>
+        <label class="hx-radio"><input type="radio" name="csvR" value="pre" checked> Reglas del preparcial (5 columnas)</label>
+        <label class="hx-radio"><input type="radio" name="csvR" value="par"> Reglas del parcial (5 o 6 columnas, con ingresos)</label>
+      </div>
+      <div class="hx-panel" id="csvOut"></div>`;
+    const area = el.querySelector("textarea"), out = el.querySelector("#csvOut");
+    area.value = st.txt;
+    function calcular(){
+      const r = procesar();
+      if(r.error){ out.innerHTML = `<p class="hx-alerta">${r.error}</p>`; return; }
+      const c = k => r.filas.filter(f => f.estado === k).length;
+      const reg = {};
+      r.servs.forEach(s => { reg[s.region] = (reg[s.region] || 0) + s.costo; });
+      const total = r.servs.reduce((a, s) => a + s.costo, 0);
+      const ETQ = { procesada: "Procesada", descartada: "Descartada", invalida: "Inválida" };
+      out.innerHTML = `
+        <div class="hx-scroll"><table class="hx-tab2"><tr><th>Línea</th><th>id</th><th>Resultado</th><th>Por qué</th></tr>
+        ${r.filas.map(f => `<tr><td>${f.nro}</td><td><code>${esc(f.id)}</code></td><td><span class="hx-est ${f.estado}">${ETQ[f.estado]}</span></td><td>${esc(f.motivo)}</td></tr>`).join("")}
+        </table></div>
+        <div class="hx-lbl">resultado.informe()</div>
+        <pre class="hx-code">Leídas: ${r.filas.length} | procesadas: ${c("procesada")} | descartadas: ${c("descartada")} | inválidas: ${c("invalida")} | objetos: ${c("procesada")}</pre>
+        <div class="hx-lbl">colector.panorama()</div>
+        <pre class="hx-code">Total: ${total} | Por Region: {${Object.keys(reg).sort().map(k => `${esc(k)}=${reg[k]}`).join(", ")}} | indice menores a 50: ${r.servs.filter(s => s.ind < 50).length}</pre>`;
+    }
+    el.addEventListener("input", e => { if(e.target === area){ st.txt = area.value; calcular(); } });
+    el.addEventListener("change", e => { if(e.target.name === "csvR"){ st.reglas = e.target.value; calcular(); } });
+    el.addEventListener("click", e => {
+      const b = e.target.closest("[data-ej]");
+      if(!b) return;
+      st.txt = area.value = EJ[b.dataset.ej];
+      st.reglas = b.dataset.ej === "pre" ? "pre" : "par";
+      el.querySelector(`input[name="csvR"][value="${st.reglas}"]`).checked = true;
+      calcular();
+    });
+    calcular();
+  }
+};
+
+function viewHerramienta(m, p, id){
+  const h = HERRAMIENTAS[id];
+  return `
+    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, esc(h.titulo))}
+    <h1>${esc(h.titulo)}</h1>
+    <p class="lead">${h.desc}</p>
+    <div id="herr" class="herr"></div>
+    ${(p.herramientas || []).length > 1 || p.quiz ? `<div class="herr-otras">${practicaBox(m, p)}</div>` : ""}`;
+}
+
 /* ---------- Navegación ---------- */
 function render(arriba = true){
   ruta = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
@@ -2567,7 +3666,17 @@ function render(arriba = true){
   const sec = (cont && cont.secciones && cont.secciones.find(x => x.id === b)) || (p && p.secciones && !p.secciones.length ? p : null);
   let titulo = CARRERA.titulo;
 
-  if(p && seccionesDe(p).includes(c)){
+  if(p && c === "quiz" && p.quiz){
+    ruta = `${a}/${b}/quiz`;
+    app.innerHTML = viewQuiz(m, p);
+    montarQuiz(m, p);
+    titulo = `Quiz · ${p.titulo} · ${m.nombre}`;
+  } else if(p && c === "h" && HERRAMIENTAS[d] && (p.herramientas || []).includes(d)){
+    ruta = `${a}/${b}/h/${d}`;
+    app.innerHTML = viewHerramienta(m, p, d);
+    HERRAMIENTAS[d].montar($("#herr"));
+    titulo = `${HERRAMIENTAS[d].titulo} · ${p.titulo} · ${m.nombre}`;
+  } else if(p && seccionesDe(p).includes(c)){
     d = d === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}/${d}`;
     app.innerHTML = viewSeccion(m, p, c, d);
@@ -2601,12 +3710,36 @@ function render(arriba = true){
   document.title = titulo;
   $("#topName").textContent = m ? m.nombre : CARRERA.nombre;
   $("#sidebar").classList.remove("open");
+  pintarAbajo(m);
+  requestAnimationFrame(dibujarMapa);
   if(arriba) window.scrollTo(0, 0);
+}
+
+/* Barra de abajo (celular): Atrás sube un nivel (de la sección al parcial, del parcial a la materia…) */
+function rutaPadre(r){
+  const p = r.split("/").filter(Boolean);
+  if(/^(material|videos)$/.test(p[p.length - 1]) && p.length > 2) p.pop();
+  p.pop();
+  return p.join("/");
+}
+function pintarAbajo(m){
+  const mat = $("#abajoMat");
+  mat.disabled = !m;
+  if(m) mat.dataset.go = "m" + m.n; else delete mat.dataset.go;
+  $("#abajoPlan").classList.toggle("on", ruta === "");
+  mat.classList.toggle("on", !!m && ruta === "m" + m.n);
+  $("#abajo [data-up]").disabled = ruta === "";
 }
 
 /* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) o data-scroll */
 document.addEventListener("click", e => {
   if(e.target.closest("[data-config]")){ abrirConfig(); return; }
+  const pdf = e.target.closest("a.file[data-pdf]");
+  if(pdf && e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey && puedeVisor()){
+    e.preventDefault();
+    abrirVisor(pdf);
+    return;
+  }
   const z = e.target.closest("[data-zip]");
   if(z){ descargarZip(z); return; }
   const k = e.target.closest("[data-chk]");
@@ -2616,6 +3749,9 @@ document.addEventListener("click", e => {
     toggleAprobada(k.dataset.chk);
     return;
   }
+  if(e.target.closest("#quiz") && clicQuiz(e)) return;
+  const un = e.target.closest("[data-unidad]");
+  if(un){ irAUnidad(+un.dataset.unidad); return; }
   const nv = e.target.closest("[data-nivel]");
   if(nv){ toggleNivel(+nv.dataset.nivel); return; }
   const s = e.target.closest("[data-scroll]");
@@ -2638,11 +3774,24 @@ document.addEventListener("click", e => {
   if(go === ruta) render(); else location.hash = "#/" + go;
 });
 window.addEventListener("hashchange", render);
+let esperaMapa;
+window.addEventListener("resize", () => { clearTimeout(esperaMapa); esperaMapa = setTimeout(dibujarMapa, 120); });
+document.addEventListener("keydown", e => { const n = e.target.closest && e.target.closest("[data-unidad]"); if(n && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); irAUnidad(+n.dataset.unidad); } });
 $("#menuBtn").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
+$("#abajoMenu").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
+$("#abajo [data-up]").addEventListener("click", () => { location.hash = "#/" + rutaPadre(ruta); });
 
 $("#guardarToken").addEventListener("click", guardarToken);
 $("#borrarToken").addEventListener("click", borrarToken);
 $("#cerrarConfig").addEventListener("click", () => $("#config").close());
+$("#visorAnt").addEventListener("click", () => moverVisor(-1));
+$("#visorSig").addEventListener("click", () => moverVisor(1));
+$("#visorCerrar").addEventListener("click", () => $("#visor").close());
+$("#visor").addEventListener("close", () => { $("#visorFrame").src = "about:blank"; });
+$("#visor").addEventListener("keydown", e => {
+  if(e.key === "ArrowLeft"){ e.preventDefault(); moverVisor(-1); }
+  if(e.key === "ArrowRight"){ e.preventDefault(); moverVisor(1); }
+});
 
 /* ---------- Contraseña de entrada ----------
    Es solo para que no entre cualquiera por el link: el repo es público.

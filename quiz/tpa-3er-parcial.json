@@ -1,0 +1,1365 @@
+{
+ "titulo": "TPA · 3º Parcial · IoT",
+ "descripcion": "Las preguntas del parcial y el recuperatorio de IoT 2025, más preguntas de práctica del apunte 2026.",
+ "secciones": [
+  {
+   "titulo": "La ESP32",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre la arquitectura de la ESP32 son verdaderas?",
+     "ex": "16 canales PWM, coprocesador <b>ULP</b> (ultra bajo consumo) y 2 ADC + 2 DAC. Es de <b>doble</b> núcleo. <b>Ojo</b> con la última: el chip no tiene USB nativo (la placa usa un conversor USB–UART), pero <b>la clave del campus la da como incorrecta</b>: no la marques.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Puede manejar hasta 16 canales PWM",
+       true
+      ],
+      [
+       "Posee coprocesadores para ciertas tareas",
+       true
+      ],
+      [
+       "Solo soporta un núcleo de ejecución",
+       false
+      ],
+      [
+       "Tiene soporte para múltiples ADC y DAC",
+       true
+      ],
+      [
+       "No tiene interfaz USB directa",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué características tiene el procesador Xtensa LX6 en la ESP32?",
+     "ex": "Tensilica Xtensa LX6, <b>doble núcleo de 32 bits hasta 240 MHz</b>; los núcleos pueden trabajar por separado o juntos (paralelo). El chip es de <b>Espressif</b>. 16 MHz es el Arduino UNO.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Doble núcleo",
+       true
+      ],
+      [
+       "Fabricado por Texas Instruments",
+       false
+      ],
+      [
+       "Corre a 16 MHz",
+       false
+      ],
+      [
+       "Arquitectura de 32 bits",
+       true
+      ],
+      [
+       "Capacidad para procesamiento paralelo",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué funciones tiene el botón BOOT en la ESP32?",
+     "ex": "BOOT pone la placa en <b>modo programación</b> para grabarle el firmware. El que <b>reinicia</b> es el botón <b>EN (ENABLE)</b>. El bootloader ya está en la ROM: no se “carga” con el botón.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "No tiene ninguna función práctica",
+       false
+      ],
+      [
+       "Cargar el bootloader",
+       false
+      ],
+      [
+       "Activar el modo de carga de firmware",
+       true
+      ],
+      [
+       "Borrar la memoria EEPROM",
+       false
+      ],
+      [
+       "Reiniciar la placa",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué sucede si aplicamos una tensión mayor a la admitida en un pin de entrada?",
+     "ex": "La ESP32 trabaja a <b>3,3 V</b>. Meterle 5 V a un pin sin divisor de tensión o conversor de nivel puede dañarla para siempre.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "El pin se desconecta",
+       false
+      ],
+      [
+       "El valor leído es más preciso",
+       false
+      ],
+      [
+       "Puede dañar el microcontrolador",
+       true
+      ],
+      [
+       "Se activa el modo seguro",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones describen el uso del LED integrado de la ESP32?",
+     "ex": "Está en el <b>GPIO 2</b> (<code>LED_BUILTIN</code>), se prende con <code>digitalWrite(2, HIGH)</code> sin librerías y se usa para depurar.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Se borra al desconectar la alimentación",
+       false
+      ],
+      [
+       "Es útil para pruebas rápidas",
+       true
+      ],
+      [
+       "Requiere librería externa",
+       false
+      ],
+      [
+       "Se puede controlar con digitalWrite()",
+       true
+      ],
+      [
+       "Solo enciende con el bootloader",
+       false
+      ],
+      [
+       "Está conectado por I2C",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué es la ESP32?",
+     "ex": "Integra en un solo chip CPU, memoria, WiFi, Bluetooth y periféricos. Es un sistema embebido (función dedicada), no una PC.",
+     "op": [
+      [
+       "Un SoC (System on Chip) de Espressif Systems",
+       true
+      ],
+      [
+       "Un microcontrolador de bajo costo y bajo consumo",
+       true
+      ],
+      [
+       "Una placa que necesita un módulo externo para tener WiFi",
+       false
+      ],
+      [
+       "Un microcontrolador con WiFi y Bluetooth integrados",
+       true
+      ],
+      [
+       "Una computadora de propósito general con sistema operativo de escritorio",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es la tensión de trabajo de la ESP32?",
+     "ex": "3,3 V (el Arduino UNO trabaja a 5 V). Por USB entran 5 V y el regulador de la placa los baja a 3,3 V.",
+     "op": [
+      [
+       "5 V",
+       false
+      ],
+      [
+       "3,3 V",
+       true
+      ],
+      [
+       "12 V",
+       false
+      ],
+      [
+       "1,8 V",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué hace el botón EN (ENABLE) de la placa?",
+     "ex": "EN = reset. El modo de carga de firmware es el botón BOOT.",
+     "op": [
+      [
+       "Reinicia la placa (reset)",
+       true
+      ],
+      [
+       "Activa el modo de carga de firmware",
+       false
+      ],
+      [
+       "Enciende el WiFi",
+       false
+      ],
+      [
+       "Borra la Flash",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Relacioná cada memoria de la ESP32 con lo que guarda. ¿Qué afirmaciones son correctas?",
+     "ex": "Flash hasta 4 MB (no volátil), SRAM 520 KB (volátil), ROM 448 KB (bootloader) y EEPROM para configuraciones que <b>sobreviven</b> a reinicios y apagones.",
+     "op": [
+      [
+       "La Flash guarda el programa y no se borra al apagar",
+       true
+      ],
+      [
+       "La SRAM guarda los datos mientras el programa corre y es volátil",
+       true
+      ],
+      [
+       "La ROM contiene el bootloader",
+       true
+      ],
+      [
+       "La EEPROM se borra en cada reinicio",
+       false
+      ],
+      [
+       "La SRAM es de hasta 4 MB",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué permite el coprocesador ULP (Ultra Low Power) de la ESP32?",
+     "ex": "Es un microcontrolador auxiliar que corre código simple mientras los núcleos duermen (deep sleep).",
+     "op": [
+      [
+       "Leer sensores con un consumo muy bajo",
+       true
+      ],
+      [
+       "Despertar al sistema principal desde el modo de bajo consumo",
+       true
+      ],
+      [
+       "Duplicar la velocidad del WiFi",
+       false
+      ],
+      [
+       "Reemplazar al conversor USB",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Por qué la placa ESP32 DevKit necesita instalar un driver (CP210x) en la PC?",
+     "ex": "El conversor USB–UART es el que la PC tiene que reconocer para poder grabar el programa y usar el monitor serie.",
+     "op": [
+      [
+       "Porque el chip ESP32 no tiene USB nativo y la placa usa un chip conversor USB–UART",
+       true
+      ],
+      [
+       "Porque el WiFi necesita un driver en la PC",
+       false
+      ],
+      [
+       "Porque Octave lo requiere",
+       false
+      ],
+      [
+       "Porque la ESP32 trabaja a 5 V",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Entradas, salidas, PWM, ADC y DAC",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "¿Qué se puede conectar a un pin de entrada analógica en la ESP32?",
+     "ex": "Entrada analógica = mide una <b>tensión que varía</b> entre 0 y 3,3 V. Motor y LED son <b>salidas</b>; el pulsador es una <b>entrada digital</b> (2 estados).",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Sensor de temperatura con salida variable",
+       true
+      ],
+      [
+       "Potenciómetro",
+       true
+      ],
+      [
+       "Motor paso a paso",
+       false
+      ],
+      [
+       "Leds",
+       false
+      ],
+      [
+       "Pulsador",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre sensores analógicos son correctas?",
+     "ex": "Dan una tensión continua proporcional a lo que miden; la ESP32 la convierte con su ADC usando <code>analogRead()</code>.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "No son compatibles con ESP32",
+       false
+      ],
+      [
+       "Usan solo pines digitales",
+       false
+      ],
+      [
+       "Varían su salida en voltaje",
+       true
+      ],
+      [
+       "Requieren lectura con analogRead()",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuál es el uso de la función analogRead(pin) en la ESP32?",
+     "ex": "El ADC es de <b>12 bits</b> → 2<sup>12</sup> = 4096 valores (0 a 4095). El duty del PWM se cambia con <code>analogWrite()</code>.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Cambiar el duty cycle del PWM",
+       false
+      ],
+      [
+       "Calcular el voltaje de salida",
+       false
+      ],
+      [
+       "Retornar un valor entre 0 y 4095",
+       true
+      ],
+      [
+       "Leer señales de entrada digital",
+       false
+      ],
+      [
+       "Leer un valor de tensión en un pin analógico",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué ventajas tiene usar sensores digitales frente a analógicos en ESP32?",
+     "ex": "La salida ya viene digital (unos y ceros), así que no pasa por el ADC y es más robusta frente al ruido. Lo de corriente y resolución no se puede afirmar en general.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Se leen con digitalRead()",
+       true
+      ],
+      [
+       "No requieren conversión ADC",
+       true
+      ],
+      [
+       "Usan menos corriente",
+       false
+      ],
+      [
+       "Tienen mayor resolución",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre la señal digital “LOW” son correctas?",
+     "ex": "LOW = 0 lógico ≈ 0 V. HIGH = 1 lógico ≈ 3,3 V.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Enciende automáticamente el pin",
+       false
+      ],
+      [
+       "Es una señal de alta frecuencia",
+       false
+      ],
+      [
+       "Equivale a voltaje cercano a 0V",
+       true
+      ],
+      [
+       "Apaga una salida digital",
+       true
+      ],
+      [
+       "Representa un 1 lógico",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué componentes se pueden controlar mediante salidas digitales de la ESP32?",
+     "ex": "Así lo da el apunte: a las salidas digitales se conectan <b>LEDs, pantallas LCD, transistores y relés</b>. El potenciómetro es una entrada analógica; un motor DC no se conecta directo (necesita transistor o driver).",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Pantallas LCD",
+       true
+      ],
+      [
+       "Leds",
+       true
+      ],
+      [
+       "Potenciómetros",
+       false
+      ],
+      [
+       "Motores DC",
+       false
+      ],
+      [
+       "Relés",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué pines pueden usarse para salidas PWM en la ESP32 DevKit V1?",
+     "ex": "No todos: los <b>GPIO34 a GPIO39 son solo de entrada</b>, así que no pueden generar PWM.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Pines I2C",
+       false
+      ],
+      [
+       "GPIOs con soporte PWM",
+       true
+      ],
+      [
+       "Todos los GPIOs",
+       false
+      ],
+      [
+       "GPIO34 a GPIO39",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué componentes podemos utilizar con salidas PWM?",
+     "ex": "PWM regula el <b>brillo</b> de un LED, la <b>posición</b> de un servo y el <b>tono</b> de un buzzer. Un relé es todo o nada (salida digital) y un sensor es una entrada.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Buzzer",
+       true
+      ],
+      [
+       "LED",
+       true
+      ],
+      [
+       "Relé mecánico",
+       false
+      ],
+      [
+       "Sensor de temperatura",
+       false
+      ],
+      [
+       "Servo",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones son correctas sobre el canal PWM en ESP32?",
+     "ex": "La ESP32 tiene <b>16 canales PWM</b> y cada uno tiene su propia frecuencia y resolución.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Cada canal funciona solo en modo entrada",
+       false
+      ],
+      [
+       "PWM solo funciona si se define en el setup()",
+       false
+      ],
+      [
+       "Hay solo un canal disponible",
+       false
+      ],
+      [
+       "Se pueden configurar frecuencia y resolución por canal",
+       true
+      ],
+      [
+       "Se pueden usar hasta 16 canales PWM",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuál es la finalidad del conversor DAC (digital a analógico) presente en algunos pines de ESP32?",
+     "ex": "El DAC (GPIO25 y GPIO26, 8 bits) genera una tensión <b>continua</b> real; el PWM, en cambio, es una onda cuadrada.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Controlar dispositivos analógicos",
+       true
+      ],
+      [
+       "Ampliar la memoria",
+       false
+      ],
+      [
+       "Medir corriente",
+       false
+      ],
+      [
+       "Generar salidas analógicas continuas",
+       true
+      ],
+      [
+       "Leer señales digitales",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "num",
+     "en": "¿Cuántos valores distintos puede devolver el ADC de 12 bits de la ESP32?",
+     "num": "4096 (de 0 a 4095)",
+     "ex": "N bits → 2<sup>N</sup> valores: 2<sup>12</sup> = 4096. La resolución en tensión es 3,3 V / 4096 ≈ 0,8 mV.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿En qué pines está el DAC de la ESP32 y qué resolución tiene?",
+     "ex": "Son las únicas dos salidas analógicas “puras” de la placa.",
+     "op": [
+      [
+       "GPIO25 y GPIO26",
+       true
+      ],
+      [
+       "8 bits (valores de 0 a 255)",
+       true
+      ],
+      [
+       "12 bits (valores de 0 a 4095)",
+       false
+      ],
+      [
+       "GPIO34 a GPIO39",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué es el ciclo de trabajo (duty cycle) de una señal PWM?",
+     "ex": "Duty = t<sub>alto</sub> / T. La frecuencia es fija; lo que cambia es el ancho del pulso. Ej.: con 5 V, un duty de 20 % da 1 V promedio.",
+     "op": [
+      [
+       "El porcentaje del período en que la señal está en HIGH",
+       true
+      ],
+      [
+       "La frecuencia de la señal",
+       false
+      ],
+      [
+       "El valor máximo de tensión",
+       false
+      ],
+      [
+       "Con 0 % la salida queda siempre en LOW y con 100 % siempre en HIGH",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Una entrada digital conectada a un pulsador sin apretar queda “flotante”. ¿Cómo se evita?",
+     "ex": "La resistencia fija un estado por defecto (pull-up → HIGH, pull-down → LOW). La ESP32 las trae internas: <code>INPUT_PULLUP</code> / <code>INPUT_PULLDOWN</code>.",
+     "op": [
+      [
+       "Con una resistencia de pull-up o pull-down",
+       true
+      ],
+      [
+       "Configurando el pin con INPUT_PULLUP",
+       true
+      ],
+      [
+       "Usando analogWrite()",
+       false
+      ],
+      [
+       "Conectando el pulsador al DAC",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre los pines GPIO34 a GPIO39 son correctas?",
+     "ex": "Por eso en los ejemplos del apunte el ADC se lee en el GPIO 34 (“solo entrada en ESP32”).",
+     "op": [
+      [
+       "Son solo de entrada",
+       true
+      ],
+      [
+       "Sirven como entrada analógica",
+       true
+      ],
+      [
+       "Sirven para PWM",
+       false
+      ],
+      [
+       "Se pueden usar como salida digital",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué hay que hacer para encender un motor DC desde la ESP32?",
+     "ex": "Un GPIO entrega muy poca corriente; con una carga grande se puede quemar. La señal de la ESP32 solo comanda al transistor/relé.",
+     "op": [
+      [
+       "Usar un transistor o un relé como interruptor",
+       true
+      ],
+      [
+       "Conectarlo directo a un GPIO",
+       false
+      ],
+      [
+       "Alimentarlo con una fuente aparte, controlada por la ESP32",
+       true
+      ],
+      [
+       "Conectarlo al pin del DAC",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Para qué sirven los pines touch de la ESP32?",
+     "ex": "Son entradas capacitivas (9–10 según la placa). En Wokwi se simulan con pulsadores.",
+     "op": [
+      [
+       "Detectan variaciones de capacitancia por contacto o proximidad",
+       true
+      ],
+      [
+       "Permiten botones táctiles sin partes mecánicas",
+       true
+      ],
+      [
+       "Pueden despertar a la ESP32 del deep sleep",
+       true
+      ],
+      [
+       "Miden temperatura",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Si se usa el WiFi, ¿qué pines analógicos conviene evitar?",
+     "ex": "El módulo WiFi interno usa el ADC2, así que esas lecturas fallan con el WiFi encendido.",
+     "op": [
+      [
+       "Los marcados como ADC2",
+       true
+      ],
+      [
+       "Los marcados como ADC1",
+       false
+      ],
+      [
+       "El GPIO 2",
+       false
+      ],
+      [
+       "Los pines touch",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Programación",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones son correctas sobre la función millis() en ESP32?",
+     "ex": "Se guarda el instante en un <code>unsigned long</code> y se compara: <code>if (millis() - antes >= 1000)</code>. El loop nunca se frena.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Devuelve el tiempo en milisegundos desde que inició el programa",
+       true
+      ],
+      [
+       "Solo funciona si se usa delay()",
+       false
+      ],
+      [
+       "Permite crear temporizadores sin bloquear el loop principal",
+       true
+      ],
+      [
+       "No está disponible en Arduino IDE",
+       false
+      ],
+      [
+       "Resetea cada segundo",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones son ciertas sobre delay() en código de ESP32?",
+     "ex": "Mientras espera no lee sensores ni atiende el WiFi: por eso con WiFi se prefiere <code>millis()</code>.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Es preferido en aplicaciones con Wi-Fi activo",
+       false
+      ],
+      [
+       "Detiene completamente la ejecución del programa por ese tiempo",
+       true
+      ],
+      [
+       "Solo funciona con funciones analógicas",
+       false
+      ],
+      [
+       "Permite ejecutar múltiples tareas en paralelo",
+       false
+      ],
+      [
+       "Su uso excesivo puede afectar el rendimiento",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es el propósito de la función map() en Arduino/ESP32?",
+     "ex": "Ej.: <code>map(lectura, 0, 4095, 0, 255)</code> pasa la lectura del ADC (12 bits) al rango del PWM (8 bits).",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Convertir enteros en texto",
+       false
+      ],
+      [
+       "Cambiar el tipo de variable",
+       false
+      ],
+      [
+       "Escalar un rango de valores a otro",
+       true
+      ],
+      [
+       "Leer valores digitales",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre setup() y loop() son correctas?",
+     "ex": "Es la estructura de todo sketch.",
+     "op": [
+      [
+       "setup() se ejecuta una sola vez al arrancar",
+       true
+      ],
+      [
+       "loop() se repite indefinidamente",
+       true
+      ],
+      [
+       "En setup() se configuran los pines y el puerto serie",
+       true
+      ],
+      [
+       "loop() se ejecuta una sola vez",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué devuelve Serial.available()?",
+     "ex": "Se usa con <code>if (Serial.available())</code> antes de leer con <code>Serial.read()</code>.",
+     "op": [
+      [
+       "La cantidad de bytes que llegaron por el puerto serie y están para leer",
+       true
+      ],
+      [
+       "La velocidad en baudios",
+       false
+      ],
+      [
+       "Si la placa está conectada al WiFi",
+       false
+      ],
+      [
+       "El último carácter recibido",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿En qué tipo de dato conviene guardar el valor que devuelve millis()?",
+     "ex": "Es de 32 bits sin signo (hasta 4.294.967.295 ms ≈ 49 días).",
+     "op": [
+      [
+       "unsigned long",
+       true
+      ],
+      [
+       "byte",
+       false
+      ],
+      [
+       "char",
+       false
+      ],
+      [
+       "bool",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre el lenguaje que se usa para programar la ESP32 son correctas?",
+     "ex": "C (Ritchie, AT&amp;T) y C++ (Stroustrup). Se compila para el micro y se graba el binario.",
+     "op": [
+      [
+       "Es C++ (adaptado para Arduino)",
+       true
+      ],
+      [
+       "Es compilado",
+       true
+      ],
+      [
+       "Es fuertemente tipado",
+       true
+      ],
+      [
+       "Es interpretado",
+       false
+      ],
+      [
+       "La memoria la maneja el programador",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "¿Qué valor tiene LED_BUILTIN en la ESP32?",
+     "num": "2 (GPIO 2)",
+     "ex": "En la mayoría de los Arduino es el 13; en la ESP32 el LED integrado está en el GPIO 2.",
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Protocolos de comunicación",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son protocolos de comunicación soportados por la ESP32?",
+     "ex": "También I2S (audio), CAN (TWAI), WiFi y Bluetooth. PCIe y HDMI son de computadoras.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "UART",
+       true
+      ],
+      [
+       "SPI",
+       true
+      ],
+      [
+       "I2C",
+       true
+      ],
+      [
+       "PCIe",
+       false
+      ],
+      [
+       "HDMI",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones describen adecuadamente el bus SPI?",
+     "ex": "SPI es <b>síncrono</b> (el maestro genera el reloj) y usa <b>4 líneas</b>: SCLK, MOSI, MISO y CS/SS. Es el más rápido: tarjetas SD, pantallas.",
+     "fuente": "Recuperatorio IoT 2025",
+     "op": [
+      [
+       "Puede transmitir a través de Wi-Fi",
+       false
+      ],
+      [
+       "Utiliza líneas CLK, MISO, MOSI y SS",
+       true
+      ],
+      [
+       "Requiere 8 líneas de conexión",
+       false
+      ],
+      [
+       "Es una comunicación síncrona",
+       true
+      ],
+      [
+       "No requiere configuración de reloj",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre el bus I2C son correctas?",
+     "ex": "Ideal para conectar muchos sensores con pocos pines: el display OLED de la placa UTN va por I2C. La línea CS por esclavo es de SPI.",
+     "op": [
+      [
+       "Usa dos líneas: SDA (datos) y SCL (reloj)",
+       true
+      ],
+      [
+       "Es síncrono, maestro–esclavo",
+       true
+      ],
+      [
+       "Cada dispositivo tiene una dirección de 7 bits, así que varios comparten el bus",
+       true
+      ],
+      [
+       "Necesita una línea CS por cada esclavo",
+       false
+      ],
+      [
+       "En Arduino se usa con la librería Wire",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre la UART son correctas?",
+     "ex": "Es punto a punto: para muchos dispositivos se usan buses como I2C o SPI.",
+     "op": [
+      [
+       "Es una comunicación asíncrona",
+       true
+      ],
+      [
+       "Usa las líneas TX y RX, cruzadas entre los dos dispositivos",
+       true
+      ],
+      [
+       "Ambos dispositivos deben usar el mismo baudrate",
+       true
+      ],
+      [
+       "Permite conectar muchos dispositivos en un mismo bus",
+       false
+      ],
+      [
+       "Es la que usa el monitor serie",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuál es la diferencia entre comunicación síncrona y asíncrona?",
+     "ex": "La síncrona es más rápida y continua; la asíncrona simplifica el cableado.",
+     "op": [
+      [
+       "En la síncrona emisor y receptor comparten una señal de reloj",
+       true
+      ],
+      [
+       "En la asíncrona cada dato lleva bits de inicio y de parada",
+       true
+      ],
+      [
+       "SPI e I2C son síncronos; UART es asíncrona",
+       true
+      ],
+      [
+       "La asíncrona siempre es más rápida",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Para conectar una tarjeta SD a la ESP32, ¿qué protocolo se usa normalmente?",
+     "ex": "SPI, por su alta velocidad (librería SD, pin CS).",
+     "op": [
+      [
+       "SPI",
+       true
+      ],
+      [
+       "I2C",
+       false
+      ],
+      [
+       "UART",
+       false
+      ],
+      [
+       "MQTT",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Redes, la nube y seguridad",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "¿Qué datos hacen falta, como mínimo, para conectar la ESP32 a una red WiFi?",
+     "ex": "<code>WiFi.begin(ssid, password)</code> y se espera hasta <code>WiFi.status() == WL_CONNECTED</code>. La librería WiFi.h ya viene instalada.",
+     "op": [
+      [
+       "El SSID (nombre de la red)",
+       true
+      ],
+      [
+       "La contraseña de la red",
+       true
+      ],
+      [
+       "La dirección MAC del router",
+       false
+      ],
+      [
+       "Una cuenta de ThingSpeak",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son modos de funcionamiento WiFi de la ESP32?",
+     "ex": "En AP la ESP32 arma su red y los dispositivos se conectan directo a ella, sin router.",
+     "op": [
+      [
+       "Estación (STA): se conecta al router como un celular",
+       true
+      ],
+      [
+       "Punto de acceso (AP): crea su propia red",
+       true
+      ],
+      [
+       "Mixto (STA + AP)",
+       true
+      ],
+      [
+       "Modo cableado Ethernet obligatorio",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Con un servidor web en la ESP32, al escribir http://192.168.1.125/ledon en el navegador…",
+     "ex": "El servidor se crea en un puerto, por ejemplo <code>WiFiServer server(80);</code>.",
+     "op": [
+      [
+       "El navegador envía una solicitud HTTP GET a la ESP32",
+       true
+      ],
+      [
+       "La ESP32 procesa la URL, prende el LED y responde con una página HTML",
+       true
+      ],
+      [
+       "Hace falta que el navegador esté en la misma red local (o que la placa tenga IP fija)",
+       true
+      ],
+      [
+       "La ESP32 envía la orden por MQTT",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre TCP y UDP son correctas?",
+     "ex": "La confiabilidad de TCP cuesta memoria y CPU, algo importante en un micro con recursos limitados.",
+     "op": [
+      [
+       "TCP garantiza la entrega ordenada y sin errores",
+       true
+      ],
+      [
+       "UDP es sin conexión, más simple y rápido",
+       true
+      ],
+      [
+       "UDP conviene para telemetría donde perder un paquete no es grave",
+       true
+      ],
+      [
+       "TCP consume menos memoria que UDP",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre MQTT son correctas?",
+     "ex": "Es liviano, funciona bien con conexiones inestables y un broker puede manejar miles de dispositivos. En la ESP32 se usa la librería <code>PubSubClient</code>.",
+     "op": [
+      [
+       "Usa el modelo publicador/suscriptor",
+       true
+      ],
+      [
+       "Un broker (como Mosquitto) recibe y reparte los mensajes",
+       true
+      ],
+      [
+       "Los mensajes se organizan en topics",
+       true
+      ],
+      [
+       "Su puerto estándar es 1883 (8883 con TLS)",
+       true
+      ],
+      [
+       "Es un protocolo pesado, pensado para PC",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre Bluetooth en la ESP32 son correctas?",
+     "ex": "El clásico sirve para flujo continuo de datos (audio); BLE para sensores a batería.",
+     "op": [
+      [
+       "Soporta Bluetooth clásico (BR/EDR) y Bluetooth Low Energy (BLE)",
+       true
+      ],
+      [
+       "BLE está pensado para muy bajo consumo",
+       true
+      ],
+      [
+       "En BLE los roles son central y periférico",
+       true
+      ],
+      [
+       "BLE organiza los datos con GATT (servicios y características)",
+       true
+      ],
+      [
+       "La ESP32 necesita un módulo externo para Bluetooth",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre ThingSpeak son correctas?",
+     "ex": "Además permite analizar y graficar los datos con MATLAB. En los prácticos hay que registrarse con el mail institucional.",
+     "op": [
+      [
+       "Es una plataforma IoT de MATLAB",
+       true
+      ],
+      [
+       "Los datos se guardan en canales de hasta 8 campos",
+       true
+      ],
+      [
+       "La ESP32 envía los datos por HTTP con una API key",
+       true
+      ],
+      [
+       "Solo funciona con Bluetooth",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Para controlar la ESP32 desde un bot de Telegram hace falta…",
+     "ex": "Desde el celular se le escriben las órdenes al bot y la ESP32 las procesa.",
+     "op": [
+      [
+       "Crear el bot con @BotFather (/newbot)",
+       true
+      ],
+      [
+       "El TOKEN que da BotFather al crear el bot",
+       true
+      ],
+      [
+       "La librería UniversalTelegramBot",
+       true
+      ],
+      [
+       "Un broker Mosquitto",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué es una plataforma IoT y qué tareas cumple?",
+     "ex": "Ejemplos: ThingSpeak, Arduino IoT Cloud, AWS IoT, Azure IoT, Google Cloud IoT.",
+     "op": [
+      [
+       "Adquiere datos de sensores",
+       true
+      ],
+      [
+       "Los almacena y analiza en la nube (o localmente, edge)",
+       true
+      ],
+      [
+       "Ordena a las “cosas” que hagan tareas",
+       true
+      ],
+      [
+       "Presenta la información a los usuarios",
+       true
+      ],
+      [
+       "Reemplaza al microcontrolador",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué características de los sistemas embebidos los hacen vulnerables en seguridad?",
+     "ex": "Por eso la ESP32 trae aceleradores criptográficos (AES, SHA, RSA), secure boot y cifrado de firmware.",
+     "op": [
+      [
+       "Recursos limitados (se omiten capas de seguridad)",
+       true
+      ],
+      [
+       "Ciclos de vida largos sin actualizaciones (deuda de seguridad)",
+       true
+      ],
+      [
+       "Exposición física: un atacante puede manipular el hardware",
+       true
+      ],
+      [
+       "Tener demasiada memoria",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  }
+ ]
+}
