@@ -740,7 +740,8 @@ const MATERIAS = {
         id: "p1",
         titulo: "1º Parcial",
         descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones y streams).",
-        secciones: ["teorico", "practico"],
+        secciones: ["teorico", "parcial"],
+        nombres: { parcial: "1º Parcial" },
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -844,13 +845,54 @@ const MATERIAS = {
             { bloque: "Streams · Apunte 10", titulo: "Ejercicio integrador Optionals + Lambdas + Streams", detalle: "Práctica", url: "https://www.youtube.com/watch?v=lQwF4fI9TgI" }
           ]
         },
-        practico: { material: [], videos: [] }
+        parcial: {
+          material: [
+            { grupo: "Para estudiar", descripcion: "Todas las preguntas del parcial, el preparcial, los cuestionarios y los simulacros en un solo archivo, sin repetidas.", archivos: [
+              { n: 1, nombre: "Guía única del 1º parcial", nota: "Empezá por acá", detalle: "El parcial real tal cual salió y cómo se resolvía, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (34 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
+            ] },
+            { grupo: "Parcial tomado · 3K1 · 19/09/2026", descripcion: "El día anterior se da el preenunciado con el proyecto para estudiar; el día del parcial, el enunciado con el cambio a programar (45 min) y un cuestionario en el campus.", archivos: [
+              { n: 2, nombre: "Preenunciado · Cloud Center", detalle: "Telemetría de servidores: contrato del CSV, índice de carga, costo de riesgo operativo y casos testigo", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1-cloud-center/01-preenunciado-cloud-center.pdf" },
+              { n: 3, nombre: "Proyecto del preparcial", detalle: "Proyecto Maven 01-modelo-inicial para estudiar y ejecutar (mvn test)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1-cloud-center/02-proyecto-preparcial-cloud-center.zip" },
+              { n: 4, nombre: "Enunciado · Ingreso promedio por servidor", detalle: "Sexta columna con los ingresos, los dos formatos en una sola carga, conteo por estado y main con el archivo del parcial", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1-cloud-center/03-enunciado-parcial.pdf" },
+              { n: 5, nombre: "Archivos del parcial", detalle: "datos_parcial.csv y el test nuevo (EvolucionTest)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1-cloud-center/04-archivos-del-parcial.zip" },
+              { n: 6, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia y probada con los 12 tests (los viejos y los nuevos). Está explicada en la guía", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1-cloud-center/05-solucion-propuesta.zip" }
+            ] },
+            { grupo: "Simulacros", descripcion: "Mismo formato que el parcial: preenunciado y proyecto para estudiar, después el enunciado con el CSV y los tests nuevos. Para practicar, hacé cada uno en 45 minutos.", partes: [
+              { titulo: "3K1 · Fintech (riesgo crediticio)", archivos: [
+                { n: 7, nombre: "Preenunciado", detalle: "Solicitudes de crédito: score financiero, tasa de interés anual y cartera de créditos", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k1-fintech/01-preenunciado.pdf" },
+                { n: 8, nombre: "Proyecto del preparcial", detalle: "Proyecto Maven para estudiar y ejecutar antes del parcial (mvn test)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k1-fintech/02-proyecto-preparcial.zip" },
+                { n: 9, nombre: "Enunciado · Nivel de morosidad", detalle: "Sexta columna EN_MORA / NORMAL con reglas nuevas de validación y cálculo", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k1-fintech/03-enunciado-parcial.pdf" },
+                { n: 10, nombre: "Archivos del parcial", detalle: "CSV del parcial y tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k1-fintech/04-archivos-del-parcial.zip" }
+              ] },
+              { titulo: "3K3 · Taller de reparaciones", archivos: [
+                { n: 11, nombre: "Preenunciado", detalle: "Órdenes de reparación de dispositivos: horas, costo base, prioridad y estadísticas", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k3-taller/01-preenunciado.pdf" },
+                { n: 12, nombre: "Proyecto del preparcial", detalle: "Proyecto Maven para estudiar y ejecutar antes del parcial (mvn test)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k3-taller/02-proyecto-preparcial.zip" },
+                { n: 13, nombre: "Enunciado · Garantía y entrega", detalle: "Reparaciones EXPRESS como subclase de Reparacion, con garantía, repuestos y modalidad", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k3-taller/03-enunciado-parcial.pdf" },
+                { n: 14, nombre: "Archivos del parcial", detalle: "CSV del parcial y tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k3-taller/04-archivos-del-parcial.zip" }
+              ] },
+              { titulo: "3K4 · Juegos de mesa", archivos: [
+                { n: 15, nombre: "Preenunciado", detalle: "Catálogo de juegos: rating, peso, puntuación ajustada y copia defensiva", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k4-juegos/01-preenunciado.pdf" },
+                { n: 16, nombre: "Proyecto del preparcial", detalle: "Proyecto Maven para estudiar y ejecutar antes del parcial (mvn test)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k4-juegos/02-proyecto-preparcial.zip" },
+                { n: 17, nombre: "Enunciado · Juegos cooperativos", detalle: "Décima columna con la dificultad cooperativa y puntuación ajustada por polimorfismo", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k4-juegos/03-enunciado-parcial.pdf" },
+                { n: 18, nombre: "Archivos del parcial", detalle: "CSV del parcial y tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k4-juegos/04-archivos-del-parcial.zip" }
+              ] },
+              { titulo: "3K7 · Tarjetas de crédito", archivos: [
+                { n: 19, nombre: "Preenunciado", detalle: "Liquidación de consumos con tarjeta: importe, bonificación, neto y comisión", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k7-tarjetas/01-preenunciado.pdf" },
+                { n: 20, nombre: "Proyecto del preparcial", detalle: "Proyecto Maven para estudiar y ejecutar antes del parcial (mvn test)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k7-tarjetas/02-proyecto-preparcial.zip" },
+                { n: 21, nombre: "Enunciado · Protección de compras", detalle: "Sexta columna con días de cobertura: consumos asegurados con prima sobre la comisión", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k7-tarjetas/03-enunciado-parcial.pdf" },
+                { n: 22, nombre: "Archivos del parcial", detalle: "CSV del parcial y tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k7-tarjetas/04-archivos-del-parcial.zip" },
+                { n: 23, nombre: "Solución", detalle: "Venía con el simulacro: consumo asegurado como subclase, con sus tests (17 en total)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacro-3k7-tarjetas/05-solucion.zip" }
+              ] }
+            ] }
+          ],
+          videos: []
+        }
       },
       {
         id: "tpi",
         titulo: "TPI",
         descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway y seguridad.",
-        secciones: ["teorico", "practico"],
+        secciones: ["teorico", "tpi"],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -928,15 +970,15 @@ const MATERIAS = {
             { bloque: "Seguridad · Apuntes 20 y 21", titulo: "Arquitectura de Spring Security", detalle: "SecurityFilterChain, AuthenticationManager, AuthenticationProvider y SecurityContextHolder", url: "https://www.youtube.com/watch?v=2eWunG4z4jo" }
           ]
         },
-        practico: {
+        tpi: {
           material: [
             { grupo: "El enunciado", descripcion: "Versión preliminar del TPI 2026: lineamientos generales y dominios para elegir.", archivos: [
-              { n: 1, nombre: "Enunciado preliminar del TPI", nota: "Empezá por acá", detalle: "Microservicios con API Gateway, Keycloak, una API pública externa, persistencia, documentación y despliegue con Docker; diagramas C1 y C2 con C4 Model (9 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/01-enunciado-preliminar-tpi.pdf" },
-              { n: 2, nombre: "Anexo · Dominios sugeridos", detalle: "10 dominios para elegir o reinterpretar: refugios de animales, competencias deportivas, servicios técnicos, entregas de última milla, turismo, incidentes urbanos, agro, energía, reservas y eventos (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/02-anexo-dominios-sugeridos.pdf" }
+              { n: 1, nombre: "Enunciado preliminar del TPI", nota: "Empezá por acá", detalle: "Microservicios con API Gateway, Keycloak, una API pública externa, persistencia, documentación y despliegue con Docker; diagramas C1 y C2 con C4 Model (9 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/01-enunciado-preliminar-tpi.pdf" },
+              { n: 2, nombre: "Anexo · Dominios sugeridos", detalle: "10 dominios para elegir o reinterpretar: refugios de animales, competencias deportivas, servicios técnicos, entregas de última milla, turismo, incidentes urbanos, agro, energía, reservas y eventos (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/02-anexo-dominios-sugeridos.pdf" }
             ] },
             { grupo: "Guías para la API externa", descripcion: "Tutoriales de la cátedra (2025) para calcular distancias entre ubicaciones desde un microservicio Spring Boot.", archivos: [
-              { n: 3, nombre: "Google Maps Distance Matrix con RestClient", detalle: "Microservicio paso a paso que recibe dos coordenadas y devuelve la distancia usando la API de Google (necesita API key de Google Cloud) (7 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/03-google-maps-distance-matrix.pdf" },
-              { n: 4, nombre: "OSRM · rutas y distancias en Argentina", detalle: "Alternativa gratis y offline: OSRM en Docker con el mapa de Argentina de OpenStreetMap y su endpoint HTTP (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/practico/04-osrm-rutas-argentina.pdf" }
+              { n: 3, nombre: "Google Maps Distance Matrix con RestClient", detalle: "Microservicio paso a paso que recibe dos coordenadas y devuelve la distancia usando la API de Google (necesita API key de Google Cloud) (7 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/03-google-maps-distance-matrix.pdf" },
+              { n: 4, nombre: "OSRM · rutas y distancias en Argentina", detalle: "Alternativa gratis y offline: OSRM en Docker con el mapa de Argentina de OpenStreetMap y su endpoint HTTP (4 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/enunciado/04-osrm-rutas-argentina.pdf" }
             ] }
           ],
           videos: []
@@ -1680,12 +1722,18 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 /* Secciones de cada parcial (en todas las materias) */
 const SECCIONES = ["teorico", "practico", "parciales"];
 const seccionesDe = p => p.secciones || SECCIONES;
-const NOMBRES = { teorico: "Teórico", practico: "Práctico", parciales: "Parciales" };
+const NOMBRES = { teorico: "Teórico", practico: "Práctico", parciales: "Parciales", parcial: "Parcial", tpi: "TPI" };
 const DESC_SECCION = {
   teorico:   "Material de lectura y videos de las clases teóricas.",
   practico:  "Guías de ejercicios y videos con las resoluciones.",
-  parciales: "Parciales de años anteriores y sus resoluciones."
+  parciales: "Parciales de años anteriores y sus resoluciones.",
+  parcial:   "Simulacros, parciales tomados y una guía para prepararlo.",
+  tpi:       "Enunciado del trabajo práctico integrador y guías para resolverlo."
 };
+/* Un parcial puede renombrar sus secciones con "nombres" (ej.: { parcial: "1º Parcial" }) */
+const nombreSec = (p, k) => (p.nombres && p.nombres[k]) || NOMBRES[k] || k;
+const descSec = k => DESC_SECCION[k] || "";
+const iconoSec = k => ({ teorico: ICON_BOOK, practico: ICON_PEN, tpi: ICON_LAYER })[k] || ICON_CHECK;
 /* Si una sección no está cargada en los datos, se muestra vacía */
 const seccion = (p, k) => p[k] || { material: [], videos: [] };
 const MOD = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatrimestre", "2C": "2º cuatrimestre", "1C-2C": "1º o 2º cuatrimestre" };
@@ -2189,9 +2237,9 @@ function crumbs(m, ...rest){
 function viewParcial(m, p){
   const tarjeta = k => `
     <div class="card" data-go="m${m.n}/${p.id}/${k}/material">
-      <div class="icon">${k === "teorico" ? ICON_BOOK : k === "practico" ? ICON_PEN : ICON_CHECK}</div>
-      <h3>${NOMBRES[k]}</h3>
-      <p>${DESC_SECCION[k]}</p>
+      <div class="icon">${iconoSec(k)}</div>
+      <h3>${nombreSec(p, k)}</h3>
+      <p>${descSec(k)}</p>
       <div class="links">
         <span class="pill" data-go="m${m.n}/${p.id}/${k}/material">📄 Material (${cantArchivos(seccion(p, k).material)})</span>
         <span class="pill" data-go="m${m.n}/${p.id}/${k}/videos">▶ Videos (${seccion(p, k).videos.length})</span>
@@ -2270,7 +2318,7 @@ function arbolZip(c){
   (c.parciales || []).forEach(p => {
     const np = nodo(p.titulo);
     if(p.secciones && !p.secciones.length) items(np, p.material);
-    else seccionesDe(p).forEach(k => { const ns = nodo(NOMBRES[k]); items(ns, seccion(p, k).material); np.hijos.push(ns); });
+    else seccionesDe(p).forEach(k => { const ns = nodo(nombreSec(p, k)); items(ns, seccion(p, k).material); np.hijos.push(ns); });
     raiz.hijos.push(np);
   });
   (c.secciones || []).forEach(x => { const nx = nodo(x.titulo); items(nx, x.material); raiz.hijos.push(nx); });
@@ -2391,11 +2439,12 @@ function viewSeccion(m, p, k, tab){
   const s = seccion(p, k);
   const base = `m${m.n}/${p.id}`;
   const otras = seccionesDe(p).filter(x => x !== k)
-    .map(x => `<span class="pill" data-go="${base}/${x}/material">${NOMBRES[x]} →</span>`).join("");
+    .map(x => `<span class="pill" data-go="${base}/${x}/material">${esc(nombreSec(p, x))} →</span>`).join("");
+  const desc = descSec(k);
   return `
-    ${crumbs(m, `<span data-go="${base}">${esc(p.titulo)}</span>`, NOMBRES[k])}
-    <h1>${NOMBRES[k]}</h1>
-    <p class="lead" style="margin-bottom:10px">${esc(p.titulo)} — ${DESC_SECCION[k].charAt(0).toLowerCase() + DESC_SECCION[k].slice(1)}</p>
+    ${crumbs(m, `<span data-go="${base}">${esc(p.titulo)}</span>`, esc(nombreSec(p, k)))}
+    <h1>${esc(nombreSec(p, k))}</h1>
+    <p class="lead" style="margin-bottom:10px">${esc(p.titulo)}${desc ? ` — ${desc.charAt(0).toLowerCase() + desc.slice(1)}` : ""}</p>
     <div class="otras">${otras}</div>
     <div class="tabs">
       <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/${k}/material">Material (${cantArchivos(s.material)})</div>
@@ -2545,8 +2594,8 @@ function render(arriba = true){
     d = d === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}/${d}`;
     app.innerHTML = viewSeccion(m, p, c, d);
-    if(d === "videos") mountPlayer(seccion(p, c).videos, `${p.titulo} · ${NOMBRES[c]}`);
-    titulo = `${NOMBRES[c]} · ${p.titulo} · ${m.nombre}`;
+    if(d === "videos") mountPlayer(seccion(p, c).videos, `${p.titulo} · ${nombreSec(p, c)}`);
+    titulo = `${nombreSec(p, c)} · ${p.titulo} · ${m.nombre}`;
   } else if(sec){
     c = c === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}`;

@@ -39,8 +39,11 @@ Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos)
 Se muestra abajo de las tarjetas de Teórico/Práctico. Si el parcial no lo tiene, no aparece nada.
 
 ## Secciones de un parcial a medida
-Si un parcial no necesita las tres tarjetas, se puede limitar con `secciones` (ej.: Backend, 1º Parcial y TPI):
+Si un parcial no necesita las tres tarjetas, se puede limitar con `secciones`:
 `secciones: ["teorico", "practico"]`
+
+Además de `teorico`, `practico` y `parciales` hay dos secciones más: `parcial` (simulacros, parciales tomados y guía para prepararlo) y `tpi` (enunciado del TPI y sus guías). Su contenido va en el parcial con la misma clave, igual que las otras. Con `nombres` se le cambia el título a una sección de ese parcial (ver Backend, `201`: el 1º Parcial tiene Teórico y "1º Parcial", y el TPI tiene Teórico y "TPI"):
+`secciones: ["teorico", "parcial"], nombres: { parcial: "1º Parcial" }`
 
 ## Comisiones
 Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia`. El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero.
