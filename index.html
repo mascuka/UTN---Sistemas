@@ -1263,19 +1263,22 @@ const MATERIAS = {
         },
         parcial: {
           material: [
+            { nivel: "esencial", grupo: "Antes de empezar", descripcion: "Lo que hay que tener listo y saber antes del parcial: instalar, armar el proyecto, leer el CSV y buscar con Streams.", archivos: [
+              { n: 1, nombre: "Guía rápida para el parcial (Windows)", nota: "Empezá por acá", detalle: "JDK 21 y Maven en Windows, generar el proyecto, paquetes app / entidades / servicios, leer cualquier CSV, 15 búsquedas con Streams, comandos y checklist (16 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-rapida-para-el-parcial-windows.pdf" }
+            ] },
             { nivel: "esencial", grupo: "Para estudiar", descripcion: "Todas las preguntas del parcial, el preparcial, los cuestionarios y los simulacros en un solo archivo, sin repetidas.", archivos: [
-              { n: 1, nombre: "Guía única del 1º parcial", nota: "Empezá por acá", detalle: "El parcial real tal cual salió y cómo se resolvía, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (34 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
+              { n: 2, nombre: "Guía única del 1º parcial", detalle: "El parcial real tal cual salió y cómo se resolvía, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (34 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
             ] },
             { nivel: "esencial", grupo: "Parcial tomado · 3K1 · 19/09/2026", descripcion: "El día anterior se da el preenunciado con el proyecto para estudiar; el día del parcial, el enunciado con el cambio a programar (45 min) y un cuestionario en el campus.", archivos: [
-              { n: 2, nombre: "Preenunciado", detalle: "Cloud Center (telemetría de servidores): el preenunciado en PDF y el proyecto 01-modelo-inicial para estudiar y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
-              { n: 3, nombre: "Enunciado", detalle: "Ingreso promedio por servidor: el enunciado en PDF, el CSV del parcial y el test nuevo", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
-              { n: 4, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia y probada con los 12 tests (los viejos y los nuevos). Está explicada en la guía", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
+              { n: 3, nombre: "Preenunciado", detalle: "Cloud Center (telemetría de servidores): el preenunciado en PDF y el proyecto 01-modelo-inicial para estudiar y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
+              { n: 4, nombre: "Enunciado", detalle: "Ingreso promedio por servidor: el enunciado en PDF, el CSV del parcial y el test nuevo", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
+              { n: 5, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia y probada con los 12 tests (los viejos y los nuevos). Está explicada en la guía", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
             ] },
             { nivel: "profundizar", grupo: "Simulacros", descripcion: "Cada ZIP trae todo el simulacro: el preenunciado con el proyecto y el enunciado con el CSV y los tests nuevos. Para practicar, hacé cada uno en 45 minutos.", archivos: [
-              { n: 5, nombre: "Simulacro 1", detalle: "3K1 · Fintech: solicitudes de crédito, score financiero y tasa de interés; en el parcial se agrega el nivel de morosidad", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
-              { n: 6, nombre: "Simulacro 2", detalle: "3K3 · Taller de reparaciones: órdenes de reparación; en el parcial se agregan las reparaciones EXPRESS, la garantía y los repuestos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
-              { n: 7, nombre: "Simulacro 3", detalle: "3K4 · Juegos de mesa: catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
-              { n: 8, nombre: "Simulacro 4", detalle: "3K7 · Tarjetas de crédito: liquidación de consumos; en el parcial se agrega la protección de compras. Trae la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
+              { n: 6, nombre: "Simulacro 1", detalle: "3K1 · Fintech: solicitudes de crédito, score financiero y tasa de interés; en el parcial se agrega el nivel de morosidad", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
+              { n: 7, nombre: "Simulacro 2", detalle: "3K3 · Taller de reparaciones: órdenes de reparación; en el parcial se agregan las reparaciones EXPRESS, la garantía y los repuestos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
+              { n: 8, nombre: "Simulacro 3", detalle: "3K4 · Juegos de mesa: catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
+              { n: 9, nombre: "Simulacro 4", detalle: "3K7 · Tarjetas de crédito: liquidación de consumos; en el parcial se agrega la protección de compras. Trae la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
             ] }
           ],
           videos: []
