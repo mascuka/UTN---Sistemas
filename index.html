@@ -1392,6 +1392,129 @@ const MATERIAS = {
       ] }
     ]
   },
+  // Desarrollo de Aplicaciones con Objetos (electiva de 4º, Python). Organizada por las unidades de la cátedra:
+  // 1 Python, 2 Objetos y 4 Persistencia y patrones (de la 3, interfaces gráficas, todavía no hay material).
+  // Archivos en material/desarrollo-de-aplicaciones-con-objetos/. Las guías de ejercicios resueltos son nuestras
+  206: {
+    condiciones: {
+      aclaracion: "Es electiva: se aprueba de forma directa, aprobando todas las instancias. Nota final: 50 % parcial, 30 % trabajo integrador y 20 % cuestionarios.",
+      requisitos: [
+        { titulo: "Parcial", corto: "Parcial ≥ 6", detalle: "Individual, con recuperatorio. Nota mínima 6. Vale el 50 % de la nota final." },
+        { titulo: "Trabajo integrador", corto: "Trabajo integrador", detalle: "Proyecto grupal: una aplicación completa (análisis, base de datos, formularios con validaciones, reportes y pruebas) con presentación y defensa. Vale el 30 %." },
+        { titulo: "Cuestionarios", corto: "Cuestionarios ≥ 6", detalle: "Actividades durante el cursado, con promedio mínimo de 6. Valen el 20 %." }
+      ]
+    },
+    parciales: [
+      {
+        id: "u1",
+        titulo: "Unidad 1 · Python",
+        descripcion: "Fundamentos de Python: tipos y estructuras de control, secuencias, archivos, conjuntos, diccionarios, excepciones y programación funcional.",
+        secciones: ["teorico", "practico"],
+        teorico: {
+          material: [
+            { nivel: "esencial", grupo: "Apunte de la cátedra", descripcion: "Los capítulos del apunte de esta unidad, en orden.", archivos: [
+              { nombre: "Apunte · Cap. 1–2 · Programación estructurada y secuencias", detalle: "Tipos de datos, operadores, condicionales, ciclos y funciones; cadenas, tuplas, listas y listas por comprensión. Con ejercicios", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/teorico/01-apunte-cap-01-02-programacion-estructurada-y-secuencias.pdf" },
+              { nombre: "Apunte · Cap. 3–5 · Archivos, conjuntos, diccionarios y excepciones", detalle: "Archivos de texto (abrir, leer y escribir), conjuntos y diccionarios, y manejo de errores con try/except", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/teorico/02-apunte-cap-03-05-archivos-colecciones-y-excepciones.pdf" },
+              { nombre: "Apunte · Cap. 6 · Programación funcional", detalle: "Funciones de orden superior, funciones como variables, lambdas y operaciones funcionales sobre secuencias", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/teorico/03-apunte-cap-06-programacion-funcional.pdf" }
+            ] },
+            { nivel: "esencial", grupo: "Clases 2026", descripcion: "Las diapositivas de cada semana.", archivos: [
+              { nombre: "Clase · Semana 1 · Presentación y Python", detalle: "Cómo es la materia y cómo se aprueba, los ejes, el proyecto integrador y los temas de la primera clase", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/teorico/04-clase-semana-1-presentacion-y-python.pdf" },
+              { nombre: "Clase · Semana 2 · Comprensiones, lambda, map, filter y reduce", detalle: "Programación funcional, comprensiones de listas y diccionarios, lambdas y funciones de orden superior, con el ejercicio de la clase", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/teorico/05-clase-semana-2-comprensiones-lambda-map-filter-reduce.pdf" },
+              { nombre: "Clase · Semana 3 · Archivos, JSON, conjuntos y diccionarios", detalle: "Archivos de texto y CSV, JSON con la librería json, conjuntos y diccionarios con sus operaciones", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/teorico/06-clase-semana-3-archivos-json-conjuntos-y-diccionarios.pdf" }
+            ] },
+            { nivel: "extra", grupo: "Más de la cátedra", archivos: [
+              { nombre: "Canal de YouTube de la cátedra (DAO-UTN)", detalle: "Todos los videos y tutoriales de la materia", tipo: "LINK", url: "https://www.youtube.com/@DAO-UTN" }
+            ] }
+          ],
+          videos: [
+            { titulo: "Presentación de la materia", url: "https://www.youtube.com/watch?v=iA3BR_y1m-E" },
+            { titulo: "Visual Studio Code para programar en Python", detalle: "Cómo preparar el entorno de desarrollo", url: "https://www.youtube.com/watch?v=Twqwdi-bRVY" },
+            { url: "https://www.youtube.com/watch?v=87s8XQbUv1k", detalle: "Material adicional de la clase 2 (programación funcional)" },
+            { titulo: "Lectura de archivos", url: "https://www.youtube.com/watch?v=im8BCHSyrFE" },
+            { titulo: "Lectura de archivos TXT", url: "https://www.youtube.com/watch?v=Fxvo18vB0SU" },
+            { titulo: "Lectura de archivos CSV", url: "https://www.youtube.com/watch?v=zRlxad7d5KY" }
+          ]
+        },
+        practico: {
+          material: [
+            { nivel: "esencial", grupo: "Comprensiones, lambda, map, filter y reduce", descripcion: "Los ejemplos de la clase 2 con su salida y el ejercicio de la clase resuelto.", archivos: [
+              { nombre: "Guía · Comprensiones, lambda, map, filter y reduce", detalle: "Cuadro de las cinco herramientas, los ejemplos de clase corregidos y el ejercicio resuelto paso a paso", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/practico/01-guia-comprensiones-lambda-map-filter-reduce.pdf" },
+              { nombre: "Código de los ejemplos y el ejercicio", detalle: "Los .py para correr en VS Code", tipo: "ZIP", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/practico/02-codigo-comprensiones-lambda-map-filter-reduce.zip" }
+            ] },
+            { nivel: "esencial", grupo: "Prácticos de conjuntos, diccionarios y archivos", descripcion: "Los cuatro prácticos de clase resueltos con los archivos de la cátedra.", archivos: [
+              { nombre: "Guía · Prácticos de conjuntos, diccionarios y archivos", detalle: "Números en archivo, palabras del Quijote, operaciones de conjuntos y padrón de personas: enunciado, solución y salida real", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/practico/03-practicos-conjuntos-diccionarios-y-archivos.pdf" },
+              { nombre: "Código y archivos de datos", detalle: "Las soluciones con numeros.txt, quijote.txt, words_alpha.txt, personas.csv y datos.json", tipo: "ZIP", url: "material/desarrollo-de-aplicaciones-con-objetos/u1/practico/04-codigo-y-datos-practicos-conjuntos.zip" }
+            ] }
+          ],
+          videos: []
+        }
+      },
+      {
+        id: "u2",
+        titulo: "Unidad 2 · Programación orientada a objetos",
+        descripcion: "Clases y objetos, encapsulamiento, composición, herencia, polimorfismo, clases abstractas y testing con pytest.",
+        secciones: ["teorico", "practico"],
+        teorico: {
+          material: [
+            { nivel: "esencial", grupo: "Apunte de la cátedra", descripcion: "Los capítulos del apunte de esta unidad, en orden.", archivos: [
+              { nombre: "Apunte · Cap. 7–9 · Clases, encapsulamiento y composición", detalle: "Clases, atributos, constructor, referencias y métodos; propiedades y métodos mágicos; composición, agregación y cardinalidad", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/teorico/01-apunte-cap-07-09-clases-encapsulamiento-y-composicion.pdf" },
+              { nombre: "Apunte · Cap. 10–12 · Herencia, polimorfismo y testing", detalle: "Herencia (“es un”), clases y métodos abstractos, interfaces y testing unitario con pytest", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/teorico/02-apunte-cap-10-12-herencia-polimorfismo-y-testing.pdf" }
+            ] },
+            { nivel: "esencial", grupo: "Clases 2026", descripcion: "Las diapositivas de cada clase.", archivos: [
+              { nombre: "Clase · Semana 4 · Clases y objetos", detalle: "Paradigmas, clases y objetos en Python, constructor, encapsulamiento y métodos especiales, con ejemplos resueltos", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/teorico/03-clase-semana-4-clases-y-objetos.pdf" },
+              { nombre: "Clase · Herencia, composición y polimorfismo", detalle: "Herencia en Python, constructores y métodos en la herencia, orden de búsqueda (MRO), redefinición, composición y polimorfismo", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/teorico/04-clase-herencia-composicion-y-polimorfismo.pdf" },
+              { nombre: "Clase · Clases y métodos abstractos", detalle: "Polimorfismo y duck typing, clases y métodos abstractos con el módulo abc, con el caso de las figuras geométricas", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/teorico/05-clase-clases-y-metodos-abstractos.pdf" },
+              { nombre: "Clase · Test unitarios con pytest", detalle: "Qué es el testing unitario, pytest, estructura del proyecto, asserts, parametrización y reportes", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/teorico/06-clase-test-unitarios-con-pytest.pdf" }
+            ] }
+          ],
+          videos: []
+        },
+        practico: {
+          material: [
+            { nivel: "esencial", grupo: "Ejercicios de objetos, herencia y polimorfismo", descripcion: "Los 10 ejercicios de la cátedra resueltos y probados.", archivos: [
+              { nombre: "Guía · Ejercicios de objetos, herencia y polimorfismo", detalle: "Enunciado tal cual, solución en Python y salida de cada uno; cinco soluciones de la cátedra corregidas (tenían errores)", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/practico/01-ejercicios-objetos-herencia-y-polimorfismo.pdf" },
+              { nombre: "Código de los ejercicios", detalle: "Una carpeta por ejercicio con el enunciado, las clases y los datos, para correr en VS Code", tipo: "ZIP", url: "material/desarrollo-de-aplicaciones-con-objetos/u2/practico/02-codigo-ejercicios-objetos-herencia-y-polimorfismo.zip" }
+            ] }
+          ],
+          videos: []
+        }
+      },
+      {
+        id: "u4",
+        titulo: "Unidad 4 · Persistencia y patrones",
+        descripcion: "Bases de datos con sqlite3 y SQLAlchemy, y patrones de diseño (Singleton, Factory, Observer, State y Strategy).",
+        secciones: ["teorico", "practico"],
+        teorico: {
+          material: [
+            { nivel: "esencial", grupo: "Apunte de la cátedra", descripcion: "Los capítulos del apunte de esta unidad, en orden.", archivos: [
+              { nombre: "Apunte · Cap. 13–14 · Bases de datos con sqlite3 y SQLAlchemy", detalle: "Conexión, cursor, consultas, transacciones y errores; el patrón DAO (Data Access Object) y el ORM SQLAlchemy con ejemplos completos", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/teorico/01-apunte-cap-13-14-bases-de-datos-sqlite3-y-sqlalchemy.pdf" },
+              { nombre: "Apunte · Cap. 15–16 · Patrones Singleton, State y Strategy", detalle: "Singleton (según GoF y en Python), State y Strategy, con ejercicios", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/teorico/02-apunte-cap-15-16-patrones-singleton-state-y-strategy.pdf" }
+            ] },
+            { nivel: "esencial", grupo: "Clases 2026", descripcion: "La guía de acceso a datos y las diapositivas de patrones.", archivos: [
+              { nombre: "Guía · Acceso a SQLite desde Python", detalle: "Conexión, cursor, execute con parámetros, fetchone y fetchall, commit y rollback, y su relación con el ABMC", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/teorico/03-guia-acceso-a-sqlite-desde-python.pdf" },
+              { nombre: "Clase · Patrones de diseño", detalle: "Qué es un patrón y cómo se describe; Singleton, Factory y Observer con ejemplos en Python", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/teorico/04-clase-patrones-de-diseno.pdf" }
+            ] },
+            { nivel: "profundizar", grupo: "Material conceptual", archivos: [
+              { nombre: "Acceso a base de datos (2023)", detalle: "SQLite y la librería sqlite3: conexión, cursores y operaciones, con un ejemplo de lectura y escritura", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/teorico/05-material-conceptual-acceso-a-base-de-datos.pdf" }
+            ] },
+            { nivel: "extra", grupo: "SQL", descripcion: "Material adicional de la cátedra para repasar SQL.", archivos: [
+              { nombre: "Ejercicios resueltos de SQL", detalle: "Nueve casos con sus consultas resueltas: tienda, empleados, almacenes, películas, directores, piezas y proveedores…", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/teorico/06-ejercicios-resueltos-de-sql.pdf" },
+              { nombre: "Manual práctico de SQL", detalle: "Crear tablas, restricciones, SELECT, condiciones, orden, JOIN y consultas resumen (orientado a SQL Server)", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/teorico/07-manual-practico-de-sql.pdf" }
+            ] }
+          ],
+          videos: []
+        },
+        practico: {
+          material: [
+            { nivel: "esencial", grupo: "Prácticos de persistencia con SQLite", archivos: [
+              { nombre: "Ejercicios con persistencia de datos", detalle: "Cinco ABMC con sqlite3 (agenda, comercio, alumnos, biblioteca y veterinaria) y el caso de la agenda resuelto", tipo: "PDF", url: "material/desarrollo-de-aplicaciones-con-objetos/u4/practico/01-practicos-persistencia-con-sqlite.pdf" }
+            ] }
+          ],
+          videos: []
+        }
+      }
+    ]
+  },
   // Green Software (electiva): la materia son 3 TPI. Cada TPI tiene Material (enunciado, resuelto y material de clase) y Videos
   // Archivos del campus en material/green-software/. Las presentaciones de los talleres están en el Drive de la cátedra
   202: {
