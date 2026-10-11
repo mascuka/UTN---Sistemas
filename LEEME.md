@@ -64,8 +64,12 @@ Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos)
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
 Se muestra abajo de las tarjetas de Teórico/Práctico. Si el parcial no lo tiene, no aparece nada.
 
-## Materias organizadas por unidades
-Si la materia no se divide por parciales (por ejemplo, tiene un parcial único), los bloques de `parciales` pueden ser las unidades de la cátedra, con su `id` y `titulo` (ver Desarrollo de Aplicaciones con Objetos, `206`: "Unidad 1 · Python", "Unidad 2 · Programación orientada a objetos"…). Cada bloque usa las secciones de siempre (`teorico`, `practico`). Toda sección que se cargue lleva `material` y `videos`, aunque alguno quede vacío (`videos: []`).
+## Bloques por evaluación
+Los bloques de `parciales` son las evaluaciones de la materia, no las unidades de la cátedra. Por ejemplo, Desarrollo de Aplicaciones con Objetos (`206`) tiene dos:
+- "1º Parcial", con Teórico, Práctico y "Parcial y simulacros".
+- "TPI", con Teórico y Práctico.
+
+Los temas de cada unidad van en el bloque de la evaluación donde se toman. Toda sección que se cargue lleva `material` y `videos`, aunque alguno quede vacío (`videos: []`).
 
 ## Secciones de un parcial a medida
 Si un parcial no necesita las tres tarjetas, se puede limitar con `secciones`:
