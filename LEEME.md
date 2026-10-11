@@ -3,6 +3,7 @@
 ## Estructura
 - `index.html` → la página. Todo el contenido se edita al principio del `<script>`:
   - `CARRERA` → el plan de estudios (página de inicio): materias por nivel, correlativas y electivas.
+  - `COLORES` → el color de cada materia (el de los horarios de cursado), por número de materia.
   - `MATERIAS` → el contenido de cada materia (parciales, material, videos, actividades), usando como clave el número de la materia (ej: `26` = Redes de Datos).
 - `material/<materia>/<parcial>/<teorico|practico>/` → los PDF de cada materia (ej: `material/redes-de-datos/p2/teorico/apunte.pdf`).
 - `material/<materia>/actividades/` → trabajos prácticos y entregas.
@@ -16,7 +17,11 @@ Cada página tiene su propio link, por ejemplo:
 - `#/m26/p2/teorico/videos` → videos del teórico
 
 ## Agregar una materia con contenido
-Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En el plan de estudios aparece marcada como "Con material".
+Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). Aparece en el menú, en "Materias con material" (y si es electiva, su fila del plan pasa a tener link).
+
+## Plan de estudios (inicio)
+Una pestaña por año (Ingreso, 1º a 5º Nivel). Cada una muestra las obligatorias y debajo las electivas de ese año, con los créditos mínimos que pide (`CREDITOS_NIVEL`). La pestaña elegida se recuerda en el navegador.
+Cada materia lleva su abreviatura con el color que tiene en los horarios de cursado (`COLORES`, por número de materia). Las electivas que en los horarios comparten casillero con otra (ej.: "GMP / GIP") llevan el color de ese casillero; las que no figuran en los horarios quedan sin color. El texto de la etiqueta va negro o blanco según lo que se lea mejor.
 
 ## Agregar un PDF
 1. Subilo a la carpeta que corresponde (ej: `material/redes-de-datos/p2/teorico/apunte.pdf`).
@@ -40,7 +45,8 @@ Cada grupo de material puede llevar `nivel: "esencial"`, `"profundizar"` o `"ext
 `{ nivel: "profundizar", grupo: "Material del profe", archivos: [...] }`
 
 ## Tapas de los PDF y visor
-Cada PDF del repo muestra su primera página en la lista y, en la compu, se abre en un visor dentro de la página (con anterior/siguiente). En el celular se abre como siempre. Las tapas están en `miniaturas/` (misma ruta que en `material/`, en .jpg). Cuando subas PDFs nuevos, corré desde la raíz del repo:
+Cada PDF del repo muestra su primera página en la lista y se abre en el visor de la página, en la compu y en el celular. El visor dibuja el PDF con PDF.js (se carga de cdnjs la primera vez que se abre un PDF), así no depende del navegador: antes, Chrome de Android los descargaba y los navegadores de WhatsApp o Instagram los dejaban en blanco. Tiene las páginas al costado (en pantallas anchas), zoom, buscar una palabra, descargar, y pasar al archivo anterior o siguiente de la misma página. En el celular ocupa toda la pantalla y el botón "atrás" lo cierra. Si PDF.js no carga, ofrece abrir o descargar el PDF. Ctrl/Cmd + clic sigue abriendo el PDF en otra pestaña.
+Las tapas están en `miniaturas/` (misma ruta que en `material/`, en .jpg). Cuando subas PDFs nuevos, corré desde la raíz del repo:
 `python3 herramientas/miniaturas.py` (necesita `pip install pymupdf`). Crea las que faltan y borra las que ya no tienen PDF. Si un PDF no tiene tapa, se ve el cartel "PDF" como antes.
 
 ## Quiz
