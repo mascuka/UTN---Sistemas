@@ -38,6 +38,10 @@
   @media (hover:hover){ .anio:not(.on):hover{color:var(--text);background:var(--hover)} }
   .anio.on{background:var(--brand);color:#fff}
   .anio:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .tema-btn{display:grid;place-items:center;width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;padding:0;transition:transform .2s}
+  .tema-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .tema-btn:active{transform:rotate(25deg) scale(.92)}
+  .tema-btn svg{width:18px;height:18px}
   .barra-av{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);white-space:nowrap;cursor:pointer}
   .barra-av svg{width:30px;height:30px;transform:rotate(-90deg)}
   .barra-av circle{fill:none;stroke-width:4}
@@ -449,6 +453,15 @@
   /* Videos estilo YouTube */
   .player-wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
   .player{background:#000;border-radius:14px;overflow:hidden;aspect-ratio:16/9}
+  /* Carga suave: mientras algo carga se ve su forma con un brillo que pasa, no un blanco */
+  #app.entra{animation:entra .28s ease-out}
+  @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes brillo{from{background-position:150% 0}to{background-position:-50% 0}}
+  .file .mini:not(.ok),.pl-thumb img:not(.ok){background:linear-gradient(100deg,var(--hover) 30%,var(--bg) 50%,var(--hover) 70%) 0 0/250% 100%;animation:brillo 1.3s linear infinite}
+  .player{background:linear-gradient(100deg,#141414 30%,#262626 50%,#141414 70%) 0 0/250% 100%;animation:brillo 1.6s linear infinite}
+  .visor-esq{display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px 12px}
+  .visor-esq i{display:block;width:min(820px,92%);aspect-ratio:1/1.35;border-radius:4px;background:linear-gradient(100deg,#e9e9e9 30%,#f7f7f7 50%,#e9e9e9 70%) 0 0/250% 100%;animation:brillo 1.3s linear infinite}
+  @media (prefers-reduced-motion:reduce){ #app.entra,.file .mini,.pl-thumb img,.player,.visor-esq i{animation:none !important} }
   .player iframe{width:100%;height:100%;border:0;display:block}
   .now-title{font-size:1.15rem;font-weight:600;margin:14px 0 4px}
   .now-desc{color:var(--muted);font-size:.9rem}
@@ -535,7 +548,8 @@
     /* Adentro de una materia, en el celular: el logo y los bloques de la materia en una sola fila */
     .barra.en-materia{display:flex;align-items:center}
     .barra.en-materia .barra-in{flex:none;padding-right:0}
-    .barra.en-materia .anios{display:none}
+    .barra.en-materia .anios,.barra.en-materia .tema-btn{display:none}
+    .tema-btn{width:34px;height:34px}
     .barra.en-materia .subnav{flex:1;min-width:0;border-top:0}
     .subnav-in{padding:8px 12px 8px 0;gap:8px}
     .pie{margin-top:28px}
@@ -544,16 +558,15 @@
   }
 
   /* ---------- Plan de estudios (inicio): todos los años en una página ---------- */
-  :root{--elec:#a15c07;--elec-soft:#fdf1e2;--elec-bg:#fffaf3}
-  @media (prefers-color-scheme: dark){ :root{--elec:#f0b46a;--elec-soft:#3a2c1a;--elec-bg:#2e2b26} }
+  :root{--elec:#a15c07;--elec-soft:#fdf1e2;--elec-bg:#fffaf3;--cur:#2f5fd0;--cur-soft:#e3ebfb;--reg:#7a4fc2;--reg-soft:#efe7fb}
+  @media (prefers-color-scheme: dark){ :root{--elec:#f0b46a;--elec-soft:#3a2c1a;--elec-bg:#2e2b26;--cur:#8fb0f5;--cur-soft:#1f2a44;--reg:#c3a6f2;--reg-soft:#2d2340} }
   .nivel{margin-bottom:10px;scroll-margin-top:20px}
   .anio-sec{margin-bottom:40px}
   .presumen{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;padding:0 4px 10px}
   .presumen h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.5rem}
   .presumen > span{font-size:.84rem;color:var(--muted)}
-  .presumen .pav{margin-left:auto;display:inline-flex;align-items:center;gap:10px;align-self:center}
-  .presumen .bar{width:110px}
-  .pfila{display:grid;grid-template-columns:minmax(0,1fr) 128px 64px 160px 160px 30px 12px;gap:10px;align-items:center;padding:11px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px;font-size:.9rem;box-shadow:0 1px 2px rgba(30,25,15,.04);transition:border-color .15s,box-shadow .15s,transform .15s}
+  .presumen .pav{margin-left:auto;display:inline-flex;align-items:center;gap:12px;align-self:center;flex-wrap:wrap;justify-content:flex-end}
+  .pfila{display:grid;grid-template-columns:minmax(0,1fr) 104px 54px 138px 138px 300px 12px;gap:10px;align-items:center;padding:11px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px;font-size:.9rem;box-shadow:0 1px 2px rgba(30,25,15,.04);transition:border-color .15s,box-shadow .15s,transform .15s}
   .pfila + .pfila{margin-top:7px}
   .pfila[data-go]:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(30,25,15,.07);transform:translateY(-1px)}
   .pcab{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:2px;padding-bottom:6px;background:none;border-color:transparent;box-shadow:none}
@@ -569,6 +582,33 @@
   .pfila.elec{background:var(--elec-bg)}
   .pfila.elec .pnom{font-weight:500}
   .tag.mat{display:inline-flex;align-items:center;gap:4px;background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
+  /* Estado de cada materia: cursando (azul), regular (violeta), aprobada (verde) */
+  .est{display:flex;align-items:center;gap:6px}
+  .est-btns{display:inline-flex;gap:1px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px}
+  .es{font:inherit;font-size:.72rem;font-weight:600;color:var(--muted);background:none;border:0;border-radius:999px;padding:4px 9px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+  @media (hover:hover){ .es:not(.on):hover{color:var(--text);background:var(--hover)} }
+  .es.cursando.on{background:var(--cur-soft);color:var(--cur)}
+  .es.regular.on{background:var(--reg-soft);color:var(--reg)}
+  .es.aprobada.on{background:var(--ok);color:#fff}
+  .es:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .nota-in{width:52px;font:inherit;font-size:.86rem;font-weight:700;text-align:center;color:var(--text);background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:3px 2px;-moz-appearance:textfield}
+  .nota-in::-webkit-outer-spin-button,.nota-in::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .nota-in::placeholder{font-weight:500;font-size:.72rem;color:var(--muted)}
+  .nota-in:focus{outline:none;border-color:var(--accent)}
+  .nota-in:placeholder-shown{border-style:dashed}
+  .pfila.e-aprobada{box-shadow:inset 3px 0 0 var(--ok),0 1px 2px rgba(30,25,15,.04)}
+  .pfila.e-regular{box-shadow:inset 3px 0 0 var(--reg),0 1px 2px rgba(30,25,15,.04)}
+  .pfila.e-cursando{box-shadow:inset 3px 0 0 var(--cur),0 1px 2px rgba(30,25,15,.04)}
+  .num.reg{background:var(--reg-soft);color:var(--reg)}
+  /* Cabecera del año: cuántas en cada estado y una barra apilada */
+  .pley{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.8rem}
+  .pley b{font-weight:600;display:inline-flex;align-items:center;gap:5px;color:var(--muted)}
+  .pley b::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+  .pley .l-ok{color:var(--ok)}.pley .l-reg{color:var(--reg)}.pley .l-cur{color:var(--cur)}
+  .pley .l-prom{color:var(--text)}.pley .l-prom::before{display:none}
+  .pstack{display:flex;width:150px;height:7px;border-radius:9px;background:var(--hover);overflow:hidden}
+  .pstack i{display:block;height:100%}
+  .pstack .ok{background:var(--ok)}.pstack .reg{background:var(--reg)}.pstack .cur{background:var(--cur)}
   /* Un año solo: su título grande y, al final, para ir al anterior o al siguiente */
   .anio-sec.solo .presumen{padding-bottom:14px}
   .anio-sec.solo .presumen h1{font-size:2.1rem;margin:0}
@@ -585,7 +625,8 @@
   .res-anillo div{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
   .res-anillo b{font-size:2.3rem;line-height:1;font-variant-numeric:tabular-nums}
   .res-anillo span{font-size:.78rem;color:var(--muted);margin-top:4px}
-  .res-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .res-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  @media (max-width:1300px){ .res-kpis{grid-template-columns:repeat(2,minmax(0,1fr))} }
   .kpi{background:var(--bg);border-radius:16px;padding:16px 18px}
   .kpi small{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
   .kpi b{display:block;font-size:1.65rem;margin:6px 0 10px;font-variant-numeric:tabular-nums}
@@ -600,6 +641,57 @@
   .kpi p{font-size:.8rem;color:var(--muted);margin-top:9px}
   .kpi p .cumple{color:var(--ok);font-weight:700}
   .res-h{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.45rem;margin:0 4px 14px}
+  /* Tu camino: una línea con los años y dos estrellas (Analista y la grande de Ingeniero/a) */
+  .camino{position:relative;display:grid;grid-template-columns:repeat(calc(var(--n) - 1),minmax(0,1fr)) minmax(0,1.5fr);align-items:start;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:30px 14px 20px;margin-bottom:36px;box-shadow:0 1px 2px rgba(30,25,15,.04)}
+  .cam-linea{position:absolute;left:calc(100% / (var(--n) + .5) / 2 + 14px);right:calc(100% / (var(--n) + .5) * 1.5 / 2 + 14px);top:72px;height:6px;border-radius:9px;background:var(--hover)}
+  .cam-linea i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--ok),#4caf72)}
+  .cam-n{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;min-width:0}
+  .cam-ic{position:relative;height:84px;display:grid;place-items:center}
+  .cam-c{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:2.5px solid var(--line);color:#fff;font-weight:800;font-size:.95rem;position:relative;z-index:1}
+  .cam-c svg{position:absolute;inset:-3px;width:calc(100% + 6px);height:calc(100% + 6px)}
+  .cam-n.hecho .cam-c{background:var(--ok);border-color:var(--ok)}
+  .cam-n.ahora .cam-c{border-color:transparent;width:40px;height:40px}
+  .cam-n b{font-size:.92rem;color:var(--text)}
+  .cam-n .corto{display:none}
+  .cam-n small{font-size:.74rem;color:var(--muted);line-height:1.3;max-width:120px}
+  .cam-n.hecho small{color:var(--ok)}
+  a.cam-n:hover .cam-c{transform:scale(1.08)}
+  .cam-c{transition:transform .15s}
+  .cam-aca{position:absolute;top:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.68rem;font-weight:800;letter-spacing:.03em;color:#fff;background:var(--brand);border-radius:999px;padding:2px 9px;z-index:2}
+  .cam-aca::after{content:"";position:absolute;left:50%;bottom:-4px;margin-left:-4px;border:4px solid transparent;border-bottom:0;border-top-color:var(--brand)}
+  .star-svg{position:relative;z-index:1;display:block;filter:drop-shadow(0 2px 3px rgba(160,100,10,.25))}
+  .estrella.an .star-svg{width:52px;height:52px}
+  .estrella.ing .star-svg{width:86px;height:86px}
+  .estrella b{color:#a8620c}
+  .estrella.ing b{font-family:Georgia,"Times New Roman",serif;font-size:1.1rem;font-weight:600}
+  .estrella.an small,.estrella.ing small{color:#a8620c}
+  .estrella:not(.hecho) .star-svg{filter:drop-shadow(0 1px 2px rgba(160,100,10,.15))}
+  .halo{position:absolute;width:118px;height:118px;border-radius:50%;background:radial-gradient(circle,rgba(255,214,102,.55) 0,rgba(255,214,102,.18) 45%,transparent 70%)}
+  .estrella.ing:not(.hecho) .halo{opacity:.55}
+  .chispa{position:absolute;width:12px;height:12px;background:#f5b82e;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);z-index:2;animation:titila 2.4s ease-in-out infinite}
+  .chispa.c1{top:4px;right:6px}
+  .chispa.c2{bottom:12px;left:2px;width:9px;height:9px;animation-delay:.8s}
+  .chispa.c3{top:20px;left:-2px;width:7px;height:7px;animation-delay:1.6s}
+  @keyframes titila{0%,100%{opacity:.25;transform:scale(.6)}50%{opacity:1;transform:scale(1.1)}}
+  @media (prefers-reduced-motion:reduce){ .chispa{animation:none;opacity:.8} }
+  @media (prefers-color-scheme: dark){ .estrella b,.estrella.an small,.estrella.ing small{color:#f2c46b} .halo{background:radial-gradient(circle,rgba(255,200,80,.28) 0,rgba(255,200,80,.08) 45%,transparent 70%)} }
+  @media (max-width:760px){
+    .camino{padding:28px 4px 16px;border-radius:18px}
+    .cam-ic{height:64px}
+    .cam-linea{top:56px;height:5px;left:calc(100% / (var(--n) + .5) / 2 + 4px);right:calc(100% / (var(--n) + .5) * 1.5 / 2 + 4px)}
+    .cam-c{width:24px;height:24px;font-size:.72rem;border-width:2px}
+    .cam-n.ahora .cam-c{width:28px;height:28px}
+    .estrella.an .star-svg{width:34px;height:34px}
+    .estrella.ing .star-svg{width:58px;height:58px}
+    .halo{width:80px;height:80px}
+    .chispa.c1{right:-2px}
+    .cam-n b{font-size:.74rem}
+    .estrella.ing b{font-size:.8rem}
+    .cam-n small{font-size:.6rem}
+    .cam-aca{font-size:.56rem;padding:1px 6px;top:-20px}
+    .cam-n .largo{display:none}
+    .cam-n .corto{display:inline}
+  }
   .res-anios{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:34px}
   .res-anio{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 20px 20px;box-shadow:0 1px 2px rgba(30,25,15,.04);transition:border-color .15s,box-shadow .15s,transform .15s}
   .res-anio:hover{border-color:var(--accent);box-shadow:0 8px 22px rgba(30,25,15,.08);transform:translateY(-2px)}
@@ -614,6 +706,10 @@
   .res-pills .abr:hover{filter:brightness(.94)}
   .res-anio .abr.ok{background:var(--ok-soft);color:var(--ok)}
   .res-anio .abr.ok::before{content:"✓ "}
+  .res-anio .abr.reg{background:var(--reg-soft);color:var(--reg)}
+  .res-anio .abr.cur{background:var(--cur-soft);color:var(--cur)}
+  .res-anio .abr.cur::before{content:"● ";font-size:.6rem;vertical-align:1px}
+  .res-prom{font-size:.8rem;font-weight:700;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
   .res-pills .abr.nom{min-width:0}
   .res-elec{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:14px;font-size:.78rem;color:var(--muted)}
   .res-elec .abr{margin:0}
@@ -637,13 +733,6 @@
   .nada{color:var(--line)}
   .num.ok{background:var(--ok-soft);color:var(--ok)}
   .hc{text-align:center}
-  .chk{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);color:transparent;display:grid;place-items:center;cursor:pointer;padding:0;justify-self:center;transition:background .15s,border-color .15s,color .15s}
-  .chk svg{width:15px;height:15px}
-  .chk:hover{border-color:var(--ok);color:var(--ok)}
-  /* Aprobada: círculo verde con tilde blanco (sin fondo en la fila) */
-  .chk.on{background:var(--ok);border-color:var(--ok);color:#fff;box-shadow:0 1px 3px rgba(46,125,79,.35)}
-  .chk.on svg{width:14px;height:14px;stroke-width:3.4}
-  .chk.on:hover{filter:brightness(1.1)}
 
   /* Contraseña de entrada */
   body.locked > header, body.locked > main, body.locked > .abajo{display:none}
@@ -694,14 +783,9 @@
   .zip-btn svg{width:17px;height:17px;flex-shrink:0}
   .zip-btn small{font-weight:400;color:var(--muted)}
   .abr-lg{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.9rem;padding:4px 10px;margin-right:12px;vertical-align:6px}
-  @media (max-width:760px){
-    .anio-sec{margin-bottom:30px}
-    .presumen{padding:0 2px 10px}
-    .presumen h2{font-size:1.3rem}
-    .presumen .pav{margin-left:0}
+  @media (max-width:1180px){
     .pcab{display:none}
-    .pfila{grid-template-columns:auto minmax(0,1fr);gap:3px 8px;padding:12px 50px 12px 14px;position:relative;border-radius:12px}
-    .pfila + .pfila{margin-top:6px}
+    .pfila{grid-template-columns:auto minmax(0,1fr);gap:3px 8px;padding:12px 14px}
     .pnom{grid-column:1 / -1}
     .pnom .abr{width:auto;min-width:46px;margin-right:10px}
     .pnom .abr.vacio{display:none}
@@ -710,8 +794,19 @@
     .pfila .c.cor{grid-column:1 / -1}
     .pfila .c.cor::before{content:attr(data-l) ":";min-width:100px}
     .pfila .c.vacia{display:none}
-    .pfila .chk{position:absolute;top:10px;right:12px}
+    .pfila .est{grid-column:1 / -1;margin-top:5px}
     .pgo{display:none}
+  }
+  @media (max-width:760px){
+    .anio-sec{margin-bottom:30px}
+    .presumen{padding:0 2px 10px}
+    .presumen h2{font-size:1.3rem}
+    .presumen .pav{margin-left:0}
+    .pfila{border-radius:12px}
+    .pfila + .pfila{margin-top:6px}
+    .est-btns{flex:1}
+    .es{flex:1;padding:6px 4px;font-size:.76rem}
+    .presumen .pav{justify-content:flex-start}
     .pdiv{margin:18px 2px 8px}
   }
   .num{font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--beige);color:var(--beige-t);cursor:help;font-variant-numeric:tabular-nums}
@@ -782,7 +877,80 @@
     .comis-fila > span::before,.comis-reco::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
   }
   .back{color:var(--muted)}
+
+  /* ---------- Modo simulacro ---------- */
+  .sim{background:var(--card);border:1.5px solid var(--accent);border-radius:16px;padding:16px 18px;margin:4px 0 16px}
+  .sim-cab{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+  .sim-cab > b{font-size:1.02rem}
+  .sim-sub{font-size:.82rem;color:var(--muted)}
+  .sim-tag{font-size:.68rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:3px 10px}
+  .sim-tag.ok{color:var(--ok);background:var(--ok-soft)}
+  .sim-tag.vivo{color:#fff;background:#c0392b}
+  .sim-pasos{list-style:none;counter-reset:paso;display:grid;gap:10px;margin-top:14px}
+  .sim-pasos li{counter-increment:paso;position:relative;padding:10px 12px 10px 46px;border:1px solid var(--line);border-radius:12px;background:var(--bg);display:flex;flex-direction:column;gap:3px}
+  .sim-pasos li::before{content:counter(paso);position:absolute;left:12px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.8rem}
+  .sim-pasos li > span{font-size:.86rem;color:var(--muted)}
+  .sim-pasos li.bloq{opacity:.6}
+  .sim-pasos li.bloq::before{content:"🔒";background:var(--hover);font-size:.7rem}
+  .sim-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+  .sim-esp{flex:1}
+  .sim-b{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:.86rem;font-weight:600;color:var(--accent);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;white-space:nowrap}
+  .sim-b:hover{border-color:var(--accent)}
+  .sim-b svg{width:16px;height:16px}
+  .sim-b.fuerte{background:var(--accent);border-color:var(--accent);color:#fff}
+  .sim-dur{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--card)}
+  .sim-dur .sim-b{border:0;padding:5px 11px;font-size:1rem;line-height:1}
+  .sim-dur b{font-size:.9rem;min-width:56px;text-align:center}
+  /* En curso: oscuro, con el reloj grande, y queda arriba mientras se baja por los simulacros */
+  .sim.corriendo,.sim.pausa{background:#23262b;border-color:#23262b;color:#f2efe8;position:sticky;top:calc(var(--barra-h, 64px) + 10px);z-index:5}
+  .sim.corriendo .sim-reloj,.sim.pausa .sim-reloj{margin-left:auto;font-size:2.2rem;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:.01em}
+  .sim-reloj.poco{color:#ff8a7a}
+  .sim.pausa .sim-reloj{opacity:.6}
+  .sim-barra{height:6px;border-radius:9px;background:#3a3e45;overflow:hidden;margin:12px 0 4px}
+  .sim-barra i{display:block;height:100%;background:#4cc3d3;border-radius:9px;transition:width 1s linear}
+  .sim.corriendo .sim-b,.sim.pausa .sim-b{background:#33373e;border-color:#454a52;color:#f2efe8}
+  .sim.corriendo .sim-b.fuerte,.sim.pausa .sim-b.fuerte{background:#4cc3d3;border-color:#4cc3d3;color:#14262a}
+  .sim.corriendo .sim-tag{color:#fff}
+  .sim-nota{font-size:.84rem;color:var(--muted);margin-top:10px;line-height:1.5}
+  .sim.corriendo .sim-nota,.sim.pausa .sim-nota{color:#b9b5ab}
+  .sim.fin{border-color:var(--ok)}
+  .sim-flota[hidden]{display:none}
+  .sim-flota{position:fixed;right:18px;bottom:18px;z-index:40;display:flex;align-items:center;gap:8px;font:inherit;color:#f2efe8;background:#23262b;border:0;border-radius:999px;padding:9px 16px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  .sim-flota b{font-size:1.1rem;font-variant-numeric:tabular-nums}
+  .sim-flota small{font-size:.75rem;opacity:.75}
+  .vb-reloj{font-weight:800;font-variant-numeric:tabular-nums;color:#fff;background:#c0392b;border-radius:999px;padding:3px 10px;font-size:.85rem;white-space:nowrap}
+  @media (max-width:760px){
+    .sim{padding:14px}
+    .sim.corriendo,.sim.pausa{position:static}
+    .sim.corriendo .sim-reloj,.sim.pausa .sim-reloj{font-size:1.7rem}
+    .sim-pasos li{padding-left:42px}
+    .sim-flota{bottom:calc(74px + env(safe-area-inset-bottom));right:12px}
+    .sim-esp{display:none}
+  }
 </style>
+<script>
+/* Modo claro u oscuro elegido a mano (si no se eligió, sigue al sistema): se prenden o apagan las reglas
+   "prefers-color-scheme: dark" de la hoja de estilos. Va acá arriba para que la página no parpadee al abrir */
+(function(){
+  var reglas = [];
+  function juntar(lista){
+    for(var i = 0; i < lista.length; i++){
+      var r = lista[i];
+      if(r.media && /prefers-color-scheme:\s*dark/.test(r.media.mediaText)) reglas.push(r);
+      else if(r.cssRules) juntar(r.cssRules);
+    }
+  }
+  for(var i = 0; i < document.styleSheets.length; i++){ try { juntar(document.styleSheets[i].cssRules); } catch(e){} }
+  window.ponerTema = function(t){
+    reglas.forEach(function(r){ r.media.mediaText = t === "oscuro" ? "all" : t === "claro" ? "not all" : "(prefers-color-scheme: dark)"; });
+    var osc = t ? t === "oscuro" : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.dataset.tema = osc ? "oscuro" : "claro";
+    document.documentElement.style.colorScheme = osc ? "dark" : "light";
+  };
+  var g = null; try { g = localStorage.getItem("isi-tema"); } catch(e){}
+  ponerTema(g);
+})();
+</script>
 </head>
 <body>
 
@@ -805,6 +973,9 @@
   <div id="app"></div>
   <p class="pie" id="pie"></p>
 </main>
+
+<!-- Reloj del modo simulacro cuando se está en otra página -->
+<button class="sim-flota" id="simFlota" hidden title="Volver al simulacro"></button>
 
 <!-- En el celular: barra abajo para moverse con el pulgar -->
 <nav class="abajo" id="abajo">
@@ -836,6 +1007,7 @@
 <dialog id="visor" class="visor" aria-label="Visor de PDF">
   <div class="visor-bar">
     <div class="visor-tit"><b id="visorTit"></b><span id="visorInfo"></span></div>
+    <span class="vb-reloj" id="visorReloj" hidden></span>
     <div class="visor-acc">
       <span class="vb-pag" id="visorPag"></span>
       <span class="vb-zoom">
@@ -1379,11 +1551,20 @@ const MATERIAS = {
               { n: 4, nombre: "Enunciado", detalle: "Ingreso promedio por servidor: el enunciado en PDF, el CSV del parcial y el test nuevo", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
               { n: 5, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia y probada con los 12 tests (los viejos y los nuevos). Está explicada en la guía", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
             ] },
-            { nivel: "profundizar", grupo: "Simulacros", descripcion: "Cada ZIP trae todo el simulacro: el preenunciado con el proyecto y el enunciado con el CSV y los tests nuevos. Para practicar, hacé cada uno en 45 minutos.", archivos: [
+            { nivel: "profundizar", grupo: "Simulacros", descripcion: "Cada ZIP trae todo el simulacro: el preenunciado con el proyecto y el enunciado con el CSV y los tests nuevos. Para practicar, hacé cada uno en 45 minutos.",
+              // Modo simulacro: el Simulacro 4 con reloj, el enunciado al empezar y la solución al terminar
+              simulacro: {
+                id: "bk-s4", titulo: "Simulacro 4 · Tarjetas de crédito", minutos: 45,
+                preenunciado: { pdf: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/preenunciado.pdf", zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/01-preenunciado.zip" },
+                enunciado: { pdf: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/enunciado.pdf", zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/02-enunciado.zip" },
+                solucion: { zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/03-solucion.zip" },
+                control: "Para corregirte: copiá los tests nuevos al proyecto y corré mvn test; tienen que pasar los viejos y los nuevos. Después mirá la solución."
+              },
+              archivos: [
               { n: 6, nombre: "Simulacro 1", detalle: "3K1 · Fintech: solicitudes de crédito, score financiero y tasa de interés; en el parcial se agrega el nivel de morosidad", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
               { n: 7, nombre: "Simulacro 2", detalle: "3K3 · Taller de reparaciones: órdenes de reparación; en el parcial se agregan las reparaciones EXPRESS, la garantía y los repuestos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
               { n: 8, nombre: "Simulacro 3", detalle: "3K4 · Juegos de mesa: catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
-              { n: 9, nombre: "Simulacro 4", detalle: "3K7 · Tarjetas de crédito: liquidación de consumos; en el parcial se agrega la protección de compras. Trae la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
+              { n: 9, nombre: "Simulacro 4", nota: "Tiene modo simulacro ↑", detalle: "3K7 · Tarjetas de crédito: liquidación de consumos; en el parcial se agrega la protección de compras. Trae la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
             ] }
           ],
           videos: []
@@ -2422,6 +2603,8 @@ const ICON_PEN  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const ICON_CHECK= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>';
 const ICON_DL   = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>';
 const ICON_BACK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>';
+const ICON_SOL  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>';
+const ICON_LUNA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>';
 const ICON_LAYER= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>';
 
 /* Ruta actual, tomada del link (#/...): "", "m26", "m26/p2", "m26/p2/teorico/videos", "m26/actividades" */
@@ -2438,6 +2621,7 @@ function renderBarra(m, nivel){
     <a class="marca" data-go="inicio" href="#/" title="Resumen del avance"><div class="logo">${LOGO}</div><span>${esc(CARRERA.nombre)}</span></a>
     <nav class="anios" aria-label="Años de la carrera">${NIVELES_PLAN.map(n =>
       `<a class="anio" data-go="nivel/${n}" href="#/nivel/${n}" data-n="${n}">${n === 0 ? "Ingreso" : `${n}º<span class="largo"> Nivel</span>`}</a>`).join("")}</nav>
+    <button class="tema-btn" data-tema title="${document.documentElement.dataset.tema === "oscuro" ? "Pasar a modo claro" : "Pasar a modo oscuro"}" aria-label="Cambiar entre modo claro y oscuro">${document.documentElement.dataset.tema === "oscuro" ? ICON_SOL : ICON_LUNA}</button>
     <a class="barra-av" data-go="inicio" href="#/" title="Avance de la carrera"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" stroke="var(--hover)"/><circle cx="18" cy="18" r="15" stroke="var(--ok)" stroke-linecap="round" stroke-dasharray="${(av / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg><b>${av}%</b></a>`;
   const c = m && MATERIAS[m.n];
   const sub = (go, icon, label, on) => `<a class="sub ${on ? "on" : ""}" data-go="${go}" href="#/${go}">${icon}<span>${label}</span></a>`;
@@ -2486,6 +2670,20 @@ try { aprobadas = new Set(JSON.parse(leerLocal(CLAVE_APROBADAS)) || []); } catch
 const idMat = m => "m" + m.n;
 const idElec = e => "e:" + e.nombre;
 const ok = id => aprobadas.has(id);
+/* Además de aprobada, cada materia puede estar "cursando" o "regular"; y las aprobadas, tener su nota.
+   Se guardan en el mismo aprobadas.json (estados y notas) y en este navegador */
+const CLAVE_ESTADOS = "isi-estados";
+let estados = {}, notas = {};
+try { const g = JSON.parse(leerLocal(CLAVE_ESTADOS)) || {}; estados = g.estados || {}; notas = g.notas || {}; } catch(e){}
+const estadoDe = id => ok(id) ? "aprobada" : (estados[id] || "");
+const notaDe = id => ok(id) && notas[id] != null ? notas[id] : null;
+const idDe = x => x.creditos ? idElec(x) : idMat(x);
+const fmtNota = v => v.toFixed(2).replace(/\.?0+$/, "").replace(".", ",");
+/* Promedio de las notas cargadas (de materias aprobadas; el ingreso no lleva nota) */
+function promedio(lista){
+  const vs = lista.filter(x => !x.ingreso).map(x => notaDe(idDe(x))).filter(v => v != null);
+  return vs.length ? { valor: vs.reduce((t, v) => t + v, 0) / vs.length, n: vs.length } : null;
+}
 
 let shaRemoto = null;       // versión del archivo en GitHub (hace falta para actualizarlo)
 let estadoSync = "cargando"; // cargando | ok | guardando | error | sin-clave
@@ -2504,19 +2702,21 @@ function headers(){
 
 async function leerRemoto(){
   const r = await fetch(`${urlArchivo()}?ref=${GITHUB.rama}&t=${Date.now()}`, { headers: headers() });
-  if(r.status === 404) return { lista: [], sha: null };
+  if(r.status === 404) return { lista: [], estados: {}, notas: {}, sha: null };
   if(!r.ok) throw new Error("GitHub respondió " + r.status);
   const j = await r.json();
   const datos = JSON.parse(b64dec(j.content) || "{}");
-  return { lista: datos.aprobadas || [], sha: j.sha };
+  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, sha: j.sha };
 }
 
 async function cargarAprobadas(){
   try {
-    const { lista, sha } = await leerRemoto();
-    shaRemoto = sha;
-    aprobadas = new Set(lista);
-    guardarLocal(CLAVE_APROBADAS, JSON.stringify(lista));
+    const r = await leerRemoto();
+    shaRemoto = r.sha;
+    aprobadas = new Set(r.lista);
+    estados = r.estados;
+    notas = r.notas;
+    guardarCopia();
     estadoSync = leerLocal(CLAVE_TOKEN) ? "ok" : "sin-clave";
   } catch(e){
     estadoSync = "error"; errorSync = "No se pudo leer de GitHub; se muestra la última copia guardada en este navegador.";
@@ -2527,9 +2727,13 @@ async function cargarAprobadas(){
 async function subirAprobadas(reintento = true){
   estadoSync = "guardando"; pintarSync();
   const lista = [...aprobadas].sort();
+  const ordenar = o => Object.fromEntries(Object.keys(o).sort().map(k => [k, o[k]]));
+  // Los estados son de las que no están aprobadas; las notas, de las aprobadas
+  const est = ordenar(Object.fromEntries(Object.entries(estados).filter(([id]) => !aprobadas.has(id))));
+  const nts = ordenar(Object.fromEntries(Object.entries(notas).filter(([id]) => aprobadas.has(id))));
   const cuerpo = {
     message: "Actualizar materias aprobadas",
-    content: b64enc(JSON.stringify({ aprobadas: lista }, null, 2) + "\n"),
+    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts }, null, 2) + "\n"),
     branch: GITHUB.rama
   };
   if(shaRemoto) cuerpo.sha = shaRemoto;
@@ -2549,13 +2753,34 @@ async function subirAprobadas(reintento = true){
   pintarSync();
 }
 
-function marcar(id){
-  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
-  aprobadas.has(id) ? aprobadas.delete(id) : aprobadas.add(id);
+function guardarCopia(){
   guardarLocal(CLAVE_APROBADAS, JSON.stringify([...aprobadas]));
+  guardarLocal(CLAVE_ESTADOS, JSON.stringify({ estados, notas }));
+}
+function programarSubida(){
+  guardarCopia();
   estadoSync = "guardando";
   clearTimeout(timerGuardar);
   timerGuardar = setTimeout(() => subirAprobadas(), 1500);   // junta varios clicks en un solo guardado
+}
+/* Cambia el estado de una materia: "" (nada), "cursando", "regular" o "aprobada".
+   Tocar el estado que ya tiene lo saca */
+function ponerEstado(id, e){
+  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  if(e === estadoDe(id)) e = "";
+  aprobadas.delete(id);
+  delete estados[id];
+  if(e === "aprobada") aprobadas.add(id);
+  else if(e) estados[id] = e;
+  programarSubida();
+  return true;
+}
+/* La nota con la que se aprobó (1 a 10); vacío la borra */
+function ponerNota(id, txt){
+  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  const v = Math.round(parseFloat(String(txt).replace(",", ".")));
+  if(v >= 1 && v <= 10) notas[id] = v; else delete notas[id];
+  programarSubida();
   return true;
 }
 
@@ -2599,11 +2824,13 @@ async function guardarToken(){
   guardarLocal(CLAVE_TOKEN, t);
   $("#config").close();
   // Si antes marcaste cosas solo en este navegador, las sumo a lo que hay en GitHub
-  const locales = [...aprobadas];
+  const locales = [...aprobadas], estLoc = { ...estados }, notLoc = { ...notas };
   await cargarAprobadas();
-  const antes = aprobadas.size;
+  const antes = JSON.stringify([aprobadas.size, estados, notas]);
   locales.forEach(id => aprobadas.add(id));
-  if(aprobadas.size !== antes || !shaRemoto){ refrescar(); subirAprobadas(); }
+  estados = { ...estLoc, ...estados };
+  notas = { ...notLoc, ...notas };
+  if(JSON.stringify([aprobadas.size, estados, notas]) !== antes || !shaRemoto){ guardarCopia(); refrescar(); subirAprobadas(); }
 }
 function borrarToken(){
   guardarLocal(CLAVE_TOKEN, null);
@@ -2654,16 +2881,22 @@ function abr(x, clase = ""){
 function nums(list){
   return list.map(n => {
     const m = materia(n);
-    const t = m ? `${m.nombre}${ok(idMat(m)) ? " (aprobada)" : ""}` : "";
-    return `<span class="num ${m && ok(idMat(m)) ? "ok" : ""}" title="${esc(t)}">${esc(m && m.abr || String(n))}</span>`;
+    const e = m ? estadoDe(idMat(m)) : "";
+    const t = m ? `${m.nombre}${e === "aprobada" ? " (aprobada)" : e === "regular" ? " (regular)" : ""}` : "";
+    return `<span class="num ${e === "aprobada" ? "ok" : e === "regular" ? "reg" : ""}" title="${esc(t)}">${esc(m && m.abr || String(n))}</span>`;
   }).join("");
 }
 function celdaCorr(list){
   return list.length ? nums(list) : `<span class="nada">—</span>`;
 }
-function check(id, nombre){
-  const on = ok(id);
-  return `<button class="chk ${on ? "on" : ""}" data-chk="${esc(id)}" role="checkbox" aria-checked="${on}" title="${on ? "Aprobada" : "Marcar como aprobada"}" aria-label="${esc(nombre)} aprobada"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></button>`;
+/* Estado de la materia: Cursando · Regular · Aprobada (y la nota, si está aprobada) */
+const ESTADOS = [["cursando", "Cursando"], ["regular", "Regular"], ["aprobada", "Aprobada"]];
+function controlEstado(x){
+  const id = idDe(x), e = estadoDe(id), nota = notaDe(id);
+  return `<span class="est" role="group" aria-label="Estado de ${esc(x.nombre)}">
+    <span class="est-btns">${ESTADOS.map(([k, t]) => `<button class="es ${k} ${e === k ? "on" : ""}" data-est="${k}" data-id="${esc(id)}" aria-pressed="${e === k}">${t}</button>`).join("")}</span>
+    ${e === "aprobada" && !x.ingreso ? `<input class="nota-in" type="number" inputmode="numeric" min="1" max="10" step="1" placeholder="Nota" data-nota="${esc(id)}" value="${nota ?? ""}" aria-label="Nota de ${esc(x.nombre)}" title="La nota con la que aprobaste">` : ""}
+  </span>`;
 }
 
 const CREDITOS_NIVEL = { 3: 4, 4: 6, 5: 10 };   // créditos mínimos de electivas de cada nivel (ver las notas del plan)
@@ -2674,13 +2907,13 @@ function filaPlan(x){
   const id = el ? idElec(x) : idMat(x);
   const go = !el || MATERIAS[x.n] ? ` data-go="m${x.n}"` : "";
   return `
-    <div class="pfila ${el ? "elec" : ""} ${ok(id) ? "done" : ""}"${go}>
+    <div class="pfila ${el ? "elec" : ""} ${estadoDe(id) ? "e-" + estadoDe(id) : ""}"${go}>
       <span class="pnom">${abr(x)}<span>${esc(x.nombre)}${el ? ` <span class="tag elec-tag">Electiva</span>` : ""}${x.integradora ? ` <span class="tag">Integradora</span>` : ""}${MATERIAS[x.n] ? ` <span class="tag mat" title="Tiene apuntes, parciales o videos cargados">${ICON_BOOK}Material</span>` : ""}</span></span>
       <span class="c cur" data-l="Cursado">${MOD_CORTO[x.mod]}${x.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
       <span class="c hs" data-l="${el ? "Créditos" : "Horas"}">${el ? `${x.creditos} créd.` : x.horas ? `${x.horas} hs` : "—"}</span>
       <span class="c cor ${x.regular.length ? "" : "vacia"}" data-l="Regularizadas">${celdaCorr(x.regular)}</span>
       <span class="c cor ${x.aprobada.length ? "" : "vacia"}" data-l="Aprobadas">${celdaCorr(x.aprobada)}</span>
-      ${x.recurso ? "<span></span>" : check(id, x.nombre)}
+      ${x.recurso ? "<span></span>" : controlEstado(x)}
       <span class="pgo" aria-hidden="true">${go ? "›" : ""}</span>
     </div>`;
 }
@@ -2691,15 +2924,22 @@ function tablaNivel(n, solo = false){
   const el = CARRERA.electivas.filter(e => e.nivel === n);
   const hs = ms.reduce((t, m) => t + m.horas, 0);
   const hechas = ms.filter(m => ok(idMat(m))).length;
+  const cuenta = k => ms.filter(m => estadoDe(idMat(m)) === k).length;
+  const reg = cuenta("regular"), cur = cuenta("cursando");
+  const prom = promedio([...ms, ...ti, ...el]);
+  const pc = k => (k / ms.length * 100).toFixed(1);
   const cred = el.filter(e => ok(idElec(e))).reduce((t, e) => t + e.creditos, 0);
   return `
     <section class="anio-sec ${solo ? "solo" : ""}" aria-label="${esc(nombreNivel(n))}">
       <div class="presumen">
         ${solo ? `<h1>${nombreNivel(n)}</h1>` : `<h2>${nombreNivel(n)}</h2>`}
         <span>${ms.length} materias${hs ? ` · ${hs} hs` : ""}${el.length ? ` · ${el.length} electivas` : ""}</span>
-        <span class="pav">${hechas}/${ms.length} aprobadas<span class="bar"><i style="width:${Math.round(hechas / ms.length * 100)}%"></i></span></span>
+        <span class="pav">
+          <span class="pley"><b class="l-ok">${hechas}/${ms.length} aprobadas</b>${reg ? `<b class="l-reg">${reg} regular${reg > 1 ? "es" : ""}</b>` : ""}${cur ? `<b class="l-cur">${cur} cursando</b>` : ""}${prom ? `<b class="l-prom">Promedio ${fmtNota(prom.valor)}</b>` : ""}</span>
+          <span class="pstack"><i class="ok" style="width:${pc(hechas)}%"></i><i class="reg" style="width:${pc(reg)}%"></i><i class="cur" style="width:${pc(cur)}%"></i></span>
+        </span>
       </div>
-      <div class="pfila pcab"><span>Materia</span><span>Cursado</span><span>Horas</span><span>Regularizadas</span><span>Aprobadas</span><span class="hc">✓</span><span></span></div>
+      <div class="pfila pcab"><span>Materia</span><span>Cursado</span><span>Horas</span><span>Regularizadas</span><span>Aprobadas</span><span>Estado</span><span></span></div>
       ${ms.map(filaPlan).join("")}${rec.map(filaPlan).join("")}
       ${ti.length ? `
         <div class="pdiv"><b>Título intermedio · Analista Universitario de Sistemas</b><span>No suma para Ingeniería</span></div>
@@ -2721,12 +2961,15 @@ function viewResumen(){
     const hechas = ms.filter(m => ok(idMat(m))).length, faltan = ms.length - hechas;
     const elOk = el.filter(e => ok(idElec(e)));
     const cred = elOk.reduce((t, e) => t + e.creditos, 0);
+    const prom = promedio([...ms, ...el, ...CARRERA.materias.filter(m => m.nivel === n && m.intermedio)]);
+    const cls = x => { const e = estadoDe(idDe(x)); return e === "aprobada" ? "ok" : e === "regular" ? "reg" : e === "cursando" ? "cur" : ""; };
+    const tit = x => { const e = estadoDe(idDe(x)), v = notaDe(idDe(x)); return `${x.nombre}${e ? ` (${e}${v != null ? ` con ${v}` : ""})` : ""}`; };
     return `
       <div class="res-anio" data-go="nivel/${n}">
         <div class="res-cab"><h3>${nombreCorto(n)}</h3><span class="estado ${faltan ? "" : "ok"}">${faltan ? `Faltan ${faltan}` : "Completo"}</span></div>
-        <div class="res-num">${hechas}/${ms.length} aprobadas<span class="bar"><i style="width:${Math.round(hechas / ms.length * 100)}%"></i></span></div>
-        <div class="res-pills">${ms.map(m => `<span class="abr ${ok(idMat(m)) ? "ok" : ""} ${m.abr ? "" : "nom"}" data-go="m${m.n}" title="${esc(m.nombre)}${ok(idMat(m)) ? " (aprobada)" : ""}">${esc(m.abr || m.nombre)}</span>`).join("")}</div>
-        ${el.length ? `<div class="res-elec">Electivas: ${elOk.length ? `${elOk.map(e => `<span class="abr ok" title="${esc(e.nombre)} (aprobada)">${esc(e.abr || e.nombre)}</span>`).join("")} · ${cred} créd.` : `${el.length} para elegir`}${CREDITOS_NIVEL[n] ? ` · mínimo ${CREDITOS_NIVEL[n]} créd.` : ""}</div>` : ""}
+        <div class="res-num">${hechas}/${ms.length} aprobadas<span class="bar"><i style="width:${Math.round(hechas / ms.length * 100)}%"></i></span>${prom ? `<b class="res-prom" title="Promedio del año">${fmtNota(prom.valor)}</b>` : ""}</div>
+        <div class="res-pills">${ms.map(m => `<span class="abr ${cls(m)} ${m.abr ? "" : "nom"}" data-go="m${m.n}" title="${esc(tit(m))}">${esc(m.abr || m.nombre)}</span>`).join("")}</div>
+        ${el.length ? `<div class="res-elec">Electivas: ${elOk.length ? `${elOk.map(e => `<span class="abr ok" title="${esc(tit(e))}">${esc(e.abr || e.nombre)}</span>`).join("")} · ${cred} créd.` : `${el.length} para elegir`}${CREDITOS_NIVEL[n] ? ` · mínimo ${CREDITOS_NIVEL[n]} créd.` : ""}</div>` : ""}
       </div>`;
   };
   return `
@@ -2740,12 +2983,69 @@ function viewResumen(){
         ${kpi("Materias", p.matHechas, p.matTotal, "", `Aprobadas, contando ${p.el.necesarias} electivas`)}
         ${kpiHoras(p)}
         ${kpi("Electivas", p.el.creditos, TOTAL_CREDITOS, " créd.", `${p.el.hechas} aprobadas · ${p.el.faltan ? `faltan ${p.el.faltan}` : `<span class="cumple">completo</span>`}`)}
+        ${kpiPromedio()}
       </div>
     </div>
+    ${viewCamino()}
     <h2 class="res-h">Por año</h2>
     <div class="res-anios">${NIVELES_PLAN.map(tarjeta).join("")}</div>
     <div class="notas"><ul>${CARRERA.notas.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
 }
+/* El camino de la carrera: Ingreso, 1º, 2º, 3º, ★ Analista, 4º, 5º y ★ Ingeniero/a.
+   Analista: 1º a 3º completos (con el Seminario Integrador) y los créditos mínimos de electivas de 3º */
+const ESTRELLA = "M50 4l13.6 28.4 31.1 4-22.9 21.6 5.9 30.8L50 73.7 22.3 88.8l5.9-30.8L5.3 36.4l31.1-4z";
+function estrella(clase, logrado){
+  const g = "g" + clase;
+  return `<svg class="star-svg" viewBox="0 0 100 100" aria-hidden="true"><defs>
+    <linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${logrado ? "#ffe08a" : "#fff6dc"}"/><stop offset=".55" stop-color="${logrado ? "#f5b82e" : "#fbe7b0"}"/><stop offset="1" stop-color="${logrado ? "#d9821a" : "#f2cf7c"}"/></linearGradient></defs>
+    <path d="${ESTRELLA}" fill="url(#${g})" stroke="${logrado ? "#c47512" : "#e0a93c"}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M50 14l9.5 19.8 21.7 2.8" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/></svg>`;
+}
+function viewCamino(){
+  const obl = n => CARRERA.materias.filter(m => m.nivel === n && !m.intermedio && !m.recurso);
+  const anio = n => { const ms = obl(n), h = ms.filter(m => ok(idMat(m))).length; return { tipo: "anio", n, h, t: ms.length, hecho: h === ms.length }; };
+  const faltaAn = [1, 2, 3].flatMap(n => CARRERA.materias.filter(m => m.nivel === n && !m.recurso && !ok(idMat(m)))).map(m => m.abr || m.nombre);
+  const credE3 = CARRERA.electivas.filter(e => e.nivel === 3 && ok(idElec(e))).reduce((t, e) => t + e.creditos, 0);
+  if(credE3 < CREDITOS_NIVEL[3]) faltaAn.push(`${CREDITOS_NIVEL[3] - credE3} créd. de 3º`);
+  const faltanIng = CARRERA.materias.filter(m => !m.intermedio && !m.recurso && !m.ingreso && !ok(idMat(m))).length + planElectivas().faltan;
+  const nodos = [anio(0), anio(1), anio(2), anio(3),
+    { tipo: "an", hecho: !faltaAn.length, falta: faltaAn },
+    anio(4), anio(5),
+    { tipo: "ing", hecho: faltanIng === 0, faltan: faltanIng }];
+  const ahora = nodos.findIndex(x => !x.hecho);
+  const N = nodos.length, lleno = ahora < 0 ? 100 : ahora / (N - 1) * 100;
+  const nodo = (x, i) => {
+    const cls = `${x.hecho ? "hecho" : ""} ${i === ahora ? "ahora" : ""}`;
+    const aca = i === ahora ? `<span class="cam-aca">Estás acá</span>` : "";
+    if(x.tipo === "anio"){
+      const c = 2 * Math.PI * 13;
+      const icono = x.hecho ? "✓" : i === ahora
+        ? `<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="none" stroke="var(--hover)" stroke-width="3"/><circle cx="15" cy="15" r="13" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${(x.h / x.t * c).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 15 15)"/></svg>`
+        : "";
+      return `<a class="cam-n anio ${cls}" data-go="nivel/${x.n}" href="#/nivel/${x.n}">${aca}<span class="cam-ic"><span class="cam-c">${icono}</span></span>
+        <b>${x.n === 0 ? `<span class="largo">Ingreso</span><span class="corto">Ing.</span>` : `${x.n}º`}</b><small>${x.hecho ? `<span class="largo">Completo</span><span class="corto">${x.t}/${x.t}</span>` : `${x.h} de ${x.t}`}</small></a>`;
+    }
+    if(x.tipo === "an") return `<div class="cam-n estrella an ${cls}">${aca}<span class="cam-ic">${estrella("an", x.hecho)}</span>
+        <b>Analista</b><small title="${esc(x.falta.join(", "))}">${x.hecho ? "¡Título intermedio!" : `Falta ${esc(x.falta.slice(0, 2).join(" y "))}${x.falta.length > 2 ? "…" : ""}`}</small></div>`;
+    return `<div class="cam-n estrella ing ${cls}">${aca}<span class="cam-ic"><span class="halo"></span>${estrella("ing", x.hecho)}<i class="chispa c1"></i><i class="chispa c2"></i><i class="chispa c3"></i></span>
+        <b>Ingeniero/a</b><small>${x.hecho ? "¡Lo lograste!" : `Faltan ${x.faltan} materias`}</small></div>`;
+  };
+  return `
+    <h2 class="res-h">Tu camino</h2>
+    <div class="camino" style="--n:${N}">
+      <div class="cam-linea"><i style="width:${lleno}%"></i></div>
+      ${nodos.map(nodo).join("")}
+    </div>`;
+}
+/* Promedio de la carrera con las notas cargadas en cada año */
+function kpiPromedio(){
+  const pr = promedio([...CARRERA.materias, ...CARRERA.electivas]);
+  return `
+    <div class="kpi"><small>Promedio</small>${pr
+      ? `<b>${fmtNota(pr.valor)}<em> / 10</em></b><span class="bar"><i style="width:${pr.valor * 10}%"></i></span><p>Con ${pr.n} nota${pr.n === 1 ? "" : "s"} cargada${pr.n === 1 ? "" : "s"}${pr.n < aprobadasConNota() ? ` de ${aprobadasConNota()} aprobadas` : ""}</p>`
+      : `<b>—</b><span class="bar"><i style="width:0"></i></span><p>Cargá la nota de cada materia aprobada en su año y acá aparece tu promedio</p>`}</div>`;
+}
+const aprobadasConNota = () => [...CARRERA.materias, ...CARRERA.electivas].filter(x => !x.ingreso && ok(idDe(x))).length;
 /* Horas del avance, con la meta de CARRERA.metaHoras marcada en la barra: se llega cuando
    faltan esas horas para el total (ej.: 160 − 32 = 128 hs). Dice cuánto falta o si ya se llegó */
 function kpiHoras(p){
@@ -2776,10 +3076,7 @@ function viewNivel(n){
     </div>`;
 }
 
-/* Marca/desmarca y vuelve a dibujar sin mover la pantalla */
-function toggleAprobada(id){
-  if(marcar(id)) refrescar();
-}
+
 /* Vuelve a dibujar sin mover la pantalla */
 function refrescar(){
   const y = window.scrollY;
@@ -3137,6 +3434,7 @@ function listaArchivos(items){
     return items.map(g => `
       <section class="grupo">
         <div class="grupo-head"><h3>${esc(g.grupo)}</h3>${g.descripcion ? `<p>${esc(g.descripcion)}</p>` : ""}</div>
+        ${g.simulacro ? `<div class="sim" data-sim="${g.simulacro.id}">${simHtml(g.simulacro)}</div>` : ""}
         ${g.partes ? g.partes.map(p => `
           <div class="parte">
             <div class="parte-head">${esc(p.titulo)}<span>${p.archivos.length} archivo${p.archivos.length === 1 ? "" : "s"}</span></div>
@@ -3158,12 +3456,134 @@ function filaArchivo(f, conNum){
   return `
     <a class="file" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>
       ${f.n || conNum ? `<span class="fnum">${f.n ? String(f.n).padStart(2, "0") : ""}</span>` : ""}${pdf
-        ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onerror="sinMini(this)">`
+        ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onload="this.classList.add('ok')" onerror="sinMini(this)">`
         : `<span class="badge">${esc(f.tipo || "LINK")}</span>`}
       <span class="name">${esc(f.nombre)}${f.nota ? ` <span class="tag nota">${esc(f.nota)}</span>` : ""}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
       <span class="go">${bajar ? `<span class="go-t">Descargar </span>↓` : `<span class="go-t">Abrir </span>↗`}</span>
     </a>`;
 }
+
+/* ---------- Modo simulacro: como el parcial, con reloj ----------
+   Antes: el preenunciado. Al empezar corre el reloj y se habilita el enunciado (PDF y ZIP con el CSV y los tests).
+   Al terminar (o cuando se acaba el tiempo) se habilita la solución. El estado queda guardado en este navegador,
+   así que se puede cambiar de página, ir al IDE o recargar: el reloj sigue. La pestaña muestra el tiempo que queda. */
+const CLAVE_SIM = "isi-simulacros";
+const SIMULACROS = {};   // id → { sim, ruta }
+for(const [n, c] of Object.entries(MATERIAS)) for(const p of c.parciales || []) for(const k of (p.secciones && !p.secciones.length ? [] : seccionesDe(p))){
+  for(const g of (seccion(p, k).material || [])) if(g.simulacro) SIMULACROS[g.simulacro.id] = { sim: g.simulacro, ruta: `m${n}/${p.id}/${k}/material` };
+}
+const simTodos = () => { try { return JSON.parse(leerLocal(CLAVE_SIM)) || {}; } catch(e){ return {}; } };
+const simLeer = id => simTodos()[id] || null;
+function simGuardar(id, st){ const t = simTodos(); if(st) t[id] = st; else delete t[id]; guardarLocal(CLAVE_SIM, JSON.stringify(t)); }
+const simDur = (sim, st) => st && st.dur ? st.dur : sim.minutos * 60000;
+const simPasado = st => (st.fase === "pausa" ? st.pausaDesde : st.fase === "fin" ? st.fin : Date.now()) - st.inicio - st.pausas;
+const reloj = ms => { const t = Math.max(0, Math.round(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sg = t % 60;
+  return (h ? h + ":" + String(m).padStart(2, "0") : String(m)) + ":" + String(sg).padStart(2, "0"); };
+function simHtml(sim){
+  const st = simLeer(sim.id), dur = simDur(sim, st);
+  const pdf = (url, t) => `<a class="sim-b" href="${esc(url)}" data-pdf="${esc(t)}" target="_blank" rel="noopener">${ICON_DOC}<span>${t.split(" · ")[0]}</span></a>`;
+  const zip = (url, t) => `<a class="sim-b" href="${esc(url)}" download>${ICON_DL}<span>${t}</span></a>`;
+  const acc = (a, t, k = "") => `<button class="sim-b ${k}" data-sim-acc="${a}" data-sim-id="${sim.id}">${t}</button>`;
+  if(!st || st.fase === "listo") return `
+    <div class="sim-cab"><span class="sim-tag">Modo simulacro</span><b>${esc(sim.titulo)}</b><span class="sim-sub">Como el parcial, con reloj</span></div>
+    <ol class="sim-pasos">
+      <li><b>El día antes: el preenunciado</b><span>Bajá el proyecto, abrilo en el IDE y corré los tests para conocerlo.</span>
+        <div class="sim-acc">${pdf(sim.preenunciado.pdf, `Ver preenunciado · ${sim.titulo}`)}${zip(sim.preenunciado.zip, "Proyecto (ZIP)")}</div></li>
+      <li><b>El parcial: ${Math.round(dur / 60000)} minutos</b><span>Al empezar se habilita el enunciado, con el CSV y los tests nuevos. La pestaña va mostrando el tiempo.</span>
+        <div class="sim-acc"><span class="sim-dur">${acc("menos", "−")}<b>${Math.round(dur / 60000)} min</b>${acc("mas", "+")}</span>${acc("empezar", "▶ Empezar", "fuerte")}</div></li>
+      <li class="bloq"><b>La solución</b><span>Se habilita cuando terminás.</span></li>
+    </ol>`;
+  if(st.fase === "fin"){
+    const usado = st.fin - st.inicio - st.pausas;
+    return `
+    <div class="sim-cab"><span class="sim-tag ok">${st.agotado ? "Se terminó el tiempo" : "Terminado"}</span><b>${st.agotado ? `Usaste los ${reloj(dur)}` : `Lo hiciste en ${reloj(usado)}`}</b><span class="sim-sub">de ${reloj(dur)} · ${esc(sim.titulo)}</span></div>
+    <p class="sim-nota">${esc(sim.control)}</p>
+    <div class="sim-acc">${zip(sim.solucion.zip, "Solución (ZIP)")}${pdf(sim.enunciado.pdf, `Ver enunciado · ${sim.titulo}`)}${zip(sim.enunciado.zip, "CSV y tests nuevos (ZIP)")}${acc("reiniciar", "↺ Volver a empezar")}</div>`;
+  }
+  const pausa = st.fase === "pausa", resta = dur - simPasado(st);
+  return `
+    <div class="sim-cab"><span class="sim-tag ${pausa ? "" : "vivo"}">${pausa ? "En pausa" : "En curso"}</span><b>${esc(sim.titulo)}</b><b class="sim-reloj ${resta < 300000 ? "poco" : ""}" data-reloj="${sim.id}">${reloj(resta)}</b></div>
+    <div class="sim-barra"><i data-reloj-barra="${sim.id}" style="width:${Math.min(100, simPasado(st) / dur * 100).toFixed(1)}%"></i></div>
+    <div class="sim-acc">${pdf(sim.enunciado.pdf, `Ver enunciado · ${sim.titulo}`)}${zip(sim.enunciado.zip, "CSV y tests nuevos (ZIP)")}<span class="sim-esp"></span>${pausa ? acc("seguir", "▶ Seguir") : acc("pausa", "⏸ Pausa")}${acc("terminar", "✓ Terminé", "fuerte")}</div>
+    <p class="sim-nota">Partí del proyecto del preenunciado y programá el cambio que pide el enunciado.</p>`;
+}
+let simAudio = null, simTimer = null;
+function pitido(){
+  try {
+    const ac = simAudio || (simAudio = new (window.AudioContext || window.webkitAudioContext)());
+    [0, .35, .7].forEach(t => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.frequency.value = 880; o.connect(g); g.connect(ac.destination);
+      g.gain.setValueAtTime(.0001, ac.currentTime + t);
+      g.gain.exponentialRampToValueAtTime(.3, ac.currentTime + t + .02);
+      g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime + t + .25);
+      o.start(ac.currentTime + t); o.stop(ac.currentTime + t + .3);
+    });
+  } catch(e){}
+  if(navigator.vibrate) navigator.vibrate([250, 120, 250]);
+}
+function simAccion(id, a){
+  const { sim } = SIMULACROS[id];
+  let st = simLeer(id) || { fase: "listo" };
+  const dur = simDur(sim, st), ahora = Date.now();
+  if(a === "menos" || a === "mas") st = { fase: "listo", dur: Math.min(180, Math.max(10, dur / 60000 + (a === "mas" ? 5 : -5))) * 60000 };
+  else if(a === "empezar"){
+    st = { fase: "corriendo", inicio: ahora, pausas: 0, dur };
+    try { simAudio = simAudio || new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}   // el sonido del final necesita un toque antes
+  }
+  else if(a === "pausa") st = { ...st, fase: "pausa", pausaDesde: ahora };
+  else if(a === "seguir") st = { ...st, fase: "corriendo", pausas: st.pausas + ahora - st.pausaDesde, pausaDesde: null };
+  else if(a === "terminar"){ if(!confirm("¿Terminaste? Se habilita la solución.")) return; st = { ...st, fase: "fin", fin: st.fase === "pausa" ? st.pausaDesde : ahora, agotado: false }; }
+  else if(a === "reiniciar") st = null;
+  simGuardar(id, st);
+  simPintar();
+}
+/* Redibuja los paneles a la vista, el reloj flotante y el título de la pestaña; avisa cuando se acaba el tiempo */
+function simPintar(){
+  let corriendo = null;
+  for(const [id, { sim, ruta: r }] of Object.entries(SIMULACROS)){
+    const st = simLeer(id);
+    if(st && st.fase === "corriendo" && simDur(sim, st) - simPasado(st) <= 0){
+      simGuardar(id, { ...st, fase: "fin", fin: st.inicio + st.pausas + simDur(sim, st), agotado: true });
+      pitido();
+    }
+    const st2 = simLeer(id);
+    if(st2 && (st2.fase === "corriendo" || st2.fase === "pausa")) corriendo = { id, sim, ruta: r, st: st2 };
+    document.querySelectorAll(`.sim[data-sim="${id}"]`).forEach(el => {
+      const fase = st2 ? st2.fase : "listo";
+      if(el.dataset.fase !== fase || fase === "listo"){ el.innerHTML = simHtml(sim); el.dataset.fase = fase; el.className = `sim ${fase}`; }
+    });
+  }
+  // Reloj en los paneles, en la barra del visor y en la pestaña
+  const fl = $("#simFlota"), vr = $("#visorReloj");
+  if(corriendo){
+    const { sim, st } = corriendo, dur = simDur(sim, st), resta = dur - simPasado(st), txt = reloj(resta);
+    document.querySelectorAll(`[data-reloj="${corriendo.id}"]`).forEach(x => { x.textContent = txt; x.classList.toggle("poco", resta < 300000); });
+    document.querySelectorAll(`[data-reloj-barra="${corriendo.id}"]`).forEach(x => x.style.width = Math.min(100, simPasado(st) / dur * 100).toFixed(1) + "%");
+    document.title = `${st.fase === "pausa" ? "⏸" : "⏱"} ${txt} · ${tituloPagina}`;
+    fl.hidden = simALaVista(corriendo.id);
+    fl.innerHTML = `<span>${st.fase === "pausa" ? "⏸" : "⏱"}</span><b>${txt}</b><small>${esc(sim.titulo.split(" · ")[0])}</small>`;
+    fl.dataset.go = corriendo.ruta;
+    vr.hidden = false; vr.textContent = `⏱ ${txt}`;
+    if(!simTimer) simTimer = setInterval(simPintar, 1000);
+  } else {
+    fl.hidden = true; vr.hidden = true;
+    document.title = tituloPagina;
+    if(simTimer){ clearInterval(simTimer); simTimer = null; }
+  }
+}
+let tituloPagina = document.title;
+/* El reloj flotante aparece cuando el panel del simulacro no está en pantalla */
+function simALaVista(id){
+  const el = document.querySelector(`.sim[data-sim="${id}"]`);
+  if(!el) return false;
+  const r = el.getBoundingClientRect();
+  return r.bottom > ($("#barra").offsetHeight + 20) && r.top < innerHeight - 40;
+}
+window.addEventListener("scroll", () => {
+  const fl = $("#simFlota");
+  if(simTimer && fl.dataset.go) fl.hidden = simALaVista(Object.keys(SIMULACROS).find(id => (simLeer(id) || {}).fase === "corriendo" || (simLeer(id) || {}).fase === "pausa"));
+}, { passive: true });
 
 /* ---------- Visor de PDF propio: se ve igual en la compu y en el celular ----------
    La página dibuja cada hoja con PDF.js (se carga de cdnjs la primera vez que se abre un PDF),
@@ -3192,7 +3612,7 @@ const vz = { doc: null, tarea: 0, pags: [], zoom: 1, actual: 0, ancho: 0, textos
 const ZOOMS = [.5, .67, .8, 1, 1.25, 1.5, 2, 3];
 
 function abrirVisor(a){
-  visorLista = [...document.querySelectorAll("#app a.file[data-pdf]")];
+  visorLista = a.classList.contains("file") ? [...document.querySelectorAll("#app a.file[data-pdf]")] : [a];
   visorPos = Math.max(0, visorLista.indexOf(a));
   const d = $("#visor");
   if(!d.open){
@@ -3237,7 +3657,7 @@ async function mostrarVisor(){
   $("#visorSigT").textContent = sig ? sig.dataset.pdf : "";
   $("#visorNum").textContent = `${visorPos + 1} de ${visorLista.length}`;
   const doc = $("#visorDoc");
-  doc.innerHTML = `<div class="visor-msg"><span class="giro"></span>Cargando…</div>`;
+  doc.innerHTML = `<div class="visor-esq" role="status" aria-label="Cargando…"><i></i><i></i></div>`;
   doc.scrollTop = 0;
   try {
     const lib = await cargarPdfJs();
@@ -3501,6 +3921,7 @@ function ordenarPorClase(lista){
    se muestra el número del video */
 const TAMANIOS_MINI = ["hqdefault.jpg", "mqdefault.jpg", "sddefault.jpg", "maxresdefault.jpg", "hq720.jpg", "0.jpg"];
 function miniatura(img){
+  img.classList.add("ok");
   if(img.naturalWidth > 120) return;
   const k = +(img.dataset.k || 0) + 1;
   if(k < TAMANIOS_MINI.length){
@@ -4612,12 +5033,16 @@ function render(arriba = true){
     }
   }
   app.className = m ? "angosto" : "";
+  // Al cambiar de página el contenido aparece con un fundido corto (al marcar materias no)
+  if(arriba){ app.classList.remove("entra"); void app.offsetWidth; app.classList.add("entra"); }
   $("#pie").className = "pie " + app.className;
   $("#pie").textContent = `${CARRERA.plan} · ${CARRERA.pie}`;
   pintarSync();
+  tituloPagina = titulo;
   document.title = titulo;
   pintarAbajo(m);
   renderBarra(m, a === "nivel" && ruta !== "" ? +b : null);
+  simPintar();
   // Al volver de una materia a su año, queda donde estaba
   if(ruta.startsWith("nivel/") && venia[0] === "m" && yAnio[ruta] != null) window.scrollTo(0, yAnio[ruta]);
   else if(arriba) window.scrollTo(0, 0);
@@ -4644,7 +5069,7 @@ function pintarAbajo(m){
 /* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) */
 document.addEventListener("click", e => {
   if(e.target.closest("[data-config]")){ abrirConfig(); return; }
-  const pdf = e.target.closest("a.file[data-pdf]");
+  const pdf = e.target.closest("a[data-pdf]");
   if(pdf && e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey){
     e.preventDefault();
     abrirVisor(pdf);
@@ -4652,13 +5077,23 @@ document.addEventListener("click", e => {
   }
   const z = e.target.closest("[data-zip]");
   if(z){ descargarZip(z); return; }
-  const k = e.target.closest("[data-chk]");
+  if(e.target.closest("[data-tema]")){
+    const t = document.documentElement.dataset.tema === "oscuro" ? "claro" : "oscuro";
+    guardarLocal("isi-tema", t);
+    ponerTema(t);
+    renderBarra(ruta[0] === "m" ? materia(+ruta.split("/")[0].slice(1)) : null, ruta.startsWith("nivel/") ? +ruta.split("/")[1] : null);
+    return;
+  }
+  const sa = e.target.closest("[data-sim-acc]");
+  if(sa){ simAccion(sa.dataset.simId, sa.dataset.simAcc); return; }
+  const k = e.target.closest("[data-est]");
   if(k){
     e.preventDefault();
     e.stopPropagation();
-    toggleAprobada(k.dataset.chk);
+    if(ponerEstado(k.dataset.id, k.dataset.est)) refrescar();
     return;
   }
+  if(e.target.closest(".nota-in")) return;     // escribir la nota no entra a la materia
   if(e.target.closest("#quiz") && clicQuiz(e)) return;
   const el = e.target.closest("[data-go]");
   if(!el) return;
@@ -4668,6 +5103,13 @@ document.addEventListener("click", e => {
   if(go === ruta) render(); else location.hash = "#/" + go;
 });
 window.addEventListener("hashchange", render);
+// La nota se guarda al salir del campo o con Enter
+document.addEventListener("change", e => {
+  const n = e.target.closest && e.target.closest(".nota-in");
+  if(!n) return;
+  if(ponerNota(n.dataset.nota, n.value)) refrescar(); else n.value = notaDe(n.dataset.nota) ?? "";
+});
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches(".nota-in")) e.target.blur(); });
 $("#abajo [data-up]").addEventListener("click", () => { location.hash = "#/" + rutaPadre(ruta); });
 
 $("#guardarToken").addEventListener("click", guardarToken);
