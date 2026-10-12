@@ -21,25 +21,41 @@
     }
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+  html{scroll-padding-top:calc(var(--barra-h, 64px) + 14px)}
+  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
   a{color:inherit;text-decoration:none}
   [data-go]{cursor:pointer;user-select:none}
 
-  /* ---------- Barra lateral ---------- */
-  .sidebar{width:260px;background:var(--side);border-right:1px solid var(--line);padding:14px 10px;display:flex;flex-direction:column;gap:2px;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;transition:transform .25s;z-index:20}
-  .brand{display:flex;align-items:center;gap:10px;padding:8px 10px 16px;font-family:Georgia,"Times New Roman",serif;font-size:1.2rem}
-  .brand .logo{width:30px;height:30px;border-radius:8px;background:var(--brand);color:#fff;display:grid;place-items:center;flex-shrink:0}
-  .brand .logo svg{width:20px;height:20px}
-  .section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:14px 10px 6px}
-  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:.93rem;color:var(--text)}
-  .nav-item:hover{background:var(--hover)}
-  .nav-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
-  .nav-item svg{width:18px;height:18px;flex-shrink:0}
-  .side-foot{margin-top:auto;padding:12px 10px;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line)}
+  /* ---------- Barra de arriba (fija): los años y, adentro de una materia, sus bloques ---------- */
+  .barra{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(30,25,15,.04)}
+  .barra-in{max-width:1640px;margin:0 auto;padding:10px 40px;display:flex;align-items:center;gap:20px}
+  .marca{display:flex;align-items:center;gap:10px;font-family:Georgia,"Times New Roman",serif;font-size:1.15rem;white-space:nowrap}
+  .logo{width:32px;height:32px;border-radius:9px;background:var(--brand);color:#fff;display:grid;place-items:center;flex-shrink:0}
+  .logo svg{width:21px;height:21px}
+  .anios{display:flex;gap:2px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;overflow-x:auto;scrollbar-width:none;min-width:0}
+  .anios::-webkit-scrollbar{display:none}
+  .anio{font:inherit;font-size:.88rem;font-weight:600;color:var(--muted);background:none;border:0;border-radius:999px;padding:7px 15px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+  @media (hover:hover){ .anio:not(.on):hover{color:var(--text);background:var(--hover)} }
+  .anio.on{background:var(--brand);color:#fff}
+  .anio:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .barra-av{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);white-space:nowrap}
+  .barra-av svg{width:30px;height:30px;transform:rotate(-90deg)}
+  .barra-av circle{fill:none;stroke-width:4}
+  .barra-av b{color:var(--text);font-size:.95rem;font-variant-numeric:tabular-nums}
+  .subnav{border-top:1px solid var(--line)}
+  .subnav-in{max-width:1200px;margin:0 auto;padding:7px 40px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
+  .subnav-in::-webkit-scrollbar{display:none}
+  .sub-mat{display:flex;align-items:center;font-weight:700;font-size:.9rem;margin-right:12px;white-space:nowrap}
+  .sub-mat .abr{margin-right:0}
+  .sub{display:inline-flex;align-items:center;gap:7px;font-size:.86rem;font-weight:600;color:var(--muted);padding:6px 13px;border-radius:999px;white-space:nowrap}
+  .sub svg{width:15px;height:15px;flex-shrink:0}
+  .sub:hover{background:var(--hover);color:var(--text)}
+  .sub.on{background:var(--accent-soft);color:var(--accent)}
+  .pie{max-width:1560px;margin:40px auto 0;font-size:.8rem;color:var(--muted)}
 
   /* ---------- Principal ---------- */
-  main{flex:1;margin-left:260px;padding:40px 48px;max-width:1660px;min-width:0}
-  .topbar{display:none}
+  main{padding:30px 40px 40px;min-width:0}
+  #app{max-width:1560px;margin:0 auto}
   .crumbs{font-size:.85rem;color:var(--muted);margin-bottom:8px}
   .crumbs span[data-go]:hover{color:var(--accent)}
   h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:2.1rem;margin-bottom:10px}
@@ -245,7 +261,7 @@
   @media (max-width:900px){
     .cv-main{display:flex;flex-direction:column;align-items:stretch}
     .cv-der{display:contents}
-    .cv-chipsf{order:1} .cv-paso{order:2;position:sticky;top:0;z-index:5;box-shadow:0 6px 16px rgba(0,0,0,.08)} .cv-diag{order:3} .cv-code{order:4} .cv-der .cv-siempre{order:5}
+    .cv-chipsf{order:1} .cv-paso{order:2;position:sticky;top:var(--barra-h, 0px);z-index:5;box-shadow:0 6px 16px rgba(0,0,0,.08)} .cv-diag{order:3} .cv-code{order:4} .cv-der .cv-siempre{order:5}
     .cv-txt{min-height:0;font-size:.9rem}
     .cv-comp{grid-template-columns:1fr}
   }
@@ -469,7 +485,7 @@
     .cine-btn{display:inline-flex}
     #app.angosto:has(.player-wrap.cine){max-width:none}
     .player-wrap.cine{grid-template-columns:minmax(0,1fr)}
-    #app .player-wrap.cine .player{max-width:none;width:min(100%, calc((100vh - 150px) * 16 / 9));margin:0 auto}
+    #app .player-wrap.cine .player{max-width:none;width:min(100%, calc((100vh - 110px - var(--barra-h, 0px)) * 16 / 9));margin:0 auto}
     .player-wrap.cine .pl-head{display:flex;align-items:center;gap:12px}
     .player-wrap.cine .pl-head b{display:inline}
     .player-wrap.cine .pl-flechas{display:flex}
@@ -489,7 +505,6 @@
     .abajo button svg{width:21px;height:21px}
     .abajo button.on{color:var(--accent);font-weight:700}
     .abajo button:disabled{opacity:.35}
-    .topbar .menu-btn{display:none}
     /* Material compacto: la fila entera se toca, sin el texto "Abrir" */
     .file{gap:10px;padding:10px 12px;border-radius:12px}
     .file .name{font-size:.9rem;line-height:1.3}
@@ -510,46 +525,50 @@
     .cond-req li{grid-template-columns:1fr;gap:2px}
   }
   @media (max-width:760px){
-    .sidebar{transform:translateX(-100%)}
-    .sidebar.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.3)}
-    main{margin-left:0;padding:16px}
-    .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-    .menu-btn{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 10px;color:var(--text);font-size:1.1rem;cursor:pointer}
+    main{padding:18px 16px}
+    .barra-in{padding:8px 12px;gap:10px}
+    .marca span,.barra-av{display:none}
+    .anios{margin:0;flex:0 1 auto}
+    .anio{padding:7px 12px}
+    .anio .largo{display:none}
+    /* Adentro de una materia, en el celular: el logo y los bloques de la materia en una sola fila */
+    .barra.en-materia{display:flex;align-items:center}
+    .barra.en-materia .barra-in{flex:none;padding-right:0}
+    .barra.en-materia .anios{display:none}
+    .barra.en-materia .subnav{flex:1;min-width:0;border-top:0}
+    .subnav-in{padding:8px 12px 8px 8px}
+    .pie{margin-top:28px}
     h1{font-size:1.6rem}
     .pl-thumb{width:100px}
   }
 
-  /* ---------- Plan de estudios (inicio): una pestaña por año ---------- */
+  /* ---------- Plan de estudios (inicio): todos los años en una página ---------- */
   :root{--elec:#a15c07;--elec-soft:#fdf1e2;--elec-bg:#fffaf3}
   @media (prefers-color-scheme: dark){ :root{--elec:#f0b46a;--elec-soft:#3a2c1a;--elec-bg:#2e2b26} }
   .nivel{margin-bottom:10px;scroll-margin-top:20px}
-  .ptabs{position:relative;display:flex;gap:2px;width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:16px}
-  .ptabs::-webkit-scrollbar{display:none}
-  .ptab{font:inherit;font-size:.9rem;font-weight:600;color:var(--muted);background:none;border:0;border-radius:999px;padding:8px 16px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:baseline;gap:7px}
-  @media (hover:hover){ .ptab:not(.on):hover{color:var(--text);background:var(--hover)} }
-  .ptab.on{background:var(--brand);color:#fff}
-  .ptab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .ptabla{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:26px}
-  .presumen{display:flex;align-items:center;flex-wrap:wrap;gap:4px 14px;padding:16px 18px 14px}
-  .presumen h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.35rem}
-  .presumen > span{font-size:.82rem;color:var(--muted)}
-  .presumen .pav{margin-left:auto;display:inline-flex;align-items:center;gap:10px}
-  .presumen .bar{width:90px}
-  .pfila{display:grid;grid-template-columns:minmax(0,1fr) 128px 64px 160px 160px 30px 12px;gap:10px;align-items:center;padding:10px 18px;border-top:1px solid var(--line);font-size:.9rem}
-  .pfila[data-go]:hover{background:var(--hover)}
-  .pcab{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:8px;padding-bottom:8px;background:var(--bg)}
+  .anio-sec{margin-bottom:40px}
+  .presumen{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;padding:0 4px 10px}
+  .presumen h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.5rem}
+  .presumen > span{font-size:.84rem;color:var(--muted)}
+  .presumen .pav{margin-left:auto;display:inline-flex;align-items:center;gap:10px;align-self:center}
+  .presumen .bar{width:110px}
+  .pfila{display:grid;grid-template-columns:minmax(0,1fr) 128px 64px 160px 160px 30px 12px;gap:10px;align-items:center;padding:11px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px;font-size:.9rem;box-shadow:0 1px 2px rgba(30,25,15,.04);transition:border-color .15s,box-shadow .15s,transform .15s}
+  .pfila + .pfila{margin-top:7px}
+  .pfila[data-go]:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(30,25,15,.07);transform:translateY(-1px)}
+  .pcab{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:2px;padding-bottom:6px;background:none;border-color:transparent;box-shadow:none}
+  .pfila.pcab + .pfila{margin-top:0}
   .pnom{display:flex;align-items:center;font-weight:600;line-height:1.35;min-width:0}
-  .pnom .tag{font-weight:500;margin-left:4px;vertical-align:1px}
-  .pnom .abr{flex:none;width:64px;min-width:0;padding:3px 4px;margin-right:12px}
+  .pnom .abr{flex:none;width:64px;min-width:0;padding:3px 4px;margin-right:10px}
   .pfila .c{color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
   .pgo{color:var(--accent);font-weight:700;font-size:1.15rem;line-height:1}
-  .pdiv{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;padding:11px 18px 9px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted);background:var(--bg)}
-  .pdiv b{font-size:.88rem;color:var(--text)}
-  .pdiv.elec{background:var(--elec-soft)}
+  .pdiv{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin:22px 4px 9px;font-size:.8rem;color:var(--muted)}
+  .pdiv b{font-size:.92rem;color:var(--text)}
   .pdiv.elec b{color:var(--elec)}
+  .pdiv + .pfila{margin-top:0}
   .pfila.elec{background:var(--elec-bg)}
-  .pfila.elec[data-go]:hover{background:var(--hover)}
   .pfila.elec .pnom{font-weight:500}
+  .tag.mat{display:inline-flex;align-items:center;gap:4px;background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
+  .tag.mat svg{width:11px;height:11px}
   .elec-tag{color:var(--elec);background:var(--elec-soft);border-color:transparent;font-weight:700;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase}
   .tag{font-size:.7rem;padding:2px 7px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
   .tag.ok{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
@@ -565,7 +584,7 @@
   .chk.on:hover{filter:brightness(1.1)}
 
   /* Contraseña de entrada */
-  body.locked > aside, body.locked > main, body.locked > .abajo{display:none}
+  body.locked > header, body.locked > main, body.locked > .abajo{display:none}
   .lock{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);padding:16px;z-index:50}
   .lock[hidden]{display:none}
   .lock-box{width:100%;max-width:320px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
@@ -620,14 +639,16 @@
   .zip-btn small{font-weight:400;color:var(--muted)}
   .abr-lg{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.9rem;padding:4px 10px;margin-right:12px;vertical-align:6px}
   @media (max-width:760px){
-    .ptabs{border-radius:12px;margin-left:-2px;margin-right:-2px}
-    .ptab{padding:8px 12px;font-size:.86rem}
-    .presumen{padding:14px 14px 12px}
+    .anio-sec{margin-bottom:30px}
+    .presumen{padding:0 2px 10px}
+    .presumen h2{font-size:1.3rem}
     .presumen .pav{margin-left:0}
     .pcab{display:none}
-    .pfila{grid-template-columns:auto minmax(0,1fr);gap:3px 8px;padding:11px 50px 11px 14px;position:relative}
+    .pfila{grid-template-columns:auto minmax(0,1fr);gap:3px 8px;padding:12px 50px 12px 14px;position:relative;border-radius:12px}
+    .pfila + .pfila{margin-top:6px}
     .pnom{grid-column:1 / -1}
     .pnom .abr{width:auto;min-width:46px;margin-right:10px}
+    .pnom .abr.vacio{display:none}
     .pfila .c{font-size:.8rem}
     .pfila .c.hs::before{content:"·";margin-right:4px}
     .pfila .c.cor{grid-column:1 / -1}
@@ -635,7 +656,7 @@
     .pfila .c.vacia{display:none}
     .pfila .chk{position:absolute;top:10px;right:12px}
     .pgo{display:none}
-    .pdiv{padding:11px 14px 9px}
+    .pdiv{margin:18px 2px 8px}
   }
   .num{font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--beige);color:var(--beige-t);cursor:help;font-variant-numeric:tabular-nums}
   .notas{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;font-size:.88rem;line-height:1.55;color:var(--muted)}
@@ -645,6 +666,7 @@
   /* Ficha de la materia */
   /* Dentro de una materia el contenido va más angosto (el plan usa todo el ancho) */
   #app.angosto{max-width:1120px}
+  .pie.angosto{max-width:1120px}
   .card.compacta p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
   /* Comisiones de la materia */
@@ -718,14 +740,14 @@
   </form>
 </div>
 
-<aside class="sidebar" id="sidebar"></aside>
+<header class="barra" id="barra">
+  <div class="barra-in" id="barraIn"></div>
+  <nav class="subnav" id="subnav" aria-label="Bloques de la materia" hidden><div class="subnav-in" id="subnavIn"></div></nav>
+</header>
 
 <main>
-  <div class="topbar">
-    <button class="menu-btn" id="menuBtn">☰</button>
-    <b id="topName"></b>
-  </div>
   <div id="app"></div>
+  <p class="pie" id="pie"></p>
 </main>
 
 <!-- En el celular: barra abajo para moverse con el pulgar -->
@@ -733,7 +755,6 @@
   <button data-up><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg><span>Atrás</span></button>
   <button data-go="inicio" id="abajoPlan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg><span>Plan</span></button>
   <button id="abajoMat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></svg><span>Materia</span></button>
-  <button id="abajoMenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menú</span></button>
 </nav>
 
 <dialog id="config">
@@ -2348,35 +2369,75 @@ const ICON_LAYER= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 /* Ruta actual, tomada del link (#/...): "", "m26", "m26/p2", "m26/p2/teorico/videos", "m26/actividades" */
 let ruta = "";
 
-/* ---------- Barra lateral ---------- */
-function renderSidebar(m){
+/* ---------- Barra de arriba (fija) ----------
+   Siempre: el logo (vuelve al plan), los años del plan y el avance.
+   Adentro de una materia, una segunda fila con sus bloques (parciales, TP, actividades…). */
+function renderBarra(m){
   const [a, b] = ruta.split("/");
-  const item = (go, icon, label, on) =>
-    `<div class="nav-item ${on ? "active" : ""}" data-go="${go}">${icon}<span>${label}</span></div>`;
-  const brand = `<div class="brand"><div class="logo">${LOGO}</div><span>${esc(CARRERA.nombre)}</span></div>`;
-  let body;
-
-  if(m){
-    const c = MATERIAS[m.n];
-    body = `
-      ${item("inicio", ICON_BACK, "Plan de estudios", false)}
-      <div class="section-label">${esc(m.nombre)}</div>
-      ${item(a, ICON_HOME, "Inicio de la materia", !b)}
-      ${c ? c.parciales.map(p => item(`${a}/${p.id}`, iconoSeccion(p.id), esc(p.titulo), b === p.id)).join("") : ""}
-      ${c && c.secciones ? c.secciones.map(x => item(`${a}/${x.id}`, iconoSeccion(x.id), esc(x.titulo), b === x.id)).join("") : ""}
-      ${c && c.actividades ? item(`${a}/actividades`, ICON_CHECK, "Actividades", b === "actividades") : ""}`;
-  } else {
-    const niveles = [...new Set(CARRERA.materias.map(x => x.nivel))];
-    const conContenido = [...CARRERA.materias, ...CARRERA.electivas].filter(x => MATERIAS[x.n]);
-    body = `
-      ${item("inicio", ICON_HOME, "Plan de estudios", false)}
-      ${conContenido.length ? `<div class="section-label">Materias con material</div>
-        ${conContenido.map(x => item(`m${x.n}`, ICON_BOOK, esc(x.nombre), false)).join("")}` : ""}
-      <div class="section-label">Ir a</div>
-      ${niveles.map(n => `<div class="nav-item ${n === nivelPlan ? "active" : ""}" data-tab="${n}">${ICON_LAYER}<span>${n === 0 ? "Ingreso" : `${n}º Nivel`}</span></div>`).join("")}`;
-  }
-  $("#sidebar").innerHTML = `${brand}${body}<div class="side-foot">${esc(CARRERA.plan)} · ${esc(CARRERA.pie)}</div>`;
+  const av = progreso().pct, C = 2 * Math.PI * 15;
+  $("#barraIn").innerHTML = `
+    <div class="marca" data-go="inicio" title="Plan de estudios"><div class="logo">${LOGO}</div><span>${esc(CARRERA.nombre)}</span></div>
+    <nav class="anios" aria-label="Años de la carrera">${NIVELES_PLAN.map(n =>
+      `<button class="anio" data-anio="${n}">${n === 0 ? "Ingreso" : `${n}º<span class="largo"> Nivel</span>`}</button>`).join("")}</nav>
+    <div class="barra-av" title="Avance de la carrera"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" stroke="var(--hover)"/><circle cx="18" cy="18" r="15" stroke="var(--ok)" stroke-linecap="round" stroke-dasharray="${(av / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg><b>${av}%</b></div>`;
+  const c = m && MATERIAS[m.n];
+  const sub = (go, icon, label, on) => `<a class="sub ${on ? "on" : ""}" data-go="${go}" href="#/${go}">${icon}<span>${label}</span></a>`;
+  $("#subnavIn").innerHTML = m ? `
+    <span class="sub-mat" title="${esc(m.nombre)}">${m.abr ? abr(m) : `<b>${esc(m.nombre)}</b>`}</span>
+    ${c ? `${sub(a, ICON_HOME, "Inicio", !b)}
+      ${c.parciales.map(p => sub(`${a}/${p.id}`, iconoSeccion(p.id), esc(p.titulo), b === p.id)).join("")}
+      ${(c.secciones || []).map(x => sub(`${a}/${x.id}`, iconoSeccion(x.id), esc(x.titulo), b === x.id)).join("")}
+      ${c.actividades ? sub(`${a}/actividades`, ICON_CHECK, "Actividades", b === "actividades") : ""}` : ""}` : "";
+  $("#subnav").hidden = !m;
+  $("#barra").classList.toggle("en-materia", !!m);
+  centrarEn($("#subnavIn"), $("#subnavIn .sub.on"));
+  marcarAnio(m ? m.nivel : anioEnPantalla());
+  medirBarra();
 }
+/* Alto de la barra: los saltos (a un año, al quiz…) quedan justo debajo de ella */
+function medirBarra(){
+  document.documentElement.style.setProperty("--barra-h", $("#barra").offsetHeight + "px");
+}
+function marcarAnio(n){
+  document.querySelectorAll(".anio").forEach(x => {
+    const on = +x.dataset.anio === n;
+    x.classList.toggle("on", on);
+    if(on) x.setAttribute("aria-current", "true"); else x.removeAttribute("aria-current");
+  });
+  centrarEn($(".anios"), $(".anio.on"));
+}
+/* En el celular las filas de la barra se deslizan: que se vea lo marcado */
+function centrarEn(fila, el){
+  if(fila && el && fila.scrollWidth > fila.clientWidth) fila.scrollLeft = el.offsetLeft - fila.offsetLeft - (fila.clientWidth - el.offsetWidth) / 2;
+}
+/* El año que se está viendo: el último cuya cabecera ya pasó por debajo de la barra */
+function anioEnPantalla(){
+  const secs = document.querySelectorAll(".anio-sec");
+  if(!secs.length) return null;
+  const tope = $("#barra").offsetHeight + 80;
+  let n = +secs[0].dataset.nivel;
+  secs.forEach(x => { if(x.getBoundingClientRect().top <= tope) n = +x.dataset.nivel; });
+  return n;
+}
+/* Tocar un año: en el plan baja hasta ese año; desde una materia vuelve al plan, en ese año */
+let irAnio = null;      // año al que hay que ir cuando se dibuje el plan
+let anioFijo = null;    // mientras se desliza hasta un año, ese queda marcado
+function irAlAnio(n){
+  if(ruta !== ""){ irAnio = n; location.hash = "#/"; return; }
+  const x = document.getElementById("nivel-" + n);
+  if(!x) return;
+  anioFijo = n;
+  marcarAnio(n);
+  x.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+}
+let pedidoAnio = 0;
+window.addEventListener("scroll", () => {
+  if(ruta !== "" || pedidoAnio) return;
+  pedidoAnio = requestAnimationFrame(() => { pedidoAnio = 0; marcarAnio(anioFijo ?? anioEnPantalla()); });
+}, { passive: true });
+// Apenas la persona mueve la página a mano, el año marcado vuelve a seguir lo que se ve
+["wheel", "touchstart", "keydown", "mousedown"].forEach(t => window.addEventListener(t, () => { anioFijo = null; }, { passive: true }));
+window.addEventListener("resize", medirBarra);
 
 /* ---------- Materias aprobadas ----------
    Se guardan en el archivo aprobadas.json del repo (GitHub).
@@ -2588,14 +2649,6 @@ function check(id, nombre){
 
 const CREDITOS_NIVEL = { 3: 4, 4: 6, 5: 10 };   // créditos mínimos de electivas de cada nivel (ver las notas del plan)
 const NIVELES_PLAN = [...new Set(CARRERA.materias.map(m => m.nivel))];
-const CLAVE_PESTANIA = "isi-plan-nivel";        // la pestaña elegida se recuerda en este navegador
-let nivelPlan = (() => { const g = leerLocal(CLAVE_PESTANIA); return g !== null && NIVELES_PLAN.includes(+g) ? +g : 1; })();
-function elegirNivel(n){
-  nivelPlan = n;
-  guardarLocal(CLAVE_PESTANIA, String(n));
-  if(ruta !== "") location.hash = "#/";
-  else { refrescar(); document.querySelector(`.ptab[data-tab="${n}"]`)?.focus({ preventScroll: true }); }
-}
 
 function filaPlan(x){
   const el = !!x.creditos;                       // electiva
@@ -2603,7 +2656,7 @@ function filaPlan(x){
   const go = !el || MATERIAS[x.n] ? ` data-go="m${x.n}"` : "";
   return `
     <div class="pfila ${el ? "elec" : ""} ${ok(id) ? "done" : ""}"${go}>
-      <span class="pnom">${abr(x)}<span>${esc(x.nombre)}${el ? ` <span class="tag elec-tag">Electiva</span>` : ""}${x.integradora ? ` <span class="tag">Integradora</span>` : ""}</span></span>
+      <span class="pnom">${abr(x)}<span>${esc(x.nombre)}${el ? ` <span class="tag elec-tag">Electiva</span>` : ""}${x.integradora ? ` <span class="tag">Integradora</span>` : ""}${MATERIAS[x.n] ? ` <span class="tag mat" title="Tiene apuntes, parciales o videos cargados">${ICON_BOOK}Material</span>` : ""}</span></span>
       <span class="c cur" data-l="Cursado">${MOD_CORTO[x.mod]}${x.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
       <span class="c hs" data-l="${el ? "Créditos" : "Horas"}">${el ? `${x.creditos} créd.` : x.horas ? `${x.horas} hs` : "—"}</span>
       <span class="c cor ${x.regular.length ? "" : "vacia"}" data-l="Regularizadas">${celdaCorr(x.regular)}</span>
@@ -2621,7 +2674,7 @@ function tablaNivel(n){
   const hechas = ms.filter(m => ok(idMat(m))).length;
   const cred = el.filter(e => ok(idElec(e))).reduce((t, e) => t + e.creditos, 0);
   return `
-    <div class="ptabla" role="tabpanel" aria-label="${esc(nombreNivel(n))}">
+    <section class="anio-sec" id="nivel-${n}" data-nivel="${n}" aria-label="${esc(nombreNivel(n))}">
       <div class="presumen">
         <h2>${nombreNivel(n)}</h2>
         <span>${ms.length} materias${hs ? ` · ${hs} hs` : ""}${el.length ? ` · ${el.length} electivas` : ""}</span>
@@ -2635,7 +2688,7 @@ function tablaNivel(n){
       ${el.length ? `
         <div class="pdiv elec"><b>Electivas de ${n}º nivel</b><span>${el.length} para elegir${CREDITOS_NIVEL[n] ? ` · necesitás como mínimo ${CREDITOS_NIVEL[n]} créditos` : ""}${cred ? ` · ${cred} aprobados` : ""}</span></div>
         ${el.map(filaPlan).join("")}` : ""}
-    </div>`;
+    </section>`;
 }
 function viewInicio(){
   return `
@@ -2643,11 +2696,7 @@ function viewInicio(){
     <p class="lead lead-full">${esc(CARRERA.plan)}. ${esc(CARRERA.bienvenida)}</p>
     <div id="progreso">${panelProgreso()}</div>
     <div class="sync" id="sync"></div>
-    <div class="ptabs" role="tablist" aria-label="Año de la carrera">${NIVELES_PLAN.map(n => {
-      const on = n === nivelPlan;
-      return `<button class="ptab ${on ? "on" : ""}" role="tab" aria-selected="${on}" tabindex="${on ? 0 : -1}" data-tab="${n}">${n === 0 ? "Ingreso" : `${n}º Nivel`}</button>`;
-    }).join("")}</div>
-    ${tablaNivel(nivelPlan)}
+    ${NIVELES_PLAN.map(tablaNivel).join("")}
     <div class="notas"><ul>${CARRERA.notas.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
 }
 
@@ -3470,7 +3519,7 @@ function mountPlayer(videos, titulo){
       cine = !cine; guardarLocal(CLAVE_CINE, cine ? "1" : null);
       wrap.classList.toggle("cine", cine); pintar();
       const act = body.querySelector(".pl-item.active"); if(act) centrar(act, false);
-      if(cine){ const r = $("#player").getBoundingClientRect(); if(r.top < 0 || r.bottom > innerHeight) scrollBy({ top: r.top - 16, behavior: "smooth" }); }
+      if(cine){ const r = $("#player").getBoundingClientRect(), tope = $("#barra").offsetHeight + 12; if(r.top < tope || r.bottom > innerHeight) scrollBy({ top: r.top - tope, behavior: "smooth" }); }
     });
     $("#plAnt").addEventListener("click", () => lst.scrollBy({ left: -lst.clientWidth * .8, behavior: "smooth" }));
     $("#plSig").addEventListener("click", () => lst.scrollBy({ left: lst.clientWidth * .8, behavior: "smooth" }));
@@ -4427,7 +4476,10 @@ function viewHerramienta(m, p, id){
 }
 
 /* ---------- Navegación ---------- */
+let yPlan = null;   // dónde estaba el plan al entrar a una materia (al volver, queda ahí)
 function render(arriba = true){
+  const venia = ruta;
+  if(venia === "" && location.hash.replace(/^#\/?/, "") !== "") yPlan = window.scrollY;
   ruta = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
   let [a, b, c, d] = ruta.split("/");
   const app = $("#app");
@@ -4475,18 +4527,25 @@ function render(arriba = true){
   } else {
     ruta = "";
     app.innerHTML = viewInicio();
-    // En el celular la barra de pestañas se desliza: que se vea la elegida
-    const tabs = $(".ptabs"), on = tabs && tabs.querySelector(".ptab.on");
-    if(on) tabs.scrollLeft = on.offsetLeft - (tabs.clientWidth - on.offsetWidth) / 2;
   }
   app.className = m ? "angosto" : "";
-  renderSidebar(m);
+  $("#pie").className = "pie " + app.className;
+  $("#pie").textContent = `${CARRERA.plan} · ${CARRERA.pie}`;
   pintarSync();
   document.title = titulo;
-  $("#topName").textContent = m ? m.nombre : CARRERA.nombre;
-  $("#sidebar").classList.remove("open");
   pintarAbajo(m);
-  if(arriba) window.scrollTo(0, 0);
+  if(ruta === "" && irAnio !== null){
+    const x = document.getElementById("nivel-" + irAnio);
+    anioFijo = irAnio;
+    irAnio = null;
+    renderBarra(m);
+    if(x) x.scrollIntoView({ block: "start" }); else window.scrollTo(0, 0);
+  } else {
+    renderBarra(m);
+    if(ruta === "" && venia !== "" && yPlan !== null) window.scrollTo(0, yPlan);
+    else if(arriba) window.scrollTo(0, 0);
+  }
+  marcarAnio(m ? m.nivel : anioFijo ?? anioEnPantalla());
 }
 
 /* Barra de abajo (celular): Atrás sube un nivel (de la sección al parcial, del parcial a la materia…) */
@@ -4505,7 +4564,7 @@ function pintarAbajo(m){
   $("#abajo [data-up]").disabled = ruta === "";
 }
 
-/* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) o data-tab (año del plan) */
+/* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) o data-anio (año del plan) */
 document.addEventListener("click", e => {
   if(e.target.closest("[data-config]")){ abrirConfig(); return; }
   const pdf = e.target.closest("a.file[data-pdf]");
@@ -4524,12 +4583,8 @@ document.addEventListener("click", e => {
     return;
   }
   if(e.target.closest("#quiz") && clicQuiz(e)) return;
-  const tb = e.target.closest("[data-tab]");
-  if(tb){
-    $("#sidebar").classList.remove("open");
-    elegirNivel(+tb.dataset.tab);
-    return;
-  }
+  const an = e.target.closest("[data-anio]");
+  if(an){ irAlAnio(+an.dataset.anio); return; }
   const el = e.target.closest("[data-go]");
   if(!el) return;
   e.preventDefault();
@@ -4538,16 +4593,6 @@ document.addEventListener("click", e => {
   if(go === ruta) render(); else location.hash = "#/" + go;
 });
 window.addEventListener("hashchange", render);
-document.addEventListener("keydown", e => {
-  const t = e.target.closest && e.target.closest(".ptab");
-  if(!t || !/^(ArrowLeft|ArrowRight|Home|End)$/.test(e.key)) return;
-  e.preventDefault();
-  const i = NIVELES_PLAN.indexOf(nivelPlan), u = NIVELES_PLAN.length - 1;
-  const j = e.key === "Home" ? 0 : e.key === "End" ? u : Math.min(u, Math.max(0, i + (e.key === "ArrowRight" ? 1 : -1)));
-  elegirNivel(NIVELES_PLAN[j]);
-});
-$("#menuBtn").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
-$("#abajoMenu").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
 $("#abajo [data-up]").addEventListener("click", () => { location.hash = "#/" + rutaPadre(ruta); });
 
 $("#guardarToken").addEventListener("click", guardarToken);
