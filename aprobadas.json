@@ -31,7 +31,9 @@
     "m9",
     "m99"
   ],
-  "estados": {},
+  "estados": {
+    "m23": "regular"
+  },
   "notas": {
     "e:Gestión de la Mejora de los Procesos": 9,
     "m1": 6,
