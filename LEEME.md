@@ -11,18 +11,23 @@
 
 ## Links
 Cada página tiene su propio link, por ejemplo:
+- `#/` → inicio: el resumen del avance
+- `#/nivel/3` → las materias de 3º Nivel (`#/nivel/0` es el Ingreso)
 - `#/m26` → Redes de Datos
 - `#/m26/p2` → 2º Parcial de Redes de Datos
 - `#/m26/p2/teorico/videos` → videos del teórico
 
 ## Agregar una materia con contenido
-Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En el plan, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
+Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En la lista de su año, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
 
 ## Barra de arriba
-No hay columna al costado: la página usa todo el ancho. Arriba queda fija una barra con el logo (vuelve al plan), los años (Ingreso, 1º a 5º Nivel) y el avance. En el plan, tocar un año baja hasta él y la barra marca el año que se está viendo; desde una materia, vuelve al plan en ese año. Adentro de una materia aparece una segunda fila con sus bloques (Inicio, parciales, TP, actividades). En el celular, adentro de una materia, esa fila reemplaza a los años (para volver al plan está "Plan" en la barra de abajo). Al volver al plan desde una materia, queda donde estaba.
+No hay columna al costado: la página usa todo el ancho. Arriba queda fija una barra con el logo y el avance (los dos llevan al inicio) y los años (Ingreso, 1º a 5º Nivel), que ocupan casi todo el ancho; cada año lleva a sus materias y queda marcado mientras estás en él o en una de sus materias. Adentro de una materia aparece una segunda fila, igual de ancha, con sus bloques (Inicio, parciales, TP, actividades). En el celular, adentro de una materia, esa fila reemplaza a los años (para volver está "Inicio" o "Atrás" en la barra de abajo).
 
-## Plan de estudios (inicio)
-Todos los años en una sola página, uno debajo del otro. Cada año muestra las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que tienen material cargado llevan la etiqueta "Material".
+## Inicio: resumen del avance
+El inicio (`viewResumen`) no lista las materias: muestra el avance de la carrera (anillo con el %, materias, horas y créditos de electivas) y una tarjeta por año con sus materias como pastillas (en verde las aprobadas). Tocar la tarjeta lleva al año; tocar una pastilla, a la materia. Abajo van las notas del plan.
+
+## Cada año
+`#/nivel/N` (`viewNivel`) muestra solo las materias de ese año: las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que tienen material cargado llevan la etiqueta "Material". Al final, botones para ir al año anterior o al siguiente. Al volver de una materia, la lista queda donde estaba, y el "Atrás" de una materia lleva a su año.
 Cada materia lleva su abreviatura en una pastilla beige (`.abr`), igual que las correlativas; las correlativas ya aprobadas se ven en verde. Los colores del beige son `--beige` y `--beige-t` (con su versión para el modo oscuro).
 
 ## Agregar un PDF
