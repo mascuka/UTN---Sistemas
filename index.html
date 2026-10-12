@@ -2621,7 +2621,7 @@ function renderBarra(m, nivel){
     <a class="marca" data-go="inicio" href="#/" title="Resumen del avance"><div class="logo">${LOGO}</div><span>${esc(CARRERA.nombre)}</span></a>
     <nav class="anios" aria-label="Años de la carrera">${NIVELES_PLAN.map(n =>
       `<a class="anio" data-go="nivel/${n}" href="#/nivel/${n}" data-n="${n}">${n === 0 ? "Ingreso" : `${n}º<span class="largo"> Nivel</span>`}</a>`).join("")}</nav>
-    <button class="tema-btn" data-tema title="${document.documentElement.dataset.tema === "oscuro" ? "Pasar a modo claro" : "Pasar a modo oscuro"}" aria-label="Cambiar entre modo claro y oscuro">${document.documentElement.dataset.tema === "oscuro" ? ICON_SOL : ICON_LUNA}</button>
+    <button class="tema-btn" data-cambiar-tema title="${document.documentElement.dataset.tema === "oscuro" ? "Pasar a modo claro" : "Pasar a modo oscuro"}" aria-label="Cambiar entre modo claro y oscuro">${document.documentElement.dataset.tema === "oscuro" ? ICON_SOL : ICON_LUNA}</button>
     <a class="barra-av" data-go="inicio" href="#/" title="Avance de la carrera"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" stroke="var(--hover)"/><circle cx="18" cy="18" r="15" stroke="var(--ok)" stroke-linecap="round" stroke-dasharray="${(av / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg><b>${av}%</b></a>`;
   const c = m && MATERIAS[m.n];
   const sub = (go, icon, label, on) => `<a class="sub ${on ? "on" : ""}" data-go="${go}" href="#/${go}">${icon}<span>${label}</span></a>`;
@@ -5078,7 +5078,7 @@ document.addEventListener("click", e => {
   }
   const z = e.target.closest("[data-zip]");
   if(z){ descargarZip(z); return; }
-  if(e.target.closest("[data-tema]")){
+  if(e.target.closest("[data-cambiar-tema]")){
     const t = document.documentElement.dataset.tema === "oscuro" ? "claro" : "oscuro";
     guardarLocal("isi-tema", t);
     ponerTema(t);
