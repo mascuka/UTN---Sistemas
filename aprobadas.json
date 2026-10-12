@@ -32,7 +32,8 @@
     "m99"
   ],
   "estados": {
-    "m23": "regular"
+    "m23": "regular",
+    "m29": "cursando"
   },
   "notas": {
     "e:Gestión Industrial de la Producción": 7,
