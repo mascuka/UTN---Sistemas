@@ -10,12 +10,14 @@
     --bg:#faf9f5; --side:#f0eee6; --card:#ffffff; --text:#2b2a27; --muted:#6f6c64;
     --line:#e3e0d6; --accent:#0a8497; --brand:#0a8497; --accent-soft:#daf1f4; --hover:#e8e5da;
     --ok:#2e7d4f; --ok-soft:#dcefe2; --done:#eef5ec; --done-line:#cfe3cf;
+    --beige:#efe7d7; --beige-t:#5e5442;
   }
   @media (prefers-color-scheme: dark){
     :root{
       --bg:#262624; --side:#1f1e1d; --card:#30302e; --text:#ece9e1; --muted:#a39f95;
       --line:#3d3c39; --accent:#4cc3d3; --brand:#0a8497; --accent-soft:#18383d; --hover:#343331;
       --ok:#7fd1a0; --ok-soft:#21392b; --done:#26302a; --done-line:#35483b;
+      --beige:#3d3830; --beige-t:#e3d8c2;
     }
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -538,7 +540,7 @@
   .pcab{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:8px;padding-bottom:8px;background:var(--bg)}
   .pnom{display:flex;align-items:center;font-weight:600;line-height:1.35;min-width:0}
   .pnom .tag{font-weight:500;margin-left:4px;vertical-align:1px}
-  .pnom .abr{flex:none;width:64px;min-width:0;padding:2px 4px;margin-right:12px}
+  .pnom .abr{flex:none;width:64px;min-width:0;padding:3px 4px;margin-right:12px}
   .pfila .c{color:var(--muted);font-size:.85rem;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
   .pgo{color:var(--accent);font-weight:700;font-size:1.15rem;line-height:1}
   .pdiv{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;padding:11px 18px 9px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted);background:var(--bg)}
@@ -605,9 +607,8 @@
   .progreso em{font-style:normal;font-size:.75rem}
   .progreso em .cumple{color:var(--ok);font-weight:600}
 
-  .abr{display:inline-block;min-width:46px;text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.02em;padding:2px 6px;margin-right:8px;border-radius:6px;background:var(--hover);color:var(--muted);vertical-align:1px;white-space:nowrap}
+  .abr{display:inline-block;min-width:46px;text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.03em;padding:3px 9px;margin-right:8px;border-radius:999px;background:var(--beige);color:var(--beige-t);vertical-align:1px;white-space:nowrap}
   /* Con el color de la materia en los horarios */
-  .abr.color{background:var(--c);color:var(--ct);box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
   .abr.vacio{background:none;box-shadow:none}
   /* Cabecera de materia con el botón de descarga */
   .mat-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
@@ -636,7 +637,7 @@
     .pgo{display:none}
     .pdiv{padding:11px 14px 9px}
   }
-  .num{font-size:.72rem;font-weight:600;padding:1px 6px;border-radius:5px;background:var(--hover);color:var(--text);cursor:help;font-variant-numeric:tabular-nums}
+  .num{font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--beige);color:var(--beige-t);cursor:help;font-variant-numeric:tabular-nums}
   .notas{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;font-size:.88rem;line-height:1.55;color:var(--muted)}
   .notas ul{padding-left:18px;display:flex;flex-direction:column;gap:6px}
   .notas b{color:var(--text)}
@@ -2565,29 +2566,9 @@ function panelProgreso(){
 }
 
 /* ---------- Plan de estudios (inicio): una pestaña por año ---------- */
-/* Color de cada materia: el mismo que tiene en los horarios de cursado 2026 (por número de materia).
-   Algunas electivas comparten casillero en los horarios (ej.: "GMP / GIP"): llevan el color de ese casillero.
-   Las que no figuran en los horarios (ingreso, Seminario y algunas electivas) quedan sin color. */
-const COLORES = {
-  1: "#9cc2e5", 2: "#92d050", 3: "#ffe598", 4: "#ffc000", 5: "#ed7d31", 6: "#ffff00", 7: "#00b0f0", 8: "#c8c8c8", 11: "#893bc3",
-  9: "#fbe4d5", 10: "#ffff00", 12: "#548135", 13: "#00b0f0", 14: "#ed7d31", 15: "#9cc2e5", 16: "#ffc000", 17: "#92d050",
-  18: "#ffff00", 19: "#ffff00", 20: "#ffe598", 21: "#92d050", 22: "#aeabab", 23: "#9cc2e5",
-  24: "#9cc2e5", 25: "#d0cece", 26: "#ffe598", 27: "#92d050", 28: "#9cc2e5", 29: "#c5e0b3", 30: "#ffff00",
-  31: "#ffff00", 32: "#adb9ca", 33: "#9cc2e5", 34: "#92d050", 35: "#f4b083", 36: "#ffe598",
-  201: "#fef2cb", 202: "#c55a11", 203: "#c55a11", 204: "#8496b0", 205: "#c55a11", 206: "#00b050", 207: "#8496b0",
-  209: "#7030a0", 212: "#ffc000", 213: "#c55a11", 214: "#ffc000", 215: "#92d050", 216: "#c55a11", 217: "#c5e0b3",
-  218: "#7030a0", 219: "#548135"
-};
-/* Texto negro o blanco sobre el color: el que más contraste tenga */
-function textoSobre(hex){
-  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)
-    .map(c => c <= .03928 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4);
-  const l = .2126 * r + .7152 * g + .0722 * b;
-  return (l + .05) / .05 >= 1.05 / (l + .05) ? "#1f1e1d" : "#ffffff";
-}
+/* Abreviatura de la materia en una pastilla beige */
 function abr(x, clase = ""){
-  const c = COLORES[x.n];
-  return `<span class="abr ${clase} ${x.abr ? "" : "vacio"} ${c && x.abr ? "color" : ""}"${c && x.abr ? ` style="--c:${c};--ct:${textoSobre(c)}"` : ""}>${esc(x.abr || "")}</span>`;
+  return `<span class="abr ${clase} ${x.abr ? "" : "vacio"}">${esc(x.abr || "")}</span>`;
 }
 /* Correlativas: la abreviatura de cada materia (el nombre completo al pasar el mouse) */
 function nums(list){

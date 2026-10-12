@@ -3,7 +3,6 @@
 ## Estructura
 - `index.html` → la página. Todo el contenido se edita al principio del `<script>`:
   - `CARRERA` → el plan de estudios (página de inicio): materias por nivel, correlativas y electivas.
-  - `COLORES` → el color de cada materia (el de los horarios de cursado), por número de materia.
   - `MATERIAS` → el contenido de cada materia (parciales, material, videos, actividades), usando como clave el número de la materia (ej: `26` = Redes de Datos).
 - `material/<materia>/<parcial>/<teorico|practico>/` → los PDF de cada materia (ej: `material/redes-de-datos/p2/teorico/apunte.pdf`).
 - `material/<materia>/actividades/` → trabajos prácticos y entregas.
@@ -21,7 +20,7 @@ Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el d
 
 ## Plan de estudios (inicio)
 Una pestaña por año (Ingreso, 1º a 5º Nivel). Cada una muestra las obligatorias y debajo las electivas de ese año, con los créditos mínimos que pide (`CREDITOS_NIVEL`). La pestaña elegida se recuerda en el navegador.
-Cada materia lleva su abreviatura con el color que tiene en los horarios de cursado (`COLORES`, por número de materia). Las electivas que en los horarios comparten casillero con otra (ej.: "GMP / GIP") llevan el color de ese casillero; las que no figuran en los horarios quedan sin color. El texto de la etiqueta va negro o blanco según lo que se lea mejor.
+Cada materia lleva su abreviatura en una pastilla beige (`.abr`), igual que las correlativas; las correlativas ya aprobadas se ven en verde. Los colores del beige son `--beige` y `--beige-t` (con su versión para el modo oscuro).
 
 ## Agregar un PDF
 1. Subilo a la carpeta que corresponde (ej: `material/redes-de-datos/p2/teorico/apunte.pdf`).
