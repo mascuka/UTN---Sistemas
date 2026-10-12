@@ -891,8 +891,8 @@ const CARRERA = {
   plan: "Plan 2023",
   pie: "Ciclo lectivo 2026",
   bienvenida: "Plan de estudios con el régimen de correlatividades. Entrá a una materia para ver sus parciales, material y videos.",
-  // Meta de horas que se muestra en el inicio, junto a las horas del avance
-  metaHoras: { hs: 32, para: "pedir equivalencias" },
+  // Meta que se muestra en el inicio, junto a las horas del avance: cuando faltan 32 hs para el total (160) se puede pedir equivalencias
+  metaHoras: { faltan: 32, para: "pedir equivalencias" },
 
   // mod: "A" anual, "1C" / "2C" cuatrimestral · cc: se puede cursar contra cuatrimestre
   materias: [
@@ -2746,19 +2746,21 @@ function viewResumen(){
     <div class="res-anios">${NIVELES_PLAN.map(tarjeta).join("")}</div>
     <div class="notas"><ul>${CARRERA.notas.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
 }
-/* Horas del avance, con la meta de CARRERA.metaHoras marcada en la barra (cuánto falta o si ya se pasó) */
+/* Horas del avance, con la meta de CARRERA.metaHoras marcada en la barra: se llega cuando
+   faltan esas horas para el total (ej.: 160 − 32 = 128 hs). Dice cuánto falta o si ya se llegó */
 function kpiHoras(p){
-  const meta = CARRERA.metaHoras, pos = meta ? Math.min(100, meta.hs / p.hsTotal * 100) : 0;
-  const falta = meta ? meta.hs - p.hsHechas : 0;
+  const meta = CARRERA.metaHoras, umbral = meta ? p.hsTotal - meta.faltan : 0;
+  const pos = meta ? Math.max(0, umbral / p.hsTotal * 100) : 0;
+  const falta = umbral - p.hsHechas;
   return `
     <div class="kpi"><small>Horas</small><b>${p.hsHechas}<em> / ${p.hsTotal} hs</em></b>
       <span class="bar">
         <i style="width:${Math.min(100, Math.round(p.hsHechas / p.hsTotal * 100))}%"></i>
-        ${meta ? `<u style="left:${pos.toFixed(1)}%" title="${meta.hs} hs: ${esc(meta.para)}"></u>` : ""}
+        ${meta ? `<u style="left:${pos.toFixed(1)}%" title="${umbral} hs: ${esc(meta.para)}"></u>` : ""}
       </span>
       ${meta ? `<p class="meta ${falta > 0 ? "" : "ok"}">${falta > 0
-        ? `Faltan <b>${falta} hs</b> para las ${meta.hs} hs (${esc(meta.para)})`
-        : `✓ Pasaste las ${meta.hs} hs: ya podés ${esc(meta.para)}`}</p>` : ""}
+        ? `Faltan <b>${falta} hs</b> para ${esc(meta.para)} (con ${umbral} hs, cuando te quedan ${meta.faltan} para las ${p.hsTotal})`
+        : `✓ Te quedan ${p.hsTotal - p.hsHechas} hs para las ${p.hsTotal}: ya podés ${esc(meta.para)}`}</p>` : ""}
       <p>Suma de las horas del plan de lo aprobado (electivas: 1 crédito = 1 h)</p></div>`;
 }
 /* Un año: solo sus materias (obligatorias y electivas), y para pasar al anterior o al siguiente */
