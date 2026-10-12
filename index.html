@@ -452,6 +452,32 @@
   .empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
 
   @media (max-width:1000px){ .player-wrap{grid-template-columns:1fr} }
+  /* Modo cine (como YouTube): el video ocupa todo el ancho y la lista pasa abajo, en una fila */
+  .now-row{display:flex;align-items:flex-start;gap:12px}
+  .now-row > div{flex:1;min-width:0}
+  .cine-btn{display:none;flex-shrink:0;margin-top:12px;align-items:center;gap:7px;font:inherit;font-size:.84rem;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;white-space:nowrap}
+  .cine-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .cine-btn svg{width:18px;height:18px}
+  .pl-flechas{display:none;gap:6px;margin-left:auto}
+  .pl-flechas button{width:32px;height:32px;display:grid;place-items:center;font:inherit;font-size:1.2rem;line-height:1;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:50%;cursor:pointer}
+  .pl-flechas button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  .pl-flechas button:disabled{opacity:.35;cursor:default}
+  .pl-list{position:relative}
+  @media (min-width:1001px){
+    .cine-btn{display:inline-flex}
+    #app.angosto:has(.player-wrap.cine){max-width:none}
+    .player-wrap.cine{grid-template-columns:minmax(0,1fr)}
+    #app .player-wrap.cine .player{max-width:none;width:min(100%, calc((100vh - 150px) * 16 / 9));margin:0 auto}
+    .player-wrap.cine .pl-head{display:flex;align-items:center;gap:12px}
+    .player-wrap.cine .pl-head b{display:inline}
+    .player-wrap.cine .pl-flechas{display:flex}
+    .player-wrap.cine .pl-list{display:flex;align-items:stretch;gap:4px;max-height:none;overflow-x:auto;overflow-y:hidden;padding:10px;scroll-snap-type:x proximity;scrollbar-width:thin}
+    .player-wrap.cine .pl-item{flex:0 0 212px;flex-direction:column;align-items:stretch;gap:7px;padding:8px;border-radius:10px;scroll-snap-align:start}
+    .player-wrap.cine .pl-thumb{width:100%}
+    .player-wrap.cine .pl-num{display:none}
+    .player-wrap.cine .pl-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .player-wrap.cine .pl-bloque{position:static;flex:0 0 auto;align-self:center;max-width:130px;margin:0 6px;padding:6px 10px;border:0;border-left:3px solid var(--accent);background:none;white-space:normal}
+  }
   /* Barra de abajo: solo en el celular */
   .abajo{display:none}
   @media (max-width:760px){
@@ -3400,6 +3426,13 @@ function cargarApiYT(){
   return apiYT;
 }
 const velGuardada = () => { const v = parseFloat(leerLocal(CLAVE_VEL)); return v >= 0.25 && v <= 2 ? v : 1; };
+const CLAVE_CINE = "isi-yt-cine";
+// "t" activa o desactiva el modo cine (como en YouTube), salvo que se esté escribiendo
+document.addEventListener("keydown", e => {
+  if(e.key !== "t" || e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || document.activeElement.isContentEditable) return;
+  const btn = document.getElementById("cineBtn");
+  if(btn && btn.offsetParent && !document.querySelector("dialog[open]")){ e.preventDefault(); btn.click(); }
+});
 
 function mountPlayer(videos, titulo){
   const body = $("#tabBody");
@@ -3419,24 +3452,71 @@ function mountPlayer(videos, titulo){
     const bloque = v.bloque && (i === 0 || lista[i - 1].bloque !== v.bloque) ? `<div class="pl-bloque">${esc(v.bloque)}</div>` : "";
     return `${bloque}<div class="pl-item" data-i="${i}"><span class="pl-num">${i + 1}</span>${thumb}<div class="pl-title">${esc(v.titulo)}${v.nota ? ` <span class="tag nota">${esc(v.nota)}</span>` : ""}</div></div>`;
   };
-  const marcarActivo = i => body.querySelectorAll(".pl-item").forEach(el => el.classList.toggle("active", +el.dataset.i === i));
+  const marcarActivo = i => body.querySelectorAll(".pl-item").forEach(el => { el.classList.toggle("active", +el.dataset.i === i); if(+el.dataset.i === i) centrar(el); });
+  let cine = leerLocal(CLAVE_CINE) === "1";
   const dibujar = () => {
     quitarYT();
     body.innerHTML = `
-      <div class="player-wrap">
+      <div class="player-wrap${cine ? " cine" : ""}">
         <div>
           <div class="player" id="player"></div>
-          <div class="now-title" id="nowTitle"></div>
-          <div class="now-desc" id="nowDesc"></div>
+          <div class="now-row">
+            <div><div class="now-title" id="nowTitle"></div><div class="now-desc" id="nowDesc"></div></div>
+            <button class="cine-btn" id="cineBtn" type="button"></button>
+          </div>
         </div>
         <div class="playlist">
-          <div class="pl-head"><b>${esc(titulo)}</b><span id="plCount"></span></div>
+          <div class="pl-head"><b>${esc(titulo)}</b><span id="plCount"></span>
+            <span class="pl-flechas"><button type="button" id="plAnt" aria-label="Videos anteriores">‹</button><button type="button" id="plSig" aria-label="Más videos">›</button></span>
+          </div>
           <div class="pl-list">
             ${lista.map(item).join("")}
           </div>
         </div>
       </div>`;
     body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i, true); }));
+    armarCine();
+  };
+  // Modo cine: solo cambia el CSS, así el video no se recarga ni se corta
+  const armarCine = () => {
+    const wrap = body.querySelector(".player-wrap"), btn = $("#cineBtn"), lst = body.querySelector(".pl-list");
+    const pintar = () => {
+      btn.innerHTML = cine
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="7" width="14" height="10" rx="2"/></svg>Vista normal'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>Modo cine';
+      btn.title = (cine ? "Volver al tamaño normal" : "Agrandar el video, con la lista abajo") + " (t)";
+      flechas();
+    };
+    btn.addEventListener("click", () => {
+      cine = !cine; guardarLocal(CLAVE_CINE, cine ? "1" : null);
+      wrap.classList.toggle("cine", cine); pintar();
+      const act = body.querySelector(".pl-item.active"); if(act) centrar(act, false);
+      if(cine){ const r = $("#player").getBoundingClientRect(); if(r.top < 0 || r.bottom > innerHeight) scrollBy({ top: r.top - 16, behavior: "smooth" }); }
+    });
+    $("#plAnt").addEventListener("click", () => lst.scrollBy({ left: -lst.clientWidth * .8, behavior: "smooth" }));
+    $("#plSig").addEventListener("click", () => lst.scrollBy({ left: lst.clientWidth * .8, behavior: "smooth" }));
+    lst.addEventListener("scroll", flechas, { passive: true });
+    // En la fila, la rueda del mouse la mueve de costado (si no hay más para ese lado, scrollea la página)
+    lst.addEventListener("wheel", e => {
+      if(!wrap.classList.contains("cine") || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      const max = lst.scrollWidth - lst.clientWidth;
+      if((e.deltaY > 0 && lst.scrollLeft < max - 1) || (e.deltaY < 0 && lst.scrollLeft > 0)){ e.preventDefault(); lst.scrollLeft += e.deltaY; }
+    }, { passive: false });
+    pintar();
+  };
+  const flechas = () => {
+    const lst = body.querySelector(".pl-list"), a = $("#plAnt"), b = $("#plSig");
+    if(!lst || !a) return;
+    a.disabled = lst.scrollLeft <= 1; b.disabled = lst.scrollLeft >= lst.scrollWidth - lst.clientWidth - 1;
+  };
+  // Lleva el video activo a la vista dentro de la lista (sin mover la página)
+  const centrar = (el, suave = true) => {
+    const lst = body.querySelector(".pl-list"); if(!lst) return;
+    const comp = { behavior: suave ? "smooth" : "auto" };
+    if(body.querySelector(".player-wrap").classList.contains("cine") && lst.scrollWidth > lst.clientWidth)
+      lst.scrollTo({ left: el.offsetLeft - (lst.clientWidth - el.offsetWidth) / 2, ...comp });
+    else if(el.offsetTop < lst.scrollTop || el.offsetTop + el.offsetHeight > lst.scrollTop + lst.clientHeight)
+      lst.scrollTo({ top: el.offsetTop - (lst.clientHeight - el.offsetHeight) / 2, ...comp });
   };
   let elegido = false;
   let yt = null, ytListo = false, pendiente = null, ultimaCarga = 0;   // un solo reproductor para toda la lista
@@ -3519,7 +3599,7 @@ function mountPlayer(videos, titulo){
     const i = Math.max(0, lista.findIndex(v => (v.id || null) === actual));
     body.querySelector(".pl-list").innerHTML = lista.map(item).join("");
     body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i, true); }));
-    marcarActivo(i);
+    marcarActivo(i); flechas();
     $("#nowTitle").textContent = lista[i].titulo;
     $("#nowDesc").textContent = [lista[i].bloque, `Video ${i + 1} de ${lista.length}`, lista[i].detalle].filter(Boolean).join(" · ");
     $("#plCount").textContent = `${i + 1} / ${lista.length}`;

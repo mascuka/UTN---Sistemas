@@ -40,6 +40,8 @@ Opcionales en cada video: `bloque: "..."` agrupa la lista con un título por blo
 
 El reproductor usa la API de YouTube (`youtube.com/iframe_api`): cuando termina un video arranca solo el siguiente de la lista, y la velocidad que se elige (por ejemplo 1.5) se mantiene en los videos siguientes y queda guardada en el navegador (`isi-yt-vel`). Tocar un video de la lista lo arranca. Si la API no carga, se ve el video común de YouTube, sin esas dos cosas.
 
+En la compu, el botón "Modo cine" (o la tecla `t`) agranda el video a todo el ancho, sin pantalla completa, y pasa la lista abajo en una fila horizontal (con flechas y la rueda del mouse). Es solo CSS, así que el video no se corta; la elección queda guardada (`isi-yt-cine`). En el celular la lista ya va abajo y el botón no aparece.
+
 Los archivos con `tipo: "ZIP"` o `tipo: "INO"` se descargan (botón "Descargar ↓") en vez de abrirse en otra pestaña.
 
 ## Niveles del material (esencial, para profundizar, extra)
