@@ -1146,7 +1146,7 @@ const CARRERA = {
   ],
 
   notas: [
-    "<b>Electivas:</b> para Ingeniería en Sistemas se necesitan como mínimo 20 créditos: 4 de tercer nivel, 6 de cuarto nivel y 10 de quinto nivel (como mínimo 7 electivas). Para el título de Analista, un mínimo de 4 créditos de tercer nivel.",
+    "<b>Electivas:</b> para Ingeniería en Sistemas se necesitan como mínimo 20 créditos: 4 de tercer nivel, 6 de cuarto nivel y 10 de quinto nivel (como mínimo 7 electivas). Para el título de Analista alcanza con 4 créditos de electivas, de cualquier nivel.",
     "<b>Práctica Profesional Supervisada:</b> para iniciarla y acreditarla hay que cumplir los requisitos académicos exigidos para inscribirse a Proyecto Final.",
     "Las electivas son las vigentes al ciclo lectivo 2023. Para una versión actualizada, consultá en el Centro de Estudiantes Tecnológicos."
   ]
@@ -2992,7 +2992,8 @@ function viewResumen(){
     <div class="notas"><ul>${CARRERA.notas.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
 }
 /* El camino de la carrera: Ingreso, 1º, 2º, 3º, ★ Analista, 4º, 5º y ★ Ingeniero/a.
-   Analista: 1º a 3º completos (con el Seminario Integrador) y los créditos mínimos de electivas de 3º */
+   Analista: 1º a 3º completos (con el Seminario Integrador) y 4 créditos de electivas de cualquier nivel */
+const CREDITOS_ANALISTA = 4;
 const ESTRELLA = "M50 4l13.6 28.4 31.1 4-22.9 21.6 5.9 30.8L50 73.7 22.3 88.8l5.9-30.8L5.3 36.4l31.1-4z";
 function estrella(clase, logrado){
   const g = "g" + clase;
@@ -3005,8 +3006,8 @@ function viewCamino(){
   const obl = n => CARRERA.materias.filter(m => m.nivel === n && !m.intermedio && !m.recurso);
   const anio = n => { const ms = obl(n), h = ms.filter(m => ok(idMat(m))).length; return { tipo: "anio", n, h, t: ms.length, hecho: h === ms.length }; };
   const faltaAn = [1, 2, 3].flatMap(n => CARRERA.materias.filter(m => m.nivel === n && !m.recurso && !ok(idMat(m)))).map(m => m.abr || m.nombre);
-  const credE3 = CARRERA.electivas.filter(e => e.nivel === 3 && ok(idElec(e))).reduce((t, e) => t + e.creditos, 0);
-  if(credE3 < CREDITOS_NIVEL[3]) faltaAn.push(`${CREDITOS_NIVEL[3] - credE3} créd. de 3º`);
+  const credEl = planElectivas().creditos;
+  if(credEl < CREDITOS_ANALISTA) faltaAn.push(`${CREDITOS_ANALISTA - credEl} créd. de electivas`);
   const faltanIng = CARRERA.materias.filter(m => !m.intermedio && !m.recurso && !m.ingreso && !ok(idMat(m))).length + planElectivas().faltan;
   const nodos = [anio(0), anio(1), anio(2), anio(3),
     { tipo: "an", hecho: !faltaAn.length, falta: faltaAn },

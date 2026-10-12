@@ -25,7 +25,7 @@ No hay columna al costado: la página usa todo el ancho. Arriba queda fija una b
 
 ## Inicio: resumen del avance
 El inicio (`viewResumen`) no lista las materias: muestra el avance de la carrera (anillo con el %, materias, horas, créditos de electivas y promedio), **Tu camino** y una tarjeta por año con sus materias como pastillas (verde aprobada, violeta regular, azul cursando) y el promedio del año. Tocar la tarjeta lleva al año; tocar una pastilla, a la materia. Abajo van las notas del plan.
-**Tu camino** (`viewCamino`): Ingreso, 1º, 2º, 3º, ★ Analista, 4º, 5º y la ★ grande de Ingeniero/a. Cada año se completa con sus obligatorias aprobadas; "Estás acá" marca el primero que falta. La estrella de Analista se llena con 1º a 3º completos (con el Seminario Integrador) y los créditos mínimos de electivas de 3º; la de Ingeniero/a, con todas las obligatorias y las electivas que faltan.
+**Tu camino** (`viewCamino`): Ingreso, 1º, 2º, 3º, ★ Analista, 4º, 5º y la ★ grande de Ingeniero/a. Cada año se completa con sus obligatorias aprobadas; "Estás acá" marca el primero que falta. La estrella de Analista se llena con 1º a 3º completos (con el Seminario Integrador) y 4 créditos de electivas de cualquier nivel (`CREDITOS_ANALISTA`); la de Ingeniero/a, con todas las obligatorias y las electivas que faltan.
 En la tarjeta de horas se marca la meta de `CARRERA.metaHoras`: cuando faltan 32 hs para el total (160 − 32 = 128 hs) se puede pedir equivalencias. Se ve una rayita en la barra y un aviso con cuántas horas faltan para llegar, o en verde cuando ya se llegó. Para cambiar el número o el texto, se edita esa línea.
 
 ## Cada año
