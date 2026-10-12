@@ -2730,7 +2730,7 @@ function viewResumen(){
         <div><b>${p.pct}%</b><span>de la carrera</span></div></div>
       <div class="res-kpis">
         ${kpi("Materias", p.matHechas, p.matTotal, "", `Aprobadas, contando ${p.el.necesarias} electivas`)}
-        ${kpi("Horas", p.hsHechas, p.hsTotal, " hs", "Horas semanales de las materias aprobadas")}
+        ${kpi("Horas", p.hsHechas, p.hsTotal, " hs", "Suma de las horas del plan de lo aprobado (electivas: 1 crédito = 1 h)")}
         ${kpi("Electivas", p.el.creditos, TOTAL_CREDITOS, " créd.", `${p.el.hechas} aprobadas · ${p.el.faltan ? `faltan ${p.el.faltan}` : `<span class="cumple">completo</span>`}`)}
       </div>
     </div>
