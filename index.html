@@ -2743,7 +2743,14 @@ async function subirAprobadas(reintento = true){
       shaRemoto = (await leerRemoto()).sha;   // el archivo cambió en GitHub: tomo la versión nueva y reintento
       return subirAprobadas(false);
     }
-    if(r.status === 401 || r.status === 403) throw new Error("La clave no es válida o no tiene permiso para escribir en el repo.");
+    if(r.status === 401) throw new Error("La clave de GitHub venció o es incorrecta: cargá una nueva.");
+    if(r.status === 403 || r.status === 404){
+      // Lo más común: la clave existe pero no puede escribir en este repo
+      let m = ""; try { m = (await r.json()).message || ""; } catch(e){}
+      throw new Error(r.status === 404 || /personal access token|not accessible/i.test(m)
+        ? `La clave no tiene permiso para escribir: en la clave, "Repository access" tiene que incluir ${GITHUB.repo} y "Contents" tiene que estar en "Read and write".`
+        : `GitHub no dejó guardar (${r.status}${m ? ": " + m : ""}).`);
+    }
     if(!r.ok) throw new Error("GitHub respondió " + r.status);
     shaRemoto = (await r.json()).content.sha;
     estadoSync = "ok";
@@ -2814,11 +2821,12 @@ async function guardarToken(){
   msg.textContent = "Probando la clave…";
   try {
     const r = await fetch(`https://api.github.com/repos/${GITHUB.usuario}/${GITHUB.repo}`, { headers: { "Accept": "application/vnd.github+json", "Authorization": "Bearer " + t } });
-    if(!r.ok) throw new Error();
+    if(r.status === 401) throw new Error("La clave es incorrecta o venció. Fijate de copiarla entera (empieza con github_pat_).");
+    if(!r.ok) throw new Error(`GitHub respondió ${r.status}. Revisá que la clave incluya el repo ${GITHUB.repo}.`);
     const j = await r.json();
-    if(!(j.permissions && j.permissions.push)) throw new Error();
+    if(!(j.permissions && j.permissions.push)) throw new Error("La clave no tiene permiso de escritura en este repo. Revisá los pasos 3 y 4.");
   } catch(e){
-    msg.textContent = "La clave no funciona o no tiene permiso de escritura en este repo. Revisá los pasos.";
+    msg.textContent = e.message && e.message !== "Failed to fetch" ? e.message : "No se pudo conectar con GitHub. Probá de nuevo.";
     return;
   }
   guardarLocal(CLAVE_TOKEN, t);
