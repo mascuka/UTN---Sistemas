@@ -732,7 +732,6 @@
 
 <dialog id="visor" class="visor" aria-label="Visor de PDF">
   <div class="visor-bar">
-    <button class="vb vb-x" id="visorCerrar" title="Cerrar (Esc)" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="visor-tit"><b id="visorTit"></b><span id="visorInfo"></span></div>
     <div class="visor-acc">
       <span class="vb-pag" id="visorPag"></span>
@@ -745,6 +744,7 @@
       <a class="vb vb-otra" id="visorAbrir" target="_blank" rel="noopener" title="Abrir en otra pestaña" aria-label="Abrir en otra pestaña"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
       <a class="vb vb-bajar" id="visorBajar" download title="Descargar" aria-label="Descargar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><span class="vb-t">Descargar</span></a>
     </div>
+    <button class="vb vb-x" id="visorCerrar" title="Cerrar (Esc)" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
   <form class="visor-buscar" id="visorBuscar" hidden>
     <input id="visorQ" type="search" placeholder="Buscar en este PDF…" autocomplete="off" enterkeyhint="search" aria-label="Buscar en este PDF">
@@ -3381,6 +3381,26 @@ function miniatura(img){
   }
 }
 
+/* API de YouTube: con ella el reproductor pasa solo al video siguiente cuando termina uno
+   y mantiene la velocidad elegida (se guarda en este navegador). Si no carga, se usa el iframe común. */
+const CLAVE_VEL = "isi-yt-vel";
+let apiYT = null;
+function cargarApiYT(){
+  if(apiYT) return apiYT;
+  apiYT = new Promise(ok => {
+    if(window.YT && window.YT.Player) return ok(window.YT);
+    const t = setTimeout(() => ok(null), 6000);
+    const previo = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { clearTimeout(t); if(previo) previo(); ok(window.YT); };
+    const sc = document.createElement("script");
+    sc.src = "https://www.youtube.com/iframe_api";
+    sc.onerror = () => { clearTimeout(t); ok(null); };
+    document.head.appendChild(sc);
+  });
+  return apiYT;
+}
+const velGuardada = () => { const v = parseFloat(leerLocal(CLAVE_VEL)); return v >= 0.25 && v <= 2 ? v : 1; };
+
 function mountPlayer(videos, titulo){
   const body = $("#tabBody");
   if(!videos.length){ body.innerHTML = `<div class="empty">Todavía no hay videos cargados.</div>`; return; }
@@ -3401,6 +3421,7 @@ function mountPlayer(videos, titulo){
   };
   const marcarActivo = i => body.querySelectorAll(".pl-item").forEach(el => el.classList.toggle("active", +el.dataset.i === i));
   const dibujar = () => {
+    quitarYT();
     body.innerHTML = `
       <div class="player-wrap">
         <div>
@@ -3415,20 +3436,71 @@ function mountPlayer(videos, titulo){
           </div>
         </div>
       </div>`;
-    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i); }));
+    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i, true); }));
   };
   let elegido = false;
+  let yt = null, ytListo = false, pendiente = null, ultimaCarga = 0;   // un solo reproductor para toda la lista
+  const quitarYT = () => { if(yt){ try { yt.destroy(); } catch(e){} } yt = null; ytListo = false; pendiente = null; };
+  const iframeComun = v => `<iframe src="https://www.youtube.com/embed/${v.id}?rel=0${ytInicio(v.url) ? `&start=${ytInicio(v.url)}` : ""}" title="${esc(v.titulo)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  // Cuando termina un video arranca el siguiente que tenga link
+  const siguiente = () => {
+    const i = lista.findIndex(v => (v.id || null) === actual);
+    for(let j = i + 1; j < lista.length; j++) if(lista[j].id){ elegido = true; play(j, true); return; }
+  };
+  const crearYT = (YT, v, auto) => {
+    $("#player").innerHTML = '<div id="ytPlayer"></div>';
+    const vars = { rel: 0, playsinline: 1, autoplay: auto ? 1 : 0 };
+    if(ytInicio(v.url)) vars.start = ytInicio(v.url);
+    ultimaCarga = Date.now(); ytListo = false;
+    yt = new YT.Player("ytPlayer", {
+      videoId: v.id, playerVars: vars,
+      events: {
+        onReady: e => {
+          ytListo = true;
+          e.target.setPlaybackRate(velGuardada());
+          if(pendiente){ const p = pendiente; pendiente = null; play(p.i, p.auto); }
+        },
+        onPlaybackRateChange: e => {
+          // al cambiar de video YouTube vuelve a 1: ese cambio no es del usuario y no se guarda
+          if(e.data === 1 && Date.now() - ultimaCarga < 3000) return;
+          guardarLocal(CLAVE_VEL, String(e.data));
+        },
+        onStateChange: e => {
+          if(e.data === YT.PlayerState.PLAYING){
+            elegido = true;               // ya lo está viendo: al llegar los títulos no se vuelve a armar la lista
+            if(Math.abs(e.target.getPlaybackRate() - velGuardada()) > 0.01) e.target.setPlaybackRate(velGuardada());
+          }
+          if(e.data === YT.PlayerState.ENDED) siguiente();
+        }
+      }
+    });
+  };
 
-  const play = i => {
+  // auto: arranca solo (al tocar un video de la lista o al pasar al siguiente); si no, queda listo para darle play
+  const play = (i, auto = false) => {
     const v = lista[i];
     actual = v.id || i;
-    $("#player").innerHTML = v.id
-      ? `<iframe src="https://www.youtube.com/embed/${v.id}?rel=0${ytInicio(v.url) ? `&start=${ytInicio(v.url)}` : ""}" title="${esc(v.titulo)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-      : `<div style="height:100%;display:grid;place-items:center;color:#aaa;text-align:center;padding:20px">Este video todavía no tiene link.<br>Pegá la URL de YouTube en el código.</div>`;
     $("#nowTitle").textContent = v.titulo;
     $("#nowDesc").textContent = [v.bloque, `Video ${i + 1} de ${lista.length}`, v.detalle].filter(Boolean).join(" · ");
     $("#plCount").textContent = `${i + 1} / ${lista.length}`;
     marcarActivo(i);
+    if(!v.id){
+      quitarYT();
+      $("#player").innerHTML = `<div style="height:100%;display:grid;place-items:center;color:#aaa;text-align:center;padding:20px">Este video todavía no tiene link.<br>Pegá la URL de YouTube en el código.</div>`;
+      return;
+    }
+    if(yt && ytListo){
+      ultimaCarga = Date.now();
+      const o = { videoId: v.id, startSeconds: ytInicio(v.url) };
+      auto ? yt.loadVideoById(o) : yt.cueVideoById(o);
+      return;
+    }
+    if(yt){ pendiente = { i, auto }; return; }               // el reproductor se está armando
+    cargarApiYT().then(YT => {
+      if(!document.body.contains(body) || actual !== v.id || yt) return;   // se eligió otro mientras cargaba
+      if(YT) crearYT(YT, v, auto);
+      else $("#player").innerHTML = iframeComun(v);
+    });
   };
 
   dibujar();
@@ -3446,7 +3518,7 @@ function mountPlayer(videos, titulo){
     if(!elegido){ dibujar(); play(0); return; }
     const i = Math.max(0, lista.findIndex(v => (v.id || null) === actual));
     body.querySelector(".pl-list").innerHTML = lista.map(item).join("");
-    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i); }));
+    body.querySelectorAll(".pl-item").forEach(el => el.addEventListener("click", () => { elegido = true; play(+el.dataset.i, true); }));
     marcarActivo(i);
     $("#nowTitle").textContent = lista[i].titulo;
     $("#nowDesc").textContent = [lista[i].bloque, `Video ${i + 1} de ${lista.length}`, lista[i].detalle].filter(Boolean).join(" · ");
