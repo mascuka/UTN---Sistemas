@@ -590,7 +590,13 @@
   .kpi small{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
   .kpi b{display:block;font-size:1.65rem;margin:6px 0 10px;font-variant-numeric:tabular-nums}
   .kpi b em{font-style:normal;font-size:1rem;color:var(--muted);font-weight:600}
-  .kpi .bar{width:100%;height:7px}
+  .kpi .bar{width:100%;height:7px;position:relative}
+  /* La marca de la meta de horas sobre la barra */
+  .kpi .bar u{position:absolute;top:0;bottom:0;width:3px;margin-left:-1px;background:var(--text);opacity:.55;border-radius:2px}
+  .kpi p.meta{color:var(--text);font-weight:600;background:var(--beige);border-radius:10px;padding:6px 10px;margin-top:10px;line-height:1.35}
+  .kpi p.meta.ok{background:var(--ok-soft);color:var(--ok)}
+  .kpi p.meta b{display:inline;font-size:inherit;margin:0;font-weight:800}
+  .kpi p.meta + p{margin-top:7px}
   .kpi p{font-size:.8rem;color:var(--muted);margin-top:9px}
   .kpi p .cumple{color:var(--ok);font-weight:700}
   .res-h{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.45rem;margin:0 4px 14px}
@@ -885,6 +891,8 @@ const CARRERA = {
   plan: "Plan 2023",
   pie: "Ciclo lectivo 2026",
   bienvenida: "Plan de estudios con el régimen de correlatividades. Entrá a una materia para ver sus parciales, material y videos.",
+  // Meta de horas que se muestra en el inicio, junto a las horas del avance
+  metaHoras: { hs: 32, para: "pedir equivalencias" },
 
   // mod: "A" anual, "1C" / "2C" cuatrimestral · cc: se puede cursar contra cuatrimestre
   materias: [
@@ -2730,13 +2738,28 @@ function viewResumen(){
         <div><b>${p.pct}%</b><span>de la carrera</span></div></div>
       <div class="res-kpis">
         ${kpi("Materias", p.matHechas, p.matTotal, "", `Aprobadas, contando ${p.el.necesarias} electivas`)}
-        ${kpi("Horas", p.hsHechas, p.hsTotal, " hs", "Suma de las horas del plan de lo aprobado (electivas: 1 crédito = 1 h)")}
+        ${kpiHoras(p)}
         ${kpi("Electivas", p.el.creditos, TOTAL_CREDITOS, " créd.", `${p.el.hechas} aprobadas · ${p.el.faltan ? `faltan ${p.el.faltan}` : `<span class="cumple">completo</span>`}`)}
       </div>
     </div>
     <h2 class="res-h">Por año</h2>
     <div class="res-anios">${NIVELES_PLAN.map(tarjeta).join("")}</div>
     <div class="notas"><ul>${CARRERA.notas.map(t => `<li>${t}</li>`).join("")}</ul></div>`;
+}
+/* Horas del avance, con la meta de CARRERA.metaHoras marcada en la barra (cuánto falta o si ya se pasó) */
+function kpiHoras(p){
+  const meta = CARRERA.metaHoras, pos = meta ? Math.min(100, meta.hs / p.hsTotal * 100) : 0;
+  const falta = meta ? meta.hs - p.hsHechas : 0;
+  return `
+    <div class="kpi"><small>Horas</small><b>${p.hsHechas}<em> / ${p.hsTotal} hs</em></b>
+      <span class="bar">
+        <i style="width:${Math.min(100, Math.round(p.hsHechas / p.hsTotal * 100))}%"></i>
+        ${meta ? `<u style="left:${pos.toFixed(1)}%" title="${meta.hs} hs: ${esc(meta.para)}"></u>` : ""}
+      </span>
+      ${meta ? `<p class="meta ${falta > 0 ? "" : "ok"}">${falta > 0
+        ? `Faltan <b>${falta} hs</b> para las ${meta.hs} hs (${esc(meta.para)})`
+        : `✓ Pasaste las ${meta.hs} hs: ya podés ${esc(meta.para)}`}</p>` : ""}
+      <p>Suma de las horas del plan de lo aprobado (electivas: 1 crédito = 1 h)</p></div>`;
 }
 /* Un año: solo sus materias (obligatorias y electivas), y para pasar al anterior o al siguiente */
 function viewNivel(n){

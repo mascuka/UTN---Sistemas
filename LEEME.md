@@ -25,6 +25,7 @@ No hay columna al costado: la página usa todo el ancho. Arriba queda fija una b
 
 ## Inicio: resumen del avance
 El inicio (`viewResumen`) no lista las materias: muestra el avance de la carrera (anillo con el %, materias, horas y créditos de electivas) y una tarjeta por año con sus materias como pastillas (en verde las aprobadas). Tocar la tarjeta lleva al año; tocar una pastilla, a la materia. Abajo van las notas del plan.
+En la tarjeta de horas se marca la meta de `CARRERA.metaHoras` (32 hs, para pedir equivalencias): una rayita en la barra y un aviso con cuántas horas faltan, o en verde si ya se pasó. Para cambiar el número o el texto, se edita esa línea.
 
 ## Cada año
 `#/nivel/N` (`viewNivel`) muestra solo las materias de ese año: las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que tienen material cargado llevan la etiqueta "Material". Al final, botones para ir al año anterior o al siguiente. Al volver de una materia, la lista queda donde estaba, y el "Atrás" de una materia lleva a su año.
