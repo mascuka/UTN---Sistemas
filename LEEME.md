@@ -8,7 +8,7 @@
 - `material/<materia>/actividades/` → trabajos prácticos y entregas.
 - `miniaturas/` → la tapa de cada PDF (se genera con `herramientas/miniaturas.py`).
 - `quiz/` → las preguntas de cada quiz (JSON) y sus imágenes.
-- `practica/` → la Práctica por partes: el corrector (`corrector.py`) y un JSON por ejercicio (`practica/dao-p1/`). Se arman con `herramientas/practica/`.
+- `practica/` → la Práctica por partes: el corrector de Python (`corrector.py`), el Java del navegador (`practica/java/`) y un JSON por ejercicio (`practica/dao-p1/` en Python, `practica/bk-p1/` en Java). Se arman con `herramientas/practica/` y `herramientas/practica-java/`; el Java del navegador, con `herramientas/java-navegador/`.
 
 ## Links
 Cada página tiene su propio link, por ejemplo:
@@ -24,7 +24,7 @@ Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el d
 ## Barra de arriba
 No hay columna al costado: la página usa todo el ancho. Arriba queda fija una barra con el logo y el avance (los dos llevan al inicio), el botón de modo claro/oscuro y los años (Ingreso, 1º a 5º Nivel), que ocupan casi todo el ancho; cada año lleva a sus materias y queda marcado mientras estás en él o en una de sus materias. Adentro de una materia aparece una segunda fila, igual de ancha, con sus bloques (Inicio, parciales, TP, actividades). En el celular, adentro de una materia, esa fila reemplaza a los años (para volver está "Inicio" o "Atrás" en la barra de abajo).
 
-Adentro de un parcial se suma una tercera fila con pestañas: Resumen, cada sección (Teórico, Práctico, Parcial…), la Práctica por partes, el Quiz y las herramientas. Sale de `destinosParcial(p)` y se ve en todas las páginas del parcial, así se pasa de una sección a otra sin volver. Solo aparece si el parcial tiene al menos dos lugares además del resumen. En la página de la materia, la tarjeta de cada parcial trae los mismos accesos directos.
+Adentro de un parcial se suma una tercera fila con pestañas: Resumen, cada sección (Teórico, Práctico, Parcial…), la Práctica por partes, el Quiz y las herramientas. Sale de `destinosParcial(p)` y se ve en todas las páginas del parcial, así se pasa de una sección a otra sin volver. Solo aparece si el parcial tiene al menos dos lugares además del resumen. En la página de la materia, la tarjeta de cada parcial trae los mismos accesos directos. Si el parcial tiene `practicaTemas` (Backend), las pestañas son solo Resumen · Teórico · Práctica · Parciales / Simulacros: las explicaciones quedan marcadas como Práctica y el quiz como Parciales / Simulacros (campo `tambien` de cada pestaña).
 
 ## Inicio: resumen del avance
 El inicio (`viewResumen`) no lista las materias: muestra el avance de la carrera (anillo con el %, materias, horas, créditos de electivas y promedio), **Tu camino** y una tarjeta por año con sus materias como pastillas (verde aprobada, violeta regular, azul cursando) y el promedio del año. Tocar la tarjeta lleva al año; tocar una pastilla, a la materia. Abajo van las notas del plan.
@@ -65,6 +65,28 @@ Los JSON no se escriben a mano: se editan `herramientas/practica/ej1.py … ej5.
 `python3 herramientas/practica/validar.py ej1 ej2 ej3 ej4 ej5` y `python3 herramientas/practica/armar.py`.
 `validar.py` usa el mismo `practica/corrector.py` que la página y revisa dos cosas: que la solución de cada paso pase todos los controles, y que el código de inicio falle al menos uno.
 
+### Práctica por temas (Backend, en Java)
+Con `practicaGrupos`, `practicaTemas` y `practicaLenguaje: "java"` en el parcial (ver Backend, `201`, 1º Parcial), la Práctica se ordena por temas y reemplaza al recuadro "Practicá y entendé":
+- `practicaGrupos: [{ id, titulo, detalle }]`: Básico (lo que trae el preenunciado) y Para el parcial (los cambios del día del parcial).
+- `practicaTemas: [{ id, grupo, titulo, detalle, herramientas }]`: cada tema muestra sus explicaciones ("Entendelo", las `herramientas`) y sus ejercicios ("Practicalo": los de `practica` con ese `tema`).
+- En cada ejercicio de `practica` van además `grupo` y `tema`.
+- `quizEn: "parcial"`: arriba de esa sección (Parciales / Simulacros) aparece "Para preparar el parcial", con el quiz, las explicaciones y los ejercicios del grupo `parcial`.
+
+En la página del parcial quedan tres tarjetas: Teórico, Práctica y Parciales / Simulacros. La página de cada explicación trae abajo los ejercicios de su tema.
+
+Los ejercicios de Java tienen el mismo formato que los de Python, con `lenguaje: "java"` e `importar` (los paquetes que usan los controles). Cada control (`c`) es un bloque de Java que usa `practica/java/Prueba.java`: `Prueba.igual`, `verdad`, `lanza`, `noLanza`, `contiene`, `salida(() -> …)` (lo que imprime) y `archivo(ruta, texto)` (un CSV de prueba). Se editan `herramientas/practica-java/ej1.py … ej5.py` (los CSV y los proyectos originales están en `datos/` y `proyectos/`) y se corre, desde la raíz:
+`python3 herramientas/practica-java/validar.py ej1 ej2 ej3 ej4 ej5` (con el JDK 21: compila y corre los controles igual que la página) y `python3 herramientas/practica-java/armar.py`.
+
+### Java en el navegador
+`practica/java/trabajador.js` es un Web Worker que compila con javac y arma el programa con TeaVM 0.13.1 (WebAssembly GC), y lo corre con WASI (`practica/java/wasi/`). Necesita Chrome o Edge 119+, Firefox 120+ o Safari 18.2+.
+- **La primera vez** baja 4,8 MB (`compilador.wasm.gz`, `compilar.bin.gz`, `armar.bin.gz`) y los guarda en la caché del navegador (`isi-java`). Si se cambian, hay que subir `VERSION` en `trabajador.js`.
+- **Corregir:** compila primero el código del alumno (los errores de javac se muestran en castellano, con el original abajo y un botón a la línea). Después compila los controles en `Controles.java`: el control que no compila (falta un método, una clase…) cuenta como mal y se saca, y el resto se corre.
+- **Ejecutar:** corre el `main` del paso con los CSV en un sistema de archivos en memoria. Una excepción sin atrapar se muestra como en el JDK (`Exception in thread "main" …`).
+- **Cuánto puede tardar:** si el programa corre más de 8 s, se corta el worker y se avisa (casi siempre es un ciclo infinito). La próxima vez se arma de nuevo desde la caché.
+- **Diferencias con el JDK:** la división entera por cero corta el programa en vez de tirar `ArithmeticException` (se avisa en castellano), y algunas excepciones (índices, casteos, null) no traen mensaje.
+
+`herramientas/java-navegador/armar.sh` rehace los tres archivos desde el paquete de npm `@wasm-oj/toolchain-java` 0.2.0 (necesita el JDK 21 y ASM 9). `ParcheClasslib.java` corrige la biblioteca de TeaVM: nombres internos de métodos, `Long.sum`, `String.format` y `Scanner` livianos, `getSimpleName`, rutas relativas, `Files.createDirectories`, `System.exit` y los mensajes de `parseInt`, `parseDouble` y `Enum.valueOf` iguales a los del JDK. Las licencias están en `practica/java/LICENCIAS.md`.
+
 ## Modo oscuro y carga suave
 El botón de la luna/sol de la barra elige claro u oscuro y lo guarda (`isi-tema`); si nunca se tocó, sigue al sistema. Funciona prendiendo o apagando las reglas `@media (prefers-color-scheme: dark)` de la hoja de estilos (un script chico en el `<head>`, para que no parpadee al abrir), así que los colores oscuros se siguen escribiendo dentro de esos `@media`.
 Al cambiar de página el contenido aparece con un fundido corto; mientras cargan, las tapas de los PDF, las miniaturas de los videos, el reproductor y las hojas del visor muestran su forma con un brillo que pasa. Con "reducir movimiento" del sistema no hay animaciones.
@@ -102,10 +124,10 @@ Las tapas están en `miniaturas/` (misma ruta que en `material/`, en .jpg). Cuan
 `python3 herramientas/miniaturas.py` (necesita `pip install pymupdf`). Crea las que faltan y borra las que ya no tienen PDF. Si un PDF no tiene tapa, se ve el cartel "PDF" como antes.
 
 ## Quiz
-Con `quiz: "quiz/archivo.json"` en el parcial aparece "Practicá → Quiz" (ruta `#/m201/p1/quiz`). El JSON tiene `titulo`, `descripcion` y `secciones: [ { titulo, preguntas: [...] } ]`. Cada pregunta: `tipo` (`una`, `varias`, `vf`, `num` o `modelo`), `en` (enunciado, acepta HTML), `op: [["texto", true/false], ...]` para las de opciones, `num` o `modelo` (la respuesta, para las que se resuelven y después se mira), y opcionales `ex` (por qué), `mal` (aviso, por ejemplo una clave del campus equivocada), `fuente`, `code`, `img` y `practica: true` (no salió en un parcial). Se elige la cantidad (10, 20 o todas) y los temas: cada sección del JSON es un tema. Las preguntas salen al azar y "Otras 10" trae las que todavía no salieron. No se guarda nada de quien lo hace.
+Con `quiz: "quiz/archivo.json"` en el parcial aparece "Practicá → Quiz" (ruta `#/m201/p1/quiz`), o arriba de la sección `quizEn` si el parcial la tiene. El JSON tiene `titulo`, `descripcion` y `secciones: [ { titulo, preguntas: [...] } ]`. Cada pregunta: `tipo` (`una`, `varias`, `vf`, `num` o `modelo`), `en` (enunciado, acepta HTML), `op: [["texto", true/false], ...]` para las de opciones, `num` o `modelo` (la respuesta, para las que se resuelven y después se mira), y opcionales `ex` (por qué), `mal` (aviso, por ejemplo una clave del campus equivocada), `fuente`, `code`, `img` y `practica: true` (no salió en un parcial). Se elige la cantidad (10, 20 o todas) y los temas: cada sección del JSON es un tema. Las preguntas salen al azar y "Otras 10" trae las que todavía no salieron. No se guarda nada de quien lo hace.
 
 ## Herramientas y explicaciones
-Con `herramientas: ["csv", "streams"]` en el parcial aparecen en "Practicá y entendé" (ruta `#/m201/p1/h/csv`). Hay:
+Con `herramientas: ["csv", "streams"]` en el parcial aparecen en "Practicá y entendé" (ruta `#/m201/p1/h/csv`), o adentro de su tema en la Práctica si el parcial tiene `practicaTemas`. Hay:
 - `csv`: cómo se lee un CSV en Java. Las formas del apunte 11 (Scanner, BufferedReader, Files.lines, CSVReader, CSVReaderHeaderAware y CsvToBean) con un cuadro de qué hace cada una y, para cada forma, un paso a paso con dibujo y el código resaltado.
 - `streams`: Streams y Collectors, con un stream recorrido paso a paso y cada operación sola (filter, map, sorted, limit, terminales y groupingBy).
 - `pasos`: el paso a paso del parcial de Backend, armado con la corrección real del 3K1. Muestra cómo se reparten los puntos, los 45 minutos, los cinco comandos con los que corrige el profe y nueve pasos con su código, qué comprobar y qué requisito asegura cada uno. Los pasos se marcan y quedan en el navegador (`isi-pasos-bk`); los requisitos se ponen en verde cuando están hechos todos los pasos que los cubren.

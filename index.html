@@ -556,7 +556,7 @@
     .anio .largo{display:none}
     /* Adentro de una materia, en el celular: el logo y los bloques de la materia en una sola fila */
     .barra.en-materia{display:flex;align-items:center;flex-wrap:wrap}
-    .parnav{flex-basis:100%}
+    .parnav{flex-basis:100%;min-width:0}   /* sin min-width la fila de pestañas estira la barra */
     .parnav-in{padding:0 12px}
     .ptab{padding:8px 10px 6px;font-size:.82rem}
     .barra.en-materia .barra-in{flex:none;padding-right:0}
@@ -972,6 +972,22 @@
   .pr-ej-av{width:150px;flex:none;display:flex;flex-direction:column;gap:6px;font-size:.8rem;text-align:right}
   .pr-ej-av .bar{width:100%}
   .pr-nota{font-size:.82rem;color:var(--muted);margin-top:14px}
+  /* Práctica por temas (Backend): grupos, y en cada tema la explicación y los ejercicios */
+  .pr-grupo{margin-top:30px}
+  .pr-grupo-cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .pr-grupo-cab h2,.pr-h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.5rem;margin:0}
+  .pr-grupo-cab p{color:var(--muted);font-size:.9rem;margin:0}
+  .pr-tema{display:grid;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:12px}
+  .pr-tema-cab h3{font-size:1.12rem;margin:0 0 2px}
+  .pr-tema-cab p{color:var(--muted);font-size:.88rem;margin:0}
+  .pr-tema-fila{display:flex;flex-wrap:wrap;gap:8px}
+  .pr-tema-fila .pr-lista{width:100%}
+  .pr-tema .pr-ej,.pr-tema .pr-btn{background:var(--bg)}
+  .pr-h2{margin-bottom:10px}
+  .herr-ir{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.88rem;color:var(--muted);margin:-4px 0 18px}
+  .herr-ir .pill{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--text)}
+  .herr-ir .pill:hover{border-color:var(--accent)}
+  .herr-ir .pill svg{width:15px;height:15px;color:var(--accent)}
   .pr-cab{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px}
   .pr-cab small{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
   .pr-cab h1{margin:2px 0 0}
@@ -1052,11 +1068,18 @@
   .pr-checks li > span{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.75rem;color:#fff;background:var(--ok);margin-top:1px}
   .pr-checks li.mal > span{background:#c0392b}
   .pr-checks li.mal{border-color:#e8b9b0}
-  .pr-checks p{color:var(--text);margin-top:2px}
+  .pr-checks p{color:var(--text);margin-top:2px;white-space:pre-line}
   .pr-checks li.ok b{font-weight:500;color:var(--muted)}
   .pr-donde-btn{display:block;margin-top:5px;font:inherit;font-size:.78rem;color:var(--muted);background:var(--bg);border:1px dashed var(--line);border-radius:6px;padding:3px 8px;cursor:pointer;text-align:left}
   .pr-donde-btn code{font-family:ui-monospace,Menlo,monospace;color:var(--text)}
   .pr-donde-btn:hover{border-color:var(--accent)}
+  .pr-errs{display:grid;gap:6px;width:100%}
+  .pr-errs .pr-donde-btn{width:100%;margin:0;color:var(--text);background:var(--card);border-style:solid;font-size:.84rem;padding:7px 10px;display:grid;gap:3px}
+  .pr-errs .pr-donde-btn code{font-size:.8rem;white-space:pre-wrap;word-break:break-word}
+  .pr-errs small{font:.72rem/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
+  .pr-mal p{margin:0;color:var(--text);font-size:.84rem}
+  .pr-extra summary{cursor:pointer;font-size:.8rem;color:var(--muted)}
+  .pr-extra pre{font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;background:#16191d;color:#d6dde4;border-radius:10px;padding:8px 12px;max-height:180px;overflow:auto;white-space:pre-wrap;margin-top:6px}
   .pr-salida > div{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
   .pr-salida pre{font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;background:#16191d;color:#d6dde4;border-radius:10px;padding:10px 12px;max-height:220px;overflow:auto;white-space:pre-wrap}
   .pr-aviso{position:fixed;left:50%;top:calc(var(--barra-h, 64px) + 12px);transform:translate(-50%,-20px);opacity:0;pointer-events:none;z-index:45;background:var(--ok);color:#fff;font-weight:700;font-size:.9rem;border-radius:999px;padding:10px 20px;box-shadow:0 8px 24px rgba(0,0,0,.18);transition:opacity .25s,transform .25s;max-width:calc(100vw - 32px);text-align:center}
@@ -1642,7 +1665,28 @@ const MATERIAS = {
         herramientas: ["pasos", "csv", "streams"],
         descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones y streams).",
         secciones: ["teorico", "parcial"],
-        nombres: { parcial: "1º Parcial" },
+        nombres: { parcial: "Parciales / Simulacros" },
+        quizEn: "parcial",          // el quiz y el paso a paso se muestran arriba de esta sección
+        // Práctica: ejercicios de a pasos con Java que corre en el navegador (practica/java/, practica/bk-p1/*.json),
+        // ordenados por tema; cada tema trae su explicación (herramientas). El quiz va en Parciales / Simulacros.
+        practicaLenguaje: "java",
+        practicaGrupos: [
+          { id: "basico", titulo: "Básico", detalle: "Lo que ya trae el preenunciado: la clase del dominio, leer el CSV y las consultas con Streams." },
+          { id: "parcial", titulo: "Para el parcial", detalle: "Los cambios que piden el día del parcial: el dato nuevo con herencia, los dos formatos, el conteo y el main." }
+        ],
+        practicaTemas: [
+          { id: "clases", grupo: "basico", titulo: "Clases y validaciones", detalle: "Atributos final, constructor, getters, IllegalArgumentException y la fábrica desdeCampos.", herramientas: [] },
+          { id: "csv", grupo: "basico", titulo: "Lectura de CSV", detalle: "BufferedReader, el encabezado, split(\",\", -1) y un try/catch por fila.", herramientas: ["csv"] },
+          { id: "streams", grupo: "basico", titulo: "Colecciones y Streams", detalle: "List.copyOf, mapToInt, filter, groupingBy y los Collectors que salen en las preguntas.", herramientas: ["streams"] },
+          { id: "parcial", grupo: "parcial", titulo: "Los cambios del parcial", detalle: "El orden para asegurar puntos, y el parcial y un simulacro resueltos de a pasos.", herramientas: ["pasos"] }
+        ],
+        practica: [
+          {"id": "bk-servidor", "titulo": "La clase Servidor", "origen": "Preenunciado 3K1 · Cloud Center", "detalle": "Atributos final, constructor con validaciones, el costo y la fábrica desdeCampos: la base de cualquier preenunciado.", "pasos": 4, "grupo": "basico", "tema": "clases", "url": "practica/bk-p1/01-bk-servidor.json"},
+          {"id": "bk-csv", "titulo": "Leer el CSV de servidores", "origen": "Preenunciado 3K1 · Cloud Center", "detalle": "BufferedReader, el encabezado, split(\",\", -1) y cada fila clasificada: procesada, descartada o inválida, sin cortar la carga.", "pasos": 4, "grupo": "basico", "tema": "csv", "url": "practica/bk-p1/02-bk-csv.json"},
+          {"id": "bk-streams", "titulo": "Consultas con Streams: el colector Cloud", "origen": "Preenunciado 3K1 · Cloud Center", "detalle": "Copia defensiva, mapToInt, filter, groupingBy con summingInt, counting y averagingInt, max y sorted: todo lo que piden las preguntas del parcial.", "pasos": 7, "grupo": "basico", "tema": "streams", "url": "practica/bk-p1/03-bk-streams.json"},
+          {"id": "bk-parcial-3k1", "titulo": "Parcial 3K1 · Ingreso promedio por servidor", "origen": "Parcial tomado · 3K1 · 19/09/2026", "detalle": "El parcial real, de a pasos y con los mismos controles que mira el profe: el dato nuevo con herencia, los dos formatos, el conteo y el main.", "pasos": 7, "grupo": "parcial", "tema": "parcial", "url": "practica/bk-p1/04-bk-parcial-3k1.json"},
+          {"id": "bk-simulacro-4", "titulo": "Simulacro 4 · Protección de compras", "origen": "Simulacro · 3K7 · Tarjetas de crédito", "detalle": "Otro dominio, el mismo esquema de parcial: el consumo asegurado con herencia, los dos formatos, el conteo por modalidad y el main.", "pasos": 6, "grupo": "parcial", "tema": "parcial", "url": "practica/bk-p1/05-bk-simulacro-4.json"}
+        ],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -2823,7 +2867,7 @@ function renderBarra(m, nivel){
   const p = c && c.parciales.find(x => x.id === b);
   const tabs = p ? destinosParcial(p) : [];
   const [, , d3, d4] = ruta.split("/");
-  const enTab = t => t.k === "" ? !d3 : t.k === (d3 === "h" ? "h/" + d4 : d3);
+  const enTab = t => t.k === "" ? !d3 : t.k === (d3 === "h" ? "h/" + d4 : d3) || (t.tambien || []).includes(d3);
   $("#parnavIn").innerHTML = tabs.length > 2 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "";
   $("#parnav").hidden = tabs.length <= 2;
   $("#barra").classList.toggle("en-materia", !!m);
@@ -2843,6 +2887,14 @@ function renderBarra(m, nivel){
    k es lo que va después del parcial en la ruta (para marcar la pestaña). */
 function destinosParcial(p){
   if(p.secciones && !p.secciones.length) return [];   // parcial de una sola página (Material y Videos)
+  // Con la práctica por temas (Backend): Resumen · Teórico · Práctica · Parciales / Simulacros. Las explicaciones
+  // y el quiz van adentro: "tambien" marca la pestaña de afuera cuando se está en una de ellas.
+  if(p.practicaTemas){
+    const secs = seccionesDe(p).map(x => ({ k: x, go: `/${x}/material`, t: nombreSec(p, x), tambien: x === p.quizEn ? ["quiz"] : [] }));
+    const i = secs.findIndex(x => x.k === p.quizEn);
+    secs.splice(i < 0 ? secs.length : i, 0, { k: "practica", go: "/practica", t: "Práctica", tambien: ["h"] });
+    return [{ k: "", go: "", t: "Resumen" }, ...secs];
+  }
   return [
     { k: "", go: "", t: "Resumen" },
     ...seccionesDe(p).map(x => ({ k: x, go: `/${x}/material`, t: nombreSec(p, x) })),
@@ -3440,8 +3492,28 @@ function viewParcial(m, p){
       <div class="links">
         <span class="pill" data-go="m${m.n}/${p.id}/${k}/material">📄 Material (${cantArchivos(seccion(p, k).material)})</span>
         ${seccion(p, k).videos.length ? `<span class="pill" data-go="m${m.n}/${p.id}/${k}/videos">▶ Videos (${seccion(p, k).videos.length})</span>` : ""}
+        ${k === p.quizEn && p.quiz ? `<span class="pill" data-go="m${m.n}/${p.id}/quiz">✔ Quiz</span>` : ""}
       </div>
     </div>`;
+  // Práctica por temas: su tarjeta va antes de Parciales / Simulacros, y el recuadro "Practicá y entendé" no va
+  if(p.practicaTemas){
+    const secs = seccionesDe(p).map(tarjeta);
+    const i = seccionesDe(p).indexOf(p.quizEn);
+    const cuantos = g => p.practica.filter(x => p.practicaTemas.some(t => t.id === x.tema && t.grupo === g.id)).length;
+    secs.splice(i < 0 ? secs.length : i, 0, `
+      <div class="card destacada" data-go="m${m.n}/${p.id}/practica">
+        <div class="icon">${ICON_CODIGO}</div>
+        <h3>Práctica</h3>
+        <p>Por temas, con la explicación y ejercicios de a pasos en ${p.practicaLenguaje === "java" ? "Java" : "Python"}, que se corrigen al instante.</p>
+        <div class="links">${p.practicaGrupos.map(g => `<span class="pill">${esc(g.titulo)} · ${cuantos(g)}</span>`).join("")}</div>
+      </div>`);
+    return `
+    ${crumbs(m, esc(p.titulo))}
+    <h1>${esc(p.titulo)}</h1>
+    <p class="lead">${esc(p.descripcion)}</p>
+    <div class="grid">${secs.join("")}</div>
+    ${temasBox(p.temas)}`;
+  }
   return `
     ${crumbs(m, esc(p.titulo))}
     <h1>${esc(p.titulo)}</h1>
@@ -4093,6 +4165,7 @@ function viewSeccion(m, p, k, tab){
     ${crumbs(m, `<span data-go="${base}">${esc(p.titulo)}</span>`, esc(nombreSec(p, k)))}
     <h1>${esc(nombreSec(p, k))}</h1>
     <p class="lead">${esc(p.titulo)}${desc ? ` — ${desc.charAt(0).toLowerCase() + desc.slice(1)}` : ""}</p>
+    ${k === p.quizEn ? parcialBox(m, p) : ""}
     <div class="tabs">
       <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/${k}/material">Material (${cantArchivos(s.material)})</div>
       ${s.videos.length || tab === "videos" ? `<div class="tab ${tab === "videos" ? "active" : ""}"   data-go="${base}/${k}/videos">Videos (${s.videos.length})</div>` : ""}
@@ -4366,47 +4439,98 @@ function practicaBox(m, p){
     </div>`;
 }
 
-/* ---------- Práctica por partes: el parcial de a pasos, con Python en el navegador ----------
-   Cada ejercicio (practica/dao-p1/*.json) trae el enunciado partido, los pasos (qué hacer, contrato,
-   código inicial, pistas, solución y controles) y los CSV. A la izquierda va el enunciado con la parte del
-   paso resaltada; a la derecha, el código en pestañas (un archivo por pestaña). "Corregir" corre el código
-   con Python (Pyodide, en un worker con límite de tiempo) y los controles de practica/corrector.py.
+/* Arriba de Parciales / Simulacros (campo quizEn): el quiz, el paso a paso y los ejercicios del grupo "parcial" */
+function parcialBox(m, p){
+  const temas = (p.practicaTemas || []).filter(t => t.grupo === "parcial");
+  const hs = temas.flatMap(t => t.herramientas || []).filter(h => HERRAMIENTAS[h] && (p.herramientas || []).includes(h));
+  const ejs = (p.practica || []).filter(x => temas.some(t => t.id === x.tema));
+  if(!p.quiz && !hs.length && !ejs.length) return "";
+  return `
+    <div class="practica">
+      <span class="pr-t">Para preparar el parcial</span>
+      ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
+      ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
+      ${ejs.map(x => `<span class="pr-btn" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}<span><b>${esc(x.titulo)}</b><small>De a pasos, ${progresoTexto(x).toLowerCase()}</small></span></span>`).join("")}
+    </div>`;
+}
+
+/* ---------- Práctica por partes: el parcial de a pasos, con Python o Java en el navegador ----------
+   Cada ejercicio (practica/dao-p1/*.json, practica/bk-p1/*.json) trae el enunciado partido, los pasos (qué hacer,
+   contrato, código inicial, pistas, solución y controles) y los CSV. A la izquierda va el enunciado con la parte del
+   paso resaltada; a la derecha, el código en pestañas (un archivo por pestaña). "Corregir" corre el código:
+   - Python ("lenguaje" vacío): Pyodide en un worker con límite de tiempo, y los controles de practica/corrector.py.
+   - Java ("lenguaje": "java"): javac + TeaVM en un worker (practica/java/trabajador.js); cada control es un bloque
+     de Java que usa practica/java/Prueba.java.
    Lo que se escribe queda guardado en este navegador. */
 const PYODIDE = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
 const practicaCache = {};
 let pr = null;   // el ejercicio abierto: { m, p, ej, est, ed }
+const lengPr = () => pr && pr.ej.lenguaje === "java" ? "java" : "python";
+const nombreArch = a => a.split("/").pop();   // en Java las rutas son largas (ar/edu/backend/Servidor.java)
 const clavePr = id => "isi-practica:" + id;
 function leerPr(id){ try { return JSON.parse(leerLocal(clavePr(id))) || null; } catch(e){ return null; } }
 function guardarPr(){ if(pr) guardarLocal(clavePr(pr.ej.id), JSON.stringify(pr.est)); }
 const cargarEjercicio = url => practicaCache[url] || (practicaCache[url] = fetch(url).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }));
 
-function viewPracticas(m, p){
-  const fila = (x, i) => {
-    const est = leerPr(x.id), hechos = est ? est.hechos.length : 0;
-    return `
+const nombrePractica = p => p.practicaTemas ? "Práctica" : "Práctica por partes";
+const hechosPr = x => { const est = leerPr(x.id); return est ? est.hechos.length : 0; };
+const progresoTexto = x => { const h = hechosPr(x); return h ? (h === x.pasos ? "✓ Terminado" : `${h} de ${x.pasos} pasos`) : `${x.pasos} pasos`; };
+/* Un ejercicio en la lista, con su avance (n: el número que se muestra) */
+function filaEjercicio(m, p, x, n){
+  const hechos = hechosPr(x);
+  return `
       <a class="pr-ej" data-go="m${m.n}/${p.id}/practica/${x.id}" href="#/m${m.n}/${p.id}/practica/${x.id}">
-        <span class="pr-ej-n">${String(i + 1).padStart(2, "0")}</span>
+        <span class="pr-ej-n">${String(n).padStart(2, "0")}</span>
         <span class="pr-ej-t"><small>${esc(x.origen)}</small><b>${esc(x.titulo)}</b><span>${esc(x.detalle)}</span></span>
-        <span class="pr-ej-av">${hechos ? `<b>${hechos === x.pasos ? "✓ Terminado" : `${hechos} de ${x.pasos} pasos`}</b>` : `<b>${x.pasos} pasos</b>`}
+        <span class="pr-ej-av"><b>${progresoTexto(x)}</b>
           <span class="bar"><i style="width:${Math.round(hechos / x.pasos * 100)}%"></i></span></span>
       </a>`;
-  };
-  return `
-    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, "Práctica por partes")}
-    <h1>Práctica por partes</h1>
-    <p class="lead">El parcial de a pasos, como lo vas a resolver: primero la clase base, después cada subclase, la clase que guarda la colección, la lectura del CSV y el main.</p>
+}
+function viewPracticas(m, p){
+  const java = p.practicaLenguaje === "java", leng = java ? "Java" : "Python";
+  const como = `
     <div class="pr-como">
       <div><b>1</b><span>A la izquierda, el enunciado con la parte que toca <mark>resaltada</mark> y qué tenés que hacer.</span></div>
       <div><b>2</b><span>A la derecha escribís el código, en pestañas: un archivo por pestaña, como en VS Code.</span></div>
-      <div><b>3</b><span><b>Corregir y seguir</b> corre tu código con Python y te dice qué está bien y qué no. Si está todo bien, pasás al siguiente paso.</span></div>
-    </div>
-    <div class="pr-lista">${p.practica.map(fila).join("")}</div>
-    <p class="pr-nota">Lo que escribís queda guardado en este navegador. La primera vez que corregís tarda unos segundos en preparar Python.</p>`;
+      <div><b>3</b><span><b>Corregir y seguir</b> ${java ? "compila y corre tu código con Java" : "corre tu código con Python"} y te dice qué está bien y qué no. Si está todo bien, pasás al siguiente paso.</span></div>
+    </div>`;
+  const nota = `<p class="pr-nota">Lo que escribís queda guardado en este navegador. ${java ? "La primera vez que corregís se baja Java (4,8 MB, una sola vez) y tarda unos segundos." : "La primera vez que corregís tarda unos segundos en preparar Python."}</p>`;
+  if(!p.practicaTemas) return `
+    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, "Práctica por partes")}
+    <h1>Práctica por partes</h1>
+    <p class="lead">El parcial de a pasos, como lo vas a resolver: primero la clase base, después cada subclase, la clase que guarda la colección, la lectura del CSV y el main.</p>
+    ${como}
+    <div class="pr-lista">${p.practica.map((x, i) => filaEjercicio(m, p, x, i + 1)).join("")}</div>
+    ${nota}`;
+  // Por grupos (Básico, Para el parcial) y temas: cada tema con su explicación ("Entendelo") y sus ejercicios ("Practicalo")
+  let n = 0;
+  const tema = t => {
+    const hs = (t.herramientas || []).filter(h => HERRAMIENTAS[h] && (p.herramientas || []).includes(h));
+    const ejs = p.practica.filter(x => x.tema === t.id);
+    return `
+      <div class="pr-tema">
+        <div class="pr-tema-cab"><h3>${esc(t.titulo)}</h3><p>${esc(t.detalle)}</p></div>
+        ${hs.length ? `<div class="pr-tema-fila"><span class="pr-t">Entendelo</span>${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}</div>` : ""}
+        ${ejs.length ? `<div class="pr-tema-fila"><span class="pr-t">Practicalo</span><div class="pr-lista">${ejs.map(x => filaEjercicio(m, p, x, ++n)).join("")}</div></div>` : ""}
+      </div>`;
+  };
+  return `
+    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, "Práctica")}
+    <h1>Práctica</h1>
+    <p class="lead">Por temas: primero lo básico, que ya viene en el preenunciado, y después lo que piden el día del parcial. Cada tema tiene su explicación y ejercicios de a pasos en ${leng}.</p>
+    ${como}
+    ${p.practicaGrupos.map(g => `
+    <section class="pr-grupo">
+      <div class="pr-grupo-cab"><h2>${esc(g.titulo)}</h2><p>${esc(g.detalle)}</p></div>
+      ${p.practicaTemas.filter(t => t.grupo === g.id).map(tema).join("")}
+    </section>`).join("")}
+    ${p.quiz && p.quizEn ? `<p class="pr-nota">El <span class="linkbtn" data-go="m${m.n}/${p.id}/quiz">quiz con las preguntas de parciales</span> está en <span class="linkbtn" data-go="m${m.n}/${p.id}/${p.quizEn}/material">${esc(nombreSec(p, p.quizEn))}</span>.</p>` : ""}
+    ${nota}`;
 }
 
 function viewPractica(m, p, x){
   return `
-    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, `<span data-go="m${m.n}/${p.id}/practica">Práctica por partes</span>`, esc(x.titulo))}
+    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, `<span data-go="m${m.n}/${p.id}/practica">${nombrePractica(p)}</span>`, esc(x.titulo))}
     <div class="pr-cab"><div><small>${esc(x.origen)}</small><h1>${esc(x.titulo)}</h1></div>
       <button class="pr-chico" data-pr="reiniciar" title="Borra lo que escribiste en este ejercicio">↺ Empezar de nuevo</button></div>
     <div class="pr-pasos" id="prPasos"></div>
@@ -4416,7 +4540,7 @@ function viewPractica(m, p, x){
       <section class="pr-der">
         <div class="pr-tabs" id="prTabs"></div>
         <div class="pr-ed" id="prEd"></div>
-        <div class="pr-teclas" id="prTeclas">${["⇥", "⇤", ":", "()", "self.", "=", "\"\"", "[]", "_"].map(t => `<button data-pr-tecla="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+        <div class="pr-teclas" id="prTeclas">${(p.practicaLenguaje === "java" ? ["⇥", "⇤", "{}", "()", ";", "\"\"", "=", "this.", "->", "<>", "[]"] : ["⇥", "⇤", ":", "()", "self.", "=", "\"\"", "[]", "_"]).map(t => `<button data-pr-tecla="${esc(t)}">${esc(t)}</button>`).join("")}</div>
         <div class="pr-barra">
           <button class="pr-chico" data-pr="pista">💡 Pista</button>
           <button class="pr-chico" data-pr="solucion">Ver solución</button>
@@ -4437,7 +4561,7 @@ async function montarPractica(m, p, x){
   if(!$("#prWs")) return;   // se cambió de página mientras cargaba
   const est = leerPr(ej.id) || { paso: 0, archivos: {}, hechos: [], pistas: {} };
   pr = { m, p, ej, est, ed: null };
-  pyPreparar();
+  if(ej.lenguaje === "java") jvPreparar(); else pyPreparar();
   irPaso(Math.min(est.paso, ej.pasos.length - 1), false);
 }
 
@@ -4473,17 +4597,17 @@ function pintarIzq(){
     const on = f.p.includes(n) ? " on" : "";
     if(f.k === "li"){ if(!lista){ html += "<ul>"; lista = true; } html += `<li class="${on}">${esc(f.t)}</li>`; continue; }
     if(lista){ html += "</ul>"; lista = false; }
-    html += f.k === "h" ? `<h4 class="${on}">${esc(f.t)}</h4>` : f.k === "code" ? `<pre class="${on}">${resaltarPy(f.t)}</pre>` : `<p class="${on}">${esc(f.t)}</p>`;
+    html += f.k === "h" ? `<h4 class="${on}">${esc(f.t)}</h4>` : f.k === "code" ? `<pre class="${on}">${resaltar(f.t, lengPr())}</pre>` : `<p class="${on}">${esc(f.t)}</p>`;
   }
   if(lista) html += "</ul>";
-  const otros = (paso.tambien || []).map(a => `<code>${esc(a)}</code>`).join(" y ");
+  const otros = (paso.tambien || []).map(a => `<code title="${esc(a)}">${esc(nombreArch(a))}</code>`).join(" y ");
   $("#prIzq").innerHTML = `
     <div class="pr-paso">
       <div class="pr-num">Paso ${n} de ${pr.ej.pasos.length}</div>
       <h2>${esc(paso.titulo)}</h2>
       <ul class="pr-hacer">${paso.hacer.map(t => `<li>${esc(t)}</li>`).join("")}</ul>
       ${paso.contrato.length ? `<div class="pr-contrato"><span>Contrato</span>${paso.contrato.map(c => `<code>${esc(c)}</code>`).join("")}</div>` : ""}
-      <div class="pr-donde">Escribís en <code>${esc(paso.archivo)}</code>${otros ? ` y también en ${otros}` : ""}. <button class="linkbtn" data-pr="enunciado">Ver lo resaltado en el enunciado ↓</button></div>
+      <div class="pr-donde">Escribís en <code title="${esc(paso.archivo)}">${esc(nombreArch(paso.archivo))}</code>${otros ? ` y también en ${otros}` : ""}. <button class="linkbtn" data-pr="enunciado">Ver lo resaltado en el enunciado ↓</button></div>
     </div>
     <div class="pr-enun"><div class="pr-enun-t">Enunciado completo · resaltado lo de este paso</div>${html}</div>`;
   $("#prIzq").scrollTop = 0;
@@ -4492,14 +4616,14 @@ function pintarTabs(){
   const paso = pr.ej.pasos[pr.est.paso];
   const cod = archivosPr(), datos = Object.keys(pr.ej.datos);
   $("#prTabs").innerHTML = [
-    ...cod.map(a => `<button class="pr-tab ${a === pr.tab ? "on" : ""}" data-pr-tab="${esc(a)}">${a === paso.archivo || (paso.tambien || []).includes(a) ? `<i class="pr-punto" title="Este paso"></i>` : ""}${esc(a)}</button>`),
+    ...cod.map(a => `<button class="pr-tab ${a === pr.tab ? "on" : ""}" data-pr-tab="${esc(a)}" title="${esc(a)}">${a === paso.archivo || (paso.tambien || []).includes(a) ? `<i class="pr-punto" title="Este paso"></i>` : ""}${esc(nombreArch(a))}</button>`),
     ...datos.map(a => `<button class="pr-tab dato ${a === pr.tab ? "on" : ""}" data-pr-tab="${esc(a)}" title="Solo lectura">${esc(a)}</button>`)
   ].join("");
   const dato = pr.ej.datos[pr.tab] != null;
   pr.ed = montarEditor($("#prEd"), dato ? pr.ej.datos[pr.tab] : pr.est.archivos[pr.tab] || "", dato, v => {
     pr.est.archivos[pr.tab] = v;
     clearTimeout(pr.tGuardar); pr.tGuardar = setTimeout(guardarPr, 300);
-  });
+  }, lengPr());
   centrarEn($("#prTabs"), $("#prTabs .pr-tab.on"));
 }
 function verPr(lado){
@@ -4527,7 +4651,22 @@ function resaltarPy(t){
   });
   return out + esc(t.slice(i));
 }
-function montarEditor(caja, valor, soloLectura, alCambiar){
+const JV_CLAVES = "abstract|assert|boolean|break|byte|case|catch|char|class|continue|default|do|double|else|enum|extends|final|finally|float|for|if|implements|import|instanceof|int|interface|long|new|package|private|protected|public|record|return|short|static|super|switch|this|throw|throws|try|var|void|while|null|true|false";
+const RE_JV = new RegExp(String.raw`(\/\/[^\n]*|\/\*[\s\S]*?(?:\*\/|$))|("(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?)|(@\w+)|\b(\d+(?:\.\d+)?[dDfFlL]?)\b|\b(class|interface|enum|record)(\s+)(\w+)|\b(${JV_CLAVES})\b|\b([A-Z]\w*)\b|\b(\w+)(?=\s*\()`, "g");
+function resaltarJava(t){
+  let out = "", i = 0;
+  t.replace(RE_JV, (todo, com, cad, deco, num, dc, esp, nom, cla, tipo, fun, pos) => {
+    out += esc(t.slice(i, pos));
+    out += com ? `<span class="t-com">${esc(com)}</span>` : cad ? `<span class="t-cad">${esc(cad)}</span>` : deco ? `<span class="t-dec">${esc(deco)}</span>`
+      : num ? `<span class="t-num">${num}</span>` : dc ? `<span class="t-cla">${dc}</span>${esp}<span class="t-nom">${esc(nom)}</span>`
+      : cla ? `<span class="t-cla">${cla}</span>` : tipo ? `<span class="t-nom">${tipo}</span>` : `<span class="t-fun">${fun}</span>`;
+    i = pos + todo.length;
+    return todo;
+  });
+  return out + esc(t.slice(i));
+}
+const resaltar = (t, leng) => leng === "java" ? resaltarJava(t) : resaltarPy(t);
+function montarEditor(caja, valor, soloLectura, alCambiar, leng = "python"){
   caja.innerHTML = `<div class="ed ${soloLectura ? "lectura" : ""}"><div class="ed-num" aria-hidden="true"></div><div class="ed-cuerpo">
     <pre class="ed-hl" aria-hidden="true"></pre>
     <textarea class="ed-txt" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="Código" ${soloLectura ? "readonly" : ""}></textarea></div></div>`;
@@ -4535,7 +4674,7 @@ function montarEditor(caja, valor, soloLectura, alCambiar){
   const csv = soloLectura;
   const pintar = () => {
     const v = ta.value;
-    hl.innerHTML = (csv ? esc(v) : resaltarPy(v)) + "\n ";
+    hl.innerHTML = (csv ? esc(v) : resaltar(v, leng)) + "\n ";
     const n = v.split("\n").length;
     if(+num.dataset.n !== n){ num.dataset.n = n; num.textContent = Array.from({ length: n }, (_, i) => i + 1).join("\n"); }
     sync();
@@ -4553,10 +4692,23 @@ function montarEditor(caja, valor, soloLectura, alCambiar){
       e.preventDefault();
       const ini = ta.value.lastIndexOf("\n", ta.selectionStart - 1) + 1, linea = ta.value.slice(ini, ta.selectionStart);
       let s = linea.match(/^ */)[0];
-      if(/:\s*(#.*)?$/.test(linea)) s += "    ";
+      if(leng === "java"){
+        // Después de { (o de un paréntesis abierto) se entra un nivel; si la llave ya está cerrada, queda abajo
+        if(/[{(\[]\s*(\/\/.*)?$/.test(linea)){
+          const cierra = /^[})\]]/.test(ta.value.slice(ta.selectionEnd));
+          escribir(ta, "\n" + s + "    " + (cierra ? "\n" + s : ""));
+          if(cierra){ const pos = ta.selectionStart - 1 - s.length; ta.setSelectionRange(pos, pos); }
+          return;
+        }
+      } else if(/:\s*(#.*)?$/.test(linea)) s += "    ";
       else if(/^\s*(return|pass|break|continue|raise)\b/.test(linea)) s = s.slice(4);
       escribir(ta, "\n" + s);
       return;
+    }
+    if(leng === "java" && e.key === "}" && ta.selectionStart === ta.selectionEnd){
+      // La llave que cierra vuelve un nivel atrás
+      const ini = ta.value.lastIndexOf("\n", ta.selectionStart - 1) + 1, antes = ta.value.slice(ini, ta.selectionStart);
+      if(antes.length >= 4 && /^ +$/.test(antes)){ e.preventDefault(); ta.selectionStart = ta.selectionStart - 4; escribir(ta, "}"); return; }
     }
     if(e.key === "Backspace" && ta.selectionStart === ta.selectionEnd){
       const ini = ta.value.lastIndexOf("\n", ta.selectionStart - 1) + 1, antes = ta.value.slice(ini, ta.selectionStart);
@@ -4615,6 +4767,13 @@ self.onmessage = async e => {
 };`;
   pyW = new Worker(URL.createObjectURL(new Blob([src], { type: "text/javascript" })));
   pyListo = false;
+  // Si no se puede bajar Pyodide (sin conexión, o bloqueado), importScripts falla y el worker se cae: se avisa
+  pyW.onerror = e => {
+    e.preventDefault();
+    Object.values(pyPend).forEach(x => { clearTimeout(x.t); x.mal("No se pudo preparar Python. Revisá la conexión y probá de nuevo."); });
+    pyPend = {};
+    if(pyW){ pyW.terminate(); pyW = null; }
+  };
   pyW.onmessage = e => {
     const d = e.data;
     if(d.tipo === "listo"){ pyListo = true; Object.values(pyPend).forEach(x => x.armar()); return; }
@@ -4641,6 +4800,170 @@ function pyCorrer(trabajo){
   });
 }
 
+/* ---------- Java en un worker (practica/java/trabajador.js): javac + TeaVM, en WebAssembly ----------
+   La primera vez baja el compilador (4,8 MB, queda en la caché del navegador). Si el programa no termina
+   (un ciclo infinito), se corta el worker y la próxima vez se arma de nuevo. */
+let jvW = null, jvListo = false, jvPend = {}, jvSeq = 0;
+const JV_TOPE = 8000;        // lo que puede tardar el programa una vez armado
+const JV_ESPERA = 90000;     // sin noticias del worker por este tiempo, se corta
+// WebAssembly GC (Chrome y Edge 119+, Firefox 120+, Safari 18.2+): se prueba con un módulo mínimo que declara un struct
+const javaPosible = () => { try { return WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 3, 1, 95, 0])); } catch(e){ return false; } };
+function jvPreparar(){
+  if(jvW || !javaPosible()) return;
+  try { jvW = new Worker("practica/java/trabajador.js", { type: "module" }); }
+  catch(e){ jvW = null; return; }
+  jvListo = false;
+  const caer = msg => {
+    Object.values(jvPend).forEach(x => { clearTimeout(x.t); x.mal(msg); });
+    jvPend = {};
+    if(jvW){ jvW.terminate(); jvW = null; }
+    jvListo = false;
+  };
+  jvW.onerror = () => caer("No se pudo preparar Java. Revisá la conexión y probá de nuevo.");
+  jvW.onmessage = e => {
+    const d = e.data;
+    if(d.tipo === "listo"){ jvListo = true; return; }
+    if(d.tipo === "error"){ if(Object.keys(jvPend).length) caer("No se pudo preparar Java (" + d.mensaje + "). Revisá la conexión y probá de nuevo."); else { jvW.terminate(); jvW = null; } return; }
+    if(d.tipo === "progreso"){ Object.values(jvPend).forEach(x => { x.vigilar(JV_ESPERA); x.avisar(d); }); return; }
+    const x = jvPend[d.id]; if(!x) return;
+    if(d.tipo === "corriendo"){ x.avisar(d); x.vigilar(JV_TOPE, "Tu programa tardó demasiado y se cortó: ¿hay un ciclo (while o for) que nunca termina?"); return; }
+    delete jvPend[d.id]; clearTimeout(x.t);
+    if(d.etapa !== "interno" || !/^No se pudo preparar Java/.test(d.mensaje || "")) jvListo = true;
+    x.ok(d);
+  };
+  jvW.postMessage({ tipo: "preparar" });
+}
+function jvCorrer(msg, avisar){
+  if(!javaPosible()) return Promise.reject(new Error("Este navegador no puede correr Java: hace falta Chrome o Edge 119+, Firefox 120+ o Safari 18.2+. Actualizalo o probá con otro."));
+  jvPreparar();
+  if(!jvW) return Promise.reject(new Error("Este navegador no puede preparar Java. Probá con Chrome, Edge, Firefox o Safari actualizados."));
+  return new Promise((ok, mal) => {
+    const id = ++jvSeq;
+    const x = jvPend[id] = { ok, mal, avisar: avisar || (() => {}), t: null,
+      vigilar: (ms, texto = "Java tardó demasiado en responder y se cortó. Probá de nuevo.") => {
+        clearTimeout(x.t);
+        x.t = setTimeout(() => {
+          delete jvPend[id];
+          if(jvW){ jvW.terminate(); jvW = null; jvListo = false; }
+          mal(texto);
+        }, ms);
+      } };
+    x.vigilar(JV_ESPERA);
+    jvW.postMessage({ id, ...msg });
+  });
+}
+
+/* Los mensajes de javac, en castellano (se muestra también el original, que es lo que se ve en VS Code) */
+const cortoJava = t => t.replace(/\b(?:[a-z_]\w*\.)+(?=[A-Z])/g, "");   // java.lang.String → String
+const TRAD_JAVAC = [
+  [/^'(.+)' expected$/, x => x[1] === ";" ? "Falta un punto y coma (;) al final de la instrucción." : `Falta un ${x[1]} acá.`],
+  [/^<identifier> expected$/, () => "Falta un nombre acá: ¿hay una instrucción afuera de un método?"],
+  [/^missing return statement$/, () => "Falta el return: el método tiene que devolver un valor en todos los caminos."],
+  [/^incompatible types: possible lossy conversion from (\w+) to (\w+)$/, x => `Pasar de ${x[1]} a ${x[2]} pierde datos: hacé el cast, por ejemplo (${x[2]}) (…).`],
+  [/^incompatible types: unexpected return value$/, () => "Este método es void: no devuelve nada, así que el return no lleva valor."],
+  [/^incompatible types: inference variable/, () => "Los tipos no coinciden (por ejemplo, una List<String> con números): revisá lo que va entre < >."],
+  [/^incompatible types: (.+) cannot be converted to (.+)$/, x => `Tipos que no coinciden: un ${x[1]} no se puede usar donde va un ${x[2]}.`],
+  [/^unreported exception (\S+); must be caught or declared to be thrown$/, x => `${x[1]} es una excepción chequeada: atrapala con try/catch o agregá throws ${x[1]} en la firma del método.`],
+  [/^call to (super|this) must be first statement in constructor$/, x => `${x[1]}(…) tiene que ser lo primero del constructor.`],
+  [/^cannot assign a value to final variable (\w+)$/, x => `${x[1]} es final: se asigna una sola vez, en el constructor.`],
+  [/^variable (\w+) might already have been assigned$/, x => `${x[1]} es final y ya tiene valor: se asigna una sola vez.`],
+  [/^variable (\w+) might not have been initialized$/, x => `${x[1]} se usa antes de tener un valor. Si es un atributo final, asignalo en el constructor.`],
+  [/^variable (\w+) is already defined in/, x => `Ya hay una variable ${x[1]} acá: usá otro nombre, o sacale el tipo si querías cambiarle el valor.`],
+  [/^reached end of file while parsing$/, () => "Se terminó el archivo y falta cerrar una llave }."],
+  [/^class, interface, enum, or record expected$/, () => "Hay código afuera de la clase: ¿sobra una llave } más arriba?"],
+  [/^illegal start of (expression|type)$/, () => "Hay algo mal escrito acá: revisá las llaves y los paréntesis de esta línea y de la anterior."],
+  [/^not a statement$/, () => "Eso no es una instrucción completa (¿falta asignarlo a algo, o un paréntesis?)."],
+  [/^'else' without 'if'$/, () => "Hay un else sin su if: ¿se cerró una llave antes de tiempo?"],
+  [/^unclosed string literal$/, () => "Falta cerrar las comillas de un texto."],
+  [/^unreachable statement$/, () => "Esta línea nunca se ejecuta: está después de un return, un throw o un break."],
+  [/^(\S+) is not abstract and does not override abstract method (\S+) in (\S+)$/, x => `${x[1]} tiene que implementar ${x[2]}, que es abstracto en ${x[3]}.`],
+  [/^(\S+) is abstract; cannot be instantiated$/, x => `${x[1]} es abstracta: no se puede hacer new ${x[1]}(…).`],
+  [/^non-static (?:variable|method) (\S+) cannot be referenced from a static context$/, x => `${x[1]} no es static: desde un método static (como main) se usa a través de un objeto.`],
+  [/^(\S+) has private access in (\S+)$/, x => `${x[1]} es private en ${x[2]}: usá su getter.`],
+  [/^method (\S+) is already defined in (?:class|interface) (\S+)$/, x => `El método ${x[1]} está dos veces en ${x[2]}.`],
+  [/^class (\w+) is public, should be declared in a file named/, x => `La clase pública ${x[1]} tiene que estar en el archivo ${x[1]}.java.`],
+  [/^package (\S+) does not exist$/, x => `No existe el paquete ${x[1]}: revisá el import.`],
+  [/^bad operand types? for (?:binary|unary) operator '(.+)'$/, x => `El operador ${x[1]} no se puede usar con esos tipos: revisá qué estás comparando o sumando.`],
+  [/^incomparable types: (\S+) and (\S+)$/, x => `No se puede comparar un ${x[1]} con un ${x[2]}.`],
+  [/^missing method body, or declare abstract$/, () => "Falta el cuerpo del método { … } (o declararlo abstract)."],
+  [/^invalid method declaration; return type required$/, () => "Falta el tipo que devuelve (void, int, String…). Si es el constructor, tiene que llamarse igual que la clase."],
+  [/^cannot return a value from method whose result type is void$/, () => "Este método es void: no devuelve nada, así que el return no lleva valor."],
+  [/^break outside switch or loop$/, () => "Hay un break afuera de un for, while o switch."],
+  [/^array required, but (\S+) found$/, x => `${x[1]} no es un arreglo: no se le puede poner [ ].`]
+];
+function traducirJavac(msg){
+  const m = cortoJava(String(msg || "")), [l0, ...resto] = m.split("\n");
+  const campo = n => { const x = resto.find(l => l.trim().startsWith(n + ":")); return x ? x.trim().slice(n.length + 1).trim() : ""; };
+  if(/^cannot find symbol/.test(l0)){
+    const [tipo, ...nom] = campo("symbol").split(/\s+/), nombre = nom.join(" ");
+    const en = campo("location").replace(/^(class|interface|enum|record)\s+/, "").replace(/^variable \w+ of type\s+/, "");
+    if(tipo === "method") return `Falta el método ${nombre} en ${en}: fijate el nombre (con mayúsculas) y los parámetros.`;
+    if(tipo === "variable") return `No existe ${nombre}: ¿está declarada? ¿Está bien escrita?`;
+    if(tipo === "class") return /^[a-z]/.test(nombre) ? `No existe el tipo ${nombre}: ¿quisiste decir ${nombre[0].toUpperCase() + nombre.slice(1)}? Los tipos van con mayúscula.` : `Falta la clase ${nombre}: ¿la creaste? ¿Está en el mismo paquete o la importaste?`;
+    return `No se encuentra ${nombre || l0}.`;
+  }
+  const llamada = /^(constructor|method) (\w+) in (?:class|interface|enum|record) \S+ cannot be applied to given types;/.exec(l0);
+  if(llamada){
+    const req = campo("required"), hay = campo("found");
+    const lista = t => !t || t === "no arguments" ? "nada" : t.replace(/,/g, ", ");
+    return `${llamada[1] === "constructor" ? "El constructor de" : "El método"} ${llamada[2]} recibe (${lista(req)}) y le pasaste (${lista(hay)}).` +
+      (llamada[1] === "constructor" && hay === "no arguments" ? " Si es una subclase, empezá su constructor con super(…) con los datos del padre." : "");
+  }
+  if(/attempting to assign weaker access privileges/.test(m)) return "Al sobrescribir un método no podés hacerlo menos visible: dejalo public.";
+  for(const [re, fn] of TRAD_JAVAC){ const x = re.exec(l0); if(x) return fn(x); }
+  return l0;
+}
+
+/* La pila de una excepción como la muestra el JDK: sin los constructores de la excepción ni las líneas internas
+   de TeaVM, y con el nombre real de los archivos de Java (TInteger.java → Integer.java) */
+function limpiarPila(t){
+  const out = [];
+  let arriba = false;
+  for(const l of String(t || "").split("\n")){
+    if(!/^\s+at /.test(l)){ out.push(l); arriba = true; continue; }
+    if(arriba && /\.(fillInStackTrace|<init>)\(/.test(l)) continue;
+    arriba = false;
+    if(/^\s+at (org\.teavm\.|ArranqueUTN\.)/.test(l) || /\(Unknown Source\)/.test(l)) continue;
+    out.push(l.replace(/\(T([A-Z]\w*\.java):\d+\)/, "($1)"));
+  }
+  return out.join("\n").replace(/\n+$/, "");
+}
+
+/* Lo que devuelve el worker de Java, con la forma que pinta pintarResultado */
+function resultadoJava(d, checks, a){
+  if(d.etapa === "interno") return { falla: d.mensaje };
+  if(d.etapa === "javac") return { compilar: d.errores.map(e => {
+    const archivo = (e.archivo || "").replace(/^\//, ""), propio = pr.est.archivos[archivo] != null;
+    return { archivo, linea: e.linea, propio, codigo: propio ? (pr.est.archivos[archivo].split("\n")[e.linea - 1] || "").trim() : "", msg: traducirJavac(e.mensaje), orig: cortoJava(e.mensaje.split("\n")[0]) };
+  }) };
+  const corte = d.trampa === "salida" ? "Tu código imprimió demasiado y se cortó: ¿hay un ciclo que nunca termina?"
+    : d.trampa === "pila" ? "Un método se llama a sí mismo sin parar (StackOverflowError): revisá que un método no se llame a sí mismo, por ejemplo un getter que se devuelve a sí mismo."
+    : /(divide|remainder) by zero/i.test(d.trampa || "") ? "Hay una división entera por cero (en Java es ArithmeticException: / by zero): ¿dividís por una cantidad que puede ser 0? Acá el programa se corta en ese momento."
+    : d.trampa === "unreachable" ? "El programa se cortó por una excepción que no se pudo atrapar."
+    : d.trampa ? "El programa se cortó: " + d.trampa : "";
+  const err = limpiarPila(d.err).trim();
+  if(a === "ejecutar"){
+    const sinAtrapar = /^Exception in thread "main"/m.test(err);
+    return { salida: d.out || "", err, corte: sinAtrapar ? "Tu programa se cortó por una excepción que nadie atrapó:" : corte || (d.codigo ? `El programa terminó con System.exit(${d.codigo}).` : "") };
+  }
+  const visto = {}, extra = [];
+  for(const l of (d.out || "").split("\n")){
+    const x = /^@@(ok|mal|error) (\d+) ?(.*)$/.exec(l);
+    if(x) visto[+x[2]] = { tipo: x[1], msg: x[3].replace(/ ⏎ /g, "\n") };
+    else if(l && l !== "@@fin") extra.push(l);
+  }
+  let cortado = false;
+  const res = checks.map((c, k) => {
+    const sc = (d.sinCompilar || []).find(x => x.k === k);
+    if(sc) return { ok: false, d: c.d, msg: "No se pudo probar porque no compila: " + traducirJavac(sc.mensaje) };
+    const v = visto[k];
+    if(v) return { ok: v.tipo === "ok", d: c.d, msg: v.tipo === "error" ? "Saltó una excepción que no se esperaba: " + v.msg : v.msg };
+    const primero = !cortado; cortado = true;
+    return { ok: false, d: c.d, msg: primero ? (corte || "El programa se cortó en este control.") : "No se llegó a probar: el programa se cortó antes." };
+  });
+  return { res, extra: [extra.join("\n"), err].filter(Boolean).join("\n") };
+}
+
 async function accionPr(a){
   if(!pr || !$("#prWs")) return;
   const paso = pr.ej.pasos[pr.est.paso], res = $("#prRes");
@@ -4658,7 +4981,7 @@ async function accionPr(a){
   }
   if(a === "solucion"){
     res.innerHTML = `<div class="pr-info"><b>Solución de este paso</b><p>Probá primero solo: aprender a resolverlo es lo que sirve para el parcial.</p>
-      ${Object.entries(paso.solucion).map(([f, c]) => `<div class="pr-sol"><div><code>${esc(f)}</code></div><pre>${resaltarPy(c)}</pre></div>`).join("")}
+      ${Object.entries(paso.solucion).map(([f, c]) => `<div class="pr-sol"><div><code>${esc(f)}</code></div><pre>${resaltar(c, lengPr())}</pre></div>`).join("")}
       <button class="pr-chico" data-pr="usar">Poner la solución en mi código</button></div>`;
     return;
   }
@@ -4678,12 +5001,20 @@ async function accionPr(a){
   if(a === "corregir" || a === "seguir" || a === "ejecutar"){
     if(pr.corriendo) return;
     pr.corriendo = true;
-    res.innerHTML = `<div class="pr-corre"><span class="giro"></span>${pyListo ? "Corriendo tu código…" : "Preparando Python (la primera vez tarda unos segundos)…"}</div>`;
+    const java = lengPr() === "java";
+    res.innerHTML = `<div class="pr-corre"><span class="giro"></span><span id="prCorreT">${java ? (jvListo ? "Compilando tu código…" : "Preparando Java (la primera vez se baja, 4,8 MB)…") : pyListo ? "Corriendo tu código…" : "Preparando Python (la primera vez tarda unos segundos)…"}</span></div>`;
     verPr(innerWidth <= 900 ? "der" : null);
     const k = pr.est.paso;
     let r;
     try {
-      r = await pyCorrer({ archivos: { ...pr.ej.datos, ...pr.est.archivos }, controles: a === "ejecutar" ? [] : paso.checks, ejecutar: paso.ejecutar || false });
+      if(java){
+        const avisar = d => { const t = $("#prCorreT"); if(t) t.textContent = d.tipo === "corriendo" ? "Corriendo tu código…" : d.texto + (d.pct != null && d.pct < 100 ? ` ${d.pct}%` : ""); };
+        const archivos = Object.entries(pr.est.archivos).filter(([f]) => f.endsWith(".java")).map(([path, content]) => ({ path, content }));
+        const d = await jvCorrer(a === "ejecutar"
+          ? { archivos, entrada: paso.ejecutar.entrada, args: paso.ejecutar.args || [], datos: pr.ej.datos, controles: null }
+          : { archivos, datos: pr.ej.datos, controles: paso.checks.map((c, i) => ({ k: i, codigo: c.c })), importar: pr.ej.importar || [] }, avisar);
+        r = resultadoJava(d, paso.checks, a);
+      } else r = await pyCorrer({ archivos: { ...pr.ej.datos, ...pr.est.archivos }, controles: a === "ejecutar" ? [] : paso.checks, ejecutar: paso.ejecutar || false });
     } catch(e){
       pr.corriendo = false;
       res.innerHTML = `<div class="pr-mal"><b>${esc(String(e && e.message || e))}</b></div>`;
@@ -4696,7 +5027,25 @@ async function accionPr(a){
 }
 function pintarResultado(r, a){
   const res = $("#prRes"), paso = pr.ej.pasos[pr.est.paso], k = pr.est.paso;
+  const abajo = () => { if(innerWidth <= 900) res.scrollIntoView({ behavior: "smooth", block: "start" }); };
   const salida = r.salida != null ? `<div class="pr-salida"><div>Lo que imprime tu programa</div><pre>${esc(r.salida) || "(no imprimió nada)"}</pre></div>` : "";
+  if(r.falla){ res.innerHTML = `<div class="pr-mal"><b>${esc(r.falla)}</b></div>`; abajo(); return; }
+  if(r.compilar){
+    // Java: los errores de javac, el primero arriba (a veces uno solo causa los demás)
+    const es = r.compilar.slice(0, 4);
+    res.innerHTML = `<div class="pr-mal"><b>Tu código no compila${r.compilar.length > 1 ? ` (${r.compilar.length} errores)` : ""}</b>
+      <div class="pr-errs">${es.map(e => `<${e.propio ? `button class="pr-donde-btn" data-pr-ir="${esc(e.archivo)}:${e.linea}"` : `div class="pr-donde-btn"`}>
+        <span><b>${esc(nombreArch(e.archivo))}, línea ${e.linea}</b> · ${esc(e.msg)}</span>
+        ${e.codigo ? `<code>${esc(e.codigo)}</code>` : ""}<small>${esc(e.orig)}</small></${e.propio ? "button" : "div"}>`).join("")}</div>
+      ${r.compilar.length > es.length ? `<p>…y ${r.compilar.length - es.length} más. Arreglá primero el de más arriba: a veces uno solo causa varios.</p>` : ""}</div>`;
+    abajo();
+    return;
+  }
+  if(a === "ejecutar" && r.corte != null){
+    res.innerHTML = `${r.corte ? `<div class="pr-mal"><b>${esc(r.corte)}</b>${r.err ? `<pre>${esc(r.err)}</pre>` : ""}</div>` : ""}${salida}${!r.corte && r.err ? `<div class="pr-salida"><div>Errores (System.err)</div><pre>${esc(r.err)}</pre></div>` : ""}`;
+    abajo();
+    return;
+  }
   if(r.sintaxis){
     const s = r.sintaxis;
     res.innerHTML = `<div class="pr-mal"><b>Error de sintaxis en ${esc(s.archivo)}, línea ${s.linea}: ${esc(s.msg)}</b>
@@ -4723,7 +5072,8 @@ function pintarResultado(r, a){
       ${todo && !ultimo ? `<button class="pr-fuerte" data-pr-paso="${k + 1}">Siguiente paso →</button>` : ""}
       ${!todo && !ultimo ? `<button class="linkbtn" data-pr-paso="${k + 1}">Pasar igual al paso ${k + 2}</button>` : ""}
       ${fin ? `<button class="pr-fuerte" data-go="m${pr.m.n}/${pr.p.id}/practica">Elegir otro ejercicio</button>` : ""}</div>
-    <ul class="pr-checks">${lista}</ul>${salida}`;
+    <ul class="pr-checks">${lista}</ul>${salida}
+    ${r.extra ? `<details class="pr-extra"><summary>Lo que imprimió tu código durante los controles</summary><pre>${esc(r.extra.length > 4000 ? r.extra.slice(0, 4000) + "\n…" : r.extra)}</pre></details>` : ""}`;
   pintarPasosOk();
   if(innerWidth <= 900) res.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -4757,7 +5107,7 @@ function clicPractica(e){
     const ta = pr.ed && pr.ed.ta, k = t.dataset.prTecla;
     if(!ta || ta.readOnly) return true;
     if(k === "⇥" || k === "⇤") sangrar(ta, k === "⇥" ? 1 : -1);
-    else if(k === "()" || k === "\"\"" || k === "[]"){ escribir(ta, k); ta.setSelectionRange(ta.selectionStart - 1, ta.selectionStart - 1); }
+    else if(["()", "\"\"", "[]", "{}", "<>"].includes(k)){ escribir(ta, k); ta.setSelectionRange(ta.selectionStart - 1, ta.selectionStart - 1); }
     else escribir(ta, k);
     return true;
   }
@@ -5793,6 +6143,18 @@ Compress-Archive -Path pom.xml, src, datos, DECISIONES.md -DestinationPath parci
 
 function viewHerramienta(m, p, id){
   const h = HERRAMIENTAS[id];
+  if(p.practicaTemas){
+    const temas = p.practicaTemas.filter(t => (t.herramientas || []).includes(id));
+    const ejs = p.practica.filter(x => temas.some(t => t.id === x.tema));
+    return `
+    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, `<span data-go="m${m.n}/${p.id}/practica">Práctica</span>`, esc(h.titulo))}
+    <h1>${esc(h.titulo)}</h1>
+    <p class="lead">${h.desc}</p>
+    ${ejs.length ? `<p class="herr-ir">Después, practicalo: ${ejs.map(x => `<span class="pill" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}${esc(x.titulo)}</span>`).join("")}</p>` : ""}
+    <div id="herr" class="herr"></div>
+    ${ejs.length ? `<section class="herr-otras"><h2 class="pr-h2">Practicalo</h2><div class="pr-lista">${ejs.map(x => filaEjercicio(m, p, x, p.practica.indexOf(x) + 1)).join("")}</div></section>` : ""}
+    <p class="pr-nota"><span class="linkbtn" data-go="m${m.n}/${p.id}/practica">← Todos los temas de la Práctica</span></p>`;
+  }
   return `
     ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, esc(h.titulo))}
     <h1>${esc(h.titulo)}</h1>
@@ -5831,7 +6193,7 @@ function render(arriba = true){
     } else {
       ruta = `${a}/${b}/practica`;
       app.innerHTML = viewPracticas(m, p);
-      titulo = `Práctica por partes · ${p.titulo} · ${m.nombre}`;
+      titulo = `${nombrePractica(p)} · ${p.titulo} · ${m.nombre}`;
     }
   } else if(p && c === "h" && HERRAMIENTAS[d] && (p.herramientas || []).includes(d)){
     ruta = `${a}/${b}/h/${d}`;
