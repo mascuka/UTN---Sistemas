@@ -1,24 +1,41 @@
 {
  "titulo": "Backend · 1º Parcial",
- "descripcion": "El parcial real 3K1 (tal cual salió), el proyecto del preparcial, el Cuestionario 05, la teoría de los apuntes y los simulacros.",
+ "descripcion": "El parcial real 3K1 con la corrección del profe, el proyecto del preparcial, el Cuestionario 05, la teoría de los apuntes y los simulacros.",
  "secciones": [
   {
    "titulo": "El parcial real (3K1)",
    "preguntas": [
     {
-     "tipo": "modelo",
-     "en": "Partiendo de la base que se importa en nuevo formato y las lineas que se importan son (\"S1\", \"R1\", 56, 4500, \"ESTABLE\"), (\"S2\", \"R1\", 56, 4500, \"CRITICO\", 1200), (\"S2\", \"R1\", 56, 34500, \"CRITICO\", 1200). Cuantas lineas cual seria el resultado esperado de la clase ResultadoParseo al ivocar al metodo informe?<br><br>a. Leídas: 3 | procesadas: 1 | descartadas: 1 | inválidas: 1 | objetos: 1<br>b. Leídas: 3 | procesadas: 1 | descartadas: 2 | inválidas: 0 | objetos: 1<br>c. Leídas: 3 | procesadas: 0 | descartadas: 1 | inválidas: 1 | objetos: 0<br>d. Leídas: 3 | procesadas: 2 | descartadas: 0 | inválidas: 1 | objetos: 2",
-     "modelo": "Ninguna opción es correcta. Da <b>Leídas: 3 | procesadas: 0 | descartadas: 1 | inválidas: 2 | objetos: 0</b>.",
-     "ex": "(1) ESTABLE → descartada. (2) CPU 56 y memoria 4500 pasan sus rangos, pero el índice es (int)(56·0,7 + 4500·0,3) = 1389 y el constructor exige 1 a 70 → inválida. (3) memoria 34500 &gt; 24576 → inválida.",
-     "mal": "El campus marca la a: se olvidó de que el índice de la segunda fila se va de rango.",
-     "fuente": "Parcial 3K1 · 19/09/2026"
+     "tipo": "una",
+     "en": "Partiendo de la base que se importa en nuevo formato y las lineas que se importan son (\"S1\", \"R1\", 56, 4500, \"ESTABLE\"), (\"S2\", \"R1\", 56, 4500, \"CRITICO\", 1200), (\"S2\", \"R1\", 56, 34500, \"CRITICO\", 1200). Cuantas lineas cual seria el resultado esperado de la clase ResultadoParseo al ivocar al metodo informe?",
+     "ex": "Así lo corrige el profe: «Solo hay una línea procesada, ya que ESTABLE es descartado y S2 es inválida por superar el rango permitido de uso de memoria». Fila por fila: (1) ESTABLE → <b>descartada</b>. (2) CRITICO con CPU 56 y memoria 4500 → <b>procesada</b>. (3) memoria 34500 &gt; 24576 → <b>inválida</b>. Queda leídas 3, procesadas 1, descartadas 1, inválidas 1 y objetos 1.",
+     "mal": "Si lo corrés con el código del preenunciado, la fila 2 también es inválida: el índice da (int)(56·0,7 + 4500·0,3) = 1389 y el constructor de Servidor pide 1 a 70. El resultado real (procesadas 0, inválidas 2) no está entre las opciones. En el campus vale la a: razoná cada fila por el estado y los rangos de CPU y memoria, como el profe.",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 2 puntos",
+     "op": [
+      [
+       "Leídas: 3 | procesadas: 1 | descartadas: 1 | inválidas: 1 | objetos: 1",
+       true
+      ],
+      [
+       "Leídas: 3 | procesadas: 1 | descartadas: 2 | inválidas: 0 | objetos: 1",
+       false
+      ],
+      [
+       "Leídas: 3 | procesadas: 0 | descartadas: 1 | inválidas: 1 | objetos: 0",
+       false
+      ],
+      [
+       "Leídas: 3 | procesadas: 2 | descartadas: 0 | inválidas: 1 | objetos: 2",
+       false
+      ]
+     ]
     },
     {
      "tipo": "una",
      "en": "Para el calculo del costo total por region se tiene el siguiente codigo. ¿Cual seria el Collectors correcto si quisiera obtener el costo promedio por region?",
      "code": "this.servidores.stream()\n        .collect(Collectors.groupingBy(Servidor::getRegion,\n                Collectors.summingInt(Servidor::costoRiesgoOperativo)));",
-     "ex": "<code>costoRiesgoOperativo()</code> devuelve <code>int</code>: el colector justo es <code>averagingInt</code> (devuelve el promedio como Double). <code>summarizingInt</code> también tiene el promedio, pero trae además cantidad, suma, mínimo y máximo.",
-     "fuente": "Parcial 3K1 · 19/09/2026",
+     "ex": "El profe: «Si bien es útil el Collectors.summarizing…, para este caso en particular, sin necesidad de otro cálculo estadístico, lo más correcto es usar Collectors.averagingInt, ya que los datos son enteros». <code>costoRiesgoOperativo()</code> devuelve <code>int</code> y <code>averagingInt</code> da el promedio como Double. <code>summarizingInt</code> trae además cantidad, suma, mínimo y máximo: es más de lo que se pide.",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 2 puntos",
      "op": [
       [
        "Collectors.averagingInt",
@@ -41,8 +58,8 @@
     {
      "tipo": "una",
      "en": "En base a sus conocientos, Por qué el uso de la línea <code>this.servidores = List.copyOf(servidores);</code> dentro del constructor de una clase se considera una de las mejores prácticas de programación en Java",
-     "ex": "La copia es <b>superficial</b> (copia referencias, no clona cada objeto) e inmodificable: si después alguien vacía la lista original, el objeto no se entera.",
-     "fuente": "Parcial 3K1 · 19/09/2026",
+     "ex": "El profe: asegura la <b>inmutabilidad</b> y el <b>encapsulamiento</b>. Es una copia <b>superficial</b> (copia las referencias, no clona cada objeto) blindada contra cambios externos: si después alguien modifica la lista original, el objeto no se entera. Además rechaza los <code>null</code> y tira <code>UnsupportedOperationException</code> si se la intenta modificar.",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 2 puntos",
      "op": [
       [
        "Porque crea una copia defensiva e inmutable de la lista original, impidiendo que cambios externos sobre la colección original alteren el estado interno del objeto.",
@@ -66,7 +83,7 @@
      "tipo": "una",
      "en": "¿Qué ventaja aporta la arquitectura hexagonal respecto a una arquitectura en capas tradicional?",
      "ex": "Puertos y adaptadores: el núcleo con la lógica de negocio no depende de la base de datos ni del framework. Es la misma pregunta del Cuestionario 01.",
-     "fuente": "Parcial 3K1 · 19/09/2026",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 1 punto",
      "op": [
       [
        "Fusiona todos los componentes en una única interfaz.",
@@ -90,7 +107,7 @@
      "tipo": "vf",
      "en": "El lenguaje de Programacion Java tiene un recolector de basura que se encarga de liberar la memoria ocupada por los objetos que no estan siendo utilizados",
      "ex": "El garbage collector de la JVM libera los objetos sin referencias: en Java no se libera memoria a mano.",
-     "fuente": "Parcial 3K1 · 19/09/2026",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 1 punto",
      "op": [
       [
        "Verdadero",
@@ -106,7 +123,7 @@
      "tipo": "una",
      "en": "¿Que significa que sobrecarguemos un constructor?",
      "ex": "Mismo nombre, distinta lista de parámetros.",
-     "fuente": "Parcial 3K1 · 19/09/2026",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 1 punto",
      "op": [
       [
        "Significa que el constructor haga mas que solo construir la clase.",
@@ -126,7 +143,7 @@
      "tipo": "vf",
      "en": "Al usar el modificador final en una clase estamos diciendo que dicha clase no puede ser derivada y que al intentarlo nos sera entregado un error de compilacion",
      "ex": "Una clase <code>final</code> no se puede heredar (por ejemplo, <code>String</code>).",
-     "fuente": "Parcial 3K1 · 19/09/2026",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 1 punto",
      "op": [
       [
        "Verdadero",
@@ -142,7 +159,7 @@
      "tipo": "una",
      "en": "Seleccione las opciones correctas respecto a la operacion intermedia distinct?",
      "ex": "Las operaciones intermedias devuelven otro flujo, no una lista.",
-     "fuente": "Parcial 3K1 · 19/09/2026",
+     "fuente": "Parcial 3K1 · 19/09/2026 · 1 punto",
      "op": [
       [
        "Ninguna es correcta",
@@ -162,7 +179,7 @@
      "tipo": "modelo",
      "en": "Explique brevemente la ejecución del método costoRiesgoOperativo(). Teniendo en cuenta que podria existir una jerarquía de herencia simple compuesta por la clase base Servidor (que maneja atributos como CPU, memoria e índice de carga) y la subclase ServidorConIngresos (que extiende la base agregando un sexto campo numérico para los ingresos del servidor en estados de ALERTA o CRITICO).",
      "modelo": "El costo se define una sola vez en <b>Servidor</b>: (ingreso por hora × índice) / 100 en enteros, con ingreso 1000. <b>ServidorConIngresos</b> llama a <code>super(...)</code>, valida 1000 ≤ ingresos &lt; 1900 y <b>redefine</b> el ingreso por hora. Cuando <code>Cloud</code> hace <code>mapToInt(Servidor::costoRiesgoOperativo)</code>, por <b>enlace dinámico</b> cada objeto usa su versión: por ejemplo índice 59 e ingresos 1110 → 654. Así <code>total()</code>, los filtros y los totales por región toman la regla nueva sin cambiar Cloud.",
-     "fuente": "Parcial 3K1 · 19/09/2026"
+     "fuente": "Parcial 3K1 · 19/09/2026 · 5 puntos"
     }
    ]
   },

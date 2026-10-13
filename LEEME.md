@@ -24,6 +24,8 @@ Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el d
 ## Barra de arriba
 No hay columna al costado: la página usa todo el ancho. Arriba queda fija una barra con el logo y el avance (los dos llevan al inicio), el botón de modo claro/oscuro y los años (Ingreso, 1º a 5º Nivel), que ocupan casi todo el ancho; cada año lleva a sus materias y queda marcado mientras estás en él o en una de sus materias. Adentro de una materia aparece una segunda fila, igual de ancha, con sus bloques (Inicio, parciales, TP, actividades). En el celular, adentro de una materia, esa fila reemplaza a los años (para volver está "Inicio" o "Atrás" en la barra de abajo).
 
+Adentro de un parcial se suma una tercera fila con pestañas: Resumen, cada sección (Teórico, Práctico, Parcial…), la Práctica por partes, el Quiz y las herramientas. Sale de `destinosParcial(p)` y se ve en todas las páginas del parcial, así se pasa de una sección a otra sin volver. Solo aparece si el parcial tiene al menos dos lugares además del resumen. En la página de la materia, la tarjeta de cada parcial trae los mismos accesos directos.
+
 ## Inicio: resumen del avance
 El inicio (`viewResumen`) no lista las materias: muestra el avance de la carrera (anillo con el %, materias, horas, créditos de electivas y promedio), **Tu camino** y una tarjeta por año con sus materias como pastillas (verde aprobada, violeta regular, azul cursando) y el promedio del año. Tocar la tarjeta lleva al año; tocar una pastilla, a la materia. Abajo van las notas del plan.
 **Tu camino** (`viewCamino`): Ingreso, 1º, 2º, 3º, ★ Analista, 4º, 5º y la ★ grande de Ingeniero/a. Cada año se completa con sus obligatorias aprobadas; "Estás acá" marca el primero que falta. La estrella de Analista se llena con 1º a 3º completos (con el Seminario Integrador) y 4 créditos de electivas de cualquier nivel (`CREDITOS_ANALISTA`); la de Ingeniero/a, con todas las obligatorias y las electivas que faltan.
@@ -106,6 +108,7 @@ Con `quiz: "quiz/archivo.json"` en el parcial aparece "Practicá → Quiz" (ruta
 Con `herramientas: ["csv", "streams"]` en el parcial aparecen en "Practicá y entendé" (ruta `#/m201/p1/h/csv`). Hay:
 - `csv`: cómo se lee un CSV en Java. Las formas del apunte 11 (Scanner, BufferedReader, Files.lines, CSVReader, CSVReaderHeaderAware y CsvToBean) con un cuadro de qué hace cada una y, para cada forma, un paso a paso con dibujo y el código resaltado.
 - `streams`: Streams y Collectors, con un stream recorrido paso a paso y cada operación sola (filter, map, sorted, limit, terminales y groupingBy).
+- `pasos`: el paso a paso del parcial de Backend, armado con la corrección real del 3K1. Muestra cómo se reparten los puntos, los 45 minutos, los cinco comandos con los que corrige el profe y nueve pasos con su código, qué comprobar y qué requisito asegura cada uno. Los pasos se marcan y quedan en el navegador (`isi-pasos-bk`); los requisitos se ponen en verde cuando están hechos todos los pasos que los cubren.
 - `rotaciones` (rotaciones y traslaciones, TPA), `robot2r` (robot 2R directa e inversa, TPA) y `subredes` (subredes y VLSM, Redes).
 Están en `HERRAMIENTAS`, en el código de la página.
 
