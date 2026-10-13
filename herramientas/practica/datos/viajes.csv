@@ -1,0 +1,41 @@
+tipo,codigo,conductor,destino,pasajeros,precio_base
+1,6001,Persona 01,Cordoba,12,1800
+2,6002,Persona 02,Villa Carlos Paz,19,2050
+1,6003,Persona 03,Alta Gracia,26,2300
+2,6004,Persona 04,Rio Cuarto,33,2550
+1,6005,Persona 05,Villa Maria,40,2800
+2,6006,Persona 06,Jesus Maria,47,3050
+1,6007,Persona 07,Cordoba,54,3300
+2,6008,Persona 08,Villa Carlos Paz,17,1800
+1,6009,Persona 09,Alta Gracia,24,2050
+2,6010,Persona 10,Rio Cuarto,31,2300
+1,6011,Persona 11,Villa Maria,38,2550
+2,6012,Persona 12,Jesus Maria,45,2800
+1,6013,Persona 13,Cordoba,52,3050
+2,6014,Persona 14,Villa Carlos Paz,15,3300
+1,6015,Persona 15,Alta Gracia,22,1800
+2,6016,Persona 16,Rio Cuarto,29,2050
+1,6017,Persona 17,Villa Maria,36,2300
+2,6018,Persona 18,Jesus Maria,43,2550
+1,6019,Persona 19,Cordoba,50,2800
+2,6020,Persona 20,Villa Carlos Paz,13,3050
+1,6021,Persona 21,Alta Gracia,20,3300
+2,6022,Persona 22,Rio Cuarto,27,1800
+1,6023,Persona 23,Villa Maria,34,2050
+2,6024,Persona 24,Jesus Maria,41,2300
+1,6025,Persona 25,Cordoba,48,2550
+2,6026,Persona 26,Villa Carlos Paz,55,2800
+1,6027,Persona 27,Alta Gracia,18,3050
+2,6028,Persona 28,Rio Cuarto,25,3300
+1,6029,Persona 29,Villa Maria,32,1800
+2,6030,Persona 30,Jesus Maria,39,2050
+1,6031,Persona 31,Cordoba,46,2300
+2,6032,Persona 32,Villa Carlos Paz,53,2550
+1,6033,Persona 33,Alta Gracia,16,2800
+2,6034,Persona 34,Rio Cuarto,23,3050
+1,6035,Persona 35,Villa Maria,30,3300
+2,6036,Persona 36,Jesus Maria,37,1800
+1,6037,Persona 37,Cordoba,44,2050
+2,6038,Persona 38,Villa Carlos Paz,51,2300
+1,6039,Persona 39,Alta Gracia,14,2550
+2,6040,Persona 40,Rio Cuarto,21,2800

@@ -8,6 +8,7 @@
 - `material/<materia>/actividades/` → trabajos prácticos y entregas.
 - `miniaturas/` → la tapa de cada PDF (se genera con `herramientas/miniaturas.py`).
 - `quiz/` → las preguntas de cada quiz (JSON) y sus imágenes.
+- `practica/` → la Práctica por partes: el corrector (`corrector.py`) y un JSON por ejercicio (`practica/dao-p1/`). Se arman con `herramientas/practica/`.
 
 ## Links
 Cada página tiene su propio link, por ejemplo:
@@ -38,6 +39,30 @@ Cada materia lleva su abreviatura en una pastilla beige (`.abr`), igual que las 
 Un grupo de material puede tener `simulacro: { id, titulo, minutos, preenunciado: { pdf, zip }, enunciado: { pdf, zip }, solucion: { zip }, control }` (ver los Simulacros del 1º Parcial de Backend, `201`). Arriba del grupo aparece un panel: 1) el preenunciado para el día antes, 2) el parcial con reloj (se puede cambiar de a 5 min) y 3) la solución. Al tocar **Empezar** corre el reloj y se habilitan el enunciado (PDF en el visor) y el ZIP con el CSV y los tests; hay pausa y "Terminé". Cuando se acaba el tiempo suena un aviso y se habilita la solución. El estado queda en el navegador (`isi-simulacros`): se puede recargar, ir a otra página o al IDE y el reloj sigue. La pestaña muestra el tiempo que queda; afuera del panel aparece un reloj flotante y en el visor, un reloj en la barra.
 Por ahora está en el Simulacro 4 de Backend (`material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/`: preenunciado, enunciado y solución separados).
 
+## Práctica por partes
+Un parcial puede tener `practica: [{ id, titulo, origen, detalle, pasos, url }]` (ver DAO, `206`, 1º Parcial). En la página del parcial aparece primero la tarjeta "Práctica por partes" (`#/m206/p1/practica`), con la lista de ejercicios y cuánto lleva hecho cada uno.
+
+Cada ejercicio (`#/m206/p1/practica/<id>`) se resuelve de a pasos (las clases, la herencia, la lógica, leer el CSV, el main…):
+- **Izquierda:** lo que pide el paso y el enunciado completo, con resaltado lo que corresponde a ese paso.
+- **Derecha:** un editor de Python con una pestaña por archivo. Las pestañas de los CSV son de solo lectura.
+- **Abajo del editor:** "Pista", "Ver solución", "▶ Ejecutar" (corre el main del paso, si tiene), "Corregir" y "Corregir y seguir →". Este último corrige y, si todo está bien, pasa al paso siguiente.
+
+En el celular se elige "Enunciado" o "Código" arriba, y debajo del editor hay una fila de teclas (tab, `:`, `()`, `self.`…). Lo escrito y los pasos hechos quedan en el navegador (`isi-practica:<id>`).
+
+La corrección es Python de verdad, en el navegador:
+- **Cómo corre:** se usa Pyodide 0.26.4, bajado de jsDelivr la primera vez (unos segundos), dentro de un Web Worker. El worker carga `practica/corrector.py`, escribe los archivos del alumno y los CSV, y corre los controles del paso.
+- **Cuánto puede tardar:** si el código no termina en 10 s (por ejemplo, un `while` infinito), se corta y se avisa.
+- **Mensajes:** los errores (de sintaxis, falta de constructor, atributo con otro nombre, `super().__init__` faltante…) se explican en castellano, con un botón que lleva a la línea.
+
+Cada JSON tiene:
+- `enunciado`: bloques `{ k: "h"|"p"|"li"|"code", t, p: [pasos donde se resalta] }`.
+- `datos`: `{ "archivo.csv": contenido }`.
+- `pasos`: en cada uno, `titulo`, `archivo`, `tambien`, `hacer`, `contrato`, `checks: [{ d, c }]` (código Python con `igual`, `cerca`, `lanza`, `es_abstracta`, `hereda`, `atributo`, `correr_main`…), `solucion`, `inicio`, `pistas` y `ejecutar`.
+
+Los JSON no se escriben a mano: se editan `herramientas/practica/ej1.py … ej5.py` (los CSV están en `herramientas/practica/datos/`) y después se corre, desde la raíz:
+`python3 herramientas/practica/validar.py ej1 ej2 ej3 ej4 ej5` y `python3 herramientas/practica/armar.py`.
+`validar.py` usa el mismo `practica/corrector.py` que la página y revisa dos cosas: que la solución de cada paso pase todos los controles, y que el código de inicio falle al menos uno.
+
 ## Modo oscuro y carga suave
 El botón de la luna/sol de la barra elige claro u oscuro y lo guarda (`isi-tema`); si nunca se tocó, sigue al sistema. Funciona prendiendo o apagando las reglas `@media (prefers-color-scheme: dark)` de la hoja de estilos (un script chico en el `<head>`, para que no parpadee al abrir), así que los colores oscuros se siguen escribiendo dentro de esos `@media`.
 Al cambiar de página el contenido aparece con un fundido corto; mientras cargan, las tapas de los PDF, las miniaturas de los videos, el reproductor y las hojas del visor muestran su forma con un brillo que pasa. Con "reducir movimiento" del sistema no hay animaciones.
@@ -60,6 +85,8 @@ Opcionales en cada video: `bloque: "..."` agrupa la lista con un título por blo
 El reproductor usa la API de YouTube (`youtube.com/iframe_api`): cuando termina un video arranca solo el siguiente de la lista, y la velocidad que se elige (por ejemplo 1.5) se mantiene en los videos siguientes y queda guardada en el navegador (`isi-yt-vel`). Tocar un video de la lista lo arranca. Si la API no carga, se ve el video común de YouTube, sin esas dos cosas.
 
 En la compu, el botón "Modo cine" (o la tecla `t`) agranda el video a todo el ancho, sin pantalla completa, y pasa la lista abajo en una fila horizontal (con flechas y la rueda del mouse). Es solo CSS, así que el video no se corta; la elección queda guardada (`isi-yt-cine`). En el celular la lista ya va abajo y el botón no aparece.
+
+Si una sección no tiene videos (`videos: []`), no aparece la pestaña Videos ni el botón "▶ Videos".
 
 Los archivos con `tipo: "ZIP"` o `tipo: "INO"` se descargan (botón "Descargar ↓") en vez de abrirse en otra pestaña.
 
