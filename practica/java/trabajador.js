@@ -52,6 +52,8 @@ async function bajar(pieza, hecho, total) {
       } catch (e) { }
     }
   }
+  // Si el servidor ya lo mandó descomprimido (Content-Encoding: gzip), no empieza con 1f 8b y se usa tal cual
+  if (gz[0] !== 0x1f || gz[1] !== 0x8b) return gz;
   const flujo = new Blob([gz]).stream().pipeThrough(new DecompressionStream("gzip"));
   return new Uint8Array(await new Response(flujo).arrayBuffer());
 }
