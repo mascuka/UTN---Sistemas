@@ -3,6 +3,7 @@ la solución de cada paso tiene que pasar todos los controles y el código de in
 Uso (desde la raíz del repo):  python3 herramientas/practica/validar.py ej1 ej2 ej3 ej4 ej5
 """
 import os, sys, json, importlib
+sys.dont_write_bytecode = True
 import tempfile
 AQUI = os.path.dirname(os.path.abspath(__file__))
 os.environ["PRACTICA_DIR"] = os.path.join(tempfile.gettempdir(), "practica-validar")
