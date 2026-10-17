@@ -25,7 +25,9 @@ Cada página tiene su propio link, por ejemplo:
 Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En la lista de su año, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
 
 ## Estilo
-Colores y fuentes como Claude: fondo casi blanco (`--bg: #fcfcfb`), barra lateral apenas más oscura, bordes grises neutros, títulos en Source Serif 4 y texto en Inter (de Google Fonts). El naranja (`--accent: #c96442`, el del logo `--brand: #d97757`) queda solo para los botones principales, el logo y lo de "hoy"; los íconos, títulos y etiquetas van en gris (bloque "Suave, como Claude" al final del `<style>`). Los colores están en `:root` al principio del `<style>`, con su versión para el modo oscuro.
+Colores y fuentes como Claude: fondo casi blanco (`--bg: #fcfcfb`), barra lateral apenas más oscura, bordes grises neutros, títulos en Source Serif 4 y texto en Inter (de Google Fonts), letra base de 15 px y puntos de color chicos. El acento sale del color de la carrera y queda solo para los botones principales, el logo, lo de "hoy" y lo que estás cursando; los íconos, títulos y etiquetas van en gris (bloque "Suave, como Claude" al final del `<style>`). Los colores están en `:root` al principio del `<style>`, con su versión para el modo oscuro.
+
+**Color de la carrera** (`CARRERA.color`): el celeste de la insignia de Sistemas (#3ce8ee), pasado a una versión suave con el mismo brillo que el naranja de Claude: `acento` #2d8992 (botones, links, hoy), `logo` #3a9fab y `suave` #e4f3f5 (fondos), con otros tres para el modo oscuro. Al cargar, pisa `--accent`, `--brand` y `--accent-soft`. Si la web suma otras carreras, cada una trae su `color` (el de su insignia, en versión suave) y la web toma ese.
 
 ## Barra lateral
 A la izquierda queda fija una barra (`renderLado`) con:
@@ -37,7 +39,7 @@ A la izquierda queda fija una barra (`renderLado`) con:
 En el celular la barra es un menú que se abre con el botón de arriba a la izquierda.
 Adentro de un parcial, arriba del contenido quedan fijas sus pestañas: Resumen, cada sección (Teórico, Práctico, Parcial…), la Práctica, el Quiz y las herramientas. Salen de `destinosParcial(p)`. Solo aparecen si el parcial tiene al menos dos lugares además del resumen. Si el parcial tiene `practicaTemas` (Backend), las pestañas son solo Resumen · Teórico · Práctica · Parciales / Simulacros: las explicaciones quedan marcadas como Práctica y el quiz como Parciales / Simulacros (campo `tambien` de cada pestaña).
 
-**Colores de las materias** (`colorMat`): salen de `COLORES_PDF` (el color de cada materia en los horarios en PDF) y se bajan de tono: un fondo suave, un borde y un texto oscuro del mismo tono, y otros tres para el modo oscuro. Los grises se oscurecen un poco y los naranjas fuertes pasan al naranja de la web.
+**Colores de las materias** (`colorMat`): salen de `COLORES_PDF` (el color de cada materia en los horarios en PDF) y se bajan de tono: un fondo suave, un borde y un texto oscuro del mismo tono, y otros tres para el modo oscuro. Los grises se oscurecen un poco y los naranjas fuertes pasan a un terracota suave.
 
 ## Inicio
 Sin buscador (`viewInicio`):
@@ -65,7 +67,7 @@ En la tarjeta de horas se marca la meta de `CARRERA.metaHoras`: cuando faltan 32
 `#/nivel/N` (`viewNivel`) muestra solo las materias de ese año: las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que tienen material cargado llevan la etiqueta "Material". Arriba están las mismas pestañas del plan y al final, botones para ir al año anterior o al siguiente. Al volver de una materia, la lista queda donde estaba.
 Cada materia tiene su estado: **Cursando**, **Regular** o **Aprobada** (tocar el que ya está lo saca) y, si está aprobada, la **nota** con la que se aprobó (1 a 10). Con las notas se calcula el promedio del año (en su cabecera) y el de la carrera (en el plan). La cabecera del año muestra cuántas hay en cada estado con una barra de colores. Hasta 1180 px de ancho la fila se muestra como tarjeta para que entre el estado.
 Los estados y las notas se guardan junto con las aprobadas en `aprobadas.json` (`{ "aprobadas": [...], "estados": { "m29": "cursando" }, "notas": { "m1": 8 } }`), con la misma clave de GitHub, y en este navegador (`isi-estados`).
-Cada materia lleva su abreviatura en una pastilla beige (`.abr`), igual que las correlativas; las correlativas ya aprobadas se ven en verde y las regulares en violeta. Los colores del beige son `--beige` y `--beige-t` (con su versión para el modo oscuro).
+Cada materia lleva su abreviatura en una pastilla con su color (el de los horarios bajado de tono, `colorMat`); las correlativas van en pastillas grises, en verde las ya aprobadas y en violeta las regulares. El gris es `--beige` y `--beige-t` (con su versión para el modo oscuro).
 
 ## Modo simulacro
 Un grupo de material puede tener `simulacro: { id, titulo, minutos, preenunciado: { pdf, zip }, enunciado: { pdf, zip }, solucion: { zip }, control }` (ver los Simulacros del 1º Parcial de Backend, `201`). Arriba del grupo aparece un panel: 1) el preenunciado para el día antes, 2) el parcial con reloj (se puede cambiar de a 5 min) y 3) la solución. Al tocar **Empezar** corre el reloj y se habilitan el enunciado (PDF en el visor) y el ZIP con el CSV y los tests; hay pausa y "Terminé". Cuando se acaba el tiempo suena un aviso y se habilita la solución. El estado queda en el navegador (`isi-simulacros`): se puede recargar, ir a otra página o al IDE y el reloj sigue. La pestaña muestra el tiempo que queda; afuera del panel aparece un reloj flotante y en el visor, un reloj en la barra.
