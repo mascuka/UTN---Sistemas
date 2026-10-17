@@ -4,65 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ingeniería en Sistemas de Información</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 447 447%22%3E%3Crect width=%22447%22 height=%22447%22 rx=%2280%22 fill=%22%230a8497%22/%3E%3Cg fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2233%22%3E%3Cpath d=%22M131.5 98A92.5 92.5 0 0 0 316.5 98%22/%3E%3Cpath d=%22M131.5 347A92.5 92.5 0 0 1 316.5 347%22/%3E%3C/g%3E%3Cg fill=%22%23fff%22%3E%3Crect x=%22207.5%22 y=%2298%22 width=%2233%22 height=%22249%22/%3E%3Crect x=%22115%22 y=%22205%22 width=%22218%22 height=%2235%22/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 447 447%22%3E%3Crect width=%22447%22 height=%22447%22 rx=%2280%22 fill=%22%23c96442%22/%3E%3Cg fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2233%22%3E%3Cpath d=%22M131.5 98A92.5 92.5 0 0 0 316.5 98%22/%3E%3Cpath d=%22M131.5 347A92.5 92.5 0 0 1 316.5 347%22/%3E%3C/g%3E%3Cg fill=%22%23fff%22%3E%3Crect x=%22207.5%22 y=%2298%22 width=%2233%22 height=%22249%22/%3E%3Crect x=%22115%22 y=%22205%22 width=%22218%22 height=%2235%22/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root{
-    --bg:#faf9f5; --side:#f0eee6; --card:#ffffff; --text:#2b2a27; --muted:#6f6c64;
-    --line:#e3e0d6; --accent:#0a8497; --brand:#0a8497; --accent-soft:#daf1f4; --hover:#e8e5da;
+    --bg:#faf9f5; --side:#f4f3ee; --card:#ffffff; --text:#1f1e1d; --text2:#4a4945; --muted:#77756d;
+    --line:#e6e2d8; --accent:#c96442; --brand:#c96442; --accent-soft:#f6e9e2; --hover:#ebe8df; --sel:#e6e2d7;
     --ok:#2e7d4f; --ok-soft:#dcefe2; --done:#eef5ec; --done-line:#cfe3cf;
     --beige:#efe7d7; --beige-t:#5e5442;
+    --rojo:#a3452d; --rojo-f:#f8e6e1; --rojo-l:#e2a395;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --lado-w:272px;
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --bg:#262624; --side:#1f1e1d; --card:#30302e; --text:#ece9e1; --muted:#a39f95;
-      --line:#3d3c39; --accent:#4cc3d3; --brand:#0a8497; --accent-soft:#18383d; --hover:#343331;
+      --bg:#262624; --side:#1f1e1d; --card:#30302e; --text:#ece9e1; --text2:#cfcbc1; --muted:#a39f95;
+      --line:#3d3c39; --accent:#d97757; --brand:#d97757; --accent-soft:#3f2c24; --hover:#343331; --sel:#3a3936;
       --ok:#7fd1a0; --ok-soft:#21392b; --done:#26302a; --done-line:#35483b;
       --beige:#3d3830; --beige-t:#e3d8c2;
+      --rojo:#f0a08c; --rojo-f:#46302b; --rojo-l:#8a4a3c;
     }
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-padding-top:calc(var(--barra-h, 64px) + 14px)}
-  body{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+  html{scroll-padding-top:calc(var(--barra-h, 0px) + 14px)}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding-left:var(--lado-w);-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   [data-go]{cursor:pointer;user-select:none}
-
-  /* ---------- Barra de arriba (fija): los años y, adentro de una materia, sus bloques ---------- */
-  .barra{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);box-shadow:0 2px 10px rgba(30,25,15,.04)}
-  .barra-in{max-width:1640px;margin:0 auto;padding:10px 40px;display:flex;align-items:center;gap:20px}
-  .marca{display:flex;align-items:center;gap:10px;font-family:Georgia,"Times New Roman",serif;font-size:1.15rem;white-space:nowrap}
-  .logo{width:32px;height:32px;border-radius:9px;background:var(--brand);color:#fff;display:grid;place-items:center;flex-shrink:0}
-  .logo svg{width:21px;height:21px}
-  .anios{flex:1;max-width:860px;display:flex;gap:2px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;overflow-x:auto;scrollbar-width:none;min-width:0}
-  .anios::-webkit-scrollbar{display:none}
-  .anio{flex:1 0 auto;text-align:center;font-size:.9rem;font-weight:600;color:var(--muted);border-radius:999px;padding:8px 16px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
-  @media (hover:hover){ .anio:not(.on):hover{color:var(--text);background:var(--hover)} }
-  .anio.on{background:var(--brand);color:#fff}
-  .anio:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-  .tema-btn{display:grid;place-items:center;width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;padding:0;transition:transform .2s}
-  .tema-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .tema-btn{display:grid;place-items:center;width:34px;height:34px;flex:none;border-radius:9px;border:0;background:none;color:var(--muted);cursor:pointer;padding:0;transition:transform .2s,background .15s}
+  .tema-btn:hover{background:var(--hover);color:var(--text)}
   .tema-btn:active{transform:rotate(25deg) scale(.92)}
   .tema-btn svg{width:18px;height:18px}
-  .barra-av{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);white-space:nowrap;cursor:pointer}
-  .barra-av svg{width:30px;height:30px;transform:rotate(-90deg)}
-  .barra-av circle{fill:none;stroke-width:4}
-  .barra-av b{color:var(--text);font-size:.95rem;font-variant-numeric:tabular-nums}
-  .subnav{border-top:1px solid var(--line)}
-  .subnav-in{max-width:1200px;margin:0 auto;padding:8px 40px;display:flex;align-items:center;gap:12px}
-  .subs{flex:1;display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;overflow-x:auto;scrollbar-width:none;min-width:0}
-  .subs::-webkit-scrollbar{display:none}
-  .sub-mat{display:flex;align-items:center;font-weight:700;font-size:.9rem;white-space:nowrap}
-  .sub-mat .abr{margin-right:0}
-  .sub{flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:.87rem;font-weight:600;color:var(--muted);padding:7px 14px;border-radius:999px;white-space:nowrap}
-  .sub svg{width:15px;height:15px;flex-shrink:0}
-  .sub:hover{background:var(--hover);color:var(--text)}
-  .sub.on{background:var(--accent-soft);color:var(--accent)}
-  .parnav{border-top:1px solid var(--line)}
+
+  /* ---------- Barra lateral: Inicio, Cronograma, Plan y las materias que cursás ---------- */
+  .lado{position:fixed;left:0;top:0;bottom:0;width:var(--lado-w);z-index:40;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:12px 10px 8px}
+  .lado-top{display:flex;align-items:center;gap:10px;padding:4px 4px 12px 8px}
+  .lado-top .l-logo{width:22px;height:26px;color:var(--brand);flex:none}
+  .lado-top .l-logo svg{width:100%;height:100%}
+  .lado-top b{font:500 1.18rem var(--serif);letter-spacing:-.01em;white-space:nowrap}
+  .lado-top .tema-btn{margin-left:auto}
+  .lado-x{display:none}
+  .lado-scroll{flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;margin:0 -6px;padding:0 6px}
+  .l-item{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:9px;color:var(--text2);font-size:.93rem}
+  .l-item svg{width:18px;height:18px;flex:none;color:var(--muted)}
+  .l-item:hover{background:var(--hover);color:var(--text)}
+  .l-item.on{background:var(--sel);color:var(--text);font-weight:500}
+  .l-item.on svg{color:var(--text)}
+  .l-grupo{font-size:.78rem;font-weight:500;color:var(--muted);padding:18px 10px 6px}
+  .l-mat{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:9px;font-size:.9rem;color:var(--text2);white-space:nowrap}
+  .l-mat span{overflow:hidden;text-overflow:ellipsis;min-width:0}
+  .l-mat i{width:8px;height:8px;border-radius:50%;flex:none;background:var(--C, var(--muted))}
+  .l-mat[data-go]:hover{background:var(--hover);color:var(--text)}
+  .l-mat.abierta{color:var(--text);font-weight:500}
+  .l-mat.on{background:var(--sel)}
+  .l-mat svg{width:15px;height:15px;margin-left:auto;flex:none;color:var(--muted)}
+  .l-hijos{margin:1px 0 6px 23px;border-left:1px solid var(--line);padding-left:7px;display:flex;flex-direction:column;gap:1px}
+  .l-hijo{display:block;padding:6px 10px;border-radius:8px;font-size:.86rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .l-hijo:hover{background:var(--hover);color:var(--text)}
+  .l-hijo.on{background:var(--sel);color:var(--text);font-weight:500}
+  .l-vacio{display:block;padding:4px 10px;font-size:.84rem;color:var(--muted);line-height:1.45}
+  .l-vacio u{text-underline-offset:3px;text-decoration-color:var(--line)}
+  .lado-pie{border-top:1px solid var(--line);margin-top:6px;padding:11px 8px 4px;display:flex;align-items:center;gap:12px;border-radius:0 0 10px 10px}
+  .lado-pie:hover b{color:var(--accent)}
+  .lado-pie .l-av{width:34px;height:34px;flex:none;position:relative}
+  .lado-pie .l-av svg{width:34px;height:34px;transform:rotate(-90deg)}
+  .lado-pie .l-av circle{fill:none;stroke-width:4}
+  .lado-pie b{display:block;font-weight:500;font-size:.9rem}
+  .lado-pie small{display:block;color:var(--muted);font-size:.8rem}
+  .lado-velo{display:none}
+
+  /* ---------- Arriba: en el celular, el menú; adentro de un parcial, sus pestañas ---------- */
+  .barra{position:sticky;top:0;z-index:20;background:var(--bg)}
+  .barra:not(.vacia){border-bottom:1px solid var(--line)}
+  .barra-in{display:none}
+  .menu-btn{display:grid;place-items:center;width:38px;height:38px;flex:none;border:0;border-radius:9px;background:none;color:var(--text);cursor:pointer}
+  .menu-btn svg{width:22px;height:22px}
+  .barra-tit{flex:1;min-width:0;font:500 1.05rem var(--serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .parnav-in{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
   .parnav-in::-webkit-scrollbar{display:none}
-  .ptab{flex:none;font-size:.84rem;font-weight:600;color:var(--muted);padding:9px 12px 7px;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:color .15s,border-color .15s}
+  .ptab{flex:none;font-size:.88rem;color:var(--muted);padding:12px 12px 10px;border-bottom:1.5px solid transparent;white-space:nowrap;cursor:pointer;transition:color .15s,border-color .15s}
   .ptab:first-child{padding-left:2px}
   .ptab:hover{color:var(--text)}
-  .ptab.on{color:var(--accent);border-bottom-color:var(--accent)}
+  .ptab.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
+  @media (max-width:899px){
+    body{padding-left:0}
+    .lado{transform:translateX(-102%);transition:transform .22s ease;box-shadow:none;width:min(300px, 86vw)}
+    body.lado-abierto{overflow:hidden}
+    body.lado-abierto .lado{transform:none;box-shadow:0 0 40px rgba(0,0,0,.25)}
+    body.lado-abierto .lado-velo{display:block;position:fixed;inset:0;z-index:39;background:rgba(20,18,15,.35)}
+    .lado-x{display:grid}
+    .barra{border-bottom:1px solid var(--line)}
+    .barra-in{display:flex;align-items:center;gap:8px;padding:8px 10px}
+    .parnav{border-top:1px solid var(--line)}
+    .parnav-in{padding:0 16px}
+    .ptab{padding:9px 10px 8px;font-size:.84rem}
+  }
   .pie{max-width:1560px;margin:40px auto 0;font-size:.8rem;color:var(--muted)}
 
   /* ---------- Principal ---------- */
@@ -70,7 +108,7 @@
   #app{max-width:1560px;margin:0 auto}
   .crumbs{font-size:.85rem;color:var(--muted);margin-bottom:8px}
   .crumbs span[data-go]:hover{color:var(--accent)}
-  h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:2.1rem;margin-bottom:10px}
+  h1{font-family:var(--serif);font-weight:500;font-size:2.1rem;margin-bottom:10px}
   .lead{color:var(--muted);font-size:1.02rem;max-width:720px;line-height:1.55;margin-bottom:28px}
   .lead-full{max-width:none;margin-bottom:20px}
 
@@ -92,7 +130,7 @@
   /* Temas del parcial */
   .temas{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-top:24px}
   .temas-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-  .temas h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem}
+  .temas h2{font-family:var(--serif);font-weight:500;font-size:1.3rem}
   .unidad{padding-top:14px}
   /* Muchas unidades cortas (ej.: temas por fecha de final): en columnas */
   .temas.muchas{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 28px}
@@ -519,15 +557,7 @@
     .player-wrap.cine .pl-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .player-wrap.cine .pl-bloque{position:static;flex:0 0 auto;align-self:center;max-width:130px;margin:0 6px;padding:6px 10px;border:0;border-left:3px solid var(--accent);background:none;white-space:normal}
   }
-  /* Barra de abajo: solo en el celular */
-  .abajo{display:none}
   @media (max-width:760px){
-    body{padding-bottom:64px}
-    .abajo{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding:4px 6px calc(4px + env(safe-area-inset-bottom))}
-    .abajo button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;font-size:.68rem;color:var(--muted);background:none;border:0;border-radius:10px;padding:6px 0;cursor:pointer}
-    .abajo button svg{width:21px;height:21px}
-    .abajo button.on{color:var(--accent);font-weight:700}
-    .abajo button:disabled{opacity:.35}
     /* Material compacto: la fila entera se toca, sin el texto "Abrir" */
     .file{gap:10px;padding:10px 12px;border-radius:12px}
     .file .name{font-size:.9rem;line-height:1.3}
@@ -549,21 +579,6 @@
   }
   @media (max-width:760px){
     main{padding:18px 16px}
-    .barra-in{padding:8px 12px;gap:10px}
-    .marca span,.barra-av{display:none}
-    .anios{margin:0}
-    .anio{padding:7px 10px}
-    .anio .largo{display:none}
-    /* Adentro de una materia, en el celular: el logo y los bloques de la materia en una sola fila */
-    .barra.en-materia{display:flex;align-items:center;flex-wrap:wrap}
-    .parnav{flex-basis:100%;min-width:0}   /* sin min-width la fila de pestañas estira la barra */
-    .parnav-in{padding:0 12px}
-    .ptab{padding:8px 10px 6px;font-size:.82rem}
-    .barra.en-materia .barra-in{flex:none;padding-right:0}
-    .barra.en-materia .anios,.barra.en-materia .tema-btn{display:none}
-    .tema-btn{width:34px;height:34px}
-    .barra.en-materia .subnav{flex:1;min-width:0;border-top:0}
-    .subnav-in{padding:8px 12px 8px 0;gap:8px}
     .pie{margin-top:28px}
     h1{font-size:1.6rem}
     .pl-thumb{width:100px}
@@ -575,7 +590,7 @@
   .nivel{margin-bottom:10px;scroll-margin-top:20px}
   .anio-sec{margin-bottom:40px}
   .presumen{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;padding:0 4px 10px}
-  .presumen h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.5rem}
+  .presumen h2{font-family:var(--serif);font-weight:500;font-size:1.5rem}
   .presumen > span{font-size:.84rem;color:var(--muted)}
   .presumen .pav{margin-left:auto;display:inline-flex;align-items:center;gap:12px;align-self:center;flex-wrap:wrap;justify-content:flex-end}
   .pfila{display:grid;grid-template-columns:minmax(0,1fr) 104px 54px 138px 138px 300px 12px;gap:10px;align-items:center;padding:11px 18px;background:var(--card);border:1px solid var(--line);border-radius:14px;font-size:.9rem;box-shadow:0 1px 2px rgba(30,25,15,.04);transition:border-color .15s,box-shadow .15s,transform .15s}
@@ -652,7 +667,7 @@
   .kpi p.meta + p{margin-top:7px}
   .kpi p{font-size:.8rem;color:var(--muted);margin-top:9px}
   .kpi p .cumple{color:var(--ok);font-weight:700}
-  .res-h{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.45rem;margin:0 4px 14px}
+  .res-h{font-family:var(--serif);font-weight:500;font-size:1.45rem;margin:0 4px 14px}
   /* Tu camino: una línea con los años y dos estrellas (Analista y la grande de Ingeniero/a) */
   .camino{position:relative;display:grid;grid-template-columns:repeat(calc(var(--n) - 1),minmax(0,1fr)) minmax(0,1.5fr);align-items:start;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:30px 14px 20px;margin-bottom:36px;box-shadow:0 1px 2px rgba(30,25,15,.04)}
   .cam-linea{position:absolute;left:calc(100% / (var(--n) + .5) / 2 + 14px);right:calc(100% / (var(--n) + .5) * 1.5 / 2 + 14px);top:72px;height:6px;border-radius:9px;background:var(--hover)}
@@ -675,7 +690,7 @@
   .estrella.an .star-svg{width:52px;height:52px}
   .estrella.ing .star-svg{width:86px;height:86px}
   .estrella b{color:#a8620c}
-  .estrella.ing b{font-family:Georgia,"Times New Roman",serif;font-size:1.1rem;font-weight:600}
+  .estrella.ing b{font-family:var(--serif);font-size:1.1rem;font-weight:600}
   .estrella.an small,.estrella.ing small{color:#a8620c}
   .estrella:not(.hecho) .star-svg{filter:drop-shadow(0 1px 2px rgba(160,100,10,.15))}
   .halo{position:absolute;width:118px;height:118px;border-radius:50%;background:radial-gradient(circle,rgba(255,214,102,.55) 0,rgba(255,214,102,.18) 45%,transparent 70%)}
@@ -708,7 +723,7 @@
   .res-anio{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 20px 20px;box-shadow:0 1px 2px rgba(30,25,15,.04);transition:border-color .15s,box-shadow .15s,transform .15s}
   .res-anio:hover{border-color:var(--accent);box-shadow:0 8px 22px rgba(30,25,15,.08);transform:translateY(-2px)}
   .res-cab{display:flex;align-items:center;gap:12px}
-  .res-cab h3{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem}
+  .res-cab h3{font-family:var(--serif);font-weight:500;font-size:1.3rem}
   .res-cab .estado{margin-left:auto;font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--beige);color:var(--beige-t);white-space:nowrap}
   .res-cab .estado.ok{background:var(--ok-soft);color:var(--ok)}
   .res-num{display:flex;align-items:center;gap:10px;margin:10px 0 14px;font-size:.84rem;color:var(--muted)}
@@ -747,13 +762,14 @@
   .hc{text-align:center}
 
   /* Contraseña de entrada */
-  body.locked > header, body.locked > main, body.locked > .abajo{display:none}
+  body.locked > header, body.locked > main, body.locked > .lado{display:none}
+  body.locked{padding-left:0}
   .lock{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);padding:16px;z-index:50}
   .lock[hidden]{display:none}
   .lock-box{width:100%;max-width:320px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
   .lock-logo{width:52px;height:52px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center}
   .lock-logo svg{width:34px;height:34px}
-  .lock-box h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem}
+  .lock-box h2{font-family:var(--serif);font-weight:500;font-size:1.3rem}
   #lockPass{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;text-align:center}
   .lock-msg{min-height:1.2em;font-size:.82rem;color:#c0392b}
   .lock-box .pill{cursor:pointer;font:inherit;font-size:.88rem;padding:8px 22px}
@@ -769,7 +785,7 @@
   .linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
   dialog#config{margin:auto;max-width:560px;width:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:var(--card);color:var(--text);font-size:.9rem;line-height:1.5}
   dialog#config::backdrop{background:rgba(0,0,0,.4)}
-  dialog#config h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:8px}
+  dialog#config h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:8px}
   dialog#config ol{padding-left:20px;margin:12px 0;display:flex;flex-direction:column;gap:6px}
   dialog#config a{color:var(--accent);text-decoration:underline}
   dialog#config code{font-size:.85em;background:var(--hover);padding:1px 5px;border-radius:4px}
@@ -851,7 +867,7 @@
   .cond-req li{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;padding:10px 0;font-size:.9rem;line-height:1.5}
   .cond-req li + li{border-top:1px dashed var(--line)}
   @media (max-width:700px){ .cond-req li{grid-template-columns:1fr;gap:2px} }
-  .comis h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.3rem;margin-bottom:12px}
+  .comis h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
   /* Cada comisión es un grupo: el código a la izquierda y sus profesores al lado */
   .comis-grupo{display:grid;grid-template-columns:62px 310px minmax(0,1fr) 120px 170px;gap:18px;padding:0 18px;font-size:.9rem;line-height:1.5}
@@ -964,7 +980,7 @@
   .pr-lista{display:grid;gap:10px}
   .pr-ej{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 18px;transition:border-color .15s,transform .15s,box-shadow .15s}
   .pr-ej:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 6px 18px rgba(30,25,15,.07)}
-  .pr-ej-n{font-family:Georgia,serif;font-size:1.4rem;color:var(--muted);width:34px;flex:none}
+  .pr-ej-n{font-family:var(--serif);font-size:1.4rem;color:var(--muted);width:34px;flex:none}
   .pr-ej-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
   .pr-ej-t small{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
   .pr-ej-t b{font-size:1.05rem}
@@ -975,7 +991,7 @@
   /* Práctica por temas (Backend): grupos, y en cada tema la explicación y los ejercicios */
   .pr-grupo{margin-top:30px}
   .pr-grupo-cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
-  .pr-grupo-cab h2,.pr-h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.5rem;margin:0}
+  .pr-grupo-cab h2,.pr-h2{font-family:var(--serif);font-weight:500;font-size:1.5rem;margin:0}
   .pr-grupo-cab p{color:var(--muted);font-size:.9rem;margin:0}
   .pr-tema{display:grid;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:12px}
   .pr-tema-cab h3{font-size:1.12rem;margin:0 0 2px}
@@ -1008,7 +1024,7 @@
   .pr-izq{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:auto;padding:18px 20px}
   .pr-paso{border-left:3px solid var(--accent);padding:2px 0 4px 14px;margin-bottom:18px}
   .pr-num{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent)}
-  .pr-paso h2{font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.45rem;margin:2px 0 10px}
+  .pr-paso h2{font-family:var(--serif);font-weight:500;font-size:1.45rem;margin:2px 0 10px}
   .pr-hacer{list-style:none;display:grid;gap:7px;margin-bottom:12px}
   .pr-hacer li{position:relative;padding-left:20px;font-size:.92rem;line-height:1.5}
   .pr-hacer li::before{content:"";position:absolute;left:2px;top:.55em;width:8px;height:8px;border-radius:2px;background:var(--accent)}
@@ -1157,6 +1173,242 @@
     .sim-flota{bottom:calc(74px + env(safe-area-inset-bottom));right:12px}
     .sim-esp{display:none}
   }
+
+  /* ---------- Colores de cada materia (los de los horarios, bajados de tono) ---------- */
+  .mc{--C:var(--c);--F:var(--f);--T:var(--t)}
+  html[data-tema="oscuro"] .mc{--C:var(--cd);--F:var(--fd);--T:var(--td)}
+  #app.ancho{max-width:none}
+
+  /* ---------- Plan de la carrera: pestañas ---------- */
+  .plan-tabs{display:flex;gap:2px;background:var(--hover);border-radius:12px;padding:4px;margin:0 0 22px;overflow-x:auto;scrollbar-width:none;max-width:640px}
+  .plan-tabs::-webkit-scrollbar{display:none}
+  .plan-tab{flex:1 0 auto;text-align:center;font-size:.86rem;font-weight:500;color:var(--muted);padding:7px 14px;border-radius:9px;white-space:nowrap}
+  .plan-tab:hover{color:var(--text)}
+  .plan-tab.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+  /* ---------- Inicio ---------- */
+  .in{max-width:700px;margin:36px auto 0}
+  .in-saludo{display:flex;align-items:center;gap:14px;font:400 2.5rem/1.15 var(--serif);letter-spacing:-.015em;margin:0}
+  .in-saludo .l-logo{width:30px;height:35px;color:var(--brand);flex:none}
+  .in-saludo .l-logo svg{width:100%;height:100%}
+  .in-bajada{color:var(--muted);font-size:.95rem;margin:8px 0 0 46px}
+  .in-h2{display:flex;align-items:baseline;font:500 .95rem var(--sans);margin:38px 0 6px}
+  .in-h2 a{margin-left:auto;font-weight:400;font-size:.84rem;color:var(--muted);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+  .in-h2 a:hover{color:var(--accent)}
+  .in-clase{display:flex;align-items:center;gap:16px;padding:12px 2px;border-bottom:1px solid var(--line)}
+  .in-clase.ya{opacity:.55}
+  .in-h{width:46px;flex:none;font-weight:500;font-size:.95rem;font-variant-numeric:tabular-nums;line-height:1.25}
+  .in-h small{display:block;color:var(--muted);font-weight:400;font-size:.8rem}
+  .in-barra{width:4px;align-self:stretch;border-radius:4px;background:var(--C);flex:none}
+  .in-t{flex:1;min-width:0}
+  .in-t b{display:block;font-weight:500;font-size:.95rem}
+  .in-t small{color:var(--muted);font-size:.84rem}
+  .in-est{font-size:.84rem;color:var(--muted);white-space:nowrap}
+  .in-est.pronto{color:var(--accent);font-weight:500}
+  .in-vacio{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px dashed var(--line);border-radius:14px}
+  .in-vacio svg{width:22px;height:22px;color:var(--accent);flex:none}
+  .in-vacio b{display:block;font-weight:500}
+  .in-vacio small{color:var(--muted);font-size:.86rem}
+  .in-vacio:hover{border-color:var(--accent)}
+  .in-nada{color:var(--text2);font-size:.92rem;padding:8px 2px;line-height:1.55}
+  .in-link{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
+  .in .fe-f{padding:11px 2px}
+  .in .fe-d{width:46px}
+  .in .fe-d b{font-size:1.3rem}
+  .in .fe-q b{font-size:.95rem}
+  .in .fe-q small{font-size:.84rem}
+  .in .fe-falta{font-size:.84rem}
+  .in-btn{display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid var(--line);border-radius:9px;font-size:.84rem;font-weight:500;background:var(--card);margin-left:12px;white-space:nowrap;flex:none}
+  .in-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .in-btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .in-seguir{display:flex;align-items:center;gap:14px;padding:12px 2px;border-bottom:1px solid var(--line)}
+  .in-ic{width:36px;height:36px;border-radius:10px;background:var(--hover);color:var(--text2);display:grid;place-items:center;flex:none}
+  .in-ic svg{width:18px;height:18px}
+  .in-ic.ar{background:var(--accent-soft);color:var(--accent)}
+  .in-av{width:110px;height:4px;border-radius:99px;background:var(--hover);overflow:hidden;flex:none}
+  .in-av i{display:block;height:100%;background:var(--accent)}
+  .in-seguir:hover b,.in-clase[data-go]:hover b{color:var(--accent)}
+
+  /* ---------- Cronograma ---------- */
+  .cr{display:grid;grid-template-columns:296px minmax(0,1fr);margin:-30px -40px 0;min-height:calc(100vh - var(--barra-h, 0px))}
+  .cr-izq{border-right:1px solid var(--line);padding:26px 22px 30px}
+  .cr-zona{padding:24px 32px 32px 30px;min-width:0}
+  .cr-cab-zona{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .cr-cab-zona h1{margin:0;font-size:1.9rem}
+  .cr-cuatri{display:inline-flex;background:var(--hover);border-radius:10px;padding:3px}
+  .cr-cuatri button{font:inherit;font-size:.82rem;border:0;background:none;color:var(--muted);padding:5px 10px;border-radius:8px;cursor:pointer}
+  .cr-cuatri button.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:500}
+  .cr-acc{margin-left:auto;display:flex;gap:8px}
+  .cr-btn{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:10px;font:inherit;font-size:.88rem;font-weight:500;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+  .cr-btn svg{width:15px;height:15px}
+  .cr-btn:hover{border-color:var(--accent)}
+  .cr-btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .cr-btn.pri:hover{filter:brightness(.95)}
+  .cr-btn:disabled{opacity:.45;cursor:default;filter:none}
+  .cr-btn.plano{border-color:transparent;background:none;color:var(--text2)}
+  .cr-btn.plano:hover{background:var(--hover)}
+  .cr-bandeja{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+  .cr-chip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 4px 0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:.86rem;color:var(--text);max-width:100%}
+  .cr-chip i{width:8px;height:8px;border-radius:50%;background:var(--C);flex:none}
+  .cr-chip-t{font:inherit;border:0;background:none;color:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;padding:0 2px}
+  span.cr-chip-t{cursor:default}
+  .cr-chip em{font-style:normal;color:var(--muted);font-size:.8rem;margin-left:4px}
+  .cr-chip-x{display:grid;place-items:center;width:26px;height:26px;border:0;background:none;color:var(--muted);border-radius:7px;cursor:pointer;flex:none}
+  .cr-chip-x svg{width:13px;height:13px}
+  .cr-chip-x:hover{background:var(--hover);color:var(--text)}
+  .cr-chip.activa{background:var(--F);border:1.5px solid var(--C);color:var(--T);font-weight:500}
+  .cr-chip.activa em{color:var(--T);opacity:.75}
+  .cr-chip.sug{border-style:dashed;background:none;color:var(--text2);padding:0 12px 0 9px;cursor:pointer;font:inherit;font-size:.86rem}
+  .cr-chip.sug:hover{border-color:var(--accent);color:var(--accent)}
+  .cr-chip.sug svg{width:15px;height:15px}
+  .cr-sumar{position:relative}
+  .cr-picker{position:absolute;top:40px;left:0;z-index:30;width:350px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px -18px rgba(50,40,20,.35);padding:8px}
+  .cr-pk-in{width:100%;font:inherit;font-size:.9rem;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--bg);color:var(--text);margin-bottom:4px}
+  .cr-pk-in:focus{outline:none;border-color:var(--accent)}
+  .cr-pk-lista{max-height:340px;overflow-y:auto}
+  .cr-pk-g{font-size:.74rem;font-weight:500;color:var(--muted);padding:10px 8px 4px}
+  .cr-pk-f{display:flex;align-items:center;gap:10px;width:100%;font:inherit;font-size:.88rem;text-align:left;border:0;background:none;color:var(--text);padding:8px;border-radius:8px;cursor:pointer}
+  .cr-pk-f:hover{background:var(--hover)}
+  .cr-pk-f i{width:8px;height:8px;border-radius:50%;background:var(--C);flex:none}
+  .cr-pk-f span{flex:1;min-width:0}
+  .cr-pk-f small{color:var(--muted);font-size:.76rem;white-space:nowrap}
+  .cr-pk-vacio{padding:10px;color:var(--muted);font-size:.86rem}
+  .cr-ayuda{color:var(--muted);font-size:.84rem;line-height:1.6;margin:12px 0 14px}
+  .cr-ayuda svg{width:15px;height:15px;vertical-align:-3px;margin-right:6px}
+  .cr-mues{display:inline-block;width:22px;height:12px;border-radius:4px;vertical-align:-1px}
+  .cr-mues.opcion{border:1.5px dashed var(--muted)}
+  .cr-mues.choca{background:var(--rojo-f);border:1.5px dashed var(--rojo-l)}
+  .cr-nota-clave{margin-top:14px;font-size:.84rem;color:var(--muted)}
+  /* La grilla de la semana */
+  .cr-grilla{--gut:58px}
+  .cr-cab{display:grid;grid-template-columns:repeat(var(--dias),minmax(0,1fr));margin-left:var(--gut);font-size:.82rem;font-weight:500;color:var(--text2);padding-bottom:8px}
+  .cr-cab span{padding-left:10px}
+  .cr-cuerpo{position:relative;display:grid;grid-template-columns:var(--gut) minmax(0,1fr);border-top:1px solid var(--line)}
+  .cr-horas{position:relative}
+  .cr-horas span{position:absolute;right:10px;transform:translateY(-50%);font-size:.72rem;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;background:var(--bg);padding:1px 0}
+  .cr-banda{position:absolute;left:0;width:15px;display:flex;align-items:center;justify-content:center;border-left:2px solid var(--line);font-style:normal}
+  .cr-banda b{writing-mode:vertical-rl;transform:rotate(180deg);font-size:.68rem;font-weight:500;color:var(--muted);background:var(--bg);padding:6px 0}
+  .cr-cols{position:relative;display:grid;grid-template-columns:repeat(var(--dias),minmax(0,1fr))}
+  .cr-col{position:relative;border-left:1px solid var(--line)}
+  .cr-col:last-child{border-right:1px solid var(--line)}
+  .cr-linea{position:absolute;left:0;right:0;border-top:1px dashed var(--line)}
+  .cr-corte{position:absolute;left:0;right:0;border-top:1px solid var(--line)}
+  .cr-b{position:absolute;border-radius:9px;background:var(--F);color:var(--T);padding:6px 8px;overflow:hidden;display:flex;flex-direction:column;gap:1px;box-shadow:inset 3px 0 0 var(--C);font-size:.78rem;line-height:1.25}
+  .cr-b b{font-weight:600}
+  .cr-b small{font-size:.72rem;opacity:.85;font-variant-numeric:tabular-nums}
+  .cr-b.angosto{padding:5px 6px}
+  .cr-b.elegida[data-cr]{cursor:pointer}
+  .cr-b.elegida[data-cr]:hover{filter:brightness(.97)}
+  .cr-b.actual{outline:2px solid var(--C);outline-offset:1px}
+  .cr-b.opcion{background:var(--card);box-shadow:none;border:1.5px dashed var(--C);cursor:pointer}
+  .cr-b.opcion.encima,.cr-b.opcion:focus-visible{background:var(--F);border-style:solid;box-shadow:0 6px 18px -8px rgba(60,50,30,.35);z-index:2;outline:none}
+  .cr-elegir{display:none;align-items:center;gap:4px;margin-top:auto;align-self:flex-start;font-size:.7rem;font-weight:600;background:var(--C);color:#fff;border-radius:6px;padding:2px 7px}
+  .cr-elegir svg{width:12px;height:12px}
+  .cr-b.opcion.encima .cr-elegir{display:inline-flex}
+  .cr-b.choca{background:var(--rojo-f);box-shadow:none;border:1.5px dashed var(--rojo-l);color:var(--rojo);cursor:not-allowed}
+  .cr-b.grande{padding:10px 12px;gap:3px;font-size:.84rem}
+  .cr-b.grande b{font-size:.9rem;line-height:1.25}
+  .cr-grilla .cr-com{display:none}
+  .cr-dl-b .cr-com{font-size:.8rem;opacity:.8}
+  .cr-scroll{overflow-x:auto;padding-bottom:4px}
+  .cr-dialista{display:none}
+  .cr-dtabs{display:flex;gap:4px;padding:4px;background:var(--hover);border-radius:12px;margin:4px 0 12px}
+  .cr-dtabs button{flex:1;font:inherit;font-size:.86rem;border:0;background:none;padding:8px 0;border-radius:9px;color:var(--text2);cursor:pointer}
+  .cr-dtabs button.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.1);font-weight:500}
+  .cr-dl{display:flex;gap:12px;margin-top:10px}
+  .cr-dl-h{width:44px;flex:none;font-weight:500;font-size:.9rem;padding-top:11px;font-variant-numeric:tabular-nums;line-height:1.25}
+  .cr-dl-h small{display:block;color:var(--muted);font-weight:400;font-size:.78rem}
+  .cr-dl-b{flex:1;border-radius:14px;background:var(--F);color:var(--T);box-shadow:inset 4px 0 0 var(--C);padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+  .cr-dl-b b{font-weight:600}
+  .cr-libre{margin:10px 0 0 56px;font-size:.8rem;color:var(--muted)}
+  /* El calendario de la cursada */
+  .cal-top{display:flex;align-items:center;justify-content:space-between}
+  .cal-top b{font-weight:500;font-size:.95rem}
+  .cal-top span{display:flex;gap:2px}
+  .cal-top button{width:30px;height:30px;border-radius:8px;border:0;background:none;color:var(--text2);font-size:1.3rem;cursor:pointer;line-height:1}
+  .cal-top button:hover:not(:disabled){background:var(--hover);color:var(--text)}
+  .cal-top button:disabled{opacity:.3;cursor:default}
+  .cal-rango{display:flex;gap:4px;margin:10px 0 2px}
+  .cal-rango button{flex:1;font:inherit;font-size:.76rem;font-weight:500;color:var(--muted);padding:4px 0;border-radius:7px;border:0;background:none;cursor:pointer;text-transform:capitalize}
+  .cal-rango button.on{background:var(--hover);color:var(--text)}
+  .cal-mes{margin-top:14px}
+  .cal-cab{display:flex;align-items:baseline;gap:6px;margin-bottom:6px}
+  .cal-cab b{font:500 1.05rem var(--serif)}
+  .cal-cab span{font-size:.78rem;color:var(--muted)}
+  .cal-sem,.cal-dias{display:grid;grid-template-columns:repeat(7,1fr);text-align:center}
+  .cal-sem span{font-size:.68rem;font-weight:500;color:var(--muted);padding:3px 0}
+  .cal-d{height:31px;margin:1px 2px;display:grid;place-items:center;font:inherit;font-size:.8rem;font-weight:500;color:var(--text2);font-variant-numeric:tabular-nums;border-radius:8px;border:0;background:none;cursor:pointer;position:relative}
+  .cal-d:hover{background:var(--hover)}
+  .cal-d.finde{color:var(--muted)}
+  .cal-d.pasado{color:var(--muted);opacity:.55}
+  .cal-d.marca{background:var(--F);color:var(--T);font-weight:650;box-shadow:inset 0 -2.5px 0 var(--C);opacity:1}
+  .cal-d.varias::after{content:"";position:absolute;top:3px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--C)}
+  .cal-d.hoy{box-shadow:inset 0 0 0 1.5px var(--accent);color:var(--accent);font-weight:650;opacity:1}
+  .cal-d.hoy.marca{box-shadow:inset 0 0 0 1.5px var(--accent),inset 0 -3px 0 var(--C)}
+  .cal-d.sel{background:var(--text);color:var(--bg);box-shadow:none;opacity:1}
+  .cal-sub{font-size:.78rem;font-weight:500;color:var(--muted);margin:20px 0 2px}
+  .cal-vacio{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:6px}
+  .fe-btn{display:block;width:100%;font:inherit;text-align:left;border:0;background:none;color:inherit;cursor:pointer;padding:0;border-radius:8px}
+  .fe-btn:hover .fe-q b{color:var(--accent)}
+  .fe-f{display:flex;align-items:center;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line)}
+  .fe-d{width:36px;flex:none;text-align:center;font-size:.7rem;color:var(--muted);line-height:1.1}
+  .fe-d b{display:block;font:500 1.1rem var(--serif);color:var(--text)}
+  .fe-f.cerca .fe-d b{color:var(--accent)}
+  .fe-q{flex:1;min-width:0}
+  .fe-q b{display:block;font-weight:500;font-size:.88rem}
+  .fe-q small{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden}
+  .fe-q small i{width:7px;height:7px;border-radius:50%;background:var(--C);flex:none}
+  .fe-q small span{overflow:hidden;text-overflow:ellipsis}
+  .cr .sync{margin:10px 0 0}
+  .fe-falta{font-size:.76rem;color:var(--muted);white-space:nowrap}
+  .cal-pop{position:fixed;z-index:45;width:330px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;box-shadow:0 18px 50px -18px rgba(50,40,20,.4),0 2px 6px -2px rgba(50,40,20,.08)}
+  .cal-pop::before{content:"";position:absolute;left:-7px;top:var(--y,40px);width:12px;height:12px;background:var(--card);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+  .cal-pop.abajo{left:12px;right:12px;bottom:12px;width:auto;max-height:calc(100vh - 24px);overflow-y:auto}
+  .cal-pop.abajo::before{display:none}
+  .cal-pop h3{font:400 1.25rem var(--serif);margin-bottom:8px}
+  .cal-pop label{display:block;font-size:.76rem;font-weight:500;color:var(--muted);margin:12px 0 6px}
+  .cal-tipos,.cal-mats{display:flex;flex-wrap:wrap;gap:6px}
+  .cal-tipos button,.cal-mats button{font:inherit;font-size:.82rem;min-height:30px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:none;color:var(--text2);cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-align:left}
+  .cal-tipos button.on{background:var(--text);border-color:var(--text);color:var(--bg)}
+  .cal-mats button i{width:8px;height:8px;border-radius:50%;background:var(--C);flex:none}
+  .cal-mats button.on{background:var(--F);border:1.5px solid var(--C);color:var(--T);font-weight:500}
+  .cal-in{width:100%;font:inherit;font-size:.92rem;height:38px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--bg);color:var(--text)}
+  .cal-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .cal-pop-acc{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+  .cal-pop-ya{display:flex;flex-direction:column;gap:4px;margin-bottom:4px}
+  .cal-pop-ya div{display:flex;align-items:center;gap:8px;font-size:.84rem;padding:5px 4px 5px 10px;border-radius:8px;background:var(--F);color:var(--T)}
+  .cal-pop-ya i{width:8px;height:8px;border-radius:50%;background:var(--C);flex:none}
+  .cal-pop-ya span{flex:1;min-width:0}
+  .cal-pop-ya button{display:grid;place-items:center;width:26px;height:26px;border:0;background:none;color:inherit;border-radius:7px;cursor:pointer;opacity:.7}
+  .cal-pop-ya button:hover{opacity:1;background:rgba(0,0,0,.06)}
+  .cal-pop-ya button svg{width:13px;height:13px}
+  @media (max-width:1100px){
+    .cr{grid-template-columns:260px minmax(0,1fr)}
+    .cr-izq{padding:22px 16px}
+    .cr-zona{padding:22px 20px 28px}
+  }
+  @media (max-width:899px){
+    .cr{grid-template-columns:minmax(0,1fr);margin:-30px -40px 0}
+    .cr-izq{order:2;border-right:0;border-top:1px solid var(--line)}
+    .cr-izq .cal-mes{max-width:360px}
+    .cr-editando .cr-grilla{min-width:640px}
+  }
+  @media (max-width:760px){
+    .cr{margin:-18px -16px 0}
+    .cr-zona{padding:18px 16px 24px}
+    .cr-izq{padding:20px 16px}
+    .cr-cab-zona h1{font-size:1.6rem}
+    .cr-acc{margin-left:0;width:100%}
+    .cr-acc .cr-btn{flex:1;justify-content:center}
+    .cr-ver .cr-grilla{display:none}
+    .cr-ver .cr-dialista{display:block}
+    .in{margin-top:10px}
+    .in-saludo{font-size:1.9rem}
+    .in-saludo .l-logo{width:24px;height:28px}
+    .in-bajada{margin-left:0}
+    .in-av{display:none}
+    .in-btn{margin-left:8px}
+  }
 </style>
 <script>
 /* Modo claro u oscuro elegido a mano (si no se eligió, sigue al sistema): se prenden o apagan las reglas
@@ -1194,9 +1446,12 @@
   </form>
 </div>
 
+<!-- Barra lateral: Inicio, Cronograma, Plan de la carrera y las materias que cursás (en el celular, un menú) -->
+<aside class="lado" id="lado" aria-label="Navegación"></aside>
+<div class="lado-velo" id="ladoVelo"></div>
+
 <header class="barra" id="barra">
   <div class="barra-in" id="barraIn"></div>
-  <nav class="subnav" id="subnav" aria-label="Bloques de la materia" hidden><div class="subnav-in" id="subnavIn"></div></nav>
   <nav class="parnav" id="parnav" aria-label="Secciones del parcial" hidden><div class="parnav-in" id="parnavIn"></div></nav>
 </header>
 
@@ -1208,12 +1463,6 @@
 <!-- Reloj del modo simulacro cuando se está en otra página -->
 <button class="sim-flota" id="simFlota" hidden title="Volver al simulacro"></button>
 
-<!-- En el celular: barra abajo para moverse con el pulgar -->
-<nav class="abajo" id="abajo">
-  <button data-up><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg><span>Atrás</span></button>
-  <button data-go="inicio" id="abajoPlan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg><span>Inicio</span></button>
-  <button id="abajoMat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h7a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h8z"/></svg><span>Materia</span></button>
-</nav>
 
 <dialog id="config">
   <h2>Guardar en GitHub</h2>
@@ -2841,47 +3090,133 @@ const ICON_LAYER= '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 /* Ruta actual, tomada del link (#/...): "", "m26", "m26/p2", "m26/p2/teorico/videos", "m26/actividades" */
 let ruta = "";
 
-/* ---------- Barra de arriba (fija) ----------
-   Siempre: el logo (lleva al resumen del avance), los años del plan y el avance.
-   Cada año lleva a sus materias. Adentro de una materia, una segunda fila con sus bloques (parciales, TP, actividades…). */
+/* ---------- Barra lateral y barra de arriba ----------
+   Al costado: Inicio, Cronograma y Plan de la carrera; abajo, las materias que cursás (las del cronograma o,
+   si no armaste uno, las marcadas como "Cursando"). La materia abierta muestra sus partes (parciales, TPI, secciones…).
+   Arriba: en el celular, el botón del menú; adentro de un parcial, sus pestañas (Resumen, Teórico, Práctica…). */
 const nombreCorto = n => n === 0 ? "Ingreso" : `${n}º Nivel`;
-function renderBarra(m, nivel){
+const ICON_MENU = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+const ICON_X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const ICON_CASA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>';
+const ICON_CALEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>';
+const ICON_PLAN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg>';
+const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+
+/* Color de cada materia: el de los horarios de cursado 2026 (por número de materia), bajado de tono para la web.
+   Las que comparten casillero en los horarios (ej.: "GMP / GIP") llevan el color de ese casillero. */
+const COLORES_PDF = {
+  1: "#9cc2e5", 2: "#92d050", 3: "#ffe598", 4: "#ffc000", 5: "#ed7d31", 6: "#ffff00", 7: "#00b0f0", 8: "#c8c8c8", 11: "#893bc3",
+  9: "#fbe4d5", 10: "#ffff00", 12: "#548135", 13: "#00b0f0", 14: "#ed7d31", 15: "#9cc2e5", 16: "#ffc000", 17: "#92d050",
+  18: "#ffff00", 19: "#ffff00", 20: "#ffe598", 21: "#92d050", 22: "#aeabab", 23: "#9cc2e5",
+  24: "#9cc2e5", 25: "#d0cece", 26: "#ffe598", 27: "#92d050", 28: "#9cc2e5", 29: "#c5e0b3", 30: "#ffff00",
+  31: "#ffff00", 32: "#adb9ca", 33: "#9cc2e5", 34: "#92d050", 35: "#f4b083", 36: "#ffe598",
+  201: "#fef2cb", 202: "#c55a11", 203: "#c55a11", 204: "#8496b0", 205: "#c55a11", 206: "#00b050", 207: "#8496b0",
+  209: "#7030a0", 212: "#ffc000", 213: "#c55a11", 214: "#ffc000", 215: "#92d050", 216: "#c55a11", 217: "#c5e0b3",
+  218: "#7030a0", 219: "#548135", "x:UIX": "#00ffff", "x:HB": "#f4b083", "x:CDEV": "#8496b0"
+};
+const hslHex = (h, s, l) => {
+  const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+  const f = n => Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1)))).toString(16).padStart(2, "0");
+  return "#" + f(0) + f(8) + f(4);
+};
+function hexHsl(hex){
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
+  if(!d) return [0, 0, l];
+  const s = d / (1 - Math.abs(2 * l - 1));
+  const h = mx === r ? ((g - b) / d + 6) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return [h * 60, s, l];
+}
+/* El color del PDF pasado al estilo de la web: c (punto y borde), f (fondo), t (texto), y su versión para el modo oscuro.
+   Los grises se oscurecen un poco (si no, se pierden en el fondo crema) y los naranjas fuertes pasan al naranja de la web */
+const colorCache = {};
+function colorMat(k){
+  k = String(k);
+  if(colorCache[k]) return colorCache[k];
+  const pdf = COLORES_PDF[k];
+  let col;
+  if(!pdf) col = { c: "#9a968c", f: "#ecebe6", t: "#4b4840", cd: "#a8a397", fd: "#3a3936", td: "#dcd8cf" };
+  else {
+    let [h, s, l] = hexHsl(pdf);
+    if(s < .12) col = { c: "#7a766c", f: "#e4e2dc", t: "#3f3c35", cd: "#a8a397", fd: "#3b3a37", td: "#dedad1" };
+    else if(h >= 12 && h <= 32 && s > .6 && l < .72) col = { c: "#c96442", f: "#f6e3da", t: "#8a3b20", cd: "#d97757", fd: "#4a3028", td: "#f2c6b4" };
+    else {
+      if(h >= 48 && h <= 66) h = 46;                       // el amarillo puro, desaturado, se ve verdoso: pasa a mostaza
+      const sc = Math.max(.24, Math.min(.58, l > .84 ? s * .38 : s * .62));
+      col = { c: hslHex(h, sc, .55), f: hslHex(h, Math.min(.6, sc + .12), .91), t: hslHex(h, .42, .27),
+              cd: hslHex(h, sc + .08, .64), fd: hslHex(h, Math.min(.3, sc * .55), .23), td: hslHex(h, .5, .84) };
+    }
+  }
+  col.css = `--c:${col.c};--f:${col.f};--t:${col.t};--cd:${col.cd};--fd:${col.fd};--td:${col.td}`;
+  return colorCache[k] = col;
+}
+
+/* Las materias que cursás: las del cronograma de este cuatrimestre o, si no hay, las marcadas "Cursando" */
+function cursandoLista(){
+  const cr = cronoGuardado(cuatriActual());
+  if(cr && Object.keys(cr.materias).length) return Object.keys(cr.materias).map(k => infoMat(k)).filter(Boolean).sort((x, y) => x.nombre.localeCompare(y.nombre));
+  return [...CARRERA.materias, ...CARRERA.electivas].filter(x => estadoDe(idDe(x)) === "cursando").map(x => infoMat(x.n)).sort((x, y) => x.nombre.localeCompare(y.nombre));
+}
+/* Las partes de una materia (las de la barra lateral): parciales, secciones propias y actividades */
+function partesMateria(m){
+  const c = MATERIAS[m.n], [a, b] = ruta.split("/");
+  if(!c) return [];
+  return [
+    ...c.parciales.map(p => ({ go: `m${m.n}/${p.id}`, t: p.titulo, on: b === p.id })),
+    ...(c.secciones || []).map(x => ({ go: `m${m.n}/${x.id}`, t: x.titulo, on: b === x.id })),
+    ...(c.actividades ? [{ go: `m${m.n}/actividades`, t: "Actividades", on: b === "actividades" }] : [])
+  ];
+}
+const botonTema = () => {
+  const osc = document.documentElement.dataset.tema === "oscuro";
+  return `<button class="tema-btn" data-cambiar-tema title="${osc ? "Pasar a modo claro" : "Pasar a modo oscuro"}" aria-label="Cambiar entre modo claro y oscuro">${osc ? ICON_SOL : ICON_LUNA}</button>`;
+};
+function renderLado(m){
   const [a, b] = ruta.split("/");
-  const av = progreso().pct, C = 2 * Math.PI * 15;
-  $("#barraIn").innerHTML = `
-    <a class="marca" data-go="inicio" href="#/" title="Resumen del avance"><div class="logo">${LOGO}</div><span>${esc(CARRERA.nombre)}</span></a>
-    <nav class="anios" aria-label="Años de la carrera">${NIVELES_PLAN.map(n =>
-      `<a class="anio" data-go="nivel/${n}" href="#/nivel/${n}" data-n="${n}">${n === 0 ? "Ingreso" : `${n}º<span class="largo"> Nivel</span>`}</a>`).join("")}</nav>
-    <button class="tema-btn" data-cambiar-tema title="${document.documentElement.dataset.tema === "oscuro" ? "Pasar a modo claro" : "Pasar a modo oscuro"}" aria-label="Cambiar entre modo claro y oscuro">${document.documentElement.dataset.tema === "oscuro" ? ICON_SOL : ICON_LUNA}</button>
-    <a class="barra-av" data-go="inicio" href="#/" title="Avance de la carrera"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="15" stroke="var(--hover)"/><circle cx="18" cy="18" r="15" stroke="var(--ok)" stroke-linecap="round" stroke-dasharray="${(av / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg><b>${av}%</b></a>`;
-  const c = m && MATERIAS[m.n];
-  const sub = (go, icon, label, on) => `<a class="sub ${on ? "on" : ""}" data-go="${go}" href="#/${go}">${icon}<span>${label}</span></a>`;
-  $("#subnavIn").innerHTML = m ? `
-    <span class="sub-mat" title="${esc(m.nombre)}">${m.abr ? abr(m) : `<b>${esc(m.nombre)}</b>`}</span>
-    ${c ? `<nav class="subs">${sub(a, ICON_HOME, "Inicio", !b)}
-      ${c.parciales.map(p => sub(`${a}/${p.id}`, iconoSeccion(p.id), esc(p.titulo), b === p.id)).join("")}
-      ${(c.secciones || []).map(x => sub(`${a}/${x.id}`, iconoSeccion(x.id), esc(x.titulo), b === x.id)).join("")}
-      ${c.actividades ? sub(`${a}/actividades`, ICON_CHECK, "Actividades", b === "actividades") : ""}</nav>` : ""}` : "";
-  $("#subnav").hidden = !m;
+  const item = (go, icon, t, on) => `<a class="l-item ${on ? "on" : ""}" data-go="${go || "inicio"}" href="#/${go}"${on ? ' aria-current="page"' : ""}>${icon}<span>${t}</span></a>`;
+  const fila = x => {
+    const abierta = m && x.n === m.n, partes = abierta ? partesMateria(m) : [];
+    const link = x.n && (MATERIAS[x.n] || !x.creditos) ? ` data-go="m${x.n}" href="#/m${x.n}"` : "";
+    return `<a class="l-mat mc ${abierta ? "abierta" : ""} ${abierta && !b ? "on" : ""}"${link} style="${colorMat(x.k).css}" title="${esc(x.nombre)}"><i></i><span>${esc(x.nombre)}</span>${partes.length ? ICON_CHEV : ""}</a>
+      ${partes.length ? `<div class="l-hijos">${partes.map(h => `<a class="l-hijo ${h.on ? "on" : ""}" data-go="${h.go}" href="#/${h.go}" title="${esc(h.t)}">${esc(h.t)}</a>`).join("")}</div>` : ""}`;
+  };
+  const curs = cursandoLista();
+  const otra = m && !curs.some(x => x.n === m.n) ? infoMat(m.n) : null;
+  const p = progreso(), C = 2 * Math.PI * 14;
+  $("#lado").innerHTML = `
+    <div class="lado-top"><span class="l-logo">${LOGO}</span><b>Sistemas</b>${botonTema()}<button class="tema-btn lado-x" data-lado aria-label="Cerrar el menú">${ICON_X}</button></div>
+    <div class="lado-scroll">
+      ${item("", ICON_CASA, "Inicio", ruta === "")}
+      ${item("cronograma", ICON_CALEN, "Cronograma", a === "cronograma")}
+      ${item("plan", ICON_PLAN, "Plan de la carrera", a === "plan" || a === "nivel")}
+      ${otra ? `<div class="l-grupo">Estás viendo</div>${fila(otra)}` : ""}
+      <div class="l-grupo">Cursando</div>
+      ${curs.length ? curs.map(fila).join("") : `<a class="l-vacio" data-go="cronograma" href="#/cronograma">Armá tu <u>cronograma</u> y tus materias aparecen acá.</a>`}
+    </div>
+    <a class="lado-pie" data-go="plan" href="#/plan" title="Tu avance en la carrera">
+      <span class="l-av"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" stroke="var(--hover)"/><circle cx="18" cy="18" r="14" stroke="var(--accent)" stroke-linecap="round" stroke-dasharray="${(p.pct / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg></span>
+      <span><b>Tu avance · ${p.pct}%</b><small>${p.matHechas} de ${p.matTotal} materias</small></span></a>`;
+}
+function renderBarra(m){
+  const [a, b] = ruta.split("/");
+  const tit = m ? m.nombre : a === "cronograma" ? "Cronograma" : a === "plan" || a === "nivel" ? "Plan de la carrera" : "Inicio";
+  $("#barraIn").innerHTML = `<button class="menu-btn" data-lado aria-label="Abrir el menú">${ICON_MENU}</button><span class="barra-tit">${esc(tit)}</span>${botonTema()}`;
   // Adentro de un parcial: una fila con todo lo que tiene (resumen, secciones, práctica, quiz y herramientas)
+  const c = m && MATERIAS[m.n];
   const p = c && c.parciales.find(x => x.id === b);
   const tabs = p ? destinosParcial(p) : [];
   const [, , d3, d4] = ruta.split("/");
   const enTab = t => t.k === "" ? !d3 : t.k === (d3 === "h" ? "h/" + d4 : d3) || (t.tambien || []).includes(d3);
   $("#parnavIn").innerHTML = tabs.length > 2 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "";
   $("#parnav").hidden = tabs.length <= 2;
-  $("#barra").classList.toggle("en-materia", !!m);
-  // El año marcado: el que se está viendo, o el de la materia
-  const marcado = m ? m.nivel : nivel;
-  document.querySelectorAll(".anio").forEach(x => {
-    const on = +x.dataset.n === marcado;
-    x.classList.toggle("on", on);
-    if(on) x.setAttribute("aria-current", "page");
-  });
-  centrarEn($(".anios"), $(".anio.on"));
-  centrarEn($(".subs"), $(".sub.on"));
+  $("#barra").classList.toggle("vacia", tabs.length <= 2);
+  renderLado(m);
   centrarEn($("#parnavIn"), $(".ptab.on"));
   medirBarra();
+}
+function abrirLado(si){
+  document.body.classList.toggle("lado-abierto", si);
+  if(si){ const on = $("#lado .on"); if(on) on.scrollIntoView({ block: "nearest" }); }
 }
 /* Todo lo que tiene un parcial, en orden: resumen, secciones, práctica por partes, quiz y herramientas.
    k es lo que va después del parcial en la ruta (para marcar la pestaña). */
@@ -2961,11 +3296,11 @@ function headers(){
 
 async function leerRemoto(){
   const r = await fetch(`${urlArchivo()}?ref=${GITHUB.rama}&t=${Date.now()}`, { headers: headers() });
-  if(r.status === 404) return { lista: [], estados: {}, notas: {}, sha: null };
+  if(r.status === 404) return { lista: [], estados: {}, notas: {}, cronogramas: null, fechas: null, sha: null };
   if(!r.ok) throw new Error("GitHub respondió " + r.status);
   const j = await r.json();
   const datos = JSON.parse(b64dec(j.content) || "{}");
-  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, sha: j.sha };
+  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, cronogramas: datos.cronogramas || null, fechas: datos.fechas || null, sha: j.sha };
 }
 
 async function cargarAprobadas(){
@@ -2975,6 +3310,9 @@ async function cargarAprobadas(){
     aprobadas = new Set(r.lista);
     estados = r.estados;
     notas = r.notas;
+    // Si en GitHub todavía no hay cronograma ni fechas, quedan los de este navegador
+    if(r.cronogramas) cronogramas = r.cronogramas;
+    if(r.fechas) fechas = r.fechas;
     guardarCopia();
     estadoSync = leerLocal(CLAVE_TOKEN) ? "ok" : "sin-clave";
   } catch(e){
@@ -2991,8 +3329,8 @@ async function subirAprobadas(reintento = true){
   const est = ordenar(Object.fromEntries(Object.entries(estados).filter(([id]) => !aprobadas.has(id))));
   const nts = ordenar(Object.fromEntries(Object.entries(notas).filter(([id]) => aprobadas.has(id))));
   const cuerpo = {
-    message: "Actualizar materias aprobadas",
-    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts }, null, 2) + "\n"),
+    message: "Actualizar materias, cronograma y fechas",
+    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas }, null, 2) + "\n"),
     branch: GITHUB.rama
   };
   if(shaRemoto) cuerpo.sha = shaRemoto;
@@ -3022,6 +3360,8 @@ async function subirAprobadas(reintento = true){
 function guardarCopia(){
   guardarLocal(CLAVE_APROBADAS, JSON.stringify([...aprobadas]));
   guardarLocal(CLAVE_ESTADOS, JSON.stringify({ estados, notas }));
+  guardarLocal(CLAVE_CRONO, JSON.stringify(cronogramas));
+  guardarLocal(CLAVE_FECHAS, JSON.stringify(fechas));
 }
 function programarSubida(){
   guardarCopia();
@@ -3091,13 +3431,15 @@ async function guardarToken(){
   guardarLocal(CLAVE_TOKEN, t);
   $("#config").close();
   // Si antes marcaste cosas solo en este navegador, las sumo a lo que hay en GitHub
-  const locales = [...aprobadas], estLoc = { ...estados }, notLoc = { ...notas };
+  const locales = [...aprobadas], estLoc = { ...estados }, notLoc = { ...notas }, croLoc = { ...cronogramas }, fecLoc = { ...fechas };
   await cargarAprobadas();
-  const antes = JSON.stringify([aprobadas.size, estados, notas]);
+  const antes = JSON.stringify([aprobadas.size, estados, notas, cronogramas, fechas]);
   locales.forEach(id => aprobadas.add(id));
   estados = { ...estLoc, ...estados };
   notas = { ...notLoc, ...notas };
-  if(JSON.stringify([aprobadas.size, estados, notas]) !== antes || !shaRemoto){ guardarCopia(); refrescar(); subirAprobadas(); }
+  cronogramas = { ...croLoc, ...cronogramas };
+  fechas = { ...fecLoc, ...fechas };
+  if(JSON.stringify([aprobadas.size, estados, notas, cronogramas, fechas]) !== antes || !shaRemoto){ guardarCopia(); refrescar(); subirAprobadas(); }
 }
 function borrarToken(){
   guardarLocal(CLAVE_TOKEN, null);
@@ -3240,8 +3582,9 @@ function viewResumen(){
       </div>`;
   };
   return `
-    <h1>${esc(CARRERA.titulo)}</h1>
-    <p class="lead lead-full">${esc(CARRERA.plan)}. Tu avance en la carrera; tocá un año para ver sus materias.</p>
+    <h1>Plan de la carrera</h1>
+    <p class="lead lead-full">${esc(CARRERA.titulo)} · ${esc(CARRERA.plan)}. Tu avance; tocá un año para ver sus materias y marcar cuáles aprobaste.</p>
+    ${pestanasPlan(null)}
     <div class="sync" id="sync"></div>
     <div class="res-top">
       <div class="res-anillo"><svg viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="70" stroke="var(--hover)"/><circle cx="80" cy="80" r="70" stroke="var(--ok)" stroke-linecap="round" stroke-dasharray="${(p.pct / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg>
@@ -3335,7 +3678,7 @@ function kpiHoras(p){
 function viewNivel(n){
   const i = NIVELES_PLAN.indexOf(n), ant = NIVELES_PLAN[i - 1], sig = NIVELES_PLAN[i + 1];
   return `
-    <div class="crumbs"><span data-go="inicio">Inicio</span> / ${nombreCorto(n)}</div>
+    ${pestanasPlan(n)}
     <div class="sync" id="sync"></div>
     ${tablaNivel(n, true)}
     <div class="nivel-nav">
@@ -6163,6 +6506,437 @@ function viewHerramienta(m, p, id){
     ${(p.herramientas || []).length > 1 || p.quiz ? `<div class="herr-otras">${practicaBox(m, p)}</div>` : ""}`;
 }
 
+const ICON_MAS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+const ICON_CHECK_CHICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg>';
+const ICON_LUNA_CHICA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>';
+
+/* ---------- Inicio ----------
+   Sin buscador: las clases de hoy (del cronograma), lo que viene (las fechas del calendario) y dónde quedaste. */
+const CLAVE_VISTAS = "isi-vistas";   // las últimas páginas de estudio que abriste: [{ r, t, s, k, ej, ts }]
+let vistas = [];
+try { vistas = JSON.parse(leerLocal(CLAVE_VISTAS)) || []; } catch(e){}
+function anotarVista(v){
+  if(!v) return;
+  vistas = [{ ...v, ts: Date.now() }, ...vistas.filter(x => x.r !== v.r)].slice(0, 8);
+  guardarLocal(CLAVE_VISTAS, JSON.stringify(vistas));
+}
+function clasesDelDia(fecha){
+  const cr = cronoGuardado(cuatriActual()), d = (fecha.getDay() + 6) % 7;
+  if(!cr) return [];
+  return Object.entries(cr.materias).flatMap(([k, x]) => x.b.filter(b => b[0] === d).map(([, a, z]) => ({ k, c: x.c, a, z })))
+    .sort((x, y) => aMin(x.a) - aMin(y.a));
+}
+function viewInicio(){
+  const ahora = new Date(), h = ahora.getHours(), min = h * 60 + ahora.getMinutes();
+  const saludo = h < 6 ? "Buenas noches" : h < 13 ? "Buen día" : h < 20 ? "Buenas tardes" : "Buenas noches";
+  const cr = cronoGuardado(cuatriActual()), hoy = clasesDelDia(ahora);
+  const nombre = k => { const i = infoMat(k); return i ? i.nombre : k; };
+  const fechaTxt = `${DIAS_CR[(ahora.getDay() + 6) % 7] || "Domingo"} ${ahora.getDate()} de ${MESES[ahora.getMonth()]}`;
+  const bajada = !cr ? fechaTxt : hoy.length ? `${fechaTxt} · hoy tenés ${hoy.length === 1 ? "una clase" : `${hoy.length} clases`}, desde las ${hoy[0].a}` : `${fechaTxt} · hoy no cursás`;
+  // Hoy
+  let secHoy;
+  if(!cr) secHoy = `<a class="in-vacio" data-go="cronograma" href="#/cronograma">${ICON_CALEN}<span><b>Armá tu cronograma</b><small>Elegí tus materias y comisiones con los horarios de cursado; tus clases aparecen acá.</small></span></a>`;
+  else if(hoy.length) secHoy = hoy.map(x => {
+    const ya = min >= aMin(x.z), dentro = min >= aMin(x.a) && !ya, falta = aMin(x.a) - min;
+    const est = ya ? "terminó" : dentro ? "ahora" : falta <= 90 ? `en ${falta >= 60 ? `${Math.floor(falta / 60)} h ${falta % 60} min` : `${falta} min`}` : "";
+    const i = infoMat(x.k);
+    return `<a class="in-clase mc ${ya ? "ya" : ""}" ${i && i.n ? `data-go="m${i.n}" href="#/m${i.n}"` : ""} style="${colorMat(x.k).css}"><span class="in-h">${x.a}<small>${x.z}</small></span><span class="in-barra"></span><span class="in-t"><b>${esc(nombre(x.k))}</b><small>Comisión ${esc(x.c)}</small></span>${est ? `<span class="in-est ${dentro || (!ya && falta <= 90) ? "pronto" : ""}">${est}</span>` : ""}</a>`;
+  }).join("");
+  else {
+    let prox = null;
+    for(let i = 1; i <= 7 && !prox; i++){ const f = new Date(ahora); f.setDate(f.getDate() + i); const c = clasesDelDia(f); if(c.length) prox = { f, c: c[0] }; }
+    secHoy = `<p class="in-nada">Hoy no tenés clases.${prox ? ` La próxima: <b>${DIAS_CR[(prox.f.getDay() + 6) % 7].toLowerCase()} a las ${prox.c.a}</b>, ${esc(nombre(prox.c.k))}.` : ""}</p>`;
+  }
+  // Lo que viene
+  const prox = proximasFechas(4);
+  const secViene = prox.length ? prox.map(x => { const i = x.k && infoMat(x.k); return filaFecha(x, i && i.n && MATERIAS[i.n] && /parcial|recuperatorio/i.test(x.tipo) ? `<a class="in-btn" data-go="m${i.n}" href="#/m${i.n}">Repasar</a>` : ""); }).join("")
+    : `<p class="in-nada">Anotá parciales, TP y entregas en el <a class="in-link" data-go="cronograma" href="#/cronograma">calendario del cronograma</a> y aparecen acá.</p>`;
+  // Seguí donde dejaste
+  // Una por parcial (o sección): la más reciente, o el ejercicio de práctica si abriste uno ahí
+  const grupos = new Map();
+  vistas.forEach(v => { const g = v.r.split("/").slice(0, 2).join("/"); (grupos.get(g) || grupos.set(g, []).get(g)).push(v); });
+  const ult = [...grupos.values()].map(l => l.find(v => v.ej) || l[0]).slice(0, 3);
+  const secSeguir = ult.map(v => {
+    let av = "";
+    if(v.ej){ const est = leerPr(v.ej.id); const hechos = est ? est.hechos.length : 0; av = `<span class="in-av"><i style="width:${Math.round(hechos / v.ej.pasos * 100)}%"></i></span>`; v = { ...v, s: `${v.s} · ${hechos >= v.ej.pasos ? "terminado" : `paso ${hechos + 1} de ${v.ej.pasos}`}` }; }
+    return `<a class="in-seguir" data-go="${esc(v.r)}" href="#/${esc(v.r)}"><span class="in-ic ${v.ej ? "ar" : ""}">${v.ej ? ICON_CODIGO : v.quiz ? ICON_QUIZ : ICON_DOC}</span><span class="in-t"><b>${esc(v.t)}</b><small>${esc(v.s)}</small></span>${av}<span class="in-btn ${v.ej ? "pri" : ""}">${v.ej ? "Seguir" : "Abrir"}</span></a>`;
+  }).join("");
+  return `
+    <div class="in">
+      <h1 class="in-saludo"><span class="l-logo">${LOGO}</span>${saludo}</h1>
+      <p class="in-bajada">${esc(bajada)}</p>
+      <h2 class="in-h2">Hoy</h2>
+      ${secHoy}
+      <h2 class="in-h2">Lo que viene${prox.length ? `<a data-go="cronograma" href="#/cronograma">Ver calendario</a>` : ""}</h2>
+      ${secViene}
+      ${secSeguir ? `<h2 class="in-h2">Seguí donde dejaste</h2>${secSeguir}` : ""}
+    </div>`;
+}
+/* ---------- Plan de la carrera: el avance y cada año, en pestañas ---------- */
+function pestanasPlan(activo){
+  const t = (go, txt, on) => `<a class="plan-tab ${on ? "on" : ""}" data-go="${go}" href="#/${go}"${on ? ' aria-current="page"' : ""}>${txt}</a>`;
+  return `<nav class="plan-tabs" aria-label="Plan de la carrera">${t("plan", "Tu avance", activo == null)}${NIVELES_PLAN.map(n => t(`nivel/${n}`, n === 0 ? "Ingreso" : `${n}º`, activo === n)).join("")}</nav>`;
+}
+
+/* ---------- Cronograma ----------
+   Con los horarios de cursado 2026 (horarios/2026.json, sacados de los PDF con herramientas/horarios/extraer.py):
+   elegís una materia y se marcan todas sus comisiones; tocás una y queda. Las que se pisan con lo que ya elegiste
+   salen en rojo y no se pueden elegir. Al guardar se ven solo los turnos que usás (si todo es a la noche, solo la noche).
+   Al costado, el calendario de la cursada (hasta 4 meses) para anotar parciales, TP y entregas de cada materia.
+   Se guarda en este navegador y, con la clave de GitHub, en aprobadas.json ("cronogramas" y "fechas"). */
+const CLAVE_CRONO = "isi-cronograma";   // { "2026-2": { materias: { "201": { c: "3K4", b: [[1, "19:55", "23:05"]] } }, guardado } }
+const CLAVE_FECHAS = "isi-fechas";      // { "2026-10-28": [{ k: "201", tipo: "Parcial", nombre: "1º Parcial" }] }
+let cronogramas = {}, fechas = {};
+try { cronogramas = JSON.parse(leerLocal(CLAVE_CRONO)) || {}; } catch(e){}
+try { fechas = JSON.parse(leerLocal(CLAVE_FECHAS)) || {}; } catch(e){}
+const EXTRAS_NOM = { UIX: "Experiencia e Interfaces de Usuario", HB: "Habilidades Blandas", CDEV: "Creatividad y Desarrollo de Entornos Virtuales" };
+const DIAS_CR = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+const DIAS_CORTO = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const TURNOS = [["Mañana", 7 * 60 + 45, 13 * 60], ["Tarde", 13 * 60, 17 * 60], ["Noche", 17 * 60, 23 * 60 + 15]];
+const TIPOS_FECHA = ["Parcial", "Recuperatorio", "TP", "Entrega", "Otro"];
+const aMin = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+const hhmm = v => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, "0")}`;
+const claveDia = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const hoyClave = () => claveDia(new Date());
+const deClave = k => { const [a, m, d] = k.split("-").map(Number); return new Date(a, m - 1, d); };
+const cuatriActual = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() < 7 ? 1 : 2}`; };
+const cronoGuardado = q => cronogramas[q] || null;
+/* Una materia por su clave: el número de la web o "x:ABR" (electivas que están en los horarios pero no en el plan) */
+function infoMat(k){
+  k = String(k);
+  if(k.startsWith("x:")){ const nom = EXTRAS_NOM[k.slice(2)]; return nom ? { k, n: null, nombre: nom, abr: k.slice(2), creditos: 3 } : null; }
+  const m = materia(+k);
+  return m ? { k, n: m.n, nombre: m.nombre, abr: m.abr || "", creditos: m.creditos, m } : null;
+}
+let HOR = null, horPromesa = null;
+const cargarHorarios = () => horPromesa || (horPromesa = fetch("horarios/2026.json").then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }).then(j => HOR = j).catch(e => { horPromesa = null; throw e; }));
+
+/* Estado de la pantalla: cuatrimestre, si se está editando, el borrador, la materia que se está eligiendo… */
+const CR = { q: null, edit: false, borrador: {}, eligiendo: null, picker: false, filtro: "", mes: null, sel: null, dia: null, form: { tipo: "Parcial", k: null } };
+
+/* Correlativas: para cursar hay que tener regulares (o aprobadas) unas y aprobadas otras */
+function puedeCursar(x){
+  if(!x.m) return true;
+  const est = n => { const m = materia(n); return m ? estadoDe(idDe(m)) : ""; };
+  return x.m.regular.every(n => ["regular", "aprobada"].includes(est(n))) && x.m.aprobada.every(n => est(n) === "aprobada");
+}
+const yaHecha = x => x.m && ["aprobada", "regular"].includes(estadoDe(idDe(x.m)));
+/* ¿Se pisa con algo de lo elegido? Devuelve la materia con la que choca */
+function chocaCon(bloques, elegidas, menos){
+  for(const [d, a, z] of bloques) for(const [k, x] of Object.entries(elegidas)){
+    if(k === menos) continue;
+    for(const [d2, a2, z2] of x.b) if(d === d2 && aMin(a) < aMin(z2) && aMin(a2) < aMin(z)) return k;
+  }
+  return null;
+}
+/* Los bloques que se pisan en un mismo día van lado a lado */
+function carriles(bs){
+  bs.sort((x, y) => aMin(x.a) - aMin(y.a) || aMin(y.z) - aMin(x.z));
+  let grupo = [], fin = -1;
+  const cerrar = () => { const n = Math.max(...grupo.map(b => b.carril)) + 1; grupo.forEach(b => b.de = n); grupo = []; };
+  for(const b of bs){
+    if(grupo.length && aMin(b.a) >= fin) cerrar();
+    const usados = grupo.filter(g => aMin(g.z) > aMin(b.a)).map(g => g.carril);
+    let c = 0; while(usados.includes(c)) c++;
+    b.carril = c; grupo.push(b); fin = Math.max(fin, aMin(b.z));
+  }
+  if(grupo.length) cerrar();
+  return bs;
+}
+/* Grilla semanal. bloques: [{ d, a, z, k, tipo, tit, sub, com }] */
+function grillaCr(bloques, { t0, t1, px, dias, compacta }){
+  const horas = []; for(let t = Math.ceil(t0 / 60) * 60; t <= t1; t += 60) horas.push(t);
+  const cols = [];
+  for(let d = 0; d < dias; d++){
+    let h = horas.map(t => `<i class="cr-linea" style="top:${(t - t0) * px}px"></i>`).join("");
+    TURNOS.forEach(([, a]) => { if(a > t0 && a < t1) h += `<i class="cr-corte" style="top:${(a - t0) * px}px"></i>`; });
+    for(const b of carriles(bloques.filter(b => b.d === d))){
+      const y = (aMin(b.a) - t0) * px, alto = (aMin(b.z) - aMin(b.a)) * px, w = 100 / b.de;
+      const accion = b.tipo === "opcion" ? ` data-cr="elegir" data-k="${b.k}" data-com="${esc(b.com)}" role="button" tabindex="0"` : b.tipo === "elegida" && !compacta ? ` data-cr="cambiar" data-k="${b.k}" role="button" tabindex="0"` : "";
+      h += `<div class="cr-b mc ${b.tipo} ${b.de > 1 ? "angosto" : ""}"${accion} style="top:${y + 1}px;height:${Math.max(alto - 3, 16)}px;left:calc(${w * b.carril}% + 3px);width:calc(${w}% - 6px);${colorMat(b.k).css}" title="${esc(b.titulo || "")}">
+        <b>${esc(b.tit)}</b>${b.sub ? `<small>${esc(b.sub)}</small>` : ""}${b.extra || ""}</div>`;
+    }
+    cols.push(`<div class="cr-col">${h}</div>`);
+  }
+  const bandas = TURNOS.filter(([, a, z]) => z > t0 && a < t1).map(([n, a, z]) => {
+    const y = (Math.max(a, t0) - t0) * px, alto = (Math.min(z, t1) - Math.max(a, t0)) * px;
+    return `<em class="cr-banda" style="top:${y}px;height:${alto}px"><b>${n}</b></em>`;
+  }).join("");
+  return `<div class="cr-grilla" style="--dias:${dias}">
+    <div class="cr-cab">${DIAS_CR.slice(0, dias).map(d => `<span>${d}</span>`).join("")}</div>
+    <div class="cr-cuerpo" style="height:${(t1 - t0) * px}px">
+      <div class="cr-horas">${horas.map(t => `<span style="top:${(t - t0) * px}px">${t / 60}:00</span>`).join("")}${bandas}</div>
+      <div class="cr-cols">${cols.join("")}</div>
+    </div></div>`;
+}
+/* Desde y hasta de la grilla: editando, el día entero; guardado, solo los turnos que se usan */
+function rangoCr(bloques, compacta){
+  if(!compacta || !bloques.length) return [8 * 60 - 15, 23 * 60 + 15];
+  const a = Math.min(...bloques.map(b => aMin(b.a))), z = Math.max(...bloques.map(b => aMin(b.z)));
+  const usados = TURNOS.filter(([, ta, tz]) => a < tz && z > ta);
+  return [Math.min(usados[0][1], Math.floor(a / 60) * 60), Math.max(usados[usados.length - 1][2], z)];
+}
+const nombreCom = (k, com) => { const x = HOR && HOR.cuatrimestres[CR.q.split("-")[1]][k]; return x && x[com] && x[com].cc ? `${com} · contracuatr.` : com; };
+const textoHoras = b => b.map(([d, a, z]) => `${DIAS_CORTO[d + 1]} ${a}–${z}`).join(" · ");
+
+function viewCronograma(){
+  if(!CR.q) CR.q = cuatriActual();
+  const guardado = cronoGuardado(CR.q);
+  if(!CR.edit && !guardado){ CR.edit = true; CR.borrador = {}; }
+  const [anio, c] = CR.q.split("-");
+  const otro = `${anio}-${c === "1" ? 2 : 1}`;
+  const sinClave = !leerLocal(CLAVE_TOKEN);
+  return `
+    <div class="cr ${CR.edit ? "cr-editando" : "cr-ver"}">
+      <aside class="cr-izq" id="crIzq">${calendarioCr()}</aside>
+      <section class="cr-zona">
+        <div class="cr-cab-zona">
+          <h1>Cronograma</h1>
+          <span class="cr-cuatri"><button class="${c === "1" ? "on" : ""}" data-cr="cuatri" data-q="${anio}-1">1º cuatrimestre</button><button class="${c === "2" ? "on" : ""}" data-cr="cuatri" data-q="${anio}-2">2º cuatrimestre</button></span>
+          <span class="cr-acc">${CR.edit
+            ? `${guardado || Object.keys(CR.borrador).length ? `<button class="cr-btn plano" data-cr="cancelar">Cancelar</button>` : ""}<button class="cr-btn pri" data-cr="guardar" ${Object.keys(CR.borrador).length || guardado ? "" : "disabled"}>Guardar</button>`
+            : `<button class="cr-btn" data-cr="editar">${ICON_PEN}Editar</button>`}</span>
+        </div>
+        <div class="sync" id="sync"></div>
+        <div id="crCuerpo"><div class="empty">Cargando los horarios…</div></div>
+        ${!CR.edit && sinClave ? `<p class="cr-nota-clave">Guardado en este navegador. Para verlo también en el celular, <button class="linkbtn" data-config>conectá tu clave de GitHub</button>.</p>` : ""}
+      </section>
+    </div>`;
+}
+function montarCronograma(){
+  cargarHorarios().then(() => { if(ruta === "cronograma") pintarCuerpoCr(); })
+    .catch(() => { const el = $("#crCuerpo"); if(el) el.innerHTML = `<div class="empty">No se pudieron cargar los horarios. Revisá la conexión y recargá la página.</div>`; });
+}
+function pintarCuerpoCr(){
+  const el = $("#crCuerpo");
+  if(!el || !HOR) return;
+  const c = CR.q.split("-")[1], ofertas = HOR.cuatrimestres[c] || {};
+  const elegidas = CR.edit ? CR.borrador : (cronoGuardado(CR.q) || { materias: {} }).materias;
+  if(!CR.edit){
+    const bs = Object.entries(elegidas).flatMap(([k, x]) => x.b.map(([d, a, z]) => ({ d, a, z, k, tipo: "elegida grande", tit: infoMat(k) ? infoMat(k).nombre : k, sub: `${a} – ${z} · ${x.c}`, extra: `<span class="cr-com">Comisión ${esc(x.c)}</span>` })));
+    const [t0, t1] = rangoCr(bs, true), dias = bs.some(b => b.d === 5) ? 6 : 5;
+    const px = Math.max(.78, Math.min(1.9, 690 / (t1 - t0)));
+    const turnos = TURNOS.filter(([, a, z]) => z > t0 && a < t1).map(([n]) => n.toLowerCase());
+    el.innerHTML = `
+      ${turnos.length < 3 && bs.length ? `<p class="cr-ayuda">${ICON_LUNA_CHICA}Cursás ${turnos.length === 1 ? `solo a la ${turnos[0]}` : `a la ${turnos[0]} y a la ${turnos[1]}`}, así que se ve solo ese horario.</p>` : ""}
+      ${grillaCr(bs, { t0, t1, px, dias, compacta: true })}
+      ${diaListaCr(bs, dias)}`;
+    return;
+  }
+  // Editando: la fila de materias elegidas, la que se está eligiendo y el botón para sumar otra
+  const chips = Object.entries(elegidas).map(([k, x]) => { const i = infoMat(k); return `
+    <span class="cr-chip mc ${CR.eligiendo === k ? "activa" : ""}" style="${colorMat(k).css}"><i></i><button class="cr-chip-t" data-cr="cambiar" data-k="${k}" title="Cambiar de comisión">${esc(i ? i.nombre : k)} <em>${esc(x.c)}</em></button><button class="cr-chip-x" data-cr="quitar" data-k="${k}" aria-label="Sacar ${esc(i ? i.nombre : k)}">${ICON_X}</button></span>`; }).join("");
+  const eligiendo = CR.eligiendo && !elegidas[CR.eligiendo] ? `<span class="cr-chip mc activa" style="${colorMat(CR.eligiendo).css}"><i></i><span class="cr-chip-t">${esc(infoMat(CR.eligiendo).nombre)} <em>elegí comisión</em></span><button class="cr-chip-x" data-cr="soltar" aria-label="Cancelar">${ICON_X}</button></span>` : "";
+  const bs = [];
+  for(const [k, x] of Object.entries(elegidas)){
+    const i = infoMat(k), actual = CR.eligiendo === k;
+    x.b.forEach(([d, a, z]) => bs.push({ d, a, z, k, tipo: "elegida" + (actual ? " actual" : ""), tit: `${i && i.abr ? i.abr : (i ? i.nombre : k)} · ${x.c}`, sub: `${a}–${z}`, titulo: `${i ? i.nombre : k} · ${x.c}${actual ? " (la que tenés ahora)" : " · tocá para cambiar de comisión"}` }));
+  }
+  if(CR.eligiendo && ofertas[CR.eligiendo]){
+    const k = CR.eligiendo;
+    for(const [com, x] of Object.entries(ofertas[k])){
+      if(elegidas[k] && elegidas[k].c === com) continue;
+      const con = chocaCon(x.b, elegidas, k), ci = con && infoMat(con);
+      x.b.forEach(([d, a, z]) => bs.push(con
+        ? { d, a, z, k, com, tipo: "choca", tit: com, sub: `Se pisa con ${ci && ci.abr ? ci.abr : ci ? ci.nombre : con}`, titulo: `${com}: se pisa con ${ci ? ci.nombre : con}` }
+        : { d, a, z, k, com, tipo: "opcion", tit: nombreCom(k, com), sub: `${a}–${z}`, titulo: `Elegir ${com} (${textoHoras(x.b)})`, extra: `<span class="cr-elegir">${ICON_CHECK_CHICO}Elegir</span>` }));
+    }
+  }
+  const dias = bs.some(b => b.d === 5) ? 6 : 5;
+  const ayuda = CR.eligiendo
+    ? `Tocá una comisión para quedarte con esa. Las <span class="cr-mues opcion"></span> se pueden elegir; las <span class="cr-mues choca"></span> se pisan con algo que ya elegiste.`
+    : Object.keys(elegidas).length ? `Sumá otra materia o tocá una que ya elegiste para cambiarle la comisión.` : `Empezá eligiendo una materia: se marcan todas sus comisiones en la grilla.`;
+  el.innerHTML = `
+    <div class="cr-bandeja">${chips}${eligiendo}
+      <span class="cr-sumar"><button class="cr-chip sug" data-cr="picker">${ICON_MAS}Materia</button>${CR.picker ? pickerCr(ofertas, elegidas) : ""}</span></div>
+    <p class="cr-ayuda">${ayuda}</p>
+    <div class="cr-scroll">${grillaCr(bs, { t0: 7 * 60 + 45, t1: 23 * 60 + 15, px: .76, dias, compacta: false })}</div>`;
+  if(CR.picker){ const f = $("#crFiltro"); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); } }
+}
+/* Lista para sumar una materia: primero las que podés cursar (según tu avance); las aprobadas o regulares no salen */
+function pickerCr(ofertas, elegidas){
+  const q = CR.filtro.trim().toLowerCase();
+  const todas = Object.keys(ofertas).map(infoMat).filter(x => x && !elegidas[x.k] && !yaHecha(x))
+    .filter(x => !q || x.nombre.toLowerCase().includes(q) || x.abr.toLowerCase().includes(q))
+    .sort((a, b) => ((a.m && a.m.nivel) || 9) - ((b.m && b.m.nivel) || 9) || a.nombre.localeCompare(b.nombre));
+  const fila = x => `<button class="cr-pk-f mc" data-cr="eligiendo" data-k="${x.k}" style="${colorMat(x.k).css}"><i></i><span>${esc(x.nombre)}</span><small>${Object.keys(ofertas[x.k]).length} com.</small></button>`;
+  const si = todas.filter(puedeCursar), no = todas.filter(x => !puedeCursar(x));
+  return `<div class="cr-picker" role="dialog" aria-label="Sumar una materia">
+    <input id="crFiltro" class="cr-pk-in" type="search" placeholder="Buscar materia…" value="${esc(CR.filtro)}" autocomplete="off" data-cr-filtro>
+    <div class="cr-pk-lista">
+      ${si.length ? `<div class="cr-pk-g">Podés cursar</div>${si.map(fila).join("")}` : ""}
+      ${no.length ? `<div class="cr-pk-g">Te faltan correlativas</div>${no.map(fila).join("")}` : ""}
+      ${!todas.length ? `<p class="cr-pk-vacio">No hay materias con ese nombre en este cuatrimestre.</p>` : ""}
+    </div></div>`;
+}
+/* En el celular, guardado: un día a la vez */
+function diaListaCr(bs, dias){
+  const hoy = (new Date().getDay() + 6) % 7;
+  if(CR.dia == null) CR.dia = hoy < dias && bs.some(b => b.d === hoy) ? hoy : (bs.length ? Math.min(...bs.map(b => b.d)) : 0);
+  const del = bs.filter(b => b.d === CR.dia).sort((x, y) => aMin(x.a) - aMin(y.a));
+  let h = "";
+  del.forEach((b, i) => {
+    if(i) { const libre = aMin(b.a) - aMin(del[i - 1].z); if(libre > 0) h += `<div class="cr-libre">${libre >= 60 ? `${Math.floor(libre / 60)} h ${libre % 60 ? `${libre % 60} min` : ""}` : `${libre} min`} libre</div>`; }
+    h += `<div class="cr-dl mc" style="${colorMat(b.k).css}"><span class="cr-dl-h">${b.a}<small>${b.z}</small></span><div class="cr-dl-b" style="min-height:${Math.round((aMin(b.z) - aMin(b.a)) * .55)}px"><b>${esc(b.tit)}</b>${b.extra}</div></div>`;
+  });
+  return `<div class="cr-dialista">
+    <div class="cr-dtabs">${DIAS_CR.slice(0, dias).map((d, i) => `<button class="${i === CR.dia ? "on" : ""}" data-cr="dia-tab" data-d="${i}">${d.slice(0, 3)}</button>`).join("")}</div>
+    ${h || `<p class="cr-ayuda">Este día no cursás.</p>`}</div>`;
+}
+/* ---------- Calendario de la cursada ---------- */
+const mesesCuatri = q => { const [a, c] = q.split("-").map(Number); return (c === 1 ? [2, 3, 4, 5] : [7, 8, 9, 10]).map(m => [a, m]); };
+function mesCr(a, m){
+  const ini = (new Date(a, m, 1).getDay() + 6) % 7, dias = new Date(a, m + 1, 0).getDate(), hoy = hoyClave();
+  let h = `<div class="cal-mes"><div class="cal-cab"><b>${MESES[m][0].toUpperCase() + MESES[m].slice(1)}</b><span>${a}</span></div>
+    <div class="cal-sem">${"LMMJVSD".split("").map(x => `<span>${x}</span>`).join("")}</div><div class="cal-dias">`;
+  for(let i = 0; i < ini; i++) h += "<span></span>";
+  for(let d = 1; d <= dias; d++){
+    const k = claveDia(new Date(a, m, d)), mk = fechas[k] || [], finde = (ini + d - 1) % 7 >= 5;
+    const col = mk.length ? colorMat(mk[0].k || "").css : "";
+    h += `<button class="cal-d mc ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""} ${mk.length ? "marca" : ""} ${mk.length > 1 ? "varias" : ""} ${k === CR.sel ? "sel" : ""}" data-cr="dia" data-dia="${k}" ${col ? `style="${col}"` : ""} title="${mk.map(x => x.nombre).join(" · ") || "Anotar algo este día"}">${d}</button>`;
+  }
+  return h + "</div></div>";
+}
+function proximasFechas(n = 5){
+  const hoy = hoyClave();
+  return Object.keys(fechas).filter(k => k >= hoy).sort().flatMap(k => fechas[k].map((x, i) => ({ ...x, dia: k, i }))).slice(0, n);
+}
+const faltaTexto = k => { const dd = Math.round((deClave(k) - deClave(hoyClave())) / 864e5); return dd === 0 ? "hoy" : dd === 1 ? "mañana" : `en ${dd} días`; };
+function filaFecha(x, boton = ""){
+  const f = deClave(x.dia), i = x.k && infoMat(x.k);
+  return `<div class="fe-f mc ${faltaTexto(x.dia) === "hoy" || faltaTexto(x.dia) === "mañana" ? "cerca" : ""}" style="${colorMat(x.k || "").css}">
+    <span class="fe-d"><b>${f.getDate()}</b>${DIAS_CORTO[f.getDay()]}</span>
+    <span class="fe-q"><b>${esc(x.nombre)}</b>${i ? `<small><i></i><span>${esc(i.nombre)}</span></small>` : ""}</span>
+    <span class="fe-falta">${faltaTexto(x.dia)}</span>${boton}</div>`;
+}
+function calendarioCr(){
+  const meses = mesesCuatri(CR.q);
+  const hoy = new Date(), iHoy = meses.findIndex(([a, m]) => a === hoy.getFullYear() && m === hoy.getMonth());
+  if(CR.mes == null) CR.mes = Math.max(0, Math.min(meses.length - 2, iHoy < 0 ? 0 : iHoy));
+  const prox = proximasFechas();
+  return `
+    <div class="cal-top"><b>Cursada</b><span><button data-cr="mes" data-d="-1" ${CR.mes <= 0 ? "disabled" : ""} aria-label="Mes anterior">‹</button><button data-cr="mes" data-d="1" ${CR.mes >= meses.length - 2 ? "disabled" : ""} aria-label="Mes siguiente">›</button></span></div>
+    <div class="cal-rango">${meses.map(([a, m], i) => `<button class="${i === CR.mes || i === CR.mes + 1 ? "on" : ""}" data-cr="mes-ir" data-i="${i}">${MESES[m].slice(0, 3)}</button>`).join("")}</div>
+    ${meses.slice(CR.mes, CR.mes + 2).map(([a, m]) => mesCr(a, m)).join("")}
+    <div class="cal-sub">Próximas fechas</div>
+    ${prox.length ? prox.map(x => `<button class="fe-btn" data-cr="dia" data-dia="${x.dia}">${filaFecha(x)}</button>`).join("") : `<p class="cal-vacio">Tocá un día para anotar un parcial, un TP o una entrega.</p>`}
+    ${CR.sel ? popFecha() : ""}`;
+}
+/* Globo para anotar algo en un día */
+function popFecha(){
+  const k = CR.sel, f = deClave(k), lista = fechas[k] || [];
+  const curs = cursandoLista();
+  if(CR.form.k == null && curs.length) CR.form.k = curs[0].k;
+  return `<div class="cal-pop" id="calPop" role="dialog" aria-label="Anotar el ${f.getDate()} de ${MESES[f.getMonth()]}">
+    <h3>${DIAS_CR[(f.getDay() + 6) % 7] || "Domingo"} ${f.getDate()} de ${MESES[f.getMonth()]}</h3>
+    ${lista.length ? `<div class="cal-pop-ya">${lista.map((x, i) => { const im = x.k && infoMat(x.k); return `<div class="mc" style="${colorMat(x.k || "").css}"><i></i><span><b>${esc(x.nombre)}</b>${im ? ` · ${esc(im.nombre)}` : ""}</span><button data-cr="borrar-fecha" data-i="${i}" aria-label="Borrar">${ICON_X}</button></div>`; }).join("")}</div>` : ""}
+    <label>¿Qué hay?</label>
+    <div class="cal-tipos">${TIPOS_FECHA.map(t => `<button class="${CR.form.tipo === t ? "on" : ""}" data-cr="tipo" data-t="${t}">${t}</button>`).join("")}</div>
+    <label for="calNombre">Nombre</label>
+    <input id="calNombre" class="cal-in" type="text" maxlength="40" placeholder="${{ Parcial: "1º Parcial", Recuperatorio: "Recuperatorio del 1º", TP: "TP1", Entrega: "Entrega del TPI", Otro: "Consulta, coloquio…" }[CR.form.tipo]}" autocomplete="off">
+    ${curs.length ? `<label>Materia</label><div class="cal-mats">${curs.map(x => `<button class="mc ${CR.form.k === x.k ? "on" : ""}" style="${colorMat(x.k).css}" data-cr="fmat" data-k="${x.k}"><i></i>${esc(x.nombre)}</button>`).join("")}</div>` : ""}
+    <div class="cal-pop-acc"><button class="cr-btn plano" data-cr="cerrar-pop">Cerrar</button><button class="cr-btn pri" data-cr="anotar">Anotar</button></div>
+  </div>`;
+}
+function pintarCalendario(){
+  const el = $("#crIzq");
+  if(!el) return;
+  const nombre = $("#calNombre") ? $("#calNombre").value : "";
+  el.innerHTML = calendarioCr();
+  if($("#calNombre")){ $("#calNombre").value = nombre; ubicarPop(); }
+}
+function ubicarPop(){
+  const pop = $("#calPop"), d = CR.sel && document.querySelector(`.cal-d[data-dia="${CR.sel}"]`);
+  if(!pop) return;
+  if(matchMedia("(max-width:899px)").matches || !d){ pop.classList.add("abajo"); return; }
+  const r = d.getBoundingClientRect(), top = Math.max(12, Math.min(r.top - 40, innerHeight - pop.offsetHeight - 12));
+  pop.style.left = (r.right + 12) + "px";
+  pop.style.top = top + "px";
+  pop.style.setProperty("--y", (r.top + r.height / 2 - top - 6) + "px");
+}
+function guardarFechas(){
+  guardarCopia();
+  if(leerLocal(CLAVE_TOKEN)) programarSubida();
+}
+/* Guarda el cronograma; las materias pasan a "Cursando" (con la clave de GitHub) */
+function guardarCrono(){
+  const antes = cronoGuardado(CR.q), q = CR.q;
+  if(Object.keys(CR.borrador).length) cronogramas[q] = { materias: CR.borrador, guardado: hoyClave() };
+  else delete cronogramas[q];
+  if(leerLocal(CLAVE_TOKEN) && q === cuatriActual()){
+    const id = k => { const i = infoMat(k); return i && i.m ? idDe(i.m) : null; };
+    Object.keys(antes ? antes.materias : {}).filter(k => !CR.borrador[k]).map(id).forEach(x => { if(x && estados[x] === "cursando") delete estados[x]; });
+    Object.keys(CR.borrador).map(id).forEach(x => { if(x && !estadoDe(x)) estados[x] = "cursando"; });
+    programarSubida();
+  } else guardarCopia();
+  CR.edit = false; CR.eligiendo = null; CR.picker = false; CR.dia = null;
+  refrescar();
+}
+function clicCrono(el, e){
+  const acc = el.dataset.cr, ofertas = HOR && HOR.cuatrimestres[CR.q.split("-")[1]] || {};
+  switch(acc){
+    case "cuatri": CR.q = el.dataset.q; CR.edit = false; CR.eligiendo = null; CR.picker = false; CR.mes = null; CR.sel = null; CR.dia = null; refrescar(); return;
+    case "editar": CR.edit = true; CR.borrador = JSON.parse(JSON.stringify((cronoGuardado(CR.q) || { materias: {} }).materias)); refrescar(); return;
+    case "cancelar": CR.edit = false; CR.eligiendo = null; CR.picker = false; refrescar(); return;
+    case "guardar": guardarCrono(); return;
+    case "picker": CR.picker = !CR.picker; CR.filtro = ""; pintarCuerpoCr(); return;
+    case "eligiendo": CR.eligiendo = el.dataset.k; CR.picker = false; pintarCuerpoCr(); return;
+    case "soltar": CR.eligiendo = null; pintarCuerpoCr(); return;
+    case "cambiar": CR.eligiendo = CR.eligiendo === el.dataset.k ? null : el.dataset.k; CR.picker = false; pintarCuerpoCr(); return;
+    case "quitar": delete CR.borrador[el.dataset.k]; if(CR.eligiendo === el.dataset.k) CR.eligiendo = null; refrescar(); return;
+    case "elegir": {
+      const k = el.dataset.k, x = ofertas[k] && ofertas[k][el.dataset.com];
+      if(!x) return;
+      CR.borrador[k] = { c: el.dataset.com, b: x.b };
+      CR.eligiendo = null;
+      refrescar();
+      return;
+    }
+    case "dia-tab": CR.dia = +el.dataset.d; pintarCuerpoCr(); return;
+    case "mes": CR.mes += +el.dataset.d; pintarCalendario(); return;
+    case "mes-ir": CR.mes = Math.min(+el.dataset.i, mesesCuatri(CR.q).length - 2); pintarCalendario(); return;
+    case "dia": CR.sel = CR.sel === el.dataset.dia ? null : el.dataset.dia; CR.form = { tipo: "Parcial", k: null };
+      { const [a, m] = el.dataset.dia.split("-").map(Number), i = mesesCuatri(CR.q).findIndex(([aa, mm]) => aa === a && mm === m - 1); if(i >= 0 && (i < CR.mes || i > CR.mes + 1)) CR.mes = Math.min(i, mesesCuatri(CR.q).length - 2); }
+      pintarCalendario(); if($("#calNombre")) $("#calNombre").focus(); return;
+    case "cerrar-pop": CR.sel = null; pintarCalendario(); return;
+    case "tipo": CR.form.tipo = el.dataset.t; pintarCalendario(); return;
+    case "fmat": CR.form.k = el.dataset.k; pintarCalendario(); return;
+    case "borrar-fecha": {
+      const l = fechas[CR.sel] || [];
+      l.splice(+el.dataset.i, 1);
+      if(!l.length) delete fechas[CR.sel];
+      guardarFechas(); pintarCalendario(); return;
+    }
+    case "anotar": {
+      const nombre = ($("#calNombre").value || "").trim() || CR.form.tipo;
+      (fechas[CR.sel] = fechas[CR.sel] || []).push({ k: CR.form.k || "", tipo: CR.form.tipo, nombre });
+      CR.sel = null;
+      guardarFechas(); pintarCalendario(); return;
+    }
+  }
+}
+// Al pasar por una comisión se marcan sus dos días juntos
+document.addEventListener("mouseover", e => {
+  const b = e.target.closest && e.target.closest(".cr-b.opcion");
+  document.querySelectorAll(".cr-b.encima").forEach(x => { if(!b || x.dataset.com !== b.dataset.com) x.classList.remove("encima"); });
+  if(b) document.querySelectorAll(`.cr-b.opcion[data-com="${CSS.escape(b.dataset.com)}"]`).forEach(x => x.classList.add("encima"));
+});
+document.addEventListener("input", e => {
+  if(e.target.matches && e.target.matches("[data-cr-filtro]")){ CR.filtro = e.target.value; pintarCuerpoCr(); }
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && ruta === "cronograma"){
+    if(CR.sel){ CR.sel = null; pintarCalendario(); }
+    else if(CR.picker){ CR.picker = false; pintarCuerpoCr(); }
+    else if(CR.eligiendo){ CR.eligiendo = null; pintarCuerpoCr(); }
+  }
+  if(e.key === "Enter" && e.target.id === "calNombre"){ e.preventDefault(); const b = $('[data-cr="anotar"]'); if(b) b.click(); }
+  if((e.key === "Enter" || e.key === " ") && e.target.matches && e.target.matches(".cr-b[data-cr]")){ e.preventDefault(); e.target.click(); }
+});
+window.addEventListener("resize", () => { if(CR.sel) ubicarPop(); });
+window.addEventListener("scroll", () => { if(CR.sel) ubicarPop(); }, { passive: true });
+
 /* ---------- Navegación ---------- */
 const yAnio = {};   // dónde estaba cada año al entrar a una materia (al volver, queda ahí)
 function render(arriba = true){
@@ -6176,13 +6950,14 @@ function render(arriba = true){
   const p = cont && cont.parciales.find(x => x.id === b);
   // Un parcial con secciones: [] (ej.: los TPI de Green Software) se muestra como una sección: Material y Videos
   const sec = (cont && cont.secciones && cont.secciones.find(x => x.id === b)) || (p && p.secciones && !p.secciones.length ? p : null);
-  let titulo = CARRERA.titulo;
+  let titulo = CARRERA.titulo, vista = null;
 
   if(p && c === "quiz" && p.quiz){
     ruta = `${a}/${b}/quiz`;
     app.innerHTML = viewQuiz(m, p);
     montarQuiz(m, p);
     titulo = `Quiz · ${p.titulo} · ${m.nombre}`;
+    vista = { t: `Quiz del ${p.titulo}`, s: m.nombre, quiz: true };
   } else if(p && c === "practica" && p.practica){
     const x = d && p.practica.find(e => e.id === d);
     if(x){
@@ -6190,31 +6965,37 @@ function render(arriba = true){
       app.innerHTML = viewPractica(m, p, x);
       montarPractica(m, p, x);
       titulo = `${x.titulo} · Práctica · ${m.nombre}`;
+      vista = { t: x.titulo, s: `${m.nombre} · ${p.titulo}`, ej: { id: x.id, pasos: x.pasos } };
     } else {
       ruta = `${a}/${b}/practica`;
       app.innerHTML = viewPracticas(m, p);
       titulo = `${nombrePractica(p)} · ${p.titulo} · ${m.nombre}`;
+      vista = { t: nombrePractica(p), s: `${m.nombre} · ${p.titulo}` };
     }
   } else if(p && c === "h" && HERRAMIENTAS[d] && (p.herramientas || []).includes(d)){
     ruta = `${a}/${b}/h/${d}`;
     app.innerHTML = viewHerramienta(m, p, d);
     HERRAMIENTAS[d].montar($("#herr"));
     titulo = `${HERRAMIENTAS[d].titulo} · ${p.titulo} · ${m.nombre}`;
+    vista = { t: HERRAMIENTAS[d].titulo, s: `${m.nombre} · ${p.titulo}` };
   } else if(p && seccionesDe(p).includes(c)){
     d = d === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}/${d}`;
     app.innerHTML = viewSeccion(m, p, c, d);
     if(d === "videos") mountPlayer(seccion(p, c).videos, `${p.titulo} · ${nombreSec(p, c)}`);
     titulo = `${nombreSec(p, c)} · ${p.titulo} · ${m.nombre}`;
+    vista = { t: `${nombreSec(p, c)} · ${p.titulo}`, s: m.nombre };
   } else if(sec){
     c = c === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}`;
     app.innerHTML = viewSeccionMateria(m, sec, c);
     if(c === "videos") mountPlayer(sec.videos || [], `${sec.titulo} · ${m.nombre}`);
     titulo = `${sec.titulo} · ${m.nombre}`;
+    vista = { t: sec.titulo, s: m.nombre };
   } else if(p){
     app.innerHTML = viewParcial(m, p);
     titulo = `${p.titulo} · ${m.nombre}`;
+    vista = { t: p.titulo, s: m.nombre };
   } else if(cont && b === "actividades" && cont.actividades){
     app.innerHTML = `${crumbs(m, "Actividades")}
       <h1>Actividades</h1><p class="lead">Trabajos prácticos, entregas y consignas.</p>${filesList(cont.actividades)}`;
@@ -6224,6 +7005,15 @@ function render(arriba = true){
     app.innerHTML = viewMateria(m);
     if(cont && cont.videos && cont.videos.length) mountPlayer(cont.videos, m.nombre);
     titulo = m.nombre;
+  } else if(a === "cronograma"){
+    ruta = "cronograma";
+    app.innerHTML = viewCronograma();
+    montarCronograma();
+    titulo = `Cronograma · ${CARRERA.titulo}`;
+  } else if(a === "plan"){
+    ruta = "plan";
+    app.innerHTML = viewResumen();
+    titulo = `Plan de la carrera · ${CARRERA.titulo}`;
   } else {
     let nivel = a === "nivel" && b !== undefined && NIVELES_PLAN.includes(+b) ? +b : null;
     if(nivel !== null){
@@ -6232,10 +7022,11 @@ function render(arriba = true){
       titulo = `${nombreNivel(nivel)} · ${CARRERA.titulo}`;
     } else {
       ruta = "";
-      app.innerHTML = viewResumen();
+      app.innerHTML = viewInicio();
     }
   }
-  app.className = m ? "angosto" : "";
+  if(m && vista) anotarVista({ ...vista, r: ruta, k: String(m.n) });
+  app.className = m ? "angosto" : ruta === "cronograma" ? "ancho" : "";
   // Al cambiar de página el contenido aparece con un fundido corto (al marcar materias no)
   if(arriba){ app.classList.remove("entra"); void app.offsetWidth; app.classList.add("entra"); }
   $("#pie").className = "pie " + app.className;
@@ -6243,30 +7034,12 @@ function render(arriba = true){
   pintarSync();
   tituloPagina = titulo;
   document.title = titulo;
-  pintarAbajo(m);
-  renderBarra(m, a === "nivel" && ruta !== "" ? +b : null);
+  abrirLado(false);
+  renderBarra(m);
   simPintar();
   // Al volver de una materia a su año, queda donde estaba
   if(ruta.startsWith("nivel/") && venia[0] === "m" && yAnio[ruta] != null) window.scrollTo(0, yAnio[ruta]);
   else if(arriba) window.scrollTo(0, 0);
-}
-
-/* Barra de abajo (celular): Atrás sube un nivel (de la sección al parcial, del parcial a la materia…) */
-function rutaPadre(r){
-  const p = r.split("/").filter(Boolean);
-  // De la página de una materia se sube a su año; de un año, al inicio
-  if(p.length === 1 && p[0][0] === "m"){ const m = materia(+p[0].slice(1)); if(m) return `nivel/${m.nivel}`; }
-  if(/^(material|videos)$/.test(p[p.length - 1]) && p.length > 2) p.pop();
-  p.pop();
-  return p.join("/");
-}
-function pintarAbajo(m){
-  const mat = $("#abajoMat");
-  mat.disabled = !m;
-  if(m) mat.dataset.go = "m" + m.n; else delete mat.dataset.go;
-  $("#abajoPlan").classList.toggle("on", ruta === "");
-  mat.classList.toggle("on", !!m && ruta === "m" + m.n);
-  $("#abajo [data-up]").disabled = ruta === "";
 }
 
 /* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) */
@@ -6284,9 +7057,15 @@ document.addEventListener("click", e => {
     const t = document.documentElement.dataset.tema === "oscuro" ? "claro" : "oscuro";
     guardarLocal("isi-tema", t);
     ponerTema(t);
-    renderBarra(ruta[0] === "m" ? materia(+ruta.split("/")[0].slice(1)) : null, ruta.startsWith("nivel/") ? +ruta.split("/")[1] : null);
+    renderBarra(ruta[0] === "m" ? materia(+ruta.split("/")[0].slice(1)) : null);
     return;
   }
+  if(e.target.closest("[data-lado]") || e.target.id === "ladoVelo"){ abrirLado(!document.body.classList.contains("lado-abierto")); return; }
+  // Cronograma: cerrar la lista de materias o el globo del calendario al tocar afuera
+  if(CR.picker && !e.target.closest(".cr-sumar")){ CR.picker = false; pintarCuerpoCr(); }
+  if(CR.sel && !e.target.closest("#calPop, .cal-d, .fe-btn")){ CR.sel = null; pintarCalendario(); }
+  const cr = e.target.closest("[data-cr]");
+  if(cr && !cr.disabled){ e.preventDefault(); clicCrono(cr, e); return; }
   const sa = e.target.closest("[data-sim-acc]");
   if(sa){ simAccion(sa.dataset.simId, sa.dataset.simAcc); return; }
   const k = e.target.closest("[data-est]");
@@ -6316,7 +7095,6 @@ document.addEventListener("change", e => {
   if(ponerNota(n.dataset.nota, n.value)) refrescar(); else n.value = notaDe(n.dataset.nota) ?? "";
 });
 document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches(".nota-in")) e.target.blur(); });
-$("#abajo [data-up]").addEventListener("click", () => { location.hash = "#/" + rutaPadre(ruta); });
 
 $("#guardarToken").addEventListener("click", guardarToken);
 $("#borrarToken").addEventListener("click", borrarToken);

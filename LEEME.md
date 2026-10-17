@@ -8,11 +8,14 @@
 - `material/<materia>/actividades/` → trabajos prácticos y entregas.
 - `miniaturas/` → la tapa de cada PDF (se genera con `herramientas/miniaturas.py`).
 - `quiz/` → las preguntas de cada quiz (JSON) y sus imágenes.
+- `horarios/2026.json` → los horarios de cursado de todas las comisiones (para el Cronograma). Se arma con `herramientas/horarios/extraer.py` a partir de los PDF de horarios de la facultad.
 - `practica/` → la Práctica por partes: el corrector de Python (`corrector.py`), el Java del navegador (`practica/java/`) y un JSON por ejercicio (`practica/dao-p1/` en Python, `practica/bk-p1/` en Java). Se arman con `herramientas/practica/` y `herramientas/practica-java/`; el Java del navegador, con `herramientas/java-navegador/`.
 
 ## Links
 Cada página tiene su propio link, por ejemplo:
-- `#/` → inicio: el resumen del avance
+- `#/` → inicio: las clases de hoy, lo que viene y dónde quedaste
+- `#/cronograma` → el cronograma y el calendario de la cursada
+- `#/plan` → Plan de la carrera: el resumen del avance
 - `#/nivel/3` → las materias de 3º Nivel (`#/nivel/0` es el Ingreso)
 - `#/m26` → Redes de Datos
 - `#/m26/p2` → 2º Parcial de Redes de Datos
@@ -21,19 +24,46 @@ Cada página tiene su propio link, por ejemplo:
 ## Agregar una materia con contenido
 Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En la lista de su año, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
 
-## Barra de arriba
-No hay columna al costado: la página usa todo el ancho. Arriba queda fija una barra con el logo y el avance (los dos llevan al inicio), el botón de modo claro/oscuro y los años (Ingreso, 1º a 5º Nivel), que ocupan casi todo el ancho; cada año lleva a sus materias y queda marcado mientras estás en él o en una de sus materias. Adentro de una materia aparece una segunda fila, igual de ancha, con sus bloques (Inicio, parciales, TP, actividades). En el celular, adentro de una materia, esa fila reemplaza a los años (para volver está "Inicio" o "Atrás" en la barra de abajo).
+## Estilo
+Colores y fuentes como Claude: fondo crema, acento naranja (`--accent: #c96442`), títulos en Source Serif 4 y texto en Inter (de Google Fonts). Los colores están en `:root` al principio del `<style>`, con su versión para el modo oscuro.
 
-Adentro de un parcial se suma una tercera fila con pestañas: Resumen, cada sección (Teórico, Práctico, Parcial…), la Práctica por partes, el Quiz y las herramientas. Sale de `destinosParcial(p)` y se ve en todas las páginas del parcial, así se pasa de una sección a otra sin volver. Solo aparece si el parcial tiene al menos dos lugares además del resumen. En la página de la materia, la tarjeta de cada parcial trae los mismos accesos directos. Si el parcial tiene `practicaTemas` (Backend), las pestañas son solo Resumen · Teórico · Práctica · Parciales / Simulacros: las explicaciones quedan marcadas como Práctica y el quiz como Parciales / Simulacros (campo `tambien` de cada pestaña).
+## Barra lateral
+A la izquierda queda fija una barra (`renderLado`) con:
+- **Inicio**, **Cronograma** y **Plan de la carrera**, y el botón de modo claro/oscuro arriba.
+- **Cursando**: las materias del cronograma de este cuatrimestre o, si no hay cronograma, las marcadas como "Cursando" en el plan. Cada una con el punto de su color (el de los horarios).
+- La materia abierta se despliega con sus partes (parciales, TPI, secciones como Cuestionarios, Actividades): `partesMateria`. Tocar el nombre de la materia lleva a su página. Si abrís una materia que no estás cursando, aparece arriba en "Estás viendo".
+- Abajo, **Tu avance** (el % y cuántas materias), que lleva al plan.
 
-## Inicio: resumen del avance
-El inicio (`viewResumen`) no lista las materias: muestra el avance de la carrera (anillo con el %, materias, horas, créditos de electivas y promedio), **Tu camino** y una tarjeta por año con sus materias como pastillas (verde aprobada, violeta regular, azul cursando) y el promedio del año. Tocar la tarjeta lleva al año; tocar una pastilla, a la materia. Abajo van las notas del plan.
+En el celular la barra es un menú que se abre con el botón de arriba a la izquierda.
+Adentro de un parcial, arriba del contenido quedan fijas sus pestañas: Resumen, cada sección (Teórico, Práctico, Parcial…), la Práctica, el Quiz y las herramientas. Salen de `destinosParcial(p)`. Solo aparecen si el parcial tiene al menos dos lugares además del resumen. Si el parcial tiene `practicaTemas` (Backend), las pestañas son solo Resumen · Teórico · Práctica · Parciales / Simulacros: las explicaciones quedan marcadas como Práctica y el quiz como Parciales / Simulacros (campo `tambien` de cada pestaña).
+
+**Colores de las materias** (`colorMat`): salen de `COLORES_PDF` (el color de cada materia en los horarios en PDF) y se bajan de tono: un fondo suave, un borde y un texto oscuro del mismo tono, y otros tres para el modo oscuro. Los grises se oscurecen un poco y los naranjas fuertes pasan al naranja de la web.
+
+## Inicio
+Sin buscador (`viewInicio`):
+- **Hoy**: las clases del día según el cronograma, con "en 15 min" o "ahora". Si no hay cronograma, un acceso para armarlo; si hoy no cursás, cuándo es la próxima clase.
+- **Lo que viene**: las próximas fechas del calendario (parciales, TP, entregas), con "Repasar" en los parciales.
+- **Seguí donde dejaste**: las últimas páginas de estudio que abriste (una por parcial; si abriste un ejercicio de práctica, ese, con el paso en el que vas). Se guardan en el navegador (`isi-vistas`).
+
+## Cronograma
+`#/cronograma` (`viewCronograma`). Los horarios de todas las comisiones salen de `horarios/2026.json` (se baja la primera vez que se abre).
+- **Armarlo**: "+ Materia" muestra las materias de ese cuatrimestre que no tenés aprobadas ni regulares; primero las que podés cursar según las correlativas. Al elegir una se marcan todas sus comisiones en la grilla (mañana, tarde y noche), punteadas; al pasar por una se marcan sus dos días juntos y al tocarla queda elegida. Las que se pisan con algo que ya elegiste salen en rojo suave y no se pueden elegir. Tocando una materia elegida (en la fila de arriba o en la grilla) se le cambia la comisión; con la ✕ se saca.
+- **Guardado**: la grilla muestra solo los turnos que usás (si todo es a la noche, solo la noche) y en el celular, un día a la vez. Con "Editar" se vuelve a armar. Se puede pasar del 1º al 2º cuatrimestre.
+- **Calendario**: al costado, los meses de la cursada (marzo a junio o agosto a noviembre, de a dos). Tocando un día se anota qué hay (Parcial, Recuperatorio, TP, Entrega u Otro), con un nombre y la materia; el día se pinta con el color de la materia. Abajo, las próximas fechas.
+- **Dónde se guarda**: en el navegador (`isi-cronograma` y `isi-fechas`) y, con la clave de GitHub, en `aprobadas.json` (`"cronogramas": { "2026-2": { "materias": { "201": { "c": "3K4", "b": [[1, "19:55", "23:05"]] } } } }` y `"fechas": { "2026-10-28": [{ "k": "201", "tipo": "Parcial", "nombre": "1º Parcial" }] }`). Al guardar el cronograma del cuatrimestre actual con la clave, sus materias pasan a "Cursando".
+
+**Horarios nuevos**: cuando salgan los del próximo ciclo, se corre, desde la raíz:
+`python3 herramientas/horarios/extraer.py horarios_1er.pdf horarios_2do.pdf horarios_3ro.pdf horarios_4.pdf horarios_5.pdf`
+Reconoce las abreviaturas de los PDF con la tabla `NUM` (abreviatura → número de materia) y avisa lo que no reconoce. Las electivas que no están en el plan de la web van en `EXTRAS` (y en `EXTRAS_NOM` del `index.html`).
+
+## Plan de la carrera: resumen del avance
+`#/plan` (`viewResumen`) no lista las materias: muestra el avance de la carrera (anillo con el %, materias, horas, créditos de electivas y promedio), **Tu camino** y una tarjeta por año con sus materias como pastillas (verde aprobada, violeta regular, azul cursando) y el promedio del año. Tocar la tarjeta lleva al año; tocar una pastilla, a la materia. Abajo van las notas del plan. Arriba, unas pestañas (`pestanasPlan`) pasan del avance a cada año.
 **Tu camino** (`viewCamino`): Ingreso, 1º, 2º, 3º, ★ Analista, 4º, 5º y la ★ grande de Ingeniero/a. Cada año se completa con sus obligatorias aprobadas; "Estás acá" marca el primero que falta. La estrella de Analista se llena con 1º a 3º completos (con el Seminario Integrador) y 4 créditos de electivas de cualquier nivel (`CREDITOS_ANALISTA`); la de Ingeniero/a, con todas las obligatorias y las electivas que faltan.
 En la tarjeta de horas se marca la meta de `CARRERA.metaHoras`: cuando faltan 32 hs para el total (160 − 32 = 128 hs) se puede pedir equivalencias. Se ve una rayita en la barra y un aviso con cuántas horas faltan para llegar, o en verde cuando ya se llegó. Para cambiar el número o el texto, se edita esa línea.
 
 ## Cada año
-`#/nivel/N` (`viewNivel`) muestra solo las materias de ese año: las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que tienen material cargado llevan la etiqueta "Material". Al final, botones para ir al año anterior o al siguiente. Al volver de una materia, la lista queda donde estaba, y el "Atrás" de una materia lleva a su año.
-Cada materia tiene su estado: **Cursando**, **Regular** o **Aprobada** (tocar el que ya está lo saca) y, si está aprobada, la **nota** con la que se aprobó (1 a 10). Con las notas se calcula el promedio del año (en su cabecera) y el de la carrera (en el inicio). La cabecera del año muestra cuántas hay en cada estado con una barra de colores. Hasta 1180 px de ancho la fila se muestra como tarjeta para que entre el estado.
+`#/nivel/N` (`viewNivel`) muestra solo las materias de ese año: las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que tienen material cargado llevan la etiqueta "Material". Arriba están las mismas pestañas del plan y al final, botones para ir al año anterior o al siguiente. Al volver de una materia, la lista queda donde estaba.
+Cada materia tiene su estado: **Cursando**, **Regular** o **Aprobada** (tocar el que ya está lo saca) y, si está aprobada, la **nota** con la que se aprobó (1 a 10). Con las notas se calcula el promedio del año (en su cabecera) y el de la carrera (en el plan). La cabecera del año muestra cuántas hay en cada estado con una barra de colores. Hasta 1180 px de ancho la fila se muestra como tarjeta para que entre el estado.
 Los estados y las notas se guardan junto con las aprobadas en `aprobadas.json` (`{ "aprobadas": [...], "estados": { "m29": "cursando" }, "notas": { "m1": 8 } }`), con la misma clave de GitHub, y en este navegador (`isi-estados`).
 Cada materia lleva su abreviatura en una pastilla beige (`.abr`), igual que las correlativas; las correlativas ya aprobadas se ven en verde y las regulares en violeta. Los colores del beige son `--beige` y `--beige-t` (con su versión para el modo oscuro).
 
@@ -88,7 +118,7 @@ Los ejercicios de Java tienen el mismo formato que los de Python, con `lenguaje:
 `herramientas/java-navegador/armar.sh` rehace los tres archivos desde el paquete de npm `@wasm-oj/toolchain-java` 0.2.0 (necesita el JDK 21 y ASM 9). `ParcheClasslib.java` corrige la biblioteca de TeaVM: nombres internos de métodos, `Long.sum`, `String.format` y `Scanner` livianos, `getSimpleName`, rutas relativas, `Files.createDirectories`, `System.exit` y los mensajes de `parseInt`, `parseDouble` y `Enum.valueOf` iguales a los del JDK. Las licencias están en `practica/java/LICENCIAS.md`.
 
 ## Modo oscuro y carga suave
-El botón de la luna/sol de la barra elige claro u oscuro y lo guarda (`isi-tema`); si nunca se tocó, sigue al sistema. Funciona prendiendo o apagando las reglas `@media (prefers-color-scheme: dark)` de la hoja de estilos (un script chico en el `<head>`, para que no parpadee al abrir), así que los colores oscuros se siguen escribiendo dentro de esos `@media`.
+El botón de la luna/sol de la barra lateral (en el celular, el de arriba) elige claro u oscuro y lo guarda (`isi-tema`); si nunca se tocó, sigue al sistema. Funciona prendiendo o apagando las reglas `@media (prefers-color-scheme: dark)` de la hoja de estilos (un script chico en el `<head>`, para que no parpadee al abrir), así que los colores oscuros se siguen escribiendo dentro de esos `@media`.
 Al cambiar de página el contenido aparece con un fundido corto; mientras cargan, las tapas de los PDF, las miniaturas de los videos, el reproductor y las hojas del visor muestran su forma con un brillo que pasa. Con "reducir movimiento" del sistema no hay animaciones.
 
 ## Agregar un PDF
