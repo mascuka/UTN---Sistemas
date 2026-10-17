@@ -25,7 +25,7 @@ Cada página tiene su propio link, por ejemplo:
 Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En la lista de su año, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
 
 ## Estilo
-Colores y fuentes como Claude: fondo crema, acento naranja (`--accent: #c96442`), títulos en Source Serif 4 y texto en Inter (de Google Fonts). Los colores están en `:root` al principio del `<style>`, con su versión para el modo oscuro.
+Colores y fuentes como Claude: fondo casi blanco (`--bg: #fcfcfb`), barra lateral apenas más oscura, bordes grises neutros, títulos en Source Serif 4 y texto en Inter (de Google Fonts). El naranja (`--accent: #c96442`, el del logo `--brand: #d97757`) queda solo para los botones principales, el logo y lo de "hoy"; los íconos, títulos y etiquetas van en gris (bloque "Suave, como Claude" al final del `<style>`). Los colores están en `:root` al principio del `<style>`, con su versión para el modo oscuro.
 
 ## Barra lateral
 A la izquierda queda fija una barra (`renderLado`) con:
@@ -49,7 +49,7 @@ Sin buscador (`viewInicio`):
 `#/cronograma` (`viewCronograma`). Los horarios de todas las comisiones salen de `horarios/2026.json` (se baja la primera vez que se abre).
 - **Armarlo**: "+ Materia" muestra las materias de ese cuatrimestre que no tenés aprobadas ni regulares; primero las que podés cursar según las correlativas. Al elegir una se marcan todas sus comisiones en la grilla (mañana, tarde y noche), punteadas; al pasar por una se marcan sus dos días juntos y al tocarla queda elegida. Las que se pisan con algo que ya elegiste salen en rojo suave y no se pueden elegir. Tocando una materia elegida (en la fila de arriba o en la grilla) se le cambia la comisión; con la ✕ se saca.
 - **Guardado**: la grilla muestra solo los turnos que usás (si todo es a la noche, solo la noche) y en el celular, un día a la vez. Con "Editar" se vuelve a armar. Se puede pasar del 1º al 2º cuatrimestre.
-- **Calendario**: al costado, los meses de la cursada (marzo a junio o agosto a noviembre, de a dos). Tocando un día se anota qué hay (Parcial, Recuperatorio, TP, Entrega u Otro), con un nombre y la materia; el día se pinta con el color de la materia. Abajo, las próximas fechas.
+- **Calendario**: a la derecha (en el celular, abajo), los meses de la cursada (marzo a junio o agosto a noviembre, de a dos). Tocando un día se anota qué hay (Parcial, Recuperatorio, TP, Entrega u Otro), con un nombre y la materia; el día se pinta con el color de la materia. Abajo, las próximas fechas.
 - **Dónde se guarda**: en el navegador (`isi-cronograma` y `isi-fechas`) y, con la clave de GitHub, en `aprobadas.json` (`"cronogramas": { "2026-2": { "materias": { "201": { "c": "3K4", "b": [[1, "19:55", "23:05"]] } } } }` y `"fechas": { "2026-10-28": [{ "k": "201", "tipo": "Parcial", "nombre": "1º Parcial" }] }`). Al guardar el cronograma del cuatrimestre actual con la clave, sus materias pasan a "Cursando".
 
 **Horarios nuevos**: cuando salgan los del próximo ciclo, se corre, desde la raíz:

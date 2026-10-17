@@ -10,10 +10,10 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 447 447%22%3E%3Crect width=%22447%22 height=%22447%22 rx=%2280%22 fill=%22%23c96442%22/%3E%3Cg fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2233%22%3E%3Cpath d=%22M131.5 98A92.5 92.5 0 0 0 316.5 98%22/%3E%3Cpath d=%22M131.5 347A92.5 92.5 0 0 1 316.5 347%22/%3E%3C/g%3E%3Cg fill=%22%23fff%22%3E%3Crect x=%22207.5%22 y=%2298%22 width=%2233%22 height=%22249%22/%3E%3Crect x=%22115%22 y=%22205%22 width=%22218%22 height=%2235%22/%3E%3C/g%3E%3C/svg%3E">
 <style>
   :root{
-    --bg:#faf9f5; --side:#f4f3ee; --card:#ffffff; --text:#1f1e1d; --text2:#4a4945; --muted:#77756d;
-    --line:#e6e2d8; --accent:#c96442; --brand:#c96442; --accent-soft:#f6e9e2; --hover:#ebe8df; --sel:#e6e2d7;
+    --bg:#fcfcfb; --side:#f9f9f7; --card:#ffffff; --text:#1f1e1c; --text2:#46453f; --muted:#7c7b75;
+    --line:#e7e6e2; --line2:#d9d8d3; --accent:#c96442; --brand:#d97757; --accent-soft:#f8ede8; --hover:#f1f0ec; --sel:#ebeae5;
     --ok:#2e7d4f; --ok-soft:#dcefe2; --done:#eef5ec; --done-line:#cfe3cf;
-    --beige:#efe7d7; --beige-t:#5e5442;
+    --beige:#efeee9; --beige-t:#56544e;
     --rojo:#a3452d; --rojo-f:#f8e6e1; --rojo-l:#e2a395;
     --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
     --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -22,9 +22,9 @@
   @media (prefers-color-scheme: dark){
     :root{
       --bg:#262624; --side:#1f1e1d; --card:#30302e; --text:#ece9e1; --text2:#cfcbc1; --muted:#a39f95;
-      --line:#3d3c39; --accent:#d97757; --brand:#d97757; --accent-soft:#3f2c24; --hover:#343331; --sel:#3a3936;
+      --line:#3d3c39; --line2:#4a4945; --accent:#d97757; --brand:#d97757; --accent-soft:#3f2c24; --hover:#343331; --sel:#3a3936;
       --ok:#7fd1a0; --ok-soft:#21392b; --done:#26302a; --done-line:#35483b;
-      --beige:#3d3830; --beige-t:#e3d8c2;
+      --beige:#3a3936; --beige-t:#dcd8cf;
       --rojo:#f0a08c; --rojo-f:#46302b; --rojo-l:#8a4a3c;
     }
   }
@@ -43,36 +43,36 @@
   .lado-top{display:flex;align-items:center;gap:10px;padding:4px 4px 12px 8px}
   .lado-top .l-logo{width:22px;height:26px;color:var(--brand);flex:none}
   .lado-top .l-logo svg{width:100%;height:100%}
-  .lado-top b{font:500 1.18rem var(--serif);letter-spacing:-.01em;white-space:nowrap}
+  .lado-top b{font:500 1.12rem var(--serif);letter-spacing:-.01em;white-space:nowrap}
   .lado-top .tema-btn{margin-left:auto}
   .lado-x{display:none}
   .lado-scroll{flex:1;min-height:0;overflow-y:auto;scrollbar-width:thin;margin:0 -6px;padding:0 6px}
-  .l-item{display:flex;align-items:center;gap:11px;padding:8px 10px;border-radius:9px;color:var(--text2);font-size:.93rem}
-  .l-item svg{width:18px;height:18px;flex:none;color:var(--muted)}
+  .l-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;color:var(--text2);font-size:.875rem}
+  .l-item svg{width:17px;height:17px;flex:none;color:var(--muted)}
   .l-item:hover{background:var(--hover);color:var(--text)}
   .l-item.on{background:var(--sel);color:var(--text);font-weight:500}
   .l-item.on svg{color:var(--text)}
-  .l-grupo{font-size:.78rem;font-weight:500;color:var(--muted);padding:18px 10px 6px}
-  .l-mat{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:9px;font-size:.9rem;color:var(--text2);white-space:nowrap}
+  .l-grupo{font-size:.75rem;color:var(--muted);padding:18px 10px 6px}
+  .l-mat{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;font-size:.86rem;color:var(--text2);white-space:nowrap}
   .l-mat span{overflow:hidden;text-overflow:ellipsis;min-width:0}
-  .l-mat i{width:8px;height:8px;border-radius:50%;flex:none;background:var(--C, var(--muted))}
+  .l-mat i{width:7px;height:7px;border-radius:50%;flex:none;background:var(--C, var(--muted))}
   .l-mat[data-go]:hover{background:var(--hover);color:var(--text)}
   .l-mat.abierta{color:var(--text);font-weight:500}
   .l-mat.on{background:var(--sel)}
   .l-mat svg{width:15px;height:15px;margin-left:auto;flex:none;color:var(--muted)}
   .l-hijos{margin:1px 0 6px 23px;border-left:1px solid var(--line);padding-left:7px;display:flex;flex-direction:column;gap:1px}
-  .l-hijo{display:block;padding:6px 10px;border-radius:8px;font-size:.86rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .l-hijo{display:block;padding:5px 10px;border-radius:8px;font-size:.83rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .l-hijo:hover{background:var(--hover);color:var(--text)}
   .l-hijo.on{background:var(--sel);color:var(--text);font-weight:500}
   .l-vacio{display:block;padding:4px 10px;font-size:.84rem;color:var(--muted);line-height:1.45}
   .l-vacio u{text-underline-offset:3px;text-decoration-color:var(--line)}
-  .lado-pie{border-top:1px solid var(--line);margin-top:6px;padding:11px 8px 4px;display:flex;align-items:center;gap:12px;border-radius:0 0 10px 10px}
-  .lado-pie:hover b{color:var(--accent)}
+  .lado-pie{border-top:1px solid var(--line);margin-top:6px;padding:10px 8px 6px;display:flex;align-items:center;gap:12px;border-radius:0 0 8px 8px}
+  .lado-pie:hover{background:var(--hover)}
   .lado-pie .l-av{width:34px;height:34px;flex:none;position:relative}
   .lado-pie .l-av svg{width:34px;height:34px;transform:rotate(-90deg)}
   .lado-pie .l-av circle{fill:none;stroke-width:4}
-  .lado-pie b{display:block;font-weight:500;font-size:.9rem}
-  .lado-pie small{display:block;color:var(--muted);font-size:.8rem}
+  .lado-pie b{display:block;font-weight:500;font-size:.85rem}
+  .lado-pie small{display:block;color:var(--muted);font-size:.77rem}
   .lado-velo{display:none}
 
   /* ---------- Arriba: en el celular, el menú; adentro de un parcial, sus pestañas ---------- */
@@ -107,15 +107,15 @@
   main{padding:30px 40px 40px;min-width:0}
   #app{max-width:1560px;margin:0 auto}
   .crumbs{font-size:.85rem;color:var(--muted);margin-bottom:8px}
-  .crumbs span[data-go]:hover{color:var(--accent)}
+  .crumbs span[data-go]:hover{color:var(--text)}
   h1{font-family:var(--serif);font-weight:500;font-size:2.1rem;margin-bottom:10px}
   .lead{color:var(--muted);font-size:1.02rem;max-width:720px;line-height:1.55;margin-bottom:28px}
   .lead-full{max-width:none;margin-bottom:20px}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;transition:border-color .15s,transform .15s}
-  .card:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .card .icon{width:40px;height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:14px}
+  .card:hover{border-color:var(--line2);transform:translateY(-2px);box-shadow:0 6px 18px -12px rgba(40,35,25,.25)}
+  .card .icon{width:38px;height:38px;border-radius:10px;background:var(--hover);color:var(--text2);display:grid;place-items:center;margin-bottom:14px}
   .card .icon svg{width:20px;height:20px}
   .card h3{font-size:1.1rem;margin-bottom:6px}
   .card p{color:var(--muted);font-size:.9rem;line-height:1.45}
@@ -138,7 +138,7 @@
   .temas.muchas .unidad + .unidad{margin-top:0;border-top:0}
   .temas.muchas .unidad{padding:12px 0}
   .unidad + .unidad{margin-top:14px;border-top:1px solid var(--line)}
-  .unidad h3{font-size:1rem;color:var(--accent);margin-bottom:8px}
+  .unidad h3{font-size:1rem;color:var(--text);margin-bottom:8px}
   .unidad ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
   .unidad li{font-size:.92rem;line-height:1.5}
 
@@ -971,7 +971,8 @@
   }
 
   /* ---------- Práctica por partes ---------- */
-  .card.destacada{border-color:var(--accent);border-width:1.5px;background:linear-gradient(160deg,var(--accent-soft),var(--card) 55%)}
+  .card.destacada{border-color:var(--line2)}
+  .card.destacada .icon{background:var(--accent-soft);color:var(--accent)}
   #app.angosto:has(.pr-ws){max-width:none}
   .pr-como{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 22px}
   .pr-como > div{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:.9rem;line-height:1.45}
@@ -1230,10 +1231,10 @@
   .in-seguir:hover b,.in-clase[data-go]:hover b{color:var(--accent)}
 
   /* ---------- Cronograma ---------- */
-  .cr{display:grid;grid-template-columns:296px minmax(0,1fr);margin:-30px -40px 0;min-height:calc(100vh - var(--barra-h, 0px))}
-  .cr-izq{border-right:1px solid var(--line);padding:26px 22px 30px}
+  .cr{display:grid;grid-template-columns:minmax(0,1fr) 296px;margin:-30px -40px 0;min-height:calc(100vh - var(--barra-h, 0px))}
+  .cr-cal{border-left:1px solid var(--line);padding:26px 22px 30px;background:var(--side)}
   .cr-zona{padding:24px 32px 32px 30px;min-width:0}
-  .cr-cab-zona{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .cr-cab-zona{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
   .cr-cab-zona h1{margin:0;font-size:1.9rem}
   .cr-cuatri{display:inline-flex;background:var(--hover);border-radius:10px;padding:3px}
   .cr-cuatri button{font:inherit;font-size:.82rem;border:0;background:none;color:var(--muted);padding:5px 10px;border-radius:8px;cursor:pointer}
@@ -1247,7 +1248,7 @@
   .cr-btn:disabled{opacity:.45;cursor:default;filter:none}
   .cr-btn.plano{border-color:transparent;background:none;color:var(--text2)}
   .cr-btn.plano:hover{background:var(--hover)}
-  .cr-bandeja{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+  .cr-bandeja{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .cr-chip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 4px 0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:.86rem;color:var(--text);max-width:100%}
   .cr-chip i{width:8px;height:8px;border-radius:50%;background:var(--C);flex:none}
   .cr-chip-t{font:inherit;border:0;background:none;color:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px;padding:0 2px}
@@ -1274,6 +1275,7 @@
   .cr-pk-f small{color:var(--muted);font-size:.76rem;white-space:nowrap}
   .cr-pk-vacio{padding:10px;color:var(--muted);font-size:.86rem}
   .cr-ayuda{color:var(--muted);font-size:.84rem;line-height:1.6;margin:12px 0 14px}
+  .cr-ver .cr-ayuda{margin-top:0}
   .cr-ayuda svg{width:15px;height:15px;vertical-align:-3px;margin-right:6px}
   .cr-mues{display:inline-block;width:22px;height:12px;border-radius:4px;vertical-align:-1px}
   .cr-mues.opcion{border:1.5px dashed var(--muted)}
@@ -1363,6 +1365,7 @@
   .fe-falta{font-size:.76rem;color:var(--muted);white-space:nowrap}
   .cal-pop{position:fixed;z-index:45;width:330px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 16px 14px;box-shadow:0 18px 50px -18px rgba(50,40,20,.4),0 2px 6px -2px rgba(50,40,20,.08)}
   .cal-pop::before{content:"";position:absolute;left:-7px;top:var(--y,40px);width:12px;height:12px;background:var(--card);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+  .cal-pop.a-izq::before{left:auto;right:-7px;border:0;border-right:1px solid var(--line);border-top:1px solid var(--line)}
   .cal-pop.abajo{left:12px;right:12px;bottom:12px;width:auto;max-height:calc(100vh - 24px);overflow-y:auto}
   .cal-pop.abajo::before{display:none}
   .cal-pop h3{font:400 1.25rem var(--serif);margin-bottom:8px}
@@ -1383,20 +1386,20 @@
   .cal-pop-ya button:hover{opacity:1;background:rgba(0,0,0,.06)}
   .cal-pop-ya button svg{width:13px;height:13px}
   @media (max-width:1100px){
-    .cr{grid-template-columns:260px minmax(0,1fr)}
-    .cr-izq{padding:22px 16px}
+    .cr{grid-template-columns:minmax(0,1fr) 260px}
+    .cr-cal{padding:22px 16px}
     .cr-zona{padding:22px 20px 28px}
   }
   @media (max-width:899px){
     .cr{grid-template-columns:minmax(0,1fr);margin:-30px -40px 0}
-    .cr-izq{order:2;border-right:0;border-top:1px solid var(--line)}
-    .cr-izq .cal-mes{max-width:360px}
+    .cr-cal{border-left:0;border-top:1px solid var(--line)}
+    .cr-cal .cal-mes{max-width:360px}
     .cr-editando .cr-grilla{min-width:640px}
   }
   @media (max-width:760px){
     .cr{margin:-18px -16px 0}
     .cr-zona{padding:18px 16px 24px}
-    .cr-izq{padding:20px 16px}
+    .cr-cal{padding:20px 16px}
     .cr-cab-zona h1{font-size:1.6rem}
     .cr-acc{margin-left:0;width:100%}
     .cr-acc .cr-btn{flex:1;justify-content:center}
@@ -1409,6 +1412,36 @@
     .in-av{display:none}
     .in-btn{margin-left:8px}
   }
+
+  /* ---------- Suave, como Claude: el naranja queda para los botones, el logo y lo de hoy; lo demás, en gris ---------- */
+  .zip-btn{color:var(--text);background:var(--card);border-color:var(--line);font-weight:500}
+  .zip-btn:hover{border-color:var(--line2);background:var(--hover)}
+  .zip-btn small,.zip-btn em{color:var(--muted)}
+  .cc.fuerte{background:var(--sel);color:var(--text)}
+  .tag.mat,.tag.ok{background:var(--hover);color:var(--text2)}
+  .pgo{color:var(--muted)}
+  .nivel-nav a{color:var(--text);font-weight:500}
+  .badge{background:var(--hover);color:var(--text2)}
+  .parte-head,.pr-ej-t small,.pr-cab small,.pr-num,.cv-num,.pp-plant b:first-child,.pp-min{color:var(--muted)}
+  .pp-min{background:var(--hover)}
+  .pr-btn > svg,.herr-ir .pill svg{color:var(--text2)}
+  .pr-btn:hover{border-color:var(--line2)}
+  .sim{border:1px solid var(--line2)}
+  .sim-tag{color:var(--text2);background:var(--hover)}
+  .pl-item.active{background:var(--sel)}
+  .pill:hover{border-color:var(--line2);color:var(--text);background:var(--hover)}
+  .tab.active{border-bottom-color:var(--text)}
+  .pr-paso{border-left-color:var(--line2)}
+  .cr-btn:hover{border-color:var(--line2)}
+  .cr-chip.sug:hover{border-color:var(--line2);color:var(--text)}
+  .in-btn:hover{border-color:var(--line2);color:var(--text);background:var(--hover)}
+  .in-h2 a:hover,.fe-btn:hover .fe-q b,.in-seguir:hover b,.in-clase[data-go]:hover b{color:var(--text)}
+  .in-seguir:hover,.in-clase[data-go]:hover{background:var(--hover);border-radius:10px}
+  .in-ic.ar{background:var(--hover);color:var(--text2)}
+  .card.compacta .links .pill:hover,.hx-btn:hover,.qz-btn:hover:not(:disabled),.qz-op:hover:not(:disabled),.file:hover,.vb-arch:hover:not(:disabled),
+  .pfila[data-go]:hover,.nivel-nav a:hover,.res-anio:hover,.pr-ej:hover,.herr-ir .pill:hover,.pr-donde-btn:hover,.sim-b:hover,.in-vacio:hover{border-color:var(--line2)}
+  .vb:hover:not(:disabled),.cine-btn:hover,.pl-flechas button:hover:not(:disabled),.pr-chico:hover{border-color:var(--line2);color:var(--text)}
+  .card.compacta .links .pill:hover{color:var(--text)}
 </style>
 <script>
 /* Modo claro u oscuro elegido a mano (si no se eligió, sigue al sistema): se prenden o apagan las reglas
@@ -6613,7 +6646,7 @@ let HOR = null, horPromesa = null;
 const cargarHorarios = () => horPromesa || (horPromesa = fetch("horarios/2026.json").then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }).then(j => HOR = j).catch(e => { horPromesa = null; throw e; }));
 
 /* Estado de la pantalla: cuatrimestre, si se está editando, el borrador, la materia que se está eligiendo… */
-const CR = { q: null, edit: false, borrador: {}, eligiendo: null, picker: false, filtro: "", mes: null, sel: null, dia: null, form: { tipo: "Parcial", k: null } };
+const CR = { q: null, edit: false, auto: false, borrador: {}, eligiendo: null, picker: false, filtro: "", mes: null, sel: null, dia: null, form: { tipo: "Parcial", k: null } };
 
 /* Correlativas: para cursar hay que tener regulares (o aprobadas) unas y aprobadas otras */
 function puedeCursar(x){
@@ -6683,13 +6716,14 @@ const textoHoras = b => b.map(([d, a, z]) => `${DIAS_CORTO[d + 1]} ${a}–${z}`)
 function viewCronograma(){
   if(!CR.q) CR.q = cuatriActual();
   const guardado = cronoGuardado(CR.q);
-  if(!CR.edit && !guardado){ CR.edit = true; CR.borrador = {}; }
+  // Sin cronograma guardado se arranca editando; si después llega uno de GitHub (y no tocaste nada), se muestra ese
+  if(CR.edit && CR.auto && guardado && !Object.keys(CR.borrador).length && !CR.eligiendo){ CR.edit = false; CR.auto = false; }
+  if(!CR.edit && !guardado){ CR.edit = true; CR.auto = true; CR.borrador = {}; }
   const [anio, c] = CR.q.split("-");
   const otro = `${anio}-${c === "1" ? 2 : 1}`;
   const sinClave = !leerLocal(CLAVE_TOKEN);
   return `
     <div class="cr ${CR.edit ? "cr-editando" : "cr-ver"}">
-      <aside class="cr-izq" id="crIzq">${calendarioCr()}</aside>
       <section class="cr-zona">
         <div class="cr-cab-zona">
           <h1>Cronograma</h1>
@@ -6702,6 +6736,7 @@ function viewCronograma(){
         <div id="crCuerpo"><div class="empty">Cargando los horarios…</div></div>
         ${!CR.edit && sinClave ? `<p class="cr-nota-clave">Guardado en este navegador. Para verlo también en el celular, <button class="linkbtn" data-config>conectá tu clave de GitHub</button>.</p>` : ""}
       </section>
+      <aside class="cr-cal" id="crCal">${calendarioCr()}</aside>
     </div>`;
 }
 function montarCronograma(){
@@ -6840,7 +6875,7 @@ function popFecha(){
   </div>`;
 }
 function pintarCalendario(){
-  const el = $("#crIzq");
+  const el = $("#crCal");
   if(!el) return;
   const nombre = $("#calNombre") ? $("#calNombre").value : "";
   el.innerHTML = calendarioCr();
@@ -6851,7 +6886,9 @@ function ubicarPop(){
   if(!pop) return;
   if(matchMedia("(max-width:899px)").matches || !d){ pop.classList.add("abajo"); return; }
   const r = d.getBoundingClientRect(), top = Math.max(12, Math.min(r.top - 40, innerHeight - pop.offsetHeight - 12));
-  pop.style.left = (r.right + 12) + "px";
+  const izq = r.right + 12 + pop.offsetWidth > innerWidth - 8;
+  pop.classList.toggle("a-izq", izq);
+  pop.style.left = (izq ? r.left - 12 - pop.offsetWidth : r.right + 12) + "px";
   pop.style.top = top + "px";
   pop.style.setProperty("--y", (r.top + r.height / 2 - top - 6) + "px");
 }
@@ -6875,6 +6912,7 @@ function guardarCrono(){
 }
 function clicCrono(el, e){
   const acc = el.dataset.cr, ofertas = HOR && HOR.cuatrimestres[CR.q.split("-")[1]] || {};
+  if(["picker", "eligiendo", "elegir", "cambiar", "quitar"].includes(acc)) CR.auto = false;
   switch(acc){
     case "cuatri": CR.q = el.dataset.q; CR.edit = false; CR.eligiendo = null; CR.picker = false; CR.mes = null; CR.sel = null; CR.dia = null; refrescar(); return;
     case "editar": CR.edit = true; CR.borrador = JSON.parse(JSON.stringify((cronoGuardado(CR.q) || { materias: {} }).materias)); refrescar(); return;
