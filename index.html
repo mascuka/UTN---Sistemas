@@ -88,6 +88,13 @@
   .parnav-in::-webkit-scrollbar{display:none}
   .ptab{flex:none;font-size:.88rem;color:var(--muted);padding:12px 12px 10px;border-bottom:1.5px solid transparent;white-space:nowrap;cursor:pointer;transition:color .15s,border-color .15s}
   .ptab:first-child{padding-left:2px}
+  .pvolver{flex:none;display:inline-flex;align-items:center;gap:4px;margin:6px 14px 6px -6px;padding:0 12px 0 6px;height:32px;border-radius:8px;font-size:.86rem;color:var(--text2);white-space:nowrap;position:relative;cursor:pointer;transition:background .15s,color .15s}
+  .pvolver svg{width:16px;height:16px;flex:none}
+  .pvolver:hover{background:var(--hover);color:var(--text)}
+  .pvolver::after{content:"";position:absolute;right:-8px;top:7px;bottom:7px;width:1px;background:var(--line2)}
+  .pvolver + .ptab{padding-left:12px}
+  .pv-c{display:none}
+  .pv-l{max-width:240px;overflow:hidden;text-overflow:ellipsis}
   .ptab:hover{color:var(--text)}
   .ptab.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
   @media (max-width:899px){
@@ -102,6 +109,9 @@
     .parnav{border-top:1px solid var(--line)}
     .parnav-in{padding:0 16px}
     .ptab{padding:9px 10px 8px;font-size:.84rem}
+    .pvolver{margin:4px 10px 4px -4px;height:30px;font-size:.84rem;font-weight:500}
+    .pv-l{display:none}
+    .pv-c{display:inline}
   }
   .pie{max-width:1560px;margin:40px auto 0;font-size:.8rem;color:var(--muted)}
 
@@ -373,29 +383,34 @@
   .tab.active{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
 
   /* Material */
-  .files{display:flex;flex-direction:column;gap:8px}
-  .file{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
-  .file:hover{border-color:var(--accent)}
+  /* Lista de archivos como los de un proyecto de Claude: una tarjeta por bloque y una fila por archivo */
+  .files{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .file{display:flex;align-items:center;gap:14px;padding:10px 16px;color:inherit;transition:background .12s}
+  .file + .file{border-top:1px solid var(--line)}
+  .file:hover{background:var(--hover)}
   .badge{font-size:.7rem;font-weight:700;padding:4px 5px;border-radius:6px;background:var(--accent-soft);color:var(--accent);min-width:38px;text-align:center;flex-shrink:0}
   .file .mini{width:38px;height:50px;object-fit:cover;object-position:top;border-radius:4px;border:1px solid var(--line);background:#fff;flex-shrink:0;margin:-5px 0}
-  .file .name{flex:1;font-size:.95rem}
-  .file .go{color:var(--muted);font-size:.85rem}
+  .file .name{flex:1;min-width:0;font-size:.92rem;font-weight:500}
+  .file .go{color:var(--muted);font-size:.9rem;opacity:0;transition:opacity .12s}
+  .file:hover .go,.file:focus-visible .go{opacity:1}
+  .file .go-t{display:none}
+  @media (hover:none){ .file .go{opacity:1} }
   .tag.nota{margin-left:6px;vertical-align:1px;background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
-  .file .name small{display:block;font-size:.8rem;color:var(--muted);margin-top:2px}
-  .grupo + .grupo{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+  .file .name small{display:block;font-size:.8rem;font-weight:400;color:var(--muted);margin-top:1px}
+  .grupo + .grupo{margin-top:30px}
   .grupo-head{margin-bottom:10px}
-  .grupo-head h3{font-size:1.02rem;font-weight:600}
+  .grupo-head h3{font-size:1rem;font-weight:500}
   .grupo-head p{font-size:.85rem;color:var(--muted);margin-top:2px}
   .grupo .empty{padding:22px}
   .parte + .parte{margin-top:20px}
   /* Niveles del material: esencial, para profundizar y extra (plegado) */
-  .nivel{--nv:var(--accent);border-left:2px solid var(--nv);padding-left:18px}
-  .nivel + .nivel{margin-top:30px}
+  .nivel{--nv:var(--accent)}
+  .nivel + .nivel{margin-top:40px}
   .nivel.profundizar{--nv:var(--nv2)}
   .nivel.extra{--nv:var(--nv3)}
-  .nv-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-  .nv-t{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--nv)}
-  .nivel.extra .nv-t{color:var(--muted)}
+  .nv-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .nv-t{font:400 1.3rem var(--serif);color:var(--text)}
+  .nivel.extra .nv-t{font-size:1.1rem;color:var(--text2)}
   .nv-s{font-size:.8rem;color:var(--muted)}
   .nivel.extra summary{display:flex;align-items:baseline;gap:10px;cursor:pointer;list-style:none;padding:6px 0}
   .nivel.extra summary::-webkit-details-marker{display:none}
@@ -403,7 +418,7 @@
   .nivel.extra[open] summary{margin-bottom:12px}
   .nivel.extra[open] summary::before{content:"▾"}
   .nivel.extra summary:hover .nv-s{color:var(--text)}
-  .nivel .grupo + .grupo{margin-top:22px;padding-top:18px}
+  .nivel .grupo + .grupo{margin-top:28px}
 
   /* Visor de PDF */
   /* Visor de PDF propio (PDF.js): igual en la compu y en el celular */
@@ -471,9 +486,6 @@
     body.con-visor{padding-right:var(--visor-w)}
     body.con-visor dialog.visor{left:auto;width:var(--visor-w);border-left:1px solid var(--line);background:var(--hover);box-shadow:-16px 0 32px -28px rgba(0,0,0,.4)}
     body.con-visor .vb-t{display:none}
-    body.con-visor .mt-cuerpo{grid-template-columns:minmax(0,1fr)}
-    body.con-visor .mt-panel{position:static}
-    body.con-visor .parte .files{grid-template-columns:1fr}
     body.con-visor .comis-tabla{overflow-x:auto}
     body.con-visor .comis-grupo{min-width:840px}
   }
@@ -493,11 +505,8 @@
   .aviso-lista a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
   #app.angosto .player{max-width:900px}
   .fnum{font-size:.85rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;min-width:20px;margin-right:-4px}
-  @media (min-width:1100px){
-    .parte .files{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  }
-  .parte-head{display:flex;align-items:baseline;gap:10px;margin:0 0 8px 2px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
-  .parte-head span{font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0}
+  .parte-head{display:flex;align-items:baseline;gap:8px;margin:0 0 8px 2px;font-size:.84rem;font-weight:500;color:var(--text2)}
+  .parte-head span{font-weight:400;font-size:.8rem;color:var(--muted)}
 
   /* Videos estilo YouTube */
   .player-wrap{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
@@ -561,7 +570,7 @@
   }
   @media (max-width:760px){
     /* Material compacto: la fila entera se toca, sin el texto "Abrir" */
-    .file{gap:10px;padding:10px 12px;border-radius:12px}
+    .file{gap:10px;padding:10px 12px}
     .file .name{font-size:.9rem;line-height:1.3}
     .file .name small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.76rem}
     .file .go{font-size:1rem}
@@ -569,7 +578,7 @@
     .file .mini{width:32px;height:42px;margin:-3px 0}
     .badge{min-width:32px;font-size:.62rem;padding:3px 4px}
     .fnum{font-size:.75rem;min-width:16px}
-    .nivel{padding-left:12px}
+    .nv-t{font-size:1.15rem}
     .lead{font-size:.95rem;margin-bottom:18px}
     .tabs{margin-bottom:18px}
     .tab{flex:1;text-align:center;padding:10px 6px}
@@ -804,34 +813,47 @@
   /* Cabecera de materia con el botón de descarga */
   .mat-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
   .mat-head h1{margin-bottom:0}
-  /* Página de la materia: el material a la izquierda y la info de la materia en un panel (como un proyecto de Claude) */
-  .mt-sub{font-size:.84rem;color:var(--muted)}
-  .mt-sub span[data-go]{cursor:pointer}
-  .mt-sub span[data-go]:hover{color:var(--text)}
-  .mt-tit{display:flex;align-items:center;flex-wrap:wrap;gap:6px 0;font-weight:400;letter-spacing:-.015em;margin:6px 0 10px}
-  .mt-tit .abr-lg{vertical-align:0}
-  .mt-lead{font:400 1.1rem/1.65 var(--serif);color:var(--text2);max-width:680px}
-  .mt-cuerpo{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:28px 44px;align-items:start;margin-top:30px}
-  .mt-cuerpo.solo{grid-template-columns:minmax(0,1fr)}
-  .mt-cuerpo > .comis{grid-column:1 / -1;margin-top:8px}
+  /* Página de la materia, simple como un proyecto de Claude: cabecera con línea abajo, las partes como tarjetas
+     tranquilas y lo suelto (cuestionarios) en filas */
+  .mt-cab{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-bottom:18px;margin-bottom:26px;border-bottom:1px solid var(--line)}
+  .mt-cab-iz{min-width:0}
+  .mt-eti{display:flex;align-items:center;gap:10px;font-size:.74rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .mt-eti .abr{font-size:.7rem;letter-spacing:.04em}
+  .mt-eti span[data-go]{cursor:pointer}
+  .mt-eti span[data-go]:hover{color:var(--text)}
+  .mt-tit{font-weight:400;letter-spacing:-.015em;margin:8px 0 0;line-height:1.15}
+  .mt-acc{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .mt-pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:400 .82rem var(--sans);color:var(--text2);white-space:nowrap}
+  .zip-btn.mt-pill{margin:0;padding:0 12px;font-weight:400;color:var(--text2)}
+  .zip-btn.mt-pill svg{width:14px;height:14px}
+  .zip-btn.mt-pill small{font-size:.76rem}
+  .mt-cond{position:relative}
+  .mt-cond summary{display:flex;gap:8px;list-style:none;cursor:pointer}
+  .mt-cond summary::-webkit-details-marker{display:none}
+  .mt-cond summary:hover .mt-pill,.mt-cond[open] .mt-pill,.zip-btn.mt-pill:hover{border-color:var(--line2);color:var(--text)}
+  .mt-cond-pop{position:absolute;right:0;top:calc(100% + 8px);z-index:30;width:min(360px, 86vw);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 14px 34px -18px rgba(30,25,15,.35);font-size:.84rem;line-height:1.5}
+  .mt-cond-pop > b{display:block;font-weight:500;margin-bottom:4px}
+  .mt-cond-pop > p{color:var(--muted);margin-bottom:6px}
+  .mt-req{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;padding:8px 0;border-top:1px solid var(--line)}
+  .mt-req b{font-weight:500;white-space:nowrap}
+  .mt-req span{color:var(--muted)}
   .mt-main{min-width:0}
   .mt-h2{display:flex;align-items:baseline;gap:10px;font:500 .95rem var(--sans);margin:0 0 12px}
   .mt-h2 small{font-weight:400;color:var(--muted);font-size:.82rem}
   .mt-main > * + .mt-h2{margin-top:32px}
-  .mt-partes{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
-  .mt-parte{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:18px 20px 14px;cursor:pointer;transition:border-color .15s}
-  .mt-parte:hover,.mt-fila:hover,.mt-arch:hover{border-color:var(--line2)}
-  .mt-parte-in{flex:1}
-  .mt-parte h3{font:400 1.4rem/1.2 var(--serif);margin:0 0 6px}
-  .mt-parte p{color:var(--text2);font-size:.9rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .mt-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-  .mt-chips span{font-size:.76rem;padding:3px 9px;border-radius:999px;background:var(--hover);color:var(--text2)}
+  .mt-partes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .mt-parte{position:relative;display:block;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:20px 44px 20px 22px;color:inherit;transition:border-color .15s,box-shadow .15s}
+  .mt-parte:hover{border-color:var(--line2);box-shadow:0 8px 22px -18px rgba(30,25,15,.35)}
+  .mt-parte h3{font:400 1.45rem/1.2 var(--serif);margin:0}
+  .mt-parte p{margin-top:6px;color:var(--muted);font-size:.86rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .mt-ir{position:absolute;right:16px;top:22px;color:var(--line2);transition:color .15s,transform .15s}
+  .mt-ir svg{width:18px;height:18px}
+  .mt-parte:hover .mt-ir{color:var(--text2);transform:translateX(2px)}
   .mt-cuenta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
   .mt-cuenta span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
   .mt-cuenta svg{width:14px;height:14px;flex:none}
-  .mt-parte .mt-cuenta{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
-  .mt-parte .mt-cuenta:empty{display:none}
-  .mt-fila{display:flex;align-items:center;gap:14px;margin-top:12px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:12px 16px;cursor:pointer;transition:border-color .15s}
+  .mt-fila{display:flex;align-items:center;gap:14px;margin-top:12px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:12px 16px;color:inherit;cursor:pointer;transition:border-color .15s}
+  .mt-fila:hover{border-color:var(--line2)}
   .mt-ic{color:var(--muted);display:grid;place-items:center}
   .mt-ic svg{width:18px;height:18px}
   .mt-fila-t{flex:1;min-width:0}
@@ -839,31 +861,7 @@
   .mt-fila-t small{display:block;color:var(--muted);font-size:.84rem}
   .mt-fila > svg{width:15px;height:15px;color:var(--muted);flex:none}
   .mt-suelto{margin-top:28px}
-  .mt-arranque{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-  .mt-arch{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:8px 12px 8px 8px;color:inherit;transition:border-color .15s}
-  .mt-arch .mini{width:40px;height:56px;object-fit:cover;object-position:top;border-radius:4px;border:1px solid var(--line);flex:none}
-  .mt-arch b{display:block;font-weight:500;font-size:.88rem;line-height:1.3}
-  .mt-arch small{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}
-  .mt-panel{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:2px 18px 6px;position:sticky;top:calc(var(--barra-h, 0px) + 16px)}
-  .mt-bloq{padding:14px 0}
-  .mt-bloq + .mt-bloq{border-top:1px solid var(--line)}
-  .mt-t{font-size:.76rem;color:var(--muted);margin-bottom:8px}
-  .mt-dir{font:500 1.08rem var(--serif)}
-  .mt-reg{font-size:.86rem;color:var(--text2)}
-  .mt-aclara{font-size:.8rem;color:var(--muted);line-height:1.45;margin-top:4px}
-  .mt-req{margin-top:8px;font-size:.84rem}
-  .mt-req summary{display:flex;gap:10px;align-items:baseline;cursor:pointer;list-style:none;padding:2px 0}
-  .mt-req summary::-webkit-details-marker{display:none}
-  .mt-req summary b{font-weight:500;white-space:nowrap}
-  .mt-req summary span{color:var(--muted);font-size:.8rem;min-width:0}
-  .mt-req summary:hover span{color:var(--text2)}
-  .mt-req p{font-size:.8rem;color:var(--muted);line-height:1.5;margin:4px 0 6px;padding-left:10px;border-left:2px solid var(--line)}
-  .mt-com{font-size:.9rem}
-  .mt-com span{display:block;color:var(--muted);font-size:.8rem}
-  .mt-lnk{display:flex;align-items:center;gap:4px;margin-top:8px;padding:0;border:0;background:none;font:inherit;font-size:.84rem;color:var(--accent);cursor:pointer}
-  .mt-lnk svg{width:13px;height:13px}
-  .mt-lnk:hover{text-decoration:underline;text-underline-offset:3px}
-  .mt-panel .zip-btn{margin-top:0;width:100%;justify-content:center;border-radius:10px;padding:8px 12px}
+  .mt-lead{font:400 1.1rem/1.65 var(--serif);color:var(--text2);max-width:680px}
   .mt-main.pc{max-width:860px;margin-top:26px}
   .tm-lista{border-top:1px solid var(--line)}
   .tm-tema{border-bottom:1px solid var(--line)}
@@ -892,26 +890,17 @@
   .tm-vid{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:3px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-size:.8rem;color:var(--text2);cursor:pointer}
   .tm-vid svg{width:14px;height:14px;color:var(--muted);flex:none}
   .tm-vid:hover{border-color:var(--line2);color:var(--text)}
-  .mt-seg{display:none}
-  @media (max-width:1000px){
-    .mt-cuerpo{grid-template-columns:minmax(0,1fr)}
-    .mt-panel{position:static}
-    .mt-seg{display:flex;gap:4px;padding:4px;background:var(--hover);border-radius:11px;margin-top:18px}
-    .mt-seg button{flex:1;border:0;background:none;font:inherit;font-size:.86rem;padding:8px 0;border-radius:8px;color:var(--text2);cursor:pointer}
-    .mt-seg button.on{background:var(--card);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-    .mt-cuerpo{margin-top:18px}
-    .mt-cuerpo[data-ver="material"] > .mt-panel,.mt-cuerpo[data-ver="material"] > .comis,.mt-cuerpo[data-ver="info"] > .mt-main{display:none}
-    .mt-cuerpo > .comis{margin-top:0}
-  }
   @media (max-width:760px){
+    .mt-cab{padding-bottom:14px;margin-bottom:18px}
     .mt-lead{font-size:1rem}
     .mt-partes{grid-template-columns:1fr}
-    .mt-parte{padding:14px 16px 12px}
-    .mt-parte h3{font-size:1.2rem}
-    .mt-arranque{grid-template-columns:1fr}
+    .mt-parte{padding:16px 40px 16px 18px}
+    .mt-parte h3{font-size:1.25rem}
+    .mt-ir{top:17px}
     .mt-fila .mt-cuenta{display:none}
     .tm-c{display:none}
     .tm-cuerpo{padding-left:4px}
+    .mt-cond-pop{right:auto;left:0}
   }
   .zip-btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font:inherit;font-size:.88rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid transparent;border-radius:999px;padding:9px 16px;white-space:nowrap;margin-top:4px}
   .zip-btn:hover{border-color:var(--accent)}
@@ -1525,7 +1514,7 @@
   .pgo{color:var(--muted)}
   .nivel-nav a{color:var(--text);font-weight:500}
   .badge{background:var(--hover);color:var(--text2)}
-  .parte-head,.pr-ej-t small,.pr-cab small,.pr-num,.cv-num,.pp-plant b:first-child,.pp-min{color:var(--muted)}
+  .pr-ej-t small,.pr-cab small,.pr-num,.cv-num,.pp-plant b:first-child,.pp-min{color:var(--muted)}
   .pp-min{background:var(--hover)}
   .pr-btn > svg,.herr-ir .pill svg{color:var(--text2)}
   .pr-btn:hover{border-color:var(--line2)}
@@ -1578,7 +1567,7 @@
   .in-h2 a:hover,.fe-btn:hover .fe-q b,.in-seguir:hover b,.in-clase[data-go]:hover b{color:var(--text)}
   .in-seguir:hover,.in-clase[data-go]:hover{background:var(--hover);border-radius:10px}
   .in-ic.ar{background:var(--hover);color:var(--text2)}
-  .card.compacta .links .pill:hover,.hx-btn:hover,.qz-btn:hover:not(:disabled),.qz-op:hover:not(:disabled),.file:hover,.vb-arch:hover:not(:disabled),
+  .card.compacta .links .pill:hover,.hx-btn:hover,.qz-btn:hover:not(:disabled),.qz-op:hover:not(:disabled),.vb-arch:hover:not(:disabled),
   .pfila[data-go]:hover,.nivel-nav a:hover,.res-anio:hover,.pr-ej:hover,.herr-ir .pill:hover,.pr-donde-btn:hover,.sim-b:hover,.in-vacio:hover{border-color:var(--line2)}
   .vb:hover:not(:disabled),.cine-btn:hover,.pl-flechas button:hover:not(:disabled),.pr-chico:hover{border-color:var(--line2);color:var(--text)}
   .card.compacta .links .pill:hover{color:var(--text)}
@@ -1821,8 +1810,6 @@ const CARRERA = {
 const MATERIAS = {
   // Análisis Matemático 1
   1: {
-    // De qué se trata la materia: va arriba de todo en su página
-    descripcion: "Límites, derivadas e integrales de funciones de una variable, con sus aplicaciones. Dos parciales y un final de tres partes.",
     comisiones: [
       {
         comision: "1K13",
@@ -2003,7 +1990,6 @@ const MATERIAS = {
   },
   // Sistemas y Procesos de Negocio: material teórico por unidad y parciales anteriores
   8: {
-    descripcion: "Las organizaciones, sus procesos de negocio y los sistemas de información que los acompañan.",
     parciales: [
       {
         id: "p1",
@@ -2064,7 +2050,6 @@ const MATERIAS = {
   },
   // Backend de Aplicaciones (electiva): 1º Parcial y TPI (con teórico y práctico) + cuestionarios
   201: {
-    descripcion: "Cómo se arma el backend de una aplicación. Primero Java a fondo —objetos, colecciones y streams— y después una API de verdad con Spring, base de datos, gateway y seguridad.",
     // Condiciones de aprobación: nota para aprobar directo, nota para regularizar (null = no tiene) y qué hay que aprobar
     condiciones: {
       directa: 6,
@@ -2376,7 +2361,6 @@ const MATERIAS = {
   // 1º Parcial (Python y objetos) y TPI (trabajo integrador: persistencia, patrones e interfaces).
   // Archivos en material/desarrollo-de-aplicaciones-con-objetos/{p1,tpi}/. Las guías y los ZIP de código son nuestros
   206: {
-    descripcion: "Programación orientada a objetos en Python: clases, herencia y colecciones para el parcial, y una aplicación completa con base de datos en el trabajo integrador.",
     condiciones: {
       directa: 6,
       aclaracion: "Es electiva: se aprueba de forma directa, aprobando todas las instancias. Nota final: 50 % parcial, 30 % trabajo integrador y 20 % cuestionarios.",
@@ -2504,7 +2488,6 @@ const MATERIAS = {
   // Green Software (electiva): la materia son 3 TPI. Cada TPI tiene Material (enunciado, resuelto y material de clase) y Videos
   // Archivos del campus en material/green-software/. Las presentaciones de los talleres están en el Drive de la cátedra
   202: {
-    descripcion: "Sustentabilidad aplicada al software y al hardware: energía, huella de carbono y pensamiento sistémico. Se aprueba con tres TPI grupales y una charla final.",
     comisionesNota: "Es una sola aula para todo 4K1: Franco y Luis dan los talleres; Vane (4K1A) e Inés (4K1B) llevan los TPI.",
     comisiones: [
       { comision: "4K1", profesor: "Franco Mana", examen: "Defensa de TPI", asistencia: false, recomendada: true, comentario: "Los profes son buenos y es difícil desaprobar. Se enojan si faltás, pero no toman asistencia y no te van a dejar libre. La materia es muy fácil." },
@@ -2632,7 +2615,6 @@ const MATERIAS = {
   // Tecnologías para la Automatización: 2 parciales de robótica, 1 de IoT y el TP con la ESP32.
   // Cada parcial tiene solo Material y Videos (secciones: []).
   29: {
-    descripcion: "Dos mundos en una materia: robótica (ubicación espacial, cinemática y trayectorias, con Octave o Matlab) e internet de las cosas con la ESP32.",
     // Sin "regular": no se sabe la nota de regularidad, así que no se muestra
     condiciones: {
       directa: 8,
@@ -2907,7 +2889,6 @@ const MATERIAS = {
     ]
   },
   26: {
-    descripcion: "Cómo se comunican las computadoras: arquitectura de redes, redes locales, direccionamiento y encaminamiento IP, transporte, aplicación y seguridad.",
     // Comisiones: profesor, opinión y si la recomendás (recomendada: true / false)
     comisiones: [
       {
@@ -3401,9 +3382,12 @@ function renderBarra(m){
   const tabs = p ? destinosParcial(p) : [];
   const [, , d3, d4] = ruta.split("/");
   const enTab = t => t.k === "" ? !d3 : t.k === (d3 === "h" ? "h/" + d4 : d3) || (t.tambien || []).includes(d3);
-  $("#parnavIn").innerHTML = tabs.length > 2 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "";
-  $("#parnav").hidden = tabs.length <= 2;
-  $("#barra").classList.toggle("vacia", tabs.length <= 2);
+  // Adentro de la materia (un parcial, una sección…): a la izquierda, siempre a mano, la vuelta a la materia
+  const dentro = !!(m && b);
+  const volver = dentro ? `<a class="pvolver" data-go="${a}" href="#/${a}" title="Volver a ${esc(m.nombre)}">${ICON_BACK}<span class="pv-l">${esc(m.nombre)}</span><span class="pv-c">${esc(m.abr || m.nombre)}</span></a>` : "";
+  $("#parnavIn").innerHTML = volver + (tabs.length > 2 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "");
+  $("#parnav").hidden = !dentro;
+  $("#barra").classList.toggle("vacia", !dentro);
   renderLado(m);
   centrarEn($("#parnavIn"), $(".ptab.on"));
   medirBarra();
@@ -3910,81 +3894,46 @@ function cuentaParte(p, propia){
     p.quiz && `${ICON_CHECK}Quiz`
   ].filter(Boolean).map(x => `<span>${x}</span>`).join("");
 }
-/* Los temas como etiquetas (si son temas: las fechas de final no) */
-function chipsTemas(t){
-  const us = t && t.unidades ? t.unidades.map(u => u.titulo) : [];
-  if(us.length < 2 || us.some(x => /^\d{1,2} de [a-z]+$/i.test(x))) return "";
-  const corto = x => x.replace(/^Unidad N?º?\s*\d+:\s*/i, "").replace(/^\d+\s*·\s*/, "");
-  return `<div class="mt-chips">${us.slice(0, 6).map(x => `<span>${esc(corto(x))}</span>`).join("")}${us.length > 6 ? `<span>+${us.length - 6}</span>` : ""}</div>`;
-}
-/* Lo que conviene abrir primero: los archivos marcados "Empezá por acá". fuentes = [[material, dónde está], …] */
-function paraEmpezar(fuentes){
-  const lista = [];
-  fuentes.forEach(([items, donde]) => (items || []).forEach(x => (x.grupo ? archivosDe(x) : [x]).forEach(f => { if(/empez/i.test(f.nota || "")) lista.push({ f, donde }); })));
-  if(!lista.length) return "";
+/* Cómo se aprueba, en la cabecera: "Directa con 6 · Sin regularidad"; al tocarlo se despliega cada requisito */
+function aprobacion(x){
+  const pills = [x.directa != null && `Directa con ${x.directa}`, "regular" in x && (x.regular == null ? "Sin regularidad" : `Regular con ${x.regular}`)].filter(Boolean);
+  if(!pills.length && !(x.requisitos || []).length) return "";
   return `
-    <h2 class="mt-h2">Para empezar<small>lo primero que conviene abrir</small></h2>
-    <div class="mt-arranque">${lista.map(({ f, donde }) => {
-      const pdf = esPdfLocal(f), bajar = /^(ZIP|INO)$/.test(f.tipo);
-      return `<a class="mt-arch" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>
-        ${pdf ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onload="this.classList.add('ok')" onerror="sinMini(this)">` : `<span class="badge">${esc(f.tipo || "LINK")}</span>`}
-        <span><b>${esc(f.nombre)}</b><small>${[f.tipo, donde].filter(Boolean).map(esc).join(" · ")}</small></span></a>`;
-    }).join("")}</div>`;
-}
-const fuentesMateria = c => [
-  ...c.parciales.flatMap(p => partesDe(p).map(x => [x.material, p.titulo])),
-  ...(c.secciones || []).map(x => [x.material, x.titulo]),
-  [c.material, ""]
-];
-/* Cómo se aprueba: directa, regularidad y cada requisito (se despliega el detalle) */
-function comoSeAprueba(x){
-  return `
-    <section class="mt-bloq"><div class="mt-t">Cómo se aprueba</div>
-      ${x.directa != null ? `<div class="mt-dir">Directa con ${esc(String(x.directa))}</div>` : ""}
-      ${"regular" in x ? `<div class="mt-reg">${x.regular == null ? "Sin regularidad" : `Regular con ${esc(String(x.regular))}`}</div>` : ""}
-      ${x.aclaracion ? `<p class="mt-aclara">${esc(x.aclaracion)}</p>` : ""}
-      ${(x.requisitos || []).map(r => {
-        // El nombre largo, sin la sigla ("NAP · Nota de…" → "Nota de…") y solo si dice algo más que lo corto
-        const largo = r.corto ? r.titulo.replace(/^[^·]+·\s*/, "") : "";
-        const ver = largo && !r.corto.toLowerCase().startsWith(largo.toLowerCase());
-        return `
-        <details class="mt-req"><summary><b>${esc(r.corto || r.titulo)}</b>${ver ? `<span>${esc(largo)}</span>` : ""}</summary>${r.detalle ? `<p>${esc(r.detalle)}</p>` : ""}</details>`;
-      }).join("")}
-    </section>`;
-}
-/* Resumen de las comisiones para el panel: cuántas hay y cuántas se recomiendan */
-function resumenComisiones(lista){
-  const cods = [...new Set(lista.map(x => x.comision))];
-  const reco = v => cods.filter(k => lista.some(x => x.comision === k && x.recomendada === v)).length;
-  const si = reco(true), no = reco(false);
-  return `
-    <section class="mt-bloq"><div class="mt-t">Comisiones</div>
-      <div class="mt-com">${cods.length} comisi${cods.length === 1 ? "ón" : "ones"}${si || no ? `<span>${si ? `${si} recomendada${si === 1 ? "" : "s"}${no ? ` · ${no} no` : ""}` : "Ninguna recomendada"}</span>` : ""}</div>
-      <button class="mt-lnk" data-ir="comis">Profes, opiniones y cómo toman${ICON_DER}</button>
-    </section>`;
+    <details class="mt-cond">
+      <summary title="Cómo se aprueba">${(pills.length ? pills : ["Cómo se aprueba"]).map(t => `<span class="mt-pill">${esc(String(t))}</span>`).join("")}</summary>
+      <div class="mt-cond-pop">
+        <b>Cómo se aprueba</b>
+        ${x.aclaracion ? `<p>${esc(x.aclaracion)}</p>` : ""}
+        ${(x.requisitos || []).map(r => `<div class="mt-req"><b>${esc(r.corto || r.titulo)}</b><span>${esc(r.detalle || r.titulo)}</span></div>`).join("")}
+      </div>
+    </details>`;
 }
 function viewMateria(m){
   const c = MATERIAS[m.n];
-  const sub = `<span data-go="nivel/${m.nivel}">${nombreCorto(m.nivel)}</span>${m.creditos ? ` · Electiva · ${m.creditos} créditos` : !m.ingreso && MOD[m.mod] ? ` · ${MOD[m.mod]}` : ""}`;
+  const eti = [nombreCorto(m.nivel), m.creditos ? "Electiva" : !m.ingreso && MOD[m.mod]].filter(Boolean).join(" · ");
+  const nZip = c ? archivosZip(c).length : 0;
   const cab = `
-    <div class="mt-sub">${sub}</div>
-    <h1 class="mt-tit">${m.abr ? abr(m, "abr-lg") : ""}${esc(m.nombre)}</h1>
-    ${c && c.descripcion ? `<p class="mt-lead">${esc(c.descripcion)}</p>` : ""}`;
+    <div class="mt-cab">
+      <div class="mt-cab-iz">
+        <div class="mt-eti">${m.abr ? abr(m) : ""}<span data-go="nivel/${m.nivel}">${esc(eti)}</span></div>
+        <h1 class="mt-tit">${esc(m.nombre)}</h1>
+      </div>
+      <div class="mt-acc">
+        ${c && c.condiciones ? aprobacion(c.condiciones) : ""}
+        ${nZip ? `<button class="zip-btn mt-pill" data-zip="${m.n}" title="Todos los PDF y archivos de la materia, en carpetas con el mismo orden que la página (sin videos)">${ICON_DL}<span>ZIP completo</span><small>${nZip}</small></button>` : ""}
+      </div>
+    </div>`;
   if(!c) return `${cab}<div class="empty">Todavía no hay material cargado para esta materia.</div>`;
 
-  // Las partes (parciales, TPI, final…) como carpetas; las secciones sueltas (cuestionarios) como filas
+  // Las partes (parciales, TPI, final…) como tarjetas simples; las secciones sueltas (cuestionarios) como filas abajo
   const partes = c.parciales.length ? `
-    <h2 class="mt-h2">Partes</h2>
     <div class="mt-partes">${c.parciales.map(p => `
-      <div class="mt-parte" data-go="m${m.n}/${p.id}">
-        <div class="mt-parte-in"><h3>${esc(p.titulo)}</h3>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}${chipsTemas(p.temas)}</div>
-        <div class="mt-cuenta">${cuentaParte(p)}</div>
-      </div>`).join("")}</div>` : "";
+      <a class="mt-parte" data-go="m${m.n}/${p.id}" href="#/m${m.n}/${p.id}"><h3>${esc(p.titulo)}</h3>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}<span class="mt-ir">${ICON_DER}</span></a>`).join("")}</div>` : "";
   const filas = [
-    ...(c.secciones || []).map(x => ({ go: `m${m.n}/${x.id}`, ic: iconoSeccion(x.id), t: x.titulo, d: x.descripcion, cu: cuentaParte(x, true) })),
-    ...(c.actividades ? [{ go: `m${m.n}/actividades`, ic: ICON_CHECK, t: "Actividades", d: "Trabajos prácticos, entregas y consignas.", cu: "" }] : [])
+    ...(c.secciones || []).map(x => ({ go: `m${m.n}/${x.id}`, ic: iconoSeccion(x.id), t: x.titulo, d: x.descripcion })),
+    ...(c.actividades ? [{ go: `m${m.n}/actividades`, ic: ICON_CHECK, t: "Actividades", d: "Trabajos prácticos, entregas y consignas." }] : [])
   ].map(x => `
-    <div class="mt-fila" data-go="${x.go}"><span class="mt-ic">${x.ic}</span><span class="mt-fila-t"><b>${esc(x.t)}</b>${x.d ? `<small>${esc(x.d)}</small>` : ""}</span><span class="mt-cuenta">${x.cu}</span>${ICON_DER}</div>`).join("");
+    <a class="mt-fila" data-go="${x.go}" href="#/${x.go}"><span class="mt-ic">${x.ic}</span><span class="mt-fila-t"><b>${esc(x.t)}</b>${x.d ? `<small>${esc(x.d)}</small>` : ""}</span>${ICON_DER}</a>`).join("");
 
   // Materias con el material o los videos sueltos (sin partes)
   let suelto = "";
@@ -3995,24 +3944,10 @@ function viewMateria(m){
     <p class="aviso-lista">Para ver la lista completa de videos, usá el ícono de lista arriba a la derecha del reproductor o
       <a href="https://www.youtube.com/playlist?list=${encodeURIComponent(c.playlist)}" target="_blank" rel="noopener">abrí la playlist en YouTube ↗</a>.</p>`;
   if(suelto && (partes || filas)) suelto = `<div class="mt-suelto">${suelto}</div>`;
-
-  const nZip = archivosZip(c).length;
-  const panel = [
-    c.condiciones ? comoSeAprueba(c.condiciones) : "",
-    c.comisiones && c.comisiones.length ? resumenComisiones(c.comisiones) : "",
-    nZip ? `<section class="mt-bloq"><div class="mt-t">Todo el material</div>
-      <button class="zip-btn" data-zip="${m.n}" title="Todos los PDF y archivos de la materia, en carpetas con el mismo orden que la página (sin videos)">${ICON_DL}<span>Descargar todo (ZIP)</span><small>${nZip} archivos</small></button></section>` : ""
-  ].join("");
-  const comis = c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : "";
-  const hayInfo = panel || comis;
   return `
     ${cab}
-    ${hayInfo ? `<div class="mt-seg" role="tablist"><button class="on" data-mt="material" role="tab">Material</button><button data-mt="info" role="tab">Sobre la materia</button></div>` : ""}
-    <div class="mt-cuerpo ${panel ? "" : "solo"}" data-ver="material">
-      <div class="mt-main">${partes}${filas}${suelto}${paraEmpezar(fuentesMateria(c))}</div>
-      ${panel ? `<aside class="mt-panel">${panel}</aside>` : ""}
-      ${comis}
-    </div>`;
+    <div class="mt-main">${partes}${filas}${suelto}</div>
+    ${c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : ""}`;
 }
 
 /* Cuadro de comisiones: profesor, examen, comentario y recomendación */
@@ -4097,7 +4032,6 @@ function viewParcial(m, p){
     <h1>${esc(p.titulo)}</h1>
     ${p.descripcion ? `<p class="mt-lead">${esc(p.descripcion)}</p>` : ""}
     <div class="mt-main pc">
-      ${paraEmpezar(partesDe(p).map(x => [x.material, ""]))}
       <h2 class="mt-h2">Material</h2>
       ${secs.join("")}
       ${temasParcial(m, p)}
@@ -7395,15 +7329,8 @@ document.addEventListener("click", e => {
     return;
   }
   if(e.target.closest("[data-lado]") || e.target.id === "ladoVelo"){ abrirLado(!document.body.classList.contains("lado-abierto")); return; }
-  // Materia en el celular: pestañas Material / Sobre la materia; y el salto a las comisiones
-  const mt = e.target.closest("[data-mt]");
-  if(mt){
-    document.querySelectorAll("[data-mt]").forEach(x => x.classList.toggle("on", x === mt));
-    $(".mt-cuerpo").dataset.ver = mt.dataset.mt;
-    return;
-  }
-  const ir = e.target.closest("[data-ir]");
-  if(ir){ const d = document.getElementById(ir.dataset.ir); if(d) d.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+  // "Cómo se aprueba" de la materia: se cierra al tocar afuera
+  document.querySelectorAll(".mt-cond[open]").forEach(d => { if(!d.contains(e.target)) d.open = false; });
   // Cronograma: cerrar la lista de materias o el globo del calendario al tocar afuera
   if(CR.picker && !e.target.closest(".cr-sumar")){ CR.picker = false; pintarCuerpoCr(); }
   if(CR.sel && !e.target.closest("#calPop, .cal-d, .fe-btn")){ CR.sel = null; pintarCalendario(); }

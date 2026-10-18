@@ -25,12 +25,11 @@ Cada página tiene su propio link, por ejemplo:
 Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En la lista de su año, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
 
 ## Página de la materia
-`#/m201` (`viewMateria`). Solo muestra el material y la info de la materia: nada de tu cursada (comisión, días, fechas, notas: eso va en el Cronograma) ni de tu avance (va en "Tu avance").
-- **Arriba**: año, si es electiva, el nombre y `descripcion` (de qué se trata, en una o dos oraciones; va al principio del bloque de la materia en `MATERIAS`).
-- **Partes**: cada parcial / TPI / final es una tarjeta con su descripción, los temas como etiquetas (de `temas`, si son temas y no fechas) y cuánto material tiene (archivos, videos, ejercicios, quiz). Las secciones sueltas (Cuestionarios) y las Actividades van como filas.
-- **Para empezar**: los archivos con `nota: "Empezá por acá"` de cualquier parte, con su tapa.
-- **Sobre la materia** (el panel de la derecha): cómo se aprueba (`condiciones`), un resumen de las comisiones (cuántas hay y cuántas se recomiendan, con un salto al cuadro) y el ZIP. Abajo de todo, el cuadro de comisiones.
-- **En el celular**: dos pestañas, Material y Sobre la materia (con las comisiones).
+`#/m201` (`viewMateria`). Solo el material y la info de la materia: nada de tu cursada (comisión, días, fechas, notas: eso va en el Cronograma) ni de tu avance (va en "Tu avance").
+- **Arriba**: la sigla, el año y el nombre; a la derecha, cómo se aprueba ("Directa con 6 · Sin regularidad", de `condiciones`; al tocarlo se despliega cada requisito) y el ZIP completo.
+- **Las partes**: cada parcial / TPI / final es una tarjeta simple, con su nombre y su descripción corta. Lo suelto (Cuestionarios, Actividades) va abajo en filas, y al final el cuadro de comisiones.
+- **Adentro** (un parcial, una sección, la práctica…): arriba a la izquierda, siempre a mano, "‹ Backend de Aplicaciones" vuelve a la materia (en el celular, "‹ BDA"); al lado, las pestañas del parcial.
+- **Los archivos**: cada bloque es una tarjeta con una fila por archivo (tapa, nombre y detalle); los niveles (Esencial, Para profundizar, Extra) son títulos.
 
 ## Estilo
 Colores y fuentes como Claude: fondo casi blanco (`--bg: #fcfcfb`), barra lateral apenas más oscura, bordes grises neutros, títulos en Source Serif 4 y texto en Inter (de Google Fonts), letra base de 15 px y puntos de color chicos. El acento sale del color de la carrera y queda solo para los botones principales, el logo, lo de "hoy" y lo que estás cursando; los íconos, títulos y etiquetas van en gris (bloque "Suave, como Claude" al final del `<style>`). Los colores están en `:root` al principio del `<style>`, con su versión para el modo oscuro. Además del acento hay una paleta chica y apagada: `--ok` (verde salvia: aprobado, correcto), `--rojo`, `--rojo-f`, `--rojo-l` y `--error` (ladrillo suave: errores, "No"), `--mark` (arena: resaltados) y `--nv2` / `--nv3` (gris azulado y gris: las líneas de "Para profundizar" y "Extra"; la de "Esencial" va en el acento). Los dibujos de las herramientas usan los mismos tonos.
@@ -179,7 +178,7 @@ Están en `HERRAMIENTAS`, en el código de la página.
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
-Se muestra en el resumen del parcial como una lista numerada: cada tema se despliega con lo que entra y su material, que sale solo: los archivos de las `partes` del material que se llaman igual que el tema (ej.: la parte "Streams" del Teórico) y los videos cuyo `bloque` empieza con el nombre del tema (ej.: "Streams · Apunte 10"). Tocando un video se abre la lista de videos arrancando por ese. El resumen del parcial también muestra arriba lo marcado "Empezá por acá" y las secciones (Teórico, Práctica, Parciales, Quiz…) como filas. Si el parcial no tiene `temas`, no aparece la lista.
+Se muestra en el resumen del parcial como una lista numerada: cada tema se despliega con lo que entra y su material, que sale solo: los archivos de las `partes` del material que se llaman igual que el tema (ej.: la parte "Streams" del Teórico) y los videos cuyo `bloque` empieza con el nombre del tema (ej.: "Streams · Apunte 10"). Tocando un video se abre la lista de videos arrancando por ese. El resumen del parcial también muestra las secciones (Teórico, Práctica, Parciales, Quiz…) como filas. Si el parcial no tiene `temas`, no aparece la lista.
 
 ## Bloques por evaluación
 Los bloques de `parciales` son las evaluaciones de la materia, no las unidades de la cátedra. Por ejemplo, Desarrollo de Aplicaciones con Objetos (`206`) tiene dos:
@@ -202,9 +201,9 @@ Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia`. El c
 Con `secciones: []` el parcial no tiene tarjetas de Teórico/Práctico: su página muestra directamente las pestañas Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`). Si además tiene `temas`, se muestran debajo del material (ver Tecnologías para la Automatización, `29`).
 
 ## Condiciones de aprobación
-Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra en el panel "Sobre la materia":
+Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra arriba a la derecha en la página de la materia:
 `condiciones: { directa: 6, regular: 4, aclaracion: "...", requisitos: [ { titulo: "Parcial", corto: "Parcial ≥ 6", detalle: "6 o más" } ] }`
-Se ve "Directa con 6", la regularidad, la aclaración y cada requisito con su `corto` (y el nombre largo); tocándolo se despliega el `detalle`. Si `regular` es `null`, aparece "Sin regularidad" (electivas, que solo se aprueban de forma directa). La asistencia no va acá: se indica en la columna de cada profesor en las comisiones.
+Se ve "Directa con 6" y la regularidad; tocándolo se despliegan la aclaración y cada requisito con su `corto` y su `detalle`. Si `regular` es `null`, aparece "Sin regularidad" (electivas, que solo se aprueban de forma directa). La asistencia no va acá: se indica en la columna de cada profesor en las comisiones.
 
 ## Descargar toda la materia (ZIP)
 En la página de cada materia aparece el botón "Descargar todo (ZIP)" si tiene archivos propios (`material/...`). El ZIP se arma en el navegador, sin copias en el repo: una carpeta por parcial y sección (Teórico, Práctico…), y adentro una por grupo y parte, numeradas en el orden de la página. Los archivos se llaman como en la página ("01 - Nombre.pdf"). Los videos no van, y los links externos (Drive, webs) quedan en un `Enlaces.txt` dentro de su carpeta.
