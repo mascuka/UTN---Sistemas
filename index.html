@@ -1436,6 +1436,40 @@
   .pr-paso{border-left-color:var(--line2)}
   .cr-btn:hover{border-color:var(--line2)}
   .abr.mc{background:var(--F);color:var(--T)}
+  /* Notas de la cursada (debajo del cronograma) */
+  .nt{margin-top:34px}
+  .nt-cab{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .nt-cab h2{font:400 1.35rem var(--serif);margin:0}
+  .nt-cab span{color:var(--muted);font-size:.84rem}
+  .nt-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  .nt-tabla{width:100%;border-collapse:collapse;font-size:.88rem;min-width:720px}
+  .nt-tabla thead th{font-weight:500;font-size:.76rem;color:var(--muted);text-align:center;padding:11px 6px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .nt-tabla thead th:first-child{text-align:left;padding-left:16px}
+  .nt-tabla tbody th{text-align:left;font-weight:500;padding:8px 10px 8px 16px;white-space:nowrap}
+  .nt-tabla tbody th i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--C);margin-right:10px;vertical-align:2px}
+  .nt-tabla tbody th span{display:inline-block;max-width:250px;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+  .nt-tabla tbody tr + tr{border-top:1px solid var(--line)}
+  .nt-tabla td{text-align:center;padding:6px 4px}
+  .nt-no{color:var(--line2)}
+  .nt-in{width:54px;height:32px;border-radius:8px;border:1px solid transparent;background:var(--hover);text-align:center;font:500 .92rem var(--sans);color:var(--text);font-variant-numeric:tabular-nums}
+  .nt-in:hover{border-color:var(--line2)}
+  .nt-in:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px var(--accent-soft)}
+  .nt-in.llega{background:var(--ok-soft);color:var(--ok)}
+  .nt-in.no-llega{background:var(--rojo-f);color:var(--rojo)}
+  .nt-promo{border-left:1px solid var(--line)}
+  .nt-in.promo{background:none;font:500 1.05rem var(--serif);color:var(--text)}
+  .nt-in.promo:hover{background:var(--hover)}
+  .nt-tabla tbody th b{display:none;font-weight:500}
+  @media (max-width:760px){
+    .nt-tabla{min-width:0;font-size:.84rem}
+    .nt-tabla thead th:first-child,.nt-tabla tbody th{position:sticky;left:0;z-index:1;background:var(--card);padding-left:12px;padding-right:8px}
+    .nt-tabla tbody th span{display:none}
+    .nt-tabla tbody th b{display:inline}
+    .nt-tabla thead th{padding:10px 3px 8px;font-size:.72rem}
+    .nt-tabla td{padding:6px 3px}
+    .nt-in{width:46px;height:34px}
+    .nt-tabla .nt-promo{position:sticky;right:0;z-index:1;background:var(--card);padding:6px 8px}
+  }
   .abr.mc.vacio{background:none}
   .cr-chip.sug:hover{border-color:var(--line2);color:var(--text)}
   .in-btn:hover{border-color:var(--line2);color:var(--text);background:var(--hover)}
@@ -2238,6 +2272,7 @@ const MATERIAS = {
   // Archivos en material/desarrollo-de-aplicaciones-con-objetos/{p1,tpi}/. Las guías y los ZIP de código son nuestros
   206: {
     condiciones: {
+      directa: 6,
       aclaracion: "Es electiva: se aprueba de forma directa, aprobando todas las instancias. Nota final: 50 % parcial, 30 % trabajo integrador y 20 % cuestionarios.",
       requisitos: [
         { titulo: "Parcial", corto: "Parcial ≥ 6", detalle: "Individual, con recuperatorio. Nota mínima 6. Vale el 50 % de la nota final." },
@@ -3346,11 +3381,11 @@ function headers(){
 
 async function leerRemoto(){
   const r = await fetch(`${urlArchivo()}?ref=${GITHUB.rama}&t=${Date.now()}`, { headers: headers() });
-  if(r.status === 404) return { lista: [], estados: {}, notas: {}, cronogramas: null, fechas: null, sha: null };
+  if(r.status === 404) return { lista: [], estados: {}, notas: {}, cronogramas: null, fechas: null, notasCursada: null, sha: null };
   if(!r.ok) throw new Error("GitHub respondió " + r.status);
   const j = await r.json();
   const datos = JSON.parse(b64dec(j.content) || "{}");
-  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, cronogramas: datos.cronogramas || null, fechas: datos.fechas || null, sha: j.sha };
+  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, cronogramas: datos.cronogramas || null, fechas: datos.fechas || null, notasCursada: datos.notasCursada || null, sha: j.sha };
 }
 
 async function cargarAprobadas(){
@@ -3363,6 +3398,7 @@ async function cargarAprobadas(){
     // Si en GitHub todavía no hay cronograma ni fechas, quedan los de este navegador
     if(r.cronogramas) cronogramas = r.cronogramas;
     if(r.fechas) fechas = r.fechas;
+    if(r.notasCursada) notasCursada = r.notasCursada;
     guardarCopia();
     estadoSync = leerLocal(CLAVE_TOKEN) ? "ok" : "sin-clave";
   } catch(e){
@@ -3380,7 +3416,7 @@ async function subirAprobadas(reintento = true){
   const nts = ordenar(Object.fromEntries(Object.entries(notas).filter(([id]) => aprobadas.has(id))));
   const cuerpo = {
     message: "Actualizar materias, cronograma y fechas",
-    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas }, null, 2) + "\n"),
+    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas, notasCursada }, null, 2) + "\n"),
     branch: GITHUB.rama
   };
   if(shaRemoto) cuerpo.sha = shaRemoto;
@@ -3412,6 +3448,7 @@ function guardarCopia(){
   guardarLocal(CLAVE_ESTADOS, JSON.stringify({ estados, notas }));
   guardarLocal(CLAVE_CRONO, JSON.stringify(cronogramas));
   guardarLocal(CLAVE_FECHAS, JSON.stringify(fechas));
+  guardarLocal(CLAVE_NOTAS_C, JSON.stringify(notasCursada));
 }
 function programarSubida(){
   guardarCopia();
@@ -3481,7 +3518,7 @@ async function guardarToken(){
   guardarLocal(CLAVE_TOKEN, t);
   $("#config").close();
   // Si antes marcaste cosas solo en este navegador, las sumo a lo que hay en GitHub
-  const locales = [...aprobadas], estLoc = { ...estados }, notLoc = { ...notas }, croLoc = { ...cronogramas }, fecLoc = { ...fechas };
+  const locales = [...aprobadas], estLoc = { ...estados }, notLoc = { ...notas }, croLoc = { ...cronogramas }, fecLoc = { ...fechas }, ntcLoc = { ...notasCursada };
   await cargarAprobadas();
   const antes = JSON.stringify([aprobadas.size, estados, notas, cronogramas, fechas]);
   locales.forEach(id => aprobadas.add(id));
@@ -3489,6 +3526,7 @@ async function guardarToken(){
   notas = { ...notLoc, ...notas };
   cronogramas = { ...croLoc, ...cronogramas };
   fechas = { ...fecLoc, ...fechas };
+  notasCursada = { ...ntcLoc, ...notasCursada };
   if(JSON.stringify([aprobadas.size, estados, notas, cronogramas, fechas]) !== antes || !shaRemoto){ guardarCopia(); refrescar(); subirAprobadas(); }
 }
 function borrarToken(){
@@ -6636,9 +6674,11 @@ function pestanasPlan(activo){
    Se guarda en este navegador y, con la clave de GitHub, en aprobadas.json ("cronogramas" y "fechas"). */
 const CLAVE_CRONO = "isi-cronograma";   // { "2026-2": { materias: { "201": { c: "3K4", b: [[1, "19:55", "23:05"]] } }, guardado } }
 const CLAVE_FECHAS = "isi-fechas";      // { "2026-10-28": [{ k: "201", tipo: "Parcial", nombre: "1º Parcial" }] }
-let cronogramas = {}, fechas = {};
+const CLAVE_NOTAS_C = "isi-notas-cursada";   // { "2026-2": { "201": { p1: 7, tp: 8, promo: 6 } } }
+let cronogramas = {}, fechas = {}, notasCursada = {};
 try { cronogramas = JSON.parse(leerLocal(CLAVE_CRONO)) || {}; } catch(e){}
 try { fechas = JSON.parse(leerLocal(CLAVE_FECHAS)) || {}; } catch(e){}
+try { notasCursada = JSON.parse(leerLocal(CLAVE_NOTAS_C)) || {}; } catch(e){}
 const EXTRAS_NOM = { UIX: "Experiencia e Interfaces de Usuario", HB: "Habilidades Blandas", CDEV: "Creatividad y Desarrollo de Entornos Virtuales" };
 const DIAS_CR = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const DIAS_CORTO = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
@@ -6773,7 +6813,8 @@ function pintarCuerpoCr(){
     el.innerHTML = `
       ${turnos.length < 3 && bs.length ? `<p class="cr-ayuda">${ICON_LUNA_CHICA}Cursás ${turnos.length === 1 ? `solo a la ${turnos[0]}` : `a la ${turnos[0]} y a la ${turnos[1]}`}, así que se ve solo ese horario.</p>` : ""}
       ${grillaCr(bs, { t0, t1, px, dias, compacta: true })}
-      ${diaListaCr(bs, dias)}`;
+      ${diaListaCr(bs, dias)}
+      ${tablaNotas(Object.keys(elegidas))}`;
     return;
   }
   // Editando: la fila de materias elegidas, la que se está eligiendo y el botón para sumar otra
@@ -6822,6 +6863,52 @@ function pickerCr(ofertas, elegidas){
       ${!todas.length ? `<p class="cr-pk-vacio">No hay materias con ese nombre en este cuatrimestre.</p>` : ""}
     </div></div>`;
 }
+/* ---------- Notas de la cursada ----------
+   Debajo del cronograma: una fila por materia que cursás y una columna por instancia (1º, 2º y 3º parcial,
+   TP / TPI, recuperatorio y otra: NAP, cuestionarios, coloquio…). Solo se habilitan las que tiene la materia
+   (sus parciales en MATERIAS); al final, la nota para promocionar (condiciones.directa, que se puede cambiar).
+   Cada nota se pinta según llegue o no a esa nota. Se guarda como el cronograma ("notasCursada"). */
+const COLS_NOTA = [["p1", "1º Parcial"], ["p2", "2º Parcial"], ["p3", "3º Parcial"], ["tp", "TP / TPI"], ["rec", "Recup."], ["otra", "Otra"]];
+function instanciasDe(k){
+  const i = infoMat(k), c = i && i.n && MATERIAS[i.n];
+  if(!c || !c.parciales.length) return new Set(COLS_NOTA.map(([x]) => x));
+  const s = new Set(["rec", "otra"]);
+  c.parciales.forEach(p => { if(/^p[123]$/.test(p.id)) s.add(p.id); else if(/^tp/.test(p.id)) s.add("tp"); });
+  return s;
+}
+const promoDe = k => { const n = (notasCursada[CR.q] || {})[k] || {}, i = infoMat(k), c = i && i.n && MATERIAS[i.n]; return n.promo ?? (c && c.condiciones && c.condiciones.directa) ?? null; };
+const claseNota = (v, promo) => v == null || promo == null ? "" : v >= promo ? "llega" : "no-llega";
+function tablaNotas(ks){
+  if(!ks.length) return "";
+  const notas = notasCursada[CR.q] || {};
+  const filas = ks.map(infoMat).filter(Boolean).sort((x, y) => x.nombre.localeCompare(y.nombre)).map(i => {
+    const tiene = instanciasDe(i.k), n = notas[i.k] || {}, promo = promoDe(i.k);
+    const celda = ([x, t]) => tiene.has(x)
+      ? `<td><input class="nt-in ${claseNota(n[x], promo)}" data-nt-k="${i.k}" data-nt-i="${x}" value="${n[x] != null ? fmtNota(n[x]) : ""}" inputmode="decimal" maxlength="5" autocomplete="off" aria-label="${t} de ${esc(i.nombre)}"></td>`
+      : `<td class="nt-no" title="No tiene">—</td>`;
+    return `<tr class="mc" style="${colorMat(i.k).css}"><th title="${esc(i.nombre)}"><i></i><span>${esc(i.nombre)}</span><b>${esc(i.abr || i.nombre)}</b></th>${COLS_NOTA.map(celda).join("")}
+      <td class="nt-promo"><input class="nt-in promo" data-nt-k="${i.k}" data-nt-i="promo" value="${promo != null ? fmtNota(promo) : ""}" inputmode="decimal" maxlength="5" placeholder="—" aria-label="Nota para promocionar ${esc(i.nombre)}" title="La nota para promocionar (se puede cambiar)"></td></tr>`;
+  }).join("");
+  return `<section class="nt">
+    <div class="nt-cab"><h2>Notas de la cursada</h2><span>Anotá cómo te va; la última columna es la nota para promocionar.</span></div>
+    <div class="nt-scroll"><table class="nt-tabla"><thead><tr><th>Materia</th>${COLS_NOTA.map(([, t]) => `<th>${t}</th>`).join("")}<th class="nt-promo">Promo</th></tr></thead><tbody>${filas}</tbody></table></div>
+  </section>`;
+}
+function ponerNotaCursada(el){
+  const k = el.dataset.ntK, x = el.dataset.ntI, txt = el.value.trim();
+  const v = Math.round(parseFloat(txt.replace(",", ".")) * 100) / 100;
+  const q = (notasCursada[CR.q] = notasCursada[CR.q] || {}), n = (q[k] = q[k] || {});
+  if(txt && v >= 1 && v <= 10) n[x] = v; else delete n[x];
+  if(!Object.keys(n).length) delete q[k];
+  el.value = n[x] != null ? fmtNota(n[x]) : "";
+  // Se repintan los colores de la fila (la nota para promocionar puede haber cambiado)
+  const promo = promoDe(k);
+  if(x === "promo" && n.promo == null) el.value = promo != null ? fmtNota(promo) : "";
+  document.querySelectorAll(`.nt-in[data-nt-k="${k}"]:not(.promo)`).forEach(c => { c.classList.remove("llega", "no-llega"); const cl = claseNota(n[c.dataset.ntI], promo); if(cl) c.classList.add(cl); });
+  guardarCopia();
+  if(leerLocal(CLAVE_TOKEN)) programarSubida();
+}
+
 /* En el celular, guardado: un día a la vez */
 function diaListaCr(bs, dias){
   const hoy = (new Date().getDay() + 6) % 7;
@@ -7149,7 +7236,8 @@ document.addEventListener("change", e => {
   if(!n) return;
   if(ponerNota(n.dataset.nota, n.value)) refrescar(); else n.value = notaDe(n.dataset.nota) ?? "";
 });
-document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches(".nota-in")) e.target.blur(); });
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches(".nota-in, .nt-in")) e.target.blur(); });
+document.addEventListener("change", e => { if(e.target.matches && e.target.matches(".nt-in")) ponerNotaCursada(e.target); });
 
 $("#guardarToken").addEventListener("click", guardarToken);
 $("#borrarToken").addEventListener("click", borrarToken);
