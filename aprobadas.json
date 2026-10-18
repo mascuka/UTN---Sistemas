@@ -113,7 +113,15 @@
       "guardado": "2026-10-17"
     }
   },
-  "fechas": {},
+  "fechas": {
+    "2026-11-03": [
+      {
+        "k": "206",
+        "tipo": "Parcial",
+        "nombre": "3° Parcial"
+      }
+    ]
+  },
   "notasCursada": {
     "2026-2": {
       "29": {
