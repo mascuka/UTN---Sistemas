@@ -120,6 +120,13 @@
         "tipo": "Parcial",
         "nombre": "3° Parcial"
       }
+    ],
+    "2026-10-29": [
+      {
+        "k": "206",
+        "tipo": "TP",
+        "nombre": "TPI"
+      }
     ]
   },
   "notasCursada": {
