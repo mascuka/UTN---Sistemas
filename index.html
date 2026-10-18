@@ -1409,8 +1409,10 @@
   .cr-elegir svg{width:12px;height:12px}
   .cr-b.opcion.encima .cr-elegir{display:inline-flex}
   .cr-b.choca{background:var(--rojo-f);box-shadow:none;border:1.5px dashed var(--rojo-l);color:var(--rojo);cursor:not-allowed}
-  .cr-b.grande{padding:10px 12px;gap:3px;font-size:.84rem}
-  .cr-b.grande b{font-size:.9rem;line-height:1.25}
+  .cr-b.grande{padding:8px 10px;gap:2px;font-size:.8rem;align-items:center;justify-content:center;text-align:center}
+  .cr-b.grande b{font-size:1.2rem;font-weight:600;letter-spacing:.03em;line-height:1.2}
+  .cr-nom{font-size:.72rem;line-height:1.3;opacity:.85;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:3px}
+  .cr-b.grande small{font-size:.74rem}
   .cr-grilla .cr-com{display:none}
   .cr-dl-b .cr-com{font-size:.8rem;opacity:.8}
   .cr-scroll{overflow-x:auto;padding-bottom:4px}
@@ -1422,7 +1424,7 @@
   .cr-dl-h{width:44px;flex:none;font-weight:500;font-size:.9rem;padding-top:11px;font-variant-numeric:tabular-nums;line-height:1.25}
   .cr-dl-h small{display:block;color:var(--muted);font-weight:400;font-size:.78rem}
   .cr-dl-b{flex:1;border-radius:14px;background:var(--F);color:var(--T);box-shadow:inset 4px 0 0 var(--C);padding:12px 14px;display:flex;flex-direction:column;gap:3px}
-  .cr-dl-b b{font-weight:600}
+  .cr-dl-b b{font-weight:600;font-size:1.05rem;letter-spacing:.03em}
   .cr-libre{margin:10px 0 0 56px;font-size:.8rem;color:var(--muted)}
   /* El calendario de la cursada */
   .cal-top{display:flex;align-items:center;justify-content:space-between}
@@ -1558,12 +1560,13 @@
   .nt-promo{border-left:1px solid var(--line)}
   .nt-in.promo{background:none;font:500 1.05rem var(--serif);color:var(--text)}
   .nt-in.promo:hover{background:var(--hover)}
-  .nt-tabla tbody th b{display:none;font-weight:500}
+  .nt-tabla tbody th b{display:inline-block;min-width:52px;font-weight:600;letter-spacing:.02em}
+  .nt-tabla tbody th span{color:var(--muted);font-weight:400}
   @media (max-width:760px){
     .nt-tabla{min-width:0;font-size:.84rem}
     .nt-tabla thead th:first-child,.nt-tabla tbody th{position:sticky;left:0;z-index:1;background:var(--card);padding-left:12px;padding-right:8px}
     .nt-tabla tbody th span{display:none}
-    .nt-tabla tbody th b{display:inline}
+    .nt-tabla tbody th b{min-width:0}
     .nt-tabla thead th{padding:10px 3px 8px;font-size:.72rem}
     .nt-tabla td{padding:6px 3px}
     .nt-in{width:46px;height:34px}
@@ -1785,7 +1788,6 @@ const CARRERA = {
     { n: 205, nivel: 4, abr: "DevOps", nombre: "Desarrollo y Operaciones DevOps",            mod: "1C",    creditos: 3, regular: [19, 20], aprobada: [14, 13] },
     { n: 206, nivel: 4, abr: "DAO", nombre: "Desarrollo de Aplicaciones con Objetos",     mod: "2C",    creditos: 3, regular: [13],     aprobada: [6] },
     { n: 207, nivel: 4, abr: "CMD", nombre: "Comunicación Multimedial en el Desarrollo de Sistemas de Información", mod: "2C", creditos: 3, regular: [19], aprobada: [8, 16] },
-    { n: 208, nivel: 4, nombre: "Arquitectura de Software",                   mod: "1C",    creditos: 3, regular: [19, 20], aprobada: [14, 13] },
 
     { n: 209, nivel: 5, abr: "DTB", nombre: "Desarrollo de Tecnologías Blockchain",       mod: "1C",    creditos: 3, regular: [26, 19], aprobada: [14, 20] },
     { n: 210, nivel: 5, nombre: "Creatividad e Innovación en Ingeniería",     mod: "1C-2C", creditos: 3, regular: [30],     aprobada: [20] },
@@ -6917,7 +6919,7 @@ function grillaCr(bloques, { t0, t1, px, dias, compacta }){
       const y = (aMin(b.a) - t0) * px, alto = (aMin(b.z) - aMin(b.a)) * px, w = 100 / b.de;
       const accion = b.tipo === "opcion" ? ` data-cr="elegir" data-k="${b.k}" data-com="${esc(b.com)}" role="button" tabindex="0"` : b.tipo === "elegida" && !compacta ? ` data-cr="cambiar" data-k="${b.k}" role="button" tabindex="0"` : "";
       h += `<div class="cr-b mc ${b.tipo} ${b.de > 1 ? "angosto" : ""}"${accion} style="top:${y + 1}px;height:${Math.max(alto - 3, 16)}px;left:calc(${w * b.carril}% + 3px);width:calc(${w}% - 6px);${colorMat(b.k).css}" title="${esc(b.titulo || "")}">
-        <b>${esc(b.tit)}${b.marca || ""}</b>${b.sub ? `<small>${esc(b.sub)}</small>` : ""}${b.extra || ""}</div>`;
+        <b>${esc(b.tit)}${b.marca || ""}</b>${b.nom ? `<span class="cr-nom">${esc(b.nom)}</span>` : ""}${b.sub ? `<small>${esc(b.sub)}</small>` : ""}${b.sub2 ? `<small>${esc(b.sub2)}</small>` : ""}${b.extra || ""}</div>`;
     }
     cols.push(`<div class="cr-col">${h}</div>`);
   }
@@ -6990,7 +6992,8 @@ function pintarCuerpoCr(){
   const c = CR.q.split("-")[1], ofertas = HOR.cuatrimestres[c] || {};
   const elegidas = CR.edit ? CR.borrador : (cronoGuardado(CR.q) || { materias: {} }).materias;
   if(!CR.edit){
-    const bs = Object.entries(elegidas).flatMap(([k, x]) => x.b.map(([d, a, z]) => ({ d, a, z, k, tipo: "elegida grande", tit: infoMat(k) ? infoMat(k).nombre : k, sub: `${a} – ${z} · ${x.c}`, extra: `<span class="cr-com">Comisión ${esc(x.c)}</span>` })));
+    // Guardado: la sigla grande y abajo el nombre, la comisión y el horario
+    const bs = Object.entries(elegidas).flatMap(([k, x]) => x.b.map(([d, a, z]) => { const i = infoMat(k); return { d, a, z, k, tipo: "elegida grande", tit: i ? i.abr || i.nombre : k, nom: i && i.abr ? i.nombre : "", sub: `Comisión ${x.c}`, sub2: `${a} – ${z}`, titulo: `${i ? i.nombre : k} · ${x.c} · ${a} – ${z}` }; }));
     const [t0, t1] = rangoCr(bs, true), dias = bs.some(b => b.d === 5) ? 6 : 5;
     const px = Math.max(.78, Math.min(1.9, 690 / (t1 - t0)));
     const turnos = TURNOS.filter(([, a, z]) => z > t0 && a < t1).map(([n]) => n.toLowerCase());
@@ -7003,8 +7006,8 @@ function pintarCuerpoCr(){
   }
   // Editando: la fila de materias elegidas, la que se está eligiendo y el botón para sumar otra
   const chips = Object.entries(elegidas).map(([k, x]) => { const i = infoMat(k); return `
-    <span class="cr-chip mc ${CR.eligiendo === k ? "activa" : ""}" style="${colorMat(k).css}"><i></i><button class="cr-chip-t" data-cr="cambiar" data-k="${k}" title="Cambiar de comisión">${esc(i ? i.nombre : k)} <em>${esc(x.c)}</em></button><button class="cr-chip-x" data-cr="quitar" data-k="${k}" aria-label="Sacar ${esc(i ? i.nombre : k)}">${ICON_X}</button></span>`; }).join("");
-  const eligiendo = CR.eligiendo && !elegidas[CR.eligiendo] ? `<span class="cr-chip mc activa" style="${colorMat(CR.eligiendo).css}"><i></i><span class="cr-chip-t">${esc(infoMat(CR.eligiendo).nombre)} <em>elegí comisión</em></span><button class="cr-chip-x" data-cr="soltar" aria-label="Cancelar">${ICON_X}</button></span>` : "";
+    <span class="cr-chip mc ${CR.eligiendo === k ? "activa" : ""}" style="${colorMat(k).css}"><i></i><button class="cr-chip-t" data-cr="cambiar" data-k="${k}" title="${esc(i ? i.nombre : k)} · cambiar de comisión">${esc(i ? i.abr || i.nombre : k)} <em>${esc(x.c)}</em></button><button class="cr-chip-x" data-cr="quitar" data-k="${k}" aria-label="Sacar ${esc(i ? i.nombre : k)}">${ICON_X}</button></span>`; }).join("");
+  const eligiendo = CR.eligiendo && !elegidas[CR.eligiendo] ? `<span class="cr-chip mc activa" style="${colorMat(CR.eligiendo).css}"><i></i><span class="cr-chip-t" title="${esc(infoMat(CR.eligiendo).nombre)}">${esc(infoMat(CR.eligiendo).abr || infoMat(CR.eligiendo).nombre)} <em>elegí comisión</em></span><button class="cr-chip-x" data-cr="soltar" aria-label="Cancelar">${ICON_X}</button></span>` : "";
   const bs = [];
   for(const [k, x] of Object.entries(elegidas)){
     const i = infoMat(k), actual = CR.eligiendo === k;
@@ -7075,7 +7078,7 @@ function tablaNotas(ks){
     const celda = ([x, t]) => tiene.has(x)
       ? `<td><input class="nt-in ${claseNota(n[x], promo)}" data-nt-k="${i.k}" data-nt-i="${x}" value="${n[x] != null ? fmtNota(n[x]) : ""}" inputmode="decimal" maxlength="5" autocomplete="off" aria-label="${t} de ${esc(i.nombre)}"></td>`
       : `<td class="nt-no" title="No tiene">—</td>`;
-    return `<tr class="mc" style="${colorMat(i.k).css}"><th title="${esc(i.nombre)}"><i></i><span>${esc(i.nombre)}</span><b>${esc(i.abr || i.nombre)}</b></th>${COLS_NOTA.map(celda).join("")}
+    return `<tr class="mc" style="${colorMat(i.k).css}"><th title="${esc(i.nombre)}"><i></i><b>${esc(i.abr || i.nombre)}</b>${i.abr ? `<span>${esc(i.nombre)}</span>` : ""}</th>${COLS_NOTA.map(celda).join("")}
       <td class="nt-promo"><input class="nt-in promo" data-nt-k="${i.k}" data-nt-i="promo" value="${promo != null ? fmtNota(promo) : ""}" inputmode="decimal" maxlength="5" placeholder="—" aria-label="Nota para promocionar ${esc(i.nombre)}" title="La nota para promocionar (se puede cambiar)"></td></tr>`;
   }).join("");
   return `<section class="nt">
@@ -7106,7 +7109,7 @@ function diaListaCr(bs, dias){
   let h = "";
   del.forEach((b, i) => {
     if(i) { const libre = aMin(b.a) - aMin(del[i - 1].z); if(libre > 0) h += `<div class="cr-libre">${libre >= 60 ? `${Math.floor(libre / 60)} h ${libre % 60 ? `${libre % 60} min` : ""}` : `${libre} min`} libre</div>`; }
-    h += `<div class="cr-dl mc" style="${colorMat(b.k).css}"><span class="cr-dl-h">${b.a}<small>${b.z}</small></span><div class="cr-dl-b" style="min-height:${Math.round((aMin(b.z) - aMin(b.a)) * .55)}px"><b>${esc(b.tit)}</b>${b.extra}</div></div>`;
+    h += `<div class="cr-dl mc" style="${colorMat(b.k).css}"><span class="cr-dl-h">${b.a}<small>${b.z}</small></span><div class="cr-dl-b" style="min-height:${Math.round((aMin(b.z) - aMin(b.a)) * .55)}px"><b>${esc(b.tit)}</b>${b.nom ? `<span class="cr-nom">${esc(b.nom)}</span>` : ""}<span class="cr-com">${esc(b.sub)}</span></div></div>`;
   });
   return `<div class="cr-dialista">
     <div class="cr-dtabs">${DIAS_CR.slice(0, dias).map((d, i) => `<button class="${i === CR.dia ? "on" : ""}" data-cr="dia-tab" data-d="${i}">${d.slice(0, 3)}</button>`).join("")}</div>
@@ -7131,11 +7134,11 @@ function proximasFechas(n = 5){
   return Object.keys(fechas).filter(k => k >= hoy).sort().flatMap(k => fechas[k].map((x, i) => ({ ...x, dia: k, i }))).slice(0, n);
 }
 const faltaTexto = k => { const dd = Math.round((deClave(k) - deClave(hoyClave())) / 864e5); return dd === 0 ? "hoy" : dd === 1 ? "mañana" : `en ${dd} días`; };
-function filaFecha(x, boton = ""){
+function filaFecha(x, boton = "", corto = false){
   const f = deClave(x.dia), i = x.k && infoMat(x.k);
   return `<div class="fe-f mc ${faltaTexto(x.dia) === "hoy" || faltaTexto(x.dia) === "mañana" ? "cerca" : ""}" style="${colorMat(x.k || "").css}">
     <span class="fe-d"><b>${f.getDate()}</b>${DIAS_CORTO[f.getDay()]}</span>
-    <span class="fe-q"><b>${esc(x.nombre)}</b>${i ? `<small><i></i><span>${esc(i.nombre)}</span></small>` : ""}</span>
+    <span class="fe-q"><b>${esc(x.nombre)}</b>${i ? `<small${corto && i.abr ? ` title="${esc(i.nombre)}"` : ""}><i></i><span>${esc(corto && i.abr ? i.abr : i.nombre)}</span></small>` : ""}</span>
     <span class="fe-falta">${faltaTexto(x.dia)}</span>${boton}</div>`;
 }
 function calendarioCr(){
@@ -7148,7 +7151,7 @@ function calendarioCr(){
     <div class="cal-rango">${meses.map(([a, m], i) => `<button class="${i === CR.mes || i === CR.mes + 1 ? "on" : ""}" data-cr="mes-ir" data-i="${i}">${MESES[m].slice(0, 3)}</button>`).join("")}</div>
     ${meses.slice(CR.mes, CR.mes + 2).map(([a, m]) => mesCr(a, m)).join("")}
     <div class="cal-sub">Próximas fechas</div>
-    ${prox.length ? prox.map(x => `<button class="fe-btn" data-cr="dia" data-dia="${x.dia}">${filaFecha(x)}</button>`).join("") : `<p class="cal-vacio">Tocá un día para anotar un parcial, un TP o una entrega.</p>`}
+    ${prox.length ? prox.map(x => `<button class="fe-btn" data-cr="dia" data-dia="${x.dia}">${filaFecha(x, "", true)}</button>`).join("") : `<p class="cal-vacio">Tocá un día para anotar un parcial, un TP o una entrega.</p>`}
     ${CR.sel ? popFecha() : ""}`;
 }
 /* Globo para anotar algo en un día */
@@ -7158,12 +7161,12 @@ function popFecha(){
   if(CR.form.k == null && curs.length) CR.form.k = curs[0].k;
   return `<div class="cal-pop" id="calPop" role="dialog" aria-label="Anotar el ${f.getDate()} de ${MESES[f.getMonth()]}">
     <h3>${DIAS_CR[(f.getDay() + 6) % 7] || "Domingo"} ${f.getDate()} de ${MESES[f.getMonth()]}</h3>
-    ${lista.length ? `<div class="cal-pop-ya">${lista.map((x, i) => { const im = x.k && infoMat(x.k); return `<div class="mc" style="${colorMat(x.k || "").css}"><i></i><span><b>${esc(x.nombre)}</b>${im ? ` · ${esc(im.nombre)}` : ""}</span><button data-cr="borrar-fecha" data-i="${i}" aria-label="Borrar">${ICON_X}</button></div>`; }).join("")}</div>` : ""}
+    ${lista.length ? `<div class="cal-pop-ya">${lista.map((x, i) => { const im = x.k && infoMat(x.k); return `<div class="mc" style="${colorMat(x.k || "").css}"><i></i><span><b>${esc(x.nombre)}</b>${im ? ` · ${esc(im.abr || im.nombre)}` : ""}</span><button data-cr="borrar-fecha" data-i="${i}" aria-label="Borrar">${ICON_X}</button></div>`; }).join("")}</div>` : ""}
     <label>¿Qué hay?</label>
     <div class="cal-tipos">${TIPOS_FECHA.map(t => `<button class="${CR.form.tipo === t ? "on" : ""}" data-cr="tipo" data-t="${t}">${t}</button>`).join("")}</div>
     <label for="calNombre">Nombre</label>
     <input id="calNombre" class="cal-in" type="text" maxlength="40" placeholder="${{ Parcial: "1º Parcial", Recuperatorio: "Recuperatorio del 1º", TP: "TP1", Entrega: "Entrega del TPI", Otro: "Consulta, coloquio…" }[CR.form.tipo]}" autocomplete="off">
-    ${curs.length ? `<label>Materia</label><div class="cal-mats">${curs.map(x => `<button class="mc ${CR.form.k === x.k ? "on" : ""}" style="${colorMat(x.k).css}" data-cr="fmat" data-k="${x.k}"><i></i>${esc(x.nombre)}</button>`).join("")}</div>` : ""}
+    ${curs.length ? `<label>Materia</label><div class="cal-mats">${curs.map(x => `<button class="mc ${CR.form.k === x.k ? "on" : ""}" style="${colorMat(x.k).css}" data-cr="fmat" data-k="${x.k}" title="${esc(x.nombre)}"><i></i>${esc(x.abr || x.nombre)}</button>`).join("")}</div>` : ""}
     <div class="cal-pop-acc"><button class="cr-btn plano" data-cr="cerrar-pop">Cerrar</button><button class="cr-btn pri" data-cr="anotar">Anotar</button></div>
   </div>`;
 }
