@@ -24,6 +24,14 @@ Cada página tiene su propio link, por ejemplo:
 ## Agregar una materia con contenido
 Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En la lista de su año, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
 
+## Página de la materia
+`#/m201` (`viewMateria`). Solo muestra el material y la info de la materia: nada de tu cursada (comisión, días, fechas, notas: eso va en el Cronograma) ni de tu avance (va en "Tu avance").
+- **Arriba**: año, si es electiva, el nombre y `descripcion` (de qué se trata, en una o dos oraciones; va al principio del bloque de la materia en `MATERIAS`).
+- **Partes**: cada parcial / TPI / final es una tarjeta con su descripción, los temas como etiquetas (de `temas`, si son temas y no fechas) y cuánto material tiene (archivos, videos, ejercicios, quiz). Las secciones sueltas (Cuestionarios) y las Actividades van como filas.
+- **Para empezar**: los archivos con `nota: "Empezá por acá"` de cualquier parte, con su tapa.
+- **Sobre la materia** (el panel de la derecha): cómo se aprueba (`condiciones`), un resumen de las comisiones (cuántas hay y cuántas se recomiendan, con un salto al cuadro) y el ZIP. Abajo de todo, el cuadro de comisiones.
+- **En el celular**: dos pestañas, Material y Sobre la materia (con las comisiones).
+
 ## Estilo
 Colores y fuentes como Claude: fondo casi blanco (`--bg: #fcfcfb`), barra lateral apenas más oscura, bordes grises neutros, títulos en Source Serif 4 y texto en Inter (de Google Fonts), letra base de 15 px y puntos de color chicos. El acento sale del color de la carrera y queda solo para los botones principales, el logo, lo de "hoy" y lo que estás cursando; los íconos, títulos y etiquetas van en gris (bloque "Suave, como Claude" al final del `<style>`). Los colores están en `:root` al principio del `<style>`, con su versión para el modo oscuro. Además del acento hay una paleta chica y apagada: `--ok` (verde salvia: aprobado, correcto), `--rojo`, `--rojo-f`, `--rojo-l` y `--error` (ladrillo suave: errores, "No"), `--mark` (arena: resaltados) y `--nv2` / `--nv3` (gris azulado y gris: las líneas de "Para profundizar" y "Extra"; la de "Esencial" va en el acento). Los dibujos de las herramientas usan los mismos tonos.
 
@@ -49,7 +57,7 @@ Sin buscador (`viewInicio`):
 
 ## Cronograma
 `#/cronograma` (`viewCronograma`). Los horarios de todas las comisiones salen de `horarios/2026.json` (se baja la primera vez que se abre).
-- **Armarlo**: "+ Materia" muestra las materias de ese cuatrimestre que no tenés aprobadas ni regulares; primero las que podés cursar según las correlativas. Al elegir una se marcan todas sus comisiones en la grilla (mañana, tarde y noche), punteadas; al pasar por una se marcan sus dos días juntos y al tocarla queda elegida. Las que se pisan con algo que ya elegiste salen en rojo suave y no se pueden elegir. Tocando una materia elegida (en la fila de arriba o en la grilla) se le cambia la comisión; con la ✕ se saca.
+- **Armarlo**: "+ Materia" muestra las materias de ese cuatrimestre que no tenés aprobadas ni regulares; primero las que podés cursar según las correlativas. Al elegir una se marcan todas sus comisiones en la grilla (mañana, tarde y noche), punteadas; al pasar por una se marcan sus dos días juntos y al tocarla queda elegida. Las que se pisan con algo que ya elegiste salen en rojo suave y no se pueden elegir. Tocando una materia elegida (en la fila de arriba o en la grilla) se le cambia la comisión; con la ✕ se saca. Mientras se elige, cada comisión lleva un pulgar verde si está recomendada o rojo si no, según el cuadro de comisiones de la materia (`recomendada` y `motivo` o `comentario`, que se ven al pasar el mouse); si de esa comisión no hay nada cargado, no lleva nada. En "+ Materia" se ve cuántas comisiones recomendadas tiene cada una.
 - **Guardado**: la grilla muestra solo los turnos que usás (si todo es a la noche, solo la noche) y en el celular, un día a la vez. Con "Editar" se vuelve a armar. Se puede pasar del 1º al 2º cuatrimestre.
 - **Calendario**: a la derecha (en el celular, abajo), los meses de la cursada (marzo a junio o agosto a noviembre, de a dos). Tocando un día se anota qué hay (Parcial, Recuperatorio, TP, Entrega u Otro), con un nombre y la materia; el día se pinta con el color de la materia. Abajo, las próximas fechas.
 - **Dónde se guarda**: en el navegador (`isi-cronograma` y `isi-fechas`) y, con la clave de GitHub, en `aprobadas.json` (`"cronogramas": { "2026-2": { "materias": { "201": { "c": "3K4", "b": [[1, "19:55", "23:05"]] } } } }` y `"fechas": { "2026-10-28": [{ "k": "201", "tipo": "Parcial", "nombre": "1º Parcial" }] }`). Al guardar el cronograma del cuatrimestre actual con la clave, sus materias pasan a "Cursando".
@@ -152,7 +160,7 @@ Cada grupo de material puede llevar `nivel: "esencial"`, `"profundizar"` o `"ext
 `{ nivel: "profundizar", grupo: "Material del profe", archivos: [...] }`
 
 ## Tapas de los PDF y visor
-Cada PDF del repo muestra su primera página en la lista y se abre en el visor de la página, en la compu y en el celular. El visor dibuja el PDF con PDF.js (se carga de cdnjs la primera vez que se abre un PDF), así no depende del navegador: antes, Chrome de Android los descargaba y los navegadores de WhatsApp o Instagram los dejaban en blanco. Tiene las páginas al costado (en pantallas anchas), zoom, buscar una palabra, descargar, la cruz para cerrar arriba a la derecha, y pasar al archivo anterior o siguiente de la misma página. En el celular ocupa toda la pantalla y el botón "atrás" lo cierra. Si PDF.js no carga, ofrece abrir o descargar el PDF. Ctrl/Cmd + clic sigue abriendo el PDF en otra pestaña.
+Cada PDF del repo muestra su primera página en la lista y se abre en el visor de la página, en la compu y en el celular. El visor dibuja el PDF con PDF.js (se carga de cdnjs la primera vez que se abre un PDF), así no depende del navegador: antes, Chrome de Android los descargaba y los navegadores de WhatsApp o Instagram los dejaban en blanco. Tiene las páginas al costado (en pantallas anchas), zoom, buscar una palabra, descargar, la cruz para cerrar arriba a la derecha, y pasar al archivo anterior o siguiente de la misma página. En la compu ancha (1280 px o más) se abre al costado, como un artefacto de Claude: la página se corre a la izquierda y se sigue usando (Esc o la cruz lo cierran). En pantallas más chicas y en el celular ocupa toda la pantalla y el botón "atrás" lo cierra. Si PDF.js no carga, ofrece abrir o descargar el PDF. Ctrl/Cmd + clic sigue abriendo el PDF en otra pestaña.
 Las tapas están en `miniaturas/` (misma ruta que en `material/`, en .jpg). Cuando subas PDFs nuevos, corré desde la raíz del repo:
 `python3 herramientas/miniaturas.py` (necesita `pip install pymupdf`). Crea las que faltan y borra las que ya no tienen PDF. Si un PDF no tiene tapa, se ve el cartel "PDF" como antes.
 
@@ -170,7 +178,7 @@ Están en `HERRAMIENTAS`, en el código de la página.
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
-Se muestra abajo de las tarjetas de Teórico/Práctico. Si el parcial no lo tiene, no aparece nada.
+Se muestra en el resumen del parcial como una lista numerada: cada tema se despliega con lo que entra y su material, que sale solo: los archivos de las `partes` del material que se llaman igual que el tema (ej.: la parte "Streams" del Teórico) y los videos cuyo `bloque` empieza con el nombre del tema (ej.: "Streams · Apunte 10"). Tocando un video se abre la lista de videos arrancando por ese. El resumen del parcial también muestra arriba lo marcado "Empezá por acá" y las secciones (Teórico, Práctica, Parciales, Quiz…) como filas. Si el parcial no tiene `temas`, no aparece la lista.
 
 ## Bloques por evaluación
 Los bloques de `parciales` son las evaluaciones de la materia, no las unidades de la cátedra. Por ejemplo, Desarrollo de Aplicaciones con Objetos (`206`) tiene dos:
@@ -187,15 +195,15 @@ Además de `teorico`, `practico` y `parciales` hay dos secciones más: `parcial`
 `secciones: ["teorico", "parcial"], nombres: { parcial: "1º Parcial" }`
 
 ## Comisiones
-Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia`. El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero.
+Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia`. El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero. La recomendación también se ve en el Cronograma, al elegir comisión.
 
 ## Parcial o TPI en una sola página
 Con `secciones: []` el parcial no tiene tarjetas de Teórico/Práctico: su página muestra directamente las pestañas Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`). Si además tiene `temas`, se muestran debajo del material (ver Tecnologías para la Automatización, `29`).
 
 ## Condiciones de aprobación
-Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra arriba de todo en la página de la materia:
+Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra en el panel "Sobre la materia":
 `condiciones: { directa: 6, regular: 4, aclaracion: "...", requisitos: [ { titulo: "Parcial", corto: "Parcial ≥ 6", detalle: "6 o más" } ] }`
-Se ve en una sola línea ("Para aprobar: Directa con 6 · Parcial ≥ 6…", con `corto`) y al tocarla se despliega el detalle. Si `regular` es `null`, aparece "Sin regularidad" (electivas, que solo se aprueban de forma directa). La asistencia no va acá: se indica en la columna de cada profesor en las comisiones.
+Se ve "Directa con 6", la regularidad, la aclaración y cada requisito con su `corto` (y el nombre largo); tocándolo se despliega el `detalle`. Si `regular` es `null`, aparece "Sin regularidad" (electivas, que solo se aprueban de forma directa). La asistencia no va acá: se indica en la columna de cada profesor en las comisiones.
 
 ## Descargar toda la materia (ZIP)
 En la página de cada materia aparece el botón "Descargar todo (ZIP)" si tiene archivos propios (`material/...`). El ZIP se arma en el navegador, sin copias en el repo: una carpeta por parcial y sección (Teórico, Práctico…), y adentro una por grupo y parte, numeradas en el orden de la página. Los archivos se llaman como en la página ("01 - Nombre.pdf"). Los videos no van, y los links externos (Drive, webs) quedan en un `Enlaces.txt` dentro de su carpeta.

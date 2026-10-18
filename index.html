@@ -129,20 +129,6 @@
   .pill:hover{border-color:var(--accent);color:var(--accent)}
   .lead .pill{display:inline-block;white-space:nowrap;margin-top:4px}
 
-  /* Temas del parcial */
-  .temas{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-top:24px}
-  .temas-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
-  .temas h2{font-family:var(--serif);font-weight:500;font-size:1.3rem}
-  .unidad{padding-top:14px}
-  /* Muchas unidades cortas (ej.: temas por fecha de final): en columnas */
-  .temas.muchas{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 28px}
-  .temas.muchas .temas-head{grid-column:1 / -1}
-  .temas.muchas .unidad + .unidad{margin-top:0;border-top:0}
-  .temas.muchas .unidad{padding:12px 0}
-  .unidad + .unidad{margin-top:14px;border-top:1px solid var(--line)}
-  .unidad h3{font-size:1rem;color:var(--text);margin-bottom:8px}
-  .unidad ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
-  .unidad li{font-size:.92rem;line-height:1.5}
 
   /* Practicá: accesos al quiz y a las herramientas */
   .practica{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px}
@@ -478,6 +464,19 @@
   .vb-arch:disabled{visibility:hidden}
   .visor-pie .vnum{margin:0 auto;font-size:.8rem;color:var(--muted);white-space:nowrap}
   @media (max-width:899px){ .visor-minis{display:none} }
+  /* Al costado (compu ancha): panel fijo a la derecha; la página se corre y sigue andando */
+  :root{--visor-w:clamp(440px, 42vw, 760px)}
+  body.con-visor dialog.visor{position:fixed;inset:0;z-index:60;margin:0;width:100%;height:100%;border-radius:0}
+  @media (min-width:1280px){
+    body.con-visor{padding-right:var(--visor-w)}
+    body.con-visor dialog.visor{left:auto;width:var(--visor-w);border-left:1px solid var(--line);background:var(--hover);box-shadow:-16px 0 32px -28px rgba(0,0,0,.4)}
+    body.con-visor .vb-t{display:none}
+    body.con-visor .mt-cuerpo{grid-template-columns:minmax(0,1fr)}
+    body.con-visor .mt-panel{position:static}
+    body.con-visor .parte .files{grid-template-columns:1fr}
+    body.con-visor .comis-tabla{overflow-x:auto}
+    body.con-visor .comis-grupo{min-width:840px}
+  }
   @media (max-width:760px){
     dialog.visor{width:100vw;height:100vh;height:100dvh;border-radius:0}
     .visor-bar{gap:6px;padding:6px 8px}
@@ -575,10 +574,7 @@
     .tabs{margin-bottom:18px}
     .tab{flex:1;text-align:center;padding:10px 6px}
     .grupo + .grupo{margin-top:20px;padding-top:16px}
-    .cond-linea summary{padding:10px 12px;gap:6px}
     .cc{font-size:.78rem;padding:3px 9px}
-    .cond-mas{margin-left:0}
-    .cond-req li{grid-template-columns:1fr;gap:2px}
   }
   @media (max-width:760px){
     main{padding:18px 16px}
@@ -808,6 +804,115 @@
   /* Cabecera de materia con el botón de descarga */
   .mat-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
   .mat-head h1{margin-bottom:0}
+  /* Página de la materia: el material a la izquierda y la info de la materia en un panel (como un proyecto de Claude) */
+  .mt-sub{font-size:.84rem;color:var(--muted)}
+  .mt-sub span[data-go]{cursor:pointer}
+  .mt-sub span[data-go]:hover{color:var(--text)}
+  .mt-tit{display:flex;align-items:center;flex-wrap:wrap;gap:6px 0;font-weight:400;letter-spacing:-.015em;margin:6px 0 10px}
+  .mt-tit .abr-lg{vertical-align:0}
+  .mt-lead{font:400 1.1rem/1.65 var(--serif);color:var(--text2);max-width:680px}
+  .mt-cuerpo{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:28px 44px;align-items:start;margin-top:30px}
+  .mt-cuerpo.solo{grid-template-columns:minmax(0,1fr)}
+  .mt-cuerpo > .comis{grid-column:1 / -1;margin-top:8px}
+  .mt-main{min-width:0}
+  .mt-h2{display:flex;align-items:baseline;gap:10px;font:500 .95rem var(--sans);margin:0 0 12px}
+  .mt-h2 small{font-weight:400;color:var(--muted);font-size:.82rem}
+  .mt-main > * + .mt-h2{margin-top:32px}
+  .mt-partes{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+  .mt-parte{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;background:var(--card);padding:18px 20px 14px;cursor:pointer;transition:border-color .15s}
+  .mt-parte:hover,.mt-fila:hover,.mt-arch:hover{border-color:var(--line2)}
+  .mt-parte-in{flex:1}
+  .mt-parte h3{font:400 1.4rem/1.2 var(--serif);margin:0 0 6px}
+  .mt-parte p{color:var(--text2);font-size:.9rem;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .mt-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .mt-chips span{font-size:.76rem;padding:3px 9px;border-radius:999px;background:var(--hover);color:var(--text2)}
+  .mt-cuenta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
+  .mt-cuenta span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .mt-cuenta svg{width:14px;height:14px;flex:none}
+  .mt-parte .mt-cuenta{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+  .mt-parte .mt-cuenta:empty{display:none}
+  .mt-fila{display:flex;align-items:center;gap:14px;margin-top:12px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:12px 16px;cursor:pointer;transition:border-color .15s}
+  .mt-ic{color:var(--muted);display:grid;place-items:center}
+  .mt-ic svg{width:18px;height:18px}
+  .mt-fila-t{flex:1;min-width:0}
+  .mt-fila-t b{font-weight:500}
+  .mt-fila-t small{display:block;color:var(--muted);font-size:.84rem}
+  .mt-fila > svg{width:15px;height:15px;color:var(--muted);flex:none}
+  .mt-suelto{margin-top:28px}
+  .mt-arranque{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+  .mt-arch{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:8px 12px 8px 8px;color:inherit;transition:border-color .15s}
+  .mt-arch .mini{width:40px;height:56px;object-fit:cover;object-position:top;border-radius:4px;border:1px solid var(--line);flex:none}
+  .mt-arch b{display:block;font-weight:500;font-size:.88rem;line-height:1.3}
+  .mt-arch small{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}
+  .mt-panel{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:2px 18px 6px;position:sticky;top:calc(var(--barra-h, 0px) + 16px)}
+  .mt-bloq{padding:14px 0}
+  .mt-bloq + .mt-bloq{border-top:1px solid var(--line)}
+  .mt-t{font-size:.76rem;color:var(--muted);margin-bottom:8px}
+  .mt-dir{font:500 1.08rem var(--serif)}
+  .mt-reg{font-size:.86rem;color:var(--text2)}
+  .mt-aclara{font-size:.8rem;color:var(--muted);line-height:1.45;margin-top:4px}
+  .mt-req{margin-top:8px;font-size:.84rem}
+  .mt-req summary{display:flex;gap:10px;align-items:baseline;cursor:pointer;list-style:none;padding:2px 0}
+  .mt-req summary::-webkit-details-marker{display:none}
+  .mt-req summary b{font-weight:500;white-space:nowrap}
+  .mt-req summary span{color:var(--muted);font-size:.8rem;min-width:0}
+  .mt-req summary:hover span{color:var(--text2)}
+  .mt-req p{font-size:.8rem;color:var(--muted);line-height:1.5;margin:4px 0 6px;padding-left:10px;border-left:2px solid var(--line)}
+  .mt-com{font-size:.9rem}
+  .mt-com span{display:block;color:var(--muted);font-size:.8rem}
+  .mt-lnk{display:flex;align-items:center;gap:4px;margin-top:8px;padding:0;border:0;background:none;font:inherit;font-size:.84rem;color:var(--accent);cursor:pointer}
+  .mt-lnk svg{width:13px;height:13px}
+  .mt-lnk:hover{text-decoration:underline;text-underline-offset:3px}
+  .mt-panel .zip-btn{margin-top:0;width:100%;justify-content:center;border-radius:10px;padding:8px 12px}
+  .mt-main.pc{max-width:860px;margin-top:26px}
+  .tm-lista{border-top:1px solid var(--line)}
+  .tm-tema{border-bottom:1px solid var(--line)}
+  .tm-tema summary{display:flex;align-items:center;gap:14px;padding:12px 4px;cursor:pointer;list-style:none}
+  .tm-tema summary::-webkit-details-marker{display:none}
+  .tm-n{width:26px;flex:none;text-align:center;font:400 1.25rem var(--serif);color:var(--muted)}
+  .tm-tema[open] .tm-n{color:var(--text)}
+  .tm-t{flex:1;min-width:0}
+  .tm-t b{display:block;font-weight:500}
+  .tm-t small{display:block;color:var(--muted);font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tm-tema[open] .tm-t small{display:none}
+  .tm-c{font-size:.8rem;color:var(--muted);white-space:nowrap}
+  .tm-tema summary > svg{width:16px;height:16px;color:var(--muted);flex:none;transform:rotate(-90deg);transition:transform .15s}
+  .tm-tema[open] summary > svg{transform:none}
+  .tm-tema summary:hover .tm-t b{color:var(--accent)}
+  .tm-cuerpo{padding:0 4px 16px 44px}
+  .tm-cont{margin:0 0 4px 18px;font-size:.9rem;line-height:1.6;color:var(--text2)}
+  .tm-lbl{font-size:.74rem;color:var(--muted);margin:12px 0 6px}
+  .tm-archs{display:flex;flex-direction:column}
+  .tm-arch{display:flex;align-items:center;gap:12px;padding:6px 8px;margin:0 -8px;border-radius:10px;color:inherit}
+  .tm-arch:hover{background:var(--hover)}
+  .tm-arch .mini{width:30px;height:42px;object-fit:cover;object-position:top;border-radius:3px;border:1px solid var(--line);flex:none}
+  .tm-arch b{display:block;font-weight:500;font-size:.9rem}
+  .tm-arch small{display:block;color:var(--muted);font-size:.8rem}
+  .tm-vids{display:flex;flex-wrap:wrap;gap:6px}
+  .tm-vid{display:inline-flex;align-items:center;gap:6px;min-height:28px;padding:3px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-size:.8rem;color:var(--text2);cursor:pointer}
+  .tm-vid svg{width:14px;height:14px;color:var(--muted);flex:none}
+  .tm-vid:hover{border-color:var(--line2);color:var(--text)}
+  .mt-seg{display:none}
+  @media (max-width:1000px){
+    .mt-cuerpo{grid-template-columns:minmax(0,1fr)}
+    .mt-panel{position:static}
+    .mt-seg{display:flex;gap:4px;padding:4px;background:var(--hover);border-radius:11px;margin-top:18px}
+    .mt-seg button{flex:1;border:0;background:none;font:inherit;font-size:.86rem;padding:8px 0;border-radius:8px;color:var(--text2);cursor:pointer}
+    .mt-seg button.on{background:var(--card);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+    .mt-cuerpo{margin-top:18px}
+    .mt-cuerpo[data-ver="material"] > .mt-panel,.mt-cuerpo[data-ver="material"] > .comis,.mt-cuerpo[data-ver="info"] > .mt-main{display:none}
+    .mt-cuerpo > .comis{margin-top:0}
+  }
+  @media (max-width:760px){
+    .mt-lead{font-size:1rem}
+    .mt-partes{grid-template-columns:1fr}
+    .mt-parte{padding:14px 16px 12px}
+    .mt-parte h3{font-size:1.2rem}
+    .mt-arranque{grid-template-columns:1fr}
+    .mt-fila .mt-cuenta{display:none}
+    .tm-c{display:none}
+    .tm-cuerpo{padding-left:4px}
+  }
   .zip-btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font:inherit;font-size:.88rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border:1px solid transparent;border-radius:999px;padding:9px 16px;white-space:nowrap;margin-top:4px}
   .zip-btn:hover{border-color:var(--accent)}
   .zip-btn:disabled{cursor:progress;opacity:.85}
@@ -852,24 +957,9 @@
   .card.compacta p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
   /* Comisiones de la materia */
-  .comis{margin-top:32px}
-  /* Condiciones de aprobación: una línea que se despliega */
-  .cond-linea{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:-4px 0 22px}
-  .cond-linea summary{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 16px;cursor:pointer;list-style:none}
-  .cond-linea summary::-webkit-details-marker{display:none}
-  .cond-tit{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:4px}
+  .comis{margin-top:32px;scroll-margin-top:calc(var(--barra-h, 0px) + 16px)}
   .cc{font-size:.84rem;font-weight:600;padding:4px 11px;border-radius:999px;background:var(--bg);border:1px solid var(--line);white-space:nowrap}
   .cc.fuerte{background:var(--accent-soft);color:var(--accent);border-color:transparent}
-  .cond-mas{margin-left:auto;font-size:.8rem;color:var(--muted);white-space:nowrap}
-  .cond-mas::after{content:" ▾"}
-  .cond-linea[open] .cond-mas::after{content:" ▴"}
-  .cond-linea summary:hover .cond-mas{color:var(--accent)}
-  .cond-det{padding:4px 16px 12px;border-top:1px dashed var(--line)}
-  .cond-aclara{font-size:.86rem;color:var(--muted);margin-top:10px}
-  .cond-req{list-style:none;display:flex;flex-direction:column}
-  .cond-req li{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;padding:10px 0;font-size:.9rem;line-height:1.5}
-  .cond-req li + li{border-top:1px dashed var(--line)}
-  @media (max-width:700px){ .cond-req li{grid-template-columns:1fr;gap:2px} }
   .comis h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
   /* Cada comisión es un grupo: el código a la izquierda y sus profesores al lado */
@@ -1274,7 +1364,16 @@
   .cr-pk-f:hover{background:var(--hover)}
   .cr-pk-f i{width:6px;height:6px;border-radius:50%;background:var(--C);flex:none}
   .cr-pk-f span{flex:1;min-width:0}
-  .cr-pk-f small{color:var(--muted);font-size:.76rem;white-space:nowrap}
+  .cr-pk-f small{color:var(--muted);font-size:.76rem;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+  /* Comisión recomendada o no (de lo cargado en la materia) */
+  .cr-reco{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;margin-left:5px;vertical-align:-3px;flex:none}
+  .cr-reco svg{width:10px;height:10px}
+  .cr-reco.si{background:var(--ok-soft);color:var(--ok)}
+  .cr-reco.no{background:var(--rojo-f);color:var(--rojo)}
+  .cr-b .cr-reco{box-shadow:0 0 0 1.5px var(--card)}
+  .cr-reco-ley .cr-reco{margin:0 2px 0 6px}
+  .cr-pk-reco{display:inline-flex;align-items:center;gap:3px;color:var(--ok);font-weight:600}
+  .cr-pk-reco svg{width:12px;height:12px}
   .cr-pk-vacio{padding:10px;color:var(--muted);font-size:.86rem}
   .cr-ayuda{color:var(--muted);font-size:.84rem;line-height:1.6;margin:12px 0 14px}
   .cr-ver .cr-ayuda{margin-top:0}
@@ -1720,6 +1819,8 @@ const CARRERA = {
 const MATERIAS = {
   // Análisis Matemático 1
   1: {
+    // De qué se trata la materia: va arriba de todo en su página
+    descripcion: "Límites, derivadas e integrales de funciones de una variable, con sus aplicaciones. Dos parciales y un final de tres partes.",
     comisiones: [
       {
         comision: "1K13",
@@ -1900,6 +2001,7 @@ const MATERIAS = {
   },
   // Sistemas y Procesos de Negocio: material teórico por unidad y parciales anteriores
   8: {
+    descripcion: "Las organizaciones, sus procesos de negocio y los sistemas de información que los acompañan.",
     parciales: [
       {
         id: "p1",
@@ -1960,6 +2062,7 @@ const MATERIAS = {
   },
   // Backend de Aplicaciones (electiva): 1º Parcial y TPI (con teórico y práctico) + cuestionarios
   201: {
+    descripcion: "Cómo se arma el backend de una aplicación. Primero Java a fondo —objetos, colecciones y streams— y después una API de verdad con Spring, base de datos, gateway y seguridad.",
     // Condiciones de aprobación: nota para aprobar directo, nota para regularizar (null = no tiene) y qué hay que aprobar
     condiciones: {
       directa: 6,
@@ -2271,6 +2374,7 @@ const MATERIAS = {
   // 1º Parcial (Python y objetos) y TPI (trabajo integrador: persistencia, patrones e interfaces).
   // Archivos en material/desarrollo-de-aplicaciones-con-objetos/{p1,tpi}/. Las guías y los ZIP de código son nuestros
   206: {
+    descripcion: "Programación orientada a objetos en Python: clases, herencia y colecciones para el parcial, y una aplicación completa con base de datos en el trabajo integrador.",
     condiciones: {
       directa: 6,
       aclaracion: "Es electiva: se aprueba de forma directa, aprobando todas las instancias. Nota final: 50 % parcial, 30 % trabajo integrador y 20 % cuestionarios.",
@@ -2398,6 +2502,7 @@ const MATERIAS = {
   // Green Software (electiva): la materia son 3 TPI. Cada TPI tiene Material (enunciado, resuelto y material de clase) y Videos
   // Archivos del campus en material/green-software/. Las presentaciones de los talleres están en el Drive de la cátedra
   202: {
+    descripcion: "Sustentabilidad aplicada al software y al hardware: energía, huella de carbono y pensamiento sistémico. Se aprueba con tres TPI grupales y una charla final.",
     comisionesNota: "Es una sola aula para todo 4K1: Franco y Luis dan los talleres; Vane (4K1A) e Inés (4K1B) llevan los TPI.",
     comisiones: [
       { comision: "4K1", profesor: "Franco Mana", examen: "Defensa de TPI", asistencia: false, recomendada: true, comentario: "Los profes son buenos y es difícil desaprobar. Se enojan si faltás, pero no toman asistencia y no te van a dejar libre. La materia es muy fácil." },
@@ -2525,6 +2630,7 @@ const MATERIAS = {
   // Tecnologías para la Automatización: 2 parciales de robótica, 1 de IoT y el TP con la ESP32.
   // Cada parcial tiene solo Material y Videos (secciones: []).
   29: {
+    descripcion: "Dos mundos en una materia: robótica (ubicación espacial, cinemática y trayectorias, con Octave o Matlab) e internet de las cosas con la ESP32.",
     // Sin "regular": no se sabe la nota de regularidad, así que no se muestra
     condiciones: {
       directa: 8,
@@ -2799,6 +2905,7 @@ const MATERIAS = {
     ]
   },
   26: {
+    descripcion: "Cómo se comunican las computadoras: arquitectura de redes, redes locales, direccionamiento y encaminamiento IP, transporte, aplicación y seguridad.",
     // Comisiones: profesor, opinión y si la recomendás (recomendada: true / false)
     comisiones: [
       {
@@ -3783,81 +3890,127 @@ function refrescar(){
   window.scrollTo(0, y);
 }
 
-/* ---------- Página de una materia ---------- */
+/* ---------- Página de una materia ----------
+   Solo el material y la info de la materia (cómo se aprueba, comisiones). Lo de tu cursada
+   (qué comisión, días, fechas, notas) va en el Cronograma; el avance, en "Tu avance". */
+const ICON_VIDEO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="13" height="14" rx="2"/><path d="m16 10 5-3v10l-5-3"/></svg>';
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5.5 3.5-5.5 3.5z"/></svg>';
+const ICON_DER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
+/* Una parte de una página sola (secciones: []) o una sección de la materia tiene su material y videos adentro */
+const partesDe = (p, propia) => propia || (p.secciones && !p.secciones.length) ? [p] : seccionesDe(p).map(k => seccion(p, k));
+function cuentaParte(p, propia){
+  const ss = partesDe(p, propia);
+  const a = ss.reduce((t, x) => t + cantArchivos(x.material || []), 0), v = ss.reduce((t, x) => t + (x.videos || []).length, 0);
+  return [
+    a && `${ICON_DOC}${a} archivo${a === 1 ? "" : "s"}`,
+    v && `${ICON_VIDEO}${v} video${v === 1 ? "" : "s"}`,
+    p.practica && p.practica.length && `${ICON_CODIGO}${p.practica.length} ejercicio${p.practica.length === 1 ? "" : "s"}`,
+    p.quiz && `${ICON_CHECK}Quiz`
+  ].filter(Boolean).map(x => `<span>${x}</span>`).join("");
+}
+/* Los temas como etiquetas (si son temas: las fechas de final no) */
+function chipsTemas(t){
+  const us = t && t.unidades ? t.unidades.map(u => u.titulo) : [];
+  if(us.length < 2 || us.some(x => /^\d{1,2} de [a-z]+$/i.test(x))) return "";
+  const corto = x => x.replace(/^Unidad N?º?\s*\d+:\s*/i, "").replace(/^\d+\s*·\s*/, "");
+  return `<div class="mt-chips">${us.slice(0, 6).map(x => `<span>${esc(corto(x))}</span>`).join("")}${us.length > 6 ? `<span>+${us.length - 6}</span>` : ""}</div>`;
+}
+/* Lo que conviene abrir primero: los archivos marcados "Empezá por acá". fuentes = [[material, dónde está], …] */
+function paraEmpezar(fuentes){
+  const lista = [];
+  fuentes.forEach(([items, donde]) => (items || []).forEach(x => (x.grupo ? archivosDe(x) : [x]).forEach(f => { if(/empez/i.test(f.nota || "")) lista.push({ f, donde }); })));
+  if(!lista.length) return "";
+  return `
+    <h2 class="mt-h2">Para empezar<small>lo primero que conviene abrir</small></h2>
+    <div class="mt-arranque">${lista.map(({ f, donde }) => {
+      const pdf = esPdfLocal(f), bajar = /^(ZIP|INO)$/.test(f.tipo);
+      return `<a class="mt-arch" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>
+        ${pdf ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onload="this.classList.add('ok')" onerror="sinMini(this)">` : `<span class="badge">${esc(f.tipo || "LINK")}</span>`}
+        <span><b>${esc(f.nombre)}</b><small>${[f.tipo, donde].filter(Boolean).map(esc).join(" · ")}</small></span></a>`;
+    }).join("")}</div>`;
+}
+const fuentesMateria = c => [
+  ...c.parciales.flatMap(p => partesDe(p).map(x => [x.material, p.titulo])),
+  ...(c.secciones || []).map(x => [x.material, x.titulo]),
+  [c.material, ""]
+];
+/* Cómo se aprueba: directa, regularidad y cada requisito (se despliega el detalle) */
+function comoSeAprueba(x){
+  return `
+    <section class="mt-bloq"><div class="mt-t">Cómo se aprueba</div>
+      ${x.directa != null ? `<div class="mt-dir">Directa con ${esc(String(x.directa))}</div>` : ""}
+      ${"regular" in x ? `<div class="mt-reg">${x.regular == null ? "Sin regularidad" : `Regular con ${esc(String(x.regular))}`}</div>` : ""}
+      ${x.aclaracion ? `<p class="mt-aclara">${esc(x.aclaracion)}</p>` : ""}
+      ${(x.requisitos || []).map(r => {
+        // El nombre largo, sin la sigla ("NAP · Nota de…" → "Nota de…") y solo si dice algo más que lo corto
+        const largo = r.corto ? r.titulo.replace(/^[^·]+·\s*/, "") : "";
+        const ver = largo && !r.corto.toLowerCase().startsWith(largo.toLowerCase());
+        return `
+        <details class="mt-req"><summary><b>${esc(r.corto || r.titulo)}</b>${ver ? `<span>${esc(largo)}</span>` : ""}</summary>${r.detalle ? `<p>${esc(r.detalle)}</p>` : ""}</details>`;
+      }).join("")}
+    </section>`;
+}
+/* Resumen de las comisiones para el panel: cuántas hay y cuántas se recomiendan */
+function resumenComisiones(lista){
+  const cods = [...new Set(lista.map(x => x.comision))];
+  const reco = v => cods.filter(k => lista.some(x => x.comision === k && x.recomendada === v)).length;
+  const si = reco(true), no = reco(false);
+  return `
+    <section class="mt-bloq"><div class="mt-t">Comisiones</div>
+      <div class="mt-com">${cods.length} comisi${cods.length === 1 ? "ón" : "ones"}${si || no ? `<span>${si ? `${si} recomendada${si === 1 ? "" : "s"}${no ? ` · ${no} no` : ""}` : "Ninguna recomendada"}</span>` : ""}</div>
+      <button class="mt-lnk" data-ir="comis">Profes, opiniones y cómo toman${ICON_DER}</button>
+    </section>`;
+}
 function viewMateria(m){
   const c = MATERIAS[m.n];
-  let contenido;
-  if(!c){
-    contenido = `<div class="empty">Todavía no hay material cargado para esta materia.</div>`;
-  } else {
-    contenido = `
-      <div class="grid">
-        ${c.parciales.map(p => `
-          <div class="card compacta" data-go="m${m.n}/${p.id}">
-            <div class="icon">${iconoSeccion(p.id)}</div>
-            <h3>${esc(p.titulo)}</h3>
-            <p>${esc(p.descripcion)}</p>
-            ${destinosParcial(p).length > 1 ? `<div class="links">${destinosParcial(p).slice(1).map(t => `<span class="pill" data-go="m${m.n}/${p.id}${t.go}">${esc(t.t)}</span>`).join("")}</div>` : ""}
-          </div>`).join("")}
-        ${(c.secciones || []).map(x => `
-          <div class="card compacta" data-go="m${m.n}/${x.id}">
-            <div class="icon">${iconoSeccion(x.id)}</div>
-            <h3>${esc(x.titulo)}</h3>
-            <p>${esc(x.descripcion || "")}</p>
-            <div class="links">
-              <span class="pill" data-go="m${m.n}/${x.id}/material">📄 Material (${cantArchivos(x.material || [])})</span>
-              ${x.videos ? `<span class="pill" data-go="m${m.n}/${x.id}/videos">▶ Videos (${x.videos.length})</span>` : ""}
-            </div>
-          </div>`).join("")}
-        ${c.actividades ? `
-          <div class="card compacta" data-go="m${m.n}/actividades">
-            <div class="icon">${ICON_CHECK}</div>
-            <h3>Actividades</h3>
-            <p>Trabajos prácticos y entregas.</p>
-          </div>` : ""}
-      </div>`;
-  }
-  if(c && c.material && c.material.length){
-    contenido = `${c.parciales.length ? `${contenido}<div class="separa"></div>` : ""}${filesList(c.material)}`;
-  }
-  if(c && c.videos && c.videos.length){
-    contenido = `<div id="tabBody"></div>${c.parciales.length ? contenido : ""}`;
-  }
-  if(c && c.playlist){
-    contenido = `
-      <div class="player"><iframe src="https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(c.playlist)}&rel=0" title="${esc(m.nombre)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-      <p class="aviso-lista">Para ver la lista completa de videos, usá el ícono de lista arriba a la derecha del reproductor o
-        <a href="https://www.youtube.com/playlist?list=${encodeURIComponent(c.playlist)}" target="_blank" rel="noopener">abrí la playlist en YouTube ↗</a>.</p>
-      ${c.parciales.length ? contenido : ""}`;
-  }
-  const nZip = c ? archivosZip(c).length : 0;
-  return `
-    <div class="crumbs"><span data-go="nivel/${m.nivel}">${nombreCorto(m.nivel)}</span> / ${esc(m.nombre)}</div>
-    <div class="mat-head">
-      <h1>${m.abr ? abr(m, "abr-lg") : ""}${esc(m.nombre)}</h1>
-      ${nZip ? `<button class="zip-btn" data-zip="${m.n}" title="Todos los PDF y archivos de la materia, en carpetas con el mismo orden que la página (sin videos)">${ICON_DL}<span>Descargar todo (ZIP)</span><small>${nZip} archivos</small></button>` : ""}
-    </div>
-    ${c && c.condiciones ? condiciones(c.condiciones) : ""}
-    ${contenido}
-    ${c && c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : ""}`;
-}
+  const sub = `<span data-go="nivel/${m.nivel}">${nombreCorto(m.nivel)}</span>${m.creditos ? ` · Electiva · ${m.creditos} créditos` : !m.ingreso && MOD[m.mod] ? ` · ${MOD[m.mod]}` : ""}`;
+  const cab = `
+    <div class="mt-sub">${sub}</div>
+    <h1 class="mt-tit">${m.abr ? abr(m, "abr-lg") : ""}${esc(m.nombre)}</h1>
+    ${c && c.descripcion ? `<p class="mt-lead">${esc(c.descripcion)}</p>` : ""}`;
+  if(!c) return `${cab}<div class="empty">Todavía no hay material cargado para esta materia.</div>`;
 
-/* Condiciones de aprobación en una línea: directa, regularidad y lo que hay que aprobar ("corto").
-   Al tocarla se despliega el detalle de cada requisito. */
-function condiciones(x){
-  const chips = [];
-  if(x.directa != null) chips.push(`<span class="cc fuerte">Directa con ${esc(String(x.directa))}</span>`);
-  if("regular" in x) chips.push(`<span class="cc">${x.regular == null ? "Sin regularidad" : `Regular con ${esc(String(x.regular))}`}</span>`);
-  (x.requisitos || []).forEach(r => chips.push(`<span class="cc">${esc(r.corto || r.titulo)}</span>`));
-  const hayDetalle = x.aclaracion || (x.requisitos && x.requisitos.length);
+  // Las partes (parciales, TPI, final…) como carpetas; las secciones sueltas (cuestionarios) como filas
+  const partes = c.parciales.length ? `
+    <h2 class="mt-h2">Partes</h2>
+    <div class="mt-partes">${c.parciales.map(p => `
+      <div class="mt-parte" data-go="m${m.n}/${p.id}">
+        <div class="mt-parte-in"><h3>${esc(p.titulo)}</h3>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}${chipsTemas(p.temas)}</div>
+        <div class="mt-cuenta">${cuentaParte(p)}</div>
+      </div>`).join("")}</div>` : "";
+  const filas = [
+    ...(c.secciones || []).map(x => ({ go: `m${m.n}/${x.id}`, ic: iconoSeccion(x.id), t: x.titulo, d: x.descripcion, cu: cuentaParte(x, true) })),
+    ...(c.actividades ? [{ go: `m${m.n}/actividades`, ic: ICON_CHECK, t: "Actividades", d: "Trabajos prácticos, entregas y consignas.", cu: "" }] : [])
+  ].map(x => `
+    <div class="mt-fila" data-go="${x.go}"><span class="mt-ic">${x.ic}</span><span class="mt-fila-t"><b>${esc(x.t)}</b>${x.d ? `<small>${esc(x.d)}</small>` : ""}</span><span class="mt-cuenta">${x.cu}</span>${ICON_DER}</div>`).join("");
+
+  // Materias con el material o los videos sueltos (sin partes)
+  let suelto = "";
+  if(c.material && c.material.length) suelto = filesList(c.material);
+  if(c.videos && c.videos.length) suelto = `<div id="tabBody"></div>`;
+  if(c.playlist) suelto = `
+    <div class="player"><iframe src="https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(c.playlist)}&rel=0" title="${esc(m.nombre)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    <p class="aviso-lista">Para ver la lista completa de videos, usá el ícono de lista arriba a la derecha del reproductor o
+      <a href="https://www.youtube.com/playlist?list=${encodeURIComponent(c.playlist)}" target="_blank" rel="noopener">abrí la playlist en YouTube ↗</a>.</p>`;
+  if(suelto && (partes || filas)) suelto = `<div class="mt-suelto">${suelto}</div>`;
+
+  const nZip = archivosZip(c).length;
+  const panel = [
+    c.condiciones ? comoSeAprueba(c.condiciones) : "",
+    c.comisiones && c.comisiones.length ? resumenComisiones(c.comisiones) : "",
+    nZip ? `<section class="mt-bloq"><div class="mt-t">Todo el material</div>
+      <button class="zip-btn" data-zip="${m.n}" title="Todos los PDF y archivos de la materia, en carpetas con el mismo orden que la página (sin videos)">${ICON_DL}<span>Descargar todo (ZIP)</span><small>${nZip} archivos</small></button></section>` : ""
+  ].join("");
+  const comis = c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : "";
+  const hayInfo = panel || comis;
   return `
-    <details class="cond-linea">
-      <summary><span class="cond-tit">Para aprobar</span>${chips.join("")}${hayDetalle ? `<span class="cond-mas">Ver detalle</span>` : ""}</summary>
-      ${hayDetalle ? `<div class="cond-det">
-        ${x.aclaracion ? `<p class="cond-aclara">${esc(x.aclaracion)}</p>` : ""}
-        ${x.requisitos && x.requisitos.length ? `<ul class="cond-req">${x.requisitos.map(r => `<li><b>${esc(r.titulo)}</b><span>${esc(r.detalle || "")}</span></li>`).join("")}</ul>` : ""}
-      </div>` : ""}
-    </details>`;
+    ${cab}
+    ${hayInfo ? `<div class="mt-seg" role="tablist"><button class="on" data-mt="material" role="tab">Material</button><button data-mt="info" role="tab">Sobre la materia</button></div>` : ""}
+    <div class="mt-cuerpo ${panel ? "" : "solo"}" data-ver="material">
+      <div class="mt-main">${partes}${filas}${suelto}${paraEmpezar(fuentesMateria(c))}</div>
+      ${panel ? `<aside class="mt-panel">${panel}</aside>` : ""}
+      ${comis}
+    </div>`;
 }
 
 /* Cuadro de comisiones: profesor, examen, comentario y recomendación */
@@ -3887,7 +4040,7 @@ function comisiones(lista, nota){
       <span data-l="Asistencia">${x.asistencia === undefined ? "—" : x.asistencia ? "Toma asistencia" : "No toma"}</span>
     </div>`;
   return `
-    <section class="comis">
+    <section class="comis" id="comis">
       <h2>Comisiones</h2>
       ${nota ? `<p class="comis-nota">${esc(nota)}</p>` : ""}
       <div class="comis-tabla${grupos.some(g => g.horario) ? " con-horario" : ""}">
@@ -3914,53 +4067,76 @@ function crumbs(m, ...rest){
   return `<div class="crumbs"><span data-go="nivel/${m.nivel}">${nombreCorto(m.nivel)}</span> / <span data-go="m${m.n}">${esc(m.nombre)}</span> / ${rest.join(" / ")}</div>`;
 }
 
+/* Resumen de un parcial: lo que conviene abrir primero, las secciones como filas y los temas
+   numerados; cada tema se despliega con lo que entra y su material (los archivos de las partes
+   que se llaman como el tema y los videos de su bloque) */
 function viewParcial(m, p){
-  const tarjeta = k => `
-    <div class="card" data-go="m${m.n}/${p.id}/${k}/material">
-      <div class="icon">${iconoSec(k)}</div>
-      <h3>${nombreSec(p, k)}</h3>
-      <p>${seccion(p, k).videos.length ? descSec(k) : descSec(k).replace(" y videos", "")}</p>
-      <div class="links">
-        <span class="pill" data-go="m${m.n}/${p.id}/${k}/material">📄 Material (${cantArchivos(seccion(p, k).material)})</span>
-        ${seccion(p, k).videos.length ? `<span class="pill" data-go="m${m.n}/${p.id}/${k}/videos">▶ Videos (${seccion(p, k).videos.length})</span>` : ""}
-        ${k === p.quizEn && p.quiz ? `<span class="pill" data-go="m${m.n}/${p.id}/quiz">✔ Quiz</span>` : ""}
-      </div>
-    </div>`;
-  // Práctica por temas: su tarjeta va antes de Parciales / Simulacros, y el recuadro "Practicá y entendé" no va
+  const fila = (go, ic, t, d, cu = "") => `
+    <div class="mt-fila" data-go="m${m.n}/${p.id}${go}"><span class="mt-ic">${ic}</span><span class="mt-fila-t"><b>${esc(t)}</b>${d ? `<small>${esc(d)}</small>` : ""}</span><span class="mt-cuenta">${cu}</span>${ICON_DER}</div>`;
+  const secs = seccionesDe(p).map(k => {
+    const x = seccion(p, k);
+    return fila(`/${k}/material`, iconoSec(k), nombreSec(p, k), x.videos.length ? descSec(k) : descSec(k).replace(" y videos", ""), cuentaParte(x, true));
+  });
+  const hs = (p.herramientas || []).filter(h => HERRAMIENTAS[h]);
   if(p.practicaTemas){
-    const secs = seccionesDe(p).map(tarjeta);
+    // Práctica por temas: va antes de Parciales / Simulacros; las explicaciones están adentro
     const i = seccionesDe(p).indexOf(p.quizEn);
     const cuantos = g => p.practica.filter(x => p.practicaTemas.some(t => t.id === x.tema && t.grupo === g.id)).length;
-    secs.splice(i < 0 ? secs.length : i, 0, `
-      <div class="card destacada" data-go="m${m.n}/${p.id}/practica">
-        <div class="icon">${ICON_CODIGO}</div>
-        <h3>Práctica</h3>
-        <p>Por temas, con la explicación y ejercicios de a pasos en ${p.practicaLenguaje === "java" ? "Java" : "Python"}, que se corrigen al instante.</p>
-        <div class="links">${p.practicaGrupos.map(g => `<span class="pill">${esc(g.titulo)} · ${cuantos(g)}</span>`).join("")}</div>
-      </div>`);
-    return `
-    ${crumbs(m, esc(p.titulo))}
-    <h1>${esc(p.titulo)}</h1>
-    <p class="lead">${esc(p.descripcion)}</p>
-    <div class="grid">${secs.join("")}</div>
-    ${temasBox(p.temas)}`;
+    secs.splice(i < 0 ? secs.length : i, 0, fila("/practica", ICON_CODIGO, "Práctica",
+      `Por temas, con la explicación y ejercicios de a pasos en ${p.practicaLenguaje === "java" ? "Java" : "Python"} que se corrigen al instante.`,
+      p.practicaGrupos.map(g => `<span>${esc(g.titulo)} · ${cuantos(g)}</span>`).join("")));
+  } else {
+    if(p.practica) secs.unshift(fila("/practica", ICON_CODIGO, "Práctica por partes", "El parcial de a pasos: escribís el código de cada parte y se corrige al instante.", `<span>${p.practica.length} ejercicios</span>`));
+    hs.forEach(h => secs.push(fila(`/h/${h}`, ICON_TOOL, HERRAMIENTAS[h].titulo, HERRAMIENTAS[h].corto)));
   }
+  if(p.quiz) secs.push(fila("/quiz", ICON_QUIZ, "Quiz", "Preguntas de parciales, con la corrección al instante."));
   return `
     ${crumbs(m, esc(p.titulo))}
     <h1>${esc(p.titulo)}</h1>
-    <p class="lead">${esc(p.descripcion)}</p>
-    ${practicaBox(m, p)}
-    <div class="grid">
-      ${p.practica ? `
-      <div class="card destacada" data-go="m${m.n}/${p.id}/practica">
-        <div class="icon">${ICON_CODIGO}</div>
-        <h3>Práctica por partes</h3>
-        <p>El parcial de a pasos: escribís el código de cada parte y se corrige al instante. ${p.practica.length} ejercicios.</p>
-        <div class="links"><span class="pill">▶ Empezar</span></div>
-      </div>` : ""}
-      ${seccionesDe(p).map(tarjeta).join("")}
-    </div>
-    ${temasBox(p.temas)}`;
+    ${p.descripcion ? `<p class="mt-lead">${esc(p.descripcion)}</p>` : ""}
+    <div class="mt-main pc">
+      ${paraEmpezar(partesDe(p).map(x => [x.material, ""]))}
+      <h2 class="mt-h2">Material</h2>
+      ${secs.join("")}
+      ${temasParcial(m, p)}
+    </div>`;
+}
+const normal = x => String(x).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+function materialDeTema(p, titulo){
+  const t = normal(titulo), archivos = [], videos = [];
+  // Una página sola (secciones: []) o una sección de la materia tienen el material adentro
+  const lugares = (p.secciones && !p.secciones.length) || p.material ? [[p, "videos"]] : seccionesDe(p).map(k => [seccion(p, k), `${k}/videos`]);
+  lugares.forEach(([x, ir]) => {
+    (x.material || []).forEach(g => (g.partes || []).forEach(pt => { if(normal(pt.titulo) === t) archivos.push(...pt.archivos); }));
+    (x.videos || []).forEach(v => { if(v.bloque && normal(v.bloque.split(" · ")[0]) === t) videos.push({ v, ir }); });
+  });
+  return { archivos, videos };
+}
+function temasParcial(m, p){
+  const t = p.temas;
+  if(!t || !t.unidades || !t.unidades.length) return "";
+  const plural = (n, x) => `${n} ${x}${n === 1 ? "" : "s"}`;
+  return `
+    <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
+    <div class="tm-lista">${t.unidades.map((u, i) => {
+      const { archivos, videos } = materialDeTema(p, u.titulo);
+      const cu = [archivos.length && plural(archivos.length, "archivo"), videos.length && plural(videos.length, "video")].filter(Boolean).join(" · ");
+      return `
+      <details class="tm-tema"${t.unidades.length === 1 ? " open" : ""}>
+        <summary><span class="tm-n">${i + 1}</span><span class="tm-t"><b>${esc(u.titulo)}</b><small>${esc(u.contenidos.join(" · "))}</small></span>${cu ? `<span class="tm-c">${cu}</span>` : ""}${ICON_CHEV}</summary>
+        <div class="tm-cuerpo">
+          <ul class="tm-cont">${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
+          ${archivos.length ? `<div class="tm-lbl">Para leer</div><div class="tm-archs">${archivos.map(f => {
+            const pdf = esPdfLocal(f), bajar = /^(ZIP|INO)$/.test(f.tipo);
+            return `<a class="tm-arch" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>${pdf
+              ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onload="this.classList.add('ok')" onerror="sinMini(this)">`
+              : `<span class="badge">${esc(f.tipo || "LINK")}</span>`}<span><b>${esc(f.nombre)}</b>${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span></a>`;
+          }).join("")}</div>` : ""}
+          ${videos.length ? `<div class="tm-lbl">Videos</div><div class="tm-vids">${videos.map(({ v, ir }) => `
+            <span class="tm-vid" data-go="m${m.n}/${p.id}/${ir}"${ytId(v.url) ? ` data-vid="${ytId(v.url)}"` : ""}>${ICON_PLAY}${esc(v.titulo || "Video")}</span>`).join("")}</div>` : ""}
+        </div>
+      </details>`;
+    }).join("")}</div>`;
 }
 
 /* Secciones propias de una materia (ej.: Teórico, Práctico, Cuestionarios, TPI) */
@@ -3981,24 +4157,9 @@ function viewSeccionMateria(m, x, tab){
       <div class="tab ${tab === "videos" ? "active" : ""}" data-go="${base}/videos">Videos (${x.videos.length})</div>
     </div>` : ""}
     <div id="tabBody">${tab === "material" || !conVideos ? filesList(x.material || []) : ""}</div>
-    ${tab === "material" || !conVideos ? temasBox(x.temas) : ""}`;
+    ${tab === "material" || !conVideos ? `<div class="mt-main pc">${temasParcial(m, x)}</div>` : ""}`;
 }
 
-/* Temas que entran en el parcial (opcional: campo "temas" del parcial) */
-function temasBox(t){
-  if(!t || !t.unidades || !t.unidades.length) return "";
-  return `
-    <section class="temas ${t.unidades.length > 6 ? "muchas" : ""}">
-      <div class="temas-head">
-        <h2>${esc(t.titulo || "Temas que entran")}</h2>
-      </div>
-      ${t.unidades.map(u => `
-        <div class="unidad">
-          <h3>${esc(u.titulo)}</h3>
-          <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
-        </div>`).join("")}
-    </section>`;
-}
 
 /* ---------- Descarga de toda la materia en un ZIP ----------
    Se arma en el navegador con los archivos del repo (material/...), en carpetas
@@ -4338,12 +4499,17 @@ let visorLista = [], visorPos = 0;
 const vz = { doc: null, tarea: 0, pags: [], zoom: 1, actual: 0, ancho: 0, textos: null, q: "", marcas: [], marcaPos: -1, obs: null, obsMini: null };
 const ZOOMS = [.5, .67, .8, 1, 1.25, 1.5, 2, 3];
 
+/* En la compu ancha el PDF se abre al costado, como un artefacto de Claude: la página sigue a la izquierda */
+const VISOR_COSTADO = "(min-width: 1280px)";
+const conMinis = () => matchMedia("(min-width: 900px)").matches && !document.body.classList.contains("con-visor");
 function abrirVisor(a){
-  visorLista = a.classList.contains("file") ? [...document.querySelectorAll("#app a.file[data-pdf]")] : [a];
+  const tipo = ["file", "tm-arch"].find(x => a.classList.contains(x));
+  visorLista = tipo ? [...document.querySelectorAll(`#app a.${tipo}[data-pdf]`)] : [a];
   visorPos = Math.max(0, visorLista.indexOf(a));
   const d = $("#visor");
   if(!d.open){
-    d.showModal();
+    if(matchMedia(VISOR_COSTADO).matches){ document.body.classList.add("con-visor"); d.show(); }
+    else d.showModal();
     // Así el botón "atrás" del celular cierra el visor en vez de salir de la página
     if(!(history.state && history.state.visor)) history.pushState({ visor: 1 }, "");
   }
@@ -4505,7 +4671,7 @@ function armarMiniaturas(){
   const nav = $("#visorMinis");
   nav.innerHTML = "";
   if(vz.obsMini) vz.obsMini.disconnect();
-  if(!matchMedia("(min-width: 900px)").matches || vz.pags.length < 2) return;
+  if(!conMinis() || vz.pags.length < 2) return;
   nav.innerHTML = vz.pags.map((g, i) =>
     `<button class="vmini" data-n="${i + 1}" title="Página ${i + 1}"><span class="vm-hoja" style="aspect-ratio:${g.vp.width} / ${g.vp.height}"></span>${i + 1}</button>`).join("");
   const t = vz.tarea;
@@ -4684,6 +4850,7 @@ document.addEventListener("keydown", e => {
   if(btn && btn.offsetParent && !document.querySelector("dialog[open]")){ e.preventDefault(); btn.click(); }
 });
 
+let videoPedido = null;   // id de YouTube con el que tiene que arrancar la próxima lista (se toca en un tema)
 function mountPlayer(videos, titulo){
   const body = $("#tabBody");
   if(!videos.length){ body.innerHTML = `<div class="empty">Todavía no hay videos cargados.</div>`; return; }
@@ -4834,7 +5001,10 @@ function mountPlayer(videos, titulo){
   };
 
   dibujar();
-  play(0);
+  const i0 = videoPedido ? Math.max(0, lista.findIndex(v => v.id === videoPedido)) : 0;
+  if(videoPedido) elegido = true;     // al llegar los títulos no vuelve al primero
+  videoPedido = null;
+  play(i0);
 
   // Trae los títulos que falten y actualiza solo la lista (el video que se está viendo no se corta)
   const c0 = id => titulosYT[id] && Date.now() - titulosYT[id].f < 86400000;
@@ -6596,6 +6766,8 @@ function viewHerramienta(m, p, id){
 
 const ICON_MAS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
 const ICON_CHECK_CHICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4.5 4.5L19 7"/></svg>';
+const ICON_PULGAR_SI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 8a2 2 0 0 1-1.9 1.4H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.8a2 2 0 0 0 1.8-1.1L12 2a3.1 3.1 0 0 1 3 3.9z"/></svg>';
+const ICON_PULGAR_NO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V2"/><path d="M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.8a2 2 0 0 0-1.8 1.1L12 22a3.1 3.1 0 0 1-3-3.9z"/></svg>';
 const ICON_LUNA_CHICA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>';
 
 /* ---------- Inicio ----------
@@ -6745,7 +6917,7 @@ function grillaCr(bloques, { t0, t1, px, dias, compacta }){
       const y = (aMin(b.a) - t0) * px, alto = (aMin(b.z) - aMin(b.a)) * px, w = 100 / b.de;
       const accion = b.tipo === "opcion" ? ` data-cr="elegir" data-k="${b.k}" data-com="${esc(b.com)}" role="button" tabindex="0"` : b.tipo === "elegida" && !compacta ? ` data-cr="cambiar" data-k="${b.k}" role="button" tabindex="0"` : "";
       h += `<div class="cr-b mc ${b.tipo} ${b.de > 1 ? "angosto" : ""}"${accion} style="top:${y + 1}px;height:${Math.max(alto - 3, 16)}px;left:calc(${w * b.carril}% + 3px);width:calc(${w}% - 6px);${colorMat(b.k).css}" title="${esc(b.titulo || "")}">
-        <b>${esc(b.tit)}</b>${b.sub ? `<small>${esc(b.sub)}</small>` : ""}${b.extra || ""}</div>`;
+        <b>${esc(b.tit)}${b.marca || ""}</b>${b.sub ? `<small>${esc(b.sub)}</small>` : ""}${b.extra || ""}</div>`;
     }
     cols.push(`<div class="cr-col">${h}</div>`);
   }
@@ -6767,6 +6939,18 @@ function rangoCr(bloques, compacta){
   const usados = TURNOS.filter(([, ta, tz]) => a < tz && z > ta);
   return [Math.min(usados[0][1], Math.floor(a / 60) * 60), Math.max(usados[usados.length - 1][2], z)];
 }
+/* ¿Se recomienda la comisión? Sale del cuadro de comisiones de la materia (recomendada: true / false, con el motivo
+   o el comentario). Si de esa comisión no hay nada cargado, no se marca. */
+function recoCom(k, com){
+  const i = infoMat(k), c = i && i.n && MATERIAS[i.n];
+  if(!c || !c.comisiones) return null;
+  const igual = x => String(x).toUpperCase().replace(/\s+/g, "") === String(com).toUpperCase().replace(/\s+/g, "");
+  const es = c.comisiones.filter(x => igual(x.comision)), r = es.find(x => x.recomendada !== undefined);
+  if(!r) return null;
+  return { si: !!r.recomendada, por: (es.find(x => x.motivo) || {}).motivo || (es.find(x => x.comentario) || {}).comentario || "" };
+}
+const textoReco = r => r ? `${r.si ? "Recomendada" : "No recomendada"}${r.por ? `: ${r.por}` : ""}` : "";
+const marcaReco = r => r ? `<span class="cr-reco ${r.si ? "si" : "no"}" aria-label="${r.si ? "Recomendada" : "No recomendada"}">${r.si ? ICON_PULGAR_SI : ICON_PULGAR_NO}</span>` : "";
 const nombreCom = (k, com) => { const x = HOR && HOR.cuatrimestres[CR.q.split("-")[1]][k]; return x && x[com] && x[com].cc ? `${com} · contracuatr.` : com; };
 const textoHoras = b => b.map(([d, a, z]) => `${DIAS_CORTO[d + 1]} ${a}–${z}`).join(" · ");
 
@@ -6824,21 +7008,23 @@ function pintarCuerpoCr(){
   const bs = [];
   for(const [k, x] of Object.entries(elegidas)){
     const i = infoMat(k), actual = CR.eligiendo === k;
-    x.b.forEach(([d, a, z]) => bs.push({ d, a, z, k, tipo: "elegida" + (actual ? " actual" : ""), tit: `${i && i.abr ? i.abr : (i ? i.nombre : k)} · ${x.c}`, sub: `${a}–${z}`, titulo: `${i ? i.nombre : k} · ${x.c}${actual ? " (la que tenés ahora)" : " · tocá para cambiar de comisión"}` }));
+    const r = actual && recoCom(k, x.c), rt = textoReco(r);
+    x.b.forEach(([d, a, z]) => bs.push({ d, a, z, k, marca: marcaReco(r), tipo: "elegida" + (actual ? " actual" : ""), tit: `${i && i.abr ? i.abr : (i ? i.nombre : k)} · ${x.c}`, sub: `${a}–${z}`, titulo: `${i ? i.nombre : k} · ${x.c}${actual ? " (la que tenés ahora)" : " · tocá para cambiar de comisión"}${rt ? `\n${rt}` : ""}` }));
   }
   if(CR.eligiendo && ofertas[CR.eligiendo]){
     const k = CR.eligiendo;
     for(const [com, x] of Object.entries(ofertas[k])){
       if(elegidas[k] && elegidas[k].c === com) continue;
-      const con = chocaCon(x.b, elegidas, k), ci = con && infoMat(con);
+      const con = chocaCon(x.b, elegidas, k), ci = con && infoMat(con), r = recoCom(k, com), rt = textoReco(r), marca = marcaReco(r);
       x.b.forEach(([d, a, z]) => bs.push(con
-        ? { d, a, z, k, com, tipo: "choca", tit: com, sub: `Se pisa con ${ci && ci.abr ? ci.abr : ci ? ci.nombre : con}`, titulo: `${com}: se pisa con ${ci ? ci.nombre : con}` }
-        : { d, a, z, k, com, tipo: "opcion", tit: nombreCom(k, com), sub: `${a}–${z}`, titulo: `Elegir ${com} (${textoHoras(x.b)})`, extra: `<span class="cr-elegir">${ICON_CHECK_CHICO}Elegir</span>` }));
+        ? { d, a, z, k, com, marca, tipo: "choca", tit: com, sub: `Se pisa con ${ci && ci.abr ? ci.abr : ci ? ci.nombre : con}`, titulo: `${com}: se pisa con ${ci ? ci.nombre : con}${rt ? `\n${rt}` : ""}` }
+        : { d, a, z, k, com, marca, tipo: "opcion", tit: nombreCom(k, com), sub: `${a}–${z}`, titulo: `Elegir ${com} (${textoHoras(x.b)})${rt ? `\n${rt}` : ""}`, extra: `<span class="cr-elegir">${ICON_CHECK_CHICO}Elegir</span>` }));
     }
   }
   const dias = bs.some(b => b.d === 5) ? 6 : 5;
+  const conReco = CR.eligiendo && ofertas[CR.eligiendo] && Object.keys(ofertas[CR.eligiendo]).some(com => recoCom(CR.eligiendo, com));
   const ayuda = CR.eligiendo
-    ? `Tocá una comisión para quedarte con esa. Las <span class="cr-mues opcion"></span> se pueden elegir; las <span class="cr-mues choca"></span> se pisan con algo que ya elegiste.`
+    ? `Tocá una comisión para quedarte con esa. Las <span class="cr-mues opcion"></span> se pueden elegir; las <span class="cr-mues choca"></span> se pisan con algo que ya elegiste.${conReco ? ` <span class="cr-reco-ley">${marcaReco({ si: true })} recomendada · ${marcaReco({ si: false })} no, según lo que cargaste de las comisiones</span>` : ""}`
     : Object.keys(elegidas).length ? `Sumá otra materia o tocá una que ya elegiste para cambiarle la comisión.` : `Empezá eligiendo una materia: se marcan todas sus comisiones en la grilla.`;
   el.innerHTML = `
     <div class="cr-bandeja">${chips}${eligiendo}
@@ -6853,7 +7039,10 @@ function pickerCr(ofertas, elegidas){
   const todas = Object.keys(ofertas).map(infoMat).filter(x => x && !elegidas[x.k] && !yaHecha(x))
     .filter(x => !q || x.nombre.toLowerCase().includes(q) || x.abr.toLowerCase().includes(q))
     .sort((a, b) => ((a.m && a.m.nivel) || 9) - ((b.m && b.m.nivel) || 9) || a.nombre.localeCompare(b.nombre));
-  const fila = x => `<button class="cr-pk-f mc" data-cr="eligiendo" data-k="${x.k}" style="${colorMat(x.k).css}"><i></i><span>${esc(x.nombre)}</span><small>${Object.keys(ofertas[x.k]).length} com.</small></button>`;
+  const fila = x => {
+    const coms = Object.keys(ofertas[x.k]), si = coms.filter(com => (recoCom(x.k, com) || {}).si).length;
+    return `<button class="cr-pk-f mc" data-cr="eligiendo" data-k="${x.k}" style="${colorMat(x.k).css}"><i></i><span>${esc(x.nombre)}</span><small>${si ? `<span class="cr-pk-reco" title="${si} recomendada${si === 1 ? "" : "s"}">${ICON_PULGAR_SI}${si}</span>` : ""}${coms.length} com.</small></button>`;
+  };
   const si = todas.filter(puedeCursar), no = todas.filter(x => !puedeCursar(x));
   return `<div class="cr-picker" role="dialog" aria-label="Sumar una materia">
     <input id="crFiltro" class="cr-pk-in" type="search" placeholder="Buscar materia…" value="${esc(CR.filtro)}" autocomplete="off" data-cr-filtro>
@@ -7203,6 +7392,15 @@ document.addEventListener("click", e => {
     return;
   }
   if(e.target.closest("[data-lado]") || e.target.id === "ladoVelo"){ abrirLado(!document.body.classList.contains("lado-abierto")); return; }
+  // Materia en el celular: pestañas Material / Sobre la materia; y el salto a las comisiones
+  const mt = e.target.closest("[data-mt]");
+  if(mt){
+    document.querySelectorAll("[data-mt]").forEach(x => x.classList.toggle("on", x === mt));
+    $(".mt-cuerpo").dataset.ver = mt.dataset.mt;
+    return;
+  }
+  const ir = e.target.closest("[data-ir]");
+  if(ir){ const d = document.getElementById(ir.dataset.ir); if(d) d.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   // Cronograma: cerrar la lista de materias o el globo del calendario al tocar afuera
   if(CR.picker && !e.target.closest(".cr-sumar")){ CR.picker = false; pintarCuerpoCr(); }
   if(CR.sel && !e.target.closest("#calPop, .cal-d, .fe-btn")){ CR.sel = null; pintarCalendario(); }
@@ -7224,6 +7422,7 @@ document.addEventListener("click", e => {
   if(!el) return;
   e.preventDefault();
   e.stopPropagation();
+  if(el.dataset.vid) videoPedido = el.dataset.vid;
   const go = el.dataset.go === "inicio" ? "" : el.dataset.go;
   if(go === ruta) render(); else location.hash = "#/" + go;
 });
@@ -7255,6 +7454,7 @@ $("#visorQ").addEventListener("input", () => { clearTimeout(timerBuscar); timerB
 $("#visorMinis").addEventListener("click", e => { const b = e.target.closest(".vmini"); if(b) irAPagina(+b.dataset.n); });
 $("#visorDoc").addEventListener("scroll", () => requestAnimationFrame(() => actualizarPag()), { passive: true });
 $("#visor").addEventListener("close", () => {
+  document.body.classList.remove("con-visor");
   limpiarVisor();
   $("#visorQ").value = "";
   $("#visorBuscar").hidden = true;
@@ -7273,6 +7473,11 @@ $("#visor").addEventListener("keydown", e => {
   else if(e.key === "-"){ e.preventDefault(); zoomVisor(-1); }
   else if(e.key === "0"){ e.preventDefault(); zoomVisor(0); }
 });
+// Al costado no es modal: Esc lo cierra igual (si la búsqueda está abierta, primero cierra la búsqueda)
+document.addEventListener("keydown", e => {
+  if(e.key !== "Escape" || e.defaultPrevented || !$("#visor").open || !document.body.classList.contains("con-visor")) return;
+  if(!$("#visorBuscar").hidden) cerrarBusqueda(); else $("#visor").close();
+});
 // El botón "atrás" (celular o navegador) cierra el visor
 window.addEventListener("popstate", () => { if($("#visor").open) $("#visor").close(); });
 if(history.state && history.state.visor) history.replaceState(null, "");
@@ -7283,7 +7488,7 @@ window.addEventListener("resize", () => {
   clearTimeout(timerVisor);
   timerVisor = setTimeout(() => {
     if($("#visorDoc").clientWidth !== vz.ancho) rearmarVisor();
-    const anchoMinis = matchMedia("(min-width: 900px)").matches;
+    const anchoMinis = conMinis();
     if(anchoMinis !== !!$("#visorMinis").children.length){ armarMiniaturas(); actualizarPag(true); }
   }, 150);
 });
