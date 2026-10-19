@@ -93,8 +93,8 @@
   .pvolver:hover{background:var(--hover);color:var(--text)}
   .pvolver::after{content:"";position:absolute;right:-8px;top:7px;bottom:7px;width:1px;background:var(--line2)}
   .pvolver + .ptab{padding-left:12px}
-  .pv-c{display:none}
-  .pv-l{max-width:240px;overflow:hidden;text-overflow:ellipsis}
+  .pvolver .pv-abr{font-size:.66rem;padding:2px 8px;margin:0 4px 0 2px;letter-spacing:.03em}
+  .pv-l{max-width:240px;overflow:hidden;text-overflow:ellipsis;font-weight:500;color:var(--text)}
   .ptab:hover{color:var(--text)}
   .ptab.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
   @media (max-width:899px){
@@ -110,8 +110,7 @@
     .parnav-in{padding:0 16px}
     .ptab{padding:9px 10px 8px;font-size:.84rem}
     .pvolver{margin:4px 10px 4px -4px;height:30px;font-size:.84rem;font-weight:500}
-    .pv-l{display:none}
-    .pv-c{display:inline}
+    .pv-l:not(.sin-abr){display:none}
   }
   .pie{max-width:1560px;margin:40px auto 0;font-size:.8rem;color:var(--muted)}
 
@@ -383,6 +382,24 @@
   .tab.active{color:var(--text);border-bottom-color:var(--accent);font-weight:600}
 
   /* Material */
+  /* Parciales y simulacros: una fila por examen que se despliega con sus archivos */
+  .ex-lista{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .ex-fila + .ex-fila{border-top:1px solid var(--line)}
+  .ex-fila summary{display:flex;align-items:center;gap:14px;padding:13px 16px;cursor:pointer;list-style:none;transition:background .12s}
+  .ex-fila summary::-webkit-details-marker{display:none}
+  .ex-fila summary:hover{background:var(--hover)}
+  .ex-t{flex:1;min-width:0}
+  .ex-t b{font-weight:500;font-size:.95rem}
+  .ex-tema{color:var(--text2)}
+  .ex-t small{display:block;color:var(--muted);font-size:.8rem;margin-top:1px}
+  .ex-c{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);white-space:nowrap}
+  .ex-fila summary > svg{width:16px;height:16px;color:var(--muted);flex:none;transform:rotate(-90deg);transition:transform .15s}
+  .ex-fila[open] summary > svg{transform:none}
+  .ex-fila[open] summary{border-bottom:1px solid var(--line)}
+  .ex-cuerpo{background:var(--bg);padding:10px 12px 12px}
+  .ex-cuerpo .sim{margin:2px 0 10px}
+  .pr-grupo-mat{margin:0 0 14px}
+  @media (max-width:760px){ .ex-c .tag{display:none} .ex-fila summary{padding:12px} }
   /* Lista de archivos como los de un proyecto de Claude: una tarjeta por bloque y una fila por archivo */
   .files{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
   .file{display:flex;align-items:center;gap:14px;padding:10px 16px;color:inherit;transition:background .12s}
@@ -487,7 +504,7 @@
     body.con-visor dialog.visor{left:auto;width:var(--visor-w);border-left:1px solid var(--line);background:var(--hover);box-shadow:-16px 0 32px -28px rgba(0,0,0,.4)}
     body.con-visor .vb-t{display:none}
     body.con-visor .comis-tabla{overflow-x:auto}
-    body.con-visor .comis-grupo{min-width:840px}
+    body.con-visor .comis-grupo{min-width:820px}
   }
   @media (max-width:760px){
     dialog.visor{width:100vw;height:100vh;height:100dvh;border-radius:0}
@@ -962,19 +979,19 @@
   .comis h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:12px}
   .comis-tabla{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
   /* Cada comisión es un grupo: el código a la izquierda y sus profesores al lado */
-  .comis-grupo{display:grid;grid-template-columns:62px 310px minmax(0,1fr) 120px 170px;gap:18px;padding:0 18px;font-size:.9rem;line-height:1.5}
+  .comis-grupo{display:grid;grid-template-columns:72px minmax(220px,1.1fr) minmax(0,1.7fr) minmax(110px,.7fr) 104px;gap:20px;padding:0 20px;font-size:.9rem;line-height:1.5;align-items:center}
   .comis-grupo + .comis-grupo{border-top:1px solid var(--line)}
   .comis-cod{display:flex;align-items:center;padding:14px 0}
   .comis-cod small{color:var(--muted);font-size:.78rem;line-height:1.3}
-  .con-horario .comis-grupo{grid-template-columns:132px 310px minmax(0,1fr) 120px 170px}
+  .con-horario .comis-grupo{grid-template-columns:118px minmax(220px,1.1fr) minmax(0,1.7fr) minmax(110px,.7fr) 104px}
   .comis-com{line-height:1.5}
   .comis-com b{font-weight:600}
-  .comis-reco{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:14px 0}
+  .comis-reco{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:12px 0}
   .comis-reco small{display:block;color:var(--muted);font-size:.82rem;margin-top:4px}
   .comis-head .comis-reco{padding:10px 0;justify-content:center}
   .con-horario .comis-cod{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px}
   .comis-nota{font-size:.88rem;color:var(--muted);margin:-4px 0 12px}
-  .comis-fila{display:grid;grid-template-columns:170px 122px;gap:18px;padding:14px 0;align-items:start}
+  .comis-fila{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:12px;padding:12px 0;align-items:center}
   .comis-fila + .comis-fila{border-top:1px dashed var(--line)}
   .comis-head{background:var(--bg);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
   .comis-head .comis-cod,.comis-head .comis-fila{padding:10px 0}
@@ -982,8 +999,14 @@
   .reco{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:999px}
   .reco.si{background:var(--ok-soft);color:var(--ok)}
   .reco.no{background:var(--rojo-f);color:var(--rojo)}
-  .comis-fila small{display:block;color:var(--muted);font-size:.82rem;margin-top:4px}
-  .c-prof{text-align:center}
+  .comis-fila small{display:block;color:var(--muted);font-size:.78rem;margin-top:1px}
+  .c-prof{text-align:left}
+  .comis-centro{text-align:center;align-items:center}
+  .comis-reco.comis-centro{align-items:center}
+  .asis{display:inline-block;font-size:.74rem;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--hover);color:var(--text2);white-space:nowrap}
+  .asis.si{background:var(--mark);color:var(--mark-t)}
+  .comis-mot{display:block;color:var(--muted);font-size:.8rem;margin-top:4px;line-height:1.45}
+  .comis-vacio{color:var(--line2)}
 
   @media (max-width:900px){
     .comis-head{display:none}
@@ -992,8 +1015,8 @@
     .comis-cod{padding:14px 0 0}
     .comis-cod::before{content:"Comisión";font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:8px}
     .comis-fila{grid-template-columns:1fr;gap:6px}
-    .c-prof{text-align:left}
     .comis-reco{padding:0 0 14px}
+    .comis-centro,.comis-reco.comis-centro{text-align:left;align-items:flex-start}
     .comis-fila > span::before,.comis-reco::before{content:attr(data-l);display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
   }
   .back{color:var(--muted)}
@@ -1214,6 +1237,112 @@
     .pr-res{max-height:none}
     .pr-barra .pr-fuerte{flex:1}
     .pr-cab{align-items:flex-start;flex-direction:column}
+  }
+
+  /* ---------- El parcial por partes ---------- */
+  .ejp :not(pre) > code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:0 5px}
+  .ejp-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px;margin-bottom:12px}
+  .ejp-cab h1{margin:0}
+  .ejp-prog{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--muted);width:min(300px,100%)}
+  .ejp-prog b{color:var(--text)}
+  .ejp-prog .bar{flex:1}
+  .ejp-partes{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 10px;scroll-margin-top:calc(var(--barra-h, 64px) + 8px)}
+  .ejp-partes::-webkit-scrollbar{display:none}
+  .ejp-parte small{font-size:.7rem;font-weight:600;color:var(--muted)}
+  .ejp-expl{display:grid;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 16px;margin-bottom:12px}
+  .ejp-expl-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+  .ejp-n,.ejp-num{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent)}
+  .ejp-expl p{margin:0;font-size:.9rem;line-height:1.5}
+  .ejp-ejs{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+  .ejp-ej{font:inherit;font-size:.8rem;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px 11px;cursor:pointer}
+  .ejp-ej:hover{border-color:var(--accent)}
+  .ejp-ej.ok{color:var(--ok)}
+  .ejp-ej.on{color:var(--text);border-color:var(--accent);background:var(--accent-soft)}
+  .ejp-num{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+  .ejp-num > span{display:contents}
+  .ejp-hecho{font-size:.72rem;letter-spacing:0;text-transform:none;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:2px 9px}
+  .ejp-desm{font-size:.74rem;font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted)}
+  .ejp-tit{font-family:var(--serif);font-weight:500;font-size:1.45rem;margin:2px 0 10px}
+  .ejp-donde{display:flex;align-items:baseline;gap:10px;font-size:.88rem;line-height:1.5;background:var(--accent-soft);border-radius:10px;padding:8px 12px;margin-bottom:14px}
+  .ejp-donde > span{flex:none;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent)}
+  .ejp-tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:14px;overflow-x:auto;scrollbar-width:none}
+  .ejp-tabs::-webkit-scrollbar{display:none}
+  .ejp-tabs button{flex:none;font:inherit;font-size:.87rem;font-weight:600;color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;padding:7px 12px;margin-bottom:-1px;cursor:pointer}
+  .ejp-tabs button:hover{color:var(--text)}
+  .ejp-tabs button.on{color:var(--text);border-bottom-color:var(--accent)}
+  .ejp-tabs small{font-weight:600;color:var(--muted)}
+  .ejp-md p,.ejp-md li{font-size:.93rem;line-height:1.6;margin:0 0 8px}
+  .ejp-md ol,.ejp-md ul{padding-left:20px;margin:0 0 8px}
+  .ejp-datos{font-size:.88rem;line-height:1.5;background:var(--mark);color:var(--mark-t);border-radius:10px;padding:8px 12px;margin:10px 0}
+  .ejp-tabla{margin:12px 0}
+  .ejp-tabla-t{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+  .ejp-csv-w{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:0 0 8px}
+  .ejp-csv{border-collapse:collapse;font:12.5px/1.4 ui-monospace,Menlo,Consolas,monospace;width:max-content;min-width:100%}
+  .ejp-csv th,.ejp-csv td{padding:6px 10px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-align:left;white-space:nowrap}
+  .ejp-csv th{background:var(--bg);font-weight:700;color:var(--muted)}
+  .ejp-csv tr:last-child td{border-bottom:0}
+  .ejp-csv th:last-child,.ejp-csv td:last-child{border-right:0}
+  .ejp-csv .nueva{background:var(--mark);color:var(--mark-t)}
+  .ejp-csv-n{color:var(--muted);text-align:right;width:1%;user-select:none}
+  .ejp-csv .falta{color:var(--rojo);background:var(--rojo-f);font-style:italic}
+  .ejp-csv .vacio{color:var(--muted)}
+  .ejp-csv tr.mal .ejp-csv-n{color:var(--rojo);font-weight:700}
+  .ejp-csv-ley{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.78rem;color:var(--muted);margin:0 0 8px}
+  .ejp-csv-ley span{display:inline-flex;align-items:center;gap:6px}
+  .ejp-csv-ley i{width:12px;height:12px;border-radius:3px;background:var(--mark);border:1px solid var(--mark-l)}
+  .ejp-csv-ley i.falta{background:var(--rojo-f);border-color:var(--rojo-l)}
+  .ejp-crudo summary{cursor:pointer;font-size:.8rem;color:var(--muted)}
+  .ejp-crudo pre{font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;overflow-x:auto;margin-top:6px}
+  .ejp-lista{list-style:none;counter-reset:n;display:grid;gap:8px;padding:0;margin:0 0 12px}
+  .ejp-lista li{counter-increment:n;position:relative;font-size:.91rem;line-height:1.5;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 12px 8px 44px}
+  .ejp-lista li::before{content:counter(n);position:absolute;left:11px;top:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:.74rem;font-weight:800}
+  .ejp-lista.pistas li::before{content:"💡";background:none;font-size:.9rem}
+  .ejp-vacio{color:var(--muted);font-size:.88rem;margin:0 0 10px}
+  /* El área de trabajo entra en la pantalla con el encabezado arriba (en pantallas bajas, al menos 520px) */
+  .ejp-ws{height:max(520px, calc(100vh - var(--barra-h, 64px) - 330px));min-height:0}
+  .ejp-der{overflow-y:auto}
+  .ejp-der .pr-ed{min-height:240px}
+  .ejp-leng{margin:0 6px 6px auto;align-self:center;font:600 .66rem var(--sans);color:#9aa3ad;border:1px solid #39404a;border-radius:6px;padding:1px 7px}
+  .ejp-sol{display:block;overflow:auto}
+  .ejp-sol pre{margin:0;padding:12px 0;font:inherit;color:#e6e6e6;min-width:max-content}
+  .ejp-l{display:block;white-space:pre;padding-right:16px;min-height:1.6em}
+  .ejp-l i{display:inline-block;width:46px;padding-right:10px;margin-right:14px;text-align:right;color:#59626d;font-style:normal;user-select:none}
+  .ejp-l.nueva{background:rgba(95,184,195,.17);box-shadow:inset 3px 0 0 #5fb8c3}
+  .ejp-l.nueva i{color:#5fb8c3}
+  .ejp-op-w{flex:1;min-height:0;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+  .ejp-op-cab{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin-bottom:10px;font-size:.93rem}
+  .ejp-op-cab span{font-size:.8rem;color:var(--muted)}
+  .ejp-items{list-style:none;display:grid;gap:8px;padding:0;margin:0}
+  .ejp-item{display:grid;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .ejp-item.ok{border-color:var(--done-line);background:var(--done)}
+  .ejp-item.mal{border-color:var(--rojo-l)}
+  .ejp-item-t{font-size:.91rem;line-height:1.45}
+  .ejp-item-t > code{word-break:break-all}
+  .ejp-ops{display:flex;flex-wrap:wrap;gap:6px}
+  .ejp-op{font:inherit;font-size:.82rem;font-weight:600;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 13px;cursor:pointer}
+  .ejp-op:hover{border-color:var(--accent)}
+  .ejp-op.on{background:var(--brand);border-color:var(--brand);color:#fff}
+  .ejp-item.mal .ejp-op.on{background:var(--error);border-color:var(--error)}
+  .ejp-op.bien{box-shadow:0 0 0 2px var(--ok)}
+  .ejp-motivo{font-size:.84rem;line-height:1.45;color:var(--muted)}
+  .ejp-item.mal .ejp-motivo{color:var(--text)}
+  .ejp-texto{flex:1;min-height:200px;font:13.5px/1.6 ui-monospace,Menlo,Consolas,monospace;color:#e6e6e6;background:#1e2228;border:0;border-radius:0 0 12px 12px;padding:12px 14px;resize:vertical;outline:none}
+  .ejp-texto::placeholder{color:#6b7480}
+  .ejp-check{display:grid;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.87rem;line-height:1.45}
+  .ejp-check label{display:flex;gap:9px;align-items:flex-start;cursor:pointer}
+  .ejp-check input{margin-top:3px;accent-color:var(--accent);flex:none}
+  .ejp-aviso{font-size:.78rem;color:var(--muted);margin:0}
+  .ejp-acc{display:flex;flex-wrap:wrap;gap:6px}
+  .ejp-ejemplo{font:12.5px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;white-space:pre-wrap;width:100%;margin:0}
+  @media (max-width:900px){
+    .ejp-ws{display:flex;flex-direction:column;gap:12px;height:auto}
+    .ejp-ejs{margin-left:0;width:100%}
+    .ejp-der{overflow:visible}
+    .ejp-op-w{flex:none;overflow:visible;padding:12px}
+    .ejp-texto{flex:none;height:38vh}
+    .ejp-cab{flex-direction:column;align-items:flex-start}
+    .ejp-prog{width:100%}
+    .ejp-expl{padding:12px 14px}
   }
 
   /* ---------- Modo simulacro ---------- */
@@ -2100,11 +2229,14 @@ const MATERIAS = {
         secciones: ["teorico", "parcial"],
         nombres: { parcial: "Parciales / Simulacros" },
         quizEn: "parcial",          // el quiz y el paso a paso se muestran arriba de esta sección
+        practicaParcial: "practica/bk-parcial/ejercicios.json",   // "El parcial por partes": las 7 partes con ejercicios de todos los parciales
         // Práctica: ejercicios de a pasos con Java que corre en el navegador (practica/java/, practica/bk-p1/*.json),
         // ordenados por tema; cada tema trae su explicación (herramientas). El quiz va en Parciales / Simulacros.
         practicaLenguaje: "java",
         practicaGrupos: [
-          { id: "basico", titulo: "Básico", detalle: "Lo que ya trae el preenunciado: la clase del dominio, leer el CSV y las consultas con Streams." },
+          { id: "basico", titulo: "Básico", detalle: "Lo que ya trae el preenunciado: la clase del dominio, leer el CSV y las consultas con Streams.", material: [
+            { nombre: "Resumen de lo básico · guía rápida", nota: "Lo básico", detalle: "Lo que ya te dan en el parcial: JDK 21 y Maven en Windows, generar el proyecto, paquetes app / entidades / servicios, leer cualquier CSV, 15 búsquedas con Streams, comandos y checklist (16 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-rapida-para-el-parcial-windows.pdf" }
+          ] },
           { id: "parcial", titulo: "Para el parcial", detalle: "Los cambios que piden el día del parcial: el dato nuevo con herencia, los dos formatos, el conteo y el main." }
         ],
         practicaTemas: [
@@ -2224,32 +2356,48 @@ const MATERIAS = {
           ]
         },
         parcial: {
+          // Arriba van las herramientas para practicar (quiz, paso a paso, ejercicios). Después, las dos guías y
+          // cada parcial o simulacro en una fila que se despliega con sus archivos (filas: true)
           material: [
-            { nivel: "esencial", grupo: "Antes de empezar", descripcion: "Lo que hay que tener listo y saber antes del parcial: instalar, armar el proyecto, leer el CSV y buscar con Streams.", archivos: [
-              { n: 1, nombre: "Guía rápida para el parcial (Windows)", nota: "Empezá por acá", detalle: "JDK 21 y Maven en Windows, generar el proyecto, paquetes app / entidades / servicios, leer cualquier CSV, 15 búsquedas con Streams, comandos y checklist (16 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-rapida-para-el-parcial-windows.pdf" }
+            { grupo: "Para estudiar", descripcion: "Primero, cómo resolverlo paso a paso; después, todas las preguntas con su respuesta.", archivos: [
+              { n: 1, nombre: "Cómo resolver el parcial · paso a paso", nota: "Empezá por acá", detalle: "El orden para resolverlo: parser, dominio, polimorfismo, colector, main y entrega. Cada paso con el código antes y después (lo nuevo marcado) y qué hacer si te piden otra cosa, según los 5 parciales", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/como-resolver-el-parcial-paso-a-paso.pdf" },
+              { n: 2, nombre: "Guía única del 1º parcial", detalle: "Todas las preguntas, con multiple choice: el parcial real tal cual salió, cómo corrige el profe la parte práctica, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (35 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
             ] },
-            { nivel: "esencial", grupo: "Para estudiar", descripcion: "Todas las preguntas del parcial, el preparcial, los cuestionarios y los simulacros en un solo archivo, sin repetidas.", archivos: [
-              { n: 2, nombre: "Guía única del 1º parcial", detalle: "El parcial real tal cual salió, cómo se resolvía y cómo corrige el profe la parte práctica; preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (35 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
-            ] },
-            { nivel: "esencial", grupo: "Parcial tomado · 3K1 · 19/09/2026", descripcion: "El día anterior se da el preenunciado con el proyecto para estudiar; el día del parcial, el enunciado con el cambio a programar (45 min) y un cuestionario en el campus.", archivos: [
-              { n: 3, nombre: "Preenunciado", detalle: "Cloud Center (telemetría de servidores): el preenunciado en PDF y el proyecto 01-modelo-inicial para estudiar y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
-              { n: 4, nombre: "Enunciado", detalle: "Ingreso promedio por servidor: el enunciado en PDF, el CSV del parcial y el test nuevo", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
-              { n: 5, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia, probada con los 12 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir. Está explicada en la guía", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
-            ] },
-            { nivel: "profundizar", grupo: "Simulacros", descripcion: "Cada ZIP trae todo el simulacro: el preenunciado con el proyecto y el enunciado con el CSV y los tests nuevos. Para practicar, hacé cada uno en 45 minutos.",
-              // Modo simulacro: el Simulacro 4 con reloj, el enunciado al empezar y la solución al terminar
-              simulacro: {
-                id: "bk-s4", titulo: "Simulacro 4 · Tarjetas de crédito", minutos: 45,
-                preenunciado: { pdf: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/preenunciado.pdf", zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/01-preenunciado.zip" },
-                enunciado: { pdf: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/enunciado.pdf", zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/02-enunciado.zip" },
-                solucion: { zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/03-solucion.zip" },
-                control: "Para corregirte: copiá los tests nuevos al proyecto y corré mvn test; tienen que pasar los viejos y los nuevos. Después mirá la solución."
-              },
-              archivos: [
-              { n: 6, nombre: "Simulacro 1", detalle: "3K1 · Fintech: solicitudes de crédito, score financiero y tasa de interés; en el parcial se agrega el nivel de morosidad", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
-              { n: 7, nombre: "Simulacro 2", detalle: "3K3 · Taller de reparaciones: órdenes de reparación; en el parcial se agregan las reparaciones EXPRESS, la garantía y los repuestos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
-              { n: 8, nombre: "Simulacro 3", detalle: "3K4 · Juegos de mesa: catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
-              { n: 9, nombre: "Simulacro 4", nota: "Tiene modo simulacro ↑", detalle: "3K7 · Tarjetas de crédito: liquidación de consumos; en el parcial se agrega la protección de compras. Trae la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
+            { grupo: "Parciales y simulacros", descripcion: "Tocá uno para ver sus archivos. Para practicar, hacé cada simulacro en 45 minutos.", filas: true, partes: [
+              { titulo: "Parcial 3K1 · 2026", tema: "Cloud Center", detalle: "Telemetría de servidores; el día del parcial, el ingreso promedio por servidor (19/09/2026)", archivos: [
+                { n: 3, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: el sistema de servidores para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/preenunciado.pdf" },
+                { n: 4, nombre: "Enunciado", detalle: "El cambio a programar en el parcial (45 min)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/enunciado.pdf" },
+                { n: 5, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
+                { n: 6, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos_parcial.csv y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
+                { n: 7, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia, probada con los 12 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
+              ] },
+              { titulo: "Simulacro 1 · 3K1", tema: "Fintech", detalle: "Solicitudes de crédito, score y tasa; en el parcial se agrega el nivel de morosidad", archivos: [
+                { n: 8, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/preenunciado.pdf" },
+                { n: 9, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/enunciado.pdf" },
+                { n: 10, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" }
+              ] },
+              { titulo: "Simulacro 2 · 3K3", tema: "Taller de reparaciones", detalle: "Órdenes de reparación; en el parcial se agregan las EXPRESS, la garantía y los repuestos", archivos: [
+                { n: 11, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/preenunciado.pdf" },
+                { n: 12, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/enunciado.pdf" },
+                { n: 13, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" }
+              ] },
+              { titulo: "Simulacro 3 · 3K4", tema: "Juegos de mesa", detalle: "Catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", archivos: [
+                { n: 14, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
+                { n: 15, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
+                { n: 16, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" }
+              ] },
+              { titulo: "Simulacro 4 · 3K7", tema: "Tarjetas de crédito", detalle: "Liquidación de consumos; en el parcial se agrega la protección de compras. Tiene modo simulacro y la solución", 
+                // Modo simulacro: con reloj, el enunciado al empezar y la solución al terminar
+                simulacro: {
+                  id: "bk-s4", titulo: "Simulacro 4 · Tarjetas de crédito", minutos: 45,
+                  preenunciado: { pdf: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/preenunciado.pdf", zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/01-preenunciado.zip" },
+                  enunciado: { pdf: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/enunciado.pdf", zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/02-enunciado.zip" },
+                  solucion: { zip: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/03-solucion.zip" },
+                  control: "Para corregirte: copiá los tests nuevos al proyecto y corré mvn test; tienen que pasar los viejos y los nuevos. Después mirá la solución."
+                },
+                archivos: [
+                { n: 17, nombre: "Todo el simulacro", detalle: "El preenunciado, el enunciado, el proyecto, el CSV del parcial y la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
+              ] }
             ] }
           ],
           videos: []
@@ -2371,6 +2519,10 @@ const MATERIAS = {
   // 1º Parcial (Python y objetos) y TPI (trabajo integrador: persistencia, patrones e interfaces).
   // Archivos en material/desarrollo-de-aplicaciones-con-objetos/{p1,tpi}/. Las guías y los ZIP de código son nuestros
   206: {
+    comisiones: [
+      { comision: "4K3", horario: "Mar · Noche", profesor: "Oscar Ernesto Botta", rol: "Teórico", asistencia: false, recomendada: true },
+      { comision: "4K3", profesor: "Martín Gustavo Casatti", rol: "Práctico", asistencia: false }
+    ],
     condiciones: {
       directa: 6,
       aclaracion: "Es electiva: se aprueba de forma directa, aprobando todas las instancias. Nota final: 50 % parcial, 30 % trabajo integrador y 20 % cuestionarios.",
@@ -3394,7 +3546,7 @@ function renderBarra(m){
   const enTab = t => t.on([d3, d4]);
   // Adentro de la materia (un parcial, una sección…): a la izquierda, siempre a mano, la vuelta a la materia
   const dentro = !!(m && b);
-  const volver = dentro ? `<a class="pvolver" data-go="${a}" href="#/${a}" title="Volver a ${esc(m.nombre)}">${ICON_BACK}<span class="pv-l">${esc(m.nombre)}</span><span class="pv-c">${esc(m.abr || m.nombre)}</span></a>` : "";
+  const volver = dentro ? `<a class="pvolver" data-go="${a}" href="#/${a}" title="Volver a ${esc(m.nombre)}">${ICON_BACK}${m.abr ? abr(m, "pv-abr") : ""}<span class="pv-l ${m.abr ? "" : "sin-abr"}">${esc(m.nombre)}</span></a>` : "";
   $("#parnavIn").innerHTML = volver + (tabs.length > 1 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "");
   $("#parnav").hidden = !dentro;
   $("#barra").classList.toggle("vacia", !dentro);
@@ -3406,36 +3558,39 @@ function abrirLado(si){
   document.body.classList.toggle("lado-abierto", si);
   if(si){ const on = $("#lado .on"); if(on) on.scrollIntoView({ block: "nearest" }); }
 }
-/* Todo lo que tiene una parte (parcial, TPI, final o una sección como Cuestionarios), en una sola fila de pestañas:
-   el material de cada sección (Teórico, Parciales…), los videos juntos, la práctica, el quiz, las herramientas y los
-   temas. on(d) dice si la pestaña está abierta según lo que va después de la parte en la ruta. */
+/* Todo lo que tiene una parte (parcial, TPI, final o una sección como Cuestionarios), en una sola fila de pestañas,
+   siempre en el mismo orden: Temas · Teórico · Práctico (o la Práctica) · Videos · Parciales. El quiz y las herramientas
+   van adentro de Parciales (en una parte de una sola página, en Práctica). on(d) dice si la pestaña está abierta según
+   lo que va después de la parte en la ruta. */
+const esSeccionParcial = (p, k) => k === p.quizEn || /^parcial/.test(k);
+const herramientasParte = p => p.practicaTemas ? [] : (p.herramientas || []).filter(h => HERRAMIENTAS[h]);
+const tieneHerramientas = p => !!p.quiz || herramientasParte(p).length > 0;
 function pestanasDe(p){
   const una = (p.secciones && !p.secciones.length) || !!p.material;
-  const hs = (p.herramientas || []).filter(h => HERRAMIENTAS[h]);
-  const fin = [
-    ...(p.quiz ? [{ go: "/quiz", t: "Quiz", on: d => d[0] === "quiz" }] : []),
-    ...(p.practicaTemas ? [] : hs.map(h => ({ go: `/h/${h}`, t: HERRAMIENTAS[h].titulo, on: d => d[0] === "h" && d[1] === h }))),
-    ...(p.temas && p.temas.unidades && p.temas.unidades.length ? [{ go: "/temas", t: "Temas", on: d => d[0] === "temas" }] : [])
-  ];
+  const enHerr = d => d[0] === "quiz" || d[0] === "pp" || (!p.practicaTemas && d[0] === "h");
+  const temas = p.temas && p.temas.unidades && p.temas.unidades.length ? [{ go: "/temas", t: "Temas", on: d => d[0] === "temas" }] : [];
   if(una){
     const vids = (p.videos || []).length, arch = cantArchivos(p.material || []);
     return [
+      ...temas,
       ...(arch || !vids ? [{ go: "/material", t: "Material", on: d => !d[0] || d[0] === "material" }] : []),
-      ...(vids ? [{ go: "/videos", t: "Videos", on: d => d[0] === "videos" }] : []),
-      ...fin
+      ...(tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
+      ...(vids ? [{ go: "/videos", t: "Videos", on: d => d[0] === "videos" }] : [])
     ];
   }
   const ks = seccionesDe(p);
-  const tabs = ks.filter(k => cantArchivos(seccion(p, k).material) || k === p.quizEn)
-    .map(k => ({ go: `/${k}/material`, t: nombreSec(p, k), k, on: d => d[0] === k && d[1] !== "videos" }));
+  const kp = ks.find(k => esSeccionParcial(p, k));
+  const conArch = k => cantArchivos(seccion(p, k).material) > 0;
+  const tab = k => ({ go: `/${k}/material`, t: nombreSec(p, k), on: d => (d[0] === k && d[1] !== "videos") || (k === kp && enHerr(d)) });
   const conVideos = ks.find(k => seccion(p, k).videos.length);
-  if(conVideos) tabs.splice(Math.min(1, tabs.length), 0, { go: `/${conVideos}/videos`, t: "Videos", on: d => d[1] === "videos" });
-  // La práctica va antes de los parciales / simulacros
-  if(p.practica){
-    const i = tabs.findIndex(t => t.k && (t.k === p.quizEn || /^parcial/.test(t.k)));
-    tabs.splice(i < 0 ? tabs.length : i, 0, { go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h") });
-  }
-  return [...tabs, ...fin];
+  return [
+    ...temas,
+    ...ks.filter(k => !esSeccionParcial(p, k) && conArch(k)).map(tab),
+    ...(p.practica ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h") }]
+      : !kp && tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
+    ...(conVideos ? [{ go: `/${conVideos}/videos`, t: "Videos", on: d => d[1] === "videos" }] : []),
+    ...ks.filter(k => esSeccionParcial(p, k) && (conArch(k) || (k === kp && (tieneHerramientas(p) || p.practicaParcial)))).map(tab)
+  ];
 }
 /* La parte que se está viendo (un parcial o una sección de la materia) */
 const parteDe = (c, b) => c && b ? c.parciales.find(x => x.id === b) || (c.secciones || []).find(x => x.id === b) : null;
@@ -3988,18 +4143,18 @@ function comisiones(lista, nota){
   const comentario = g => {
     const cs = g.profes.filter(p => p.comentario);
     const txt = cs.length > 1 ? cs.map(p => `<b>${esc(p.profesor.split(" ").pop())}:</b> ${esc(p.comentario)}`).join("<br>") : esc((cs[0] || {}).comentario || "");
-    return `<span class="comis-reco comis-com" data-l="Comentario">${txt}</span>`;
+    const motivo = (g.profes.find(p => p.motivo) || {}).motivo;
+    return `<span class="comis-reco comis-com" data-l="Comentario">${txt || (motivo ? "" : `<span class="comis-vacio">—</span>`)}${motivo ? `<small class="comis-mot">${esc(motivo)}</small>` : ""}</span>`;
   };
   const examen = g => `<span class="comis-reco" data-l="Examen">${esc((g.profes.find(p => p.examen) || {}).examen || "—")}</span>`;
   const reco = g => {
     const x = g.profes.find(p => p.recomendada !== undefined) || {};
-    const motivo = (g.profes.find(p => p.motivo) || {}).motivo;
-    return `<span class="comis-reco" data-l="¿La recomiendo?">${x.recomendada === undefined ? "—" : `<span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>`}${motivo ? `<small>${esc(motivo)}</small>` : ""}</span>`;
+    return `<span class="comis-reco comis-centro" data-l="¿La recomiendo?">${x.recomendada === undefined ? `<span class="comis-vacio">—</span>` : `<span class="reco ${x.recomendada ? "si" : "no"}">${x.recomendada ? "Sí" : "No"}</span>`}</span>`;
   };
   const fila = x => `
     <div class="comis-fila">
-      <span data-l="Profesor" class="c-prof">${esc(x.profesor)}${x.rol ? `<small>(${esc(x.rol)})</small>` : ""}</span>
-      <span data-l="Asistencia">${x.asistencia === undefined ? "—" : x.asistencia ? "Toma asistencia" : "No toma"}</span>
+      <span data-l="Profesor" class="c-prof">${esc(x.profesor)}${x.rol ? `<small>${esc(x.rol)}</small>` : ""}</span>
+      <span data-l="Asistencia" class="comis-centro">${x.asistencia === undefined ? `<span class="comis-vacio">—</span>` : `<span class="asis ${x.asistencia ? "si" : "no"}">${x.asistencia ? "Toma" : "No toma"}</span>`}</span>
     </div>`;
   return `
     <section class="comis" id="comis">
@@ -4008,10 +4163,10 @@ function comisiones(lista, nota){
       <div class="comis-tabla${grupos.some(g => g.horario) ? " con-horario" : ""}">
         <div class="comis-grupo comis-head">
           <span class="comis-cod">Comisión</span>
-          <div class="comis-fila"><span class="c-prof">Profesor</span><span>Asistencia</span></div>
+          <div class="comis-fila"><span class="c-prof">Profesor</span><span class="comis-centro">Asistencia</span></div>
           <span class="comis-reco">Comentario</span>
           <span class="comis-reco">Examen</span>
-          <span class="comis-reco">¿La recomiendo?</span>
+          <span class="comis-reco comis-centro">¿La recomiendo?</span>
         </div>
         ${grupos.map(g => `
           <div class="comis-grupo">
@@ -4111,6 +4266,7 @@ function arbolZip(c){
     const np = nodo(p.titulo);
     if(p.secciones && !p.secciones.length) items(np, p.material);
     else seccionesDe(p).forEach(k => { const ns = nodo(nombreSec(p, k)); items(ns, seccion(p, k).material); np.hijos.push(ns); });
+    if(p.practicaGrupos){ const npr = nodo("Práctica"); p.practicaGrupos.forEach(g => archivos(npr, g.material)); np.hijos.push(npr); }
     raiz.hijos.push(np);
   });
   (c.secciones || []).forEach(x => { const nx = nodo(x.titulo); items(nx, x.material); raiz.hijos.push(nx); });
@@ -4245,7 +4401,7 @@ function listaArchivos(items){
       <section class="grupo">
         <div class="grupo-head"><h3>${esc(g.grupo)}</h3>${g.descripcion ? `<p>${esc(g.descripcion)}</p>` : ""}</div>
         ${g.simulacro ? `<div class="sim" data-sim="${g.simulacro.id}">${simHtml(g.simulacro)}</div>` : ""}
-        ${g.partes ? g.partes.map(p => `
+        ${g.partes && g.filas ? `<div class="ex-lista">${g.partes.map(filaExamen).join("")}</div>` : g.partes ? g.partes.map(p => `
           <div class="parte">
             <div class="parte-head">${esc(p.titulo)}<span>${p.archivos.length} archivo${p.archivos.length === 1 ? "" : "s"}</span></div>
             ${listaArchivos(p.archivos)}
@@ -4255,6 +4411,20 @@ function listaArchivos(items){
   if(!items.length) return `<div class="empty">Todavía no hay material cargado.</div>`;
   const conNum = items.some(f => f.n);
   return `<div class="files">${items.map(f => filaArchivo(f, conNum)).join("")}</div>`;
+}
+/* Un parcial o simulacro en una fila: el nombre y el tema ("Parcial 3K1 · 2026 — Cloud Center"); al tocarla se
+   despliegan sus archivos (y el modo simulacro, si tiene). Si el simulacro está en curso, la fila queda abierta. */
+function filaExamen(x){
+  const n = x.archivos.length, enCurso = x.simulacro && (simLeer(x.simulacro.id) || {}).fase;
+  return `
+    <details class="ex-fila"${enCurso ? " open" : ""}>
+      <summary><span class="ex-t"><b>${esc(x.titulo)}</b>${x.tema ? `<span class="ex-tema"> — ${esc(x.tema)}</span>` : ""}${x.detalle ? `<small>${esc(x.detalle)}</small>` : ""}</span>
+        <span class="ex-c">${x.simulacro ? `<span class="tag nota">Modo simulacro</span>` : ""}${n} archivo${n === 1 ? "" : "s"}</span>${ICON_CHEV}</summary>
+      <div class="ex-cuerpo">
+        ${x.simulacro ? `<div class="sim" data-sim="${x.simulacro.id}">${simHtml(x.simulacro)}</div>` : ""}
+        ${listaArchivos(x.archivos)}
+      </div>
+    </details>`;
 }
 /* Los PDF del repo muestran la tapa (miniaturas/…, la genera herramientas/miniaturas.py) y en la compu se abren en el visor */
 const esPdfLocal = f => /^material\/.+\.pdf$/i.test(f.url || "");
@@ -4280,7 +4450,7 @@ function filaArchivo(f, conNum){
 const CLAVE_SIM = "isi-simulacros";
 const SIMULACROS = {};   // id → { sim, ruta }
 for(const [n, c] of Object.entries(MATERIAS)) for(const p of c.parciales || []) for(const k of (p.secciones && !p.secciones.length ? [] : seccionesDe(p))){
-  for(const g of (seccion(p, k).material || [])) if(g.simulacro) SIMULACROS[g.simulacro.id] = { sim: g.simulacro, ruta: `m${n}/${p.id}/${k}/material` };
+  for(const g of (seccion(p, k).material || [])) for(const x of [g, ...(g.partes || [])]) if(x.simulacro) SIMULACROS[x.simulacro.id] = { sim: x.simulacro, ruta: `m${n}/${p.id}/${k}/material` };
 }
 const simTodos = () => { try { return JSON.parse(leerLocal(CLAVE_SIM)) || {}; } catch(e){ return {}; } };
 const simLeer = id => simTodos()[id] || null;
@@ -4685,9 +4855,10 @@ function viewSeccion(m, p, k, tab){
       ${fuentes.length > 1 ? `<div class="pt-fuentes">${fuentes.map(x => `<a class="${x === k ? "on" : ""}" data-go="${base}/${x}/videos" href="#/${base}/${x}/videos">${esc(nombreSec(p, x))}<small>${seccion(p, x).videos.length}</small></a>`).join("")}</div>` : ""}
       <div id="tabBody"></div>`;
   }
+  const herr = k === seccionesDe(p).find(x => esSeccionParcial(p, x)) ? parcialBox(m, p) : "";
   return `${cabParte(p)}
-    ${k === p.quizEn ? parcialBox(m, p) : ""}
-    <div id="tabBody">${filesList(s.material)}</div>`;
+    ${herr}
+    <div id="tabBody">${herr && !cantArchivos(s.material) ? "" : filesList(s.material)}</div>`;
 }
 
 /* ---------- Reproductor con lista (estilo YouTube) ---------- */
@@ -4950,19 +5121,25 @@ function mountPlayer(videos, titulo){
 const ICON_QUIZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/><path d="M12 17.5v.5"/></svg>';
 const ICON_TOOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>';
 
-/* Arriba de Parciales / Simulacros (campo quizEn): el quiz, el paso a paso y los ejercicios del grupo "parcial" */
+/* Herramientas para practicar, arriba de Parciales (o en la pestaña Práctica de una parte de una sola página):
+   la práctica del parcial por partes, el quiz, las herramientas y los ejercicios del grupo "parcial" de la Práctica */
 function parcialBox(m, p){
   const temas = (p.practicaTemas || []).filter(t => t.grupo === "parcial");
-  const hs = temas.flatMap(t => t.herramientas || []).filter(h => HERRAMIENTAS[h] && (p.herramientas || []).includes(h));
+  const hs = [...herramientasParte(p), ...temas.flatMap(t => t.herramientas || []).filter(h => HERRAMIENTAS[h] && (p.herramientas || []).includes(h))];
   const ejs = (p.practica || []).filter(x => temas.some(t => t.id === x.tema));
-  if(!p.quiz && !hs.length && !ejs.length) return "";
+  if(!p.quiz && !hs.length && !ejs.length && !p.practicaParcial) return "";
   return `
     <div class="practica">
-      <span class="pr-t">Para preparar el parcial</span>
+      <span class="pr-t">Herramientas para practicar</span>
+      ${p.practicaParcial ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pp">${ICON_CODIGO}<span><b>El parcial por partes</b><small>De la consigna a la entrega, con ejercicios de todos los parciales</small></span></span>` : ""}
       ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
       ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
       ${ejs.map(x => `<span class="pr-btn" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}<span><b>${esc(x.titulo)}</b><small>De a pasos, ${progresoTexto(x).toLowerCase()}</small></span></span>`).join("")}
     </div>`;
+}
+/* Pestaña Práctica de una parte sin práctica propia: las herramientas para practicar */
+function viewPracticar(m, p){
+  return `${cabParte(p)}${parcialBox(m, p) || `<div class="empty">Esta parte no tiene herramientas.</div>`}`;
 }
 
 /* ---------- Práctica por partes: el parcial de a pasos, con Python o Java en el navegador ----------
@@ -5031,6 +5208,7 @@ function viewPracticas(m, p){
     ${p.practicaGrupos.map(g => `
     <section class="pr-grupo">
       <div class="pr-grupo-cab"><h2>${esc(g.titulo)}</h2><p>${esc(g.detalle)}</p></div>
+      ${g.material ? `<div class="pr-grupo-mat">${filesList(g.material)}</div>` : ""}
       ${p.practicaTemas.filter(t => t.grupo === g.id).map(tema).join("")}
     </section>`).join("")}
     ${nota}`;
@@ -5174,7 +5352,7 @@ function resaltarJava(t){
   return out + esc(t.slice(i));
 }
 const resaltar = (t, leng) => leng === "java" ? resaltarJava(t) : resaltarPy(t);
-function montarEditor(caja, valor, soloLectura, alCambiar, leng = "python"){
+function montarEditor(caja, valor, soloLectura, alCambiar, leng = "python", alEnter = () => accionPr("seguir")){
   caja.innerHTML = `<div class="ed ${soloLectura ? "lectura" : ""}"><div class="ed-num" aria-hidden="true"></div><div class="ed-cuerpo">
     <pre class="ed-hl" aria-hidden="true"></pre>
     <textarea class="ed-txt" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="Código" ${soloLectura ? "readonly" : ""}></textarea></div></div>`;
@@ -5193,7 +5371,7 @@ function montarEditor(caja, valor, soloLectura, alCambiar, leng = "python"){
   ta.addEventListener("input", () => { pintar(); if(alCambiar) alCambiar(ta.value); });
   ta.addEventListener("scroll", sync);
   ta.addEventListener("keydown", e => {
-    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){ e.preventDefault(); accionPr("seguir"); return; }
+    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){ e.preventDefault(); alEnter(); return; }
     if(soloLectura) return;
     if(e.key === "Tab"){ e.preventDefault(); sangrar(ta, e.shiftKey ? -1 : 1); return; }
     if(e.key === "Enter" && !e.shiftKey && !e.altKey){
@@ -5621,6 +5799,381 @@ function clicPractica(e){
   }
   return false;
 }
+
+/* ---------- El parcial por partes (campo "practicaParcial" de la parte: practica/bk-parcial/ejercicios.json) ----------
+   Las 7 partes de siempre, de leer la consigna a la entrega, cada una con ejercicios de distintos parciales; "Otro
+   ejemplo" pasa al siguiente de la misma parte. Tipos: codigo (editor y verificación), ubicacion y clasificacion
+   (una opción por fila y "Corregir"), texto (escribir y autoevaluarse). En el navegador no se corre Java: la
+   verificación busca con expresiones regulares en el código sin comentarios, y es orientativa.
+   El código, las respuestas y los resueltos quedan en este navegador. */
+let ejp = null;   // { m, p, d, ej, est, ed, tab, pista, sol (0 oculta, 1 vista, 2 mirándola), corregido }
+const claveEjp = p => "isi-pp:" + p.practicaParcial;
+function leerEjp(p){
+  let e = null;
+  try { e = JSON.parse(leerLocal(claveEjp(p))); } catch(err){}
+  e = e && typeof e === "object" ? e : {};
+  const obj = x => x && typeof x === "object" && !Array.isArray(x) ? x : {};
+  return { codigo: obj(e.codigo), resp: obj(e.resp), marcas: obj(e.marcas), hechos: Array.isArray(e.hechos) ? e.hechos : [], ultimo: e.ultimo || null };
+}
+const guardarEjp = () => { if(ejp) guardarLocal(claveEjp(ejp.p), JSON.stringify(ejp.est)); };
+const ejsEjp = () => ejp.d.partes.flatMap(x => x.ejercicios);
+const parteEjp = ej => ejp.d.partes.find(x => x.n === ej.parte);
+const hayOtroEjp = () => parteEjp(ejp.ej).ejercicios.length > 1;
+
+/* Markdown corto de los textos: `código`, **negrita** y listas numeradas o con guiones */
+const mdLinea = t => String(t).split(/(`[^`]+`)/).map(s => s.length > 1 && s[0] === "`" && s.endsWith("`") ? `<code>${esc(s.slice(1, -1))}</code>` : esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")).join("");
+function mdBloque(t){
+  let out = "", lista = null;
+  for(const l of String(t).split("\n")){
+    const li = l.match(/^\s*(\d+\.|[-*])\s+(.*)$/);
+    if(li){
+      const tipo = /\d/.test(li[1]) ? "ol" : "ul";
+      if(lista !== tipo){ if(lista) out += `</${lista}>`; out += `<${tipo}>`; lista = tipo; }
+      out += `<li>${mdLinea(li[2])}</li>`;
+      continue;
+    }
+    if(lista){ out += `</${lista}>`; lista = null; }
+    if(l.trim()) out += `<p>${mdLinea(l)}</p>`;
+  }
+  return out + (lista ? `</${lista}>` : "");
+}
+// Saca los comentarios (de línea y de bloque) sin tocar lo que está entre comillas: un comentario no hace pasar una verificación
+function sinComentarios(c){
+  let out = "", i = 0, enStr = null;
+  while(i < c.length){
+    const ch = c[i], dos = c.slice(i, i + 2);
+    if(enStr){ out += ch; if(ch === "\\"){ out += c[i + 1] || ""; i += 2; continue; } if(ch === enStr || ch === "\n") enStr = null; i++; continue; }
+    if(ch === '"' || ch === "'"){ enStr = ch; out += ch; i++; continue; }
+    if(dos === "//"){ while(i < c.length && c[i] !== "\n") i++; continue; }
+    if(dos === "/*"){ const f = c.indexOf("*/", i + 2); i = f < 0 ? c.length : f + 2; continue; }
+    out += ch; i++;
+  }
+  return out;
+}
+/* Cada verificación: contiene / noContiene / cuenta (exactamente "veces") / lineas (entre min y max, sin contar vacías) */
+function verificarEjp(texto, checks){
+  return checks.map(k => {
+    let ok = false;
+    try {
+      if(k.tipo === "lineas"){ const n = texto.split("\n").filter(l => l.trim()).length; ok = n >= k.min && n <= k.max; }
+      else {
+        const n = (texto.match(new RegExp(k.regex, (k.flags || "").replace("g", "") + "g")) || []).length;
+        ok = k.tipo === "noContiene" ? n === 0 : k.tipo === "cuenta" ? n === k.veces : n > 0;
+      }
+    } catch(e){}
+    return { ok, msg: ok ? k.ok : k.error };
+  });
+}
+
+function viewEjp(m, p){
+  const kp = seccionesDe(p).find(k => esSeccionParcial(p, k));
+  return `
+    <div class="ejp">
+      <div class="crumbs"><span data-go="m${m.n}/${p.id}${kp ? `/${kp}/material` : ""}">‹ ${esc(kp ? nombreSec(p, kp) : p.titulo)}</span></div>
+      <div class="ejp-cab"><h1>El parcial por partes</h1><div class="ejp-prog" id="ejpProg"></div></div>
+      <div class="ejp-partes" id="ejpPartes"></div>
+      <div class="ejp-expl" id="ejpExpl"></div>
+      <div class="pr-ws ejp-ws" id="ejpWs">
+        <section class="pr-izq ejp-izq" id="ejpIzq"><div class="empty">Cargando los ejercicios…</div></section>
+        <section class="pr-der ejp-der" id="ejpDer"></section>
+      </div>
+    </div>`;
+}
+async function montarEjp(m, p, id){
+  let d;
+  try { d = await cargarEjercicio(p.practicaParcial); }
+  catch(e){ const c = $("#ejpIzq"); if(c) c.innerHTML = `<div class="empty">No se pudieron cargar los ejercicios. Probá recargar la página.</div>`; return; }
+  if(!$("#ejpWs")) return;   // se cambió de página mientras cargaba
+  ejp = { m, p, d, est: leerEjp(p) };
+  const todos = ejsEjp();
+  abrirEjp(todos.find(x => x.id === id) || todos.find(x => x.id === ejp.est.ultimo) || todos[0], false);
+}
+/* Abre un ejercicio sin recargar la página (la dirección cambia, sin sumar pasos al "atrás") */
+function abrirEjp(ej, mover = true){
+  Object.assign(ejp, { ej, tab: "consigna", pista: 0, sol: 0, corregido: false, ed: null });
+  ejp.est.ultimo = ej.id;
+  guardarEjp();
+  const r = `m${ejp.m.n}/${ejp.p.id}/pp/${ej.id}`;
+  if(ruta !== r){ ruta = r; history.replaceState(history.state, "", "#/" + r); }
+  pintarPartesEjp();
+  pintarIzqEjp();
+  pintarDerEjp();
+  if(mover){ const w = $("#ejpPartes"); if(w.getBoundingClientRect().top < 0) w.scrollIntoView({ block: "start" }); }
+}
+function pintarPartesEjp(){
+  const { d, ej, est } = ejp, todos = ejsEjp(), hechos = todos.filter(x => est.hechos.includes(x.id)).length;
+  $("#ejpProg").innerHTML = `<span>Resueltos <b>${hechos} / ${todos.length}</b></span><span class="bar"><i style="width:${Math.round(hechos / todos.length * 100)}%"></i></span>`;
+  $("#ejpPartes").innerHTML = d.partes.map(x => {
+    const h = x.ejercicios.filter(e => est.hechos.includes(e.id)).length, todo = h === x.ejercicios.length;
+    return `<button class="pr-p ejp-parte ${x.n === ej.parte ? "on" : ""} ${todo ? "ok" : ""}" data-ejp-parte="${x.n}" title="Parte ${x.n} · ${esc(x.titulo)}"><b>${todo ? "✓" : x.n}</b><span>${esc(x.pestana || x.titulo)}</span><small>${h}/${x.ejercicios.length}</small></button>`;
+  }).join("");
+  centrarEn($("#ejpPartes"), $("#ejpPartes .on"));
+  const pa = parteEjp(ej);
+  $("#ejpExpl").innerHTML = `
+    <div class="ejp-expl-t"><span class="ejp-n">Parte ${pa.n}</span><b>${esc(pa.titulo)}</b>
+      <div class="ejp-ejs">${pa.ejercicios.map(e => `<button class="ejp-ej ${e.id === ej.id ? "on" : ""} ${est.hechos.includes(e.id) ? "ok" : ""}" data-ejp-ir="${esc(e.id)}">${est.hechos.includes(e.id) ? "✓ " : ""}${esc(e.id)} · ${esc(e.tema || e.titulo)}</button>`).join("")}</div></div>
+    ${pa.explicacion ? `<p>${mdLinea(pa.explicacion)}</p>` : ""}`;
+}
+
+/* ---- Panel izquierdo: el ejercicio, "Dónde" y las pestañas Consigna / CSV / Pasos / Pistas */
+function pintarIzqEjp(){
+  const ej = ejp.ej, pa = parteEjp(ej);
+  const tabs = [["consigna", "Consigna"], ...(ej.csv ? [["csv", "CSV"]] : []), ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", "Pistas"]] : [])];
+  if(!tabs.some(t => t[0] === ejp.tab)) ejp.tab = "consigna";
+  $("#ejpIzq").innerHTML = `
+    <div class="ejp-num">Ejercicio ${pa.ejercicios.indexOf(ej) + 1} de ${pa.ejercicios.length}${ej.tema ? ` · ${esc(ej.tema)}` : ""}<span id="ejpHecho"></span></div>
+    <h2 class="ejp-tit">${mdLinea(ej.titulo)}</h2>
+    ${ej.donde ? `<div class="ejp-donde"><span>Dónde</span><div>${mdLinea(ej.donde)}</div></div>` : ""}
+    ${tabs.length > 1 ? `<div class="ejp-tabs">${tabs.map(([k, t]) => `<button class="${k === ejp.tab ? "on" : ""}" data-ejp-tab="${k}">${t}${k === "pistas" ? ` <small>${ejp.pista}/${ej.pistas.length}</small>` : ""}</button>`).join("")}</div>` : ""}
+    <div class="ejp-cuerpo">${cuerpoIzqEjp()}</div>`;
+  pintarHechoEjp();
+}
+function pintarHechoEjp(){
+  const h = $("#ejpHecho");
+  if(h) h.innerHTML = ejp.est.hechos.includes(ejp.ej.id) ? `<span class="ejp-hecho">✓ Resuelto</span><button class="linkbtn ejp-desm" data-ejp="desmarcar">desmarcar</button>` : "";
+}
+function cuerpoIzqEjp(){
+  const ej = ejp.ej;
+  if(ejp.tab === "csv") return csvEjp(ej);
+  if(ejp.tab === "pasos") return `<ol class="ejp-lista">${ej.pasos.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ol>`;
+  if(ejp.tab === "pistas"){
+    const ps = ej.pistas, n = ejp.pista;
+    return `${n ? `<ol class="ejp-lista pistas">${ps.slice(0, n).map(t => `<li>${mdLinea(t)}</li>`).join("")}</ol>` : `<p class="ejp-vacio">Las pistas se ven de a una. Probá primero solo.</p>`}
+      ${n < ps.length ? `<button class="pr-chico" data-ejp="pista">💡 ${n ? "Otra pista" : "Ver la primera pista"} (${n + 1} de ${ps.length})</button>` : `<p class="ejp-vacio">No hay más pistas.${ej.solucion ? " Si seguís trabado, mirá la solución." : ""}</p>`}`;
+  }
+  return `<div class="ejp-md">${mdBloque(ej.consigna || "")}</div>
+    ${ej.tabla ? tablaEjp(ej.tabla) : ""}
+    ${ej.datos ? `<p class="ejp-datos">${mdLinea(ej.datos)}</p>` : ""}
+    ${ej.csv ? `<button class="linkbtn" data-ejp-tab="csv">Ver el CSV de ejemplo →</button>` : ""}`;
+}
+/* El CSV en una tabla: la columna nueva resaltada y, si una fila tiene otro ancho, lo que falta o sobra */
+function csvEjp(ej){
+  const c = ej.csv, sep = c.separador || ",", cab = c.cabecera.split(sep), filas = c.filas.map(f => f.split(sep));
+  const nueva = cab.map(h => (c.columnasNuevas || []).includes(h.trim()) ? "nueva" : "");
+  const otroAncho = filas.some(f => f.length !== cab.length);
+  return `
+    <div class="ejp-csv-w"><table class="ejp-csv">
+      <thead><tr><th class="ejp-csv-n">1</th>${cab.map((h, i) => `<th class="${nueva[i]}">${esc(h)}</th>`).join("")}</tr></thead>
+      <tbody>${filas.map((f, r) => `<tr class="${f.length !== cab.length ? "mal" : ""}"><td class="ejp-csv-n">${r + 2}</td>${cab.map((_, i) => i < f.length
+        ? `<td class="${nueva[i]}">${f[i] ? esc(f[i]) : `<i class="vacio">vacío</i>`}</td>` : `<td class="falta">falta</td>`).join("")}${f.slice(cab.length).map(x => `<td class="falta">${esc(x)}</td>`).join("")}</tr>`).join("")}</tbody>
+    </table></div>
+    <p class="ejp-csv-ley"><span><i></i>Columna nueva</span>${otroAncho ? `<span><i class="falta"></i>Fila con otro ancho</span>` : ""}<span>Separador <code>${esc(sep)}</code></span></p>
+    ${ej.csvNota ? `<p class="ejp-datos">${mdLinea(ej.csvNota)}</p>` : ""}
+    <details class="ejp-crudo"><summary>Verlo como texto</summary><pre>${esc([c.cabecera, ...c.filas].join("\n"))}</pre></details>`;
+}
+const tablaEjp = t => `<div class="ejp-tabla"><div class="ejp-tabla-t">${mdLinea(t.titulo)}</div><div class="ejp-csv-w"><table class="ejp-csv">
+  <thead><tr>${t.cabecera.map(h => `<th>${mdLinea(h)}</th>`).join("")}</tr></thead>
+  <tbody>${t.filas.map(f => `<tr>${f.map(x => `<td>${mdLinea(x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>`;
+
+/* ---- Panel derecho, según el tipo de ejercicio */
+function pintarDerEjp(){
+  const ej = ejp.ej, otro = hayOtroEjp() ? `<button class="pr-chico" data-ejp="otro">Otro ejemplo →</button>` : "";
+  const res = `<div class="pr-res" id="ejpRes" aria-live="polite"></div>`;
+  if(ej.tipo === "codigo"){
+    $("#ejpDer").innerHTML = `
+      <div class="pr-tabs" id="ejpTabs"></div>
+      <div class="pr-ed" id="ejpEd"></div>
+      <div class="pr-teclas">${["⇥", "⇤", "{}", "()", ";", "\"\"", "=", "this.", "->", "<>", "::"].map(t => `<button data-ejp-tecla="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+      <div class="pr-barra">
+        <button class="pr-fuerte" data-ejp="verificar" title="Ctrl + Enter">Verificar</button>
+        <button class="pr-chico" data-ejp="pista">💡 Pista</button>
+        <button class="pr-chico" data-ejp="solucion">Ver solución</button>
+        <button class="pr-chico" data-ejp="reiniciar">↺ Reiniciar código</button>
+        <span class="sim-esp"></span>${otro}
+      </div>${res}`;
+    pintarEdEjp();
+  } else if(ej.tipo === "texto"){
+    $("#ejpDer").innerHTML = `
+      <div class="pr-tabs"><span class="pr-tab on">DECISIONES.md</span></div>
+      <textarea class="ejp-texto" id="ejpTexto" spellcheck="true" aria-label="Tu respuesta" placeholder="Escribí acá…">${esc(ejp.est.codigo[ej.id] || "")}</textarea>
+      ${(ej.checklist || []).length ? `<div class="ejp-check"><b>Autoevaluación</b>${ej.checklist.map((t, i) => `<label><input type="checkbox" data-ejp-marca="${i}" ${(ejp.est.marcas[ej.id] || []).includes(i) ? "checked" : ""}><span>${mdLinea(t)}</span></label>`).join("")}</div>` : ""}
+      <div class="pr-barra">
+        <button class="pr-fuerte" data-ejp="verificar">Verificar</button>
+        ${ej.solucion ? `<button class="pr-chico" data-ejp="solucion">Ver un ejemplo</button>` : ""}
+        <span class="sim-esp"></span>${otro}
+      </div>${res}`;
+  } else {
+    $("#ejpDer").innerHTML = `
+      <div class="ejp-op-w" id="ejpOps">${opcionesEjp()}</div>
+      <div class="pr-barra">
+        <button class="pr-fuerte" data-ejp="corregir">Corregir</button>
+        <button class="pr-chico" data-ejp="limpiar">↺ Empezar de nuevo</button>
+        <span class="sim-esp"></span>${otro}
+      </div>${res}`;
+  }
+}
+function pintarEdEjp(){
+  const ej = ejp.ej, viendo = ejp.sol === 2;
+  $("#ejpTabs").innerHTML = `<button class="pr-tab ${viendo ? "" : "on"}" data-ejp-ed="tuyo">${esc(ej.archivo || "Código")}</button>${ejp.sol ? `<button class="pr-tab ${viendo ? "on" : ""}" data-ejp-ed="sol">Solución${ej.solucionNota ? ` · ${esc(ej.solucionNota)}` : ""}</button>` : ""}<span class="ejp-leng">Java</span>`;
+  if(viendo){ ejp.ed = null; $("#ejpEd").innerHTML = solucionEjp(ej); return; }
+  ejp.ed = montarEditor($("#ejpEd"), ejp.est.codigo[ej.id] ?? ej.codigoInicial ?? "", false, v => {
+    if(v === (ej.codigoInicial || "")) delete ejp.est.codigo[ej.id]; else ejp.est.codigo[ej.id] = v;
+    clearTimeout(ejp.tGuardar); ejp.tGuardar = setTimeout(guardarEjp, 300);
+  }, "java", () => accionEjp("verificar"));
+}
+/* La solución en solo lectura, con las líneas que no estaban en el código inicial marcadas */
+function solucionEjp(ej){
+  const sol = (ej.solucion || "").split("\n"), nuevas = lineasNuevas((ej.codigoInicial || "").split("\n").map(l => l.trim()), sol.map(l => l.trim()));
+  return `<div class="ed lectura ejp-sol"><pre>${sol.map((l, i) => `<span class="ejp-l ${nuevas[i] && l.trim() ? "nueva" : ""}"><i>${i + 1}</i>${resaltarJava(l)}</span>`).join("")}</pre></div>`;
+}
+/* Diferencia por líneas (la subsecuencia común más larga): true en las líneas de b que no vienen de a */
+function lineasNuevas(a, b){
+  const L = Array.from({ length: a.length + 1 }, () => new Uint16Array(b.length + 1));
+  for(let i = a.length - 1; i >= 0; i--) for(let j = b.length - 1; j >= 0; j--) L[i][j] = a[i] === b[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const nueva = b.map(() => true);
+  for(let i = 0, j = 0; i < a.length && j < b.length;){
+    if(a[i] === b[j]){ nueva[j] = false; i++; j++; } else if(L[i + 1][j] >= L[i][j + 1]) i++; else j++;
+  }
+  return nueva;
+}
+function opcionesEjp(){
+  const ej = ejp.ej, r = ejp.est.resp[ej.id] || {}, corr = ejp.corregido;
+  return `
+    <div class="ejp-op-cab"><b>${ej.tipo === "clasificacion" ? "¿Qué pasa con cada fila?" : ej.opciones.includes("Parser") ? "¿Dónde va cada cambio?" : "Elegí una opción en cada fila"}</b><span>${Object.keys(r).length} de ${ej.items.length} respondidas</span></div>
+    <ol class="ejp-items">${ej.items.map((it, i) => {
+      const ok = r[i] === it.respuesta;
+      return `
+      <li class="ejp-item ${corr ? (ok ? "ok" : r[i] ? "mal" : "falta") : ""}">
+        <div class="ejp-item-t">${ej.tipo === "clasificacion" ? `<code>${esc(it.texto)}</code>` : mdLinea(it.texto)}</div>
+        <div class="ejp-ops">${ej.opciones.map(o => `<button class="ejp-op ${r[i] === o ? "on" : ""} ${corr && o === it.respuesta ? "bien" : ""}" data-ejp-op="${i}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>
+        ${corr ? `<div class="ejp-motivo">${ok ? "✓" : r[i] ? `✗ Era <b>${esc(it.respuesta)}</b> ·` : `Era <b>${esc(it.respuesta)}</b> ·`} ${mdLinea(it.motivo)}</div>` : ""}
+      </li>`; }).join("")}</ol>`;
+}
+
+/* ---- Lo que hacen los botones */
+function accionEjp(a){
+  if(!ejp || !ejp.ej || !$("#ejpWs")) return;
+  const ej = ejp.ej, res = $("#ejpRes");
+  if(a === "otro"){ const xs = parteEjp(ej).ejercicios; abrirEjp(xs[(xs.indexOf(ej) + 1) % xs.length]); return; }
+  if(a === "pista"){
+    const ps = ej.pistas || [];
+    if(!ps.length){ res.innerHTML = `<div class="pr-info">Este ejercicio no tiene pistas: mirá los pasos.</div>`; return; }
+    ejp.pista = Math.min(ps.length, ejp.pista + 1);
+    ejp.tab = "pistas";
+    pintarIzqEjp();
+    res.innerHTML = `<div class="pr-info"><b>💡 Pista ${ejp.pista} de ${ps.length}</b><p>${mdLinea(ps[ejp.pista - 1])}</p>${ejp.pista < ps.length ? `<button class="linkbtn" data-ejp="pista">Otra pista</button>` : ""}</div>`;
+    return;
+  }
+  if(a === "solucion"){
+    if(!ejp.sol && !confirm(ej.tipo === "texto" ? "¿Ver un ejemplo de respuesta? Escribí primero la tuya." : "¿Ver la solución? Probá primero solo: resolverlo es lo que sirve para el parcial.")) return;
+    ejp.sol = 2;
+    const marcar = ejp.est.hechos.includes(ej.id) ? "" : `<button class="pr-chico" data-ejp="marcar">✓ Marcar como resuelto</button>`;
+    if(ej.tipo === "texto"){
+      res.innerHTML = `<div class="pr-info"><b>Un ejemplo de respuesta</b><pre class="ejp-ejemplo">${esc(ej.solucion)}</pre><div class="ejp-acc">${marcar}</div></div>`;
+      return;
+    }
+    pintarEdEjp();
+    res.innerHTML = `<div class="pr-info"><b>Solución${ej.solucionNota ? ` (${esc(ej.solucionNota)})` : ""}</b><p>Lo nuevo está marcado en color. Comparalo con tu código y, si lo entendiste, marcalo como resuelto.</p>
+      <div class="ejp-acc"><button class="pr-chico" data-ejp-ed="tuyo">← Volver a mi código</button>${marcar}</div></div>`;
+    return;
+  }
+  if(a === "marcar" || a === "desmarcar"){
+    marcarEjp(a === "marcar");
+    if(a === "marcar" && res) res.innerHTML = `<div class="pr-bien"><b>✓ Marcado como resuelto.</b>${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}</div>`;
+    return;
+  }
+  if(a === "reiniciar"){
+    if(!confirm("¿Volver al código inicial? Se borra lo que escribiste en este ejercicio.")) return;
+    delete ejp.est.codigo[ej.id];
+    guardarEjp();
+    if(ejp.sol) ejp.sol = 1;
+    pintarEdEjp();
+    res.innerHTML = "";
+    return;
+  }
+  if(a === "limpiar"){
+    if(!confirm("¿Borrar tus respuestas de este ejercicio?")) return;
+    delete ejp.est.resp[ej.id];
+    guardarEjp();
+    ejp.corregido = false;
+    $("#ejpOps").innerHTML = opcionesEjp();
+    res.innerHTML = "";
+    return;
+  }
+  if(a === "corregir"){ corregirEjp(); return; }
+  if(a === "verificar"){
+    if(ej.tipo === "texto"){ pintarChecksEjp(verificarEjp(ejp.est.codigo[ej.id] || "", ej.checks || [])); return; }
+    if(ejp.sol === 2){ ejp.sol = 1; pintarEdEjp(); }
+    pintarChecksEjp(verificarEjp(sinComentarios(ejp.est.codigo[ej.id] ?? ej.codigoInicial ?? ""), ej.checks || []));
+  }
+}
+function marcarEjp(si){
+  const h = ejp.est.hechos, id = ejp.ej.id, ya = h.includes(id);
+  if(si === ya) return;
+  if(si) h.push(id); else h.splice(h.indexOf(id), 1);
+  guardarEjp();
+  pintarPartesEjp();
+  pintarHechoEjp();
+}
+/* Lo que sigue cuando sale todo bien: otro ejemplo de la parte o la parte siguiente */
+function seguirEjp(){
+  const pa = parteEjp(ejp.ej), sig = ejp.d.partes[ejp.d.partes.indexOf(pa) + 1];
+  return `${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}${sig ? `<button class="linkbtn" data-ejp-parte="${sig.n}">Parte ${sig.n}: ${esc(sig.pestana || sig.titulo)} →</button>` : ""}`;
+}
+function pintarChecksEjp(r){
+  const res = $("#ejpRes"), bien = r.filter(x => x.ok).length, todo = bien === r.length;
+  if(todo) marcarEjp(true);
+  res.innerHTML = `
+    <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ Pasa las ${r.length} verificaciones` : `${bien} de ${r.length} verificaciones bien`}</b>${todo ? seguirEjp() : ""}</div>
+    <ul class="pr-checks">${r.map(x => `<li class="${x.ok ? "ok" : "mal"}"><span>${x.ok ? "✓" : "✗"}</span><div><b>${mdLinea(x.msg)}</b></div></li>`).join("")}</ul>
+    <p class="ejp-aviso">Verificación orientativa: compará también con la solución.</p>`;
+  if(innerWidth <= 900) res.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function corregirEjp(){
+  const ej = ejp.ej, r = ejp.est.resp[ej.id] || {};
+  const bien = ej.items.filter((it, i) => r[i] === it.respuesta).length, faltan = ej.items.filter((_, i) => !r[i]).length, todo = bien === ej.items.length;
+  ejp.corregido = true;
+  if(todo) marcarEjp(true);
+  $("#ejpOps").innerHTML = opcionesEjp();
+  $("#ejpRes").innerHTML = `
+    <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ ¡Todas bien! ${bien} de ${bien}` : `${bien} de ${ej.items.length} bien${faltan ? ` · ${faltan} sin responder` : ""}`}</b>${todo ? seguirEjp() : ""}</div>
+    ${[ej.resumen, ej.extra].filter(Boolean).map(t => `<div class="pr-info"><p>${mdLinea(t)}</p></div>`).join("")}`;
+  if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+/* Clics dentro de la práctica del parcial */
+function clicEjp(e){
+  const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-tab],[data-ejp-ed],[data-ejp-op],[data-ejp-tecla]");
+  if(!t || !ejp || !ejp.ej) return false;
+  const ds = t.dataset;
+  if(ds.ejp){ accionEjp(ds.ejp); return true; }
+  if(ds.ejpParte != null){
+    const pa = ejp.d.partes.find(x => x.n === +ds.ejpParte);
+    if(pa) abrirEjp(pa.ejercicios.find(x => !ejp.est.hechos.includes(x.id)) || pa.ejercicios[0]);
+    return true;
+  }
+  if(ds.ejpIr){ const x = ejsEjp().find(y => y.id === ds.ejpIr); if(x) abrirEjp(x); return true; }
+  if(ds.ejpTab){ ejp.tab = ds.ejpTab; pintarIzqEjp(); return true; }
+  if(ds.ejpEd){ ejp.sol = ds.ejpEd === "sol" ? 2 : 1; pintarEdEjp(); return true; }
+  if(ds.ejpOp != null){
+    const r = ejp.est.resp[ejp.ej.id] || (ejp.est.resp[ejp.ej.id] = {});
+    r[ds.ejpOp] = ds.v;
+    guardarEjp();
+    if(ejp.corregido) corregirEjp(); else $("#ejpOps").innerHTML = opcionesEjp();
+    return true;
+  }
+  if(ds.ejpTecla){
+    const ta = ejp.ed && ejp.ed.ta, k = ds.ejpTecla;
+    if(!ta) return true;
+    if(k === "⇥" || k === "⇤") sangrar(ta, k === "⇥" ? 1 : -1);
+    else if(["()", "\"\"", "{}", "<>"].includes(k)){ escribir(ta, k); ta.setSelectionRange(ta.selectionStart - 1, ta.selectionStart - 1); }
+    else escribir(ta, k);
+    return true;
+  }
+  return false;
+}
+document.addEventListener("input", e => {
+  if(e.target.id !== "ejpTexto" || !ejp || !ejp.ej) return;
+  ejp.est.codigo[ejp.ej.id] = e.target.value;
+  clearTimeout(ejp.tGuardar); ejp.tGuardar = setTimeout(guardarEjp, 300);
+});
+document.addEventListener("change", e => {
+  const c = e.target.closest && e.target.closest("[data-ejp-marca]");
+  if(!c || !ejp || !ejp.ej) return;
+  const xs = new Set(ejp.est.marcas[ejp.ej.id] || []);
+  c.checked ? xs.add(+c.dataset.ejpMarca) : xs.delete(+c.dataset.ejpMarca);
+  ejp.est.marcas[ejp.ej.id] = [...xs];
+  guardarEjp();
+});
 
 /* ---------- Quiz (campo "quiz" del parcial: un JSON en quiz/, armado con los bancos de preguntas) ---------- */
 const quizCache = {};
@@ -7200,6 +7753,12 @@ function render(arriba = true){
     montarQuiz(m, p);
     titulo = `Quiz · ${p.titulo} · ${m.nombre}`;
     vista = { t: `Quiz del ${p.titulo}`, s: m.nombre, quiz: true };
+  } else if(p && c === "pp" && p.practicaParcial){
+    ruta = `${a}/${b}/pp${d ? "/" + d : ""}`;
+    app.innerHTML = viewEjp(m, p);
+    montarEjp(m, p, d);
+    titulo = `El parcial por partes · ${p.titulo} · ${m.nombre}`;
+    vista = { t: "El parcial por partes", s: `${m.nombre} · ${p.titulo}` };
   } else if(p && c === "practica" && p.practica){
     const x = d && p.practica.find(e => e.id === d);
     if(x){
@@ -7214,6 +7773,11 @@ function render(arriba = true){
       titulo = `${nombrePractica(p)} · ${p.titulo} · ${m.nombre}`;
       vista = { t: nombrePractica(p), s: `${m.nombre} · ${p.titulo}` };
     }
+  } else if(p && c === "practica" && tieneHerramientas(p)){
+    ruta = `${a}/${b}/practica`;
+    app.innerHTML = viewPracticar(m, p);
+    titulo = `Práctica · ${p.titulo} · ${m.nombre}`;
+    vista = { t: `Práctica · ${p.titulo}`, s: m.nombre };
   } else if(p && c === "h" && HERRAMIENTAS[d] && (p.herramientas || []).includes(d)){
     ruta = `${a}/${b}/h/${d}`;
     app.innerHTML = viewHerramienta(m, p, d);
@@ -7322,6 +7886,7 @@ document.addEventListener("click", e => {
   }
   if(e.target.closest(".nota-in")) return;     // escribir la nota no entra a la materia
   if(e.target.closest("#quiz") && clicQuiz(e)) return;
+  if(e.target.closest(".ejp") && clicEjp(e)) return;
   if(e.target.closest(".pr-ws,.pr-cab,.pr-pasos,.pr-vista") && clicPractica(e)) return;
   const el = e.target.closest("[data-go]");
   if(!el) return;
@@ -7333,7 +7898,7 @@ document.addEventListener("click", e => {
 });
 window.addEventListener("hashchange", render);
 // Las teclas de abajo del editor (celular) no le sacan el foco al código
-document.addEventListener("mousedown", e => { if(e.target.closest("[data-pr-tecla]")) e.preventDefault(); });
+document.addEventListener("mousedown", e => { if(e.target.closest("[data-pr-tecla],[data-ejp-tecla]")) e.preventDefault(); });
 // La nota se guarda al salir del campo o con Enter
 document.addEventListener("change", e => {
   const n = e.target.closest && e.target.closest(".nota-in");

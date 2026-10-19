@@ -28,7 +28,7 @@ Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el d
 `#/m201` (`viewMateria`). Solo el material y la info de la materia: nada de tu cursada (comisión, días, fechas, notas: eso va en el Cronograma) ni de tu avance (va en "Tu avance").
 - **Arriba**: la sigla, el año y el nombre; a la derecha, cómo se aprueba ("Directa con 6 · Sin regularidad", de `condiciones`; al tocarlo se despliega cada requisito) y el ZIP completo.
 - **Las partes**: cada parcial / TPI / final es una tarjeta simple, con su nombre y su descripción corta. Lo suelto (Cuestionarios, Actividades) va abajo en filas, y al final el cuadro de comisiones.
-- **Adentro** (un parcial, el TPI, una sección…): todo está en una sola fila de pestañas, fija arriba, y cada pestaña muestra su contenido directo, sin más páginas para entrar. A la izquierda, "‹ Backend de Aplicaciones" vuelve a la materia (en el celular, "‹ BDA"). Al entrar a una parte se abre su primera pestaña.
+- **Adentro** (un parcial, el TPI, una sección…): todo está en una sola fila de pestañas, fija arriba, y cada pestaña muestra su contenido directo, sin más páginas para entrar. A la izquierda, "‹ BDA Backend de Aplicaciones" (la sigla con el color de la materia y el nombre) vuelve a la materia; en el celular queda solo la sigla. Al entrar a una parte se abre su primera pestaña.
 - **Los archivos**: cada bloque es una tarjeta con una fila por archivo (tapa, nombre y detalle); los niveles (Esencial, Para profundizar, Extra) son títulos.
 
 ## Estilo
@@ -44,7 +44,7 @@ A la izquierda queda fija una barra (`renderLado`) con:
 - Abajo, **Tu avance** (el % y cuántas materias), que lleva al plan.
 
 En el celular la barra es un menú que se abre con el botón de arriba a la izquierda.
-Adentro de una parte, una sola fila de pestañas con todo (sale de `pestanasDe(p)`): el material de cada sección que tiene archivos (Teórico, Práctico, Parciales / Simulacros…), **Videos** (todos juntos; si hay de más de una sección, arriba se elige "Teórico · Práctico"), **Práctica** (antes de los parciales), **Quiz**, las herramientas y **Temas**. En una parte de una sola página (`secciones: []`) o una sección de la materia: Material, Videos, Quiz, herramientas y Temas. Arriba de cada pestaña va el nombre de la parte y su descripción (`cabParte`). Si hay una sola pestaña, la fila muestra solo la vuelta a la materia.
+Adentro de una parte, una sola fila de pestañas con todo (sale de `pestanasDe(p)`), siempre en el mismo orden: **Temas**, el material de cada sección que tiene archivos (Teórico, Práctico…), **Práctica**, **Videos** (todos juntos; si hay de más de una sección, arriba se elige "Teórico · Práctico") y al final **Parciales / Simulacros**. El quiz y las herramientas no son pestañas: van arriba de Parciales, en "Herramientas para practicar" (`parcialBox`). En una parte de una sola página (`secciones: []`) o una sección de la materia: Temas, Material, Práctica (con las herramientas) y Videos. Arriba de cada pestaña va el nombre de la parte y su descripción (`cabParte`). Si hay una sola pestaña, la fila muestra solo la vuelta a la materia.
 
 **Colores de las materias** (`colorMat`): salen de `COLORES_PDF` (el color de cada materia en los horarios en PDF) y se bajan de tono: un fondo suave, un borde y un texto oscuro del mismo tono, y otros tres para el modo oscuro. Los grises se oscurecen un poco y los naranjas fuertes pasan a un terracota suave.
 
@@ -79,8 +79,11 @@ Los estados y las notas se guardan junto con las aprobadas en `aprobadas.json` (
 Cada materia lleva su abreviatura en una pastilla con su color (el de los horarios bajado de tono, `colorMat`); las correlativas van en pastillas grises, en verde las ya aprobadas y en violeta las regulares. El gris es `--beige` y `--beige-t` (con su versión para el modo oscuro).
 
 ## Modo simulacro
-Un grupo de material puede tener `simulacro: { id, titulo, minutos, preenunciado: { pdf, zip }, enunciado: { pdf, zip }, solucion: { zip }, control }` (ver los Simulacros del 1º Parcial de Backend, `201`). Arriba del grupo aparece un panel: 1) el preenunciado para el día antes, 2) el parcial con reloj (se puede cambiar de a 5 min) y 3) la solución. Al tocar **Empezar** corre el reloj y se habilitan el enunciado (PDF en el visor) y el ZIP con el CSV y los tests; hay pausa y "Terminé". Cuando se acaba el tiempo suena un aviso y se habilita la solución. El estado queda en el navegador (`isi-simulacros`): se puede recargar, ir a otra página o al IDE y el reloj sigue. La pestaña muestra el tiempo que queda; afuera del panel aparece un reloj flotante y en el visor, un reloj en la barra.
+Un grupo de material (o una de sus `partes`) puede tener `simulacro: { id, titulo, minutos, preenunciado: { pdf, zip }, enunciado: { pdf, zip }, solucion: { zip }, control }` (ver los Simulacros del 1º Parcial de Backend, `201`). Arriba del grupo aparece un panel: 1) el preenunciado para el día antes, 2) el parcial con reloj (se puede cambiar de a 5 min) y 3) la solución. Al tocar **Empezar** corre el reloj y se habilitan el enunciado (PDF en el visor) y el ZIP con el CSV y los tests; hay pausa y "Terminé". Cuando se acaba el tiempo suena un aviso y se habilita la solución. El estado queda en el navegador (`isi-simulacros`): se puede recargar, ir a otra página o al IDE y el reloj sigue. La pestaña muestra el tiempo que queda; afuera del panel aparece un reloj flotante y en el visor, un reloj en la barra.
 Por ahora está en el Simulacro 4 de Backend (`material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4/`: preenunciado, enunciado y solución separados).
+
+## Parciales y simulacros en filas
+Un grupo con `filas: true` y `partes` muestra cada parte en una sola fila: "Parcial 3K1 · 2026 — Cloud Center", con el detalle abajo y cuántos archivos tiene. Al tocarla se despliega con sus archivos (y el panel del modo simulacro, si la parte tiene `simulacro`; si hay uno en curso, la fila ya aparece abierta). Cada parte: `{ titulo, tema, detalle, archivos, simulacro? }` (ver Parciales / Simulacros del 1º Parcial de Backend, `201`).
 
 ## Práctica por partes
 Un parcial puede tener `practica: [{ id, titulo, origen, detalle, pasos, url }]` (ver DAO, `206`, 1º Parcial). En la página del parcial aparece primero la tarjeta "Práctica por partes" (`#/m206/p1/practica`), con la lista de ejercicios y cuánto lleva hecho cada uno.
@@ -108,12 +111,12 @@ Los JSON no se escriben a mano: se editan `herramientas/practica/ej1.py … ej5.
 
 ### Práctica por temas (Backend, en Java)
 Con `practicaGrupos`, `practicaTemas` y `practicaLenguaje: "java"` en el parcial (ver Backend, `201`, 1º Parcial), la Práctica se ordena por temas:
-- `practicaGrupos: [{ id, titulo, detalle }]`: Básico (lo que trae el preenunciado) y Para el parcial (los cambios del día del parcial).
+- `practicaGrupos: [{ id, titulo, detalle, material? }]`: Básico (lo que trae el preenunciado) y Para el parcial (los cambios del día del parcial). Con `material` (archivos, como en cualquier sección) el grupo muestra esos archivos arriba de sus temas: en Básico va la guía rápida, el resumen de lo básico.
 - `practicaTemas: [{ id, grupo, titulo, detalle, herramientas }]`: cada tema muestra sus explicaciones ("Entendelo", las `herramientas`) y sus ejercicios ("Practicalo": los de `practica` con ese `tema`).
 - En cada ejercicio de `practica` van además `grupo` y `tema`.
-- `quizEn: "parcial"`: arriba de esa sección (Parciales / Simulacros) aparece "Para preparar el parcial", con el quiz, las explicaciones y los ejercicios del grupo `parcial`.
+- `quizEn: "parcial"`: arriba de esa sección (Parciales / Simulacros) aparece "Herramientas para practicar", con El parcial por partes (si está `practicaParcial`), el quiz, las explicaciones y los ejercicios del grupo `parcial`.
 
-En la página del parcial quedan tres tarjetas: Teórico, Práctica y Parciales / Simulacros. La página de cada explicación trae abajo los ejercicios de su tema.
+Las pestañas del parcial quedan: Temas · Teórico · Práctica · Videos · Parciales / Simulacros. Parciales / Simulacros tiene, en orden: las herramientas para practicar, "Para estudiar" (cómo resolver el parcial paso a paso y la guía única con el multiple choice) y una fila por parcial o simulacro. La página de cada explicación trae abajo los ejercicios de su tema.
 
 Los ejercicios de Java tienen el mismo formato que los de Python, con `lenguaje: "java"` e `importar` (los paquetes que usan los controles). Cada control (`c`) es un bloque de Java que usa `practica/java/Prueba.java`: `Prueba.igual`, `verdad`, `lanza`, `noLanza`, `contiene`, `salida(() -> …)` (lo que imprime) y `archivo(ruta, texto)` (un CSV de prueba). Se editan `herramientas/practica-java/ej1.py … ej5.py` (los CSV y los proyectos originales están en `datos/` y `proyectos/`) y se corre, desde la raíz:
 `python3 herramientas/practica-java/validar.py ej1 ej2 ej3 ej4 ej5` (con el JDK 21: compila y corre los controles igual que la página) y `python3 herramientas/practica-java/armar.py`.
@@ -127,6 +130,16 @@ Los ejercicios de Java tienen el mismo formato que los de Python, con `lenguaje:
 - **Diferencias con el JDK:** la división entera por cero corta el programa en vez de tirar `ArithmeticException` (se avisa en castellano), y algunas excepciones (índices, casteos, null) no traen mensaje.
 
 `herramientas/java-navegador/armar.sh` rehace los tres archivos desde el paquete de npm `@wasm-oj/toolchain-java` 0.2.0 (necesita el JDK 21 y ASM 9). `ParcheClasslib.java` corrige la biblioteca de TeaVM: nombres internos de métodos, `Long.sum`, `String.format` y `Scanner` livianos, `getSimpleName`, rutas relativas, `Files.createDirectories`, `System.exit` y los mensajes de `parseInt`, `parseDouble` y `Enum.valueOf` iguales a los del JDK. Las licencias están en `practica/java/LICENCIAS.md`.
+
+## El parcial por partes
+Con `practicaParcial: "practica/bk-parcial/ejercicios.json"` en el parcial (ver Backend, `201`) aparece la tarjeta "El parcial por partes" en Herramientas para practicar (`#/m201/p1/pp`, o `#/m201/p1/pp/1.2` para un ejercicio). Son las 7 partes de siempre del parcial, en pestañas: 0 Consigna (dónde va cada cambio), 1 CSV (los dos formatos), 2 Dominio, 3 Polimorfismo, 4 Colector, 5 Main y 6 Entrega. Arriba de cada parte va su explicación corta y los ejercicios de esa parte, cada uno de un parcial distinto (Fintech, Reparaciones, Juegos, Compras, Servidores).
+- **Izquierda:** el ejercicio, la línea **Dónde** (en qué clase o método se trabaja) y las pestañas Consigna, CSV (en una tabla, con la columna nueva resaltada y las filas de otro ancho marcadas), Pasos y Pistas (de a una).
+- **Derecha, según el tipo:** `codigo`: el editor de Java con "Verificar" (o Ctrl + Enter), "Pista", "Ver solución" (pide confirmar; se ve en otra pestaña del editor con lo nuevo marcado en color), "Reiniciar código" y "Otro ejemplo →" (el siguiente de la misma parte, en ciclo). `ubicacion` y `clasificacion`: una opción por fila y "Corregir", que muestra el motivo de cada una. `texto`: un área para escribir, la autoevaluación y las verificaciones.
+- **Verificar:** no se corre Java. Se buscan con expresiones regulares (los `checks` del ejercicio: `contiene`, `noContiene`, `cuenta` con `veces` y `lineas` con `min` y `max`) en el código sin comentarios, así un comentario no hace pasar nada. Es orientativa, y se avisa.
+- **Progreso:** el código, las respuestas y los ejercicios resueltos quedan en el navegador (`isi-pp:<archivo>`). Un ejercicio queda resuelto cuando pasa todo, o a mano después de ver la solución.
+- En el celular los paneles van uno abajo del otro y el editor ocupa todo el ancho.
+
+El JSON (`partes: [{ n, titulo, pestana, explicacion, ejercicios }]`, y cada ejercicio con `id, parte, tema, titulo, tipo, donde, consigna, csv, csvNota, tabla, datos, pasos, pistas, archivo, codigoInicial, solucion, solucionNota, checks, items, opciones, resumen, extra, checklist`) sale tal cual de las instrucciones que armamos con todos los parciales. Si se cambian, conviene probar que la solución de cada ejercicio pase todos sus `checks` y el código inicial no.
 
 ## Modo oscuro y carga suave
 El botón de la luna/sol de la barra lateral (en el celular, el de arriba) elige claro u oscuro y lo guarda (`isi-tema`); si nunca se tocó, sigue al sistema. Funciona prendiendo o apagando las reglas `@media (prefers-color-scheme: dark)` de la hoja de estilos (un script chico en el `<head>`, para que no parpadee al abrir), así que los colores oscuros se siguen escribiendo dentro de esos `@media`.
@@ -195,7 +208,7 @@ Además de `teorico`, `practico` y `parciales` hay dos secciones más: `parcial`
 `secciones: ["teorico", "parcial"], nombres: { parcial: "1º Parcial" }`
 
 ## Comisiones
-Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia`. El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero. La recomendación también se ve en el Cronograma, al elegir comisión.
+Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia` (se ve como "Toma" o "No toma", centrado). El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero. La recomendación es una pastilla centrada (Sí / No) y el `motivo` va debajo del comentario. La recomendación también se ve en el Cronograma, al elegir comisión.
 
 ## Parcial o TPI en una sola página
 Con `secciones: []` el parcial no tiene secciones de Teórico/Práctico: sus pestañas son Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`), más Quiz, herramientas y Temas si los tiene (ver Tecnologías para la Automatización, `29`).

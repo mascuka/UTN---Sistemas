@@ -1,0 +1,1405 @@
+{
+ "partes": [
+  {
+   "n": 0,
+   "titulo": "¿Dónde va cada cambio?",
+   "explicacion": "Antes de escribir código hay que ubicar cada pedido: la estructura del CSV va en el **Parser**; las validaciones y cálculos del dato nuevo, en el **dominio**; conteos y totales, en el **colector**; mostrar, en el **Main**.",
+   "corto": "Leer la consigna",
+   "ejercicios": [
+    {
+     "id": "0.1",
+     "parte": 0,
+     "tema": "",
+     "titulo": "Fintech",
+     "tipo": "ubicacion",
+     "consigna": "La fintech agrega la columna `nivelMorosidad` (`NORMAL` / `EN_MORA`). Indicá en qué clase va cada cambio.",
+     "items": [
+      {
+       "texto": "Aceptar la cabecera de 6 columnas además de la de 5",
+       "respuesta": "Parser",
+       "motivo": "La estructura del archivo es responsabilidad del parser"
+      },
+      {
+       "texto": "Rechazar una fila de 5 campos bajo la cabecera de 6",
+       "respuesta": "Parser",
+       "motivo": "El ancho se controla contra la cabecera leída"
+      },
+      {
+       "texto": "Descartar las filas de tipo BLACK",
+       "respuesta": "Parser",
+       "motivo": "El descarte va antes de construir el objeto (ya estaba ahí)"
+      },
+      {
+       "texto": "`RECHAZADO` solo admite `EN_MORA`",
+       "respuesta": "Dominio",
+       "motivo": "Es una regla del dato: va en `desdeCampos`"
+      },
+      {
+       "texto": "EN_MORA exige ingresos > 25000",
+       "respuesta": "Dominio",
+       "motivo": "Validación del objeto"
+      },
+      {
+       "texto": "Guardar el nivel de morosidad en el objeto",
+       "respuesta": "Dominio",
+       "motivo": "Atributo + getter"
+      },
+      {
+       "texto": "Contar cuántas solicitudes hay por nivel de morosidad",
+       "respuesta": "Colector",
+       "motivo": "Operación sobre la colección (`CarteraCreditos`)"
+      },
+      {
+       "texto": "Usar `datos/datos-parcial.csv` por defecto",
+       "respuesta": "Main",
+       "motivo": "Ruta por defecto en `App`"
+      },
+      {
+       "texto": "Mostrar las cantidades NORMAL / EN_MORA",
+       "respuesta": "Main",
+       "motivo": "El main imprime lo que calcula el colector"
+      }
+     ],
+     "opciones": [
+      "Parser",
+      "Dominio",
+      "Colector",
+      "Main"
+     ]
+    },
+    {
+     "id": "0.2",
+     "parte": 0,
+     "tema": "",
+     "titulo": "Reparaciones",
+     "tipo": "ubicacion",
+     "consigna": "El taller agrega `garantia,repuestos,modalidad` (8 → 11 columnas). `EXPRESS` cobra un 25 % más.",
+     "items": [
+      {
+       "texto": "Aceptar cabeceras de 8 y de 11 columnas",
+       "respuesta": "Parser",
+       "motivo": "Estructura del archivo"
+      },
+      {
+       "texto": "Descartar `CANCELADA` después de verificar el ancho",
+       "respuesta": "Parser",
+       "motivo": "Precedencia: ancho → descarte"
+      },
+      {
+       "texto": "`garantia` solo admite SI/NO",
+       "respuesta": "Dominio",
+       "motivo": "Validación del dato"
+      },
+      {
+       "texto": "Repuestos negativos invalidan la fila",
+       "respuesta": "Dominio",
+       "motivo": "Validación del dato"
+      },
+      {
+       "texto": "Una reparación EXPRESS calcula el importe × 1.25",
+       "respuesta": "Dominio",
+       "motivo": "Subclase `ReparacionExpress` con `@Override importe()`"
+      },
+      {
+       "texto": "Elegir entre `Reparacion` y `ReparacionExpress` según la modalidad",
+       "respuesta": "Dominio",
+       "motivo": "`desdeCampos` decide qué clase crear"
+      },
+      {
+       "texto": "Total facturado de las reparaciones ENTREGADA",
+       "respuesta": "Colector",
+       "motivo": "Operación sobre la colección (`Taller`)"
+      },
+      {
+       "texto": "Conteo por tipo de dispositivo",
+       "respuesta": "Colector",
+       "motivo": "`groupingBy` en `Taller`"
+      },
+      {
+       "texto": "Mostrar facturación, entregadas y agrupamiento",
+       "respuesta": "Main",
+       "motivo": "Solo imprime"
+      }
+     ],
+     "opciones": [
+      "Parser",
+      "Dominio",
+      "Colector",
+      "Main"
+     ]
+    },
+    {
+     "id": "0.3",
+     "parte": 0,
+     "tema": "",
+     "titulo": "Juegos",
+     "tipo": "ubicacion",
+     "consigna": "Se agrega `dificultad_cooperativa` (10.ª columna). Si tiene valor, el juego es cooperativo y su puntuación ajustada cambia.",
+     "items": [
+      {
+       "texto": "Aceptar cabeceras de 9 y 10 columnas separadas por `;`",
+       "respuesta": "Parser",
+       "motivo": "Estructura del archivo"
+      },
+      {
+       "texto": "La dificultad debe ser un entero entre 1 y 10",
+       "respuesta": "Dominio",
+       "motivo": "Validación del dato"
+      },
+      {
+       "texto": "`getPuntuacionAjustada()` suma `dificultad / 2.0` en los cooperativos",
+       "respuesta": "Dominio",
+       "motivo": "Polimorfismo: subclase `JuegoCooperativo`"
+      },
+      {
+       "texto": "Suma total de la puntuación ajustada",
+       "respuesta": "Colector",
+       "motivo": "Operación sobre la colección"
+      },
+      {
+       "texto": "Conteo por tipo Normal / Cooperativo",
+       "respuesta": "Colector",
+       "motivo": "`groupingBy(Juego::getTipo, counting())`"
+      },
+      {
+       "texto": "Mostrar el panorama con los totales y los conteos",
+       "respuesta": "Main",
+       "motivo": "Solo imprime"
+      }
+     ],
+     "opciones": [
+      "Parser",
+      "Dominio",
+      "Colector",
+      "Main"
+     ]
+    }
+   ],
+   "pestana": "Consigna"
+  },
+  {
+   "n": 1,
+   "titulo": "Lectura de dos formatos (Parser)",
+   "explicacion": "El parser reconoce dos cabeceras y la primera línea define cuántas columnas tiene que tener **cada** fila. Un **solo loop** para los dos formatos. El orden es siempre: ancho → descarte → validaciones. Duplicar el loop por formato está mal.",
+   "corto": "Lectura de dos formatos",
+   "ejercicios": [
+    {
+     "id": "1.1",
+     "parte": 1,
+     "tema": "Fintech",
+     "titulo": "5 → 6 columnas",
+     "tipo": "codigo",
+     "donde": "`ParserSolicitudes` → `procesar(Path)`",
+     "consigna": "El archivo puede venir con la cabecera original de 5 columnas o con la nueva de 6, que agrega `nivelMorosidad`. Modificá el parser para que acepte las dos **sin duplicar el loop**. Cada fila debe tener exactamente el ancho de **su** cabecera. Si la cabecera no es ninguna de las dos, se lanza `IllegalArgumentException`. (En este ejercicio solo se toca el parser.)",
+     "csv": {
+      "cabecera": "idCliente,tipoCliente,ingresosMensuales,totalDeudasActuales,estadoSolicitud,nivelMorosidad",
+      "filas": [
+       "CL969,PREMIUM,12868,4384,RECHAZADO,NORMAL",
+       "CL877,REGULAR,14613,6913,APROBADO,NORMAL",
+       "CL124,BLACK,9000,100,APROBADO,NORMAL",
+       "CL300,REGULAR,8000,500,APROBADO"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "nivelMorosidad"
+      ]
+     },
+     "csvNota": "La última fila tiene 5 campos bajo una cabecera de 6, así que es **inválida**.",
+     "pasos": [
+      "Crear dos constantes de cabecera.",
+      "Leer la primera línea y guardar el ancho esperado (5 o 6). Si no coincide con ninguna, `IllegalArgumentException`.",
+      "Reemplazar el `5` fijo por la variable del ancho esperado.",
+      "Dejar un solo `while`."
+     ],
+     "pistas": [
+      "`String cabecera = lector.readLine();` y después un `if / else if / else`.",
+      "La variable puede llamarse `largoCabecera` y declararse antes del `if`.",
+      "El `throw` del `else` es el mismo que ya existía."
+     ],
+     "archivo": "ParserSolicitudes.java",
+     "codigoInicial": "public class ParserSolicitudes {\n    private static final String CABECERA = \"idCliente,tipoCliente,ingresosMensuales,totalDeudasActuales,estadoSolicitud\";\n\n    public ResultadoProceso procesar(Path archivo) throws IOException {\n        ArrayList<SolicitudCredito> creditos = new ArrayList<>();\n        ArrayList<String> errores = new ArrayList<>();\n        ArrayList<String> descartes = new ArrayList<>();\n        int leidas = 0;\n\n        try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            if (!CABECERA.equals(lector.readLine())) {\n                throw new IllegalArgumentException(\"encabezado incorrecto\");\n            }\n            String linea;\n            while ((linea = lector.readLine()) != null) {\n                leidas++;\n                int numero = leidas + 1;\n                try {\n                    String[] tokens = Arrays.stream(linea.split(\",\", -1)).map(String::strip).toArray(String[]::new);\n                    if (tokens.length != 5)\n                        throw new IllegalArgumentException(\"Cantidad de columnas incorrectas\");\n                    if (tokens[1].equals(\"BLACK\")) {\n                        descartes.add(\"Linea %d: BLACK\".formatted(numero));\n                        continue;\n                    }\n                    if (!List.of(\"REGULAR\", \"PREMIUM\").contains(tokens[1]))\n                        throw new IllegalArgumentException(\"tipo desconocido: \" + tokens[1]);\n                    creditos.add(SolicitudCredito.desdeCampos(tokens));\n                } catch (IllegalArgumentException ex) {\n                    errores.add(\"Linea %d: %s\".formatted(numero, ex.getMessage()));\n                }\n            }\n        }\n        return new ResultadoProceso(creditos, leidas, descartes.size(), errores, descartes);\n    }\n}",
+     "solucion": "public class ParserSolicitudes {\n    private static final String CABECERA_5 = \"idCliente,tipoCliente,ingresosMensuales,totalDeudasActuales,estadoSolicitud\";\n    private static final String CABECERA_6 = \"idCliente,tipoCliente,ingresosMensuales,totalDeudasActuales,estadoSolicitud,nivelMorosidad\";\n\n    public ResultadoProceso procesar(Path archivo) throws IOException {\n        ArrayList<SolicitudCredito> creditos = new ArrayList<>();\n        ArrayList<String> errores = new ArrayList<>();\n        ArrayList<String> descartes = new ArrayList<>();\n        int leidas = 0;\n\n        try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            String cabecera = lector.readLine();\n            int largoCabecera;\n            if (CABECERA_5.equals(cabecera)) {\n                largoCabecera = 5;\n            } else if (CABECERA_6.equals(cabecera)) {\n                largoCabecera = 6;\n            } else {\n                throw new IllegalArgumentException(\"encabezado incorrecto\");\n            }\n            String linea;\n            while ((linea = lector.readLine()) != null) {\n                leidas++;\n                int numero = leidas + 1;\n                try {\n                    String[] tokens = Arrays.stream(linea.split(\",\", -1)).map(String::strip).toArray(String[]::new);\n                    if (tokens.length != largoCabecera)\n                        throw new IllegalArgumentException(\"Cantidad de columnas incorrectas\");\n                    if (tokens[1].equals(\"BLACK\")) {\n                        descartes.add(\"Linea %d: BLACK\".formatted(numero));\n                        continue;\n                    }\n                    if (!List.of(\"REGULAR\", \"PREMIUM\").contains(tokens[1]))\n                        throw new IllegalArgumentException(\"tipo desconocido: \" + tokens[1]);\n                    creditos.add(SolicitudCredito.desdeCampos(tokens));\n                } catch (IllegalArgumentException ex) {\n                    errores.add(\"Linea %d: %s\".formatted(numero, ex.getMessage()));\n                }\n            }\n        }\n        return new ResultadoProceso(creditos, leidas, descartes.size(), errores, descartes);\n    }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "\"[^\"]*estadoSolicitud,nivelMorosidad\"",
+       "ok": "Está la cabecera nueva",
+       "error": "Falta la constante con la cabecera de 6 columnas"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"[^\"]*estadoSolicitud\"\\s*;",
+       "ok": "Se conserva la cabecera vieja",
+       "error": "La cabecera de 5 columnas tiene que seguir existiendo"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "tokens\\.length\\s*!=\\s*5\\b",
+       "ok": "El ancho ya no es un 5 fijo",
+       "error": "Todavía comparás contra un 5 fijo"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "tokens\\.length\\s*!=\\s*[a-zA-Z_]\\w*",
+       "ok": "Se compara contra una variable",
+       "error": "Compará `tokens.length` contra el ancho guardado de la cabecera"
+      },
+      {
+       "tipo": "cuenta",
+       "regex": "\\bwhile\\s*\\(",
+       "ok": "Un solo loop",
+       "error": "Hay más de un `while`: eso es duplicar la carga",
+       "veces": 1
+      },
+      {
+       "tipo": "contiene",
+       "regex": "throw new IllegalArgumentException\\(\"encabezado incorrecto\"\\)",
+       "ok": "Cabecera desconocida sigue fallando",
+       "error": "Si la cabecera no es ninguna, hay que lanzar `IllegalArgumentException`"
+      }
+     ]
+    },
+    {
+     "id": "1.2",
+     "parte": 1,
+     "tema": "Juegos",
+     "titulo": "9 → 10 columnas con `;`",
+     "tipo": "codigo",
+     "donde": "`ParserJuegos` → `procesar(Path)`",
+     "consigna": "El CSV de juegos usa `;` como separador. La versión nueva agrega `dificultad_cooperativa` como 10.ª columna. El parser tiene que aceptar las dos cabeceras con un solo loop, y cada fila tiene que tener el ancho de su cabecera.",
+     "csv": {
+      "cabecera": "id;nombre;anio;min_jugadores;max_jugadores;duracion;rating;peso;categoria;dificultad_cooperativa",
+      "filas": [
+       "1;Pandemic;2008;2;4;45;7.6;2.4;estrategia;6",
+       "2;Catan;1995;3;4;90;7.1;2.3;estrategia;",
+       "3;Spirit Island;2017;1;4;120;8.3;4.0;estrategia;8",
+       "4;Azul;2017;2;4;45;7.8;1.8;abstracto"
+      ],
+      "separador": ";",
+      "columnasNuevas": [
+       "dificultad_cooperativa"
+      ]
+     },
+     "csvNota": "La fila 2 tiene la 10.ª columna vacía: es un juego normal y el ancho es correcto. La fila 4 tiene 9 campos, así que es **inválida**.",
+     "pasos": [
+      "Dos constantes de cabecera (9 y 10 columnas).",
+      "Guardar el ancho esperado según la cabecera leída.",
+      "Comparar `campos.length` contra ese ancho."
+     ],
+     "pistas": [
+      "Ojo: el separador es `;` en el `split` y también en las constantes.",
+      "`split(\";\", -1)` conserva el campo vacío del final, así que la fila 2 tiene 10 campos."
+     ],
+     "archivo": "ParserJuegos.java",
+     "codigoInicial": "public class ParserJuegos {\n    private static final String CABECERA = \"id;nombre;anio;min_jugadores;max_jugadores;duracion;rating;peso;categoria\";\n\n    public ResultadoCarga procesar(Path archivo) throws IOException {\n        List<Juego> juegos = new ArrayList<>();\n        List<String> errores = new ArrayList<>();\n        int leidas = 0;\n        try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            if (!CABECERA.equals(lector.readLine()))\n                throw new IllegalArgumentException(\"encabezado incorrecto\");\n            String linea;\n            while ((linea = lector.readLine()) != null) {\n                leidas++;\n                int numero = leidas + 1;\n                try {\n                    String[] campos = Arrays.stream(linea.split(\";\", -1)).map(String::strip).toArray(String[]::new);\n                    if (campos.length != 9)\n                        throw new IllegalArgumentException(\"ancho incorrecto\");\n                    juegos.add(Juego.desdeCampos(campos));\n                } catch (IllegalArgumentException ex) {\n                    errores.add(\"Linea %d: %s\".formatted(numero, ex.getMessage()));\n                }\n            }\n        }\n        return new ResultadoCarga(juegos, leidas, errores);\n    }\n}",
+     "solucion": "public class ParserJuegos {\n    private static final String CABECERA_9 = \"id;nombre;anio;min_jugadores;max_jugadores;duracion;rating;peso;categoria\";\n    private static final String CABECERA_10 = CABECERA_9 + \";dificultad_cooperativa\";\n\n    public ResultadoCarga procesar(Path archivo) throws IOException {\n        List<Juego> juegos = new ArrayList<>();\n        List<String> errores = new ArrayList<>();\n        int leidas = 0;\n        try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            String cabecera = lector.readLine();\n            int ancho;\n            if (CABECERA_9.equals(cabecera)) ancho = 9;\n            else if (CABECERA_10.equals(cabecera)) ancho = 10;\n            else throw new IllegalArgumentException(\"encabezado incorrecto\");\n\n            String linea;\n            while ((linea = lector.readLine()) != null) {\n                leidas++;\n                int numero = leidas + 1;\n                try {\n                    String[] campos = Arrays.stream(linea.split(\";\", -1)).map(String::strip).toArray(String[]::new);\n                    if (campos.length != ancho)\n                        throw new IllegalArgumentException(\"ancho incorrecto\");\n                    juegos.add(Juego.desdeCampos(campos));\n                } catch (IllegalArgumentException ex) {\n                    errores.add(\"Linea %d: %s\".formatted(numero, ex.getMessage()));\n                }\n            }\n        }\n        return new ResultadoCarga(juegos, leidas, errores);\n    }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "dificultad_cooperativa",
+       "ok": "Está la cabecera nueva",
+       "error": "Falta la cabecera de 10 columnas"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "campos\\.length\\s*!=\\s*9\\b",
+       "ok": "El ancho ya no es un 9 fijo",
+       "error": "Todavía comparás contra un 9 fijo"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "campos\\.length\\s*!=\\s*[a-zA-Z_]\\w*",
+       "ok": "Se compara contra una variable",
+       "error": "Compará contra el ancho de la cabecera"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "split\\(\";\",\\s*-1\\)",
+       "ok": "Se conserva `split(\";\", -1)`",
+       "error": "El separador es `;` y hace falta el `-1` para no perder el campo vacío final"
+      },
+      {
+       "tipo": "cuenta",
+       "regex": "\\bwhile\\s*\\(",
+       "ok": "Un solo loop",
+       "error": "No dupliques el loop",
+       "veces": 1
+      }
+     ]
+    },
+    {
+     "id": "1.3",
+     "parte": 1,
+     "tema": "Reparaciones",
+     "titulo": "8 → 11 columnas + descarte",
+     "tipo": "codigo",
+     "donde": "`ParserReparaciones` → `procesar(Path)`",
+     "consigna": "La cabecera inicial tiene 8 columnas y la evolucionada 11 (`garantia,repuestos,modalidad`). Aceptá las dos con un solo loop. **Precedencia:** primero el ancho; después, si el estado (columna 7, índice 6) es `CANCELADA`, la fila se **descarta** sin validar nada más. Probá calcular el ancho a partir de la cabecera en vez de escribir los números.",
+     "csv": {
+      "cabecera": "id,cliente,dispositivo,marca,prioridad,horas,estado,costoBase,garantia,repuestos,modalidad",
+      "filas": [
+       "R1,Ana,celular,Samsung,2,3,ABIERTA,1000,SI,200,NORMAL",
+       "R2,Luis,notebook,Lenovo,1,2,CANCELADA,xx,??,-5,RARA",
+       "R3,Eva,tablet,Apple,3,1,LISTA,800,NO,0"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "garantia",
+       "repuestos",
+       "modalidad"
+      ]
+     },
+     "csvNota": "R2 se **descarta** (CANCELADA), aunque tiene valores inválidos. R3 tiene 10 campos, así que es **inválida**.",
+     "pasos": [
+      "Dos constantes de cabecera.",
+      "Si la cabecera leída es una de las dos, `ancho = cabecera.split(\",\").length`; si no, excepción.",
+      "Control de ancho → descarte de CANCELADA → `desdeCampos`."
+     ],
+     "pistas": [
+      "`cabecera.split(\",\").length` da 8 o 11 sin escribir los números.",
+      "El descarte va **después** del control de ancho: una fila CANCELADA con ancho incorrecto es inválida, no descartada."
+     ],
+     "archivo": "ParserReparaciones.java",
+     "codigoInicial": "public class ParserReparaciones {\n    private static final String CABECERA = \"id,cliente,dispositivo,marca,prioridad,horas,estado,costoBase\";\n\n    public ResultadoCarga procesar(Path archivo) throws IOException {\n        List<Reparacion> reparaciones = new ArrayList<>();\n        List<String> errores = new ArrayList<>();\n        int leidas = 0, descartadas = 0;\n        try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            if (!CABECERA.equals(lector.readLine()))\n                throw new IllegalArgumentException(\"encabezado incorrecto\");\n            String linea;\n            while ((linea = lector.readLine()) != null) {\n                leidas++;\n                try {\n                    String[] c = Arrays.stream(linea.split(\",\", -1)).map(String::strip).toArray(String[]::new);\n                    if (c.length != 8)\n                        throw new IllegalArgumentException(\"ancho incorrecto\");\n                    if (c[6].equals(\"CANCELADA\")) {\n                        descartadas++;\n                        continue;\n                    }\n                    reparaciones.add(Reparacion.desdeCampos(c));\n                } catch (IllegalArgumentException ex) {\n                    errores.add(\"Linea %d: %s\".formatted(leidas + 1, ex.getMessage()));\n                }\n            }\n        }\n        return new ResultadoCarga(reparaciones, leidas, descartadas, errores);\n    }\n}",
+     "solucion": "public class ParserReparaciones {\n    private static final String CABECERA_INICIAL = \"id,cliente,dispositivo,marca,prioridad,horas,estado,costoBase\";\n    private static final String CABECERA_EVOLUCIONADA = CABECERA_INICIAL + \",garantia,repuestos,modalidad\";\n\n    public ResultadoCarga procesar(Path archivo) throws IOException {\n        List<Reparacion> reparaciones = new ArrayList<>();\n        List<String> errores = new ArrayList<>();\n        int leidas = 0, descartadas = 0;\n        try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            String cabecera = lector.readLine();\n            if (!CABECERA_INICIAL.equals(cabecera) && !CABECERA_EVOLUCIONADA.equals(cabecera))\n                throw new IllegalArgumentException(\"encabezado incorrecto\");\n            int ancho = cabecera.split(\",\").length;   // 8 u 11\n\n            String linea;\n            while ((linea = lector.readLine()) != null) {\n                leidas++;\n                try {\n                    String[] c = Arrays.stream(linea.split(\",\", -1)).map(String::strip).toArray(String[]::new);\n                    if (c.length != ancho)\n                        throw new IllegalArgumentException(\"ancho incorrecto\");\n                    if (c[6].equals(\"CANCELADA\")) {\n                        descartadas++;\n                        continue;\n                    }\n                    reparaciones.add(Reparacion.desdeCampos(c));\n                } catch (IllegalArgumentException ex) {\n                    errores.add(\"Linea %d: %s\".formatted(leidas + 1, ex.getMessage()));\n                }\n            }\n        }\n        return new ResultadoCarga(reparaciones, leidas, descartadas, errores);\n    }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "garantia,repuestos,modalidad",
+       "ok": "Está la cabecera evolucionada",
+       "error": "Falta la cabecera de 11 columnas"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "c\\.length\\s*!=\\s*8\\b",
+       "ok": "El ancho ya no es un 8 fijo",
+       "error": "Todavía comparás contra un 8 fijo"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "c\\.length\\s*!=\\s*[a-zA-Z_]\\w*",
+       "ok": "Se compara contra una variable",
+       "error": "Compará contra el ancho de la cabecera"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "c\\.length\\s*!=[\\s\\S]*CANCELADA",
+       "ok": "El ancho se controla antes del descarte",
+       "error": "El control de ancho tiene que ir antes del descarte de CANCELADA"
+      },
+      {
+       "tipo": "cuenta",
+       "regex": "\\bwhile\\s*\\(",
+       "ok": "Un solo loop",
+       "error": "No dupliques el loop",
+       "veces": 1
+      }
+     ]
+    }
+   ],
+   "pestana": "CSV"
+  },
+  {
+   "n": 2,
+   "titulo": "Columna nueva en el dominio",
+   "explicacion": "Atributo + getter nuevos; constructor nuevo, con el viejo **delegando** con `this(...)` (los tests viejos lo usan); `desdeCampos` acepta los dos anchos y lee la columna nueva **solo si existe** (si no, usa un valor por defecto). Las validaciones nuevas van acá, no en el parser. Leer `tokens[5]` en una fila de 5 tira `ArrayIndexOutOfBoundsException`, que el parser no atrapa.",
+   "corto": "Columna nueva en el dominio",
+   "ejercicios": [
+    {
+     "id": "2.1",
+     "parte": 2,
+     "tema": "Fintech",
+     "titulo": "nivel de morosidad",
+     "tipo": "codigo",
+     "donde": "`SolicitudCredito` → atributo, constructores, `desdeCampos`",
+     "consigna": "`desdeCampos` recibe filas de 5 o 6 campos (el parser ya controló el ancho y descartó BLACK). Reglas:\n- Formato de 5 columnas: morosidad `NORMAL` por defecto, sin validaciones nuevas.\n- Formato de 6: `RECHAZADO` solo admite `EN_MORA`; `APROBADO` / `PRE_APROBADO` admiten `NORMAL` o `EN_MORA` (vacío o desconocido es inválido); cualquier otro estado es inválido.\n- `NORMAL`: reglas originales (ingresos entre 1000 y 15000; deudas ≥ 0 y menores que los ingresos).\n- `EN_MORA`: ingresos > 25000 y deudas ≤ 12 % de los ingresos.\n- **No romper** el constructor de 4 parámetros: lo usan los tests existentes.\n- Agregar `getNivelMorosidad()`.",
+     "csv": {
+      "cabecera": "idCliente,tipoCliente,ingresosMensuales,totalDeudasActuales,estadoSolicitud,nivelMorosidad",
+      "filas": [
+       "CL1,PREMIUM,15000,3000,APROBADO,NORMAL",
+       "CL2,PREMIUM,30000,3000,APROBADO,EN_MORA",
+       "CL3,PREMIUM,15000,3000,APROBADO,EN_MORA",
+       "CL4,REGULAR,9000,1000,RECHAZADO,NORMAL"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "nivelMorosidad"
+      ]
+     },
+     "csvNota": "CL1 es válida (score 80, tasa 56). CL2 es válida (EN_MORA con 30000 y 10 % de deuda). CL3 es inválida (EN_MORA con ingresos ≤ 25000). CL4 es inválida (RECHAZADO exige EN_MORA).",
+     "pasos": [
+      "Atributo `nivelMorosidad` + getter.",
+      "Constructor de 5 parámetros; el de 4 delega con `this(..., \"NORMAL\")`.",
+      "En `desdeCampos`: aceptar 5 o 6 y leer la morosidad con un ternario.",
+      "Si hay 6 campos, validar estado × morosidad en un método `private static` aparte.",
+      "`if (EN_MORA) { nuevas } else { originales }`.",
+      "`return` con el constructor nuevo y la variable (no `tokens[5]`)."
+     ],
+     "pistas": [
+      "`String nivel = tokens.length == 6 ? tokens[5] : \"NORMAL\";`",
+      "`tokens[5]` en una fila de 5 tira `ArrayIndexOutOfBoundsException`, que el parser NO atrapa.",
+      "Un método no puede escribirse dentro de otro: `validarMorosidad` va después de la `}` de `desdeCampos`.",
+      "`switch (estado) { case \"RECHAZADO\" -> {...} case \"APROBADO\", \"PRE_APROBADO\" -> {...} default -> throw ...; }`"
+     ],
+     "archivo": "SolicitudCredito.java",
+     "codigoInicial": "public class SolicitudCredito {\n    private final String idCliente;\n    private final String tipoCliente;\n    private final double scoreFinanciero;\n    private final String estado;\n    private static final double TASA_BASE = 40;\n\n    public SolicitudCredito(String idCliente, String tipoCliente, double scoreFinanciero, String estado) {\n        if (idCliente == null || idCliente.isBlank() || tipoCliente == null || tipoCliente.isBlank())\n            throw new IllegalArgumentException(\"Id y tipo requeridos\");\n        this.idCliente = idCliente;\n        this.tipoCliente = tipoCliente;\n        this.scoreFinanciero = scoreFinanciero;\n        this.estado = estado;\n    }\n\n    public static SolicitudCredito desdeCampos(String[] tokens) {\n        if (tokens.length != 5)\n            throw new IllegalArgumentException(\"Se esperan 5 columnas\");\n        double ingresos = Double.parseDouble(tokens[2]);\n        double deudas = Double.parseDouble(tokens[3]);\n        if (ingresos < 1000 || ingresos > 15000)\n            throw new IllegalArgumentException(\"Ingresos no aptos\");\n        if (deudas < 0 || deudas >= ingresos)\n            throw new IllegalArgumentException(\"Deudas no aptas\");\n        double score = (1 - (deudas / ingresos)) * 100;\n        return new SolicitudCredito(tokens[0], tokens[1], score, tokens[4]);\n    }\n\n    public String getIdCliente() { return idCliente; }\n    public String getTipoCliente() { return tipoCliente; }\n    public double getScoreFinanciero() { return scoreFinanciero; }\n    public String getEstado() { return estado; }\n    public double getTasaInteresAnual() { return TASA_BASE + (100 - scoreFinanciero) * 0.8; }\n}",
+     "solucion": "public class SolicitudCredito {\n    private final String idCliente;\n    private final String tipoCliente;\n    private final double scoreFinanciero;\n    private final String estado;\n    private final String nivelMorosidad;\n    private static final double TASA_BASE = 40;\n\n    public SolicitudCredito(String idCliente, String tipoCliente, double scoreFinanciero, String estado) {\n        this(idCliente, tipoCliente, scoreFinanciero, estado, \"NORMAL\");\n    }\n\n    public SolicitudCredito(String idCliente, String tipoCliente, double scoreFinanciero, String estado,\n                            String nivelMorosidad) {\n        if (idCliente == null || idCliente.isBlank() || tipoCliente == null || tipoCliente.isBlank())\n            throw new IllegalArgumentException(\"Id y tipo requeridos\");\n        this.idCliente = idCliente;\n        this.tipoCliente = tipoCliente;\n        this.scoreFinanciero = scoreFinanciero;\n        this.estado = estado;\n        this.nivelMorosidad = nivelMorosidad;\n    }\n\n    public static SolicitudCredito desdeCampos(String[] tokens) {\n        if (tokens.length != 5 && tokens.length != 6)\n            throw new IllegalArgumentException(\"Se esperan 5 o 6 columnas\");\n        double ingresos = Double.parseDouble(tokens[2]);\n        double deudas = Double.parseDouble(tokens[3]);\n        String nivelMorosidad = tokens.length == 6 ? tokens[5] : \"NORMAL\";\n\n        if (tokens.length == 6)\n            validarMorosidad(tokens[4], nivelMorosidad);\n\n        if (nivelMorosidad.equals(\"EN_MORA\")) {\n            if (ingresos <= 25000 || deudas < 0 || deudas > ingresos * 0.12)\n                throw new IllegalArgumentException(\"EN_MORA: ingresos o deudas no aptos\");\n        } else {\n            if (ingresos < 1000 || ingresos > 15000)\n                throw new IllegalArgumentException(\"Ingresos no aptos\");\n            if (deudas < 0 || deudas >= ingresos)\n                throw new IllegalArgumentException(\"Deudas no aptas\");\n        }\n        double score = (1 - (deudas / ingresos)) * 100;\n        return new SolicitudCredito(tokens[0], tokens[1], score, tokens[4], nivelMorosidad);\n    }\n\n    private static void validarMorosidad(String estado, String nivel) {\n        switch (estado) {\n            case \"RECHAZADO\" -> {\n                if (!nivel.equals(\"EN_MORA\"))\n                    throw new IllegalArgumentException(\"RECHAZADO solo admite EN_MORA\");\n            }\n            case \"APROBADO\", \"PRE_APROBADO\" -> {\n                if (!nivel.equals(\"NORMAL\") && !nivel.equals(\"EN_MORA\"))\n                    throw new IllegalArgumentException(\"Nivel de morosidad inválido: \" + nivel);\n            }\n            default -> throw new IllegalArgumentException(\"Estado desconocido: \" + estado);\n        }\n    }\n\n    public String getIdCliente() { return idCliente; }\n    public String getTipoCliente() { return tipoCliente; }\n    public double getScoreFinanciero() { return scoreFinanciero; }\n    public String getEstado() { return estado; }\n    public String getNivelMorosidad() { return nivelMorosidad; }\n    public double getTasaInteresAnual() { return TASA_BASE + (100 - scoreFinanciero) * 0.8; }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "private\\s+final\\s+String\\s+nivelMorosidad\\s*;",
+       "ok": "Atributo nuevo",
+       "error": "Falta el atributo `nivelMorosidad`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "String\\s+getNivelMorosidad\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+(this\\.)?nivelMorosidad\\s*;",
+       "ok": "Getter correcto",
+       "error": "Falta `getNivelMorosidad()` o devuelve otro atributo"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "this\\s*\\([^;]*\"NORMAL\"\\s*\\)\\s*;",
+       "ok": "El constructor viejo delega con NORMAL",
+       "error": "El constructor de 4 parámetros tiene que delegar con `this(..., \"NORMAL\")`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "tokens\\.length\\s*==\\s*6\\s*\\?\\s*tokens\\[5\\]\\s*:\\s*\"NORMAL\"",
+       "ok": "Columna nueva leída solo si existe",
+       "error": "Leé `tokens[5]` solo si hay 6 campos (ternario)"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "new\\s+SolicitudCredito\\([^;]*tokens\\[5\\]",
+       "ok": "El constructor recibe la variable",
+       "error": "No pases `tokens[5]` al constructor: se rompe con 5 columnas"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "tokens\\.length\\s*!=\\s*5\\s*\\)",
+       "ok": "Se aceptan 5 y 6",
+       "error": "`desdeCampos` todavía rechaza las filas de 6"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"RECHAZADO\"[\\s\\S]*\"EN_MORA\"",
+       "ok": "Regla RECHAZADO",
+       "error": "Falta la regla: RECHAZADO solo admite EN_MORA"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "25000",
+       "ok": "Límite de ingresos EN_MORA",
+       "error": "Falta la regla de ingresos > 25000"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "0\\.12",
+       "ok": "Límite de deudas EN_MORA",
+       "error": "Falta la regla del 12 % de deudas"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\\}\\s*else\\s*\\{[\\s\\S]*15000",
+       "ok": "Reglas viejas en el else",
+       "error": "Las reglas originales tienen que quedar para NORMAL"
+      }
+     ]
+    },
+    {
+     "id": "2.2",
+     "parte": 2,
+     "tema": "Compras",
+     "titulo": "días de cobertura",
+     "tipo": "codigo",
+     "donde": "`Consumo` → atributo, constructores, `desdeCampos`",
+     "consigna": "El formato nuevo agrega `diasCobertura` (6.ª columna, un entero). Valores válidos: `0` (sin seguro), `30`, `90`, `180` (asegurado). Un valor vacío o no numérico es inválido. Un consumo **asegurado** admite como máximo **500 000 centavos netos** (inclusive). El formato de 5 columnas equivale a `0`. Agregá `getDiasCobertura()` e `isAsegurado()`. (Las filas ANULADO ya las descarta el parser.) En este ejercicio todavía **no** se cambia la comisión: eso es el ejercicio 3.3.",
+     "csv": {
+      "cabecera": "id,rubro,importeCentavos,bonificacionCentavos,estado,diasCobertura",
+      "filas": [
+       "C1,electro,120000,20000,APROBADO,0",
+       "C2,electro,520000,20000,APROBADO,90",
+       "C3,hogar,520001,20000,APROBADO,90",
+       "C4,hogar,50000,0,APROBADO,45",
+       "C5,ropa,50000,0,APROBADO,"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "diasCobertura"
+      ]
+     },
+     "csvNota": "C1 es válida (sin seguro). C2 es válida (neto 500 000, justo en el límite). C3 es inválida (neto 500 001). C4 es inválida (45 no es un plazo permitido). C5 es inválida (vacío).",
+     "pasos": [
+      "Atributo `diasCobertura` + getter + `isAsegurado()`.",
+      "Constructor nuevo; el viejo delega con `0`.",
+      "En el constructor nuevo: validar plazo permitido y tope de neto si es asegurado.",
+      "`desdeCampos`: aceptar 5 o 6; `Integer.parseInt(c[5])` solo si hay 6 campos."
+     ],
+     "pistas": [
+      "`Integer.parseInt(\"\")` tira `NumberFormatException`, hija de `IllegalArgumentException`, así que la fila vacía ya queda inválida.",
+      "`List.of(0, 30, 90, 180).contains(dias)` es una forma corta de validar.",
+      "El neto es `importe - bonificacion`; calculalo con los parámetros antes de asignar."
+     ],
+     "archivo": "Consumo.java",
+     "codigoInicial": "public class Consumo {\n    private final String id;\n    private final String rubro;\n    private final long importeCentavos;\n    private final long bonificacionCentavos;\n    private final String estado;\n\n    public Consumo(String id, String rubro, long importeCentavos, long bonificacionCentavos, String estado) {\n        if (id.isBlank() || rubro.isBlank())\n            throw new IllegalArgumentException(\"id y rubro requeridos\");\n        if (importeCentavos <= 0)\n            throw new IllegalArgumentException(\"importe inválido\");\n        if (bonificacionCentavos < 0 || bonificacionCentavos > importeCentavos)\n            throw new IllegalArgumentException(\"bonificación inválida\");\n        this.id = id;\n        this.rubro = rubro;\n        this.importeCentavos = importeCentavos;\n        this.bonificacionCentavos = bonificacionCentavos;\n        this.estado = estado;\n    }\n\n    public static Consumo desdeCampos(String[] c) {\n        if (c.length != 5)\n            throw new IllegalArgumentException(\"se esperan 5 campos\");\n        return new Consumo(c[0], c[1], Long.parseLong(c[2]), Long.parseLong(c[3]), c[4]);\n    }\n\n    public String getRubro() { return rubro; }\n    public long neto() { return importeCentavos - bonificacionCentavos; }\n    public long comision() { return neto() * 2 / 100; }\n}",
+     "solucion": "public class Consumo {\n    private static final long TOPE_ASEGURADO = 500_000;\n    private final String id;\n    private final String rubro;\n    private final long importeCentavos;\n    private final long bonificacionCentavos;\n    private final String estado;\n    private final int diasCobertura;\n\n    public Consumo(String id, String rubro, long importeCentavos, long bonificacionCentavos, String estado) {\n        this(id, rubro, importeCentavos, bonificacionCentavos, estado, 0);\n    }\n\n    public Consumo(String id, String rubro, long importeCentavos, long bonificacionCentavos, String estado,\n                   int diasCobertura) {\n        if (id.isBlank() || rubro.isBlank())\n            throw new IllegalArgumentException(\"id y rubro requeridos\");\n        if (importeCentavos <= 0)\n            throw new IllegalArgumentException(\"importe inválido\");\n        if (bonificacionCentavos < 0 || bonificacionCentavos > importeCentavos)\n            throw new IllegalArgumentException(\"bonificación inválida\");\n        if (!List.of(0, 30, 90, 180).contains(diasCobertura))\n            throw new IllegalArgumentException(\"plazo de cobertura inválido: \" + diasCobertura);\n        if (diasCobertura > 0 && importeCentavos - bonificacionCentavos > TOPE_ASEGURADO)\n            throw new IllegalArgumentException(\"neto supera el tope asegurado\");\n        this.id = id;\n        this.rubro = rubro;\n        this.importeCentavos = importeCentavos;\n        this.bonificacionCentavos = bonificacionCentavos;\n        this.estado = estado;\n        this.diasCobertura = diasCobertura;\n    }\n\n    public static Consumo desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6)\n            throw new IllegalArgumentException(\"se esperan 5 o 6 campos\");\n        int dias = c.length == 6 ? Integer.parseInt(c[5]) : 0;\n        return new Consumo(c[0], c[1], Long.parseLong(c[2]), Long.parseLong(c[3]), c[4], dias);\n    }\n\n    public String getRubro() { return rubro; }\n    public int getDiasCobertura() { return diasCobertura; }\n    public boolean isAsegurado() { return diasCobertura > 0; }\n    public long neto() { return importeCentavos - bonificacionCentavos; }\n    public long comision() { return neto() * 2 / 100; }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "private\\s+final\\s+int\\s+diasCobertura",
+       "ok": "Atributo nuevo",
+       "error": "Falta el atributo `diasCobertura` (int)"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "this\\s*\\([^;]*,\\s*0\\s*\\)\\s*;",
+       "ok": "El constructor viejo delega con 0",
+       "error": "El constructor de 5 parámetros tiene que delegar con `this(..., 0)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "c\\.length\\s*==\\s*6\\s*\\?",
+       "ok": "Columna nueva leída solo si existe",
+       "error": "Leé `c[5]` solo si hay 6 campos"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "Integer\\.parseInt",
+       "ok": "Se convierte a entero",
+       "error": "`diasCobertura` es un entero: usá `Integer.parseInt`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "180",
+       "ok": "Plazos permitidos",
+       "error": "Falta validar los plazos 0/30/90/180"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "500_?000",
+       "ok": "Tope del asegurado",
+       "error": "Falta el tope de 500 000 netos"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "boolean\\s+isAsegurado\\s*\\(",
+       "ok": "`isAsegurado()`",
+       "error": "Falta `isAsegurado()`"
+      }
+     ]
+    },
+    {
+     "id": "2.3",
+     "parte": 2,
+     "tema": "Servidores",
+     "titulo": "ingresos con rango",
+     "tipo": "codigo",
+     "donde": "`Servidor` → atributo, constructores, `desdeCampos`",
+     "consigna": "El formato nuevo agrega `ingresos` (6.ª columna, entero). Para los estados `ALERTA` y `CRITICO` el valor tiene que cumplir **1000 ≤ ingresos < 1900**; fuera de ese rango, la fila es inválida. Para los otros estados del formato nuevo solo se exige que sea un número. En el formato de 5 columnas, todos los servidores tienen ingresos **1000**. Agregá `getIngresos()`.",
+     "csv": {
+      "cabecera": "id,region,porcentajeCPU,usoMemoria,estado,ingresos",
+      "filas": [
+       "S1,norte,65,40,ALERTA,1300",
+       "S2,sur,90,80,CRITICO,1900",
+       "S3,este,20,30,NORMAL,2500",
+       "S4,oeste,70,50,ALERTA,999"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "ingresos"
+      ]
+     },
+     "csvNota": "S1 es válida. S2 es inválida (1900 no es < 1900). S3 es válida (NORMAL no tiene rango). S4 es inválida (< 1000).",
+     "pasos": [
+      "Atributo + getter.",
+      "Constructor nuevo; el viejo delega con `1000`.",
+      "`desdeCampos`: aceptar 5 o 6, leer los ingresos con un ternario y validar el rango solo para ALERTA/CRITICO."
+     ],
+     "pistas": [
+      "`boolean enRiesgo = estado.equals(\"ALERTA\") || estado.equals(\"CRITICO\");`",
+      "Ojo con los límites: `>= 1000` y `< 1900`."
+     ],
+     "archivo": "Servidor.java",
+     "codigoInicial": "public class Servidor {\n    private final String id;\n    private final String region;\n    private final int porcentajeCPU;\n    private final int usoMemoria;\n    private final String estado;\n\n    public Servidor(String id, String region, int porcentajeCPU, int usoMemoria, String estado) {\n        if (porcentajeCPU < 0 || porcentajeCPU > 100)\n            throw new IllegalArgumentException(\"CPU fuera de rango\");\n        this.id = id;\n        this.region = region;\n        this.porcentajeCPU = porcentajeCPU;\n        this.usoMemoria = usoMemoria;\n        this.estado = estado;\n    }\n\n    public static Servidor desdeCampos(String[] c) {\n        if (c.length != 5)\n            throw new IllegalArgumentException(\"se esperan 5 campos\");\n        return new Servidor(c[0], c[1], Integer.parseInt(c[2]), Integer.parseInt(c[3]), c[4]);\n    }\n\n    public String getRegion() { return region; }\n    public String getEstado() { return estado; }\n}",
+     "solucion": "public class Servidor {\n    private final String id;\n    private final String region;\n    private final int porcentajeCPU;\n    private final int usoMemoria;\n    private final String estado;\n    private final int ingresos;\n\n    public Servidor(String id, String region, int porcentajeCPU, int usoMemoria, String estado) {\n        this(id, region, porcentajeCPU, usoMemoria, estado, 1000);\n    }\n\n    public Servidor(String id, String region, int porcentajeCPU, int usoMemoria, String estado, int ingresos) {\n        if (porcentajeCPU < 0 || porcentajeCPU > 100)\n            throw new IllegalArgumentException(\"CPU fuera de rango\");\n        this.id = id;\n        this.region = region;\n        this.porcentajeCPU = porcentajeCPU;\n        this.usoMemoria = usoMemoria;\n        this.estado = estado;\n        this.ingresos = ingresos;\n    }\n\n    public static Servidor desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6)\n            throw new IllegalArgumentException(\"se esperan 5 o 6 campos\");\n        String estado = c[4];\n        int ingresos = c.length == 6 ? Integer.parseInt(c[5]) : 1000;\n        boolean enRiesgo = estado.equals(\"ALERTA\") || estado.equals(\"CRITICO\");\n        if (c.length == 6 && enRiesgo && (ingresos < 1000 || ingresos >= 1900))\n            throw new IllegalArgumentException(\"ingresos fuera de rango: \" + ingresos);\n        return new Servidor(c[0], c[1], Integer.parseInt(c[2]), Integer.parseInt(c[3]), estado, ingresos);\n    }\n\n    public String getRegion() { return region; }\n    public String getEstado() { return estado; }\n    public int getIngresos() { return ingresos; }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "private\\s+final\\s+int\\s+ingresos",
+       "ok": "Atributo nuevo",
+       "error": "Falta el atributo `ingresos`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "this\\s*\\([^;]*,\\s*1000\\s*\\)\\s*;",
+       "ok": "El constructor viejo delega con 1000",
+       "error": "El formato viejo tiene que quedar con ingresos 1000 (delegar con `this`)"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "c\\.length\\s*==\\s*6\\s*\\?",
+       "ok": "Columna nueva leída solo si existe",
+       "error": "Leé `c[5]` solo si hay 6 campos"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"ALERTA\"[\\s\\S]*\"CRITICO\"|\"CRITICO\"[\\s\\S]*\"ALERTA\"",
+       "ok": "Rango solo para ALERTA/CRITICO",
+       "error": "El rango aplica a ALERTA y CRITICO"
+      },
+      {
+       "tipo": "contiene",
+       "regex": ">=\\s*1900|<\\s*1900",
+       "ok": "Límite superior exclusivo",
+       "error": "Revisá el límite: 1900 no está permitido"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "int\\s+getIngresos\\s*\\(",
+       "ok": "Getter",
+       "error": "Falta `getIngresos()`"
+      }
+     ]
+    },
+    {
+     "id": "2.4",
+     "parte": 2,
+     "tema": "Fintech",
+     "titulo": "clasificá las filas",
+     "tipo": "clasificacion",
+     "consigna": "Con las reglas de Fintech (parser + dominio del ejercicio 2.1), indicá qué pasa con cada fila. La cabecera tiene **6 columnas**. Tipos válidos: `REGULAR` / `PREMIUM`; `BLACK` se descarta. Precedencia: **ancho → descarte BLACK → validaciones**.",
+     "resumen": "Resumen esperado: **leídas 10 · procesadas 2 · descartadas 1 · inválidas 7**. Siempre se cumple `leídas = procesadas + descartadas + inválidas`.",
+     "items": [
+      {
+       "texto": "CL1,PREMIUM,12000,3000,APROBADO,NORMAL",
+       "respuesta": "Procesada",
+       "motivo": "Cumple las reglas NORMAL"
+      },
+      {
+       "texto": "CL2,BLACK,abc,1,RECHAZADO,NORMAL",
+       "respuesta": "Descartada",
+       "motivo": "BLACK se descarta sin validar nada más (aunque `abc` no es un número)"
+      },
+      {
+       "texto": "CL3,REGULAR,9000,1000,RECHAZADO,NORMAL",
+       "respuesta": "Inválida",
+       "motivo": "RECHAZADO solo admite EN_MORA"
+      },
+      {
+       "texto": "CL4,PREMIUM,30000,3000,APROBADO,EN_MORA",
+       "respuesta": "Procesada",
+       "motivo": "EN_MORA: 30000 > 25000 y 3000 ≤ 3600 (12 %)"
+      },
+      {
+       "texto": "CL5,PREMIUM,30000,4000,APROBADO,EN_MORA",
+       "respuesta": "Inválida",
+       "motivo": "4000 supera el 12 % de 30000 (3600)"
+      },
+      {
+       "texto": "CL6,REGULAR,8000,500,PRE_APROBADO",
+       "respuesta": "Inválida",
+       "motivo": "5 campos bajo una cabecera de 6"
+      },
+      {
+       "texto": "CL7,REGULAR,8000,500,PRE_APROBADO,",
+       "respuesta": "Inválida",
+       "motivo": "Morosidad vacía"
+      },
+      {
+       "texto": "CL8,GOLD,8000,500,APROBADO,NORMAL",
+       "respuesta": "Inválida",
+       "motivo": "Tipo de cliente desconocido"
+      },
+      {
+       "texto": "CL9,BLACK,8000,500,APROBADO",
+       "respuesta": "Inválida",
+       "motivo": "**Trampa:** el ancho se controla antes que el descarte; tiene 5 campos"
+      },
+      {
+       "texto": "CL10,REGULAR,8000,500,PENDIENTE,NORMAL",
+       "respuesta": "Inválida",
+       "motivo": "Estado desconocido"
+      }
+     ],
+     "opciones": [
+      "Procesada",
+      "Descartada",
+      "Inválida"
+     ]
+    }
+   ],
+   "pestana": "Dominio"
+  },
+  {
+   "n": 3,
+   "titulo": "Cálculo distinto con polimorfismo",
+   "explicacion": "Cuando el dato nuevo cambia un **cálculo**, se crea una subclase que redefine el método (`@Override`) y reutiliza el del padre con `super`. `desdeCampos` decide qué clase crear. El colector no cambia ni usa `instanceof`.",
+   "corto": "Polimorfismo",
+   "ejercicios": [
+    {
+     "id": "3.1",
+     "parte": 3,
+     "tema": "Reparaciones",
+     "titulo": "EXPRESS",
+     "tipo": "codigo",
+     "donde": "subclase nueva `ReparacionExpress` + `Reparacion.desdeCampos`",
+     "consigna": "Una reparación `EXPRESS` aplica el importe común de `Reparacion` y le suma un **recargo del 25 %** al total, una sola vez, después de garantía, mano de obra y repuestos. Creá `ReparacionExpress` (hereda de `Reparacion` y redefine `importe()` sin duplicar la fórmula) y hacé que `desdeCampos` cree una u otra según la columna `modalidad` (`NORMAL` / `EXPRESS`; cualquier otro valor es inválido). Para simplificar, en este ejercicio solo llegan filas de 11 columnas.",
+     "csv": {
+      "cabecera": "id,cliente,dispositivo,marca,prioridad,horas,estado,costoBase,garantia,repuestos,modalidad",
+      "filas": [
+       "R1,Ana,celular,Samsung,2,3,ABIERTA,1000,SI,200,NORMAL",
+       "R2,Ana,celular,Samsung,2,3,ABIERTA,1000,SI,200,EXPRESS",
+       "R3,Luis,notebook,Lenovo,1,2,LISTA,500,NO,0,URGENTE"
+      ],
+      "separador": ",",
+      "columnasNuevas": []
+     },
+     "csvNota": "R1 → importe **3840** (1000 + 2550 + 600 + 200 = 4350, menos 20 % de 2550 = 510). R2 → **4800** (3840 × 1.25). R3 es inválida (modalidad desconocida).",
+     "pasos": [
+      "`public class ReparacionExpress extends Reparacion` con un constructor que llame a `super(...)`.",
+      "`@Override public double importe() { return super.importe() * 1.25; }`",
+      "En `desdeCampos`, un `switch` sobre `c[10]`: NORMAL → `new Reparacion`, EXPRESS → `new ReparacionExpress`, default → excepción."
+     ],
+     "pistas": [
+      "Llamando a `super.importe()` reutilizás toda la fórmula común.",
+      "La lista sigue siendo `List<Reparacion>`: el colector no se entera de que hay subclases.",
+      "`switch` como expresión: `return switch (c[10]) { case \"NORMAL\" -> new Reparacion(...); ... };`"
+     ],
+     "archivo": "Reparacion.java (+ ReparacionExpress.java en el mismo editor)",
+     "codigoInicial": "public class Reparacion {\n    private static final double VALOR_HORA = 850;\n    private static final double CARGO_PRIORIDAD = 300;\n    private final String id;\n    private final String dispositivo;\n    private final String estado;\n    private final int prioridad;\n    private final double horas;\n    private final double costoBase;\n    private final boolean garantia;\n    private final double repuestos;\n\n    public Reparacion(String id, String dispositivo, String estado, int prioridad, double horas,\n                      double costoBase, boolean garantia, double repuestos) {\n        this.id = id;\n        this.dispositivo = dispositivo;\n        this.estado = estado;\n        this.prioridad = prioridad;\n        this.horas = horas;\n        this.costoBase = costoBase;\n        this.garantia = garantia;\n        this.repuestos = repuestos;\n    }\n\n    public double manoDeObra() { return horas * VALOR_HORA; }\n\n    public double importe() {\n        double total = costoBase + manoDeObra() + prioridad * CARGO_PRIORIDAD + repuestos;\n        if (garantia) total -= manoDeObra() * 0.20;\n        return total;\n    }\n\n    public String getDispositivo() { return dispositivo; }\n    public String getEstado() { return estado; }\n\n    // c: id,cliente,dispositivo,marca,prioridad,horas,estado,costoBase,garantia,repuestos,modalidad\n    public static Reparacion desdeCampos(String[] c) {\n        boolean garantia = switch (c[8]) {\n            case \"SI\" -> true;\n            case \"NO\" -> false;\n            default -> throw new IllegalArgumentException(\"garantía inválida: \" + c[8]);\n        };\n        double repuestos = Double.parseDouble(c[9]);\n        if (repuestos < 0) throw new IllegalArgumentException(\"repuestos negativos\");\n        // TODO: modalidad NORMAL / EXPRESS\n        return new Reparacion(c[0], c[2], c[6], Integer.parseInt(c[4]), Double.parseDouble(c[5]),\n                Double.parseDouble(c[7]), garantia, repuestos);\n    }\n}\n\n// TODO: class ReparacionExpress",
+     "solucion": "public class Reparacion {\n    // ... atributos, constructor, manoDeObra(), importe() y getters sin cambios ...\n\n    public static Reparacion desdeCampos(String[] c) {\n        boolean garantia = switch (c[8]) {\n            case \"SI\" -> true;\n            case \"NO\" -> false;\n            default -> throw new IllegalArgumentException(\"garantía inválida: \" + c[8]);\n        };\n        double repuestos = Double.parseDouble(c[9]);\n        if (repuestos < 0) throw new IllegalArgumentException(\"repuestos negativos\");\n        int prioridad = Integer.parseInt(c[4]);\n        double horas = Double.parseDouble(c[5]);\n        double costoBase = Double.parseDouble(c[7]);\n        return switch (c[10]) {\n            case \"NORMAL\" -> new Reparacion(c[0], c[2], c[6], prioridad, horas, costoBase, garantia, repuestos);\n            case \"EXPRESS\" -> new ReparacionExpress(c[0], c[2], c[6], prioridad, horas, costoBase, garantia, repuestos);\n            default -> throw new IllegalArgumentException(\"modalidad inválida: \" + c[10]);\n        };\n    }\n}\n\nclass ReparacionExpress extends Reparacion {\n    private static final double RECARGO = 1.25;\n\n    public ReparacionExpress(String id, String dispositivo, String estado, int prioridad, double horas,\n                             double costoBase, boolean garantia, double repuestos) {\n        super(id, dispositivo, estado, prioridad, horas, costoBase, garantia, repuestos);\n    }\n\n    @Override\n    public double importe() {\n        return super.importe() * RECARGO;\n    }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "class\\s+ReparacionExpress\\s+extends\\s+Reparacion",
+       "ok": "Subclase creada",
+       "error": "Falta `ReparacionExpress extends Reparacion`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "@Override\\s*public\\s+double\\s+importe\\s*\\(",
+       "ok": "Redefine `importe()`",
+       "error": "La subclase tiene que redefinir `importe()` con `@Override`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "super\\.importe\\s*\\(\\s*\\)\\s*\\*\\s*(1\\.25|RECARGO)",
+       "ok": "Reutiliza la fórmula común",
+       "error": "Usá `super.importe() * 1.25`, no copies la fórmula"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "new\\s+ReparacionExpress\\s*\\(",
+       "ok": "`desdeCampos` crea la subclase",
+       "error": "`desdeCampos` tiene que crear `ReparacionExpress` cuando la modalidad es EXPRESS"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"EXPRESS\"",
+       "ok": "Se lee la modalidad",
+       "error": "Falta evaluar la modalidad"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "instanceof",
+       "ok": "Sin `instanceof`",
+       "error": "No hace falta `instanceof`: eso lo resuelve el polimorfismo"
+      }
+     ]
+    },
+    {
+     "id": "3.2",
+     "parte": 3,
+     "tema": "Juegos",
+     "titulo": "cooperativos",
+     "tipo": "codigo",
+     "donde": "subclase nueva `JuegoCooperativo` + `Juego.desdeCampos`",
+     "consigna": "Si la 10.ª columna (`dificultad_cooperativa`) tiene valor, el juego es cooperativo. La dificultad tiene que ser un **entero entre 1 y 10**; si no, la fila es inválida. La puntuación ajustada de un cooperativo es `(rating * peso) + (dificultad / 2.0)`. En un juego normal es `rating * peso`. Si la columna no existe (formato de 9) o está vacía, el juego es normal. Usá polimorfismo.",
+     "csv": {
+      "cabecera": "id;nombre;anio;min_jugadores;max_jugadores;duracion;rating;peso;categoria;dificultad_cooperativa",
+      "filas": [
+       "1;Pandemic;2008;2;4;45;8.0;2.5;estrategia;6",
+       "2;Catan;1995;3;4;90;7.0;2.0;estrategia;",
+       "3;Raro;2020;1;4;60;7.5;2.0;party;11"
+      ],
+      "separador": ";",
+      "columnasNuevas": []
+     },
+     "csvNota": "Pandemic → **23.0** (8 × 2.5 + 6 / 2.0). Catan → **14.0** (normal). Raro es inválida (11 > 10).",
+     "pasos": [
+      "`class JuegoCooperativo extends Juego` con el atributo `dificultad` y un constructor que llame a `super`.",
+      "`@Override getPuntuacionAjustada()` → `super.getPuntuacionAjustada() + dificultad / 2.0`.",
+      "En `desdeCampos`: si hay 10 campos y el último no está vacío → parsear, validar de 1 a 10 y crear `JuegoCooperativo`; si no → `Juego`."
+     ],
+     "pistas": [
+      "`boolean cooperativo = c.length == 10 && !c[9].isEmpty();`",
+      "`dificultad / 2.0` (con `.0`) evita la división entera."
+     ],
+     "archivo": "Juego.java",
+     "codigoInicial": "public class Juego {\n    private final String id;\n    private final String nombre;\n    private final double rating;\n    private final double peso;\n\n    public Juego(String id, String nombre, double rating, double peso) {\n        if (rating < 0 || rating > 10) throw new IllegalArgumentException(\"rating inválido\");\n        this.id = id;\n        this.nombre = nombre;\n        this.rating = rating;\n        this.peso = peso;\n    }\n\n    public double getPuntuacionAjustada() { return rating * peso; }\n    public String getNombre() { return nombre; }\n\n    // c: id;nombre;anio;min;max;duracion;rating;peso;categoria[;dificultad_cooperativa]\n    public static Juego desdeCampos(String[] c) {\n        if (c.length != 9 && c.length != 10) throw new IllegalArgumentException(\"ancho inválido\");\n        double rating = Double.parseDouble(c[6]);\n        double peso = Double.parseDouble(c[7]);\n        // TODO: cooperativo\n        return new Juego(c[0], c[1], rating, peso);\n    }\n}\n\n// TODO: class JuegoCooperativo",
+     "solucion": "public class Juego {\n    // ... atributos, constructor, getPuntuacionAjustada() y getNombre() sin cambios ...\n\n    public static Juego desdeCampos(String[] c) {\n        if (c.length != 9 && c.length != 10) throw new IllegalArgumentException(\"ancho inválido\");\n        double rating = Double.parseDouble(c[6]);\n        double peso = Double.parseDouble(c[7]);\n        boolean cooperativo = c.length == 10 && !c[9].isEmpty();\n        if (!cooperativo)\n            return new Juego(c[0], c[1], rating, peso);\n        int dificultad = Integer.parseInt(c[9]);\n        if (dificultad < 1 || dificultad > 10)\n            throw new IllegalArgumentException(\"dificultad cooperativa fuera de rango: \" + dificultad);\n        return new JuegoCooperativo(c[0], c[1], rating, peso, dificultad);\n    }\n}\n\nclass JuegoCooperativo extends Juego {\n    private final int dificultad;\n\n    public JuegoCooperativo(String id, String nombre, double rating, double peso, int dificultad) {\n        super(id, nombre, rating, peso);\n        this.dificultad = dificultad;\n    }\n\n    @Override\n    public double getPuntuacionAjustada() {\n        return super.getPuntuacionAjustada() + dificultad / 2.0;\n    }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "class\\s+JuegoCooperativo\\s+extends\\s+Juego",
+       "ok": "Subclase creada",
+       "error": "Falta `JuegoCooperativo extends Juego`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "@Override\\s*public\\s+double\\s+getPuntuacionAjustada",
+       "ok": "Redefine el cálculo",
+       "error": "Redefiní `getPuntuacionAjustada()` con `@Override`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "super\\.getPuntuacionAjustada\\s*\\(\\s*\\)",
+       "ok": "Reutiliza el cálculo común",
+       "error": "Usá `super.getPuntuacionAjustada()` en lugar de repetir `rating * peso`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "/\\s*2\\.0",
+       "ok": "División decimal",
+       "error": "Usá `/ 2.0` para evitar la división entera"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "isEmpty\\s*\\(|isBlank\\s*\\(",
+       "ok": "Columna vacía = juego normal",
+       "error": "Si la 10.ª columna está vacía, el juego es normal"
+      },
+      {
+       "tipo": "contiene",
+       "regex": ">\\s*10",
+       "ok": "Validación de rango",
+       "error": "La dificultad debe estar entre 1 y 10"
+      }
+     ]
+    },
+    {
+     "id": "3.3",
+     "parte": 3,
+     "tema": "Compras",
+     "titulo": "consumo asegurado",
+     "tipo": "codigo",
+     "donde": "subclase nueva `ConsumoAsegurado` + `Consumo.desdeCampos` (se parte de la solución del 2.2)",
+     "consigna": "La comisión de un consumo sin seguro es el 2 % del neto. Un consumo asegurado paga esa misma comisión **más una prima de 200 centavos por cada 30 días** de cobertura. Implementalo con una subclase que redefina `comision()`.",
+     "tabla": {
+      "titulo": "Tabla de ejemplos (neto → días → comisión)",
+      "cabecera": [
+       "Neto",
+       "Días",
+       "Comisión"
+      ],
+      "filas": [
+       [
+        "100 000",
+        "0",
+        "2 000"
+       ],
+       [
+        "100 000",
+        "30",
+        "2 200"
+       ],
+       [
+        "100 000",
+        "90",
+        "2 600"
+       ],
+       [
+        "100 000",
+        "180",
+        "3 200"
+       ],
+       [
+        "500 000",
+        "90",
+        "10 600"
+       ]
+      ]
+     },
+     "pasos": [
+      "`class ConsumoAsegurado extends Consumo`, con un constructor que pase todo a `super` (incluidos los días).",
+      "`@Override comision()` → `super.comision() + 200L * (getDiasCobertura() / 30)`.",
+      "En `desdeCampos`: `dias > 0` → `new ConsumoAsegurado(...)`; si no → `new Consumo(...)`."
+     ],
+     "pistas": [
+      "La subclase usa `getDiasCobertura()` del padre: no repitas el atributo.",
+      "Alternativa válida: sin subclase, `comision()` en `Consumo` suma la prima si `isAsegurado()`. Para practicar polimorfismo, hacelo con subclase."
+     ],
+     "archivo": "Consumo.java",
+     "codigoInicial": "public class Consumo {\n    private static final long TOPE_ASEGURADO = 500_000;\n    private final String id;\n    private final String rubro;\n    private final long importeCentavos;\n    private final long bonificacionCentavos;\n    private final String estado;\n    private final int diasCobertura;\n\n    public Consumo(String id, String rubro, long importeCentavos, long bonificacionCentavos, String estado) {\n        this(id, rubro, importeCentavos, bonificacionCentavos, estado, 0);\n    }\n\n    public Consumo(String id, String rubro, long importeCentavos, long bonificacionCentavos, String estado,\n                   int diasCobertura) {\n        if (id.isBlank() || rubro.isBlank())\n            throw new IllegalArgumentException(\"id y rubro requeridos\");\n        if (importeCentavos <= 0)\n            throw new IllegalArgumentException(\"importe inválido\");\n        if (bonificacionCentavos < 0 || bonificacionCentavos > importeCentavos)\n            throw new IllegalArgumentException(\"bonificación inválida\");\n        if (!List.of(0, 30, 90, 180).contains(diasCobertura))\n            throw new IllegalArgumentException(\"plazo de cobertura inválido: \" + diasCobertura);\n        if (diasCobertura > 0 && importeCentavos - bonificacionCentavos > TOPE_ASEGURADO)\n            throw new IllegalArgumentException(\"neto supera el tope asegurado\");\n        this.id = id;\n        this.rubro = rubro;\n        this.importeCentavos = importeCentavos;\n        this.bonificacionCentavos = bonificacionCentavos;\n        this.estado = estado;\n        this.diasCobertura = diasCobertura;\n    }\n\n    public static Consumo desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6)\n            throw new IllegalArgumentException(\"se esperan 5 o 6 campos\");\n        int dias = c.length == 6 ? Integer.parseInt(c[5]) : 0;\n        return new Consumo(c[0], c[1], Long.parseLong(c[2]), Long.parseLong(c[3]), c[4], dias);\n    }\n\n    public String getRubro() { return rubro; }\n    public int getDiasCobertura() { return diasCobertura; }\n    public boolean isAsegurado() { return diasCobertura > 0; }\n    public long neto() { return importeCentavos - bonificacionCentavos; }\n    public long comision() { return neto() * 2 / 100; }\n}\n\n// TODO: class ConsumoAsegurado\n",
+     "solucion": "    public static Consumo desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6)\n            throw new IllegalArgumentException(\"se esperan 5 o 6 campos\");\n        int dias = c.length == 6 ? Integer.parseInt(c[5]) : 0;\n        long importe = Long.parseLong(c[2]);\n        long bonificacion = Long.parseLong(c[3]);\n        return dias > 0\n                ? new ConsumoAsegurado(c[0], c[1], importe, bonificacion, c[4], dias)\n                : new Consumo(c[0], c[1], importe, bonificacion, c[4], dias);\n    }\n}\n\nclass ConsumoAsegurado extends Consumo {\n    private static final long PRIMA_CADA_30_DIAS = 200;\n\n    public ConsumoAsegurado(String id, String rubro, long importe, long bonificacion, String estado, int dias) {\n        super(id, rubro, importe, bonificacion, estado, dias);\n    }\n\n    @Override\n    public long comision() {\n        return super.comision() + PRIMA_CADA_30_DIAS * (getDiasCobertura() / 30);\n    }\n}",
+     "solucionNota": "solo lo que cambia",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "class\\s+ConsumoAsegurado\\s+extends\\s+Consumo",
+       "ok": "Subclase creada",
+       "error": "Falta `ConsumoAsegurado extends Consumo`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "@Override\\s*public\\s+long\\s+comision",
+       "ok": "Redefine `comision()`",
+       "error": "Redefiní `comision()` con `@Override`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "super\\.comision\\s*\\(\\s*\\)",
+       "ok": "Reutiliza la comisión común",
+       "error": "Usá `super.comision()` y sumale la prima"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "/\\s*30",
+       "ok": "Prima por cada 30 días",
+       "error": "La prima es de 200 por cada 30 días"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "new\\s+ConsumoAsegurado\\s*\\(",
+       "ok": "`desdeCampos` crea la subclase",
+       "error": "`desdeCampos` tiene que crear `ConsumoAsegurado` cuando días > 0"
+      }
+     ]
+    }
+   ],
+   "pestana": "Polimorfismo"
+  },
+  {
+   "n": 4,
+   "titulo": "Operación nueva en el colector",
+   "explicacion": "Conteos y totales con Streams: `groupingBy(..., counting())`, `summingDouble`, `filter(...).mapToDouble(...).sum()`. Una colección vacía da un mapa vacío o 0.",
+   "corto": "Colector",
+   "ejercicios": [
+    {
+     "id": "4.1",
+     "parte": 4,
+     "tema": "Fintech",
+     "titulo": "conteo por nivel de morosidad",
+     "tipo": "codigo",
+     "donde": "`CarteraCreditos`",
+     "consigna": "Agregá un método que devuelva cuántas solicitudes hay por nivel de morosidad. Con la cartera vacía tiene que devolver un mapa vacío. Fijate en `maximaTasaInteresPorTipo()`, que ya agrupa.",
+     "datos": "A: NORMAL · B: NORMAL · C: EN_MORA → resultado esperado `{NORMAL=2, EN_MORA=1}`",
+     "pasos": [
+      "Firma: `public Map<String, Long> cantidadPorNivelMorosidad()`.",
+      "`groupingBy(SolicitudCredito::getNivelMorosidad, Collectors.counting())`."
+     ],
+     "pistas": [
+      "`counting()` devuelve `Long`, por eso el mapa es `Map<String, Long>`.",
+      "Con la lista vacía, `groupingBy` ya devuelve `{}`."
+     ],
+     "archivo": "CarteraCreditos.java",
+     "codigoInicial": "public class CarteraCreditos {\n    private final List<SolicitudCredito> creditos;\n\n    public CarteraCreditos(List<SolicitudCredito> creditos) {\n        this.creditos = List.copyOf(creditos);\n    }\n\n    public double tasaInteresPromedio() {\n        return creditos.stream().mapToDouble(SolicitudCredito::getTasaInteresAnual).average().orElse(0);\n    }\n\n    public Map<String, Double> maximaTasaInteresPorTipo() {\n        return creditos.stream().collect(Collectors.groupingBy(\n                SolicitudCredito::getTipoCliente,\n                Collectors.collectingAndThen(\n                        Collectors.mapping(SolicitudCredito::getTasaInteresAnual,\n                                Collectors.maxBy(Comparator.naturalOrder())),\n                        max -> max.orElse(0.0))));\n    }\n\n    // TODO: conteo por nivel de morosidad\n}",
+     "solucion": "    public Map<String, Long> cantidadPorNivelMorosidad() {\n        return creditos.stream()\n                .collect(Collectors.groupingBy(\n                        SolicitudCredito::getNivelMorosidad,\n                        Collectors.counting()));\n    }",
+     "solucionNota": "método nuevo",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "Map<String,\\s*Long>",
+       "ok": "Tipo de retorno correcto",
+       "error": "`counting()` devuelve `Long`: el mapa es `Map<String, Long>`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "groupingBy\\s*\\(\\s*SolicitudCredito::getNivelMorosidad",
+       "ok": "Agrupa por morosidad",
+       "error": "Agrupá por `SolicitudCredito::getNivelMorosidad`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "Collectors\\.counting\\s*\\(\\s*\\)|counting\\s*\\(\\s*\\)",
+       "ok": "Cuenta",
+       "error": "Usá `Collectors.counting()`"
+      }
+     ]
+    },
+    {
+     "id": "4.2",
+     "parte": 4,
+     "tema": "Juegos",
+     "titulo": "total de puntuación y conteo por tipo",
+     "tipo": "codigo",
+     "donde": "`ServicioJuegos` (+ un `getTipo()` polimórfico en `Juego` / `JuegoCooperativo`)",
+     "consigna": "Agregá:\n1. `totalPuntuacionAjustada()`: la suma de `getPuntuacionAjustada()` de todos los juegos.\n2. `cantidadPorTipo()`: cuántos juegos hay de tipo `NORMAL` y `COOPERATIVO`.\n\nPara el tipo, agregá `getTipo()` en `Juego` (devuelve `\"NORMAL\"`) y redefinilo en `JuegoCooperativo` (devuelve `\"COOPERATIVO\"`). **Sin `instanceof`.**",
+     "datos": "Pandemic (coop, 23.0) · Catan (normal, 14.0) · Spirit Island (coop, 37.2) → total **74.2** · `{COOPERATIVO=2, NORMAL=1}`",
+     "pasos": [
+      "`public String getTipo() { return \"NORMAL\"; }` en `Juego`; `@Override` en `JuegoCooperativo`.",
+      "Total: `mapToDouble(Juego::getPuntuacionAjustada).sum()`.",
+      "Conteo: `groupingBy(Juego::getTipo, Collectors.counting())`."
+     ],
+     "pistas": [
+      "Pensá por qué conviene `getTipo()` y no `instanceof`: si mañana aparece otro tipo, el colector no cambia."
+     ],
+     "archivo": "ServicioJuegos.java",
+     "codigoInicial": "public class ServicioJuegos {\n    private final List<Juego> juegos;\n\n    public ServicioJuegos(List<Juego> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public List<Juego> filtrar(Predicate<Juego> criterio) {\n        return juegos.stream().filter(criterio).toList();\n    }\n\n    // TODO: totalPuntuacionAjustada()\n    // TODO: cantidadPorTipo()\n}\n\n// En Juego:            TODO public String getTipo()\n// En JuegoCooperativo: TODO @Override getTipo()",
+     "solucion": "public class ServicioJuegos {\n    private final List<Juego> juegos;\n\n    public ServicioJuegos(List<Juego> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public List<Juego> filtrar(Predicate<Juego> criterio) {\n        return juegos.stream().filter(criterio).toList();\n    }\n\n    public double totalPuntuacionAjustada() {\n        return juegos.stream().mapToDouble(Juego::getPuntuacionAjustada).sum();\n    }\n\n    public Map<String, Long> cantidadPorTipo() {\n        return juegos.stream().collect(Collectors.groupingBy(Juego::getTipo, Collectors.counting()));\n    }\n}\n\n// En Juego:\npublic String getTipo() { return \"NORMAL\"; }\n\n// En JuegoCooperativo:\n@Override\npublic String getTipo() { return \"COOPERATIVO\"; }",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "mapToDouble\\s*\\(\\s*Juego::getPuntuacionAjustada\\s*\\)\\s*\\.sum\\s*\\(",
+       "ok": "Total con `mapToDouble().sum()`",
+       "error": "Sumá con `mapToDouble(Juego::getPuntuacionAjustada).sum()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "groupingBy\\s*\\(\\s*Juego::getTipo",
+       "ok": "Agrupa por tipo",
+       "error": "Agrupá por `Juego::getTipo`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"COOPERATIVO\"",
+       "ok": "Tipo cooperativo",
+       "error": "Falta el `getTipo()` que devuelve \"COOPERATIVO\""
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "instanceof",
+       "ok": "Sin `instanceof`",
+       "error": "Usá `getTipo()` polimórfico en lugar de `instanceof`"
+      }
+     ]
+    },
+    {
+     "id": "4.3",
+     "parte": 4,
+     "tema": "Reparaciones",
+     "titulo": "entregadas y agrupamiento por dispositivo",
+     "tipo": "codigo",
+     "donde": "`Taller`",
+     "consigna": "Agregá:\n1. `totalEntregadas()`: la suma de `importe()` de las reparaciones con estado `ENTREGADA`.\n2. `cantidadPorDispositivo()`: un conteo por **dispositivo** (no por marca: son columnas distintas).",
+     "tabla": {
+      "titulo": "Datos de prueba",
+      "cabecera": [
+       "id",
+       "dispositivo",
+       "marca",
+       "estado",
+       "importe"
+      ],
+      "filas": [
+       [
+        "R1",
+        "celular",
+        "Samsung",
+        "ENTREGADA",
+        "3840"
+       ],
+       [
+        "R2",
+        "celular",
+        "Motorola",
+        "ABIERTA",
+        "2000"
+       ],
+       [
+        "R3",
+        "notebook",
+        "Samsung",
+        "ENTREGADA",
+        "4800"
+       ]
+      ]
+     },
+     "datos": "Esperado: total entregadas **8640** · `{celular=2, notebook=1}`",
+     "pasos": [
+      "`filter(r -> r.getEstado().equals(\"ENTREGADA\")).mapToDouble(Reparacion::importe).sum()`.",
+      "`groupingBy(Reparacion::getDispositivo, Collectors.counting())`."
+     ],
+     "pistas": [
+      "`importe()` es polimórfico: las EXPRESS ya suman su recargo sin que el taller haga nada."
+     ],
+     "archivo": "Taller.java",
+     "codigoInicial": "public class Taller {\n    private final List<Reparacion> reparaciones;\n\n    public Taller(List<Reparacion> reparaciones) {\n        this.reparaciones = List.copyOf(reparaciones);\n    }\n\n    public double facturacionTotal() {\n        return reparaciones.stream().mapToDouble(Reparacion::importe).sum();\n    }\n\n    // TODO: totalEntregadas()\n    // TODO: cantidadPorDispositivo()\n}",
+     "solucion": "    public double totalEntregadas() {\n        return reparaciones.stream()\n                .filter(r -> r.getEstado().equals(\"ENTREGADA\"))\n                .mapToDouble(Reparacion::importe)\n                .sum();\n    }\n\n    public Map<String, Long> cantidadPorDispositivo() {\n        return reparaciones.stream()\n                .collect(Collectors.groupingBy(Reparacion::getDispositivo, Collectors.counting()));\n    }",
+     "solucionNota": "métodos nuevos",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "filter\\s*\\([^;]*\"ENTREGADA\"",
+       "ok": "Filtra las entregadas",
+       "error": "Filtrá por estado \"ENTREGADA\""
+      },
+      {
+       "tipo": "contiene",
+       "regex": "mapToDouble\\s*\\(\\s*Reparacion::importe\\s*\\)",
+       "ok": "Suma el importe",
+       "error": "Sumá `Reparacion::importe`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "groupingBy\\s*\\(\\s*Reparacion::getDispositivo",
+       "ok": "Agrupa por dispositivo",
+       "error": "Agrupá por dispositivo (no por marca)"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "getMarca",
+       "ok": "No usa la marca",
+       "error": "Ojo: te piden dispositivo, no marca"
+      }
+     ]
+    },
+    {
+     "id": "4.4",
+     "parte": 4,
+     "tema": "Compras",
+     "titulo": "conteo por modalidad y totales por rubro",
+     "tipo": "codigo",
+     "donde": "`Colector`",
+     "consigna": "Agregá:\n1. `cantidadPorModalidad()`: un conteo con las claves `SIN_SEGURO` / `ASEGURADO` (salen de `isAsegurado()`).\n2. `totalesPorRubro()`: la suma de `comision()` por rubro.",
+     "datos": "electro (neto 100 000, 90 días) · electro (neto 100 000, 0 días) · hogar (neto 50 000, 0 días) → `{ASEGURADO=1, SIN_SEGURO=2}` · `{electro=4600, hogar=1000}`",
+     "pasos": [
+      "Clave calculada: `groupingBy(c -> c.isAsegurado() ? \"ASEGURADO\" : \"SIN_SEGURO\", counting())`.",
+      "Suma: `groupingBy(Consumo::getRubro, Collectors.summingLong(Consumo::comision))`."
+     ],
+     "pistas": [
+      "`comision()` devuelve `long`: usá `summingLong`, no `summingDouble`."
+     ],
+     "archivo": "Colector.java",
+     "codigoInicial": "public class Colector {\n    private final List<Consumo> consumos;\n\n    public Colector(List<Consumo> consumos) {\n        this.consumos = List.copyOf(consumos);\n    }\n\n    public long getTotalLiquidacion() {\n        return consumos.stream().mapToLong(Consumo::comision).sum();\n    }\n\n    // TODO: cantidadPorModalidad()\n    // TODO: totalesPorRubro()\n}",
+     "solucion": "    public Map<String, Long> cantidadPorModalidad() {\n        return consumos.stream()\n                .collect(Collectors.groupingBy(c -> c.isAsegurado() ? \"ASEGURADO\" : \"SIN_SEGURO\",\n                        Collectors.counting()));\n    }\n\n    public Map<String, Long> totalesPorRubro() {\n        return consumos.stream()\n                .collect(Collectors.groupingBy(Consumo::getRubro, Collectors.summingLong(Consumo::comision)));\n    }",
+     "solucionNota": "métodos nuevos",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "isAsegurado\\s*\\(\\s*\\)\\s*\\?\\s*\"ASEGURADO\"\\s*:\\s*\"SIN_SEGURO\"|isAsegurado\\s*\\(\\s*\\)\\s*\\?\\s*\"SIN_SEGURO\"",
+       "ok": "Clave por modalidad",
+       "error": "Agrupá con una clave calculada a partir de `isAsegurado()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "summingLong\\s*\\(\\s*Consumo::comision\\s*\\)",
+       "ok": "Suma la comisión",
+       "error": "Usá `summingLong(Consumo::comision)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "groupingBy\\s*\\(\\s*Consumo::getRubro",
+       "ok": "Agrupa por rubro",
+       "error": "Agrupá por `Consumo::getRubro`"
+      }
+     ]
+    }
+   ],
+   "pestana": "Colector"
+  },
+  {
+   "n": 5,
+   "titulo": "Main delegando",
+   "explicacion": "CSV del parcial por defecto; se imprime todo **llamando métodos**. Si en el main hay un `for`, un `stream` o una cuenta, eso va en otra clase.",
+   "corto": "Main",
+   "ejercicios": [
+    {
+     "id": "5.1",
+     "parte": 5,
+     "tema": "Fintech",
+     "titulo": "sacar la lógica del main",
+     "tipo": "codigo",
+     "donde": "`App` (y `CarteraCreditos` si falta el método)",
+     "consigna": "Este main **calcula** cosas: tiene un `for` que cuenta NORMAL/EN_MORA y usa el CSV viejo por defecto. Dejalo usando `datos/datos-parcial.csv` por defecto y **solo delegando**. El conteo ya existe en `cartera.cantidadPorNivelMorosidad()`.",
+     "codigoInicial": "public class App {\n    public static void main(String[] args) throws IOException {\n        Path archivo = Path.of(args.length == 0 ? \"datos/datos.csv\" : args[0]);\n        ResultadoProceso resultado = new ParserSolicitudes().procesar(archivo);\n        CarteraCreditos cartera = new CarteraCreditos(resultado.getCreditos());\n\n        System.out.println(resultado.informe());\n        System.out.println(cartera.informe());\n\n        int normal = 0, enMora = 0;\n        for (SolicitudCredito s : resultado.getCreditos()) {\n            if (s.getNivelMorosidad().equals(\"EN_MORA\")) enMora++;\n            else normal++;\n        }\n        System.out.println(\"NORMAL: \" + normal + \" | EN_MORA: \" + enMora);\n    }\n}",
+     "pasos": [
+      "Cambiar la ruta por defecto.",
+      "Borrar el `for` y obtener el mapa desde la cartera.",
+      "Imprimir con `getOrDefault(..., 0L)`, para mostrar 0 si una clave no aparece."
+     ],
+     "pistas": [
+      "`getOrDefault` es presentación, no lógica de negocio: está bien en el main."
+     ],
+     "solucion": "public class App {\n    public static void main(String[] args) throws IOException {\n        Path archivo = Path.of(args.length == 0 ? \"datos/datos-parcial.csv\" : args[0]);\n        ResultadoProceso resultado = new ParserSolicitudes().procesar(archivo);\n        CarteraCreditos cartera = new CarteraCreditos(resultado.getCreditos());\n\n        System.out.println(resultado.informe());\n        System.out.println(cartera.informe());\n\n        Map<String, Long> porMorosidad = cartera.cantidadPorNivelMorosidad();\n        System.out.println(\"NORMAL: %d | EN_MORA: %d\".formatted(\n                porMorosidad.getOrDefault(\"NORMAL\", 0L),\n                porMorosidad.getOrDefault(\"EN_MORA\", 0L)));\n    }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "\"datos/datos-parcial\\.csv\"",
+       "ok": "Ruta del parcial por defecto",
+       "error": "La ruta por defecto tiene que ser `datos/datos-parcial.csv` (con guion)"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bfor\\s*\\(",
+       "ok": "Sin loops en el main",
+       "error": "El main no debe contar: delegá en la cartera"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\.stream\\s*\\(",
+       "ok": "Sin streams en el main",
+       "error": "Los streams van en el colector"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "cantidadPorNivelMorosidad\\s*\\(\\s*\\)",
+       "ok": "Delega el conteo",
+       "error": "Usá `cartera.cantidadPorNivelMorosidad()`"
+      }
+     ],
+     "archivo": "App.java"
+    },
+    {
+     "id": "5.2",
+     "parte": 5,
+     "tema": "Reparaciones",
+     "titulo": "main completo",
+     "tipo": "codigo",
+     "donde": "`Main`",
+     "consigna": "El main tiene que usar `datos/datos-parcial.csv` por defecto y mostrar: el resumen del parser, la facturación total, el total de entregadas y el agrupamiento por dispositivo. Los métodos ya existen: `resultado.informe()`, `taller.facturacionTotal()`, `taller.totalEntregadas()` y `taller.cantidadPorDispositivo()`.",
+     "codigoInicial": "public class Main {\n    public static void main(String[] args) throws IOException {\n        Path archivo = Path.of(args.length == 0 ? \"datos/datos.csv\" : args[0]);\n        ResultadoCarga resultado = new ParserReparaciones().procesar(archivo);\n        Taller taller = new Taller(resultado.getReparaciones());\n        System.out.println(resultado.informe());\n        // TODO\n    }\n}",
+     "solucion": "public class Main {\n    public static void main(String[] args) throws IOException {\n        Path archivo = Path.of(args.length == 0 ? \"datos/datos-parcial.csv\" : args[0]);\n        ResultadoCarga resultado = new ParserReparaciones().procesar(archivo);\n        Taller taller = new Taller(resultado.getReparaciones());\n\n        System.out.println(resultado.informe());\n        System.out.printf(\"Facturación total: %.2f%n\", taller.facturacionTotal());\n        System.out.printf(\"Total entregadas: %.2f%n\", taller.totalEntregadas());\n        System.out.println(\"Por dispositivo: \" + taller.cantidadPorDispositivo());\n    }\n}",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "\"datos/datos-parcial\\.csv\"",
+       "ok": "Ruta del parcial",
+       "error": "Cambiá la ruta por defecto"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "facturacionTotal\\s*\\(",
+       "ok": "Muestra la facturación",
+       "error": "Falta mostrar la facturación"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "totalEntregadas\\s*\\(",
+       "ok": "Muestra las entregadas",
+       "error": "Falta mostrar el total de entregadas"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "cantidadPorDispositivo\\s*\\(",
+       "ok": "Muestra el agrupamiento",
+       "error": "Falta mostrar el agrupamiento por dispositivo"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bfor\\s*\\(|\\.stream\\s*\\(",
+       "ok": "Solo delega",
+       "error": "No calcules en el main"
+      }
+     ],
+     "archivo": "Main.java"
+    }
+   ],
+   "pestana": "Main"
+  },
+  {
+   "n": 6,
+   "titulo": "Entrega",
+   "explicacion": "`DECISIONES.md` de 3 a 5 líneas (estrategia y pendientes) y un ZIP con `pom.xml`, `src/`, `datos/`, sin `target/`.",
+   "corto": "Entrega",
+   "ejercicios": [
+    {
+     "id": "6.1",
+     "parte": 6,
+     "tema": "",
+     "titulo": "Escribir DECISIONES.md",
+     "tipo": "texto",
+     "consigna": "Escribí entre 3 y 5 líneas para el parcial Fintech: la estrategia elegida y si quedó algo pendiente.",
+     "checklist": [
+      "Dice cómo se leen los dos formatos (un solo parser; el ancho sale de la cabecera).",
+      "Dice dónde están las reglas nuevas (dominio, `desdeCampos`).",
+      "Menciona el valor por defecto del formato viejo.",
+      "Menciona la operación nueva del colector.",
+      "Dice si quedó algo pendiente o alguna aclaración.",
+      "Tiene entre 3 y 5 líneas."
+     ],
+     "solucion": "- Un solo parser: la cabecera define el ancho esperado (5 o 6); cada fila se compara contra ese ancho.\n- La morosidad se valida en SolicitudCredito.desdeCampos: RECHAZADO exige EN_MORA; EN_MORA pide ingresos > 25000 y deudas <= 12 %. El formato de 5 columnas usa NORMAL por defecto.\n- Se conserva el constructor de 4 parámetros (delega con this) para no romper los tests existentes.\n- CarteraCreditos.cantidadPorNivelMorosidad() cuenta con groupingBy; el main solo delega.\n- Pendiente/aclaración: \"totales por zona\" no aplica a este dominio; se muestran tasa promedio y máxima por tipo.",
+     "solucionNota": "se ve con \"Ver solución\"",
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "parser",
+       "flags": "i",
+       "ok": "Dice cómo se leen los formatos (parser)",
+       "error": "Falta mencionar el parser"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "desdeCampos|dominio",
+       "flags": "i",
+       "ok": "Dice dónde están las reglas",
+       "error": "Falta decir dónde van las reglas (desdeCampos / dominio)"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "NORMAL",
+       "flags": "i",
+       "ok": "Menciona el valor por defecto",
+       "error": "Falta el valor por defecto del formato viejo (NORMAL)"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "groupingBy|conteo|cuenta",
+       "flags": "i",
+       "ok": "Menciona la operación del colector",
+       "error": "Falta la operación nueva del colector"
+      },
+      {
+       "tipo": "lineas",
+       "min": 3,
+       "max": 5,
+       "ok": "Tiene entre 3 y 5 líneas",
+       "error": "Tiene que tener entre 3 y 5 líneas"
+      }
+     ]
+    },
+    {
+     "id": "6.2",
+     "parte": 6,
+     "tema": "",
+     "titulo": "¿Qué va en el ZIP?",
+     "tipo": "ubicacion",
+     "extra": "Para armar el ZIP desde PowerShell, en la raíz del proyecto: `Compress-Archive -Path pom.xml, src, datos, DECISIONES.md -DestinationPath entrega.zip`",
+     "items": [
+      {
+       "texto": "`pom.xml`",
+       "respuesta": "Incluir",
+       "motivo": "Define el proyecto y sus dependencias"
+      },
+      {
+       "texto": "`src/`",
+       "respuesta": "Incluir",
+       "motivo": "Código y tests"
+      },
+      {
+       "texto": "`datos/` (con `datos-parcial.csv`)",
+       "respuesta": "Incluir",
+       "motivo": "El main lo usa por defecto"
+      },
+      {
+       "texto": "`DECISIONES.md`",
+       "respuesta": "Incluir",
+       "motivo": "Lo pide la consigna"
+      },
+      {
+       "texto": "`target/`",
+       "respuesta": "Excluir",
+       "motivo": "Es compilado; se regenera"
+      },
+      {
+       "texto": "`.git/`",
+       "respuesta": "Excluir",
+       "motivo": "No se pide"
+      },
+      {
+       "texto": "`.idea/`, `.vscode/`, `*.iml`",
+       "respuesta": "Excluir",
+       "motivo": "Archivos del IDE"
+      }
+     ],
+     "opciones": [
+      "Incluir",
+      "Excluir"
+     ]
+    }
+   ],
+   "pestana": "Entrega"
+  }
+ ]
+}
