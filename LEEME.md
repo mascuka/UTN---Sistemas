@@ -28,7 +28,7 @@ Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el d
 `#/m201` (`viewMateria`). Solo el material y la info de la materia: nada de tu cursada (comisión, días, fechas, notas: eso va en el Cronograma) ni de tu avance (va en "Tu avance").
 - **Arriba**: la sigla, el año y el nombre; a la derecha, cómo se aprueba ("Directa con 6 · Sin regularidad", de `condiciones`; al tocarlo se despliega cada requisito) y el ZIP completo.
 - **Las partes**: cada parcial / TPI / final es una tarjeta simple, con su nombre y su descripción corta. Lo suelto (Cuestionarios, Actividades) va abajo en filas, y al final el cuadro de comisiones.
-- **Adentro** (un parcial, una sección, la práctica…): arriba a la izquierda, siempre a mano, "‹ Backend de Aplicaciones" vuelve a la materia (en el celular, "‹ BDA"); al lado, las pestañas del parcial.
+- **Adentro** (un parcial, el TPI, una sección…): todo está en una sola fila de pestañas, fija arriba, y cada pestaña muestra su contenido directo, sin más páginas para entrar. A la izquierda, "‹ Backend de Aplicaciones" vuelve a la materia (en el celular, "‹ BDA"). Al entrar a una parte se abre su primera pestaña.
 - **Los archivos**: cada bloque es una tarjeta con una fila por archivo (tapa, nombre y detalle); los niveles (Esencial, Para profundizar, Extra) son títulos.
 
 ## Estilo
@@ -44,7 +44,7 @@ A la izquierda queda fija una barra (`renderLado`) con:
 - Abajo, **Tu avance** (el % y cuántas materias), que lleva al plan.
 
 En el celular la barra es un menú que se abre con el botón de arriba a la izquierda.
-Adentro de un parcial, arriba del contenido quedan fijas sus pestañas: Resumen, cada sección (Teórico, Práctico, Parcial…), la Práctica, el Quiz y las herramientas. Salen de `destinosParcial(p)`. Solo aparecen si el parcial tiene al menos dos lugares además del resumen. Si el parcial tiene `practicaTemas` (Backend), las pestañas son solo Resumen · Teórico · Práctica · Parciales / Simulacros: las explicaciones quedan marcadas como Práctica y el quiz como Parciales / Simulacros (campo `tambien` de cada pestaña).
+Adentro de una parte, una sola fila de pestañas con todo (sale de `pestanasDe(p)`): el material de cada sección que tiene archivos (Teórico, Práctico, Parciales / Simulacros…), **Videos** (todos juntos; si hay de más de una sección, arriba se elige "Teórico · Práctico"), **Práctica** (antes de los parciales), **Quiz**, las herramientas y **Temas**. En una parte de una sola página (`secciones: []`) o una sección de la materia: Material, Videos, Quiz, herramientas y Temas. Arriba de cada pestaña va el nombre de la parte y su descripción (`cabParte`). Si hay una sola pestaña, la fila muestra solo la vuelta a la materia.
 
 **Colores de las materias** (`colorMat`): salen de `COLORES_PDF` (el color de cada materia en los horarios en PDF) y se bajan de tono: un fondo suave, un borde y un texto oscuro del mismo tono, y otros tres para el modo oscuro. Los grises se oscurecen un poco y los naranjas fuertes pasan a un terracota suave.
 
@@ -107,7 +107,7 @@ Los JSON no se escriben a mano: se editan `herramientas/practica/ej1.py … ej5.
 `validar.py` usa el mismo `practica/corrector.py` que la página y revisa dos cosas: que la solución de cada paso pase todos los controles, y que el código de inicio falle al menos uno.
 
 ### Práctica por temas (Backend, en Java)
-Con `practicaGrupos`, `practicaTemas` y `practicaLenguaje: "java"` en el parcial (ver Backend, `201`, 1º Parcial), la Práctica se ordena por temas y reemplaza al recuadro "Practicá y entendé":
+Con `practicaGrupos`, `practicaTemas` y `practicaLenguaje: "java"` en el parcial (ver Backend, `201`, 1º Parcial), la Práctica se ordena por temas:
 - `practicaGrupos: [{ id, titulo, detalle }]`: Básico (lo que trae el preenunciado) y Para el parcial (los cambios del día del parcial).
 - `practicaTemas: [{ id, grupo, titulo, detalle, herramientas }]`: cada tema muestra sus explicaciones ("Entendelo", las `herramientas`) y sus ejercicios ("Practicalo": los de `practica` con ese `tema`).
 - En cada ejercicio de `practica` van además `grupo` y `tema`.
@@ -165,10 +165,10 @@ Las tapas están en `miniaturas/` (misma ruta que en `material/`, en .jpg). Cuan
 `python3 herramientas/miniaturas.py` (necesita `pip install pymupdf`). Crea las que faltan y borra las que ya no tienen PDF. Si un PDF no tiene tapa, se ve el cartel "PDF" como antes.
 
 ## Quiz
-Con `quiz: "quiz/archivo.json"` en el parcial aparece "Practicá → Quiz" (ruta `#/m201/p1/quiz`), o arriba de la sección `quizEn` si el parcial la tiene. El JSON tiene `titulo`, `descripcion` y `secciones: [ { titulo, preguntas: [...] } ]`. Cada pregunta: `tipo` (`una`, `varias`, `vf`, `num` o `modelo`), `en` (enunciado, acepta HTML), `op: [["texto", true/false], ...]` para las de opciones, `num` o `modelo` (la respuesta, para las que se resuelven y después se mira), y opcionales `ex` (por qué), `mal` (aviso, por ejemplo una clave del campus equivocada), `fuente`, `code`, `img` y `practica: true` (no salió en un parcial). Se elige la cantidad (10, 20 o todas) y los temas: cada sección del JSON es un tema. Las preguntas salen al azar y "Otras 10" trae las que todavía no salieron. No se guarda nada de quien lo hace.
+Con `quiz: "quiz/archivo.json"` en el parcial aparece la pestaña Quiz (ruta `#/m201/p1/quiz`), y también arriba de la sección `quizEn` si el parcial la tiene. El JSON tiene `titulo`, `descripcion` y `secciones: [ { titulo, preguntas: [...] } ]`. Cada pregunta: `tipo` (`una`, `varias`, `vf`, `num` o `modelo`), `en` (enunciado, acepta HTML), `op: [["texto", true/false], ...]` para las de opciones, `num` o `modelo` (la respuesta, para las que se resuelven y después se mira), y opcionales `ex` (por qué), `mal` (aviso, por ejemplo una clave del campus equivocada), `fuente`, `code`, `img` y `practica: true` (no salió en un parcial). Se elige la cantidad (10, 20 o todas) y los temas: cada sección del JSON es un tema. Las preguntas salen al azar y "Otras 10" trae las que todavía no salieron. No se guarda nada de quien lo hace.
 
 ## Herramientas y explicaciones
-Con `herramientas: ["csv", "streams"]` en el parcial aparecen en "Practicá y entendé" (ruta `#/m201/p1/h/csv`), o adentro de su tema en la Práctica si el parcial tiene `practicaTemas`. Hay:
+Con `herramientas: ["csv", "streams"]` en el parcial cada una es una pestaña (ruta `#/m201/p1/h/csv`), o va adentro de su tema en la Práctica si el parcial tiene `practicaTemas`. Hay:
 - `csv`: cómo se lee un CSV en Java. Las formas del apunte 11 (Scanner, BufferedReader, Files.lines, CSVReader, CSVReaderHeaderAware y CsvToBean) con un cuadro de qué hace cada una y, para cada forma, un paso a paso con dibujo y el código resaltado.
 - `streams`: Streams y Collectors, con un stream recorrido paso a paso y cada operación sola (filter, map, sorted, limit, terminales y groupingBy).
 - `pasos`: el paso a paso del parcial de Backend, armado con la corrección real del 3K1. Muestra cómo se reparten los puntos, los 45 minutos, los cinco comandos con los que corrige el profe y nueve pasos con su código, qué comprobar y qué requisito asegura cada uno. Los pasos se marcan y quedan en el navegador (`isi-pasos-bk`); los requisitos se ponen en verde cuando están hechos todos los pasos que los cubren.
@@ -178,7 +178,7 @@ Están en `HERRAMIENTAS`, en el código de la página.
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
-Se muestra en el resumen del parcial como una lista numerada: cada tema se despliega con lo que entra y su material, que sale solo: los archivos de las `partes` del material que se llaman igual que el tema (ej.: la parte "Streams" del Teórico) y los videos cuyo `bloque` empieza con el nombre del tema (ej.: "Streams · Apunte 10"). Tocando un video se abre la lista de videos arrancando por ese. El resumen del parcial también muestra las secciones (Teórico, Práctica, Parciales, Quiz…) como filas. Si el parcial no tiene `temas`, no aparece la lista.
+Se muestra en la pestaña **Temas** (ruta `#/m201/p1/temas`) como una lista numerada: cada tema se despliega con lo que entra y su material, que sale solo: los archivos de las `partes` del material que se llaman igual que el tema (ej.: la parte "Streams" del Teórico) y los videos cuyo `bloque` empieza con el nombre del tema (ej.: "Streams · Apunte 10"). Tocando un video se abre la lista de videos arrancando por ese. Si el parcial no tiene `temas`, no aparece la pestaña.
 
 ## Bloques por evaluación
 Los bloques de `parciales` son las evaluaciones de la materia, no las unidades de la cátedra. Por ejemplo, Desarrollo de Aplicaciones con Objetos (`206`) tiene dos:
@@ -198,7 +198,7 @@ Además de `teorico`, `practico` y `parciales` hay dos secciones más: `parcial`
 Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia`. El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero. La recomendación también se ve en el Cronograma, al elegir comisión.
 
 ## Parcial o TPI en una sola página
-Con `secciones: []` el parcial no tiene tarjetas de Teórico/Práctico: su página muestra directamente las pestañas Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`). Si además tiene `temas`, se muestran debajo del material (ver Tecnologías para la Automatización, `29`).
+Con `secciones: []` el parcial no tiene secciones de Teórico/Práctico: sus pestañas son Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`), más Quiz, herramientas y Temas si los tiene (ver Tecnologías para la Automatización, `29`).
 
 ## Condiciones de aprobación
 Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra arriba a la derecha en la página de la materia:

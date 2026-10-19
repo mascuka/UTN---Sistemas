@@ -862,7 +862,17 @@
   .mt-fila > svg{width:15px;height:15px;color:var(--muted);flex:none}
   .mt-suelto{margin-top:28px}
   .mt-lead{font:400 1.1rem/1.65 var(--serif);color:var(--text2);max-width:680px}
-  .mt-main.pc{max-width:860px;margin-top:26px}
+  .mt-main.pc{max-width:860px}
+  /* Adentro de una parte: el nombre y una línea, y abajo lo de la pestaña */
+  .pt-cab{margin:4px 0 22px}
+  .pt-cab h1{margin-bottom:4px}
+  .pt-cab p{color:var(--muted);font-size:.92rem;line-height:1.5;max-width:760px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pt-intro{color:var(--text2);font-size:.92rem;line-height:1.55;max-width:760px;margin:-8px 0 18px}
+  .pt-h2{font:400 1.35rem var(--serif);margin:0 0 6px}
+  .pt-fuentes{display:inline-flex;gap:4px;padding:4px;background:var(--hover);border-radius:11px;margin:-6px 0 18px}
+  .pt-fuentes a{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:8px;font-size:.86rem;color:var(--text2)}
+  .pt-fuentes a small{font-size:.76rem;color:var(--muted)}
+  .pt-fuentes a.on{background:var(--card);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
   .tm-lista{border-top:1px solid var(--line)}
   .tm-tema{border-bottom:1px solid var(--line)}
   .tm-tema summary{display:flex;align-items:center;gap:14px;padding:12px 4px;cursor:pointer;list-style:none}
@@ -3378,44 +3388,59 @@ function renderBarra(m){
   $("#barraIn").innerHTML = `<button class="menu-btn" data-lado aria-label="Abrir el menú">${ICON_MENU}</button><span class="barra-tit">${esc(tit)}</span>${botonTema()}`;
   // Adentro de un parcial: una fila con todo lo que tiene (resumen, secciones, práctica, quiz y herramientas)
   const c = m && MATERIAS[m.n];
-  const p = c && c.parciales.find(x => x.id === b);
-  const tabs = p ? destinosParcial(p) : [];
+  const p = parteDe(c, b);
+  const tabs = p ? pestanasDe(p) : [];
   const [, , d3, d4] = ruta.split("/");
-  const enTab = t => t.k === "" ? !d3 : t.k === (d3 === "h" ? "h/" + d4 : d3) || (t.tambien || []).includes(d3);
+  const enTab = t => t.on([d3, d4]);
   // Adentro de la materia (un parcial, una sección…): a la izquierda, siempre a mano, la vuelta a la materia
   const dentro = !!(m && b);
   const volver = dentro ? `<a class="pvolver" data-go="${a}" href="#/${a}" title="Volver a ${esc(m.nombre)}">${ICON_BACK}<span class="pv-l">${esc(m.nombre)}</span><span class="pv-c">${esc(m.abr || m.nombre)}</span></a>` : "";
-  $("#parnavIn").innerHTML = volver + (tabs.length > 2 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "");
+  $("#parnavIn").innerHTML = volver + (tabs.length > 1 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "");
   $("#parnav").hidden = !dentro;
   $("#barra").classList.toggle("vacia", !dentro);
   renderLado(m);
-  centrarEn($("#parnavIn"), $(".ptab.on"));
+  centrarEn($("#parnavIn"), $(".ptab.on") || $(".pvolver"));
   medirBarra();
 }
 function abrirLado(si){
   document.body.classList.toggle("lado-abierto", si);
   if(si){ const on = $("#lado .on"); if(on) on.scrollIntoView({ block: "nearest" }); }
 }
-/* Todo lo que tiene un parcial, en orden: resumen, secciones, práctica por partes, quiz y herramientas.
-   k es lo que va después del parcial en la ruta (para marcar la pestaña). */
-function destinosParcial(p){
-  if(p.secciones && !p.secciones.length) return [];   // parcial de una sola página (Material y Videos)
-  // Con la práctica por temas (Backend): Resumen · Teórico · Práctica · Parciales / Simulacros. Las explicaciones
-  // y el quiz van adentro: "tambien" marca la pestaña de afuera cuando se está en una de ellas.
-  if(p.practicaTemas){
-    const secs = seccionesDe(p).map(x => ({ k: x, go: `/${x}/material`, t: nombreSec(p, x), tambien: x === p.quizEn ? ["quiz"] : [] }));
-    const i = secs.findIndex(x => x.k === p.quizEn);
-    secs.splice(i < 0 ? secs.length : i, 0, { k: "practica", go: "/practica", t: "Práctica", tambien: ["h"] });
-    return [{ k: "", go: "", t: "Resumen" }, ...secs];
-  }
-  return [
-    { k: "", go: "", t: "Resumen" },
-    ...seccionesDe(p).map(x => ({ k: x, go: `/${x}/material`, t: nombreSec(p, x) })),
-    ...(p.practica ? [{ k: "practica", go: "/practica", t: "Práctica por partes" }] : []),
-    ...(p.quiz ? [{ k: "quiz", go: "/quiz", t: "Quiz" }] : []),
-    ...(p.herramientas || []).filter(h => HERRAMIENTAS[h]).map(h => ({ k: "h/" + h, go: `/h/${h}`, t: HERRAMIENTAS[h].titulo }))
+/* Todo lo que tiene una parte (parcial, TPI, final o una sección como Cuestionarios), en una sola fila de pestañas:
+   el material de cada sección (Teórico, Parciales…), los videos juntos, la práctica, el quiz, las herramientas y los
+   temas. on(d) dice si la pestaña está abierta según lo que va después de la parte en la ruta. */
+function pestanasDe(p){
+  const una = (p.secciones && !p.secciones.length) || !!p.material;
+  const hs = (p.herramientas || []).filter(h => HERRAMIENTAS[h]);
+  const fin = [
+    ...(p.quiz ? [{ go: "/quiz", t: "Quiz", on: d => d[0] === "quiz" }] : []),
+    ...(p.practicaTemas ? [] : hs.map(h => ({ go: `/h/${h}`, t: HERRAMIENTAS[h].titulo, on: d => d[0] === "h" && d[1] === h }))),
+    ...(p.temas && p.temas.unidades && p.temas.unidades.length ? [{ go: "/temas", t: "Temas", on: d => d[0] === "temas" }] : [])
   ];
+  if(una){
+    const vids = (p.videos || []).length, arch = cantArchivos(p.material || []);
+    return [
+      ...(arch || !vids ? [{ go: "/material", t: "Material", on: d => !d[0] || d[0] === "material" }] : []),
+      ...(vids ? [{ go: "/videos", t: "Videos", on: d => d[0] === "videos" }] : []),
+      ...fin
+    ];
+  }
+  const ks = seccionesDe(p);
+  const tabs = ks.filter(k => cantArchivos(seccion(p, k).material) || k === p.quizEn)
+    .map(k => ({ go: `/${k}/material`, t: nombreSec(p, k), k, on: d => d[0] === k && d[1] !== "videos" }));
+  const conVideos = ks.find(k => seccion(p, k).videos.length);
+  if(conVideos) tabs.splice(Math.min(1, tabs.length), 0, { go: `/${conVideos}/videos`, t: "Videos", on: d => d[1] === "videos" });
+  // La práctica va antes de los parciales / simulacros
+  if(p.practica){
+    const i = tabs.findIndex(t => t.k && (t.k === p.quizEn || /^parcial/.test(t.k)));
+    tabs.splice(i < 0 ? tabs.length : i, 0, { go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h") });
+  }
+  return [...tabs, ...fin];
 }
+/* La parte que se está viendo (un parcial o una sección de la materia) */
+const parteDe = (c, b) => c && b ? c.parciales.find(x => x.id === b) || (c.secciones || []).find(x => x.id === b) : null;
+/* Arriba de cada pestaña: el nombre de la parte y su descripción corta */
+const cabParte = p => `<div class="pt-cab"><h1>${esc(p.titulo)}</h1>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}</div>`;
 /* Alto de la barra: los saltos (al quiz, al modo cine…) quedan justo debajo de ella */
 function medirBarra(){
   document.documentElement.style.setProperty("--barra-h", $("#barra").offsetHeight + "px");
@@ -4004,38 +4029,10 @@ function crumbs(m, ...rest){
   return `<div class="crumbs"><span data-go="nivel/${m.nivel}">${nombreCorto(m.nivel)}</span> / <span data-go="m${m.n}">${esc(m.nombre)}</span> / ${rest.join(" / ")}</div>`;
 }
 
-/* Resumen de un parcial: lo que conviene abrir primero, las secciones como filas y los temas
-   numerados; cada tema se despliega con lo que entra y su material (los archivos de las partes
-   que se llaman como el tema y los videos de su bloque) */
+/* Pestaña "Temas" de un parcial: los temas numerados; cada uno se despliega con lo que entra y su material
+   (los archivos de las partes que se llaman como el tema y los videos de su bloque) */
 function viewParcial(m, p){
-  const fila = (go, ic, t, d, cu = "") => `
-    <div class="mt-fila" data-go="m${m.n}/${p.id}${go}"><span class="mt-ic">${ic}</span><span class="mt-fila-t"><b>${esc(t)}</b>${d ? `<small>${esc(d)}</small>` : ""}</span><span class="mt-cuenta">${cu}</span>${ICON_DER}</div>`;
-  const secs = seccionesDe(p).map(k => {
-    const x = seccion(p, k);
-    return fila(`/${k}/material`, iconoSec(k), nombreSec(p, k), x.videos.length ? descSec(k) : descSec(k).replace(" y videos", ""), cuentaParte(x, true));
-  });
-  const hs = (p.herramientas || []).filter(h => HERRAMIENTAS[h]);
-  if(p.practicaTemas){
-    // Práctica por temas: va antes de Parciales / Simulacros; las explicaciones están adentro
-    const i = seccionesDe(p).indexOf(p.quizEn);
-    const cuantos = g => p.practica.filter(x => p.practicaTemas.some(t => t.id === x.tema && t.grupo === g.id)).length;
-    secs.splice(i < 0 ? secs.length : i, 0, fila("/practica", ICON_CODIGO, "Práctica",
-      `Por temas, con la explicación y ejercicios de a pasos en ${p.practicaLenguaje === "java" ? "Java" : "Python"} que se corrigen al instante.`,
-      p.practicaGrupos.map(g => `<span>${esc(g.titulo)} · ${cuantos(g)}</span>`).join("")));
-  } else {
-    if(p.practica) secs.unshift(fila("/practica", ICON_CODIGO, "Práctica por partes", "El parcial de a pasos: escribís el código de cada parte y se corrige al instante.", `<span>${p.practica.length} ejercicios</span>`));
-    hs.forEach(h => secs.push(fila(`/h/${h}`, ICON_TOOL, HERRAMIENTAS[h].titulo, HERRAMIENTAS[h].corto)));
-  }
-  if(p.quiz) secs.push(fila("/quiz", ICON_QUIZ, "Quiz", "Preguntas de parciales, con la corrección al instante."));
-  return `
-    ${crumbs(m, esc(p.titulo))}
-    <h1>${esc(p.titulo)}</h1>
-    ${p.descripcion ? `<p class="mt-lead">${esc(p.descripcion)}</p>` : ""}
-    <div class="mt-main pc">
-      <h2 class="mt-h2">Material</h2>
-      ${secs.join("")}
-      ${temasParcial(m, p)}
-    </div>`;
+  return `${cabParte(p)}<div class="mt-main pc">${temasParcial(m, p) || `<div class="empty">Este parcial no tiene los temas cargados.</div>`}</div>`;
 }
 const normal = x => String(x).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
 function materialDeTema(p, titulo){
@@ -4079,21 +4076,10 @@ function temasParcial(m, p){
 function iconoSeccion(id){
   return { teorico: ICON_BOOK, practico: ICON_PEN, cuestionarios: ICON_CHECK, tpi: ICON_LAYER, tpi1: ICON_PEN, tpi2: ICON_PEN, tpi3: ICON_PEN, tp: ICON_PEN, final: ICON_CHECK, talleres: ICON_PEN, contexto: ICON_LAYER, biblioteca: ICON_BOOK }[id] || ICON_DOC;
 }
+/* Una parte de una sola página (secciones: []) o una sección de la materia: Material, Videos o Temas */
 function viewSeccionMateria(m, x, tab){
-  const base = `m${m.n}/${x.id}`;
-  const conVideos = !!x.videos;
-  return `
-    ${crumbs(m, esc(x.titulo))}
-    <h1>${esc(x.titulo)}</h1>
-    ${x.descripcion ? `<p class="lead">${esc(x.descripcion)}</p>` : ""}
-    ${tab === "material" || !conVideos ? practicaBox(m, x) : ""}
-    ${conVideos ? `
-    <div class="tabs">
-      <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/material">Material (${cantArchivos(x.material || [])})</div>
-      <div class="tab ${tab === "videos" ? "active" : ""}" data-go="${base}/videos">Videos (${x.videos.length})</div>
-    </div>` : ""}
-    <div id="tabBody">${tab === "material" || !conVideos ? filesList(x.material || []) : ""}</div>
-    ${tab === "material" || !conVideos ? `<div class="mt-main pc">${temasParcial(m, x)}</div>` : ""}`;
+  return `${cabParte(x)}
+    ${tab === "videos" ? `<div id="tabBody"></div>` : tab === "temas" ? `<div class="mt-main pc">${temasParcial(m, x)}</div>` : `<div id="tabBody">${filesList(x.material || [])}</div>`}`;
 }
 
 
@@ -4690,20 +4676,18 @@ function cerrarBusqueda(){
   $("#visorDoc").focus({ preventScroll: true });
 }
 
+/* Pestaña de una sección de un parcial: su material, o los videos (si hay en más de una sección, se elige de cuál) */
 function viewSeccion(m, p, k, tab){
-  const s = seccion(p, k);
-  const base = `m${m.n}/${p.id}`;
-  const desc = descSec(k);
-  return `
-    ${crumbs(m, `<span data-go="${base}">${esc(p.titulo)}</span>`, esc(nombreSec(p, k)))}
-    <h1>${esc(nombreSec(p, k))}</h1>
-    <p class="lead">${esc(p.titulo)}${desc ? ` — ${desc.charAt(0).toLowerCase() + desc.slice(1)}` : ""}</p>
+  const s = seccion(p, k), base = `m${m.n}/${p.id}`;
+  if(tab === "videos"){
+    const fuentes = seccionesDe(p).filter(x => seccion(p, x).videos.length);
+    return `${cabParte(p)}
+      ${fuentes.length > 1 ? `<div class="pt-fuentes">${fuentes.map(x => `<a class="${x === k ? "on" : ""}" data-go="${base}/${x}/videos" href="#/${base}/${x}/videos">${esc(nombreSec(p, x))}<small>${seccion(p, x).videos.length}</small></a>`).join("")}</div>` : ""}
+      <div id="tabBody"></div>`;
+  }
+  return `${cabParte(p)}
     ${k === p.quizEn ? parcialBox(m, p) : ""}
-    <div class="tabs">
-      <div class="tab ${tab === "material" ? "active" : ""}" data-go="${base}/${k}/material">Material (${cantArchivos(s.material)})</div>
-      ${s.videos.length || tab === "videos" ? `<div class="tab ${tab === "videos" ? "active" : ""}"   data-go="${base}/${k}/videos">Videos (${s.videos.length})</div>` : ""}
-    </div>
-    <div id="tabBody">${tab === "material" ? filesList(s.material) : ""}</div>`;
+    <div id="tabBody">${filesList(s.material)}</div>`;
 }
 
 /* ---------- Reproductor con lista (estilo YouTube) ---------- */
@@ -4965,16 +4949,6 @@ function mountPlayer(videos, titulo){
 /* ---------- Practicá: quiz y herramientas de cada parcial ---------- */
 const ICON_QUIZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/><path d="M12 17.5v.5"/></svg>';
 const ICON_TOOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>';
-function practicaBox(m, p){
-  const hs = (p.herramientas || []).filter(h => HERRAMIENTAS[h]);
-  if(!p.quiz && !hs.length) return "";
-  return `
-    <div class="practica">
-      <span class="pr-t">Practicá y entendé</span>
-      ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
-      ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
-    </div>`;
-}
 
 /* Arriba de Parciales / Simulacros (campo quizEn): el quiz, el paso a paso y los ejercicios del grupo "parcial" */
 function parcialBox(m, p){
@@ -5033,9 +5007,8 @@ function viewPracticas(m, p){
     </div>`;
   const nota = `<p class="pr-nota">Lo que escribís queda guardado en este navegador. ${java ? "La primera vez que corregís se baja Java (4,8 MB, una sola vez) y tarda unos segundos." : "La primera vez que corregís tarda unos segundos en preparar Python."}</p>`;
   if(!p.practicaTemas) return `
-    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, "Práctica por partes")}
-    <h1>Práctica por partes</h1>
-    <p class="lead">El parcial de a pasos, como lo vas a resolver: primero la clase base, después cada subclase, la clase que guarda la colección, la lectura del CSV y el main.</p>
+    ${cabParte(p)}
+    <p class="pt-intro">El parcial de a pasos, como lo vas a resolver: primero la clase base, después cada subclase, la clase que guarda la colección, la lectura del CSV y el main.</p>
     ${como}
     <div class="pr-lista">${p.practica.map((x, i) => filaEjercicio(m, p, x, i + 1)).join("")}</div>
     ${nota}`;
@@ -5052,16 +5025,14 @@ function viewPracticas(m, p){
       </div>`;
   };
   return `
-    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, "Práctica")}
-    <h1>Práctica</h1>
-    <p class="lead">Por temas: primero lo básico, que ya viene en el preenunciado, y después lo que piden el día del parcial. Cada tema tiene su explicación y ejercicios de a pasos en ${leng}.</p>
+    ${cabParte(p)}
+    <p class="pt-intro">Por temas: primero lo básico, que ya viene en el preenunciado, y después lo que piden el día del parcial. Cada tema tiene su explicación y ejercicios de a pasos en ${leng}.</p>
     ${como}
     ${p.practicaGrupos.map(g => `
     <section class="pr-grupo">
       <div class="pr-grupo-cab"><h2>${esc(g.titulo)}</h2><p>${esc(g.detalle)}</p></div>
       ${p.practicaTemas.filter(t => t.grupo === g.id).map(tema).join("")}
     </section>`).join("")}
-    ${p.quiz && p.quizEn ? `<p class="pr-nota">El <span class="linkbtn" data-go="m${m.n}/${p.id}/quiz">quiz con las preguntas de parciales</span> está en <span class="linkbtn" data-go="m${m.n}/${p.id}/${p.quizEn}/material">${esc(nombreSec(p, p.quizEn))}</span>.</p>` : ""}
     ${nota}`;
 }
 
@@ -5657,8 +5628,7 @@ let qz = null;   // el quiz abierto: datos, preguntas elegidas, posición y punt
 const mezclar = a => { for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 function viewQuiz(m, p){
   return `
-    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, "Quiz")}
-    <h1>Quiz · ${esc(p.titulo)}</h1>
+    ${cabParte(p)}
     <div id="quiz" class="quiz"><div class="empty">Cargando preguntas…</div></div>`;
 }
 async function montarQuiz(m, p){
@@ -6684,7 +6654,7 @@ function viewHerramienta(m, p, id){
     const temas = p.practicaTemas.filter(t => (t.herramientas || []).includes(id));
     const ejs = p.practica.filter(x => temas.some(t => t.id === x.tema));
     return `
-    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, `<span data-go="m${m.n}/${p.id}/practica">Práctica</span>`, esc(h.titulo))}
+    <div class="crumbs"><span data-go="m${m.n}/${p.id}/practica">‹ Práctica</span></div>
     <h1>${esc(h.titulo)}</h1>
     <p class="lead">${h.desc}</p>
     ${ejs.length ? `<p class="herr-ir">Después, practicalo: ${ejs.map(x => `<span class="pill" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}${esc(x.titulo)}</span>`).join("")}</p>` : ""}
@@ -6693,11 +6663,10 @@ function viewHerramienta(m, p, id){
     <p class="pr-nota"><span class="linkbtn" data-go="m${m.n}/${p.id}/practica">← Todos los temas de la Práctica</span></p>`;
   }
   return `
-    ${crumbs(m, `<span data-go="m${m.n}/${p.id}">${esc(p.titulo)}</span>`, esc(h.titulo))}
-    <h1>${esc(h.titulo)}</h1>
-    <p class="lead">${h.desc}</p>
-    <div id="herr" class="herr"></div>
-    ${(p.herramientas || []).length > 1 || p.quiz ? `<div class="herr-otras">${practicaBox(m, p)}</div>` : ""}`;
+    ${cabParte(p)}
+    <h2 class="pt-h2">${esc(h.titulo)}</h2>
+    <p class="pt-intro">${h.desc}</p>
+    <div id="herr" class="herr"></div>`;
 }
 
 const ICON_MAS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
@@ -7218,6 +7187,11 @@ function render(arriba = true){
   const p = cont && cont.parciales.find(x => x.id === b);
   // Un parcial con secciones: [] (ej.: los TPI de Green Software) se muestra como una sección: Material y Videos
   const sec = (cont && cont.secciones && cont.secciones.find(x => x.id === b)) || (p && p.secciones && !p.secciones.length ? p : null);
+  // Entrar a una parte (sin pestaña) abre su primera pestaña
+  if((p || sec) && !c){
+    const t = pestanasDe(p || sec)[0];
+    if(t){ ruta = `${a}/${b}${t.go}`; history.replaceState(history.state, "", "#/" + ruta); [, , c, d] = ruta.split("/"); }
+  }
   let titulo = CARRERA.titulo, vista = null;
 
   if(p && c === "quiz" && p.quiz){
@@ -7254,15 +7228,16 @@ function render(arriba = true){
     titulo = `${nombreSec(p, c)} · ${p.titulo} · ${m.nombre}`;
     vista = { t: `${nombreSec(p, c)} · ${p.titulo}`, s: m.nombre };
   } else if(sec){
-    c = c === "videos" ? "videos" : "material";
+    c = c === "videos" || c === "temas" ? c : "material";
     ruta = `${a}/${b}/${c}`;
     app.innerHTML = viewSeccionMateria(m, sec, c);
     if(c === "videos") mountPlayer(sec.videos || [], `${sec.titulo} · ${m.nombre}`);
     titulo = `${sec.titulo} · ${m.nombre}`;
     vista = { t: sec.titulo, s: m.nombre };
   } else if(p){
+    ruta = `${a}/${b}/temas`;
     app.innerHTML = viewParcial(m, p);
-    titulo = `${p.titulo} · ${m.nombre}`;
+    titulo = `Temas · ${p.titulo} · ${m.nombre}`;
     vista = { t: p.titulo, s: m.nombre };
   } else if(cont && b === "actividades" && cont.actividades){
     app.innerHTML = `${crumbs(m, "Actividades")}
