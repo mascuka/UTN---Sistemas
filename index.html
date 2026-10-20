@@ -1622,6 +1622,7 @@
   .cal-top button:hover:not(:disabled){background:var(--hover);color:var(--text)}
   .cal-top button:disabled{opacity:.3;cursor:default}
   .cal-rango{display:flex;gap:4px;margin:10px 0 2px}
+  .cal-rango.extra{margin-top:2px}
   .cal-rango button{flex:1;font:inherit;font-size:.76rem;font-weight:500;color:var(--muted);padding:4px 0;border-radius:7px;border:0;background:none;cursor:pointer;text-transform:capitalize}
   .cal-rango button.on{background:var(--hover);color:var(--text)}
   .cal-mes{margin-top:14px}
@@ -1653,7 +1654,14 @@
   .cal-d.hoy{box-shadow:inset 0 0 0 1.5px var(--accent);color:var(--accent);font-weight:650;opacity:1}
   .cal-d.hoy.marca{box-shadow:inset 0 0 0 1.5px var(--accent),inset 0 -3px 0 var(--C)}
   .cal-d.hoy.dos,.cal-d.hoy.tres{box-shadow:inset 0 0 0 1.5px var(--accent)}
-  .cal-d.sel{background:var(--text);color:var(--bg);box-shadow:none;opacity:1}
+  /* Fecha tentativa (varios días): color más suave y borde punteado; en un día partido, solo su parte más suave */
+  .cal-d.marca.tent{background:color-mix(in srgb,var(--F) 50%,var(--card));box-shadow:none;outline:1.5px dashed color-mix(in srgb,var(--C) 70%,transparent);outline-offset:-1.5px}
+  .cal-d.hoy.marca.tent{box-shadow:inset 0 0 0 1.5px var(--accent);outline:none}
+  .cal-d.t1{--G1:color-mix(in srgb,var(--F1) 45%,var(--card))}
+  .cal-d.t2{--G2:color-mix(in srgb,var(--F2) 45%,var(--card))}
+  .cal-d.t3{--G3:color-mix(in srgb,var(--F3) 45%,var(--card))}
+  .cal-d .ti.tn{opacity:.5}
+  .cal-d.sel{background:var(--text);color:var(--bg);box-shadow:none;outline:none;opacity:1}
   .cal-d.sel .ti{color:var(--bg)}
   .cal-ley{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:10px;font-size:.72rem;color:var(--muted)}
   .cal-ley span{display:inline-flex;align-items:center;gap:4px}
@@ -1666,6 +1674,7 @@
   .fe-d{width:36px;flex:none;text-align:center;font-size:.7rem;color:var(--muted);line-height:1.1}
   .fe-d b{display:block;font:500 1.1rem var(--serif);color:var(--text)}
   .fe-f.cerca .fe-d b{color:var(--accent)}
+  .fe-d b.rango{font-size:.9rem;white-space:nowrap}
   .fe-q{flex:1;min-width:0}
   .fe-q b{display:block;font-weight:500;font-size:.88rem}
   .fe-q small{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden}
@@ -1692,6 +1701,9 @@
   .cal-pop-ya div{display:flex;align-items:center;gap:8px;font-size:.84rem;padding:5px 4px 5px 10px;border-radius:8px;background:var(--F);color:var(--T)}
   .cal-pop-ya .ti{width:9px;height:9px;color:var(--C);flex:none}
   .cal-pop-ya span{flex:1;min-width:0}
+  .cal-pop-ya small{display:block;font-size:.72rem;opacity:.8}
+  .cal-pop-ya .tent{background:color-mix(in srgb,var(--F) 50%,var(--card));outline:1px dashed color-mix(in srgb,var(--C) 70%,transparent);outline-offset:-1px}
+  .cal-hasta{margin-top:8px}
   .cal-pop-ya button{display:grid;place-items:center;width:26px;height:26px;border:0;background:none;color:inherit;border-radius:7px;cursor:pointer;opacity:.7}
   .cal-pop-ya button:hover{opacity:1;background:rgba(0,0,0,.06)}
   .cal-pop-ya button svg{width:13px;height:13px}
@@ -7719,18 +7731,16 @@ const DIAS_CR = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
 const DIAS_CORTO = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 const TURNOS = [["Mañana", 7 * 60 + 45, 13 * 60], ["Tarde", 13 * 60, 17 * 60], ["Noche", 17 * 60, 23 * 60 + 15]];
-const TIPOS_FECHA = ["Parcial", "Recuperatorio", "TP", "TPI", "Entrega", "Otro"];
+const TIPOS_FECHA = ["Parcial", "Recuperatorio", "TP", "TPI"];
 /* Un ícono por tipo, para reconocerlos de un vistazo en el calendario: el recuperatorio es la estrella del parcial vacía */
 const ICONO_TIPO = {
   Parcial: '<path d="M5 .5l1.4 2.9 3.1.4-2.3 2.2.6 3.1L5 7.6 2.2 9.1l.6-3.1L.5 3.8l3.1-.4z"/>',
   Recuperatorio: '<path d="M5 .5l1.4 2.9 3.1.4-2.3 2.2.6 3.1L5 7.6 2.2 9.1l.6-3.1L.5 3.8l3.1-.4z" transform="translate(5 5) scale(.84) translate(-5 -5)" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
   TP: '<circle cx="5" cy="5" r="3.1"/>',
-  TPI: '<path d="M5 .7L9.3 5 5 9.3.7 5z"/>',
-  Entrega: '<path d="M5 1l4.3 7.8H.7z"/>',
-  Otro: '<circle cx="5" cy="5" r="2.7" fill="none" stroke="currentColor" stroke-width="1.5"/>'
+  TPI: '<path d="M5 .7L9.3 5 5 9.3.7 5z"/>'
 };
-// Los TPI anotados como TP antes de que existiera el tipo TPI se reconocen por el nombre
-const tipoFecha = x => x.tipo === "TP" && /\bTPI\b/i.test(x.nombre || "") ? "TPI" : ICONO_TIPO[x.tipo] ? x.tipo : "Otro";
+// Los TPI anotados como TP antes de que existiera el tipo TPI se reconocen por el nombre (y lo de tipos viejos va como TP)
+const tipoFecha = x => x.tipo === "TP" && /\bTPI\b/i.test(x.nombre || "") ? "TPI" : ICONO_TIPO[x.tipo] ? x.tipo : "TP";
 const iconoTipo = (t, cls = "") => `<svg class="ti ${cls}" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">${ICONO_TIPO[t]}</svg>`;
 const aMin = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
 const hhmm = v => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, "0")}`;
@@ -7989,34 +7999,53 @@ function diaListaCr(bs, dias){
     ${h || `<p class="cr-ayuda">Este día no cursás.</p>`}</div>`;
 }
 /* ---------- Calendario de la cursada ---------- */
-const mesesCuatri = q => { const [a, c] = q.split("-").map(Number); return (c === 1 ? [2, 3, 4, 5] : [7, 8, 9, 10]).map(m => [a, m]); };
+const mesesCuatri = q => { const [a, c] = q.split("-").map(Number); return (c === 1 ? [2, 3, 4, 5, 6] : [7, 8, 9, 10, 11]).map(m => [a, m]); };
+/* Lo que hay un día: lo anotado ese día y las fechas tentativas que lo cubren (se guardan en su primer día, con "hasta";
+   los sábados y domingos del medio no se pintan). Primero lo fijo; tent marca lo tentativo */
+function fechasDelDia(k){
+  const r = (fechas[k] || []).map((x, i) => ({ x, dia: k, i, tent: !!x.hasta }));
+  const finde = [0, 6].includes(deClave(k).getDay());
+  if(!finde) Object.entries(fechas).forEach(([d, l]) => { if(d < k) l.forEach((x, i) => { if(x.hasta && x.hasta >= k) r.push({ x, dia: d, i, tent: true }); }); });
+  return r.sort((p, q) => p.tent - q.tent);
+}
+const masDias = (k, n) => { const f = deClave(k); f.setDate(f.getDate() + n); return claveDia(f); };
+function rangoTxt(x, dia){
+  const a = deClave(dia), b = deClave(x.hasta), m = f => MESES[f.getMonth()].slice(0, 3);
+  return a.getMonth() === b.getMonth() ? `${a.getDate()}–${b.getDate()} ${m(a)}` : `${a.getDate()} ${m(a)}–${b.getDate()} ${m(b)}`;
+}
 function mesCr(a, m){
   const ini = (new Date(a, m, 1).getDay() + 6) % 7, dias = new Date(a, m + 1, 0).getDate(), hoy = hoyClave();
   let h = `<div class="cal-mes"><div class="cal-cab"><b>${MESES[m][0].toUpperCase() + MESES[m].slice(1)}</b><span>${a}</span></div>
     <div class="cal-sem">${"LMMJVSD".split("").map(x => `<span>${x}</span>`).join("")}</div><div class="cal-dias">`;
   for(let i = 0; i < ini; i++) h += "<span></span>";
   for(let d = 1; d <= dias; d++){
-    const k = claveDia(new Date(a, m, d)), mk = (fechas[k] || []).slice(0, 3), finde = (ini + d - 1) % 7 >= 5;
-    // Un color por cosa anotada: con dos el día se parte en diagonal, con tres en franjas
-    const col = mk.length === 1 ? colorMat(mk[0].k || "").css
-      : mk.map((x, i) => { const c = colorMat(x.k || ""); return `--c${i + 1}:${c.c};--f${i + 1}:${c.f};--t${i + 1}:${c.t};--cd${i + 1}:${c.cd};--fd${i + 1}:${c.fd};--td${i + 1}:${c.td}`; }).join(";");
-    const iconos = mk.map((x, i) => iconoTipo(tipoFecha(x), "ti" + (i + 1))).join("");
-    h += `<button class="cal-d mc ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""} ${mk.length ? "marca" : ""} ${["", "", "dos", "tres"][mk.length]} ${k === CR.sel ? "sel" : ""}" data-cr="dia" data-dia="${k}" ${col ? `style="${col}"` : ""} title="${mk.map(x => x.nombre).join(" · ") || "Anotar algo este día"}">${d}${iconos}</button>`;
+    const k = claveDia(new Date(a, m, d)), mk = fechasDelDia(k).slice(0, 3), finde = (ini + d - 1) % 7 >= 5;
+    // Un color por cosa anotada: con dos el día se parte en diagonal, con tres en franjas. Lo tentativo, más suave
+    const col = mk.length === 1 ? colorMat(mk[0].x.k || "").css
+      : mk.map(({ x }, i) => { const c = colorMat(x.k || ""); return `--c${i + 1}:${c.c};--f${i + 1}:${c.f};--t${i + 1}:${c.t};--cd${i + 1}:${c.cd};--fd${i + 1}:${c.fd};--td${i + 1}:${c.td}`; }).join(";");
+    const iconos = mk.map(({ x, tent }, i) => iconoTipo(tipoFecha(x), "ti" + (i + 1) + (tent ? " tn" : ""))).join("");
+    const tents = mk.length === 1 ? (mk[0].tent ? "tent" : "") : mk.map((y, i) => y.tent ? "t" + (i + 1) : "").join(" ");
+    h += `<button class="cal-d mc ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""} ${mk.length ? "marca" : ""} ${["", "", "dos", "tres"][mk.length]} ${tents} ${k === CR.sel ? "sel" : ""}" data-cr="dia" data-dia="${k}" ${col ? `style="${col}"` : ""} title="${mk.map(({ x, tent, dia }) => x.nombre + (tent ? ` (tentativa, ${rangoTxt(x, dia)})` : "")).join(" · ") || "Anotar algo este día"}">${d}${iconos}</button>`;
   }
   return h + "</div></div>";
 }
 function proximasFechas(n = 5){
   const hoy = hoyClave();
-  return Object.keys(fechas).filter(k => k >= hoy).sort().flatMap(k => fechas[k].map((x, i) => ({ ...x, dia: k, i }))).slice(0, n);
+  return Object.keys(fechas).sort().flatMap(k => fechas[k].map((x, i) => ({ ...x, dia: k, i }))).filter(x => (x.hasta || x.dia) >= hoy).slice(0, n);
 }
 const faltaTexto = k => { const dd = Math.round((deClave(k) - deClave(hoyClave())) / 864e5); return dd === 0 ? "hoy" : dd === 1 ? "mañana" : `en ${dd} días`; };
 function filaFecha(x, boton = "", corto = false){
-  const f = deClave(x.dia), i = x.k && infoMat(x.k);
-  return `<div class="fe-f mc ${faltaTexto(x.dia) === "hoy" || faltaTexto(x.dia) === "mañana" ? "cerca" : ""}" style="${colorMat(x.k || "").css}">
-    <span class="fe-d"><b>${f.getDate()}</b>${DIAS_CORTO[f.getDay()]}</span>
-    <span class="fe-q"><b>${esc(x.nombre)}</b>${i ? `<small${corto && i.abr ? ` title="${esc(i.nombre)}"` : ""}>${iconoTipo(tipoFecha(x))}<span>${esc(corto && i.abr ? i.abr : i.nombre)}</span></small>` : ""}</span>
-    <span class="fe-falta">${faltaTexto(x.dia)}</span>${boton}</div>`;
+  const f = deClave(x.dia), i = x.k && infoMat(x.k), h = x.hasta && deClave(x.hasta);
+  const falta = h && x.dia <= hoyClave() ? "puede ser hoy" : faltaTexto(x.dia);
+  // Una tentativa muestra el rango de días (1–5 y el mes)
+  const dia = h ? `<b class="rango">${f.getDate()}–${h.getDate()}</b>${MESES[f.getMonth()].slice(0, 3)}${h.getMonth() !== f.getMonth() ? "–" + MESES[h.getMonth()].slice(0, 3) : ""}` : `<b>${f.getDate()}</b>${DIAS_CORTO[f.getDay()]}`;
+  return `<div class="fe-f mc ${falta === "hoy" || falta === "mañana" || falta === "puede ser hoy" ? "cerca" : ""} ${h ? "tent" : ""}" style="${colorMat(x.k || "").css}">
+    <span class="fe-d">${dia}</span>
+    <span class="fe-q"><b>${esc(x.nombre)}</b>${i || h ? `<small${i && corto && i.abr ? ` title="${esc(i.nombre)}"` : ""}>${iconoTipo(tipoFecha(x))}<span>${i ? esc(corto && i.abr ? i.abr : i.nombre) : ""}${h ? (i ? " · " : "") + "tentativa" : ""}</span></small>` : ""}</span>
+    <span class="fe-falta">${falta}</span>${boton}</div>`;
 }
+// Los cuatro meses del cuatrimestre en fila y el que sigue (julio o diciembre) abajo, a lo largo
+const tabMes = ([a, m], i) => `<button class="${i === CR.mes || i === CR.mes + 1 ? "on" : ""}" data-cr="mes-ir" data-i="${i}">${i >= 4 ? MESES[m] : MESES[m].slice(0, 3)}</button>`;
 function calendarioCr(){
   const meses = mesesCuatri(CR.q);
   const hoy = new Date(), iHoy = meses.findIndex(([a, m]) => a === hoy.getFullYear() && m === hoy.getMonth());
@@ -8024,25 +8053,29 @@ function calendarioCr(){
   const prox = proximasFechas();
   return `
     <div class="cal-top"><b>Cursada</b><span><button data-cr="mes" data-d="-1" ${CR.mes <= 0 ? "disabled" : ""} aria-label="Mes anterior">‹</button><button data-cr="mes" data-d="1" ${CR.mes >= meses.length - 2 ? "disabled" : ""} aria-label="Mes siguiente">›</button></span></div>
-    <div class="cal-rango">${meses.map(([a, m], i) => `<button class="${i === CR.mes || i === CR.mes + 1 ? "on" : ""}" data-cr="mes-ir" data-i="${i}">${MESES[m].slice(0, 3)}</button>`).join("")}</div>
+    <div class="cal-rango">${meses.slice(0, 4).map(tabMes).join("")}</div>
+    <div class="cal-rango extra">${meses.slice(4).map((x, i) => tabMes(x, i + 4)).join("")}</div>
     ${meses.slice(CR.mes, CR.mes + 2).map(([a, m]) => mesCr(a, m)).join("")}
     <div class="cal-ley">${TIPOS_FECHA.map(t => `<span>${iconoTipo(t)}${t === "Recuperatorio" ? "Recup." : t}</span>`).join("")}</div>
     <div class="cal-sub">Próximas fechas</div>
-    ${prox.length ? prox.map(x => `<button class="fe-btn" data-cr="dia" data-dia="${x.dia}">${filaFecha(x, "", true)}</button>`).join("") : `<p class="cal-vacio">Tocá un día para anotar un parcial, un TP o una entrega.</p>`}
+    ${prox.length ? prox.map(x => `<button class="fe-btn" data-cr="dia" data-dia="${x.dia}">${filaFecha(x, "", true)}</button>`).join("") : `<p class="cal-vacio">Tocá un día para anotar un parcial, un TP o el TPI.</p>`}
     ${CR.sel ? popFecha() : ""}`;
 }
 /* Globo para anotar algo en un día */
 function popFecha(){
-  const k = CR.sel, f = deClave(k), lista = fechas[k] || [];
+  const k = CR.sel, f = deClave(k), lista = fechasDelDia(k);
   const curs = cursandoLista();
   if(CR.form.k == null && curs.length) CR.form.k = curs[0].k;
   return `<div class="cal-pop" id="calPop" role="dialog" aria-label="Anotar el ${f.getDate()} de ${MESES[f.getMonth()]}">
     <h3>${DIAS_CR[(f.getDay() + 6) % 7] || "Domingo"} ${f.getDate()} de ${MESES[f.getMonth()]}</h3>
-    ${lista.length ? `<div class="cal-pop-ya">${lista.map((x, i) => { const im = x.k && infoMat(x.k); return `<div class="mc" style="${colorMat(x.k || "").css}">${iconoTipo(tipoFecha(x))}<span><b>${esc(x.nombre)}</b>${im ? ` · ${esc(im.abr || im.nombre)}` : ""}</span><button data-cr="borrar-fecha" data-i="${i}" aria-label="Borrar">${ICON_X}</button></div>`; }).join("")}</div>` : ""}
+    ${lista.length ? `<div class="cal-pop-ya">${lista.map(({ x, dia, i, tent }) => { const im = x.k && infoMat(x.k); return `<div class="mc ${tent ? "tent" : ""}" style="${colorMat(x.k || "").css}">${iconoTipo(tipoFecha(x))}<span><b>${esc(x.nombre)}</b>${im ? ` · ${esc(im.abr || im.nombre)}` : ""}${tent ? `<small>Tentativa · ${rangoTxt(x, dia)}</small>` : ""}</span><button data-cr="borrar-fecha" data-dia="${dia}" data-i="${i}" aria-label="Borrar">${ICON_X}</button></div>`; }).join("")}</div>` : ""}
     <label>¿Qué hay?</label>
     <div class="cal-tipos">${TIPOS_FECHA.map(t => `<button class="${CR.form.tipo === t ? "on" : ""}" data-cr="tipo" data-t="${t}">${iconoTipo(t)}${t}</button>`).join("")}</div>
     <label for="calNombre">Nombre</label>
-    <input id="calNombre" class="cal-in" type="text" maxlength="40" placeholder="${{ Parcial: "1º Parcial", Recuperatorio: "Recuperatorio del 1º", TP: "TP1", TPI: "TPI · 1ª oportunidad", Entrega: "Entrega del TPI", Otro: "Consulta, coloquio…" }[CR.form.tipo]}" autocomplete="off">
+    <input id="calNombre" class="cal-in" type="text" maxlength="40" placeholder="${{ Parcial: "1º Parcial", Recuperatorio: "Recuperatorio del 1º", TP: "TP1", TPI: "TPI · 1ª oportunidad" }[CR.form.tipo]}" autocomplete="off">
+    <label>¿Cuándo?</label>
+    <div class="cal-tipos"><button class="${CR.form.tent ? "" : "on"}" data-cr="tent" data-v="0">Este día</button><button class="${CR.form.tent ? "on" : ""}" data-cr="tent" data-v="1">Tentativa · varios días</button></div>
+    ${CR.form.tent ? `<select id="calHasta" class="cal-in cal-hasta" aria-label="Hasta qué día">${Array.from({ length: 20 }, (_, n) => { const d = masDias(k, n + 1), g = deClave(d); return `<option value="${d}" ${d === CR.form.hasta ? "selected" : ""}>Hasta el ${DIAS_CORTO[g.getDay()].toLowerCase()} ${g.getDate()} de ${MESES[g.getMonth()]}</option>`; }).join("")}</select>` : ""}
     ${curs.length ? `<label>Materia</label><div class="cal-mats">${curs.map(x => `<button class="mc ${CR.form.k === x.k ? "on" : ""}" style="${colorMat(x.k).css}" data-cr="fmat" data-k="${x.k}" title="${esc(x.nombre)}"><i></i>${esc(x.abr || x.nombre)}</button>`).join("")}</div>` : ""}
     <div class="cal-pop-acc"><button class="cr-btn plano" data-cr="cerrar-pop">Cerrar</button><button class="cr-btn pri" data-cr="anotar">Anotar</button></div>
   </div>`;
@@ -8107,21 +8140,29 @@ function clicCrono(el, e){
     case "dia-tab": CR.dia = +el.dataset.d; pintarCuerpoCr(); return;
     case "mes": CR.mes += +el.dataset.d; pintarCalendario(); return;
     case "mes-ir": CR.mes = Math.min(+el.dataset.i, mesesCuatri(CR.q).length - 2); pintarCalendario(); return;
-    case "dia": CR.sel = CR.sel === el.dataset.dia ? null : el.dataset.dia; CR.form = { tipo: "Parcial", k: null };
+    case "dia": CR.sel = CR.sel === el.dataset.dia ? null : el.dataset.dia; CR.form = { tipo: "Parcial", k: null, tent: false, hasta: null };
       { const [a, m] = el.dataset.dia.split("-").map(Number), i = mesesCuatri(CR.q).findIndex(([aa, mm]) => aa === a && mm === m - 1); if(i >= 0 && (i < CR.mes || i > CR.mes + 1)) CR.mes = Math.min(i, mesesCuatri(CR.q).length - 2); }
       pintarCalendario(); if($("#calNombre")) $("#calNombre").focus(); return;
     case "cerrar-pop": CR.sel = null; pintarCalendario(); return;
     case "tipo": CR.form.tipo = el.dataset.t; pintarCalendario(); return;
     case "fmat": CR.form.k = el.dataset.k; pintarCalendario(); return;
+    case "tent": {
+      CR.form.tent = el.dataset.v === "1";
+      // De entrada, hasta el viernes de esa semana (o cuatro días después si ya es viernes o fin de semana)
+      if(CR.form.tent && !CR.form.hasta){ const dw = (deClave(CR.sel).getDay() + 6) % 7; CR.form.hasta = masDias(CR.sel, dw < 4 ? 4 - dw : 4); }
+      pintarCalendario(); return;
+    }
     case "borrar-fecha": {
-      const l = fechas[CR.sel] || [];
+      const dia = el.dataset.dia || CR.sel, l = fechas[dia] || [];
       l.splice(+el.dataset.i, 1);
-      if(!l.length) delete fechas[CR.sel];
+      if(!l.length) delete fechas[dia];
       guardarFechas(); pintarCalendario(); return;
     }
     case "anotar": {
       const nombre = ($("#calNombre").value || "").trim() || CR.form.tipo;
-      (fechas[CR.sel] = fechas[CR.sel] || []).push({ k: CR.form.k || "", tipo: CR.form.tipo, nombre });
+      const nueva = { k: CR.form.k || "", tipo: CR.form.tipo, nombre };
+      if(CR.form.tent && CR.form.hasta > CR.sel) nueva.hasta = CR.form.hasta;
+      (fechas[CR.sel] = fechas[CR.sel] || []).push(nueva);
       CR.sel = null;
       guardarFechas(); pintarCalendario(); return;
     }
@@ -8328,6 +8369,7 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches(".nota-in, .nt-in")) e.target.blur(); });
 document.addEventListener("change", e => { if(e.target.matches && e.target.matches(".nt-in")) ponerNotaCursada(e.target); });
+document.addEventListener("change", e => { if(e.target.id === "calHasta") CR.form.hasta = e.target.value; });
 
 $("#guardarToken").addEventListener("click", guardarToken);
 $("#borrarToken").addEventListener("click", borrarToken);
