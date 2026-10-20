@@ -320,16 +320,11 @@
   .qz-ini,.qz-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;max-width:820px}
   .qz-ini{display:flex;flex-direction:column;gap:14px}
   .qz-lbl{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-  .qz-secs{display:flex;flex-wrap:wrap;gap:8px}
-  .qz-sec{font:inherit;font-size:.86rem;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:6px 13px;cursor:pointer}
-  .qz-sec.on{background:var(--sel);color:var(--text);border-color:transparent;font-weight:500}
-  .qz-sec small{margin-left:6px;opacity:.75;font-weight:400}
   .qz-chk{font-size:.9rem;display:flex;gap:8px;align-items:center;cursor:pointer}
   .qz-cant{display:flex;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;width:max-content;max-width:100%}
   .qz-c{font:inherit;font-size:.9rem;font-weight:600;border:0;border-right:1px solid var(--line);background:var(--bg);color:var(--muted);padding:8px 18px;cursor:pointer}
   .qz-c:last-child{border-right:0}
   .qz-c.on{background:var(--sel);color:var(--text);font-weight:600}
-  .qz-lbl .qz-todos{font:inherit;font-size:.72rem;text-transform:none;letter-spacing:0;font-weight:600;color:var(--accent);background:none;border:0;cursor:pointer;margin-left:8px;text-decoration:underline;text-underline-offset:2px}
   .qz-btn{font:inherit;font-size:.9rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:10px;padding:9px 16px;cursor:pointer}
   .qz-btn:hover:not(:disabled){border-color:var(--accent)}
   .qz-btn.primario{background:var(--accent);border-color:var(--accent);color:#fff}
@@ -1055,25 +1050,75 @@
   .pp-paso.hecho .pp-chk::after{content:"✓"}
   .pp-min{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 10px}
   .pp-paso h3{margin:6px 0 8px;font-size:1.06rem}
-  .pp-hacer{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:.92rem;line-height:1.5}
-  .pp-flujo{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;margin:10px 0 0}
-  .pp-flujo span{font-family:ui-monospace,Menlo,monospace;font-size:.76rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px 8px}
-  .pp-flujo i{color:var(--muted);font-style:normal}
-  .pp-plant{margin-top:10px;background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:.88rem;line-height:1.5}
-  .pp-plant b:first-child{display:block;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
-  details.pp-cod{margin-top:10px}
-  details.pp-cod summary{cursor:pointer;font-weight:600;font-size:.86rem;color:var(--accent)}
-  details.pp-cod .cv-code{margin-top:8px}
-  .pp-comp{margin-top:10px;font-size:.86rem;line-height:1.5;border-left:3px solid var(--accent);padding:5px 12px;background:var(--bg);border-radius:0 8px 8px 0}
-  .pp-comp b{margin-right:4px}
   .pp-asegura{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
   .pp-asegura span{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
   .pp-asegura em{font-style:normal;font-size:.76rem;font-weight:600;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:2px 9px}
   .pp-ir{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .pp-errs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-  .pp-errs div{border-left:3px solid var(--error);padding:2px 0 2px 10px;font-size:.86rem;line-height:1.45}
-  .pp-errs div > b{display:block;margin-bottom:2px}
-  .pp-errs span{color:var(--muted)}
+  /* Paso a paso del parcial: el código antes y después, con cada cambio numerado */
+  .pa :not(pre) > code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.84em;background:var(--hover);border-radius:5px;padding:1px 5px}
+  .pa-puntos{margin:0;padding-left:20px;display:grid;gap:5px;font-size:.9rem;line-height:1.5}
+  .pa-tabla{width:100%;border-collapse:collapse;font-size:.85rem;line-height:1.45}
+  .pa-tabla th{text-align:left;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line2)}
+  .pa-tabla td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  .pa-tabla tr:last-child td{border-bottom:0}
+  .pa-tabla.receta{margin:2px 0 12px;background:var(--bg);border:1px solid var(--line);border-radius:10px;border-collapse:separate;border-spacing:0;overflow:hidden}
+  .pa-tabla.receta td:first-child{font-weight:600;white-space:nowrap}
+  .pa-donde{display:flex;gap:10px;align-items:baseline;font-size:.88rem;line-height:1.5;background:var(--accent-soft);border-radius:10px;padding:7px 12px;margin:0 0 10px}
+  .pa-donde > span{flex:none;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent)}
+  .pa-p{font-size:.92rem;line-height:1.55;margin:0 0 10px}
+  .pa-sub{margin:0 0 12px;padding-left:20px;display:grid;gap:6px;font-size:.92rem;line-height:1.5}
+  .pa-orden{font-size:.9rem;line-height:1.5;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:10px 0}
+  .pa-bloque{margin:4px 0 12px}
+  .pa-ad{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+  .pa-cod{background:#1e2228;border-radius:12px;overflow:hidden;min-width:0}
+  .pa-cab{display:flex;align-items:center;gap:8px;font-size:.74rem;font-weight:600;color:#b8c0c8;padding:7px 12px;background:#16191d}
+  .pa-pt{width:8px;height:8px;border-radius:50%}
+  .pa-pt.menos{background:#e07a66}
+  .pa-pt.mas{background:#6cc08b}
+  .pa-pre{margin:0;padding:8px 0;font:12.5px/1.6 ui-monospace,"Cascadia Code",Consolas,Menlo,monospace;color:#e6e6e6}
+  /* Las líneas largas siguen abajo, con sangría (no hay que mover nada de costado) */
+  .pa-l{display:block;white-space:pre-wrap;overflow-wrap:anywhere;padding:0 12px 0 33px;text-indent:-33px;border-left:3px solid transparent;transition:background .15s,opacity .15s}
+  .pa-g{display:inline-block;width:30px;text-indent:0;text-align:center;color:#59626d;font-style:normal;user-select:none}
+  .pa-g b{display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#39404a;color:#e6e6e6;font:700 .66rem/1 var(--sans)}
+  .pa-l.mas{background:rgba(108,192,139,.13);border-left-color:#6cc08b}
+  .pa-l.menos{background:rgba(224,122,102,.14);border-left-color:#e07a66}
+  .pa-l.mas .pa-g{color:#6cc08b}
+  .pa-l.menos .pa-g{color:#e07a66}
+  .pa-pre mark{background:rgba(108,192,139,.35);color:inherit;border-radius:3px;padding:0 1px}
+  .pa-bloque.activo .pa-l:not(.on){opacity:.32}
+  .pa-l.on{background:rgba(95,184,195,.22);border-left-color:#5fb8c3}
+  .pa-l.on .pa-g b{background:#5fb8c3;color:#10282b}
+  .pa-pre mark.on{background:rgba(95,184,195,.6);box-shadow:0 0 0 1px #5fb8c3}
+  .pa-cambios{list-style:none;padding:0;margin:10px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+  .pa-cambios li{display:flex;gap:10px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:9px 12px;cursor:pointer;font-size:.86rem;line-height:1.45;transition:border-color .15s,background .15s}
+  .pa-cambios li > div{display:grid;gap:2px}
+  .pa-cambios li span{color:var(--muted)}
+  .pa-num{flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:.74rem}
+  .pa-cambios li.igual .pa-num{background:var(--muted)}
+  .pa-cambios li:hover,.pa-cambios li.on{border-color:var(--accent);background:var(--accent-soft)}
+  .pa-cambios li.on span{color:var(--text)}
+  .pa-caja{font-size:.88rem;line-height:1.5;border-left:3px solid;border-radius:0 10px 10px 0;padding:8px 12px;margin:10px 0}
+  .pa-caja.trampa{background:var(--mark);border-color:var(--mark-l);color:var(--mark-t)}
+  .pa-caja.dato{background:var(--hover);border-color:var(--nv2)}
+  .pa-caja.ok{background:var(--ok-soft);border-color:var(--ok)}
+  .pa-alts{display:grid;gap:6px;margin:12px 0}
+  .pa-alt{border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+  .pa-alt summary{display:flex;gap:10px;align-items:baseline;cursor:pointer;padding:9px 12px;font-size:.9rem;line-height:1.45;list-style:none}
+  .pa-alt summary::-webkit-details-marker{display:none}
+  .pa-alt summary::after{content:"+";margin-left:auto;padding-left:8px;color:var(--muted);font-weight:700}
+  .pa-alt[open] summary::after{content:"−"}
+  .pa-si{flex:none;font-size:.6rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--accent);border-radius:5px;padding:2px 7px;position:relative;top:-1px}
+  .pa-alt-c{padding:0 12px 12px}
+  .pa-alt-c p{font-size:.88rem;line-height:1.5;margin:0 0 8px;color:var(--text2)}
+  .pa-cod.term,.pa-cod.md{margin:10px 0}
+  .pa-cod.term .pa-pre,.pa-cod.md .pa-pre{color:#d6dde4}
+  .pa-profe{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+  .pa-fin{margin-top:14px}
+  .pa-fin .pp-sub{margin:-4px 0 10px}
+  .pa .pp-prog{flex-wrap:nowrap}
+  .pa-tabla code{overflow-wrap:anywhere}
+  @media (max-width:1180px){ .pa-ad{grid-template-columns:1fr} }
+  @media (max-width:760px){ .pa-tabla{font-size:.8rem} .pa-tabla th,.pa-tabla td{padding:6px 5px} .pa-tabla.receta td:first-child{white-space:normal} .pa-cambios{grid-template-columns:1fr} .pa-pre{font-size:12px} .pa .pp-reqs{display:flex} }
   @media (max-width:760px){
     .pp-top{grid-template-columns:1fr}
     .pp-paso{grid-template-columns:34px minmax(0,1fr);gap:10px;padding:14px}
@@ -1302,6 +1347,7 @@
   .ejp-ws{height:max(520px, calc(100vh - var(--barra-h, 64px) - 330px));min-height:0}
   .ejp-der{overflow-y:auto}
   .ejp-der .pr-ed{min-height:240px}
+  .ejp-der > :not(.pr-ed){flex-shrink:0}
   .ejp-leng{margin:0 6px 6px auto;align-self:center;font:600 .66rem var(--sans);color:#9aa3ad;border:1px solid #39404a;border-radius:6px;padding:1px 7px}
   .ejp-sol{display:block;overflow:auto}
   .ejp-sol pre{margin:0;padding:12px 0;font:inherit;color:#e6e6e6;min-width:max-content}
@@ -1332,6 +1378,20 @@
   .ejp-check label{display:flex;gap:9px;align-items:flex-start;cursor:pointer}
   .ejp-check input{margin-top:3px;accent-color:var(--accent);flex:none}
   .ejp-aviso{font-size:.78rem;color:var(--muted);margin:0}
+  .ejp-enun{margin:12px 0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+  .ejp-enun ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:.88rem;line-height:1.5}
+  .ejp-guia{display:grid;gap:6px;margin:12px 0}
+  .ejp-guia > div:not(.ejp-tabla-t){display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:baseline;font-size:.86rem;line-height:1.45;border-left:3px solid var(--accent);background:var(--bg);padding:6px 10px;border-radius:0 8px 8px 0}
+  .ejp-guia > div:not(.ejp-tabla-t) b{font-size:.82rem}
+  .ejp-guia > div:not(.ejp-tabla-t) span{color:var(--text2)}
+  .ejp-ver{margin:0 6px 6px auto;align-self:center;display:inline-flex;flex:none;background:#16191d;border:1px solid #39404a;border-radius:7px;overflow:hidden}
+  .ejp-ver button{font:600 .7rem var(--sans);color:#9aa3ad;background:none;border:0;padding:3px 9px;cursor:pointer}
+  .ejp-ver button.on{background:#39404a;color:#fff}
+  .pr-checks .ejp-arch{display:inline-block;margin-left:7px;font:600 .7rem ui-monospace,Menlo,monospace;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:0 5px;vertical-align:1px}
+  .pr-fuerte.ocultar{background:var(--card);color:var(--text);box-shadow:inset 0 0 0 1px var(--line2)}
+  .ejp-cabecera{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-size:.8rem;margin:-2px 0 10px}
+  .ejp-cabecera > span{font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .ejp-cabecera code{word-break:break-all}
   .ejp-acc{display:flex;flex-wrap:wrap;gap:6px}
   .ejp-ejemplo{font:12.5px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;white-space:pre-wrap;width:100%;margin:0}
   @media (max-width:900px){
@@ -1653,7 +1713,7 @@
   .pgo{color:var(--muted)}
   .nivel-nav a{color:var(--text);font-weight:500}
   .badge{background:var(--hover);color:var(--text2)}
-  .pr-ej-t small,.pr-cab small,.pr-num,.cv-num,.pp-plant b:first-child,.pp-min{color:var(--muted)}
+  .pr-ej-t small,.pr-cab small,.pr-num,.cv-num,.pp-min{color:var(--muted)}
   .pp-min{background:var(--hover)}
   .pr-btn > svg,.herr-ir .pill svg{color:var(--text2)}
   .pr-btn:hover{border-color:var(--line2)}
@@ -2229,6 +2289,7 @@ const MATERIAS = {
         secciones: ["teorico", "parcial"],
         nombres: { parcial: "Parciales / Simulacros" },
         quizEn: "parcial",          // el quiz y el paso a paso se muestran arriba de esta sección
+        herramientasParcial: ["pasos"],   // herramientas que van arriba de Parciales (no en la Práctica)
         practicaParcial: "practica/bk-parcial/ejercicios.json",   // "El parcial por partes": las 7 partes con ejercicios de todos los parciales
         // Práctica: ejercicios de a pasos con Java que corre en el navegador (practica/java/, practica/bk-p1/*.json),
         // ordenados por tema; cada tema trae su explicación (herramientas). El quiz va en Parciales / Simulacros.
@@ -2243,7 +2304,7 @@ const MATERIAS = {
           { id: "clases", grupo: "basico", titulo: "Clases y validaciones", detalle: "Atributos final, constructor, getters, IllegalArgumentException y la fábrica desdeCampos.", herramientas: [] },
           { id: "csv", grupo: "basico", titulo: "Lectura de CSV", detalle: "BufferedReader, el encabezado, split(\",\", -1) y un try/catch por fila.", herramientas: ["csv"] },
           { id: "streams", grupo: "basico", titulo: "Colecciones y Streams", detalle: "List.copyOf, mapToInt, filter, groupingBy y los Collectors que salen en las preguntas.", herramientas: ["streams"] },
-          { id: "parcial", grupo: "parcial", titulo: "Los cambios del parcial", detalle: "El orden para asegurar puntos, y el parcial y un simulacro resueltos de a pasos.", herramientas: ["pasos"] }
+          { id: "parcial", grupo: "parcial", titulo: "Los cambios del parcial", detalle: "El parcial y un simulacro resueltos de a pasos, con Java en el navegador." }
         ],
         practica: [
           {"id": "bk-servidor", "titulo": "La clase Servidor", "origen": "Preenunciado 3K1 · Cloud Center", "detalle": "Atributos final, constructor con validaciones, el costo y la fábrica desdeCampos: la base de cualquier preenunciado.", "pasos": 4, "grupo": "basico", "tema": "clases", "url": "practica/bk-p1/01-bk-servidor.json"},
@@ -2359,32 +2420,31 @@ const MATERIAS = {
           // Arriba van las herramientas para practicar (quiz, paso a paso, ejercicios). Después, las dos guías y
           // cada parcial o simulacro en una fila que se despliega con sus archivos (filas: true)
           material: [
-            { grupo: "Para estudiar", descripcion: "Primero, cómo resolverlo paso a paso; después, todas las preguntas con su respuesta.", archivos: [
-              { n: 1, nombre: "Cómo resolver el parcial · paso a paso", nota: "Empezá por acá", detalle: "El orden para resolverlo: parser, dominio, polimorfismo, colector, main y entrega. Cada paso con el código antes y después (lo nuevo marcado) y qué hacer si te piden otra cosa, según los 5 parciales", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/como-resolver-el-parcial-paso-a-paso.pdf" },
-              { n: 2, nombre: "Guía única del 1º parcial", detalle: "Todas las preguntas, con multiple choice: el parcial real tal cual salió, cómo corrige el profe la parte práctica, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (35 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
+            { grupo: "Para estudiar", descripcion: "Todas las preguntas, con su respuesta.", archivos: [
+              { n: 1, nombre: "Guía única del 1º parcial", detalle: "Todas las preguntas, con multiple choice: el parcial real tal cual salió, cómo corrige el profe la parte práctica, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (35 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
             ] },
             { grupo: "Parciales y simulacros", descripcion: "Tocá uno para ver sus archivos. Para practicar, hacé cada simulacro en 45 minutos.", filas: true, partes: [
               { titulo: "Parcial 3K1 · 2026", tema: "Cloud Center", detalle: "Telemetría de servidores; el día del parcial, el ingreso promedio por servidor (19/09/2026)", archivos: [
-                { n: 3, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: el sistema de servidores para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/preenunciado.pdf" },
-                { n: 4, nombre: "Enunciado", detalle: "El cambio a programar en el parcial (45 min)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/enunciado.pdf" },
-                { n: 5, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
-                { n: 6, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos_parcial.csv y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
-                { n: 7, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia, probada con los 12 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
+                { n: 2, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: el sistema de servidores para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/preenunciado.pdf" },
+                { n: 3, nombre: "Enunciado", detalle: "El cambio a programar en el parcial (45 min)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/enunciado.pdf" },
+                { n: 4, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
+                { n: 5, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos_parcial.csv y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
+                { n: 6, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia, probada con los 12 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Simulacro 1 · 3K1", tema: "Fintech", detalle: "Solicitudes de crédito, score y tasa; en el parcial se agrega el nivel de morosidad", archivos: [
-                { n: 8, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/preenunciado.pdf" },
-                { n: 9, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/enunciado.pdf" },
-                { n: 10, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" }
+                { n: 7, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/preenunciado.pdf" },
+                { n: 8, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/enunciado.pdf" },
+                { n: 9, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" }
               ] },
               { titulo: "Simulacro 2 · 3K3", tema: "Taller de reparaciones", detalle: "Órdenes de reparación; en el parcial se agregan las EXPRESS, la garantía y los repuestos", archivos: [
-                { n: 11, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/preenunciado.pdf" },
-                { n: 12, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/enunciado.pdf" },
-                { n: 13, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" }
+                { n: 10, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/preenunciado.pdf" },
+                { n: 11, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/enunciado.pdf" },
+                { n: 12, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" }
               ] },
               { titulo: "Simulacro 3 · 3K4", tema: "Juegos de mesa", detalle: "Catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", archivos: [
-                { n: 14, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
-                { n: 15, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
-                { n: 16, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" }
+                { n: 13, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
+                { n: 14, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
+                { n: 15, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" }
               ] },
               { titulo: "Simulacro 4 · 3K7", tema: "Tarjetas de crédito", detalle: "Liquidación de consumos; en el parcial se agrega la protección de compras. Tiene modo simulacro y la solución", 
                 // Modo simulacro: con reloj, el enunciado al empezar y la solución al terminar
@@ -2396,7 +2456,7 @@ const MATERIAS = {
                   control: "Para corregirte: copiá los tests nuevos al proyecto y corré mvn test; tienen que pasar los viejos y los nuevos. Después mirá la solución."
                 },
                 archivos: [
-                { n: 17, nombre: "Todo el simulacro", detalle: "El preenunciado, el enunciado, el proyecto, el CSV del parcial y la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
+                { n: 16, nombre: "Todo el simulacro", detalle: "El preenunciado, el enunciado, el proyecto, el CSV del parcial y la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
               ] }
             ] }
           ],
@@ -3567,7 +3627,8 @@ const herramientasParte = p => p.practicaTemas ? [] : (p.herramientas || []).fil
 const tieneHerramientas = p => !!p.quiz || herramientasParte(p).length > 0;
 function pestanasDe(p){
   const una = (p.secciones && !p.secciones.length) || !!p.material;
-  const enHerr = d => d[0] === "quiz" || d[0] === "pp" || (!p.practicaTemas && d[0] === "h");
+  const deParcial = d => d[0] === "h" && (!p.practicaTemas || (p.herramientasParcial || []).includes(d[1]));
+  const enHerr = d => d[0] === "quiz" || d[0] === "pp" || deParcial(d);
   const temas = p.temas && p.temas.unidades && p.temas.unidades.length ? [{ go: "/temas", t: "Temas", on: d => d[0] === "temas" }] : [];
   if(una){
     const vids = (p.videos || []).length, arch = cantArchivos(p.material || []);
@@ -3586,7 +3647,7 @@ function pestanasDe(p){
   return [
     ...temas,
     ...ks.filter(k => !esSeccionParcial(p, k) && conArch(k)).map(tab),
-    ...(p.practica ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h") }]
+    ...(p.practica ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h" && !deParcial(d)) }]
       : !kp && tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
     ...(conVideos ? [{ go: `/${conVideos}/videos`, t: "Videos", on: d => d[1] === "videos" }] : []),
     ...ks.filter(k => esSeccionParcial(p, k) && (conArch(k) || (k === kp && (tieneHerramientas(p) || p.practicaParcial)))).map(tab)
@@ -5121,20 +5182,18 @@ function mountPlayer(videos, titulo){
 const ICON_QUIZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14"/><path d="M12 17.5v.5"/></svg>';
 const ICON_TOOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>';
 
-/* Herramientas para practicar, arriba de Parciales (o en la pestaña Práctica de una parte de una sola página):
-   la práctica del parcial por partes, el quiz, las herramientas y los ejercicios del grupo "parcial" de la Práctica */
+/* Herramientas para practicar, arriba de Parciales (o en la pestaña Práctica de una parte de una sola página),
+   en este orden: las herramientas (en Backend, el paso a paso del parcial), el parcial por partes y el quiz */
 function parcialBox(m, p){
   const temas = (p.practicaTemas || []).filter(t => t.grupo === "parcial");
-  const hs = [...herramientasParte(p), ...temas.flatMap(t => t.herramientas || []).filter(h => HERRAMIENTAS[h] && (p.herramientas || []).includes(h))];
-  const ejs = (p.practica || []).filter(x => temas.some(t => t.id === x.tema));
-  if(!p.quiz && !hs.length && !ejs.length && !p.practicaParcial) return "";
+  const hs = [...herramientasParte(p), ...(p.herramientasParcial || []), ...temas.flatMap(t => t.herramientas || [])].filter((h, i, xs) => HERRAMIENTAS[h] && (p.herramientas || []).includes(h) && xs.indexOf(h) === i);
+  if(!p.quiz && !hs.length && !p.practicaParcial) return "";
   return `
     <div class="practica">
       <span class="pr-t">Herramientas para practicar</span>
-      ${p.practicaParcial ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pp">${ICON_CODIGO}<span><b>El parcial por partes</b><small>De la consigna a la entrega, con ejercicios de todos los parciales</small></span></span>` : ""}
-      ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
       ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
-      ${ejs.map(x => `<span class="pr-btn" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}<span><b>${esc(x.titulo)}</b><small>De a pasos, ${progresoTexto(x).toLowerCase()}</small></span></span>`).join("")}
+      ${p.practicaParcial ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pp">${ICON_CODIGO}<span><b>El parcial por partes</b><small>Cada parte del parcial con ejemplos de todos los parciales y simulacros</small></span></span>` : ""}
+      ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
     </div>`;
 }
 /* Pestaña Práctica de una parte sin práctica propia: las herramientas para practicar */
@@ -5819,6 +5878,22 @@ const guardarEjp = () => { if(ejp) guardarLocal(claveEjp(ejp.p), JSON.stringify(
 const ejsEjp = () => ejp.d.partes.flatMap(x => x.ejercicios);
 const parteEjp = ej => ejp.d.partes.find(x => x.n === ej.parte);
 const hayOtroEjp = () => parteEjp(ejp.ej).ejercicios.length > 1;
+/* Los archivos de un ejercicio de código (una pestaña cada uno; los de solo lectura son para mirar) y lo que
+   escribió en cada uno. Solo se guarda lo que cambió respecto del código inicial. */
+const archivosEj = ej => ej.archivos || [];
+const editablesEj = ej => archivosEj(ej).filter(a => !a.soloLectura);
+function codigoEjp(ej){
+  let c = ejp.est.codigo[ej.id];
+  if(typeof c === "string") c = { [(editablesEj(ej)[0] || {}).nombre]: c };   // guardado cuando era un solo archivo
+  c = c && typeof c === "object" ? c : {};
+  return Object.fromEntries(editablesEj(ej).map(a => [a.nombre, typeof c[a.nombre] === "string" ? c[a.nombre] : a.inicial]));
+}
+function guardarCodigoEjp(ej, nombre, v){
+  const c = { ...codigoEjp(ej), [nombre]: v };
+  const cambiado = Object.fromEntries(editablesEj(ej).filter(a => c[a.nombre] !== a.inicial).map(a => [a.nombre, c[a.nombre]]));
+  if(Object.keys(cambiado).length) ejp.est.codigo[ej.id] = cambiado; else delete ejp.est.codigo[ej.id];
+  clearTimeout(ejp.tGuardar); ejp.tGuardar = setTimeout(guardarEjp, 300);
+}
 
 /* Markdown corto de los textos: `código`, **negrita** y listas numeradas o con guiones */
 const mdLinea = t => String(t).split(/(`[^`]+`)/).map(s => s.length > 1 && s[0] === "`" && s.endsWith("`") ? `<code>${esc(s.slice(1, -1))}</code>` : esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")).join("");
@@ -5850,9 +5925,11 @@ function sinComentarios(c){
   }
   return out;
 }
-/* Cada verificación: contiene / noContiene / cuenta (exactamente "veces") / lineas (entre min y max, sin contar vacías) */
-function verificarEjp(texto, checks){
+/* Cada verificación: contiene / noContiene / cuenta (exactamente "veces") / lineas (entre min y max, sin contar vacías).
+   textoDe(k) da el texto donde se busca: el de su "archivo" o, si no dice, el de todos los que se editan. */
+function verificarEjp(textoDe, checks){
   return checks.map(k => {
+    const texto = typeof textoDe === "function" ? textoDe(k) : textoDe;
     let ok = false;
     try {
       if(k.tipo === "lineas"){ const n = texto.split("\n").filter(l => l.trim()).length; ok = n >= k.min && n <= k.max; }
@@ -5861,7 +5938,7 @@ function verificarEjp(texto, checks){
         ok = k.tipo === "noContiene" ? n === 0 : k.tipo === "cuenta" ? n === k.veces : n > 0;
       }
     } catch(e){}
-    return { ok, msg: ok ? k.ok : k.error };
+    return { ok, msg: ok ? k.ok : k.error, archivo: k.archivo };
   });
 }
 
@@ -5890,7 +5967,7 @@ async function montarEjp(m, p, id){
 }
 /* Abre un ejercicio sin recargar la página (la dirección cambia, sin sumar pasos al "atrás") */
 function abrirEjp(ej, mover = true){
-  Object.assign(ejp, { ej, tab: "consigna", pista: 0, sol: 0, corregido: false, ed: null });
+  Object.assign(ejp, { ej, tab: "consigna", pista: 0, sol: 0, corregido: false, ed: null, verif: null, arch: Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura)) });
   ejp.est.ultimo = ej.id;
   guardarEjp();
   const r = `m${ejp.m.n}/${ejp.p.id}/pp/${ej.id}`;
@@ -5939,9 +6016,12 @@ function cuerpoIzqEjp(){
   if(ejp.tab === "pistas"){
     const ps = ej.pistas, n = ejp.pista;
     return `${n ? `<ol class="ejp-lista pistas">${ps.slice(0, n).map(t => `<li>${mdLinea(t)}</li>`).join("")}</ol>` : `<p class="ejp-vacio">Las pistas se ven de a una. Probá primero solo.</p>`}
-      ${n < ps.length ? `<button class="pr-chico" data-ejp="pista">💡 ${n ? "Otra pista" : "Ver la primera pista"} (${n + 1} de ${ps.length})</button>` : `<p class="ejp-vacio">No hay más pistas.${ej.solucion ? " Si seguís trabado, mirá la solución." : ""}</p>`}`;
+      ${n < ps.length ? `<button class="pr-chico" data-ejp="pista">💡 ${n ? "Otra pista" : "Ver la primera pista"} (${n + 1} de ${ps.length})</button>` : `<p class="ejp-vacio">No hay más pistas.${ej.tipo === "codigo" ? " Si seguís trabado, mirá la solución." : ""}</p>`}`;
   }
+  const guia = parteEjp(ej).guia;
   return `<div class="ejp-md">${mdBloque(ej.consigna || "")}</div>
+    ${ej.enunciado ? `<div class="ejp-enun"><div class="ejp-tabla-t">Lo que pide el enunciado</div><ul>${ej.enunciado.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
+    ${guia && ej.tipo === "ubicacion" ? `<div class="ejp-guia"><div class="ejp-tabla-t">Cómo decidir dónde va</div>${guia.map(([t, d]) => `<div><b>${esc(t)}</b><span>${mdLinea(d)}</span></div>`).join("")}</div>` : ""}
     ${ej.tabla ? tablaEjp(ej.tabla) : ""}
     ${ej.datos ? `<p class="ejp-datos">${mdLinea(ej.datos)}</p>` : ""}
     ${ej.csv ? `<button class="linkbtn" data-ejp-tab="csv">Ver el CSV de ejemplo →</button>` : ""}`;
@@ -6002,19 +6082,19 @@ function pintarDerEjp(){
       </div>${res}`;
   }
 }
+/* Las pestañas del editor (una por archivo) y, si ya se vio la solución, "Mi código | Solución" del archivo abierto */
 function pintarEdEjp(){
-  const ej = ejp.ej, viendo = ejp.sol === 2;
-  $("#ejpTabs").innerHTML = `<button class="pr-tab ${viendo ? "" : "on"}" data-ejp-ed="tuyo">${esc(ej.archivo || "Código")}</button>${ejp.sol ? `<button class="pr-tab ${viendo ? "on" : ""}" data-ejp-ed="sol">Solución${ej.solucionNota ? ` · ${esc(ej.solucionNota)}` : ""}</button>` : ""}<span class="ejp-leng">Java</span>`;
-  if(viendo){ ejp.ed = null; $("#ejpEd").innerHTML = solucionEjp(ej); return; }
-  ejp.ed = montarEditor($("#ejpEd"), ejp.est.codigo[ej.id] ?? ej.codigoInicial ?? "", false, v => {
-    if(v === (ej.codigoInicial || "")) delete ejp.est.codigo[ej.id]; else ejp.est.codigo[ej.id] = v;
-    clearTimeout(ejp.tGuardar); ejp.tGuardar = setTimeout(guardarEjp, 300);
-  }, "java", () => accionEjp("verificar"));
+  const ej = ejp.ej, as = archivosEj(ej), a = as[ejp.arch] || as[0], viendo = ejp.sol === 2 && !a.soloLectura;
+  $("#ejpTabs").innerHTML = as.map((x, i) => `<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="Para mirar: no se edita"` : ""}>${esc(x.nombre)}</button>`).join("")
+    + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">Java</span>`);
+  centrarEn($("#ejpTabs"), $("#ejpTabs .pr-tab.on"));
+  if(viendo || a.soloLectura){ ejp.ed = null; $("#ejpEd").innerHTML = codigoLecturaEjp(viendo ? a.solucion : a.inicial, viendo ? a.inicial : null); return; }
+  ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); }, "java", () => accionEjp("verificar"));
 }
-/* La solución en solo lectura, con las líneas que no estaban en el código inicial marcadas */
-function solucionEjp(ej){
-  const sol = (ej.solucion || "").split("\n"), nuevas = lineasNuevas((ej.codigoInicial || "").split("\n").map(l => l.trim()), sol.map(l => l.trim()));
-  return `<div class="ed lectura ejp-sol"><pre>${sol.map((l, i) => `<span class="ejp-l ${nuevas[i] && l.trim() ? "nueva" : ""}"><i>${i + 1}</i>${resaltarJava(l)}</span>`).join("")}</pre></div>`;
+/* Código en solo lectura; con "inicial", las líneas que no estaban ahí se marcan (así se ve la solución) */
+function codigoLecturaEjp(texto, inicial){
+  const ls = (texto || "").split("\n"), nuevas = inicial == null ? [] : lineasNuevas(inicial.split("\n").map(l => l.trim()), ls.map(l => l.trim()));
+  return `<div class="ed lectura ejp-sol"><pre>${ls.map((l, i) => `<span class="ejp-l ${nuevas[i] && l.trim() ? "nueva" : ""}"><i>${i + 1}</i>${resaltarJava(l)}</span>`).join("")}</pre></div>`;
 }
 /* Diferencia por líneas (la subsecuencia común más larga): true en las líneas de b que no vienen de a */
 function lineasNuevas(a, b){
@@ -6030,6 +6110,7 @@ function opcionesEjp(){
   const ej = ejp.ej, r = ejp.est.resp[ej.id] || {}, corr = ejp.corregido;
   return `
     <div class="ejp-op-cab"><b>${ej.tipo === "clasificacion" ? "¿Qué pasa con cada fila?" : ej.opciones.includes("Parser") ? "¿Dónde va cada cambio?" : "Elegí una opción en cada fila"}</b><span>${Object.keys(r).length} de ${ej.items.length} respondidas</span></div>
+    ${ej.cabecera ? `<div class="ejp-cabecera"><span>Cabecera</span><code>${esc(ej.cabecera)}</code></div>` : ""}
     <ol class="ejp-items">${ej.items.map((it, i) => {
       const ok = r[i] === it.respuesta;
       return `
@@ -6040,18 +6121,37 @@ function opcionesEjp(){
       </li>`; }).join("")}</ol>`;
 }
 
+/* Lo que se muestra abajo del editor. "verif" es la verificación: el mismo botón la oculta (y el editor vuelve
+   a su tamaño) mientras el código no cambie; si cambió, el botón verifica de nuevo. */
+function resEjp(html, que = ""){
+  const res = $("#ejpRes");
+  if(!res) return;
+  res.innerHTML = html;
+  res.dataset.que = que;
+  if(que !== "verif") ejp.verif = null;
+  pintarBtnVerif();
+}
+const firmaEjp = () => JSON.stringify(codigoEjp(ejp.ej));
+function pintarBtnVerif(){
+  const b = $('#ejpDer [data-ejp="verificar"]');
+  if(!b || ejp.ej.tipo !== "codigo") return;
+  const visible = ejp.verif != null && ejp.verif === firmaEjp();
+  b.textContent = visible ? "Ocultar verificación" : "Verificar";
+  b.classList.toggle("ocultar", visible);
+}
+
 /* ---- Lo que hacen los botones */
 function accionEjp(a){
   if(!ejp || !ejp.ej || !$("#ejpWs")) return;
-  const ej = ejp.ej, res = $("#ejpRes");
+  const ej = ejp.ej;
   if(a === "otro"){ const xs = parteEjp(ej).ejercicios; abrirEjp(xs[(xs.indexOf(ej) + 1) % xs.length]); return; }
   if(a === "pista"){
     const ps = ej.pistas || [];
-    if(!ps.length){ res.innerHTML = `<div class="pr-info">Este ejercicio no tiene pistas: mirá los pasos.</div>`; return; }
+    if(!ps.length){ resEjp(`<div class="pr-info">Este ejercicio no tiene pistas: mirá los pasos.</div>`); return; }
     ejp.pista = Math.min(ps.length, ejp.pista + 1);
     ejp.tab = "pistas";
     pintarIzqEjp();
-    res.innerHTML = `<div class="pr-info"><b>💡 Pista ${ejp.pista} de ${ps.length}</b><p>${mdLinea(ps[ejp.pista - 1])}</p>${ejp.pista < ps.length ? `<button class="linkbtn" data-ejp="pista">Otra pista</button>` : ""}</div>`;
+    resEjp(`<div class="pr-info"><b>💡 Pista ${ejp.pista} de ${ps.length}</b><p>${mdLinea(ps[ejp.pista - 1])}</p>${ejp.pista < ps.length ? `<button class="linkbtn" data-ejp="pista">Otra pista</button>` : ""}</div>`);
     return;
   }
   if(a === "solucion"){
@@ -6059,26 +6159,27 @@ function accionEjp(a){
     ejp.sol = 2;
     const marcar = ejp.est.hechos.includes(ej.id) ? "" : `<button class="pr-chico" data-ejp="marcar">✓ Marcar como resuelto</button>`;
     if(ej.tipo === "texto"){
-      res.innerHTML = `<div class="pr-info"><b>Un ejemplo de respuesta</b><pre class="ejp-ejemplo">${esc(ej.solucion)}</pre><div class="ejp-acc">${marcar}</div></div>`;
+      resEjp(`<div class="pr-info"><b>Un ejemplo de respuesta</b><pre class="ejp-ejemplo">${esc(ej.solucion)}</pre><div class="ejp-acc">${marcar}</div></div>`);
       return;
     }
+    if((archivosEj(ej)[ejp.arch] || {}).soloLectura) ejp.arch = archivosEj(ej).findIndex(x => !x.soloLectura);
     pintarEdEjp();
-    res.innerHTML = `<div class="pr-info"><b>Solución${ej.solucionNota ? ` (${esc(ej.solucionNota)})` : ""}</b><p>Lo nuevo está marcado en color. Comparalo con tu código y, si lo entendiste, marcalo como resuelto.</p>
-      <div class="ejp-acc"><button class="pr-chico" data-ejp-ed="tuyo">← Volver a mi código</button>${marcar}</div></div>`;
+    resEjp(`<div class="pr-info"><b>Solución</b><p>Lo nuevo está marcado en color.${editablesEj(ej).length > 1 ? " Mirá cada pestaña: el cambio está en más de un archivo." : ""} Comparalo con tu código y, si lo entendiste, marcalo como resuelto.</p>
+      <div class="ejp-acc"><button class="pr-chico" data-ejp-ed="tuyo">← Volver a mi código</button>${marcar}</div></div>`);
     return;
   }
   if(a === "marcar" || a === "desmarcar"){
     marcarEjp(a === "marcar");
-    if(a === "marcar" && res) res.innerHTML = `<div class="pr-bien"><b>✓ Marcado como resuelto.</b>${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}</div>`;
+    if(a === "marcar") resEjp(`<div class="pr-bien"><b>✓ Marcado como resuelto.</b>${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}</div>`);
     return;
   }
   if(a === "reiniciar"){
-    if(!confirm("¿Volver al código inicial? Se borra lo que escribiste en este ejercicio.")) return;
+    if(!confirm(`¿Volver al código inicial? Se borra lo que escribiste en este ejercicio${editablesEj(ej).length > 1 ? " (en todas las pestañas)" : ""}.`)) return;
     delete ejp.est.codigo[ej.id];
     guardarEjp();
     if(ejp.sol) ejp.sol = 1;
     pintarEdEjp();
-    res.innerHTML = "";
+    resEjp("");
     return;
   }
   if(a === "limpiar"){
@@ -6087,14 +6188,18 @@ function accionEjp(a){
     guardarEjp();
     ejp.corregido = false;
     $("#ejpOps").innerHTML = opcionesEjp();
-    res.innerHTML = "";
+    resEjp("");
     return;
   }
   if(a === "corregir"){ corregirEjp(); return; }
   if(a === "verificar"){
     if(ej.tipo === "texto"){ pintarChecksEjp(verificarEjp(ejp.est.codigo[ej.id] || "", ej.checks || [])); return; }
+    const firma = firmaEjp();
+    if(ejp.verif === firma && $("#ejpRes").dataset.que === "verif"){ resEjp(""); return; }   // el mismo botón la oculta
     if(ejp.sol === 2){ ejp.sol = 1; pintarEdEjp(); }
-    pintarChecksEjp(verificarEjp(sinComentarios(ejp.est.codigo[ej.id] ?? ej.codigoInicial ?? ""), ej.checks || []));
+    const t = codigoEjp(ej);
+    ejp.verif = firma;
+    pintarChecksEjp(verificarEjp(k => sinComentarios(k.archivo ? t[k.archivo] ?? "" : Object.values(t).join("\n")), ej.checks || []), true);
   }
 }
 function marcarEjp(si){
@@ -6110,14 +6215,14 @@ function seguirEjp(){
   const pa = parteEjp(ejp.ej), sig = ejp.d.partes[ejp.d.partes.indexOf(pa) + 1];
   return `${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}${sig ? `<button class="linkbtn" data-ejp-parte="${sig.n}">Parte ${sig.n}: ${esc(sig.pestana || sig.titulo)} →</button>` : ""}`;
 }
-function pintarChecksEjp(r){
-  const res = $("#ejpRes"), bien = r.filter(x => x.ok).length, todo = bien === r.length;
+function pintarChecksEjp(r, verif = false){
+  const bien = r.filter(x => x.ok).length, todo = bien === r.length, varios = editablesEj(ejp.ej).length > 1;
   if(todo) marcarEjp(true);
-  res.innerHTML = `
+  resEjp(`
     <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ Pasa las ${r.length} verificaciones` : `${bien} de ${r.length} verificaciones bien`}</b>${todo ? seguirEjp() : ""}</div>
-    <ul class="pr-checks">${r.map(x => `<li class="${x.ok ? "ok" : "mal"}"><span>${x.ok ? "✓" : "✗"}</span><div><b>${mdLinea(x.msg)}</b></div></li>`).join("")}</ul>
-    <p class="ejp-aviso">Verificación orientativa: compará también con la solución.</p>`;
-  if(innerWidth <= 900) res.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    <ul class="pr-checks">${r.map(x => `<li class="${x.ok ? "ok" : "mal"}"><span>${x.ok ? "✓" : "✗"}</span><div><b>${mdLinea(x.msg)}</b>${varios && x.archivo ? `<small class="ejp-arch">${esc(x.archivo)}</small>` : ""}</div></li>`).join("")}</ul>
+    <p class="ejp-aviso">Verificación orientativa: compará también con la solución.</p>`, verif ? "verif" : "");
+  if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 function corregirEjp(){
   const ej = ejp.ej, r = ejp.est.resp[ej.id] || {};
@@ -6125,14 +6230,14 @@ function corregirEjp(){
   ejp.corregido = true;
   if(todo) marcarEjp(true);
   $("#ejpOps").innerHTML = opcionesEjp();
-  $("#ejpRes").innerHTML = `
+  resEjp(`
     <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ ¡Todas bien! ${bien} de ${bien}` : `${bien} de ${ej.items.length} bien${faltan ? ` · ${faltan} sin responder` : ""}`}</b>${todo ? seguirEjp() : ""}</div>
-    ${[ej.resumen, ej.extra].filter(Boolean).map(t => `<div class="pr-info"><p>${mdLinea(t)}</p></div>`).join("")}`;
+    ${[ej.resumen, ej.extra].filter(Boolean).map(t => `<div class="pr-info"><p>${mdLinea(t)}</p></div>`).join("")}`);
   if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 /* Clics dentro de la práctica del parcial */
 function clicEjp(e){
-  const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-tab],[data-ejp-ed],[data-ejp-op],[data-ejp-tecla]");
+  const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-tab],[data-ejp-ed],[data-ejp-arch],[data-ejp-op],[data-ejp-tecla]");
   if(!t || !ejp || !ejp.ej) return false;
   const ds = t.dataset;
   if(ds.ejp){ accionEjp(ds.ejp); return true; }
@@ -6143,7 +6248,8 @@ function clicEjp(e){
   }
   if(ds.ejpIr){ const x = ejsEjp().find(y => y.id === ds.ejpIr); if(x) abrirEjp(x); return true; }
   if(ds.ejpTab){ ejp.tab = ds.ejpTab; pintarIzqEjp(); return true; }
-  if(ds.ejpEd){ ejp.sol = ds.ejpEd === "sol" ? 2 : 1; pintarEdEjp(); return true; }
+  if(ds.ejpEd){ ejp.sol = ds.ejpEd === "sol" ? 2 : 1; if((archivosEj(ejp.ej)[ejp.arch] || {}).soloLectura) ejp.arch = archivosEj(ejp.ej).findIndex(x => !x.soloLectura); pintarEdEjp(); return true; }
+  if(ds.ejpArch != null){ ejp.arch = +ds.ejpArch; pintarEdEjp(); return true; }
   if(ds.ejpOp != null){
     const r = ejp.est.resp[ejp.ej.id] || (ejp.est.resp[ejp.ej.id] = {});
     r[ds.ejpOp] = ds.v;
@@ -6180,7 +6286,9 @@ const quizCache = {};
 let qz = null;   // el quiz abierto: datos, preguntas elegidas, posición y puntaje (no se guarda nada)
 const mezclar = a => { for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 function viewQuiz(m, p){
+  const kp = seccionesDe(p).find(k => esSeccionParcial(p, k));
   return `
+    ${kp ? `<div class="crumbs"><span data-go="m${m.n}/${p.id}/${kp}/material">‹ ${esc(nombreSec(p, kp))}</span></div>` : ""}
     ${cabParte(p)}
     <div id="quiz" class="quiz"><div class="empty">Cargando preguntas…</div></div>`;
 }
@@ -6206,17 +6314,14 @@ function quizElegidas(){
 }
 function quizInicio(){
   const d = qz.d, n = quizElegidas().length, van = qz.cant ? Math.min(qz.cant, n) : n;
-  const todas = qz.secs.size === d.secciones.length;
   const hayPractica = d.secciones.some(s => s.preguntas.some(q => q.practica));
   $("#quiz").innerHTML = `
     <p class="lead">${esc(d.descripcion)}</p>
     <div class="qz-ini">
       <div class="qz-lbl">¿Cuántas preguntas?</div>
-      <div class="qz-cant">${[10, 20, 0].map(c => `<button class="qz-c${qz.cant === c ? " on" : ""}" data-qcant="${c}">${c || `Todas (${n})`}</button>`).join("")}</div>
-      <div class="qz-lbl">Temas <button class="qz-todos" data-qtodos>${todas ? "Ninguno" : "Todos"}</button></div>
-      <div class="qz-secs">${d.secciones.map((s, i) => `<button class="qz-sec${qz.secs.has(i) ? " on" : ""}" data-qsec="${i}">${esc(s.titulo)}<small>${s.preguntas.length}</small></button>`).join("")}</div>
+      <div class="qz-cant">${[5, 10, 15, 20, 25, 0].filter(c => c < n).map(c => `<button class="qz-c${qz.cant === c ? " on" : ""}" data-qcant="${c}">${c || `Todas (${n})`}</button>`).join("")}</div>
       ${hayPractica ? `<label class="qz-chk"><input type="checkbox" data-qreal${qz.soloReales ? " checked" : ""}> Solo las que salieron en parciales</label>` : ""}
-      <div><button class="qz-btn primario" data-qempezar${n ? "" : " disabled"}>${n ? `Empezar · ${van} pregunta${van === 1 ? "" : "s"}` : "Elegí al menos un tema"}</button></div>
+      <div><button class="qz-btn primario" data-qempezar${n ? "" : " disabled"}>${n ? `Empezar · ${van} pregunta${van === 1 ? "" : "s"}` : "No hay preguntas"}</button></div>
     </div>`;
 }
 /* Arma una tanda al azar; primero las que todavía no salieron en esta visita */
@@ -6304,12 +6409,10 @@ function quizFin(){
 }
 function clicQuiz(e){
   const t = e.target;
-  const el = t.closest("[data-qsec],[data-qcant],[data-qtodos],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra]");
+  const el = t.closest("[data-qcant],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra]");
   if(!el) return false;
   const ds = el.dataset;
-  if("qsec" in ds){ const i = +ds.qsec; qz.secs.has(i) ? qz.secs.delete(i) : qz.secs.add(i); quizInicio(); }
-  else if("qcant" in ds){ qz.cant = +ds.qcant; quizInicio(); }
-  else if("qtodos" in ds){ qz.secs = qz.secs.size === qz.d.secciones.length ? new Set() : new Set(qz.d.secciones.map((_, i) => i)); quizInicio(); }
+  if("qcant" in ds){ qz.cant = +ds.qcant; quizInicio(); }
   else if("qempezar" in ds || "qmas" in ds) quizEmpezar(quizElegidas());
   else if("qop" in ds && !qz.hecho){
     const { q } = qz.cola[qz.i], k = +ds.qop;
@@ -6991,191 +7094,438 @@ HERRAMIENTAS.streams = {
   }
 };
 
-/* 6 · Paso a paso del parcial (Backend · 1º Parcial): el orden para asegurar puntos, armado con la
-   corrección real del 3K1 (el profe corre cinco comandos y revisa el enunciado requisito por requisito).
-   Los pasos hechos quedan en este navegador (isi-pasos-bk). */
+/* 6 · Paso a paso del parcial (Backend · 1º Parcial): cómo resolverlo en orden, con el código antes y después.
+   El código se escribe con una marca al principio de cada línea: "+" (nueva o cambiada), "-" (la que se va o cambia)
+   o " " (igual); después, opcional, {1} o {1,2}: a qué cambio de la lista pertenece. Adentro de una línea,
+   [[1:así]] marca el pedazo nuevo de ese cambio. Al pasar el mouse por un cambio (o tocarlo) se marca qué se tocó
+   en el antes y qué quedó en el después. Los pasos hechos quedan en este navegador (isi-pasos-bk2). */
+const PA_ID = n => String.fromCharCode(0xE010 + n);
+function codigoPasos(txt, tipo = "java"){
+  const filas = txt.replace(/^\n|\n\s*$/g, "").split("\n").map(l => {
+    const m = l.match(/^([+\- ]?)(?:\{([\d,]+)\})?(.*)$/);
+    return { marca: m[1] || " ", ids: m[2] ? m[2].split(",") : [], cod: m[3] };
+  });
+  let previo = "";
+  return `<pre class="pa-pre">${filas.map(f => {
+    let html;
+    if(tipo === "java"){
+      const conMarcas = f.cod.replace(/\[\[(?:(\d+):)?/g, (_, n) => "" + PA_ID(+(n || f.ids[0] || 0))).replace(/\]\]/g, "");
+      html = resaltarJava(conMarcas)
+        .replace(/([-])/g, (_, c) => { const n = c.charCodeAt(0) - 0xE010; return n ? `<mark data-c="${n}">` : "<mark>"; }).replace(//g, "</mark>");
+    } else html = esc(f.cod).replace(/(^|\s)(#.*)$/, '$1<span class="t-com">$2</span>');
+    const cls = f.marca === "+" ? "mas" : f.marca === "-" ? "menos" : "";
+    const primero = f.ids.length && f.ids.join() !== previo ? f.ids[0] : "";
+    previo = f.ids.join();
+    return `<span class="pa-l ${cls}"${f.ids.length ? ` data-c="${f.ids.join(" ")}"` : ""}><i class="pa-g">${primero ? `<b>${primero}</b>` : f.marca === "+" ? "+" : f.marca === "-" ? "−" : ""}</i>${html || " "}</span>`;
+  }).join("")}</pre>`;
+}
 HERRAMIENTAS.pasos = {
   titulo: "Paso a paso del parcial",
-  corto: "El orden para asegurar puntos, armado con la corrección del profe",
-  desc: "Armado con la corrección real del parcial 3K1: el profe corre cinco comandos y revisa el enunciado requisito por requisito. Seguí los pasos en orden y marcá cada uno al terminarlo. Queda guardado en este navegador: usalo también con los simulacros.",
+  corto: "Cómo resolverlo en orden, con el código antes y después",
+  desc: "Siempre te dan un proyecto que funciona (el preenunciado) y, el día del parcial, un CSV con una columna nueva y una consigna con los mismos cinco puntos: cambia el tema, no la forma. Seguí los pasos en orden. En cada uno está el código <b>antes</b> y <b>después</b>: pasá el mouse por un cambio (o tocalo) y se marca qué se tocó y qué quedó. Abajo, qué hacer <b>si te piden otra cosa</b>, según los cinco parciales. Marcá cada paso al terminarlo: queda guardado en este navegador.",
   montar(el){
-    const CLAVE = "isi-pasos-bk";
-    const REQ = { her: "Herencia conectada", ing: "Dato nuevo en el cálculo", enc: "Encabezados de 5 y 6", imp: "Importa el CSV nuevo", orig: "CSV viejo igual", cont: "Conteo mostrado", main: "Main del parcial", tests: "Tests viejos y nuevos", zip: "Entrega completa" };
-    const flujo = ["datos.csv", "ParserServidores", "desdeCampos", "Servidor", "ResultadoParseo", "Cloud", "App"];
+    const CLAVE = "isi-pasos-bk2";
+    const c = t => `<code>${esc(t)}</code>`;
+    const REQ = { cab: "Dos cabeceras, un solo loop", anchos: "El dominio acepta los dos anchos", regla: "La regla nueva en el dominio", poli: "Subclase si cambia un cálculo", col: "La operación en el colector", main: "Main con el CSV del parcial", tests: "Tests en verde y CSV viejo igual", zip: "DECISIONES.md y el ZIP" };
     const PASOS = [
-      { min: "El día anterior", t: "Entendé el preenunciado",
-        hacer: ["Corré el proyecto tal cual y anotá la salida. Ese resultado con el CSV viejo <b>no puede cambiar</b>.",
-                "Seguí una fila de punta a punta y ubicá dónde está cada cálculo (costo, total, por región):",
-                "Mirá qué constructores y métodos usan los tests: <b>esas firmas no se tocan</b>.",
-                "Hacé un simulacro con reloj: el Simulacro 4 tiene modo simulacro."],
-        flujo: true, ir: [["m201/p1/parcial/material", "Ir a los simulacros"]],
-        comp: "<code>mvn test</code> y <code>java -cp target/classes ar.edu.backend.App datos/datos.csv</code> → anotá cuántos procesa (en el 3K1, 30)." },
-      { min: "0 a 5 min", t: "Leé y prepará el proyecto",
-        hacer: ["Leé “Resultado requerido”: cada punto es una fila de la corrección. Hacete la lista.",
-                "Copiá los tests nuevos a <code>src/test/java</code> (fusionando carpetas) y el CSV a <code>datos/</code>. Si el nombre del enunciado y el del archivo no coinciden, <b>dejá los dos</b>: el profe corrió <code>datos_parcial.csv</code>.",
-                "Corré <code>mvn test</code>: los viejos pasan y algunos nuevos fallan. Es lo esperado: son los que vas a hacer pasar."],
-        comp: "<code>mvn test</code> → solo fallan tests nuevos." },
-      { min: "5 a 12 min", t: "El dato nuevo, con herencia", req: ["her", "ing"],
-        hacer: ["Subclase con <code>extends</code>: su constructor llama a <code>super(...)</code> y valida el dato nuevo (en el 3K1, 1000 ≤ ingresos &lt; 1900).",
-                "En la base, el cálculo usa un método “gancho” que la subclase redefine con <code>@Override</code>. El cálculo queda en un solo lugar.",
-                "¿Falta un dato en la base (por ejemplo, el estado para contar)? <b>Agregá</b> un constructor; el viejo queda igual."],
-        cod: `// Servidor: el constructor viejo queda y se agrega otro (sobrecarga)
-public Servidor(String id, String region, int indiceCarga) {
-    this(id, region, indiceCarga, "SIN ESTADO");
-}
-public Servidor(String id, String region, int indiceCarga, String estado) { ... }
+      { fase: "Leer · 0 a 5 min", t: "Antes de escribir código", donde: "La consigna, la carpeta del proyecto y la terminal.",
+        sub: [
+          "Leé la consigna y marcá: la <b>cabecera nueva</b>, los <b>valores válidos</b> de la columna nueva, a qué <b>estados</b> afecta, las <b>fórmulas y ejemplos</b>, la <b>operación del colector</b> y qué tiene que mostrar el <b>main</b>.",
+          `Copiá los tests nuevos <b>fusionando carpetas</b> y el CSV a ${c("datos/")} con el nombre exacto de la consigna.`,
+          `Corré ${c("mvn test")} y anotá qué falla. Lo esperable: los viejos pasan y algunos nuevos fallan. Esa es tu línea base.`],
+        term: { t: "Terminal", cod: `
+ # Desde la raíz del proyecto (la carpeta que tiene el pom.xml)
+ cp -R tests-nuevos/ar src/test/java/          # Cloud Center y Fintech: el paquete es ar
+ cp -R tests-nuevos/utnfc src/test/java/       # Taller y Tarjetas: el paquete es utnfc
+ cp datos-parcial.csv datos/datos-parcial.csv
+ mvn test` },
+        cajas: [["trampa", "Trampa", `el ZIP del Parcial 3K1 traía ${c("datos_parcial.csv")} (guion bajo) y la consigna pedía ${c("datos-parcial.csv")} (guion medio). Si el nombre no coincide, el main no lo encuentra. Usá el de la consigna.`],
+                ["dato", "Dato", `si un test nuevo no compila, mirá primero la línea ${c("package")}: tiene que ser igual a la carpeta donde lo copiaste.`]],
+        pp: ["0.1", "Practicá dónde va cada cambio"] },
+      { fase: "Cambios", t: "Parser: aceptar las dos cabeceras", donde: `La clase Parser, método ${c("procesar(Path)")} o ${c("leer(Path)")}.`, req: ["cab"],
+        intro: "El mismo loop lee los dos formatos: la <b>primera línea</b> decide cuántas columnas tiene que tener <b>cada</b> fila. Así una fila de 5 bajo una cabecera de 6 es inválida, y al revés también.",
+        ad: { a: "Antes · Fintech", antes: `
+-{1}private static final String CABECERA = "idCliente,...,estadoSolicitud";
 
-protected int ingresoPorHora() { return INGRESO_PROMEDIO; }   // el gancho
+ try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {
+-{2}    if (!CABECERA.equals(lector.readLine()))
+-{2}        throw new IllegalArgumentException("encabezado incorrecto");
+     String linea;
+ {4}    while ((linea = lector.readLine()) != null) {
+         ...
+-{3}        if (tokens.length != 5)
+             throw new IllegalArgumentException("Cantidad de columnas incorrectas");`, despues: `
++{1}private static final String CABECERA_5 = "idCliente,...,estadoSolicitud";
++{1}private static final String CABECERA_6 = CABECERA_5 + ",nivelMorosidad";
 
-public int costoRiesgoOperativo() {
-    return (this.ingresoPorHora() * this.indiceCarga) / 100;
-}
+ try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {
++{2}    String cabecera = lector.readLine();
++{2}    int largoCabecera;
++{2}    if (CABECERA_5.equals(cabecera)) largoCabecera = 5;
++{2}    else if (CABECERA_6.equals(cabecera)) largoCabecera = 6;
++{2}    else throw new IllegalArgumentException("encabezado incorrecto");
+     String linea;
+ {4}    while ((linea = lector.readLine()) != null) {      // UN solo loop
+         ...
++{3}        if (tokens.length != [[largoCabecera]])
+             throw new IllegalArgumentException("Cantidad de columnas incorrectas");`,
+          cambios: [
+            ["Dos cabeceras", "La constante sola pasa a ser dos: la vieja de 5 columnas y la nueva, que es la vieja + `,nivelMorosidad`."],
+            ["La primera línea decide el ancho", "Se lee la cabecera una sola vez y se guarda cuántas columnas tiene que tener cada fila. Si no es ninguna de las dos, la misma excepción de antes."],
+            ["El 5 fijo pasa a ser la variable", "Cada fila se compara con el ancho de **su** cabecera."],
+            ["Un solo loop (no se toca)", "El `while` no se duplica: los dos formatos pasan por el mismo.", true]] },
+        orden: "El orden adentro del loop es siempre el mismo: <b>1) ancho</b> → <b>2) descarte</b> (BLACK, ESTABLE, CANCELADA, ANULADO) sin validar nada más → <b>3) validaciones</b>.",
+        cajas: [["trampa", "Trampa", `hacer ${c("if (formato viejo) { while… } else { while… }")}. Eso es "duplicar el proceso de carga" y lo descuentan.`]],
+        alts: [
+          ["un separador <b>;</b> (Juegos de mesa, 9 → 10 columnas)", `Mismo patrón. El ${c(";")} va en las constantes y en el ${c("split")}, y el ${c("-1")} conserva el campo vacío del final (un juego sin dificultad tiene 10 campos igual).`, `
++private static final String CABECERA_9 = "id;nombre;anio;min_jugadores;max_jugadores;duracion;rating;peso;categoria";
++private static final String CABECERA_10 = CABECERA_9 + ";dificultad_cooperativa";
+ ...
+ String[] campos = Arrays.stream(linea.split([[";"]], -1)).map(String::strip).toArray(String[]::new);`],
+          ["varias columnas nuevas (Taller: 8 → 11)", "Igual, pero podés sacar el ancho de la cabecera en vez de escribir los números.", `
++if (!CABECERA_INICIAL.equals(cabecera) && !CABECERA_EVOLUCIONADA.equals(cabecera))
++    throw new IllegalArgumentException("encabezado incorrecto");
++int ancho = cabecera.split(",").length;   // 8 u 11`],
+          ["un <b>estado nuevo que es válido</b> (Taller: ENTREGADA)", "Sumalo a la lista de estados que el parser acepta. El descarte (CANCELADA) queda donde estaba, después del ancho.", `
+-if (!List.of("ABIERTA", "LISTA").contains(c[6]))
++if (!List.of("ABIERTA", "LISTA", [["ENTREGADA"]]).contains(c[6]))
+     throw new IllegalArgumentException("estado desconocido: " + c[6]);`],
+          ["\"después de quitar los espacios externos\"", `Ya lo hace el ${c(".map(String::strip)")} del preenunciado sobre cada campo: no hay que agregar nada.`]],
+        ok: `los tests viejos siguen en verde con ${c("mvn test")}.`,
+        pp: ["1.1", "Practicá el parser"] },
+      { fase: "Cambios", t: "Dominio: que desdeCampos acepte los dos anchos", donde: `La clase del dominio, ${c("desdeCampos(String[])")}.`, req: ["anchos"],
+        intro: "El dominio casi siempre tiene el ancho fijo, repetido. Si arreglás solo el parser, todas las filas nuevas mueren con \"Se esperan 5 columnas\".",
+        ad: { a: "Antes · Fintech", antes: `
+ public static SolicitudCredito desdeCampos(String[] tokens) {
+-{1}    if (tokens.length != 5)
+-{1}        throw new IllegalArgumentException("Se esperan 5 columnas");
+     double ingresos = Double.parseDouble(tokens[2]);`, despues: `
+ public static SolicitudCredito desdeCampos(String[] tokens) {
++{1}    if (tokens.length != 5 && tokens.length != 6)
++{1}        throw new IllegalArgumentException("Se esperan 5 o 6 columnas");
+     double ingresos = Double.parseDouble(tokens[2]);
++{2}    // la columna nueva se lee SOLO si existe; si no, el valor por defecto
++{2}    String nivelMorosidad = tokens.length == 6 ? tokens[5] : "NORMAL";`,
+          cambios: [
+            ["Acepta los dos anchos", "El mismo control que el parser, con los dos números. Es el error más común: el parser ya está bien y todas las filas nuevas siguen dando inválidas."],
+            ["La columna nueva, solo si existe", "Con 5 columnas no hay `tokens[5]`: se usa el valor por defecto del formato viejo (acá, NORMAL)."]] },
+        cajas: [["trampa", "Trampa grande", `leer ${c("tokens[5]")} en una fila de 5 tira ${c("ArrayIndexOutOfBoundsException")}. No es ${c("IllegalArgumentException")}: el ${c("catch")} del parser no la atrapa y se corta <b>toda</b> la carga del CSV viejo.`],
+                ["dato", "Dato útil", `${c("Integer.parseInt")} y ${c("Double.parseDouble")} tiran ${c("NumberFormatException")}, que <b>sí</b> es hija de ${c("IllegalArgumentException")}: un número mal escrito (o vacío) deja la fila inválida sin cortar la lectura.`]],
+        alts: [["un valor por defecto que no es un texto (Servidores: ingresos 1000, Tarjetas: 0 días)", "Mismo ternario, con el tipo que corresponda.", `
++int ingresos = c.length == 6 ? Integer.parseInt(c[5]) : 1000;
++int dias = c.length == 6 ? Integer.parseInt(c[5]) : 0;`]],
+        ok: "corré el main con el CSV del parcial: leídas = procesadas + descartadas + inválidas. Con el CSV viejo tienen que salir los mismos números de siempre.",
+        pp: ["1.4", "Practicalo con dos archivos"] },
+      { fase: "Cambios", t: "La regla nueva, en el dominio", donde: "La clase del dominio. <b>No</b> en el parser: la consigna pide que la construcción y las reglas queden en el dominio.", req: ["regla"],
+        intro: "Cuatro sub-pasos, siempre en este orden:",
+        sub: ["<b>Atributo nuevo + getter.</b>",
+          `<b>Constructor nuevo</b> con el parámetro extra. El viejo se queda y <b>delega</b> con ${c("this(...)")} pasando el valor por defecto: los tests viejos lo usan y tienen que seguir compilando.`,
+          `La validación de combinaciones en un método ${c("private static")} aparte, <b>afuera</b> de ${c("desdeCampos")}.`,
+          `${c("if (caso nuevo) { reglas nuevas } else { reglas viejas tal cual }")}.`],
+        ad: { a: "Antes · Fintech", antes: `
+ private final String estado;
 
-// ServidorConIngresos: solo lo nuevo
-public class ServidorConIngresos extends Servidor {
-    private final int ingresos;
+ {2}public SolicitudCredito(String id, String tipo, double score, String estado) {
+     ... validaciones ...
+     this.estado = estado;
+ }
 
-    public ServidorConIngresos(String id, String region, int indiceCarga,
-                               String estado, int ingresos) {
-        super(id, region, indiceCarga, estado);   // la base valida lo suyo
-        if (ingresos < 1000 || ingresos >= 1900)
-            throw new IllegalArgumentException("ingresos fuera de rango");
-        this.ingresos = ingresos;
-    }
+ // en desdeCampos:
+ {3}    if (ingresos < 1000 || ingresos > 15000)
+ {3}        throw new IllegalArgumentException("Ingresos no aptos");
+ {3}    if (deudas < 0 || deudas >= ingresos)
+ {3}        throw new IllegalArgumentException("Deudas no aptas");
+-{5}    return new SolicitudCredito(tokens[0], tokens[1], score, tokens[4]);`, despues: `
+ private final String estado;
++{1}private final String nivelMorosidad;
 
-    @Override
-    protected int ingresoPorHora() { return ingresos; }
-}`,
-        comp: "<code>mvn compile</code> y <code>mvn test</code> → los tests viejos siguen pasando." },
-      { min: "12 a 20 min", t: "Un solo parser para los dos formatos", req: ["enc", "imp", "orig", "her"],
-        hacer: ["El encabezado decide cuántas columnas se esperan (5 o 6) y cada fila se controla contra ese número.",
-                "La fábrica (<code>desdeCampos</code>) crea la subclase cuando la fila trae el dato nuevo. Si no, la subclase existe pero <b>no suma</b>.",
-                "Las validaciones de antes siguen: ESTABLE se descarta, los rangos, el estado desconocido."],
-        cod: `String cabecera = lector.readLine();
-int columnas;
-if (CABECERA.equals(cabecera)) columnas = 5;
-else if ((CABECERA + ",ingresos").equals(cabecera)) columnas = 6;
-else throw new IllegalArgumentException("encabezado incorrecto");
-...
-if (tokens.length != columnas)
-    throw new IllegalArgumentException("cantidad de columnas incorrecta");
++{2}public SolicitudCredito(String id, String tipo, double score, String estado) {
++{2}    this(id, tipo, score, estado, "NORMAL");          // el viejo delega
++{2}}
+ {2}public SolicitudCredito(String id, String tipo, double score, String estado[[, String nivelMorosidad]]) {
+     ... validaciones ...
+     this.estado = estado;
++{1}    this.nivelMorosidad = nivelMorosidad;
+ }
 
-// Servidor.desdeCampos, después de las validaciones de siempre
-if (tokens.length == 6)
-    return new ServidorConIngresos(tokens[0], tokens[1], indiceCarga,
-            tokens[4], Integer.parseInt(tokens[5]));
-return new Servidor(tokens[0], tokens[1], indiceCarga, tokens[4]);`,
-        comp: "<code>App datos/datos.csv</code> → el mismo número que anotaste · <code>App datos/datos_parcial.csv</code> → más de 0 objetos." },
-      { min: "20 a 25 min", t: "El conteo en el colector", req: ["cont"],
-        hacer: ["Un método nuevo en el colector (<code>Cloud</code>) que cuente por estado. Vacío si no hay servidores.",
-                "<code>total()</code>, los totales por región y los filtros <b>no se tocan</b>: llaman al cálculo y el polimorfismo hace el resto.",
-                "¿Filtrás “ALERTA o CRITICO”? Es <code>||</code>. Con <code>&amp;&amp;</code> nunca se cumple para un mismo servidor."],
-        cod: `public Map<String, Long> conteoPorEstado() {
-    return servidores.stream()
-            .collect(Collectors.groupingBy(Servidor::getEstado,
-                    TreeMap::new, Collectors.counting()));
-}`,
-        comp: "<code>mvn test</code> → pasan los tests nuevos." },
-      { min: "25 a 30 min", t: "El main muestra todo lo pedido", req: ["cont", "main"],
-        hacer: ["Por defecto, el CSV del parcial; si le pasan una ruta, usa esa.",
-                "Mostrá cada cosa que pide el enunciado: resumen, cantidad de objetos, cada estado <b>por separado</b> (aunque dé 0), total y totales por región.",
-                "El main solo muestra: los cálculos siguen en las clases."],
-        cod: `Path archivo = Path.of(args.length == 0 ? "datos/datos-parcial.csv" : args[0]);
-ResultadoParseo resultado = new ParserServidores().leer(archivo);
-Cloud colector = new Cloud(resultado.getServidores());
+ // en desdeCampos:
++{4}    if (tokens.length == 6) validarMorosidad(tokens[4], nivelMorosidad);
++{3}    if (nivelMorosidad.equals("EN_MORA")) {                 // regla nueva
++{3}        if (ingresos <= 25000 || deudas < 0 || deudas > ingresos * 0.12)
++{3}            throw new IllegalArgumentException("EN_MORA: ingresos o deudas no aptos");
++{3}    } else {                                                // reglas viejas, sin tocar
+ {3}    if (ingresos < 1000 || ingresos > 15000)
+ {3}        throw new IllegalArgumentException("Ingresos no aptos");
+ {3}    if (deudas < 0 || deudas >= ingresos)
+ {3}        throw new IllegalArgumentException("Deudas no aptas");
++{3}    }
++{5}    return new SolicitudCredito(tokens[0], tokens[1], score, tokens[4], [[nivelMorosidad]]);
+ }
 
-System.out.println(resultado.informe());        // resumen y objetos
-Map<String, Long> porEstado = colector.conteoPorEstado();
-System.out.println("ALERTA: %d | CRITICO: %d".formatted(
-        porEstado.getOrDefault("ALERTA", 0L),
-        porEstado.getOrDefault("CRITICO", 0L)));
-System.out.println(colector.panorama());        // total y por región`,
-        comp: "<code>App</code> sin ruta → usa el CSV del parcial y muestra las dos cantidades." },
-      { min: "30 a 40 min", t: "Corré lo mismo que el profe", req: ["tests"],
-        hacer: ["Los cinco comandos, en orden y sin saltear ninguno.",
-                "Compará con lo que anotaste el día anterior: el CSV viejo tiene que dar igual.",
-                "¿Algo no compila y no llegás? Volvé a la última versión que compilaba (comentá lo nuevo). Que compile y pasen los tests vale más que todo a medias."],
-        cod: `mvn clean
-mvn compile
-mvn test
-java -cp target/classes ar.edu.backend.App datos/datos.csv
-java -cp target/classes ar.edu.backend.App datos/datos_parcial.csv`, abierto: true,
-        comp: "BUILD SUCCESS en los tres <code>mvn</code>, y objetos en las dos salidas." },
-      { min: "40 a 45 min", t: "DECISIONES.md y el ZIP", req: ["zip"],
-        hacer: ["De 3 a 5 líneas: la estrategia (herencia, dónde se decide el formato, qué agregaste) y si quedó algo pendiente.",
-                "ZIP con <code>pom.xml</code>, <code>src/</code>, <code>datos/</code> y <code>DECISIONES.md</code>. Sin <code>target/</code>, <code>.git/</code> ni carpetas del IDE.",
-                "Abrí el ZIP antes de subirlo y fijate que esté todo."],
-        cod: `# En PowerShell, desde la carpeta del proyecto
-Compress-Archive -Path pom.xml, src, datos, DECISIONES.md -DestinationPath parcial.zip`,
-        comp: "El ZIP subido en la pregunta del cuestionario que lo pide." },
-      { min: "En el campus", t: "Las otras 9 preguntas (16 puntos)",
-        hacer: ["<b>3 de 2 puntos</b> sobre el código del proyecto: trazar filas a mano con el informe, elegir el Collector, para qué sirve <code>List.copyOf</code>.",
-                "<b>1 de desarrollo (5 puntos)</b>: explicá la herencia con <code>super(...)</code>, <code>@Override</code> y enlace dinámico, con un ejemplo con números.",
-                "<b>5 de 1 punto</b> de teoría: salen de los cuestionarios semanales."],
-        plantilla: "«El cálculo está una sola vez en la clase base: (ingreso × índice) / 100, con ingreso 1000. La subclase llama a <code>super(...)</code>, valida su dato y redefine el ingreso con <code>@Override</code>. Cuando el colector recorre la lista de la base, por <b>enlace dinámico</b> cada objeto usa su versión: por ejemplo, índice 59 e ingresos 1110 da 654. Así <code>total()</code>, los filtros y los totales por región toman la regla nueva sin tocar el colector.»",
-        ir: [["m201/p1/quiz", "Practicar en el quiz"]] }
-    ];
-    const ERRORES = [
-      ["Romper los tests viejos", "Si cambiás la firma de un constructor que usan los tests, no compilan y <b>no corre ninguno</b>: es “falla funcional”. Agregá uno nuevo y dejá el viejo."],
-      ["Subclase desconectada", "La subclase existe pero el parser sigue creando la base: el dato nuevo nunca se usa en el costo."],
-      ["El CSV viejo deja de andar", "Cero procesados con el archivo original es perder “mantener el formato original”. Corré siempre los dos."],
-      ["Calcular pero no mostrar", "Si el main no imprime el conteo (cada estado por separado), el requisito no cuenta aunque el método exista."],
-      ["<code>&amp;&amp;</code> en vez de <code>||</code>", "“ALERTA y CRITICO” a la vez no se cumple nunca para un mismo servidor."]
++{4}private static void validarMorosidad(String estado, String nivel) {   // AFUERA de desdeCampos
++{4}    switch (estado) {
++{4}        case "RECHAZADO" -> { if (!nivel.equals("EN_MORA"))
++{4}            throw new IllegalArgumentException("RECHAZADO solo admite EN_MORA"); }
++{4}        case "APROBADO", "PRE_APROBADO" -> { if (!nivel.equals("NORMAL") && !nivel.equals("EN_MORA"))
++{4}            throw new IllegalArgumentException("Morosidad inválida: " + nivel); }
++{4}        default -> throw new IllegalArgumentException("Estado desconocido: " + estado);
++{4}    }
++{4}}
++{1}public String getNivelMorosidad() { return nivelMorosidad; }`,
+          cambios: [
+            ["Atributo nuevo + getter", "`nivelMorosidad` se guarda en el objeto, con su getter: lo va a usar el colector para contar."],
+            ["Constructor nuevo; el viejo delega", "Se agrega el constructor con el parámetro extra. El viejo se queda y llama al nuevo con `this(...)` y el valor por defecto: los tests viejos lo usan."],
+            ["La regla nueva, y las viejas tal cual", "`if (EN_MORA) { reglas nuevas } else { reglas viejas }`: NORMAL conserva todo como estaba."],
+            ["La combinación, en un método aparte", "`validarMorosidad` va **afuera** de `desdeCampos` (un método adentro de otro no compila) y revisa qué nivel admite cada estado."],
+            ["Se pasa la variable, no `tokens[5]`", "Con 5 columnas, `tokens[5]` no existe: al constructor va la variable que ya tiene el valor por defecto."]] },
+        cajas: [["trampa", "Trampas", `pasarle ${c("tokens[5]")} al constructor (se rompe con 5 columnas: pasale la variable); escribir el método nuevo <b>adentro</b> de otro (no compila); cambiar la firma del constructor viejo en vez de agregar uno (los tests viejos dejan de compilar).`]],
+        alts: [
+          ["un rango solo para algunos estados (Cloud Center: ALERTA y CRITICO, 1000 ≤ ingresos &lt; 1900)", `Ojo con los límites: ${c(">= 1000")} y ${c("< 1900")}. Si después del descarte solo quedan esos estados, podés validar en el constructor de la subclase (como en la solución propuesta).`, `
++boolean enRiesgo = estado.equals("ALERTA") || estado.equals("CRITICO");
++if (c.length == 6 && enRiesgo && (ingresos < 1000 || ingresos >= 1900))
++    throw new IllegalArgumentException("ingresos fuera de rango: " + ingresos);`],
+          ["valores permitidos y un tope (Tarjetas: 0 / 30 / 90 / 180 días, máximo 500 000 netos si está asegurado)", `${c("List.of(...).contains")} para los valores y el tope <b>inclusive</b>. Un valor vacío ya falla solo en ${c("Integer.parseInt")}.`, `
++if (!List.of(0, 30, 90, 180).contains(diasCobertura))
++    throw new IllegalArgumentException("plazo de cobertura inválido: " + diasCobertura);
++if (diasCobertura > 0 && importeCentavos - bonificacionCentavos > 500_000)
++    throw new IllegalArgumentException("neto supera el tope asegurado");`],
+          ["una columna opcional: vacía quiere decir \"normal\" (Juegos: dificultad cooperativa)", "Si no hay valor, no se valida nada: es un juego normal. Si hay, tiene que ser un entero entre 1 y 10.", `
++boolean cooperativo = c.length == 10 && !c[9].isEmpty();
++if (cooperativo) {
++    int dificultad = Integer.parseInt(c[9]);
++    if (dificultad < 1 || dificultad > 10)
++        throw new IllegalArgumentException("dificultad fuera de rango: " + dificultad);
++}`],
+          ["varios campos con valores fijos (Taller: garantía SI/NO, repuestos ≥ 0)", `Un ${c("switch")} que devuelve el valor o tira la excepción; y la regla del número.`, `
++boolean garantia = switch (c[8]) {
++    case "SI" -> true;
++    case "NO" -> false;
++    default -> throw new IllegalArgumentException("garantía inválida: " + c[8]);
++};
++double repuestos = Double.parseDouble(c[9]);
++if (repuestos < 0) throw new IllegalArgumentException("repuestos negativos");`]],
+        pp: ["2.1", "Practicá las reglas nuevas"] },
+      { fase: "Cambios", t: "Cuando cambia un cálculo: polimorfismo", donde: `Una <b>subclase nueva</b> + ${c("desdeCampos")}, que elige qué clase crear.`, req: ["poli"],
+        intro: `<b>Señales en la consigna:</b> "mediante polimorfismo", "especialización", "calcula un importe diferente", "conserva las reglas comunes y agrega…". La solución típica: una subclase que <b>redefine</b> el método del cálculo y reutiliza el del padre con ${c("super")}.`,
+        ad: { a: "Antes · Taller", antes: `
+ public static Reparacion desdeCampos(String[] c) {
+     ...
+-{1}    return new Reparacion(c[0], c[2], c[6], prioridad, horas, costoBase, garantia, repuestos);
+ }`, despues: `
+ public static Reparacion desdeCampos(String[] c) {
+     ...
++{1}    return switch (c[10]) {                      // desdeCampos decide qué clase crear
++{1}        case "NORMAL" -> new Reparacion(c[0], c[2], c[6], prioridad, horas, costoBase, garantia, repuestos);
++{1}        case "EXPRESS" -> new [[ReparacionExpress]](c[0], c[2], c[6], prioridad, horas, costoBase, garantia, repuestos);
++{3}        default -> throw new IllegalArgumentException("modalidad inválida: " + c[10]);
++{1}    };
+ }
+
++{2}class ReparacionExpress extends Reparacion {
++{2}    public ReparacionExpress(/* los mismos parámetros */) { super(/* ... */); }
++{4}    @Override
++{4}    public double importe() {
++{4}        return super.importe() * 1.25;           // reutiliza todo el cálculo común
++{4}    }
++{2}}`,
+          cambios: [
+            ["desdeCampos elige la clase", "Según la modalidad crea una `Reparacion` o una `ReparacionExpress`. Es el único lugar que pregunta el tipo."],
+            ["La subclase", "`extends Reparacion`: tiene todos los datos y reglas comunes; el constructor le pasa todo a `super(...)`."],
+            ["Una modalidad desconocida es inválida", "El `default` tira `IllegalArgumentException`: la fila queda inválida y la carga sigue."],
+            ["Redefine el cálculo, con `super`", "`@Override importe()` reutiliza el cálculo del padre y le aplica el recargo: no se copia la fórmula."]] },
+        nota: `La lista sigue siendo ${c("List<Reparacion>")}: el colector no cambia, y cuando llama a ${c("importe()")} Java ejecuta la versión de cada objeto.`,
+        cajas: [["trampa", "Trampas", `usar ${c("instanceof")} o un ${c("if (tipo == ...)")} en el colector o el main (justo lo que el polimorfismo evita); copiar la fórmula entera en la subclase en vez de llamar a ${c("super")}.`]],
+        alts: [
+          ["que el dato nuevo entre en una fórmula que ya existe (Cloud Center: el ingreso por hora en el costo de riesgo)", `"Sin alterar la estructura de objetos": la fórmula queda en el padre y usa un método que la subclase redefine. Así ${c("total()")}, los filtros y los totales por región toman la regla nueva sin tocarlos.`, `
+ public int costoRiesgoOperativo() {
+     return ([[ingresoPorHora()]] * indiceCarga) / 100;      // antes: 1000 fijo
+ }
++protected int ingresoPorHora() { return 1000; }         // el formato viejo
+
++class ServidorConIngresos extends Servidor {
++    private final int ingresos;
++    ...
++    @Override protected int ingresoPorHora() { return ingresos; }
++}`],
+          ["sumar algo al cálculo común (Juegos: + dificultad / 2.0 · Tarjetas: + 200 cada 30 días)", `El mismo molde: ${c("super.metodo() + lo nuevo")}. Ojo con ${c("/ 2.0")} (con punto) para que no sea división entera.`, `
++@Override public double getPuntuacionAjustada() {
++    return super.getPuntuacionAjustada() + dificultad / 2.0;
++}
++@Override public long comision() {
++    return super.comision() + 200L * (getDiasCobertura() / 30);
++}`],
+          ["una solución sin herencia", `La consigna acepta composición u otra solución razonable si no duplica la lógica (por ejemplo, un ${c("if (isAsegurado())")} adentro de ${c("comision()")} en el dominio). Nunca en el colector ni en el main. Elegí una y explicala en ${c("DECISIONES.md")}.`]],
+        pp: ["3.1", "Practicá el polimorfismo"] },
+      { fase: "Cambios", t: "La operación nueva, en el colector", donde: "La clase colector (CarteraCreditos, Cloud, Taller, LiquidadorTarjetas, ServicioJuegos).", req: ["col"],
+        intro: `Casi siempre ya hay un método con ${c("groupingBy")} en esa clase: copiá el patrón y cambiá la clave o lo que se hace con cada grupo.`,
+        receta: [["Conteo por X", "groupingBy(T::getX, Collectors.counting())", "Map<String, Long>"], ["Suma por X", "groupingBy(T::getX, Collectors.summingDouble(T::monto))", "Map<String, Double>"], ["Total general", "stream().mapToDouble(T::monto).sum()", "double"], ["Total de un estado", "filter(t -> t.getEstado().equals(\"ENTREGADA\")).mapToDouble(...).sum()", "double"], ["Promedio", "mapToDouble(T::monto).average().orElse(0)", "double"]],
+        ad: { a: "Antes · Fintech", antes: `
+ public class CarteraCreditos {
+     ...
+ {1}    public Map<String, Double> maximaTasaInteresPorTipo() { ... }
+ }`, despues: `
+ public class CarteraCreditos {
+     ...
+ {1}    public Map<String, Double> maximaTasaInteresPorTipo() { ... }
+
++{2}    public Map<String, Long> cantidadPorNivelMorosidad() {
++{2}        return creditos.stream()
++{2}                .collect(Collectors.groupingBy(
++{3}                        SolicitudCredito::getNivelMorosidad,   // la clave
++{4}                        Collectors.counting()));               // qué hacer con cada grupo
++{2}    }
+ }`,
+          cambios: [
+            ["El molde que ya está (no se toca)", "El método que ya agrupa te muestra cómo se escribe en ese proyecto.", true],
+            ["Método nuevo en el colector", "Devuelve un `Map<String, Long>`. Con la cartera vacía da un mapa vacío: justo lo que piden."],
+            ["La clave", "Por qué se agrupa: el getter del atributo nuevo."],
+            ["Qué hacer con cada grupo", "`counting()` cuenta; `summingDouble(...)` suma."]] },
+        cajas: [["dato", "Colección vacía", `${c("groupingBy")} devuelve un mapa vacío y ${c("sum()")} devuelve 0. Es justo lo que piden ("resultado vacío o conteos cero").`]],
+        alts: [
+          ["contar por un dato que el objeto no guarda (Cloud Center: conteo por estado)", `El ${c("Servidor")} del preenunciado no guardaba el estado. Agregá el atributo y el getter (con el constructor viejo delegando) y recién ahí agrupá. Son dos archivos: el dominio y el colector.`, `
++public Map<String, Long> conteoPorEstado() {
++    return servidores.stream().collect(Collectors.groupingBy(Servidor::getEstado, Collectors.counting()));
++}`],
+          ["una clave que no es un campo (Tarjetas: SIN_SEGURO / ASEGURADO)", "La clave se calcula con una lambda. \"No se pide agrupar por plazo\": leé bien qué clave quieren.", `
++groupingBy(c -> c.isAsegurado() ? "ASEGURADO" : "SIN_SEGURO", Collectors.counting())`],
+          ["\"por tipo\" cuando el tipo es la clase (Juegos: Normal / Cooperativo)", `Un ${c("getTipo()")} en el padre que la subclase redefine, y se agrupa por eso. Sin ${c("instanceof")}.`, `
++public String getTipo() { return "NORMAL"; }                  // en Juego
++@Override public String getTipo() { return "COOPERATIVO"; }   // en JuegoCooperativo
++groupingBy(Juego::getTipo, Collectors.counting())`],
+          ["un total de un estado y un agrupamiento (Taller: ENTREGADA y por dispositivo)", "Leé bien el campo: \"dispositivo\" y \"marca\" son columnas distintas.", `
++reparaciones.stream().filter(r -> r.getEstado().equals("ENTREGADA")).mapToDouble(Reparacion::importe).sum();
++reparaciones.stream().collect(Collectors.groupingBy(Reparacion::[[getDispositivo]], Collectors.counting()));`]],
+        pp: ["4.1", "Practicá el colector"] },
+      { fase: "Cambios", t: "El main: el CSV del parcial y solo delegar", donde: "App / Main.", req: ["main"],
+        intro: `Cambiá la ruta por defecto (y seguí aceptando un argumento) e imprimí el resumen, el conteo nuevo y los totales <b>llamando métodos</b>. Si en el main aparece un ${c("for")}, un ${c("stream")} o una cuenta, eso va en otra clase.`,
+        ad: { a: "Antes · Fintech", antes: `
+-{1}Path archivo = Path.of(args.length == 0 ? "datos/datos.csv" : args[0]);
+ ResultadoProceso resultado = new ParserSolicitudes().procesar(archivo);
+ CarteraCreditos cartera = new CarteraCreditos(resultado.getCreditos());
+ System.out.println(resultado.informe());
+ System.out.println(cartera.informe());
+-{2}int normal = 0, enMora = 0;
+-{2}for (SolicitudCredito s : resultado.getCreditos()) { ... }   // cuenta en el main`, despues: `
++{1}Path archivo = Path.of(args.length == 0 ? [["datos/datos-parcial.csv"]] : args[0]);
+ ResultadoProceso resultado = new ParserSolicitudes().procesar(archivo);
+ CarteraCreditos cartera = new CarteraCreditos(resultado.getCreditos());
+ System.out.println(resultado.informe());
+ System.out.println(cartera.informe());
++{2}Map<String, Long> porMorosidad = cartera.cantidadPorNivelMorosidad();   // delega
++{3}System.out.println("NORMAL: %d | EN_MORA: %d".formatted(
++{3}        porMorosidad.getOrDefault("NORMAL", 0L),     // 0 si no aparece
++{3}        porMorosidad.getOrDefault("EN_MORA", 0L)));`,
+          cambios: [
+            ["El CSV del parcial por defecto", "Sin argumentos usa `datos/datos-parcial.csv`; con un argumento, esa ruta (así el profe corre los dos CSV)."],
+            ["Delega la cuenta", "El `for` que contaba se va: el conteo lo hace el colector y el main solo lo pide."],
+            ["Cada valor, aunque dé 0", "`getOrDefault(..., 0L)`: si un nivel no aparece, se imprime 0 en vez de `null`."]] },
+        alts: [
+          ["mostrar cantidades de algunos valores (Cloud Center: ALERTA / CRITICO)", `Lo mismo con ${c("getOrDefault")}: es presentación, está bien en el main.`],
+          ["algo que el dominio no tiene (\"totales por zona\" en Fintech)", `La consigna venía de otro parcial. Mostrá lo más parecido que tenga el dominio (en Fintech, la tasa promedio y la máxima por tipo) y aclaralo en ${c("DECISIONES.md")}.`],
+          ["un \"panorama\" o resumen completo (Juegos)", `Un método en el servicio que arma el texto (${c("panorama()")}) y el main solo lo imprime.`]],
+        pp: ["5.1", "Practicá el main"] },
+      { fase: "Probar y entregar · 30 a 45 min", t: "Pruebas y entrega", donde: "La terminal y la carpeta del proyecto.", req: ["tests", "zip"],
+        sub: [`${c("mvn test")}: todo en verde.`,
+          "Corré el main con el CSV del parcial y revisá que la suma de los contadores dé el total de leídas.",
+          "Corré también el CSV viejo: tiene que dar exactamente los números del preenunciado.",
+          `Si un test nuevo contradice la consigna, seguí la consigna y anotalo en ${c("DECISIONES.md")}.`,
+          `Escribí ${c("DECISIONES.md")} (3 a 5 líneas) y armá el ZIP <b>sin</b> ${c("target/")}, ${c(".git/")} ni archivos del IDE.`],
+        profe: true,
+        term: { t: "Terminal (PowerShell)", cod: `
+ mvn test
+ java -cp target/classes ar.edu.backend.App datos/datos-parcial.csv
+ Compress-Archive -Path pom.xml, src, datos, DECISIONES.md -DestinationPath entrega.zip` },
+        md: { t: "DECISIONES.md de ejemplo (Fintech)", cod: `
+ - Un solo parser: la cabecera define el ancho esperado (5 o 6); cada fila se compara contra ese ancho.
+ - La morosidad se valida en SolicitudCredito.desdeCampos: RECHAZADO exige EN_MORA; EN_MORA pide
+   ingresos > 25000 y deudas <= 12 %. El formato de 5 columnas usa NORMAL por defecto.
+ - Se conserva el constructor de 4 parámetros (delega con this) para no romper los tests existentes.
+ - CarteraCreditos.cantidadPorNivelMorosidad() cuenta con groupingBy; el main solo delega.
+ - "Totales por zona" no aplica a este dominio: se muestran tasa promedio y máxima por tipo de cliente.` } }
     ];
     let hechos = [];
     try { hechos = JSON.parse(leerLocal(CLAVE)) || []; } catch(e){ hechos = []; }
-    const seg = (w, c, t) => { const [nom, n] = [t.slice(0, t.lastIndexOf(" ")), t.slice(t.lastIndexOf(" ") + 1)]; return `<div style="flex:${w};background:${c}" title="${t}"><span class="pp-nom">${nom}&nbsp;</span>${n}</div>`; };
-    const ley = xs => `<div class="pp-ley">${xs.map(([c, t]) => `<span><i style="background:${c}"></i>${t}</span>`).join("")}</div>`;
+    if(!Array.isArray(hechos)) hechos = [];
+    const seg = (w, col, t) => { const [nom, n] = [t.slice(0, t.lastIndexOf(" ")), t.slice(t.lastIndexOf(" ") + 1)]; return `<div style="flex:${w};background:${col}" title="${t} min"><span class="pp-nom">${nom}&nbsp;</span>${n}</div>`; };
+    const bloque = (cod, t, tipo) => `<div class="pa-cod ${tipo}"><div class="pa-cab">${t}</div>${codigoPasos(cod, tipo)}</div>`;
+    const ad = x => `
+      <div class="pa-bloque">
+        <div class="pa-ad">
+          <div class="pa-cod antes"><div class="pa-cab"><span class="pa-pt menos"></span>${esc(x.a)}</div>${codigoPasos(x.antes)}</div>
+          <div class="pa-cod despues"><div class="pa-cab"><span class="pa-pt mas"></span>Después · lo nuevo, marcado</div>${codigoPasos(x.despues)}</div>
+        </div>
+        <ol class="pa-cambios">${x.cambios.map(([t, d, igual], i) => `
+          <li data-c="${i + 1}"${igual ? ` class="igual"` : ""} tabindex="0"><b class="pa-num">${i + 1}</b><div><b>${mdLinea(t)}</b><span>${mdLinea(d)}</span></div></li>`).join("")}</ol>
+      </div>`;
+    const caja = ([tipo, t, d]) => `<div class="pa-caja ${tipo}"><b>${t}:</b> ${d}</div>`;
     el.innerHTML = `
-      <div class="pp">
+      <div class="pp pa">
         <div class="pp-top">
           <div class="pp-card">
-            <div class="pp-t">Cómo se reparten los 31 puntos</div>
-            <div class="pp-barra">${seg(15, "#2d8992", "Código 15")}${seg(5, "#7d62b3", "Desarrollo 5")}${seg(6, "#4e72b8", "Proyecto 6")}${seg(5, "#6f6c64", "Teoría 5")}</div>
-            ${ley([["#2d8992", "Código: el ZIP"], ["#7d62b3", "Desarrollo: 1 pregunta"], ["#4e72b8", "Proyecto: 3 de 2 puntos"], ["#6f6c64", "Teoría: 5 de 1 punto"]])}
-            <p class="pp-sub">Casi la mitad es el código: asegurá eso primero.</p>
-            <div class="pp-t" style="margin-top:16px">Los 45 minutos del código</div>
+            <div class="pp-t">Lo que pide siempre la consigna</div>
+            <ol class="pa-puntos">
+              <li><b>Leer los dos formatos</b> del CSV (el viejo y el nuevo) sin duplicar la carga.</li>
+              <li><b>La regla nueva</b> que trae la columna: una validación distinta, un cálculo distinto, o las dos.</li>
+              <li><b>Una operación nueva en el colector</b>: un conteo, un total o un agrupamiento.</li>
+              <li><b>El main</b> usa el CSV del parcial por defecto y muestra todo, delegando.</li>
+              <li><b>La entrega</b>: tests viejos y nuevos en verde, ${c("DECISIONES.md")} y un ZIP.</li>
+            </ol>
+            <div class="pp-t" style="margin-top:16px">Los 45 minutos</div>
             <div class="pp-barra">${seg(5, "#b5603f", "Leer 5")}${seg(25, "#2d8992", "Cambios 25")}${seg(10, "#3f7a55", "Probar 10")}${seg(5, "#6f6c64", "ZIP 5")}</div>
-            ${ley([["#b5603f", "Leer"], ["#2d8992", "Cambios"], ["#3f7a55", "Probar"], ["#6f6c64", "ZIP"]])}
-            <p class="pp-sub">En minutos, como sugiere el enunciado.</p>
           </div>
           <div class="pp-card">
-            <div class="pp-t">Cómo corrige el profe el código</div>
-            <ol class="pp-cmds">
-              <li><span><code>mvn clean</code><small>El proyecto se limpia (pom.xml bien).</small></span></li>
-              <li><span><code>mvn compile</code><small>El código principal compila.</small></span></li>
-              <li><span><code>mvn test</code><small>Compilan y pasan los tests viejos y los nuevos. Si no compilan, no corre ninguno.</small></span></li>
-              <li><span><code>java … App datos/datos.csv</code><small>El CSV viejo da lo mismo que antes.</small></span></li>
-              <li><span><code>java … App datos/datos_parcial.csv</code><small>El CSV nuevo carga objetos y se ve todo lo pedido.</small></span></li>
-            </ol>
-            <p class="pp-sub">Después revisa cada punto del enunciado: <b>Cumple</b>, <b>Parcial</b> o <b>No cumple</b>.</p>
+            <div class="pp-t">Dónde se trabaja</div>
+            <table class="pa-tabla">
+              <tr><th>Rol</th><th>Cómo se llama</th><th>Qué tocás</th></tr>
+              <tr><td><b>Parser</b></td><td>ParserSolicitudes, ParserServidores…</td><td>Las cabeceras, el ancho esperado y el único loop de lectura</td></tr>
+              <tr><td><b>Dominio</b></td><td>SolicitudCredito, Servidor, Reparacion, Consumo, JuegoMesa</td><td>${c("desdeCampos")}, constructor, atributo nuevo, validaciones, cálculo; subclase si cambia un cálculo</td></tr>
+              <tr><td><b>Resultado</b></td><td>ResultadoProceso, ResultadoParseo</td><td>Casi nunca se toca</td></tr>
+              <tr><td><b>Colector</b></td><td>CarteraCreditos, Cloud, Taller, LiquidadorTarjetas, ServicioJuegos</td><td>La operación nueva</td></tr>
+              <tr><td><b>Main</b></td><td>App, Main</td><td>La ruta por defecto y lo que se imprime</td></tr>
+            </table>
           </div>
         </div>
         <div class="pp-prog">
           <div class="pp-prog-n"><b id="ppN">0</b> de ${PASOS.length} pasos</div>
           <div class="pp-pbar"><span id="ppBar"></span></div>
           <button class="pp-reset" data-pp-reset>Reiniciar</button>
-          <div class="pp-reqs">${Object.entries(REQ).map(([k, t]) => `<span class="pp-req" data-req="${k}">${t}</span>`).join("")}</div>
         </div>
         <ol class="pp-pasos">${PASOS.map((p, i) => `
           <li class="pp-paso" data-k="${i}">
-            <button class="pp-chk" data-pp-chk="${i}" aria-label="Marcar el paso ${i + 1} como hecho"><span>${i + 1}</span></button>
+            <button class="pp-chk" data-pp-chk="${i}" aria-label="Marcar el paso ${i} como hecho"><span>${i}</span></button>
             <div class="pp-cuerpo">
-              <span class="pp-min">${p.min}</span>
+              <span class="pp-min">${p.fase}</span>
               <h3>${p.t}</h3>
-              <ul class="pp-hacer">${p.hacer.map(h => `<li>${h}</li>`).join("")}</ul>
-              ${p.flujo ? `<div class="pp-flujo">${flujo.map(f => `<span>${f}</span>`).join("<i>→</i>")}</div>` : ""}
-              ${p.plantilla ? `<div class="pp-plant"><b>Plantilla para el desarrollo</b>${p.plantilla}</div>` : ""}
-              ${p.cod ? `<details class="pp-cod"${p.abierto ? " open" : ""}><summary>${p.abierto ? "Los comandos" : "Ver el código (3K1)"}</summary>${bloqueCodigo(p.cod)}</details>` : ""}
-              ${p.comp ? `<div class="pp-comp"><b>Comprobá</b> ${p.comp}</div>` : ""}
+              <div class="pa-donde"><span>Dónde</span><div>${p.donde}</div></div>
+              ${p.intro ? `<p class="pa-p">${p.intro}</p>` : ""}
+              ${p.sub ? `<ol class="pa-sub">${p.sub.map(x => `<li>${x}</li>`).join("")}</ol>` : ""}
+              ${p.receta ? `<table class="pa-tabla receta"><tr><th>Te piden…</th><th>Receta</th><th>Devuelve</th></tr>${p.receta.map(([a, b, d]) => `<tr><td>${a}</td><td>${c(b)}</td><td>${c(d)}</td></tr>`).join("")}</table>` : ""}
+              ${p.ad ? ad(p.ad) : ""}
+              ${p.nota ? `<p class="pa-p">${p.nota}</p>` : ""}
+              ${p.orden ? `<p class="pa-orden">${p.orden}</p>` : ""}
+              ${p.profe ? `<div class="pa-profe"><div class="pp-t">Lo que corre el profe para corregir</div><ol class="pp-cmds">
+                <li><span><code>mvn clean</code><small>El proyecto se limpia (pom.xml bien).</small></span></li>
+                <li><span><code>mvn compile</code><small>El código principal compila.</small></span></li>
+                <li><span><code>mvn test</code><small>Compilan y pasan los tests viejos y los nuevos. Si no compilan, no corre ninguno.</small></span></li>
+                <li><span><code>java … App datos/datos.csv</code><small>El CSV viejo da lo mismo que antes.</small></span></li>
+                <li><span><code>java … App datos/datos-parcial.csv</code><small>El CSV nuevo carga objetos y se ve todo lo pedido.</small></span></li>
+              </ol></div>` : ""}
+              ${p.term ? bloque(p.term.cod, p.term.t, "term") : ""}
+              ${p.md ? bloque(p.md.cod, p.md.t, "md") : ""}
+              ${(p.cajas || []).map(caja).join("")}
+              ${p.alts ? `<div class="pa-alts">${p.alts.map(([pide, d, cod]) => `
+                <details class="pa-alt"><summary><span class="pa-si">Si te piden</span><span>${pide}</span></summary>
+                  <div class="pa-alt-c"><p>${d}</p>${cod ? `<div class="pa-cod">${codigoPasos(cod)}</div>` : ""}</div></details>`).join("")}</div>` : ""}
+              ${p.ok ? `<div class="pa-caja ok"><b>Cómo verificar:</b> ${p.ok}</div>` : ""}
               ${p.req ? `<div class="pp-asegura"><span>Asegura</span>${p.req.map(r => `<em>${REQ[r]}</em>`).join("")}</div>` : ""}
-              ${p.ir ? `<div class="pp-ir">${p.ir.map(([go, t]) => `<span class="pill" data-go="${go}">${t} →</span>`).join("")}</div>` : ""}
+              ${p.pp ? `<div class="pp-ir"><span class="pill" data-go="m201/p1/pp/${p.pp[0]}">${p.pp[1]} →</span></div>` : ""}
             </div>
           </li>`).join("")}
         </ol>
-        <div class="pp-card pp-ojo">
-          <div class="pp-t">Lo que más puntos hace perder</div>
-          <div class="pp-errs">${ERRORES.map(([t, d]) => `<div><b>${t}</b><span>${d}</span></div>`).join("")}</div>
+        <div class="pp-card pa-fin">
+          <div class="pp-t">Antes de entregar, de un vistazo</div>
+          <p class="pp-sub">Se ponen en verde a medida que marcás los pasos.</p>
+          <div class="pp-reqs">${Object.entries(REQ).map(([k, t]) => `<span class="pp-req" data-req="${k}">${t}</span>`).join("")}</div>
         </div>
       </div>`;
     const pintar = () => {
@@ -7188,6 +7538,21 @@ Compress-Archive -Path pom.xml, src, datos, DECISIONES.md -DestinationPath parci
         r.classList.toggle("ok", de.length > 0 && de.every(i => hechos.includes(i)));
       });
     };
+    // Resaltar un cambio: en el antes, lo que se toca; en el después, lo que queda. Con el mouse o tocándolo (queda fijo)
+    const marcar = (bl, ids) => {
+      bl.classList.toggle("activo", ids.length > 0);
+      bl.querySelectorAll("[data-c]").forEach(x => x.classList.toggle("on", x.dataset.c.split(" ").some(id => ids.includes(id))));
+    };
+    const idsDe = x => x ? x.dataset.c.split(" ") : [];
+    el.addEventListener("mouseover", e => {
+      const bl = e.target.closest(".pa-bloque");
+      if(!bl || bl.dataset.fijo) return;
+      marcar(bl, idsDe(e.target.closest("[data-c]")));
+    });
+    el.addEventListener("mouseout", e => {
+      const bl = e.target.closest(".pa-bloque");
+      if(bl && !bl.dataset.fijo && !bl.contains(e.relatedTarget)) marcar(bl, []);
+    });
     el.addEventListener("click", e => {
       const b = e.target.closest("[data-pp-chk]");
       if(b){
@@ -7195,14 +7560,29 @@ Compress-Archive -Path pom.xml, src, datos, DECISIONES.md -DestinationPath parci
         hechos = hechos.includes(k) ? hechos.filter(x => x !== k) : [...hechos, k].sort((x, y) => x - y);
         guardarLocal(CLAVE, JSON.stringify(hechos)); pintar(); return;
       }
-      if(e.target.closest("[data-pp-reset]")){ hechos = []; guardarLocal(CLAVE, null); pintar(); }
+      if(e.target.closest("[data-pp-reset]")){ hechos = []; guardarLocal(CLAVE, null); pintar(); return; }
+      const ca = e.target.closest(".pa-bloque [data-c]");
+      if(ca){
+        const bl = ca.closest(".pa-bloque"), ids = idsDe(ca);
+        const igual = bl.dataset.fijo === ids.join(" ");
+        if(igual) delete bl.dataset.fijo; else bl.dataset.fijo = ids.join(" ");
+        marcar(bl, igual ? [] : ids);
+      }
     });
+    el.addEventListener("keydown", e => { if((e.key === "Enter" || e.key === " ") && e.target.matches(".pa-cambios li")){ e.preventDefault(); e.target.click(); } });
     pintar();
   }
 };
 
 function viewHerramienta(m, p, id){
   const h = HERRAMIENTAS[id];
+  // Las del parcial (herramientasParcial) vuelven a Parciales
+  const kp = (p.herramientasParcial || []).includes(id) && seccionesDe(p).find(k => esSeccionParcial(p, k));
+  if(kp) return `
+    <div class="crumbs"><span data-go="m${m.n}/${p.id}/${kp}/material">‹ ${esc(nombreSec(p, kp))}</span></div>
+    <h1>${esc(h.titulo)}</h1>
+    <p class="lead">${h.desc}</p>
+    <div id="herr" class="herr"></div>`;
   if(p.practicaTemas){
     const temas = p.practicaTemas.filter(t => (t.herramientas || []).includes(id));
     const ejs = p.practica.filter(x => temas.some(t => t.id === x.tema));
