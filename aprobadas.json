@@ -146,6 +146,13 @@
         "tipo": "TP",
         "nombre": "TPI - 2° op - Oral"
       }
+    ],
+    "2026-11-24": [
+      {
+        "k": "206",
+        "tipo": "Recuperatorio",
+        "nombre": "Recuperatorio"
+      }
     ]
   },
   "notasCursada": {
