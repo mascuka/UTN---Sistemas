@@ -143,6 +143,19 @@ El JSON: `partes: [{ n, titulo, pestana, explicacion, guia?, ejercicios }]`, y c
 
 Después de cambiar algo, desde la raíz: `python3 herramientas/parcial-por-partes/validar.py` (necesita el JDK 21). Revisa que la solución de cada ejercicio pase todos sus checks y el código inicial no; que los de `proyecto` compilen sobre el proyecto real (sacado del ZIP del preenunciado) y pasen su prueba (`herramientas/parcial-por-partes/pruebas/<id>/Prueba.java`, con los archivos de otras partes que da por hechos en `base/`); y que las respuestas de las clasificaciones sean las que da la solución del parcial con esas filas.
 
+## Cuestionarios de Backend
+Los PDF de `material/backend-de-aplicaciones/cuestionarios/` no son las capturas del campus: se arman con `herramientas/cuestionarios-back/` y copian el estilo de la revisión del intento. Arriba de cada pregunta va la cabecera gris (número, estado y puntaje) y después el recuadro azul con las opciones: la tilde verde en lo bien marcado, la cruz roja en lo mal marcado y «faltaba» en lo que había que marcar. Abajo, el recuadro beige con la respuesta correcta, el «Por qué», la «Corrección» si estaba mal y un «Ojo» cuando la clave del campus es discutible. Cada cuestionario tiene primero el intento 2026 y después las preguntas de 2023 y 2025 que no se repiten, ubicadas por tema. Por ejemplo, el JDBC del 05 de 2023 va al 06 y el Spring Data del 07 de 2023 va al 08. Las preguntas repetidas y las que tenían la clave del campus equivocada o dudosa no se agregaron.
+
+Los datos están en `herramientas/cuestionarios-back/preguntas.json`. Hay una entrada por cuestionario (`n`, `archivo`, `titulo`, `intento: {anio, nota}`) y cada pregunta lleva estos campos:
+- `origen`: el año;
+- `en`, `codigo`, `varias`, `vf` y `op`;
+- `marcadas` y `ok` (índices de las opciones);
+- `puntos: [obtenido, máximo]` y `estado`;
+- `ex`, y opcionales `corr` y `ojo`.
+
+Para sumar o corregir una, se edita el JSON y se corre, desde la raíz:
+`python3 herramientas/cuestionarios-back/generar.py --fuente CARPETA` y después `python3 herramientas/miniaturas.py`. `CARPETA` tiene los `open-sans-latin-{400,600,700}-normal.woff2` del paquete de npm `@fontsource/open-sans`; sin `--fuente`, usa DejaVu Sans. El script necesita el Chromium de Playwright (o la variable `CHROMIUM`) y pymupdf, y deja los PDF sin metadatos. Con `--solo 01,05` arma solo esos.
+
 ## Modo oscuro y carga suave
 El botón de la luna/sol de la barra lateral (en el celular, el de arriba) elige claro u oscuro y lo guarda (`isi-tema`); si nunca se tocó, sigue al sistema. Funciona prendiendo o apagando las reglas `@media (prefers-color-scheme: dark)` de la hoja de estilos (un script chico en el `<head>`, para que no parpadee al abrir), así que los colores oscuros se siguen escribiendo dentro de esos `@media`.
 Al cambiar de página el contenido aparece con un fundido corto; mientras cargan, las tapas de los PDF, las miniaturas de los videos, el reproductor y las hojas del visor muestran su forma con un brillo que pasa. Con "reducir movimiento" del sistema no hay animaciones.

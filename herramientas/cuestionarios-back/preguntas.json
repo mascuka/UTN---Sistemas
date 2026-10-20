@@ -1,0 +1,6170 @@
+{
+ "cuestionarios": [
+  {
+   "n": "01",
+   "archivo": "cuestionario-01-introduccion.pdf",
+   "titulo": "Introducción al backend",
+   "intento": {
+    "anio": 2026,
+    "nota": "12,10/15,00"
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "Cuales son los desafios del desarrollo de backend?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Seguridad.",
+      "Todas son correctas.",
+      "Experiencia de usuario.",
+      "Escalabilidad.",
+      "Rendimiento e Integracion con sistemas externos.",
+      "Manejo de la logica de negocio."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      0,
+      3,
+      4,
+      5
+     ],
+     "puntos": [
+      0,
+      1
+     ],
+     "estado": "Incorrecta",
+     "ex": "El apunte 01 nombra cinco desafíos: el manejo de la lógica de negocio, la escalabilidad, la seguridad, el rendimiento y la integración con sistemas externos. La experiencia de usuario es cosa del frontend.",
+     "corr": "Marcaste «Todas son correctas», pero la c (experiencia de usuario) no es un desafío del backend. Eran a, d, e y f."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué responsabilidad principal tiene la subcapa de servicio en una aplicación backend modular?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Ejecutar las validaciones de formularios del frontend.",
+      "Gestionar las configuraciones del servidor web.",
+      "Implementar la lógica de negocio asociada a la funcionalidad.",
+      "Generar las vistas HTML enviadas al cliente."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En un backend modular el controlador recibe la petición, el servicio tiene la lógica de negocio y el repositorio habla con la base."
+    },
+    {
+     "origen": "2026",
+     "en": "Defina la capa Cliente",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es el entorno de ejecucion de la interfaz de usuario.",
+      "Es donde se motorizan las reglas del negocio de la aplicacion a desarrollar.",
+      "Es donde desarrollaremos la presentacion de la informacion al usuario.",
+      "Es todo dispositivo que se conecta a nuestro aplicativo unicamente desde un browser."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      0,
+      1
+     ],
+     "estado": "Incorrecta",
+     "ex": "Apunte 01: «llamamos cliente al entorno de ejecución de la interfaz de usuario» (el navegador o la app). La c define al frontend y la b, al backend.",
+     "corr": "La b es la definición del backend, no del cliente."
+    },
+    {
+     "origen": "2026",
+     "en": "La interacción entre microservicios se realiza principalmente a través de llamadas a los endpoints expuestos por cada servicio. Como puede ser dicha interaccion?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Memoria Compartida.",
+      "Ninguna de las anteriores.",
+      "Asincronica.",
+      "Sincronica."
+     ],
+     "marcadas": [
+      2,
+      3
+     ],
+     "ok": [
+      2,
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Sincrónica: un servicio pide y espera la respuesta (REST/HTTP). Asincrónica: manda un mensaje o un evento y sigue (colas de mensajes)."
+    },
+    {
+     "origen": "2026",
+     "en": "En que se diferencian la Arquitectura basada en Servicios (SOA) y la Arquitectura de Microservicios?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Todas son correctas.",
+      "Escalabilidad y despliegue independiente de los servicios.",
+      "Ninguna es correcta",
+      "La SOA es un enfoque de arquitectura para toda la empresa mientras que los microservicios son una estrategia de implementacion",
+      "Se implementa mediante un enfoque monolitico y los servicios se vuelven mecanismos de interoperabilidad con otros sistemas"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3,
+      4
+     ],
+     "puntos": [
+      0.1,
+      1
+     ],
+     "estado": "Parcialmente correcta",
+     "ex": "El apunte dice que SOA, en la mayoría de los casos, se implementa con un enfoque monolítico y los servicios quedan como mecanismos de interoperabilidad con otros sistemas. La b es una ventaja de los microservicios, no la diferencia.",
+     "corr": "Marcaste solo la d y el campus dio 0,10: la mayor parte del puntaje estaba en la e, que sale textual del apunte."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Por qué es importante el uso de versionamiento en las APIs REST?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Permite reducir el número de endpoints en producción.",
+      "Permite mantener compatibilidad con clientes existentes ante cambios.",
+      "Permite ocultar la lógica de negocio del cliente final.",
+      "Permite reemplazar automáticamente los microservicios obsoletos."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Versionar (/api/v1, /api/v2) deja que los clientes que ya existen sigan andando mientras sale una versión nueva."
+    },
+    {
+     "origen": "2026",
+     "en": "A que nos referimos cuando hablamos de \"Rendimiento\" en el desarrollo backend?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es la capacidad del backend para responder rapidamente a las solicitudes de los usuarios y proporcionar una experiencia fluida y agil.",
+      "Implica la implementacion y gestion de la logica de negocio de una aplicacion.",
+      "Nos referimos a que nuestro backend debe de poder integrarse con sistemas externos como servicios web o APIs."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Rendimiento = responder rápido. La b es el manejo de la lógica de negocio y la c, la integración con sistemas externos."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué ventaja aporta la arquitectura hexagonal respecto a una arquitectura en capas tradicional?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Permite escribir menos código en el backend.",
+      "Fusiona todos los componentes en una única interfaz.",
+      "Se enfoca únicamente en la persistencia de datos.",
+      "Separa el dominio de la aplicación de las dependencias externas."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En la hexagonal (puertos y adaptadores) el dominio queda en el centro, y la base o los servicios externos se enchufan por interfaces. Se prueba y se cambia sin tocar el núcleo."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de las siguientes es una buena práctica para definir endpoints en una API REST?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Versionar la API dentro del path (ej. /api/v1/resource)",
+      "Usar verbos en mayúsculas en las rutas (ej. /GetUsers)",
+      "Incluir lógica de negocio compleja en la definición del endpoint",
+      "Usar parámetros GET para operaciones de escritura"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Rutas con sustantivos en minúscula (/clientes), el verbo lo pone HTTP y la versión va en el path. GET nunca se usa para escribir."
+    },
+    {
+     "origen": "2026",
+     "en": "Cuales son ventajas de la arquitectua de microservicios?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Despliegue dependiente de los servicios.",
+      "Ninguna de las anteriores.",
+      "Facil de desarrollar.",
+      "Escalabilidad.",
+      "Evolucion de componentes por separado."
+     ],
+     "marcadas": [
+      3,
+      4
+     ],
+     "ok": [
+      3,
+      4
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Apunte 01: los microservicios dan escalabilidad y despliegue independiente, y permiten evolucionar los componentes por separado. Son más difíciles de desarrollar, no más fáciles."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de las siguientes afirmaciones describe mejor el propósito de un API Gateway en una arquitectura de microservicios?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Exponer directamente todas las bases de datos a los clientes.",
+      "Reemplazar los microservicios por una única aplicación monolítica.",
+      "Reducir la cantidad de servicios externos necesarios en la aplicación.",
+      "Centralizar el ruteo, seguridad y filtrado de solicitudes hacia los servicios."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El API Gateway es la puerta de entrada única: manda cada pedido al microservicio que corresponde y centraliza seguridad y filtros."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué característica distingue al backend de una aplicación moderna?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Está enfocado exclusivamente en la interfaz gráfica.",
+      "No interactúa con bases de datos ni servicios externos.",
+      "Solo responde a eventos disparados por el frontend.",
+      "Gestiona la lógica de negocio y garantiza seguridad y rendimiento."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El backend hace cumplir las reglas del negocio, asegura la aplicación y optimiza procesos."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué ventaja ofrece la arquitectura de microservicios frente a una arquitectura monolítica?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Independencia en el despliegue y escalabilidad de componentes.",
+      "Mayor facilidad para el desarrollo de interfaces gráficas.",
+      "Menor cantidad de código al eliminar capas innecesarias.",
+      "Reducción de la necesidad de pruebas automatizadas."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Cada microservicio se despliega y escala por su cuenta. En un monolito, para cambiar algo hay que volver a desplegar todo."
+    },
+    {
+     "origen": "2026",
+     "en": "Defina la capa Backend",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Es donde desarrollaremos la presentacion de la informacion al usuario.",
+      "Es donde se hacen cumplir las reglas que debemos validar sobre las entidades del sistema.",
+      "Es donde involucramos las tecnicas de control de acceso y se optimizan procesos.",
+      "Es donde se motorizan las reglas del negocio de la aplicacion a desarrollar."
+     ],
+     "marcadas": [
+      1,
+      2,
+      3
+     ],
+     "ok": [
+      1,
+      2,
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Las tres salen de la definición del apunte: el backend motoriza las reglas del negocio, las hace cumplir sobre las entidades y suma control de acceso y optimización. La a es el frontend."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es una de las principales motivaciones para usar endpoints bien definidos en el diseño de microservicios?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Evitar la autenticación entre servicios.",
+      "Minimizar el uso de protocolos estándar.",
+      "Reducir el número de servicios en la aplicación.",
+      "Permitir una comunicación desacoplada y predecible."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con endpoints claros, cada servicio sabe qué pedir y qué va a recibir sin conocer cómo está hecho el otro."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es Hibernate en el contexto del desarrollo backend?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un servidor de aplicaciones Java.",
+      "Un patrón de diseño para el desarrollo de aplicaciones distribuidas.",
+      "Un framework de mapeo objeto-relacional que permite interactuar con una base de datos relacional utilizando objetos Java.",
+      "Una librería para la creación de interfaces gráficas."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Hibernate es la implementación de JPA más usada: un ORM que mapea clases Java a tablas."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre la inyección de dependencias en Spring Framework es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La inyección de dependencias es un patrón de diseño que no se aplica en Spring.",
+      "La inyección de dependencias no se utiliza en el desarrollo de aplicaciones Java.",
+      "La inyección de dependencias permite reducir el acoplamiento entre componentes y facilita la prueba unitaria.",
+      "La inyección de dependencias solo se utiliza en aplicaciones frontend."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Con inyección de dependencias el objeto recibe lo que necesita en lugar de crearlo: menos acoplamiento y se puede reemplazar por un mock al probar."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es el patrón de diseño Proxy?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un patrón de diseño que actúa como intermediario para controlar el acceso a un objeto.",
+      "Un patrón de diseño que permite representar una interfaz en Java.",
+      "Un servidor web para aplicaciones Java.",
+      "Un lenguaje de programación."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Proxy: un objeto que se pone delante de otro y controla el acceso (carga diferida, seguridad)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre el patrón de diseño Facade es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El patrón Facade es un servidor web para aplicaciones Java.",
+      "El patrón Facade solo se utiliza en aplicaciones frontend.",
+      "El patrón Facade no se utiliza en el desarrollo de aplicaciones Java.",
+      "El patrón Facade se utiliza para proporcionar una interfaz unificada para un conjunto de interfaces de un subsistema."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Facade: una interfaz simple que tapa un subsistema complejo."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre la arquitectura en capas es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La arquitectura en capas facilita la comunicación directa entre todas las capas.",
+      "La arquitectura en capas organiza los componentes de una aplicación en diferentes capas, como la capa de presentación, la  capa de aplicación y la capa de datos.",
+      "La arquitectura en capas no permite la reutilización de componentes en diferentes aplicaciones.",
+      "La arquitectura en capas no tiene ventajas en el desarrollo de aplicaciones."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Capas típicas: presentación, aplicación (negocio) y datos. Cada capa habla con la de al lado."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué se entiende por seguridad en backend?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La implementación de medidas y prácticas para proteger la aplicación de posibles vulnerabilidades y ataques maliciosos.",
+      "La seguridad no es un aspecto importante en el desarrollo de aplicaciones.",
+      "La seguridad solo se aplica en el frontend de una aplicación.",
+      "La seguridad solo es necesaria en aplicaciones monolíticas."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Seguridad = medidas para proteger la aplicación de vulnerabilidades y ataques, en cualquier arquitectura."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es el patrón de diseño Composite?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un patrón de diseño que permite componer objetos en estructuras de árbol para representar jerarquías parte-todo.",
+      "Un framework para el desarrollo web en Java.",
+      "Un tipo de base de datos NoSQL.",
+      "Un lenguaje de programación."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Composite arma árboles donde la parte y el todo se tratan igual (carpetas que tienen archivos y otras carpetas)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es una desventaja de utilizar WebSockets?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "No se puede utilizar en aplicaciones distribuidas.",
+      "Requiere soporte específico en el servidor y el cliente.",
+      "No permite la comunicación bidireccional.",
+      "No es útil para aplicaciones en tiempo real."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "WebSockets da comunicación bidireccional en tiempo real, pero el servidor y el cliente tienen que soportarlo."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre el patrón de diseño Decorator es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El patrón Decorator no se utiliza en el desarrollo de aplicaciones Java.",
+      "El patrón Decorator solo se utiliza en aplicaciones frontend.",
+      "El patrón Decorator es un lenguaje de programación.",
+      "El patrón Decorator se utiliza para agregar responsabilidades a objetos de forma dinámica."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Decorator envuelve un objeto para sumarle comportamiento sin tocar su clase."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es Spring Boot?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un servidor web para aplicaciones Java.",
+      "Un lenguaje de programación.",
+      "Un proyecto de Spring que simplifica la configuración y el despliegue de aplicaciones Java.",
+      "Un IDE para el desarrollo de aplicaciones Java."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Spring Boot arma un proyecto Spring listo para correr: autoconfiguración y servidor embebido."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre el patrón de diseño Observer es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El patrón Observer solo se aplica en aplicaciones frontend.",
+      "El patrón Observer no es útil en el desarrollo de microservicios.",
+      "El patrón Observer permite a objetos interesados suscribirse y recibir notificaciones cuando un objeto observado cambia su  estado.",
+      "El patrón Observer solo se utiliza en aplicaciones monolíticas."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Observer: los interesados se suscriben y el objeto observado les avisa cuando cambia."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre el patrón de diseño Gateway es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El patrón Gateway se utiliza para centralizar la lógica de acceso a datos y proporcionar una interfaz unificada para interactuar  con diferentes sistemas de almacenamiento.",
+      "El patrón Gateway solo se utiliza en aplicaciones frontend.",
+      "El patrón Gateway no se utiliza en el desarrollo de aplicaciones Java.",
+      "El patrón Gateway es un IDE para el desarrollo de aplicaciones Java."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Gateway: un punto único que centraliza el acceso y esconde cómo se habla con cada sistema.",
+     "ojo": "El apunte 01 lo describe como el punto de entrada único que centraliza acceso y seguridad para los microservicios. La idea es la misma: todo el acceso pasa por un solo lugar."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre el patrón de diseño DAO (Data Access Object) es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El patrón DAO se utiliza para separar la lógica de negocio de la lógica de acceso a datos.",
+      "El patrón DAO es un lenguaje de programación.",
+      "El patrón DAO no es útil en aplicaciones distribuidas.",
+      "El patrón DAO se utiliza para representar una base de datos relacional en Java."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "DAO encapsula el acceso a datos, así la lógica de negocio no escribe SQL."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre el manejo de excepciones es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El manejo de excepciones solo se aplica en aplicaciones monolíticas.",
+      "El manejo de excepciones solo se aplica en aplicaciones frontend.",
+      "El manejo de excepciones permite capturar y gestionar situaciones inesperadas o errores en la aplicación.",
+      "El manejo de excepciones no es importante en el desarrollo de aplicaciones."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Las excepciones permiten capturar y manejar los errores sin que se caiga la aplicación."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones sobre el patrón de diseño Command es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El patrón Command solo se utiliza en aplicaciones frontend.",
+      "El patrón Command se utiliza para encapsular una solicitud como objeto, permitiendo parametrizar clientes con diferentes  solicitudes.",
+      "El patrón Command es un servidor web para aplicaciones Java.",
+      "El patrón Command no se utiliza en el desarrollo de aplicaciones Java."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Command convierte la solicitud en un objeto: se puede guardar, encolar o deshacer."
+    }
+   ]
+  },
+  {
+   "n": "02",
+   "archivo": "cuestionario-02-java-maven.pdf",
+   "titulo": "Java y Maven",
+   "intento": {
+    "anio": 2026,
+    "nota": "8,50/10,00"
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "¿Cual es el ultimo caracter que se usa para terminar una sentencia de codigo en java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "No se necesita identificar el fin de una sentencia en java",
+      "\".\"",
+      "\":\"",
+      "\";\""
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En Java cada sentencia termina con punto y coma."
+    },
+    {
+     "origen": "2026",
+     "en": "Maven se encarga de...",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Coordinar el ciclo completo de construccion de un proyecto, desde la compilacion y la ejecucion de pruebas hasta la generacion de artefactos binarios.",
+      "Configurar y personalizar las fases de construccion segun las necesidades del proyecto.",
+      "Automatiza las tareas y garantiza que el proceso de construccion sea consistente e impredecible."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0,
+      1
+     ],
+     "puntos": [
+      0.5,
+      1
+     ],
+     "estado": "Parcialmente correcta",
+     "ex": "Apunte 03: Maven coordina el ciclo completo de construcción y permite configurar y personalizar sus fases. La c está mal por una palabra: el proceso es consistente y predecible, no «impredecible».",
+     "corr": "Marcaste solo la a: faltó la b."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Como se dividen los bloques en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Java no divide bloques",
+      "Usando begin-end",
+      "Con corchetes []",
+      "Con llaves {}"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Los bloques (clases, métodos, if, for) van entre llaves { }."
+    },
+    {
+     "origen": "2026",
+     "en": "El lenguaje de Programacion Java tiene un recolector de basura que se encarga de liberar la memoria ocupada por los objetos que no estan siendo utilizados",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Falso",
+      "Verdadero"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El garbage collector libera la memoria de los objetos que ya no tienen referencias."
+    },
+    {
+     "origen": "2026",
+     "en": "Cual es el operador de conjuncion logica",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "||",
+      "!",
+      "&&"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "&& es el Y lógico (conjunción), || es el O (disyunción) y ! es la negación."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Como es la extension del archivo de configuracion por defecto del proyecto construido por Maven?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "pom.xml",
+      "pom.txt",
+      "pom.java",
+      "pom.json"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El POM (Project Object Model) es el pom.xml."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Como es la extension de los archivos de java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Nombre.js",
+      "Nombre.py",
+      "Nombre.Java",
+      "Nombre.java"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "La extensión es .java, en minúscula, y el archivo se llama igual que su clase pública."
+    },
+    {
+     "origen": "2026",
+     "en": "Si quiero crear una nueva clase entidad, ¿en donde la debo crear?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "src/main/java/repository",
+      "src/main/java",
+      "src/main/resources"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El código va en src/main/java (dentro de su paquete). src/main/resources es para archivos de configuración."
+    },
+    {
+     "origen": "2026",
+     "en": "El Lenguaje de Programacion Java es de",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Bajo Nivel (Segunda Generacion)",
+      "Muy alto nivel (Cuarta Generacion)",
+      "Nivel bits",
+      "Alto nivel (Tercera Generacion)"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Java es un lenguaje de alto nivel, de tercera generación."
+    },
+    {
+     "origen": "2026",
+     "en": "Indique cuales son caracteristicas clave de la administracion de dependencias en Maven",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Declaracion Imperativa.",
+      "Repositorios centrales y remotos.",
+      "Declaracion Declarativa.",
+      "Resolucion Automatica.",
+      "Repositorio local.",
+      "Todas son correctas.",
+      "Ninguna es correcta."
+     ],
+     "marcadas": [
+      5
+     ],
+     "ok": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "puntos": [
+      0,
+      1
+     ],
+     "estado": "Incorrecta",
+     "ex": "Apunte 03: declaración declarativa (en el pom.xml), resolución automática (incluye las dependencias transitivas), repositorios centrales y remotos (Maven Central) y repositorio local (.m2).",
+     "corr": "Marcaste «Todas son correctas», pero la a (declaración imperativa) no va. Eran b, c, d y e."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué se mostrará en la consola estándar luego de ejecutar el siguiente segmento de código?",
+     "codigo": [
+      "char c1 = 'A';",
+      "c1 = (char) (c1 + 1);",
+      "System.out.println(\"car = \" + c1);"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Se muestra: car = 66",
+      "Se muestra: car = B",
+      "No llega a mostrar nada, pues el segmento no compila.",
+      "Se muestra: car = AB"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "'A' + 1 da 66 (int), pero el casting a char lo vuelve carácter: 'B'."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué tienen de malo las siguientes instrucciones en Java?",
+     "codigo": [
+      "short a = 30000, b = 40000;",
+      "short x = (short) (a + b);"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "No es necesario el operador de casting explícito en la última línea.",
+      "No hay nada de malo con esas líneas de código.",
+      "El segmento mostrado no compila: el valor 40000 no cabe en la variable b.",
+      "El valor asignado finalmente en x queda truncado (no será 70000)."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "short llega hasta 32767: 40000 no entra y esa línea no compila."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuántas condiciones como mínimo necesita en un programa Java para encontrar el menor valor de entre tres variables?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Una condición.",
+      "Dos condiciones.",
+      "Tres condiciones.",
+      "Cuatro condiciones."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Con dos comparaciones alcanza: el menor entre a y b, y ese contra c."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es la primer línea que causará un error en tiempo de compilación?",
+     "codigo": [
+      "public class NuevaClase {",
+      "   public static void main(String[] args) {",
+      "      char c;",
+      "      int i;",
+      "      c = 'a'; // (1)",
+      "      i = c;   // (2)",
+      "      i++;     // (3)",
+      "      c = i;   // (4)",
+      "      c++;     // (5)",
+      "   }",
+      "}"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La línea etiquetada como (4)",
+      "La línea etiquetada como (5)",
+      "La línea etiquetada como (2)",
+      "Ninguna de las línea son incorrectas. El programa compilará bien.",
+      "La línea etiquetada como (3)",
+      "La línea etiquetada como (1)"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "int → char achica (puede perder datos) y necesita casting: c = (char) i; en cambio, char → int (2) es automático y c++ (5) compila."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de los siguientes elementos es independiente de la plataforma?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El compilador javac del JDK.",
+      "Los archivos de bytecode (o sea, lo archivos .class).",
+      "La máquina virtual java.",
+      "Los archivos ejecutables .exe"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      0.0,
+      1.0
+     ],
+     "estado": "Incorrecta",
+     "ex": "El bytecode (.class) corre en cualquier JVM. El compilador javac y la JVM sí dependen del sistema operativo.",
+     "corr": "La JVM es justamente la parte que depende de la plataforma: hay una para cada sistema operativo."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué ocurre si intenta compilar y ejecutar el siguiente código?",
+     "codigo": [
+      "public class OpeNumeros {",
+      "   public static void main(String[] args) {",
+      "      int x = 5;",
+      "      int i = 2;",
+      "      x = i++;",
+      "      System.out.println(\"x es \" + x);",
+      "      System.out.println(\"i es \" + i);",
+      "   }",
+      "}"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "x es 5 i es 3",
+      "x es 7 i es 3",
+      "x es 2  i es 3",
+      "x es 7 i es 2"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "i++ es post-incremento: primero asigna a x el valor actual de i (2) y después suma 1 a i."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el efecto del siguiente segmento de código Java?",
+     "codigo": [
+      "byte x;",
+      "x = 12;",
+      "float y = x + 1;"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La variable “y” queda valiendo 13.",
+      "El código mostrado no compila.",
+      "El código compila pero lanza una excepción al ejecutarse.",
+      "La variable “y” queda valiendo 12."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "x + 1 da un int (13) que pasa solo a float porque agranda: y queda en 13.0."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuáles son los motivos por los cuales una persona que sabe resolver un problema, querría programar y usar una computadora para resolverlo?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Porque al programar una computadora, tendrá la garantía de una solución correcta.",
+      "Porque solo programando una computadora obtendrá soluciones numéricamente precisas y sin errores ni pérdida de precisión por valores decimales.",
+      "Porque al programar una computadora para resolver el problema, ganará tiempo y ahorrará esfuerzo en el futuro: la  computadora puede obtener las soluciones muy rápidamente, y con precisión.",
+      "No hay motivos para que lo haga. Si sabe resolver el problema, no necesita una computadora."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "La computadora no garantiza que la solución sea correcta, pero resuelve rápido y siempre igual."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el comando para ejecutar pruebas unitarias en Maven?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "mvn verify",
+      "maven unit",
+      "mvn test",
+      "mvn run-tests"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "mvn test compila y corre las pruebas de src/test/java."
+    },
+    {
+     "origen": "2023",
+     "en": "Considere estas declaraciones y asignaciones en Java: ¿Cuál de las siguientes instrucciones es correcta?",
+     "codigo": [
+      "int a = 1;",
+      "float b = 3.45f;",
+      "byte c = 23;",
+      "long d = 10000;"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "long res = a + b + c + d;",
+      "byte res = c + 1;",
+      "int res = a + c + d;",
+      "float res = a + b + c + d;"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Si en la suma hay un float, el resultado es float. Las otras no compilan: long no recibe float, c + 1 da int y un int no recibe long."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué significa declarar una variable en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Indicar su tipo y su nombre o identificador.",
+      "Indicar su nombre y asignarle un valor.",
+      "Indicar su nombre.",
+      "Indicar su tipo, su nombre y su tamaño."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Declarar es decir el tipo y el nombre: int edad; darle valor es asignar."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuándo es obligatorio el uso de llaves en alguna de las ramas o salidas de una condición dentro de un programa Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Nunca.",
+      "Solo si la rama contiene más de una instrucción.",
+      "Solo si la rama tiene una y solo una instrucción.",
+      "Siempre."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Con una sola instrucción las llaves son opcionales; con más de una son obligatorias."
+    },
+    {
+     "origen": "2023",
+     "en": "Las aplicaciones comienzan con un método llamado:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "void()",
+      "static()",
+      "main()",
+      "start()"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "La ejecución arranca en public static void main(String[] args)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el comando para compilar un proyecto Maven?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "mvn start",
+      "maven run",
+      "maven build",
+      "mvn compile"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "mvn compile compila src/main/java en target/classes."
+    },
+    {
+     "origen": "2023",
+     "en": "Observe el siguiente código, ¿cuál de las siguientes líneas es inválida?",
+     "codigo": [
+      "1. double d = 12.4564;",
+      "2. long x = 98712;",
+      "3. int i = x;",
+      "4. int j = (int) d;"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La línea 3",
+      "La línea 2",
+      "La línea 4",
+      "La línea 1"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "long → int achica y pide casting: int i = (int) x; la línea 4 ya lo tiene."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué se entiende por casting en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es el mecanismo por el cual Java reconoce y fija en forma automática el tipo de dato de una variable, de acuerdo al valor que se asigna en ella.",
+      "Es la propiedad por la cual una variable puede cambiar su tipo de dato.",
+      "Es un mecanismo que permite que una variable se convierta en una cadena de caracteres cuando lo requiera el programador.",
+      "Es el proceso por el cual un valor de un tipo se convierte en un valor de otro tipo, ya sea en forma automática o usando un  operador de conversión explícita."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Casting = convertir un valor de un tipo a otro: automático si agranda, con (tipo) si achica."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Hay algún error en la siguiente secuencia de instrucciones en Java? (Suponga que el import correspondiente está agregado en la clase. También suponga que esta secuencia está correctamente incluida dentro del método main() de una clase. Solo analice las líneas que siguen suponiendo un contexto correcto):",
+     "codigo": [
+      "Scanner miEscaner 0 new Scanner(System.in);",
+      "String nombre;",
+      "int edad;",
+      "System.out.print(\"Nombre: \");",
+      "Nombre = miEscaner.nextLine();",
+      "System.out.print(\"Edad: \");",
+      "Edad = miEscaner.nextInt();"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "No hay ningún error.",
+      "El error es que las variables edad y nombre se declararon en minúsculas, y luego se usaron con mayúscula en la primera letra  (Edad y Nombre), al hacer las lecturas.",
+      "El error es que la clase String no existe en Java, y por lo tanto no pueden declararse variables de ese tipo.",
+      "El error es que la clase Consola provista por los docentes para cargas por teclado, no incluye ningún método readInt() para leer enteros."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Java distingue mayúsculas: nombre y Nombre son variables distintas, y Nombre nunca se declaró.",
+     "ojo": "El 0 de la primera línea es un error de tipeo del enunciado original (va un =)."
+    },
+    {
+     "origen": "2023",
+     "en": "En tu proyecto Maven, has definido una propiedad personalizada en el archivo pom.xml para especificar la versión de una biblioteca externa. Sin embargo, olvidaste definir esta propiedad en algunos módulos del proyecto. ¿Cuál de las siguientes secciones en el pom.xml te permite definir una propiedad personalizada para que pueda ser heredada por los módulos?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "<settings>",
+      "<properties>",
+      "<dependencies>",
+      "<variables>"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "En <properties> se definen valores como ${version.lib}, que heredan los módulos."
+    },
+    {
+     "origen": "2023",
+     "en": "Considere estas declaraciones y asignaciones en Java: ¿Cuál de las siguientes instrucciones es INCORRECTA?",
+     "codigo": [
+      "int a = 20;",
+      "float b = 123.45f;",
+      "byte c = 2;",
+      "long d = 1500;"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "long res = (long) (a + b + c + d);",
+      "long res = a + (long) b + c + d;",
+      "byte res = (byte) a + c;",
+      "int res = a + (short) b + c + (int) d;"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      0.0,
+      1.0
+     ],
+     "estado": "Incorrecta",
+     "ex": "El casting (byte) se aplica solo a a. Después byte + byte da int, y un int no entra en un byte sin casting.",
+     "corr": "La d compila: (short) b y (int) d convierten antes de sumar, y todo queda int."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes expresiones es verdadera si el valor de la variable x es 1, 2, 3, o 4?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "x == 1 || x == 2 || x == 3 || x == 4",
+      "x != 1 && x != 2 && x != 3 && x != 4",
+      "x < 0  &&  x > 5",
+      "x == 1 && x == 2 && x == 3 && x == 4"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Con || alcanza con que se cumpla una de las cuatro. Con && tendrían que cumplirse todas a la vez, y eso es imposible."
+    }
+   ]
+  },
+  {
+   "n": "03",
+   "archivo": "cuestionario-03-poo-excepciones.pdf",
+   "titulo": "POO, arreglos y excepciones",
+   "intento": null,
+   "preguntas": [
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el resultado de la expresión \"10 / 3\" en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "3.33333",
+      "Error de compilación",
+      "3.0",
+      "3"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Entre dos int la división es entera: 10 / 3 da 3. Para 3.33 hace falta un double (10.0 / 3)."
+    },
+    {
+     "origen": "2023",
+     "en": "En Java, ¿cómo se llama un método que tiene el mismo nombre pero diferentes parámetros en una misma clase?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Método sobrecargado.",
+      "Método anulado.",
+      "Método duplicado.",
+      "Método sobrescrito."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Mismo nombre y distintos parámetros en la misma clase = sobrecarga. Sobrescribir es redefinir un método heredado."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué modificador de acceso en Java permite que un miembro de clase sea accesible solo dentro de su propia clase?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "private",
+      "public",
+      "default",
+      "protected"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "private: solo la propia clase."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es la idea principal en la cual se basa el algoritmo de ordenamiento de Selección Directa que se presentó en clase? (Suponga que se desea ordenar el arreglo de menor a mayor).",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Ralizar varias pasadas sobre el arreglo, en cada pasada seleccionar el menor valor de los que aún no han sido ordenados, y  colocarlo en su casilla definitiva.",
+      "Ralizar varias pasadas sobre el arreglo, en cada pasada comparar a cada elemento con el que le sigue inmediatamente, intercambiarlos si están desordenados y seguir haciendo pasadas en esta forma hasta que el arreglo quede ordenado",
+      "Ralizar varias pasadas sobre el arreglo. En cada pasada seleccionar un elemento cualquiera x. Pasar a la derecha del arreglo todos los valores mayores a x. Pasar a la izquierda del arreglo todos los valores menores a x. Finalmente, aplicar la misma idea a cada una de las dos \"mitades\" así obtenidas y seguir así hasta que ya no pueda seguir obteniendo nuevas \"mitades\".",
+      "Ralizar una sola pasada sobre el arreglo, en esa pasada comparar a cada elemento con el que le sigue e intercambiarlos si están invertidos."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Selección directa: en cada pasada busca el menor de lo que falta y lo pone en su lugar. La b es burbuja y la c es quicksort."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes declaraciones es cierta sobre las excepciones controladas (checked exceptions) en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las excepciones controladas no necesitan ser manejadas en el código.",
+      "Las excepciones controladas se generan automáticamente por el sistema operativo.",
+      "Las excepciones controladas siempre deben ser declaradas en la firma del método o manejadas en el bloque \"try-catch\".",
+      "Las excepciones controladas son subclases de la clase \"Exception\", excepto \"RuntimeException\"."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      0.0,
+      1.0
+     ],
+     "estado": "Incorrecta",
+     "ex": "El compilador obliga a manejar las controladas con try-catch o a declararlas con throws.",
+     "corr": "La d no es la que toma el campus.",
+     "ojo": "La d también describe a las controladas (heredan de Exception pero no de RuntimeException), pero la respuesta del campus es la c."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito de la cláusula \"finally\" en una estructura \"try-catch-finally\" en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Ejecutar un bloque de código independientemente de si ocurre o no una excepción.",
+      "Capturar y manejar excepciones específicas.",
+      "Detener la ejecución del programa en caso de excepción.",
+      "Ignorar cualquier excepción que ocurra en el bloque \"try\"."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "finally se ejecuta siempre, haya excepción o no. Se usa para cerrar recursos."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es la diferencia entre un método y un constructor en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Los métodos se utilizan para crear objetos, mientras que los constructores se utilizan para definir comportamientos.",
+      "Los constructores tienen un tipo de retorno, mientras que los métodos no.",
+      "Los métodos tienen un tipo de retorno, mientras que los constructores no.",
+      "Los métodos son opcionales en una clase, mientras que los constructores son obligatorios."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El constructor no tiene tipo de retorno (ni void) y se llama igual que la clase."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es la diferencia entre una referencia a un objeto y el propio objeto en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Una referencia es una dirección de memoria que apunta al objeto real.",
+      "No hay diferencia entre una referencia y un objeto en Java.",
+      "Una referencia es un tipo de dato primitivo, mientras que el objeto es una instancia de una clase.",
+      "Una referencia es una instancia de una clase, mientras que el objeto es una variable que almacena valores."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "La variable guarda una referencia (dirección) al objeto, que está en el heap."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es una clase en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un tipo de dato primitivo.",
+      "Una instancia de un objeto.",
+      "Una plantilla para crear objetos.",
+      "Una función que realiza una tarea específica."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "La clase es el molde; cada objeto que se crea con new es una instancia."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones es CIERTA respecto del uso arreglos en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El primer índice de cada dimensión de un arreglo en Java, es siempre cero.",
+      "Los arreglos pueden aumentar o disminuir su tamaño a medida que lo requieran.",
+      "Si se intenta usar un índice fuera de rango para entrar a una casilla que no está definida para el arreglo, el programa no compila.",
+      "Siempre se puede saber el tamaño de un arreglo llamando al método length() que todo arreglo tiene."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Los índices van de 0 a length - 1. El tamaño es fijo, length va sin paréntesis y un índice fuera de rango compila pero tira ArrayIndexOutOfBoundsException."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es el encapsulamiento en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La creación de múltiples constructores en una clase.",
+      "La agrupación de objetos en una sola entidad.",
+      "El proceso de ocultar los detalles internos de una clase y proporcionar una interfaz pública para interactuar con ella.",
+      "La capacidad de una clase para extender otra clase, heredando sus atributos y métodos."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Encapsular = atributos private y acceso a través de métodos públicos."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué hace el siguiente método?",
+     "codigo": [
+      "  public boolean comprobar( int v[] )",
+      "{",
+      "    int n = v.length;",
+      "    for(int i = 0; i < n - 1; i++)",
+      "    {",
+      "        if(v[i] > v[i+1]) return false;",
+      "    }",
+      "    return true;",
+      "}"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Retorna true si el arreglo v tomado como parámetro está ordenado de menor a mayor, o retorna false en caso contrario.",
+      "Retorna true si el arreglo v tomado como parámetro contiene al valor n, o retorna false en caso contrario.",
+      "Retorna true si el arreglo v tomado como parámetro está ordenado de mayor a menor, o retorna false en caso contrario.",
+      "Retorna true si el arreglo v tomado como parámetro contiene todos sus elementos iguales, o retorna false en caso contrario."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Si algún elemento es mayor que el siguiente, devuelve false. Si nunca pasa, está ordenado de menor a mayor."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de los siguientes es un modificador de acceso que permite que un miembro de clase sea accesible desde cualquier clase en el mismo paquete?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "public",
+      "default",
+      "private",
+      "protected"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Sin modificador (default): visible en todo el paquete."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es la rethrowing de una excepción en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Lanzar una excepción controlada en un bloque \"try\".",
+      "Capturar una excepción en un bloque \"catch\" y lanzarla nuevamente.",
+      "Lanzar una nueva excepción en un bloque \"finally\".",
+      "Lanzar una excepción no controlada en un bloque \"try\"."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Relanzar: se captura en el catch y se vuelve a lanzar con throw (a veces envuelta en otra)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es el operador ternario en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un operador que se utiliza para realizar conversiones entre tipos de datos.",
+      "Un operador que permite asignar un valor a una variable en función de una condición.",
+      "Un operador que realiza operaciones aritméticas en tres operandos.",
+      "Un operador que compara tres valores y devuelve el mayor."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "condición ? siVerdadero : siFalso. Por ejemplo: int max = a > b ? a : b;"
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué hace el siguiente método?",
+     "codigo": [
+      "  public int [] generar( int v[] )",
+      "{",
+      "    int ac = 0;",
+      "    for(int i = 0; i < v.length; i++) ac += v[i];",
+      "    float p = ac / v.length;",
+      "    int c = 0;",
+      "    for(int i = 0; i < v.length; i++)",
+      "    {",
+      "        if(v[i] >= p) c++;",
+      "    }",
+      "    int mp[] = new int[c], idx = 0;",
+      "    for(int i = 0; i < v.length; i++)",
+      "    {",
+      "        if(v[i] >= p)",
+      "        {",
+      "            mp[idx] = v[i];",
+      "            idx++;",
+      "        }",
+      "    }",
+      "    return mp;",
+      "}"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Toma un arreglo v como parámetro. Calcula el promedio de los valores contenidos en v. Finalmente, genera un segundo  arreglo mp que contiene solo los elementos de v que son mayores o iguales al promedio y retorna el nuevo arreglo mp.",
+      "Toma un arreglo v como parámetro. Genera un segundo arreglo mp que contiene solo los elementos de v que son mayores a 10 y retorna el nuevo arreglo mp.",
+      "Toma un arreglo v como parámetro. Ordena el arreglo v. Finalmente, genera un segundo arreglo mp que contiene todos los elementos de v, y retorna mp (que entonces, será igual al vector v pero ordenado).",
+      "Toma un arreglo v como parámetro. Genera un segundo arreglo mp que contiene solo los elementos no negativos de v, y retorna el nuevo arreglo mp."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Suma todo, saca el promedio, cuenta cuántos son mayores o iguales, crea un arreglo de ese tamaño y los copia."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es un constructor por defecto en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un constructor que crea una instancia de la clase Object.",
+      "Un constructor que es proporcionado por el programador.",
+      "Un constructor que no toma ningún parámetro.",
+      "Un constructor que está definido en una clase abstracta."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Es el constructor sin parámetros. Si la clase no tiene ninguno, Java lo agrega solo."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el objetivo principal de la sobrecarga de métodos en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Reducir la complejidad del código.",
+      "Definir métodos con el mismo nombre pero diferentes implementaciones.",
+      "Evitar la reutilización de código.",
+      "Crear múltiples constructores en una clase."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Sobrecarga: mismo nombre con distintos parámetros, y cada versión con su implementación."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes declaraciones es cierta con respecto a las excepciones en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las excepciones solo pueden ser generadas por el sistema operativo.",
+      "Las excepciones solo ocurren en programas mal escritos.",
+      "Las excepciones solo ocurren durante la compilación del código.",
+      "Las excepciones son situaciones normales y predecibles que deben manejarse."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Las excepciones son situaciones previsibles (un archivo que no está, un dato mal escrito) que el programa tiene que manejar."
+    }
+   ]
+  },
+  {
+   "n": "04",
+   "archivo": "cuestionario-04-herencia-colecciones.pdf",
+   "titulo": "Herencia, colecciones y genéricos",
+   "intento": null,
+   "preguntas": [
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes declaraciones sobre las clases finales en Java es correcta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las clases finales no pueden tener constructores.",
+      "Las clases finales no pueden tener variables miembro.",
+      "Las clases finales no pueden tener métodos.",
+      "Las clases finales no pueden ser heredadas por otras clases."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Una clase final no se puede extender (como String)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el método utilizado para eliminar un elemento específico de una lista en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "delete()",
+      "erase()",
+      "discard()",
+      "remove()"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "lista.remove(índice) o lista.remove(objeto)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué significa el término \"polimorfismo\" en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La capacidad de una clase para ocultar su implementación.",
+      "La capacidad de una clase para comportarse de diferentes maneras en función de su tipo.",
+      "La capacidad de una clase para tener múltiples constructores.",
+      "La capacidad de una clase para tener múltiples interfaces."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Polimorfismo: la misma llamada se comporta distinto según el tipo real del objeto."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones es verdadera sobre las clases internas en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las clases internas pueden acceder a los miembros privados de la clase externa.",
+      "Las clases internas no pueden acceder a los miembros de la clase externa.",
+      "Las clases internas siempre son estáticas.",
+      "Las clases internas no pueden heredar de otras clases."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Una clase interna (no estática) ve todos los miembros de la externa, incluso los private."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones es verdadera sobre la clase Object en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Object no puede ser utilizada como superclase.",
+      "Object es una clase abstracta.",
+      "Todas las clases heredan de la clase Object.",
+      "Object no tiene métodos predefinidos."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Toda clase hereda de Object (toString, equals, hashCode…)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué interfaz en Java se utiliza para representar una lista ordenada?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "SortedList",
+      "SortedSet",
+      "ComparableList",
+      "OrderedList"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "SortedSet (por ejemplo TreeSet) mantiene sus elementos ordenados.",
+     "ojo": "No existe SortedList en Java. SortedSet es un conjunto: no admite repetidos."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito de la palabra clave \"final\" en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Indicar que un atributo es constante y no puede cambiar de valor.",
+      "Indicar que un objeto es inmutable y no puede ser modificado.",
+      "Indicar que un método puede ser sobrescrito por las subclases.",
+      "Indicar que una clase no puede tener subclases."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "final en un atributo lo vuelve constante.",
+     "ojo": "final también hace que una clase no tenga subclases (la d) o que un método no se pueda sobrescribir. El campus toma la a."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes opciones describe mejor un ArrayList en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Una lista que solo permite la inserción al final.",
+      "Una colección de elementos únicos y ordenados.",
+      "Una estructura de datos para representar gráficos.",
+      "Una lista que permite elementos duplicados y se redimensiona automáticamente."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "ArrayList admite repetidos, mantiene el orden de inserción y crece sola."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué clase en Java se utiliza como base para implementar una lista personalizada que deriva de AbstractList?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "ArrayList",
+      "HashSet",
+      "AbstractList",
+      "LinkedList"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Para armar una lista propia se extiende AbstractList: ya trae casi todo y solo hay que implementar get y size."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes opciones describe mejor un HashMap en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Una colección de elementos que se almacenan en una lista enlazada.",
+      "Una colección de elementos que se almacenan en un árbol binario.",
+      "Una colección de pares clave-valor sin duplicados, donde las claves se utilizan para buscar los valores.",
+      "Una colección ordenada de elementos únicos."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "HashMap guarda pares clave → valor; las claves no se repiten y no mantiene el orden."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es el autoboxing en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El proceso de convertir un objeto en un tipo de dato primitivo.",
+      "El proceso de comparar dos objetos utilizando el operador \"==\"",
+      "El proceso de sobrecargar un método con diferentes tipos de parámetros.",
+      "El proceso de convertir un tipo de dato primitivo en un objeto."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Autoboxing: de int a Integer, automático. Al revés (la a) es unboxing."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es la inferencia de tipos en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un proceso para convertir tipos de datos en tipos primitivos.",
+      "Un proceso para deducir el tipo genérico de una variable en tiempo de compilación.",
+      "Un proceso para determinar el tipo de objeto en tiempo de ejecución.",
+      "Un proceso para convertir tipos de datos en tipos de referencia."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El compilador deduce el tipo: con var o con el diamante, new ArrayList<>()."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es una clase wrapper en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Una clase que envuelve una excepción.",
+      "Una clase que envuelve un archivo.",
+      "Una clase que envuelve un objeto de datos primitivos.",
+      "Una clase que envuelve un regalo."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Integer, Double, Character… envuelven un primitivo en un objeto para poder usarlo en colecciones."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es la concatenación de cadenas en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un proceso para dividir una cadena en varias subcadenas.",
+      "Un proceso para buscar una subcadena dentro de otra cadena.",
+      "Un proceso para convertir una cadena en un número entero.",
+      "Un proceso para combinar dos o más cadenas en una sola cadena."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Concatenar = unir cadenas: \"Hola \" + nombre."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué símbolo se utiliza para indicar un tipo genérico en una declaración de clase o método en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El símbolo \"&\"",
+      "El símbolo \"#\"",
+      "El símbolo \"<T>\"",
+      "El símbolo \"<>\""
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      0.0,
+      1.0
+     ],
+     "estado": "Incorrecta",
+     "ex": "Un genérico se declara con <T>: class Caja<T> o <T> void metodo(T x).",
+     "corr": "<> solo es el diamante, que se usa al crear el objeto (new ArrayList<>()), no para declarar el genérico."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es una característica clave de una lista basada en un array en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Tiene acceso rápido y constante a los elementos.",
+      "No puede contener elementos duplicados.",
+      "Puede cambiar su tamaño dinámicamente.",
+      "Almacena elementos en una estructura de datos enlazada."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "ArrayList usa un arreglo por dentro: el acceso por índice es rápido y constante."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes declaraciones es verdadera sobre la clase Vector en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Vector es una clase final y no puede ser heredada.",
+      "Vector es una clase genérica que solo puede contener objetos de un tipo específico.",
+      "Vector es una implementación de una lista enlazada.",
+      "Vector es una implementación de una lista dinámica que se redimensiona automáticamente."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Vector es como ArrayList (lista dinámica que crece) pero sincronizada."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito de la palabra clave \"abstract\" en la definición de una clase en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Indicar que la clase no puede tener métodos abstractos.",
+      "Indicar que la clase puede tener métodos abstractos.",
+      "Indicar que la clase es una interfaz.",
+      "Indicar que la clase no puede ser heredada."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Una clase abstract no se instancia y puede tener métodos abstractos que implementan las hijas."
+    }
+   ]
+  },
+  {
+   "n": "05",
+   "archivo": "cuestionario-05-streams.pdf",
+   "titulo": "Programación funcional y streams",
+   "intento": {
+    "anio": 2026,
+    "nota": "18,50/20,00"
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "Con respecto a la operacion collector(): Su funcion principal es acumular, combinar y finalizar los datos procesados en el stream, permitiendo producir colecciones, resumenes o agrupaciones",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "collect() es la operación terminal que junta los resultados: listas, mapas, resúmenes o agrupaciones (con Collectors)."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione la opcion correcta respecto a los Collectors",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La clase Collectors no provee implementaciones de las colecciones y hay que sobreescribirlas.",
+      "Es un objeto que define como transformar los elementos de un flujo en un resultado final",
+      "Es una clase que define como mostrar los elementos de un flujo."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un Collector dice cómo juntar los elementos del flujo en un resultado (toList, groupingBy, joining…). La clase Collectors ya los trae hechos."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione la/las opcion/es correcta/as referido a Stream API",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Stream procesa todos los datos al mismo tiempo",
+      "Un stream es una secuencia de datos que van transcurriendo sin estar almacenados todos juntos.",
+      "No recorre los datos inmediatamente, las operaciones intermedias son perezosas(lazy) y esperan a la operacion final para ejecutarse."
+     ],
+     "marcadas": [
+      1,
+      2
+     ],
+     "ok": [
+      1,
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un stream no guarda los datos: van pasando. Y es perezoso: las operaciones intermedias no hacen nada hasta que llega la terminal."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Como funcionan las expresiones Lambda?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "La forma de escritura de una expresion lambda es [parametros]->{cuerpo}",
+      "Ofrecen la posibilidad de escribir unicamente el bloque de codigo del metodo directamente en el lugar de la declaracion de la variable. Haciendo automaticamente la sobreescritura del metodo.",
+      "Ofrecen la posibilidad de escribir unicamente el bloque de codigo del metodo directamente en el lugar de la declaracion de la variable. Aunque se tenga que hacer la sobreescritura del metodo de forma manual."
+     ],
+     "marcadas": [
+      0,
+      1
+     ],
+     "ok": [
+      0,
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "(parámetros) -> { cuerpo }. La lambda implementa sola el único método abstracto de la interfaz funcional."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione la opcion correcta respecto a las operaciones terminales",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Recolectan todos los elementos de un flujo y los procesan",
+      "Toda manipulacion de flujo puede no tener una operacion terminal",
+      "Retornan un nuevo flujo"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "La terminal recorre el flujo y da el resultado (count, collect, forEach). Sin terminal no pasa nada, y la que devuelve otro flujo es una intermedia."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione las opciones correctas respecto a la operacion intermedia distinct?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Ninguna es correcta",
+      "Retorna una nueva lista con los mismos datos del flujo original pero eliminando repetidos",
+      "Retorna un nuevo flujo con los mismos datos del flujo original pero eliminando repetidos"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "distinct() devuelve un nuevo flujo sin repetidos (usa equals). Nunca una lista: eso lo hace collect."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Para que sirve la anotacion @FunctionalInterface?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para establecer a una interfaz como funcional y asegurarse de que tenga solo un metodo.",
+      "Para sobreescribir un metodo",
+      "Para sobrecargar un metodo funcional"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Marca la interfaz como funcional y el compilador avisa si tiene más de un método abstracto."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione la/las opcion/es correcta/as referido a Stream API",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Una de las razones por las que se usa stream es para evitar recorrer arrays.",
+      "Stream mantiene todos los datos almacenados en memoria y los recorre.",
+      "Sobre la secuencia de datos se introducen operaciones que manipulan cada dato individualmente."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      0,
+      2
+     ],
+     "puntos": [
+      0.5,
+      1
+     ],
+     "estado": "Parcialmente correcta",
+     "ex": "Apunte 10: con streams «el programador introduce operaciones que manipulen cada dato individualmente», sin recorrerlos a mano. La b describe a una colección.",
+     "corr": "Marcaste solo la c: faltó la a.",
+     "ojo": "En un intento de 2025 marcaron la a y la c, y el campus dio el puntaje completo."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Como se denominan los metodos o funciones de orden superior?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Son los metodos que solo retornan tipo funcion y poseen parametros tipo primitivo",
+      "Son los metodos que poseen parametros o retorno de tipo primitivo",
+      "Son los metodos que poseen parametros o retorno de tipo funcion"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Orden superior = recibe o devuelve una función (como filter o map, que reciben una lambda)."
+    },
+    {
+     "origen": "2026",
+     "en": "La operacion terminal forEach recibe como parametro el dato y no retorna nada",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "forEach recibe un Consumer: toma cada dato y no devuelve nada (void)."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione las opciones correctas respecto a la operacion intermedia filter?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Recibe como parametro una funcion lambda que recibe un parametro y retorna un boolean.",
+      "Recibe como parametro una funcion lambda que recibe un parametro y retorna una lista",
+      "Se escribe de la siguiente manera arrayList.stream().filter(x-> x%2 == 0)"
+     ],
+     "marcadas": [
+      0,
+      2
+     ],
+     "ok": [
+      0,
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "filter recibe un Predicate (un dato → boolean) y deja pasar los que dan true."
+    },
+    {
+     "origen": "2026",
+     "en": "Como se escribe correctamente un stream collector habiendo definido previamente una Lista llamada lista.",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "List lista = nombres.stream(collect(Collectors.toList()));",
+      "List lista = nombres.stream().collect(Collectors.toList());",
+      "List lista = nombres.collect(Collectors.toList());"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Primero stream() y después collect(…) como método del stream."
+    },
+    {
+     "origen": "2026",
+     "en": "Hay que programar una clase nueva por cada expresion lambda creada",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "La lambda reemplaza a la clase anónima: no hace falta escribir una clase."
+    },
+    {
+     "origen": "2026",
+     "en": "No hay que programar una clase nueva por cada expresion lambda creada",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "La lambda implementa la interfaz funcional en el mismo lugar donde se usa."
+    },
+    {
+     "origen": "2026",
+     "en": "Limit recibe un numero entero y genera una nueva lista que contiene como maximo la cantidad indicada",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      0,
+      1
+     ],
+     "estado": "Incorrecta",
+     "ex": "limit(n) es intermedia: devuelve un nuevo flujo con como mucho n elementos, no una lista.",
+     "corr": "La palabra que la hace falsa es «lista». Es la misma frase que la pregunta 19, que dice «flujo» y es verdadera."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione las opciones correctas respecto a la operacion intermedia map?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Recibe como parametro una instancia de la interfaz funcional Function y genera un nuevo valor a partir de cada uno de los elementos del flujo",
+      "Retorna un nuevo flujo con los mismos datos del flujo original pero eliminando los repetidos",
+      "Recibe como parametro una instancia de la interfaz funcional Function y mapea con clave -> valor una serie de elementos"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "map recibe un Function y transforma cada elemento en otro valor. La b es distinct."
+    },
+    {
+     "origen": "2026",
+     "en": "La operacion terminal forEach recibe como parametro el dato y retorna cada uno de los elementos del flujo",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "forEach no devuelve nada (void)."
+    },
+    {
+     "origen": "2026",
+     "en": "La operacion intermedia llamada sorted retorna un nuevo flujo con los mismos elementos que el original pero",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "limitados",
+      "ordenados",
+      "desordenados"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "sorted() ordena (en orden natural o con un Comparator)."
+    },
+    {
+     "origen": "2026",
+     "en": "Limit recibe un numero entero y genera un nuevo flujo que contiene como maximo la cantidad indicada",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "limit(n) es intermedia: devuelve otro stream con hasta n elementos."
+    },
+    {
+     "origen": "2026",
+     "en": "La operacion terminal count retorna la _____ de elementos del flujo",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "cantidad",
+      "lista"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "count() devuelve la cantidad de elementos (un long)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones describe mejor la programación funcional en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Se centra en el uso de funciones como datos que puedan almacenarse en variables.",
+      "Se basa en el uso extensivo de bucles y estructuras de control.",
+      "Depende en gran medida de la herencia de clases.",
+      "Requiere la declaración explícita de variables.",
+      "Es un enfoque exclusivo de la programación orientada a objetos."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Programación funcional = funciones como datos: se guardan en variables y se pasan como parámetros (lambdas)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes operaciones se utiliza para contar el número de elementos en un Stream en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "reduce()",
+      "map()",
+      "filter()",
+      "collect()",
+      "count()"
+     ],
+     "marcadas": [
+      4
+     ],
+     "ok": [
+      4
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "count() devuelve la cantidad de elementos (un long)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué interfaz funcional en java.util.function se utiliza para representar una función que toma un argumento y devuelve un valor booleano?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Predicate",
+      "Function",
+      "BiFunction",
+      "Supplier",
+      "UnaryOperator"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Predicate<T> recibe un T y devuelve boolean: es lo que usa filter."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué método de la interfaz Stream se utiliza para reducir una secuencia de elementos a un solo valor en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "map",
+      "collect",
+      "filter",
+      "forEach",
+      "reduce"
+     ],
+     "marcadas": [
+      4
+     ],
+     "ok": [
+      4
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "reduce combina todos los elementos en un solo valor (por ejemplo, la suma)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito del método reduce en un Stream en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Reducir una secuencia a un solo valor acumulando los resultados.",
+      "Transformar elementos en una nueva secuencia.",
+      "Contar el número de elementos en el Stream.",
+      "Aplicar una función a cada elemento del Stream.",
+      "Filtrar elementos que cumplan con una condición."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "reduce acumula: (a, b) -> a + b va sumando hasta dejar un solo resultado."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes interfaces funcionales en java.util.function representa una función que toma un argumento y devuelve un resultado?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Consumer",
+      "Function",
+      "Predicate",
+      "UnaryOperator",
+      "Supplier"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Function<T, R> recibe un T y devuelve un R: es lo que usa map."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes interfaces funcionales se utiliza comúnmente para aplicar una función a un valor y obtener un resultado del mismo tipo?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "UnaryOperator",
+      "Supplier",
+      "BiFunction",
+      "Function",
+      "Predicate"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Function aplica una función a un valor y devuelve el resultado.",
+     "ojo": "La más precisa para «del mismo tipo» es UnaryOperator<T>, que es un Function<T, T>. El campus dio por buena Function."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito principal de la interfaz funcional Consumer en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Representar una función que toma ningún argumento y devuelve un resultado.",
+      "Representar una función que toma dos argumentos y devuelve un resultado.",
+      "Representar una función que toma un argumento y no devuelve un resultado (realiza una acción).",
+      "Representar una función que toma dos argumentos y no devuelve un resultado.",
+      "Representar una función que toma un argumento y devuelve un resultado."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Consumer<T> recibe un T y no devuelve nada: es lo que usa forEach."
+    },
+    {
+     "origen": "2023",
+     "en": "En programación funcional, ¿cuál es el propósito principal de la función map de los Stream?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Aplicar una función a cada elemento de la secuencia y producir una nueva secuencia con los resultados.",
+      "Filtrar elementos que cumplan con cierta condición.",
+      "Reducir una secuencia a un solo valor.",
+      "Ordenar los elementos en la secuencia.",
+      "Eliminar duplicados de la secuencia."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "map transforma cada elemento y arma una secuencia nueva con los resultados."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes interfaces se utiliza comúnmente en programación funcional en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Runnable",
+      "ActionListener",
+      "Function",
+      "Serializable",
+      "Comparable"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Runnable tiene un solo método abstracto (run), así que es una interfaz funcional y se puede escribir con una lambda.",
+     "ojo": "Function también es una interfaz funcional. En ese intento se marcó Runnable y el campus la dio por correcta."
+    }
+   ]
+  },
+  {
+   "n": "06",
+   "archivo": "cuestionario-06-orm-jpa.pdf",
+   "titulo": "JDBC y ORM con JPA",
+   "intento": {
+    "anio": 2026,
+    "nota": "12,00/12,00"
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el propósito de un CallableStatement en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para ejecutar una llamada a un procedimiento almacenado en una base de datos.",
+      "Para ejecutar una consulta SQL parametrizada.",
+      "Para ejecutar una consulta SQL de actualización de datos.",
+      "Para ejecutar una consulta SQL estática."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "CallableStatement llama a procedimientos almacenados: {call nombre(?)}."
+    },
+    {
+     "origen": "2026",
+     "en": "La anotación @OneToOne no puede ser utilizada en clases anotadas con @Entity.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Falso",
+      "Verdadero"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "@OneToOne se usa justamente en las entidades (@Entity), para relacionarlas 1 a 1."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué es un DataSource en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un controlador JDBC.",
+      "Un componente que almacena datos en una base de datos.",
+      "Una forma de realizar consultas SQL en JDBC.",
+      "Un componente que proporciona una conexión a la base de datos de manera eficiente."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un DataSource entrega conexiones (normalmente desde un pool). Es mejor que pedirlas a DriverManager."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuales son formas de liberar los recursos utilizados por Connection, Statement y ResultSet?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Resultset.close()",
+      "Connection.close()",
+      "Statement.close()",
+      "Try-with-Resources",
+      "a, b y c son correctas",
+      "a, d y c son correctas",
+      "Todas son correctas"
+     ],
+     "marcadas": [
+      6
+     ],
+     "ok": [
+      6
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Se puede cerrar cada uno a mano con close() o usar try-with-resources, que los cierra solo."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el propósito de la interfaz ResultSetMetaData en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para ejecutar consultas SQL en la base de datos.",
+      "Para representar los datos en un ResultSet.",
+      "Para realizar operaciones de actualización en una base de datos.",
+      "Para representar los metadatos de un ResultSet, como el número de columnas y sus tipos."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "ResultSetMetaData describe el resultado: cantidad de columnas, sus nombres y sus tipos."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué es un controlador JDBC de tipo 4?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un controlador que se utiliza para crear interfaces de usuario gráficas.",
+      "Un controlador que solo se utiliza en aplicaciones web.",
+      "Un controlador que se utiliza para conectarse a bases de datos locales.",
+      "Un controlador que se conecta directamente a la base de datos sin requerir una instalación adicional."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El tipo 4 es puro Java: habla directo con el protocolo de la base, sin instalar nada aparte."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de las siguientes opciones describe mejor el propósito de JDBC en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es una biblioteca para conectarse a bases de datos y realizar operaciones de bases de datos.",
+      "Es una biblioteca para crear animaciones en Java.",
+      "Es una biblioteca para el procesamiento de imágenes.",
+      "Es una biblioteca para crear interfaces de usuario gráficas."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "JDBC es la API estándar de Java para conectarse a una base y ejecutar SQL."
+    },
+    {
+     "origen": "2026",
+     "en": "JPQL es:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Ninguna de las anteriores",
+      "Es el nombre que se le da a SQL en JPA",
+      "Un lenguaje de consultas",
+      "Un API para hacer consultas"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "JPQL es un lenguaje de consultas sobre entidades (SELECT p FROM Persona p), no sobre tablas."
+    },
+    {
+     "origen": "2026",
+     "en": "Cuales son ventajas de utilizar en modo embebido un motor de base de datos",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "velocidad",
+      "simplicidad",
+      "solo una conexion por aplicacion"
+     ],
+     "marcadas": [
+      0,
+      1
+     ],
+     "ok": [
+      0,
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un motor embebido (como H2 en memoria) no necesita un servidor aparte: es rápido y simple de configurar."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el propósito de una conexión en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para establecer una comunicación segura con un servidor web.",
+      "Para enviar solicitudes HTTP.",
+      "Para crear una nueva base de datos.",
+      "Para ejecutar consultas SQL."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con la Connection se crean los Statement que ejecutan el SQL."
+    },
+    {
+     "origen": "2026",
+     "en": "Como evitamos los problemas de tener AutoCommit activado a la hora de manejar una transaccion.",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "A la hora de ejecutar la transaccion aunque esta quede a la mitad, por alguna razon, java automaticamente sabra que no se termino de ejecutar todas las instrucciones y hara un rollback automatico",
+      "No hay ningun problema en tener AutoCommit activado, ya que este viene activado por defecto en java",
+      "A la hora de ejecutar la transaccion si esta queda a la mitad, por alguna razon, los resultados pueden llegar a no ser los esperados"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con autocommit cada sentencia se confirma sola: si la transacción se corta a la mitad, quedan cambios a medias. Por eso se hace setAutoCommit(false) y después commit o rollback."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué es un Savepoint en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un punto de restauración para volver a un estado anterior de la base de datos.",
+      "Una declaración SQL que se ejecuta automáticamente al abrir una conexión.",
+      "Un controlador JDBC para guardar archivos de texto.",
+      "Un tipo de transacción que no se puede deshacer."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un Savepoint marca un punto dentro de la transacción para poder volver hasta ahí con rollback."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes interfaces en JDBC se utiliza para ejecutar una consulta SQL parametrizada?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Connection",
+      "ResultSet",
+      "PreparedStatement",
+      "Statement"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "PreparedStatement usa ? como parámetros y evita la inyección SQL."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones es verdadera sobre el manejo de excepciones en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las excepciones en JDBC solo pueden ocurrir en el servidor de la base de datos.",
+      "Las excepciones en JDBC se manejan automáticamente y no es necesario escribir código para ello.",
+      "Las excepciones en JDBC deben ser capturadas y manejadas adecuadamente para garantizar la robustez del programa.",
+      "Las excepciones en JDBC no son importantes y no afectan la ejecución del programa."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Los métodos de JDBC tiran SQLException (controlada): hay que capturarla o declararla."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es un conector JDBC en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un componente utilizado para crear formularios web.",
+      "Un componente utilizado para establecer una conexión con una base de datos específica.",
+      "Un componente utilizado para crear bases de datos.",
+      "Un componente utilizado para crear interfaces de usuario."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El conector (driver) es el que sabe hablar con una base en particular: H2, MySQL, PostgreSQL."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito de un ResultSet en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para representar un driver JDBC.",
+      "Para representar una conexión a una base de datos.",
+      "Para representar el resultado de una consulta SQL.",
+      "Para representar una tabla en una base de datos."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El ResultSet tiene las filas que devolvió el SELECT; se recorre con next()."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué significa \"fetching\" en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La creación de una conexión a la base de datos.",
+      "La desconexión de la base de datos.",
+      "La ejecución de una consulta SQL.",
+      "La recuperación de datos de un ResultSet."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Fetching = ir trayendo las filas del ResultSet (rs.next(), rs.getString(…))."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué significa JDBC en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Java Data Binding Connection",
+      "Java Database Connectivity",
+      "Java Database Communication",
+      "Java Database Connector"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "JDBC = Java Database Connectivity."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones describe mejor un PreparedStatement en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es una consulta SQL que se ejecuta directamente sin preparación previa.",
+      "Es una consulta SQL que no se puede utilizar con parámetros.",
+      "Es una consulta SQL que solo se utiliza para búsquedas complejas.",
+      "Es una consulta SQL que se prepara y compila antes de su ejecución."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Se compila una vez y se ejecuta muchas veces cambiando los parámetros."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito de la interfaz Statement en JDBC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para ejecutar procedimientos almacenados en la base de datos.",
+      "Para representar una conexión a la base de datos.",
+      "Para enviar consultas SQL a la base de datos.",
+      "Para representar el resultado de una consulta SQL."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Statement manda SQL fijo a la base (executeQuery, executeUpdate)."
+    },
+    {
+     "origen": "2023",
+     "en": "El framework de colecciones de Java se puede utilizar en JPA pero sin utilizar generics.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "En JPA las colecciones se usan con genéricos: List<Pedido> pedidos en un @OneToMany."
+    },
+    {
+     "origen": "2023",
+     "en": "La clase Persistence contiene un método mediante el cuál se obtiene una instancia de EntityManager.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Falso",
+      "Verdadero"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      0.0,
+      1.0
+     ],
+     "estado": "Incorrecta",
+     "ex": "Persistence.createEntityManagerFactory(…) da una EntityManagerFactory, y el EntityManager sale de esa fábrica.",
+     "corr": "Persistence no da el EntityManager directamente: primero se obtiene la fábrica."
+    },
+    {
+     "origen": "2023",
+     "en": "Es mejor utilizar JPA en lugar de JDBC, ya que JPA reemplaza a JDBC.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Falso",
+      "Verdadero"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      0.0,
+      1.0
+     ],
+     "estado": "Incorrecta",
+     "ex": "JPA no reemplaza a JDBC: lo usa por debajo (Hibernate ejecuta el SQL con JDBC).",
+     "corr": "JPA trabaja arriba de JDBC; no lo reemplaza."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cómo se llama el archivo con el que se configura JPA?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "meta-inf.xml",
+      "jpa-persit.xml",
+      "persistence.xml",
+      "persist.xml"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "persistence.xml, en src/main/resources/META-INF."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué es JPA?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "La nueva versión de JDBC",
+      "Una API",
+      "Un framework",
+      "Un componente de SpringBoot"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "JPA es una especificación (una API). Hibernate es una implementación."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es la manera correcta de buscar un Usuario por id (asumiendo que id es una variable que contiene el id que se desea buscar)?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Usuario u = em.find(Usuario.class, id);",
+      "Usuario u = em.findById(Usuario, id);",
+      "Usuario u = em.find(id, Usuario);",
+      "Usuario u = em.find(id, Usuario.class);"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "em.find(Clase.class, id) devuelve la entidad, o null si no existe."
+    },
+    {
+     "origen": "2023",
+     "en": "Utilizando JPA se pueden realizar consultas SQL \"nativas\".",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Sí: em.createNativeQuery(\"SELECT …\")."
+    },
+    {
+     "origen": "2023",
+     "en": "EntityManager es la interfaz de interacción con el contexto de persistencia.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El EntityManager persiste, busca, actualiza y borra entidades dentro del contexto de persistencia."
+    }
+   ]
+  },
+  {
+   "n": "07",
+   "archivo": "cuestionario-07-spring.pdf",
+   "titulo": "Spring",
+   "intento": {
+    "anio": 2026,
+    "nota": "15,00/15,00"
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "Cuales son los scopes mas comunes para los beans. Seleccione una o mas opciones.",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Builder",
+      "Todas son correctas",
+      "Singleton",
+      "Ninguna es correcta",
+      "Prototype"
+     ],
+     "marcadas": [
+      2,
+      4
+     ],
+     "ok": [
+      2,
+      4
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Los scopes más usados son singleton (el de por defecto) y prototype. Builder es un patrón, no un scope."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione la/las opciones correctas referido a el Scope Singleton",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Se crea una nueva instancia del bean cada vez que se solicita al contenedor de Spring",
+      "Un solo bean es compartido por toda la aplicacion",
+      "Se crea una instancia por cada request web."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Singleton: Spring crea una sola instancia y la comparte. La a es prototype y la c es request."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Como se le indica a Spring las dependencias que tiene que inyectar?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "XML o Anotacion",
+      "Anotacion o JSON",
+      "XML o JSON"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con XML (el viejo applicationContext.xml) o con anotaciones (@Component, @Autowired). Con JSON no."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué módulo de Spring Boot se utiliza para trabajar con bases de datos a través de la capa de persistencia?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Spring Boot Web",
+      "Spring Boot Data",
+      "Spring Boot Security",
+      "Spring Boot Actuator"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Spring Data (spring-boot-starter-data-jpa) es el de la capa de persistencia."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué verbo HTTP se utiliza para eliminar un recurso del servidor?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "GET",
+      "REMOVE",
+      "DELETE",
+      "PUT"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "DELETE /recurso/{id} borra el recurso."
+    },
+    {
+     "origen": "2026",
+     "en": "La principal diferencia entre PUT y PATCH es que:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "PATCH envía datos en XML y PUT en JSON",
+      "PUT reemplaza todo el recurso y PATCH modifica partes específicas",
+      "PUT sólo se usa en bases de datos relacionales",
+      "PUT crea recursos y PATCH los elimina"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "PUT manda el recurso completo y lo reemplaza; PATCH manda solo los campos que cambian."
+    },
+    {
+     "origen": "2026",
+     "en": "Al realizar una petición DELETE a `clientes/5`, ¿qué acción se espera del servidor?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Consultar el estado del cliente 5",
+      "Crear un nuevo cliente con ID 5",
+      "Actualizar parcialmente los datos del cliente 5",
+      "Eliminar al cliente con ID 5"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "DELETE /clientes/5 = borrar el cliente 5."
+    },
+    {
+     "origen": "2026",
+     "en": "Porque esta formado el Uniform Resource Identifier (URI), Seleccione la/las opcion/opciones correcta/correctas.",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Concatenacion del nombre del servidor y el identificador del recurso",
+      "Identificador del recurso",
+      "Nombre del servidor"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "URI = servidor + identificador del recurso: http://servidor/api/clientes/5."
+    },
+    {
+     "origen": "2026",
+     "en": "¿De que se encarga el contenedor de Spring?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Ninguna de las anteriores",
+      "Conectar los objetos entre si",
+      "Crear los objetos"
+     ],
+     "marcadas": [
+      1,
+      2
+     ],
+     "ok": [
+      1,
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El contenedor de Spring (IoC) crea los beans y los conecta entre sí: eso es la inyección de dependencias."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de los siguientes verbos se utiliza para obtener la representación de un recurso?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "PUT",
+      "POST",
+      "PATCH",
+      "GET"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "GET obtiene la representación del recurso."
+    },
+    {
+     "origen": "2026",
+     "en": "La anotacion SpringBootApplication inicializa el contexto de Spring Boot",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "@SpringBootApplication (= @Configuration + @EnableAutoConfiguration + @ComponentScan) arranca el contexto."
+    },
+    {
+     "origen": "2026",
+     "en": "El verbo GET es Idempotente porque multiples solicitudes producen un mismo resultado y es seguro porque no modifica recursos",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "GET es seguro (no modifica nada) e idempotente (repetirlo da lo mismo)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuales son algunas de las funcionalidades que ofrece Spring?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Seguridad y autenticacion",
+      "Desarrollo agil de Aplicaciones",
+      "Arquitectura basada en microservicios",
+      "Interfaz Grafica UI",
+      "Acceso a datos simplificado"
+     ],
+     "marcadas": [
+      0,
+      1,
+      2,
+      4
+     ],
+     "ok": [
+      0,
+      1,
+      2,
+      4
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Seguridad (Spring Security), desarrollo ágil (Spring Boot), microservicios (Spring Cloud) y acceso a datos (Spring Data). La interfaz gráfica no es lo suyo."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué verbo HTTP se emplea para reemplazar completamente un recurso existente con nuevos datos?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "GET",
+      "PATCH",
+      "POST",
+      "PUT"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "PUT reemplaza el recurso completo; PATCH modifica una parte."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de las siguientes opciones describe mejor a Spring Boot CLI?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es un módulo para conectarse a bases de datos fácilmente",
+      "Es una herramienta de línea de comandos para crear y ejecutar aplicaciones rápidamente",
+      "Es un módulo para crear servicios RESTful",
+      "Es un módulo que proporciona características de seguridad"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Spring Boot CLI es una herramienta de línea de comandos para crear y ejecutar aplicaciones rápido."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito de la anotación `@RestController` en Spring?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Definir rutas para servicios REST.",
+      "Configurar la seguridad de la aplicación.",
+      "Definir métodos de consulta en repositorios.",
+      "Configurar la vista de una página web."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@RestController (= @Controller + @ResponseBody) atiende rutas REST y devuelve datos, normalmente JSON."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito principal de la anotación `@RequestMapping` en Spring MVC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Establecer la vista predeterminada de una aplicación.",
+      "Configurar la base de datos de la aplicación.",
+      "Definir propiedades de un bean de Spring.",
+      "Definir rutas para servicios REST."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@RequestMapping asocia una ruta (y un método HTTP) a una clase o a un método del controlador."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito de la anotación `@RequestParam` en Spring MVC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Definir una ruta para un servicio REST.",
+      "Inyectar una dependencia en un controlador.",
+      "Definir propiedades de configuración.",
+      "Obtener valores de los parámetros de la URL o de la query string."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@RequestParam toma valores de la query string: /productos?id=5."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones es cierta sobre Spring Framework?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Spring es solo un framework para el desarrollo web.",
+      "Spring es un lenguaje de programación.",
+      "Spring solo se utiliza en aplicaciones de escritorio.",
+      "Spring es un framework de desarrollo de aplicaciones Java."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Spring es un framework para aplicaciones Java en general, no solo web."
+    },
+    {
+     "origen": "2023",
+     "en": "En el contexto de una URL como \"http://ejemplo.com/producto?id=123\", ¿qué es \"id\" en la query string?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Un controlador de Spring.",
+      "Un parámetro de consulta.",
+      "Un parámetro de ruta.",
+      "Un servicio de Spring."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Lo que va después del ? son parámetros de consulta (query params). Un parámetro de ruta sería /producto/123."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué anotación se utiliza para marcar una clase como un controlador en Spring MVC?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "@Repository",
+      "@RestController",
+      "@Controller",
+      "@Service"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@Controller marca un controlador de Spring MVC.",
+     "ojo": "@RestController también es un controlador (es @Controller + @ResponseBody), pero la clave pide @Controller."
+    }
+   ]
+  },
+  {
+   "n": "08",
+   "archivo": "cuestionario-08-spring-data.pdf",
+   "titulo": "Spring Data",
+   "intento": {
+    "anio": 2026,
+    "nota": "9,00/9,00"
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "¿Cuales son algunas de las funcionalidades destacadas de Spring Data? Seleccione una o mas opciones.",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Definir interfaces sin implementacion explicita y que Spring genere la implementacion en tiempo de ejecucion",
+      "Se debe declarar cada query de forma especifica",
+      "Proporciona jerarquias de interfaces que encapsulan operaciones comunes de CRUD y paginacion."
+     ],
+     "marcadas": [
+      0,
+      2
+     ],
+     "ok": [
+      0,
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Spring Data genera la implementación de tus interfaces al ejecutar y trae la jerarquía CrudRepository → PagingAndSortingRepository → JpaRepository. No hace falta escribir cada query."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué hace el método findAll() en CrudRepository?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Recupera todas las entidades del tipo especificado.",
+      "Elimina todas las entidades.",
+      "Recupera una entidad específica por ID."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "findAll() trae todas las entidades del tipo."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Por qué se debe evitar el uso de findAll() sin restricciones en tablas grandes?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Porque impide realizar consultas con filtros.",
+      "Porque puede consumir demasiada memoria y afectar el rendimiento.",
+      "Porque elimina registros de forma automática."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En una tabla grande trae todo a memoria. Mejor paginar (Pageable) o filtrar."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué representa la capa Model dentro de una aplicación con Spring y JPA?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las entidades del dominio que se mapean a tablas de base de datos.",
+      "Los controladores que exponen endpoints REST.",
+      "Los servicios que aplican reglas del negocio."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Model = las entidades @Entity que se mapean a tablas."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Dónde debe ubicarse la lógica de negocio en una aplicación Spring Data JPA?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Dentro de las interfaces de repositorio.",
+      "En las entidades JPA.",
+      "En las clases anotadas con @Service."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "La lógica de negocio va en el @Service. El repositorio solo accede a los datos."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuándo conviene usar la anotación @Transactional?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Cuando varias operaciones de persistencia deben ejecutarse como una unidad atómica.",
+      "Cuando se desea mejorar el rendimiento de consultas SELECT.",
+      "Cuando se quieren exponer datos por una API REST."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "@Transactional agrupa varias operaciones: se confirman todas o ninguna."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué hace el método save(S entity) en la interfaz CrudRepository?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Guarda una entidad en la base de datos, actualizándola si ya existe.",
+      "Recupera una entidad por su identificador.",
+      "Elimina una entidad de la base de datos."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "save inserta si la entidad es nueva y actualiza si ya existe (según el id)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué devuelve el método findById(ID id) de CrudRepository?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Una lista con todas las entidades.",
+      "Un valor booleano indicando si existe.",
+      "Una entidad envuelta en un Optional, buscada por su identificador."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "findById devuelve un Optional<T>, que puede venir vacío."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cual es la división basica de capas que se sigue en la catedra?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Service, Repository, Model",
+      "Controller, Service, Repository, Model",
+      "Controller, Repository, Model"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Controller → Service → Repository → Model."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es la principal ventaja de usar consultas dinámicas en Spring Data JPA?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Son más eficientes en términos de rendimiento.",
+      "Permiten definir consultas nativas de SQL.",
+      "Generan consultas automáticamente en función del nombre del método y los nombres de las propiedades de la entidad.",
+      "Facilitan la escritura de consultas SQL personalizadas."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Las consultas derivadas se arman solas a partir del nombre del método: findByNombreAndEdad."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes afirmaciones es cierta sobre las consultas nativas en Spring Data?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las consultas nativas se generan automáticamente por Spring Data.",
+      "Las consultas nativas se escriben en SQL puro.",
+      "Las consultas nativas no se pueden utilizar en Spring Data.",
+      "Las consultas nativas se escriben en JPQL."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Las nativas se escriben en el SQL de la base: @Query(value = \"…\", nativeQuery = true)."
+    },
+    {
+     "origen": "2023",
+     "en": "En Spring Data, ¿cuál de las siguientes opciones es cierta acerca de la anotación @NamedQuery?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Se utiliza para definir consultas personalizadas en el repositorio.",
+      "Se utiliza para definir entidades en JPA.",
+      "Es una alternativa a la anotación @Query.",
+      "Requiere el uso de SQL en lugar de JPQL."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@NamedQuery deja la consulta JPQL en la entidad, con un nombre: es la otra forma de declarar lo que hace @Query en el repositorio."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué interfaz de Spring Data proporciona métodos comunes de CRUD, pero no incluye métodos personalizados de consulta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "MongoRepository",
+      "JpaRepository",
+      "CrudRepository",
+      "PagingAndSortingRepository"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "CrudRepository trae lo básico: save, findById, findAll, count, delete… Sin paginación ni métodos extra."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál es el propósito principal de un repositorio en Spring Data?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Definir propiedades de configuración de la aplicación.",
+      "Definir la lógica de negocio de una aplicación.",
+      "Definir rutas para servicios REST.",
+      "Facilitar el acceso a la base de datos y realizar consultas."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El repositorio es la capa de acceso a datos."
+    },
+    {
+     "origen": "2023",
+     "en": "En Spring Data, ¿qué anotación se utiliza para marcar una interfaz como un repositorio?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "@Entity",
+      "@Service",
+      "@Controller",
+      "@Repository"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@Repository marca el componente de acceso a datos. Si la interfaz extiende JpaRepository, ni siquiera hace falta."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de los siguientes NO es un componente clave en Spring Data?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Consulta",
+      "Repositorio",
+      "Servicio",
+      "Entidad"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Los componentes de Spring Data son la entidad, el repositorio y la consulta. El servicio es de la capa de negocio."
+    },
+    {
+     "origen": "2023",
+     "en": "En Spring Data, ¿cuál de las siguientes opciones se utiliza para ordenar los resultados de una consulta?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "@Sort",
+      "@OrderBy",
+      "@SortBy",
+      "@Order"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@OrderBy ordena la colección de una relación (@OneToMany). En los métodos derivados se pone OrderBy en el nombre: findAllByOrderByNombreAsc()."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de los siguientes métodos se utiliza comúnmente en consultas dinámicas de Spring Data JPA para buscar registros que contengan una cadena específica en un campo de texto?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "findByNombreContaining()",
+      "findByFechaBefore()",
+      "findByTextoLike()",
+      "findByEdadGreaterThan()"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Containing arma un LIKE %texto%."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de los siguientes métodos NO es un método de consulta dinámica válido en Spring Data JPA?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Todos son métodos válidos",
+      "findByCiudadAndEstado()",
+      "findByFechaBetween()",
+      "findByTextoOrDescripcion()",
+      "findByEdadLessThan()"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "And, Between, Or y LessThan son palabras válidas de las consultas derivadas."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de los siguientes métodos NO es proporcionado por la interfaz CrudRepository de Spring Data?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "findByNombre()",
+      "save()",
+      "findAll()",
+      "deleteById()"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "findByNombre no viene en CrudRepository: es un método derivado que escribís vos en tu interfaz."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Cuál de las siguientes anotaciones se utiliza para marcar una clase como una entidad en Spring Data JPA?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "@Repository",
+      "@Component",
+      "@Entity",
+      "@Service"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@Entity marca la clase como entidad (una tabla)."
+    },
+    {
+     "origen": "2023",
+     "en": "¿Qué tipo de consulta de Spring Data JPA se utiliza para recuperar todos los registros que coinciden con un valor específico en una columna?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Consulta personalizada",
+      "Consulta JPQL",
+      "Consulta nativa",
+      "Consulta dinámica o derivada"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "findByCiudad(\"Córdoba\") es una consulta derivada: sale del nombre del método."
+    },
+    {
+     "origen": "2023",
+     "en": "En Spring Data, ¿cuál es la función de la anotación `@Query`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Especificar el nombre del repositorio.",
+      "Definir entidades en JPA.",
+      "Definir servicios de la aplicación.",
+      "Especificar consultas personalizadas utilizando JPQL o SQL."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@Query escribe la consulta a mano, en JPQL o en SQL nativo (nativeQuery = true)."
+    },
+    {
+     "origen": "2023",
+     "en": "En Spring Data, ¿cuál de los siguientes tipos de repositorios se utiliza comúnmente para la persistencia de datos en bases de datos relacionales?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "MongoRepository",
+      "CrudRepository",
+      "JpaRepository",
+      "CassandraRepository"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "JpaRepository es el de JPA, para bases relacionales. Mongo y Cassandra son NoSQL."
+    },
+    {
+     "origen": "2023",
+     "en": "En Spring Data JPA, ¿cuál NO es el propósito principal de la anotación @Query?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Especificar consultas personalizadas utilizando JPQL.",
+      "Permitir ejecutar consultas nativas",
+      "Permite escribir consultas SQL.",
+      "Definir entidades en JPA."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "@Query no define entidades: eso lo hace @Entity."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Por qué se recomienda extender JpaRepository en lugar de CrudRepository?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Porque ofrece funcionalidades adicionales como paginación, ordenamiento y métodos avanzados.",
+      "Porque elimina automáticamente las tablas al cerrar la aplicación.",
+      "Porque no requiere anotaciones @Entity."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "JpaRepository extiende a CrudRepository y a PagingAndSortingRepository: suma paginación, orden, flush y operaciones en lote."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Cual es el proposito principal de Spring Data?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Simplificar el acceso a datos en aplicaciones java",
+      "Reducir la configuracion inicial y permitir comenzar a escribir codigo rapidamente",
+      "Supervisar y administrar la aplicacion"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Spring Data simplifica el acceso a datos: los repositorios salen solos. La b es Spring Boot y la c es Actuator."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué devuelve el método count() de CrudRepository?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Una lista con todas las entidades.",
+      "El identificador de la última entidad creada.",
+      "El número total de entidades en la base de datos."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "count() devuelve la cantidad total de entidades (un long)."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Por qué no se recomienda exponer directamente entidades JPA en la API?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Porque las entidades no funcionan con controladores REST.",
+      "Porque las entidades no pueden serializarse en JSON.",
+      "Para evitar exponer datos sensibles y mantener independencia entre modelo interno y externo."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Con DTOs no se filtran datos sensibles y se puede cambiar la entidad sin romper la API. También se evitan ciclos al pasar las relaciones a JSON."
+    },
+    {
+     "origen": "2025",
+     "en": "Para almacenar datos con Spring Data es necesario definir interfaces que hereden de interfaces proporcionadas por Spring. Luego Spring generara las implementaciones en tiempo de ejecucion sin necesidad de que el programador las haga.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Extendés JpaRepository<Entidad, Id> y Spring arma la implementación al ejecutar."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Para qué se utiliza el método existsById(ID id)?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para contar el número de entidades en la base de datos.",
+      "Para comprobar si una entidad con un ID determinado existe.",
+      "Para eliminar una entidad existente."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "existsById devuelve true o false según haya o no una entidad con ese id."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Cuál de las siguientes acciones corresponde a la responsabilidad de un Controller?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Ejecutar consultas personalizadas con JPQL.",
+      "Decidir si la respuesta será 200 OK, 404 Not Found o 201 Created.",
+      "Validar reglas del negocio como evitar duplicados."
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El controller arma la respuesta HTTP (200, 201, 404). La a es del repositorio y la c, del servicio."
+    }
+   ]
+  },
+  {
+   "n": "10",
+   "archivo": "cuestionario-10-seguridad.pdf",
+   "titulo": "Seguridad",
+   "intento": {
+    "anio": 2026,
+    "nota": "13,50/15,00"
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "Para obtener un token válido, una opción es utilizar Postman. En este caso Postman interpreta el rol de:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El Cliente",
+      "El Resource Server",
+      "El Authorization Server",
+      "El Resource Owner"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Postman es la aplicación que pide el token y llama a la API en nombre del usuario: hace de Cliente."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuáles de los siguientes son claims estándar de un JWT?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "sub",
+      "exp",
+      "url"
+     ],
+     "marcadas": [
+      0,
+      1
+     ],
+     "ok": [
+      0,
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "sub (a quién se refiere el token) y exp (cuándo vence) son claims registrados, como iss, aud e iat. url no."
+    },
+    {
+     "origen": "2026",
+     "en": "En relación a JWT, los \"claims\" son:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Permisos de un usuario",
+      "Datos sobre un usuario",
+      "Roles de un usuario",
+      "Afirmaciones sobre un usuario"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Los claims son afirmaciones sobre el usuario: quién es, cuándo vence el token, qué roles tiene."
+    },
+    {
+     "origen": "2026",
+     "en": "Si se está utilizando un API GW, este es el único lugar donde se podría controlar la validez de un token de autorización.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El token también se puede validar en cada microservicio (como Resource Server), no solo en el gateway."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué significa un código HTTP 401 en Spring Security?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "La petición es inválida por sintaxis",
+      "El token está expirado pero los permisos son correctos",
+      "El recurso no existe",
+      "El usuario no está autenticado"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "401 = no autenticado (falta el token o no es válido). 403 = autenticado pero sin permiso."
+    },
+    {
+     "origen": "2026",
+     "en": "La configuración por defecto de Spring Security, donde se genera un password aleatorio, es la recomendada ya que el log donde se ve ese password es solamente accesible si se tiene acceso al servidor.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Falso",
+      "Verdadero"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El password aleatorio es solo para desarrollo. En producción se configuran usuarios o tokens."
+    },
+    {
+     "origen": "2026",
+     "en": "Tomando como ejemplo el sistema de Autogestión de la Universidad y bajo los roles de OAuth2, un alumno es:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El Resource Server.",
+      "El Resource Owner y el Cliente",
+      "El Resource Owner",
+      "El Cliente"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      0,
+      1
+     ],
+     "estado": "Incorrecta",
+     "ex": "Roles de OAuth2: Resource Owner (el usuario dueño de los datos), Cliente (la aplicación), Authorization Server (da los tokens) y Resource Server (la API).",
+     "corr": "El alumno es el dueño de sus datos (Resource Owner). El Cliente es la aplicación (Autogestión), que accede a esos datos en su nombre."
+    },
+    {
+     "origen": "2026",
+     "en": "En el \"Grant type\" Authorization Code:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Authorization Code es el nombre que se le da al token que devuelve el AS",
+      "El Resource Owner es redireccionado al Resource Server",
+      "El Resource Owner es redireccionado al AS",
+      "El cliente le solicita las credenciales al usuario"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En Authorization Code el usuario es redirigido al Authorization Server, se loguea ahí y vuelve con un código que el cliente cambia por el token. El cliente nunca ve las credenciales."
+    },
+    {
+     "origen": "2026",
+     "en": "OAuth2 define un endpoint especial denominado \"User Info\" para obtener información del usuario.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "User Info es un endpoint de OpenID Connect (la capa de identidad que va arriba de OAuth2), no de OAuth2."
+    },
+    {
+     "origen": "2026",
+     "en": "La confidencialidad de la contraseña en el esquema HTTP Basic está garantizada por la codificación Base64",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Base64 es una codificación, no un cifrado: cualquiera la decodifica. Por eso HTTP Basic siempre va con HTTPS."
+    },
+    {
+     "origen": "2026",
+     "en": "Con la anotación @PreAuthorize es posible realizar validaciones de seguridad a nivel de métodos.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "@PreAuthorize(\"hasRole('ADMIN')\") controla el acceso método por método."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuáles son roles definidos en OAuth2?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "DB Manager",
+      "Authorization Server",
+      "Resource Server"
+     ],
+     "marcadas": [
+      0,
+      1
+     ],
+     "ok": [
+      1,
+      2
+     ],
+     "puntos": [
+      0.5,
+      1
+     ],
+     "estado": "Parcialmente correcta",
+     "ex": "Los cuatro roles de OAuth2 son Resource Owner, Client, Authorization Server y Resource Server.",
+     "corr": "«DB Manager» no es un rol de OAuth2. Faltó la c, Resource Server."
+    },
+    {
+     "origen": "2026",
+     "en": "Utilizando Spring Security, los distintos roles que pueda tener un usuario deben leerse, obligatoriamente, del claim \"scope\"",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Los roles pueden venir de otro claim (por ejemplo realm_access.roles en Keycloak). Se configura con un converter."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuáles son características de la codificación?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Garantiza que nadie pueda leer la información",
+      "Convierte datos a otro formato para transmisión",
+      "No protege seguridad, solo cambia representación",
+      "Usa claves secretas para revertirla"
+     ],
+     "marcadas": [
+      1,
+      2
+     ],
+     "ok": [
+      1,
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Codificar es cambiar la representación (Base64, URL encoding). No usa claves ni protege nada: eso es cifrar."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué sucede al agregar la dependencia `spring-boot-starter-security` a un proyecto?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Se genera un password automático para desarrollo",
+      "Se activa la seguridad con configuración por defecto",
+      "Los endpoints quedan accesibles sin autenticación",
+      "Se habilita solo autenticación por tokens"
+     ],
+     "marcadas": [
+      0,
+      1
+     ],
+     "ok": [
+      0,
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con el starter, todos los endpoints piden login y se genera el usuario «user» con una password aleatoria que aparece en el log."
+    }
+   ]
+  },
+  {
+   "n": "11",
+   "archivo": "cuestionario-11-contenerizacion.pdf",
+   "titulo": "Contenerización (Docker)",
+   "intento": null,
+   "preguntas": [
+    {
+     "origen": "2025",
+     "en": "¿Qué indica la propiedad depends_on en Compose?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Que el contenedor debe reiniciarse al fallar",
+      "Que un servicio debe iniciarse antes que otro",
+      "Que los servicios comparten volumen",
+      "Que un servicio depende del puerto de otro"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "depends_on ordena el arranque: el servicio arranca después de los servicios de los que depende."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué propósito cumple el archivo Dockerfile?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Define las instrucciones para construir una imagen",
+      "Ejecuta directamente el contenedor",
+      "Gestiona redes y volúmenes",
+      "Establece el entorno base y dependencias de la aplicación"
+     ],
+     "marcadas": [
+      0,
+      3
+     ],
+     "ok": [
+      0,
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El Dockerfile es la receta de la imagen: FROM (la base), COPY, RUN (las dependencias)…"
+    },
+    {
+     "origen": "2025",
+     "en": "¿Cuándo se recomienda usar ENTRYPOINT?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Cuando el contenedor debe actuar como un ejecutable fijo",
+      "Para copiar archivos al contenedor",
+      "Cuando deseamos definir variables de entorno",
+      "Cuando queremos que el comando principal no se sobrescriba fácilmente"
+     ],
+     "marcadas": [
+      0,
+      3
+     ],
+     "ok": [
+      0,
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "ENTRYPOINT fija el ejecutable: lo que se pasa en docker run se le suma como argumento en vez de reemplazarlo (como pasa con CMD)."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué hace la instrucción EXPOSE en un Dockerfile?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Configura el firewall del host",
+      "Publica el puerto automáticamente en el host",
+      "Documenta los puertos que la aplicación usa dentro del contenedor",
+      "Conecta redes entre contenedores"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "EXPOSE solo documenta el puerto. Para publicarlo en el host hace falta -p, o ports en Compose."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Cuál es la relación entre imagen y contenedor?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "La imagen actúa como plantilla; el contenedor es su instancia en ejecución",
+      "Son sinónimos en Docker",
+      "Un contenedor crea la imagen al iniciarse",
+      "Una imagen puede generar múltiples contenedores independientes"
+     ],
+     "marcadas": [
+      0,
+      3
+     ],
+     "ok": [
+      0,
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "La imagen es la plantilla (de solo lectura) y cada contenedor es una instancia en ejecución. De una imagen salen muchos."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué representa un contenedor en Docker?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Una máquina virtual con su propio sistema operativo completo",
+      "Un proceso ligero que comparte el kernel del sistema operativo",
+      "Un entorno aislado que ejecuta una aplicación y sus dependencias",
+      "Un archivo binario ejecutable independiente del host"
+     ],
+     "marcadas": [
+      1,
+      2
+     ],
+     "ok": [
+      1,
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Un contenedor es un proceso aislado que comparte el kernel del host: no trae un sistema operativo entero."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Cuál es una diferencia clave entre Docker y una máquina virtual?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Las VMs ejecutan su propio sistema operativo completo",
+      "Docker consume más RAM que una VM",
+      "Docker comparte el kernel del host",
+      "Las VMs son más rápidas en inicio"
+     ],
+     "marcadas": [
+      0,
+      2
+     ],
+     "ok": [
+      0,
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "La VM virtualiza hardware y tiene su propio sistema operativo. Docker comparte el kernel: es más liviano y arranca más rápido."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Para qué sirve Docker Compose?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Compilar código fuente Java",
+      "Crear imágenes base de Linux",
+      "Definir servicios, redes y volúmenes en un archivo YAML",
+      "Orquestar múltiples contenedores como un solo sistema"
+     ],
+     "marcadas": [
+      2,
+      3
+     ],
+     "ok": [
+      2,
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "docker-compose.yml define servicios, redes y volúmenes, y docker compose up los levanta juntos."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué hace docker build?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Construye una imagen a partir de un Dockerfile",
+      "Inicia múltiples contenedores simultáneamente",
+      "Ejecuta una imagen existente",
+      "Borra imágenes obsoletas"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "docker build -t nombre . arma la imagen siguiendo el Dockerfile."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué ventaja tiene declarar volúmenes en docker-compose.yml?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Centraliza la configuración y persistencia de datos",
+      "Requiere permisos de administrador",
+      "Permite reutilizar volúmenes entre servicios",
+      "Los elimina automáticamente al detener los contenedores"
+     ],
+     "marcadas": [
+      0,
+      2
+     ],
+     "ok": [
+      0,
+      2
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Declarados en la sección volumes: quedan en un solo lugar y se comparten entre servicios. No se borran al detener."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Cuál es una buena práctica con volúmenes nombrados?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Definirlos dentro de cada servicio sin documentación",
+      "Evitar montajes en directorios críticos del host",
+      "Reutilizar nombres genéricos en varios entornos",
+      "Usar nombres descriptivos y únicos"
+     ],
+     "marcadas": [
+      1,
+      3
+     ],
+     "ok": [
+      1,
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Nombres descriptivos y únicos, y nada de montar carpetas críticas del host."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué sucede con los contenedores dentro de una misma red Compose?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "No requieren exponer puertos al host",
+      "Requieren IP fija",
+      "Usan siempre localhost",
+      "Pueden comunicarse por nombre de servicio"
+     ],
+     "marcadas": [
+      0,
+      3
+     ],
+     "ok": [
+      0,
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "En la misma red de Compose se hablan por el nombre del servicio (http://db:5432), sin publicar puertos al host."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Para qué sirven los volúmenes en Docker?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Permiten persistir datos fuera del contenedor",
+      "Facilitan compartir archivos entre contenedores",
+      "Requieren reiniciar Docker para crearse",
+      "Almacenan imágenes de contenedores"
+     ],
+     "marcadas": [
+      0,
+      1
+     ],
+     "ok": [
+      0,
+      1
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "El volumen guarda los datos fuera del contenedor (sobreviven si se borra) y se puede compartir."
+    },
+    {
+     "origen": "2025",
+     "en": "Docker es una plataforma que permite crear, distribuir y ejecutar aplicaciones dentro de contenedores, garantizando que se comporten igual en cualquier entorno",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Verdadero",
+      "Falso"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Docker empaqueta la aplicación con sus dependencias en contenedores que corren igual en cualquier lado."
+    },
+    {
+     "origen": "2025",
+     "en": "¿Qué componentes forman parte del Docker Engine?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "containerd",
+      "Host OS",
+      "Hypervisor",
+      "dockerd"
+     ],
+     "marcadas": [
+      0,
+      3
+     ],
+     "ok": [
+      0,
+      3
+     ],
+     "puntos": [
+      1.0,
+      1.0
+     ],
+     "estado": "Correcta",
+     "ex": "Docker Engine = dockerd (el demonio) y containerd (maneja los contenedores), más la CLI. No usa hypervisor."
+    }
+   ]
+  }
+ ]
+}
