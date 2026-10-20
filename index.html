@@ -1635,10 +1635,29 @@
   .cal-d.finde{color:var(--muted)}
   .cal-d.pasado{color:var(--muted);opacity:.55}
   .cal-d.marca{background:var(--F);color:var(--T);font-weight:650;box-shadow:inset 0 -2.5px 0 var(--C);opacity:1}
-  .cal-d.varias::after{content:"";position:absolute;top:3px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--C)}
+  /* Dos cosas el mismo día: partido en diagonal (de abajo a la izquierda hasta arriba a la derecha); tres: en franjas.
+     Cada ícono va en la parte de su color */
+  .cal-d{--F1:var(--f1);--F2:var(--f2);--F3:var(--f3);--T1:var(--t1);--T2:var(--t2);--T3:var(--t3);--C1:var(--c1);--C2:var(--c2);--C3:var(--c3)}
+  html[data-tema="oscuro"] .cal-d{--F1:var(--fd1);--F2:var(--fd2);--F3:var(--fd3);--T1:var(--td1);--T2:var(--td2);--T3:var(--td3);--C1:var(--cd1);--C2:var(--cd2);--C3:var(--cd3)}
+  .cal-d.dos,.cal-d.tres{--G1:color-mix(in srgb,var(--C1) 30%,var(--F1));--G2:color-mix(in srgb,var(--C2) 30%,var(--F2));--G3:color-mix(in srgb,var(--C3) 30%,var(--F3));color:var(--text);box-shadow:none}
+  .cal-d.dos{background:linear-gradient(to bottom right,var(--G1) calc(50% - .8px),var(--card) calc(50% - .8px) calc(50% + .8px),var(--G2) calc(50% + .8px))}
+  .cal-d.tres{background:linear-gradient(var(--G1) calc(33.33% - .7px),var(--card) calc(33.33% - .7px) calc(33.33% + .7px),var(--G2) calc(33.33% + .7px) calc(66.67% - .7px),var(--card) calc(66.67% - .7px) calc(66.67% + .7px),var(--G3) calc(66.67% + .7px))}
+  .cal-d .ti{position:absolute;width:8px;height:8px;color:var(--T);pointer-events:none}
+  .cal-d.marca .ti1{top:3px;right:4px}
+  .cal-d.dos .ti1{right:auto;left:4px;color:var(--T1)}
+  .cal-d.dos .ti2{bottom:3px;right:4px;color:var(--T2)}
+  .cal-d.tres .ti{right:3px;width:7px;height:7px}
+  .cal-d.tres .ti1{top:calc(16.67% - 3.5px);color:var(--T1)}
+  .cal-d.tres .ti2{top:calc(50% - 3.5px);color:var(--T2)}
+  .cal-d.tres .ti3{top:calc(83.33% - 3.5px);color:var(--T3)}
   .cal-d.hoy{box-shadow:inset 0 0 0 1.5px var(--accent);color:var(--accent);font-weight:650;opacity:1}
   .cal-d.hoy.marca{box-shadow:inset 0 0 0 1.5px var(--accent),inset 0 -3px 0 var(--C)}
+  .cal-d.hoy.dos,.cal-d.hoy.tres{box-shadow:inset 0 0 0 1.5px var(--accent)}
   .cal-d.sel{background:var(--text);color:var(--bg);box-shadow:none;opacity:1}
+  .cal-d.sel .ti{color:var(--bg)}
+  .cal-ley{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:10px;font-size:.72rem;color:var(--muted)}
+  .cal-ley span{display:inline-flex;align-items:center;gap:4px}
+  .cal-ley .ti,.cal-tipos .ti{width:9px;height:9px;flex:none}
   .cal-sub{font-size:.78rem;font-weight:500;color:var(--muted);margin:20px 0 2px}
   .cal-vacio{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:6px}
   .fe-btn{display:block;width:100%;font:inherit;text-align:left;border:0;background:none;color:inherit;cursor:pointer;padding:0;border-radius:8px}
@@ -1650,7 +1669,7 @@
   .fe-q{flex:1;min-width:0}
   .fe-q b{display:block;font-weight:500;font-size:.88rem}
   .fe-q small{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden}
-  .fe-q small i{width:6px;height:6px;border-radius:50%;background:var(--C);flex:none}
+  .fe-q small .ti{width:8px;height:8px;color:var(--C);flex:none}
   .fe-q small span{overflow:hidden;text-overflow:ellipsis}
   .cr .sync{margin:10px 0 0}
   .fe-falta{font-size:.76rem;color:var(--muted);white-space:nowrap}
@@ -1671,7 +1690,7 @@
   .cal-pop-acc{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
   .cal-pop-ya{display:flex;flex-direction:column;gap:4px;margin-bottom:4px}
   .cal-pop-ya div{display:flex;align-items:center;gap:8px;font-size:.84rem;padding:5px 4px 5px 10px;border-radius:8px;background:var(--F);color:var(--T)}
-  .cal-pop-ya i{width:6px;height:6px;border-radius:50%;background:var(--C);flex:none}
+  .cal-pop-ya .ti{width:9px;height:9px;color:var(--C);flex:none}
   .cal-pop-ya span{flex:1;min-width:0}
   .cal-pop-ya button{display:grid;place-items:center;width:26px;height:26px;border:0;background:none;color:inherit;border-radius:7px;cursor:pointer;opacity:.7}
   .cal-pop-ya button:hover{opacity:1;background:rgba(0,0,0,.06)}
@@ -7700,7 +7719,19 @@ const DIAS_CR = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"
 const DIAS_CORTO = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 const TURNOS = [["Mañana", 7 * 60 + 45, 13 * 60], ["Tarde", 13 * 60, 17 * 60], ["Noche", 17 * 60, 23 * 60 + 15]];
-const TIPOS_FECHA = ["Parcial", "Recuperatorio", "TP", "Entrega", "Otro"];
+const TIPOS_FECHA = ["Parcial", "Recuperatorio", "TP", "TPI", "Entrega", "Otro"];
+/* Un ícono por tipo, para reconocerlos de un vistazo en el calendario: el recuperatorio es la estrella del parcial vacía */
+const ICONO_TIPO = {
+  Parcial: '<path d="M5 .5l1.4 2.9 3.1.4-2.3 2.2.6 3.1L5 7.6 2.2 9.1l.6-3.1L.5 3.8l3.1-.4z"/>',
+  Recuperatorio: '<path d="M5 .5l1.4 2.9 3.1.4-2.3 2.2.6 3.1L5 7.6 2.2 9.1l.6-3.1L.5 3.8l3.1-.4z" transform="translate(5 5) scale(.84) translate(-5 -5)" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+  TP: '<circle cx="5" cy="5" r="3.1"/>',
+  TPI: '<path d="M5 .7L9.3 5 5 9.3.7 5z"/>',
+  Entrega: '<path d="M5 1l4.3 7.8H.7z"/>',
+  Otro: '<circle cx="5" cy="5" r="2.7" fill="none" stroke="currentColor" stroke-width="1.5"/>'
+};
+// Los TPI anotados como TP antes de que existiera el tipo TPI se reconocen por el nombre
+const tipoFecha = x => x.tipo === "TP" && /\bTPI\b/i.test(x.nombre || "") ? "TPI" : ICONO_TIPO[x.tipo] ? x.tipo : "Otro";
+const iconoTipo = (t, cls = "") => `<svg class="ti ${cls}" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">${ICONO_TIPO[t]}</svg>`;
 const aMin = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
 const hhmm = v => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, "0")}`;
 const claveDia = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -7965,9 +7996,12 @@ function mesCr(a, m){
     <div class="cal-sem">${"LMMJVSD".split("").map(x => `<span>${x}</span>`).join("")}</div><div class="cal-dias">`;
   for(let i = 0; i < ini; i++) h += "<span></span>";
   for(let d = 1; d <= dias; d++){
-    const k = claveDia(new Date(a, m, d)), mk = fechas[k] || [], finde = (ini + d - 1) % 7 >= 5;
-    const col = mk.length ? colorMat(mk[0].k || "").css : "";
-    h += `<button class="cal-d mc ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""} ${mk.length ? "marca" : ""} ${mk.length > 1 ? "varias" : ""} ${k === CR.sel ? "sel" : ""}" data-cr="dia" data-dia="${k}" ${col ? `style="${col}"` : ""} title="${mk.map(x => x.nombre).join(" · ") || "Anotar algo este día"}">${d}</button>`;
+    const k = claveDia(new Date(a, m, d)), mk = (fechas[k] || []).slice(0, 3), finde = (ini + d - 1) % 7 >= 5;
+    // Un color por cosa anotada: con dos el día se parte en diagonal, con tres en franjas
+    const col = mk.length === 1 ? colorMat(mk[0].k || "").css
+      : mk.map((x, i) => { const c = colorMat(x.k || ""); return `--c${i + 1}:${c.c};--f${i + 1}:${c.f};--t${i + 1}:${c.t};--cd${i + 1}:${c.cd};--fd${i + 1}:${c.fd};--td${i + 1}:${c.td}`; }).join(";");
+    const iconos = mk.map((x, i) => iconoTipo(tipoFecha(x), "ti" + (i + 1))).join("");
+    h += `<button class="cal-d mc ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""} ${mk.length ? "marca" : ""} ${["", "", "dos", "tres"][mk.length]} ${k === CR.sel ? "sel" : ""}" data-cr="dia" data-dia="${k}" ${col ? `style="${col}"` : ""} title="${mk.map(x => x.nombre).join(" · ") || "Anotar algo este día"}">${d}${iconos}</button>`;
   }
   return h + "</div></div>";
 }
@@ -7980,7 +8014,7 @@ function filaFecha(x, boton = "", corto = false){
   const f = deClave(x.dia), i = x.k && infoMat(x.k);
   return `<div class="fe-f mc ${faltaTexto(x.dia) === "hoy" || faltaTexto(x.dia) === "mañana" ? "cerca" : ""}" style="${colorMat(x.k || "").css}">
     <span class="fe-d"><b>${f.getDate()}</b>${DIAS_CORTO[f.getDay()]}</span>
-    <span class="fe-q"><b>${esc(x.nombre)}</b>${i ? `<small${corto && i.abr ? ` title="${esc(i.nombre)}"` : ""}><i></i><span>${esc(corto && i.abr ? i.abr : i.nombre)}</span></small>` : ""}</span>
+    <span class="fe-q"><b>${esc(x.nombre)}</b>${i ? `<small${corto && i.abr ? ` title="${esc(i.nombre)}"` : ""}>${iconoTipo(tipoFecha(x))}<span>${esc(corto && i.abr ? i.abr : i.nombre)}</span></small>` : ""}</span>
     <span class="fe-falta">${faltaTexto(x.dia)}</span>${boton}</div>`;
 }
 function calendarioCr(){
@@ -7992,6 +8026,7 @@ function calendarioCr(){
     <div class="cal-top"><b>Cursada</b><span><button data-cr="mes" data-d="-1" ${CR.mes <= 0 ? "disabled" : ""} aria-label="Mes anterior">‹</button><button data-cr="mes" data-d="1" ${CR.mes >= meses.length - 2 ? "disabled" : ""} aria-label="Mes siguiente">›</button></span></div>
     <div class="cal-rango">${meses.map(([a, m], i) => `<button class="${i === CR.mes || i === CR.mes + 1 ? "on" : ""}" data-cr="mes-ir" data-i="${i}">${MESES[m].slice(0, 3)}</button>`).join("")}</div>
     ${meses.slice(CR.mes, CR.mes + 2).map(([a, m]) => mesCr(a, m)).join("")}
+    <div class="cal-ley">${TIPOS_FECHA.map(t => `<span>${iconoTipo(t)}${t === "Recuperatorio" ? "Recup." : t}</span>`).join("")}</div>
     <div class="cal-sub">Próximas fechas</div>
     ${prox.length ? prox.map(x => `<button class="fe-btn" data-cr="dia" data-dia="${x.dia}">${filaFecha(x, "", true)}</button>`).join("") : `<p class="cal-vacio">Tocá un día para anotar un parcial, un TP o una entrega.</p>`}
     ${CR.sel ? popFecha() : ""}`;
@@ -8003,11 +8038,11 @@ function popFecha(){
   if(CR.form.k == null && curs.length) CR.form.k = curs[0].k;
   return `<div class="cal-pop" id="calPop" role="dialog" aria-label="Anotar el ${f.getDate()} de ${MESES[f.getMonth()]}">
     <h3>${DIAS_CR[(f.getDay() + 6) % 7] || "Domingo"} ${f.getDate()} de ${MESES[f.getMonth()]}</h3>
-    ${lista.length ? `<div class="cal-pop-ya">${lista.map((x, i) => { const im = x.k && infoMat(x.k); return `<div class="mc" style="${colorMat(x.k || "").css}"><i></i><span><b>${esc(x.nombre)}</b>${im ? ` · ${esc(im.abr || im.nombre)}` : ""}</span><button data-cr="borrar-fecha" data-i="${i}" aria-label="Borrar">${ICON_X}</button></div>`; }).join("")}</div>` : ""}
+    ${lista.length ? `<div class="cal-pop-ya">${lista.map((x, i) => { const im = x.k && infoMat(x.k); return `<div class="mc" style="${colorMat(x.k || "").css}">${iconoTipo(tipoFecha(x))}<span><b>${esc(x.nombre)}</b>${im ? ` · ${esc(im.abr || im.nombre)}` : ""}</span><button data-cr="borrar-fecha" data-i="${i}" aria-label="Borrar">${ICON_X}</button></div>`; }).join("")}</div>` : ""}
     <label>¿Qué hay?</label>
-    <div class="cal-tipos">${TIPOS_FECHA.map(t => `<button class="${CR.form.tipo === t ? "on" : ""}" data-cr="tipo" data-t="${t}">${t}</button>`).join("")}</div>
+    <div class="cal-tipos">${TIPOS_FECHA.map(t => `<button class="${CR.form.tipo === t ? "on" : ""}" data-cr="tipo" data-t="${t}">${iconoTipo(t)}${t}</button>`).join("")}</div>
     <label for="calNombre">Nombre</label>
-    <input id="calNombre" class="cal-in" type="text" maxlength="40" placeholder="${{ Parcial: "1º Parcial", Recuperatorio: "Recuperatorio del 1º", TP: "TP1", Entrega: "Entrega del TPI", Otro: "Consulta, coloquio…" }[CR.form.tipo]}" autocomplete="off">
+    <input id="calNombre" class="cal-in" type="text" maxlength="40" placeholder="${{ Parcial: "1º Parcial", Recuperatorio: "Recuperatorio del 1º", TP: "TP1", TPI: "TPI · 1ª oportunidad", Entrega: "Entrega del TPI", Otro: "Consulta, coloquio…" }[CR.form.tipo]}" autocomplete="off">
     ${curs.length ? `<label>Materia</label><div class="cal-mats">${curs.map(x => `<button class="mc ${CR.form.k === x.k ? "on" : ""}" style="${colorMat(x.k).css}" data-cr="fmat" data-k="${x.k}" title="${esc(x.nombre)}"><i></i>${esc(x.abr || x.nombre)}</button>`).join("")}</div>` : ""}
     <div class="cal-pop-acc"><button class="cr-btn plano" data-cr="cerrar-pop">Cerrar</button><button class="cr-btn pri" data-cr="anotar">Anotar</button></div>
   </div>`;
