@@ -4760,13 +4760,15 @@ function armarPaginas(){
 async function dibujarPag(g){
   if(g.canvas || g.render) return;
   const el = g.el;
-  let s = g.escala * Math.min(window.devicePixelRatio || 1, 2);
-  const px = g.vp.width * g.vp.height * s * s, max = 10e6;   // tope de píxeles por hoja
-  if(px > max) s *= Math.sqrt(max / px);
-  const vp = g.p.getViewport({ scale: s });
+  // El lienzo mide justo la hoja por k (si no, el navegador lo estira y se ve borroso) y se dibuja al doble
+  // de los píxeles de la pantalla (hasta 3×): achicado, el texto chico queda nítido como en el visor del navegador
+  const w = parseFloat(el.style.width), h = parseFloat(el.style.height), max = 12e6;   // tope de píxeles por hoja
+  let k = Math.min(Math.max((window.devicePixelRatio || 1) * 2, 2), 3);
+  if(w * h * k * k > max) k = Math.sqrt(max / (w * h));
   const c = document.createElement("canvas");
-  c.width = Math.floor(vp.width);
-  c.height = Math.floor(vp.height);
+  c.width = Math.round(w * k);
+  c.height = Math.round(h * k);
+  const vp = g.p.getViewport({ scale: c.width / g.vp.width });
   g.render = g.p.render({ canvasContext: c.getContext("2d"), viewport: vp });
   try { await g.render.promise; } catch(e){ return; }      // cancelado: se alejó o cambió el zoom
   finally { if(g.el === el) g.render = null; }
