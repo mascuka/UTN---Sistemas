@@ -84,7 +84,7 @@
      "División entera: `1000 * 50 / 100` da 500, pero `50 / 100 * 1000` da 0. Multiplicá primero.",
      "Algunos preenunciados traen también `equals`, `hashCode` y `toString` con `@Override`: redefinen los que toda clase hereda de `Object`."
     ],
-    "parcial": "Los 5 preenunciados la traen hecha: `Servidor` (3K1), `SolicitudCredito` (Simulacro 1), `Reparacion` (2), `JuegoMesa` (3) y `Consumo` (4). Es lo primero que hay que leer, porque el parcial la extiende.",
+    "parcial": "Los 6 preenunciados la traen hecha: `Servidor` (3K1), `Envio` (3K2), `SolicitudCredito` (Simulacro 1), `Reparacion` (2), `JuegoMesa` (3) y `Consumo` (4). Es lo primero que hay que leer, porque el parcial la extiende.",
     "pdf": 4,
     "java": [
      "bk-servidor"
@@ -517,6 +517,98 @@
        "regex": "private\\s+(final\\s+)?double\\s+tasa",
        "ok": "La tasa no es un atributo",
        "error": "La tasa no se guarda: se calcula en el getter"
+      }
+     ],
+     "parte": 1
+    },
+    {
+     "id": "b1.6",
+     "tema": "Envíos",
+     "titulo": "`Envio`: el costo por kilo, sin decimales",
+     "tipo": "codigo",
+     "compilar": "solo",
+     "donde": "`Envio.java` → la clase entera",
+     "consigna": "La clase `Envio` del Parcial 3K2 (central de envíos). El objeto guarda el peso **neto** en gramos:\n- Atributos `final`: `id` y `zona` (texto) y `gramos` (entero).\n- El constructor recibe los tres datos. Getters de los tres.\n- `costo()`: `500 + 200 × kilos facturables`, en pesos enteros. **Cada fracción de kilo cuenta como un kilo entero**: 1000 g son 1 kilo y 1001 g son 2. Sin `double` ni redondeos.",
+     "datos": "1000 g → **700** · 1001 g → **900** · 1 g → **700** · 30000 g → **6500**.",
+     "pasos": [
+      "Tres atributos `private final`: `id`, `zona` y `gramos`.",
+      "El constructor guarda los tres.",
+      "Los tres getters.",
+      "Los kilos facturables, redondeando hacia arriba con enteros: `(gramos + 999) / 1000`.",
+      "`costo()` devuelve `500 + 200 * kilos`."
+     ],
+     "pistas": [
+      "La división entera corta hacia abajo: `1001 / 1000` da 1. Sumarle 999 antes la lleva al kilo siguiente, salvo que ya sea justa.",
+      "Probá a mano: `(1000 + 999) / 1000 = 1` y `(1001 + 999) / 1000 = 2`.",
+      "Con `Math.ceil` habría que pasar por `double`, y la consigna lo prohíbe."
+     ],
+     "archivos": [
+      {
+       "nombre": "Envio.java",
+       "inicial": "public class Envio {\n    // atributos: id, zona y gramos (el peso neto)\n\n    // constructor(id, zona, gramos)\n\n    // getters\n\n    // costo(): 500 + 200 por kilo facturable (una fracción de kilo cuenta como un kilo entero)\n}\n",
+       "solucion": "public class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        this.id = id;\n        this.zona = zona;\n        this.gramos = gramos;\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n\n    public int costo() {\n        int kilos = (gramos + 999) / 1000;\n        return 500 + 200 * kilos;\n    }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "private\\s+final\\s+String\\s+id\\s*;",
+       "ok": "Atributo `id`",
+       "error": "Falta `private final String id;`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "private\\s+final\\s+String\\s+zona\\s*;",
+       "ok": "Atributo `zona`",
+       "error": "Falta `private final String zona;`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "private\\s+final\\s+int\\s+gramos\\s*;",
+       "ok": "Atributo `gramos`",
+       "error": "Falta `private final int gramos;`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "public\\s+Envio\\s*\\(\\s*String\\s+\\w+\\s*,\\s*String\\s+\\w+\\s*,\\s*int\\s+\\w+\\s*\\)",
+       "ok": "Constructor con tres datos",
+       "error": "Falta el constructor `public Envio(String id, String zona, int gramos)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "int\\s+getGramos\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+(this\\.)?gramos\\s*;",
+       "ok": "Getter de los gramos",
+       "error": "Falta `getGramos()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "String\\s+getZona\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+(this\\.)?zona\\s*;",
+       "ok": "Getter de la zona",
+       "error": "Falta `getZona()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "int\\s+costo\\s*\\(\\s*\\)",
+       "ok": "Está `costo()`",
+       "error": "Falta `public int costo()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\\+\\s*999\\s*\\)\\s*/\\s*1000|%\\s*1000",
+       "ok": "Redondea hacia arriba con enteros",
+       "error": "Los kilos se redondean hacia arriba: `(gramos + 999) / 1000`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "500\\s*\\+\\s*200\\s*\\*",
+       "ok": "La tarifa",
+       "error": "El costo es `500 + 200 * kilos`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bdouble\\b|\\bfloat\\b|Math\\.ceil",
+       "ok": "Sin decimales",
+       "error": "Sin `double` ni `Math.ceil`: la consigna pide pesos enteros"
       }
      ],
      "parte": 1
@@ -1045,6 +1137,68 @@
       }
      ],
      "parte": 2
+    },
+    {
+     "id": "b2.7",
+     "tema": "Envíos",
+     "titulo": "los bordes de `Envio`",
+     "tipo": "clasificacion",
+     "proyecto": "env",
+     "pregunta": "¿Se crea el objeto o tira excepción?",
+     "consigna": "Con las validaciones del constructor de `Envio` (Parcial 3K2: id y zona obligatorios; peso **neto** entre 1 y 30000 g, los dos incluidos), indicá qué pasa con cada `new`.",
+     "opciones": [
+      "Se crea",
+      "Excepción"
+     ],
+     "resumen": "**3** se crean y **6** tiran `IllegalArgumentException`. Los dos bordes, 1 y 30000, valen.",
+     "items": [
+      {
+       "texto": "new Envio(\"E01\", \"Norte\", 1000)",
+       "respuesta": "Se crea",
+       "motivo": "Todo en regla: cuesta 700"
+      },
+      {
+       "texto": "new Envio(\"E06\", \"Centro\", 30000)",
+       "respuesta": "Se crea",
+       "motivo": "El máximo está incluido"
+      },
+      {
+       "texto": "new Envio(\"I049\", \"Norte\", 30001)",
+       "respuesta": "Excepción",
+       "motivo": "Pasa los 30000 g"
+      },
+      {
+       "texto": "new Envio(\"E09\", \"Centro\", 0)",
+       "respuesta": "Excepción",
+       "motivo": "Neto 0: el mínimo es 1 (en el CSV, bruto 100 con embalaje 100)"
+      },
+      {
+       "texto": "new Envio(\"I013\", \"Norte\", 1)",
+       "respuesta": "Se crea",
+       "motivo": "El mínimo también está incluido"
+      },
+      {
+       "texto": "new Envio(\"I057\", \"\", 1000)",
+       "respuesta": "Excepción",
+       "motivo": "Zona vacía"
+      },
+      {
+       "texto": "new Envio(\"E10\", null, 500)",
+       "respuesta": "Excepción",
+       "motivo": "Zona `null`"
+      },
+      {
+       "texto": "new Envio(\"   \", \"Sur\", 500)",
+       "respuesta": "Excepción",
+       "motivo": "Solo espacios también está «en blanco»"
+      },
+      {
+       "texto": "new Envio(\"E11\", \"Sur\", -5)",
+       "respuesta": "Excepción",
+       "motivo": "Peso negativo"
+      }
+     ],
+     "parte": 2
     }
    ]
   },
@@ -1504,6 +1658,90 @@
        "regex": "campos\\[6\\]",
        "ok": "Pasa el estado",
        "error": "Falta pasar el estado: `campos[6]`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "return\\s+null\\s*;",
+       "ok": "No devuelve null",
+       "error": "Todavía devuelve `null`"
+      }
+     ],
+     "parte": 3
+    },
+    {
+     "id": "b3.6",
+     "tema": "Envíos",
+     "titulo": "`desdeCampos` calcula el neto",
+     "tipo": "codigo",
+     "proyecto": "env",
+     "donde": "`Envio` → `desdeCampos`",
+     "consigna": "En el Parcial 3K2 el CSV trae el peso **bruto** y el del **embalaje**, pero el constructor recibe el **neto**. `desdeCampos` hace la cuenta:\n- 5 campos: `id,zona,brutoGramos,embalajeGramos,estado`; con otra cantidad, `IllegalArgumentException(\"se esperan 5 columnas\")`.\n- Convertir los dos pesos a `int` (llamalos `bruto` y `embalaje`).\n- El bruto va de 1 a 50000; el embalaje, desde 0 y **menor** que el bruto. Si no, `\"pesos incompatibles: \" + c[2] + \"/\" + c[3]`.\n- Crear el `Envio` con `bruto - embalaje`. El tope de 30000 g del neto ya lo controla el constructor.",
+     "pasos": [
+      "`if (c.length != 5) throw ...`",
+      "`int bruto = Integer.parseInt(c[2]);` y lo mismo con el embalaje (`c[3]`).",
+      "Un `if` con las cuatro condiciones unidas con `||`.",
+      "`return new Envio(c[0], c[1], bruto - embalaje);`"
+     ],
+     "pistas": [
+      "\"De 1 a 50000\" → es inválido si `bruto <= 0 || bruto > 50000`.",
+      "\"Menor que el bruto\" → es inválido si `embalaje >= bruto`. Así el neto nunca da 0.",
+      "No repitas la regla del neto: el constructor ya tira la excepción si pasa los 30000."
+     ],
+     "archivos": [
+      {
+       "nombre": "Envio.java",
+       "inicial": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        // Cabecera: id,zona,brutoGramos,embalajeGramos,estado\n        // 1. Controlá la cantidad de campos\n        // 2. Convertí el bruto y el embalaje\n        // 3. Validá los pesos\n        // 4. Creá el envío con el peso NETO\n        return null;\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        if (c.length != 5) throw new IllegalArgumentException(\"se esperan 5 columnas\");\n        int bruto = Integer.parseInt(c[2]);\n        int embalaje = Integer.parseInt(c[3]);\n        if (bruto <= 0 || bruto > 50000 || embalaje < 0 || embalaje >= bruto) {\n            throw new IllegalArgumentException(\"pesos incompatibles: \" + c[2] + \"/\" + c[3]);\n        }\n        return new Envio(c[0], c[1], bruto - embalaje);\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "\\w+\\.length\\s*!=\\s*5",
+       "ok": "Controla la cantidad",
+       "error": "Controlá que sean 5 campos"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "bruto\\s*=\\s*Integer\\.parseInt\\(\\s*\\w+\\[2\\]\\s*\\)",
+       "ok": "Convierte el bruto",
+       "error": "Convertí el bruto: `int bruto = Integer.parseInt(c[2]);`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "embalaje\\s*=\\s*Integer\\.parseInt\\(\\s*\\w+\\[3\\]\\s*\\)",
+       "ok": "Convierte el embalaje",
+       "error": "Convertí el embalaje: `int embalaje = Integer.parseInt(c[3]);`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "bruto\\s*(<=\\s*0|<\\s*1)\\b",
+       "ok": "Bruto mayor a 0",
+       "error": "Falta: el bruto tiene que ser al menos 1 (`bruto <= 0` es inválido)"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "bruto\\s*>\\s*50_?000\\b",
+       "ok": "Tope del bruto",
+       "error": "Falta el tope: `bruto > 50000` es inválido"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "embalaje\\s*<\\s*0\\b",
+       "ok": "Embalaje desde 0",
+       "error": "Falta: el embalaje no puede ser negativo"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "embalaje\\s*>=\\s*bruto|bruto\\s*<=\\s*embalaje",
+       "ok": "Embalaje menor que el bruto",
+       "error": "Falta: el embalaje tiene que ser menor que el bruto (`embalaje >= bruto` es inválido)"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "return\\s+new\\s+Envio\\s*\\(\\s*\\w+\\[0\\]\\s*,\\s*\\w+\\[1\\]\\s*,\\s*bruto\\s*-\\s*embalaje\\s*\\)",
+       "ok": "Crea el envío con el neto",
+       "error": "Devolvé `new Envio(c[0], c[1], bruto - embalaje)`: el constructor recibe el neto"
       },
       {
        "tipo": "noContiene",
@@ -2060,6 +2298,84 @@
       }
      ],
      "parte": 4
+    },
+    {
+     "id": "b4.6",
+     "tema": "Envíos",
+     "titulo": "clasificá las filas",
+     "tipo": "clasificacion",
+     "proyecto": "env",
+     "consigna": "Con el parser del preenunciado 3K2, indicá qué pasa con cada fila. **El orden es:** cantidad de columnas → descarte de `CANCELADO` → estado `LISTO` → `desdeCampos` (bruto de 1 a 50000; embalaje desde 0 y menor que el bruto; neto de 1 a 30000).",
+     "cabecera": "id,zona,brutoGramos,embalajeGramos,estado",
+     "opciones": [
+      "Procesada",
+      "Descartada",
+      "Inválida"
+     ],
+     "resumen": "Resumen esperado: **leídas 12 · procesadas 4 · descartadas 2 · inválidas 6**. Casi todas son casos testigo del `datos.csv`.",
+     "items": [
+      {
+       "texto": "E01,Norte,1200,200,LISTO",
+       "respuesta": "Procesada",
+       "motivo": "Neto 1000 g: cuesta 700"
+      },
+      {
+       "texto": "E06,Centro,30100,100,LISTO",
+       "respuesta": "Procesada",
+       "motivo": "Neto 30000: el máximo está incluido"
+      },
+      {
+       "texto": "E07,Norte,0,0,CANCELADO",
+       "respuesta": "Descartada",
+       "motivo": "**Trampa:** CANCELADO se descarta antes de validar, así que el peso 0 ni se revisa"
+      },
+      {
+       "texto": "E09,Centro,100,100,LISTO",
+       "respuesta": "Inválida",
+       "motivo": "El embalaje tiene que ser menor que el bruto: el neto daría 0"
+      },
+      {
+       "texto": "I013,Norte,1,0,LISTO",
+       "respuesta": "Procesada",
+       "motivo": "1 g: el mínimo"
+      },
+      {
+       "texto": "I049,Norte,30101,100,LISTO",
+       "respuesta": "Inválida",
+       "motivo": "Neto 30001: el constructor no lo acepta"
+      },
+      {
+       "texto": "I046,Sur,mil,100,CANCELADO",
+       "respuesta": "Descartada",
+       "motivo": "Se descarta sin intentar convertir \"mil\""
+      },
+      {
+       "texto": "I057,,1000,0,LISTO",
+       "respuesta": "Inválida",
+       "motivo": "Zona vacía"
+      },
+      {
+       "texto": "E20,Sur,1000,0,PENDIENTE",
+       "respuesta": "Inválida",
+       "motivo": "Estado desconocido: solo vale LISTO"
+      },
+      {
+       "texto": "E21,Sur,1000,0",
+       "respuesta": "Inválida",
+       "motivo": "4 columnas"
+      },
+      {
+       "texto": "E22, Sur ,2000, 500 ,LISTO",
+       "respuesta": "Procesada",
+       "motivo": "Los espacios se van con `strip()`: neto 1500, cuesta 900"
+      },
+      {
+       "texto": "E23,Norte,50001,30000,LISTO",
+       "respuesta": "Inválida",
+       "motivo": "Bruto 50001: pasa el máximo, aunque el neto (20001) estaría bien"
+      }
+     ],
+     "parte": 4
     }
    ]
   },
@@ -2071,7 +2387,7 @@
    "corto": "Streams",
    "pestana": "Streams",
    "leccion": {
-    "que": "La clase **colectora** (`Cloud`, `LiquidadorTarjetas`, `Taller`, `ServicioJuegos`, `CarteraCreditos`) guarda la lista de objetos y responde preguntas sobre **todos**: el total, el promedio, el máximo, los que cumplen algo.\nCada respuesta es un método, y casi siempre es un **stream**: una cadena *fuente → operaciones intermedias → operación final*.",
+    "que": "La clase **colectora** (`Cloud`, `CentralEnvios`, `LiquidadorTarjetas`, `Taller`, `ServicioJuegos`, `CarteraCreditos`) guarda la lista de objetos y responde preguntas sobre **todos**: el total, el promedio, el máximo, los que cumplen algo.\nCada respuesta es un método, y casi siempre es un **stream**: una cadena *fuente → operaciones intermedias → operación final*.",
     "consta": [
      [
       "La copia defensiva",
@@ -2441,6 +2757,67 @@
       }
      ],
      "parte": 5
+    },
+    {
+     "id": "b5.6",
+     "tema": "Envíos",
+     "titulo": "`CentralEnvios`: el total y un filtro con lambda",
+     "tipo": "codigo",
+     "proyecto": "env",
+     "donde": "`CentralEnvios` → el constructor, `total`, `filtrar` y `panorama`",
+     "consigna": "Completá el colector del Parcial 3K2:\n- El constructor guarda una **copia que no se pueda modificar** de la lista.\n- `total()`: la suma de `costo()` de todos los envíos.\n- `filtrar(criterio)`: los envíos que cumplen el `Predicate`.\n- En `panorama()`, «hasta 1000 g» es cuántos envíos pesan 1000 g o menos: usá `filtrar` con una lambda.",
+     "datos": "Con 1000 g, 1001 g y 1 g: total **2300** (700 + 900 + 700) y **2** de hasta 1000 g. Con el `datos.csv`: `Total: 86100` y `hasta 1000 g: 8`.",
+     "pasos": [
+      "`this.envios = List.copyOf(envios);`",
+      "`return envios.stream().mapToInt(Envio::costo).sum();`",
+      "`return envios.stream().filter(criterio).toList();`",
+      "En el panorama: `filtrar(e -> e.getGramos() <= 1000).size()`."
+     ],
+     "pistas": [
+      "`mapToInt` da un `IntStream`, que tiene `sum()`. Con una lista vacía, da 0.",
+      "`toList()` devuelve una lista que no se puede modificar, como pide el test de la copia defensiva.",
+      "La lambda `e -> e.getGramos() <= 1000` es un `Predicate<Envio>`: recibe un envío y devuelve `true` o `false`."
+     ],
+     "archivos": [
+      {
+       "nombre": "CentralEnvios.java",
+       "inicial": "package ar.edu.backend.envios;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class CentralEnvios {\n    private final List<Envio> envios;\n    public CentralEnvios(List<Envio> envios) {\n        // Guardá una copia que no se pueda modificar\n        this.envios = envios;\n    }\n    public int total() {\n        // La suma del costo() de todos los envíos\n        return 0;\n    }\n    public List<Envio> filtrar(Predicate<Envio> criterio) {\n        // Los envíos que cumplen el criterio\n        return List.of();\n    }\n    public Map<String, Integer> totalesPorZona() {\n        return envios.stream().collect(Collectors.groupingBy(Envio::getZona, Collectors.summingInt(Envio::costo)));\n    }\n    public String panorama() {\n        return \"Total: \" + total() + \" | por zona: \" + new java.util.TreeMap<>(totalesPorZona())\n                + \" | hasta 1000 g: \" + 0; // cuántos pesan hasta 1000 g: usá filtrar\n    }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class CentralEnvios {\n    private final List<Envio> envios;\n    public CentralEnvios(List<Envio> envios) { this.envios = List.copyOf(envios); }\n    public int total() { return envios.stream().mapToInt(Envio::costo).sum(); }\n    public List<Envio> filtrar(Predicate<Envio> criterio) {\n        return envios.stream().filter(criterio).toList();\n    }\n    public Map<String, Integer> totalesPorZona() {\n        return envios.stream().collect(Collectors.groupingBy(Envio::getZona, Collectors.summingInt(Envio::costo)));\n    }\n    public String panorama() {\n        return \"Total: \" + total() + \" | por zona: \" + new java.util.TreeMap<>(totalesPorZona())\n                + \" | hasta 1000 g: \" + filtrar(e -> e.getGramos() <= 1000).size();\n    }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "List\\.copyOf\\(\\s*envios\\s*\\)",
+       "ok": "Copia defensiva",
+       "error": "Guardá `List.copyOf(envios)`: si no, quien te pasó la lista la puede cambiar"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "mapToInt\\(\\s*(Envio::costo|\\w+\\s*->\\s*\\w+\\.costo\\(\\))\\s*\\)\\s*\\.sum\\(\\)",
+       "ok": "El total con `mapToInt().sum()`",
+       "error": "Sumá con `mapToInt(Envio::costo).sum()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\\.filter\\(\\s*criterio\\s*\\)",
+       "ok": "Filtra con el criterio",
+       "error": "Filtrá con `.filter(criterio)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "filtrar\\(\\s*\\w+\\s*->\\s*\\w+\\.getGramos\\(\\)\\s*<=\\s*1000\\s*\\)\\s*\\.size\\(\\)",
+       "ok": "El panorama usa `filtrar`",
+       "error": "En el panorama: `filtrar(e -> e.getGramos() <= 1000).size()`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "return\\s+0\\s*;|return\\s+List\\.of\\(\\)\\s*;",
+       "ok": "Sin valores fijos",
+       "error": "Todavía devuelve un valor fijo (`0` o `List.of()`)"
+      }
+     ],
+     "parte": 5
     }
    ]
   },
@@ -2796,6 +3173,59 @@
        "regex": "\\bfor\\s*\\(|\\bwhile\\s*\\(",
        "ok": "Sin `for` ni `while`",
        "error": "Resolvelo con streams, sin `for` ni `while`"
+      }
+     ],
+     "parte": 6
+    },
+    {
+     "id": "b6.6",
+     "tema": "Envíos",
+     "titulo": "el total por zona, ordenado",
+     "tipo": "codigo",
+     "proyecto": "env",
+     "donde": "`CentralEnvios` → `totalesPorZona` y `panorama`",
+     "consigna": "`totalesPorZona()` devuelve, para cada zona, la suma del `costo()` de sus envíos. En `panorama()`, mostralo **ordenado por zona** (Centro, Norte, Sur).",
+     "datos": "Con el `datos.csv`: `{Centro=30700, Norte=28500, Sur=26900}`. Sin envíos, un mapa vacío.",
+     "pasos": [
+      "`envios.stream().collect(Collectors.groupingBy(Envio::getZona, Collectors.summingInt(Envio::costo)))`",
+      "En el panorama, `new java.util.TreeMap<>(totalesPorZona())`."
+     ],
+     "pistas": [
+      "El primer argumento de `groupingBy` dice **por qué** se agrupa; el segundo, **qué** se hace con cada grupo.",
+      "`summingInt` porque el costo es `int`; para contar sería `counting()`.",
+      "`groupingBy` arma un `HashMap`, que no tiene orden. Un `TreeMap` ordena por la clave."
+     ],
+     "archivos": [
+      {
+       "nombre": "CentralEnvios.java",
+       "inicial": "package ar.edu.backend.envios;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class CentralEnvios {\n    private final List<Envio> envios;\n    public CentralEnvios(List<Envio> envios) { this.envios = List.copyOf(envios); }\n    public int total() { return envios.stream().mapToInt(Envio::costo).sum(); }\n    public List<Envio> filtrar(Predicate<Envio> criterio) {\n        return envios.stream().filter(criterio).toList();\n    }\n    public Map<String, Integer> totalesPorZona() {\n        // Agrupá por zona y sumá el costo() de cada grupo\n        return Map.of();\n    }\n    public String panorama() {\n        return \"Total: \" + total() + \" | por zona: \" + totalesPorZona() // ordenado por zona\n                + \" | hasta 1000 g: \" + filtrar(e -> e.getGramos() <= 1000).size();\n    }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class CentralEnvios {\n    private final List<Envio> envios;\n    public CentralEnvios(List<Envio> envios) { this.envios = List.copyOf(envios); }\n    public int total() { return envios.stream().mapToInt(Envio::costo).sum(); }\n    public List<Envio> filtrar(Predicate<Envio> criterio) {\n        return envios.stream().filter(criterio).toList();\n    }\n    public Map<String, Integer> totalesPorZona() {\n        return envios.stream().collect(Collectors.groupingBy(Envio::getZona, Collectors.summingInt(Envio::costo)));\n    }\n    public String panorama() {\n        return \"Total: \" + total() + \" | por zona: \" + new java.util.TreeMap<>(totalesPorZona())\n                + \" | hasta 1000 g: \" + filtrar(e -> e.getGramos() <= 1000).size();\n    }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "groupingBy\\(\\s*(Envio::getZona|\\w+\\s*->\\s*\\w+\\.getZona\\(\\))",
+       "ok": "Agrupa por zona",
+       "error": "Agrupá con `groupingBy(Envio::getZona, ...)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "summingInt\\(\\s*(Envio::costo|\\w+\\s*->\\s*\\w+\\.costo\\(\\))\\s*\\)",
+       "ok": "Suma el costo",
+       "error": "Sumá cada grupo con `Collectors.summingInt(Envio::costo)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "TreeMap<>\\(\\s*totalesPorZona\\(\\)\\s*\\)",
+       "ok": "El panorama, ordenado",
+       "error": "En el panorama: `new java.util.TreeMap<>(totalesPorZona())`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "return\\s+Map\\.of\\(\\)\\s*;",
+       "ok": "Sin mapa fijo",
+       "error": "Todavía devuelve `Map.of()`"
       }
      ],
      "parte": 6
@@ -3200,6 +3630,86 @@
        "regex": "println\\(\\s*cartera\\.informe\\(\\)\\s*\\)",
        "ok": "Informe de la cartera",
        "error": "Mostrá `cartera.informe()`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bfor\\s*\\(|\\bwhile\\s*\\(|\\.stream\\(\\)",
+       "ok": "Sin cuentas en el main",
+       "error": "El main no recorre ni calcula: eso va en el colector o en el resultado"
+      }
+     ],
+     "parte": 7
+    },
+    {
+     "id": "b7.5",
+     "tema": "Envíos",
+     "titulo": "el main del 3K2",
+     "tipo": "codigo",
+     "proyecto": "env",
+     "donde": "`Main` → `main`",
+     "consigna": "Escribí el `main` del preenunciado 3K2. Solo orquesta:\n- La ruta: `datos/datos.csv`, salvo que venga otra en `args[0]`.\n- Leer con `ParserEnvios` y crear la `CentralEnvios` con los envíos leídos.\n- Mostrar, en este orden: el resumen, cada descarte, cada error y el panorama.",
+     "datos": "La salida empieza con `Leídas: 60 | procesadas: 39 | descartadas: 6 | inválidas: 15 | objetos: 39` y termina con `Total: 86100 | por zona: {Centro=30700, Norte=28500, Sur=26900} | hasta 1000 g: 8`.",
+     "pasos": [
+      "`Path archivo = Path.of(args.length == 0 ? \"datos/datos.csv\" : args[0]);`",
+      "`ResultadoParseo resultado = new ParserEnvios().leer(archivo);`",
+      "`CentralEnvios central = new CentralEnvios(resultado.getEnvios());`",
+      "`System.out.println(resultado.resumen());`",
+      "`resultado.getDescartes().forEach(System.out::println);` y lo mismo con los errores.",
+      "`System.out.println(central.panorama());`"
+     ],
+     "pistas": [
+      "Es el mismo main que el del 3K1 y el de Fintech: cambian los nombres. En este proyecto el resultado tiene `resumen()`, no `informe()`.",
+      "El `throws IOException` del `main` ya está: `leer` puede tirar esa excepción."
+     ],
+     "archivos": [
+      {
+       "nombre": "Main.java",
+       "inicial": "package ar.edu.backend.envios;\n\nimport java.io.IOException;\nimport java.nio.file.Path;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        // 1. La ruta: \"datos/datos.csv\", o la que venga en args[0]\n        // 2. Leer el archivo con ParserEnvios\n        // 3. Crear la CentralEnvios con los envíos leídos\n        // 4. Mostrar el resumen, los descartes, los errores y el panorama\n    }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\nimport java.io.IOException;\nimport java.nio.file.Path;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        Path archivo = Path.of(args.length == 0 ? \"datos/datos.csv\" : args[0]);\n        ResultadoParseo resultado = new ParserEnvios().leer(archivo);\n        CentralEnvios central = new CentralEnvios(resultado.getEnvios());\n        System.out.println(resultado.resumen());\n        resultado.getDescartes().forEach(System.out::println);\n        resultado.getErrores().forEach(System.out::println);\n        System.out.println(central.panorama());\n    }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "Path\\.of\\(\\s*args\\.length\\s*(==\\s*0\\s*\\?\\s*\"datos/datos\\.csv\"\\s*:\\s*args\\[0\\]|>\\s*0\\s*\\?\\s*args\\[0\\]\\s*:\\s*\"datos/datos\\.csv\"|<\\s*1\\s*\\?\\s*\"datos/datos\\.csv\"\\s*:\\s*args\\[0\\])\\s*\\)",
+       "ok": "La ruta por defecto o la de `args`",
+       "error": "La ruta: `Path.of(args.length == 0 ? \"datos/datos.csv\" : args[0])`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "new\\s+ParserEnvios\\s*\\(\\s*\\)\\s*\\.leer\\(|ParserEnvios\\s+\\w+\\s*=\\s*new\\s+ParserEnvios",
+       "ok": "Lee con el parser",
+       "error": "Leé con `new ParserEnvios().leer(archivo)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "new\\s+CentralEnvios\\(\\s*\\w+\\.getEnvios\\(\\)\\s*\\)",
+       "ok": "Crea el colector",
+       "error": "Creá el colector: `new CentralEnvios(resultado.getEnvios())`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "println\\(\\s*\\w+\\.resumen\\(\\)\\s*\\)",
+       "ok": "Muestra el resumen",
+       "error": "Mostrá `resultado.resumen()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getDescartes\\(\\)\\s*\\.forEach\\(",
+       "ok": "Muestra los descartes",
+       "error": "Mostrá los descartes: `getDescartes().forEach(System.out::println)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getErrores\\(\\)\\s*\\.forEach\\(",
+       "ok": "Muestra los errores",
+       "error": "Mostrá los errores: `getErrores().forEach(System.out::println)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "println\\(\\s*\\w+\\.panorama\\(\\)\\s*\\)",
+       "ok": "Muestra el panorama",
+       "error": "Mostrá `central.panorama()`"
       },
       {
        "tipo": "noContiene",

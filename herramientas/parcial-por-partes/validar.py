@@ -23,6 +23,7 @@ PROYECTOS = {   # ZIP del preenunciado y la carpeta del proyecto adentro
     'tal': ('simulacros/simulacro-2.zip', '01-modelo-inicial'),
     'jue': ('simulacros/simulacro-3.zip', '01-modelo-inicial'),
     'tar': ('simulacros/simulacro-4/01-preenunciado.zip', '01-preenunciado'),
+    'env': ('parcial-3k2/01-preenunciado.zip', '01-modelo-inicial'),
 }
 IMPORTS = 'import java.util.*;\nimport java.util.function.*;\nimport java.util.stream.*;\n'
 

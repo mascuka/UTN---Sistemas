@@ -11,7 +11,7 @@
    "guia": [
     [
      "Parser",
-     "La forma del archivo: las cabeceras, el ancho de cada fila, el separador, los descartes (BLACK, ESTABLE, CANCELADA, ANULADO) y qué estados se aceptan."
+     "La forma del archivo: las cabeceras, el ancho de cada fila, el separador, los descartes (BLACK, ESTABLE, CANCELADA, ANULADO, CANCELADO) y qué estados se aceptan."
     ],
     [
      "Dominio",
@@ -418,6 +418,74 @@
       },
       {
        "texto": "Usar el CSV del parcial y mostrar las cantidades",
+       "respuesta": "Main",
+       "motivo": "Solo imprime"
+      }
+     ]
+    },
+    {
+     "id": "0.6",
+     "parte": 0,
+     "tema": "",
+     "titulo": "Central de envíos (Parcial 3K2)",
+     "tipo": "ubicacion",
+     "consigna": "La mensajería agrega `modalidad` (5 → 6 columnas): NORMAL o PRIORITARIO. Indicá en qué clase va cada cambio.",
+     "enunciado": [
+      "Columna nueva: `modalidad` (5 → 6). En el formato viejo, todos los envíos son normales. Cada fila, con el ancho de su cabecera.",
+      "LISTO del formato nuevo: exactamente NORMAL o PRIORITARIO, después de quitar espacios. Vacío o desconocido: la fila es inválida.",
+      "PRIORITARIO: las mismas validaciones, como máximo 5000 g netos (inclusive) y 400 pesos más que uno normal del mismo peso, una sola vez.",
+      "Precedencia: ancho → descartar CANCELADO sin validar pesos ni modalidad → validaciones.",
+      "`costo()`, `total()`, los filtros por costo y los totales por zona, con la regla nueva. Colector: un conteo por modalidad. Main: el CSV del parcial, el resumen, los objetos, NORMAL / PRIORITARIO, el total y los totales por zona."
+     ],
+     "opciones": [
+      "Parser",
+      "Dominio",
+      "Colector",
+      "Main"
+     ],
+     "items": [
+      {
+       "texto": "Aceptar la cabecera con `modalidad` (5 y 6 columnas)",
+       "respuesta": "Parser",
+       "motivo": "Estructura del archivo"
+      },
+      {
+       "texto": "Una fila de 5 campos bajo la cabecera de 6 es inválida",
+       "respuesta": "Parser",
+       "motivo": "El ancho lo decide la cabecera"
+      },
+      {
+       "texto": "Descartar CANCELADO sin validar pesos ni modalidad",
+       "respuesta": "Parser",
+       "motivo": "Precedencia: ancho → descarte"
+      },
+      {
+       "texto": "Que la modalidad sea NORMAL o PRIORITARIO",
+       "respuesta": "Dominio",
+       "motivo": "Validación del dato, en `desdeCampos`"
+      },
+      {
+       "texto": "Un PRIORITARIO pesa como máximo 5000 g netos",
+       "respuesta": "Dominio",
+       "motivo": "Validación, en el constructor de la subclase"
+      },
+      {
+       "texto": "El PRIORITARIO cuesta 400 pesos más",
+       "respuesta": "Dominio",
+       "motivo": "Subclase `EnvioPrioritario` con `@Override costo()`"
+      },
+      {
+       "texto": "Que `total()` y `totalesPorZona()` incluyan el recargo",
+       "respuesta": "Dominio",
+       "motivo": "**Trampa:** el colector no se toca; suma `costo()`, que la subclase redefine"
+      },
+      {
+       "texto": "Contar cuántos hay NORMAL y cuántos PRIORITARIO",
+       "respuesta": "Colector",
+       "motivo": "`groupingBy(Envio::getModalidad, counting())`"
+      },
+      {
+       "texto": "Usar `datos-parcial.csv` y mostrar las cantidades",
        "respuesta": "Main",
        "motivo": "Solo imprime"
       }
@@ -897,6 +965,96 @@
        "nombre": "Consumo.java",
        "inicial": "package utnfc.backend.parcial;\n\npublic class Consumo {\n    private final String id;\n    private final String rubro;\n    private final int centavos;\n\n    public Consumo(String id, String rubro, int importe, int bonificacion) {\n        if (id == null || id.isBlank() || rubro == null || rubro.isBlank()) {\n            throw new IllegalArgumentException(\"id y rubro obligatorios\");\n        }\n        if (importe <= 0 || importe > 5_000_000 || bonificacion < 0 || bonificacion >= importe) {\n            throw new IllegalArgumentException(\"montos incompatibles: \" + importe + \"/\" + bonificacion);\n        }\n        int neto = importe - bonificacion;\n        if (neto > 3_000_000) {\n            throw new IllegalArgumentException(\"centavos fuera de rango: \" + neto);\n        }\n        this.id = id.strip();\n        this.rubro = rubro.strip();\n        this.centavos = neto;\n    }\n\n    public static Consumo desdeCampos(String[] c) {\n        if (c.length != 5) throw new IllegalArgumentException(\"se esperan 5 columnas\");\n        int importe = Integer.parseInt(c[2]);\n        int bonificacion = Integer.parseInt(c[3]);\n        return new Consumo(c[0], c[1], importe, bonificacion);\n    }\n\n    public String getId() { return id; }\n    public String getRubro() { return rubro; }\n    public int getCentavos() { return centavos; }\n    public int comision() { return centavos * 2 / 100; }\n\n    @Override public boolean equals(Object o) {\n        if (this == o) return true;\n        if (o == null || getClass() != o.getClass()) return false;\n        Consumo c = (Consumo) o;\n        return centavos == c.centavos && id.equals(c.id) && rubro.equals(c.rubro);\n    }\n    @Override public int hashCode() { return java.util.Objects.hash(id, rubro, centavos); }\n    @Override public String toString() {\n        return \"%s %s %d %d\".formatted(id, rubro, centavos, comision());\n    }\n}\n",
        "solucion": "package utnfc.backend.parcial;\n\npublic class Consumo {\n    private final String id;\n    private final String rubro;\n    private final int centavos;\n\n    public Consumo(String id, String rubro, int importe, int bonificacion) {\n        if (id == null || id.isBlank() || rubro == null || rubro.isBlank()) {\n            throw new IllegalArgumentException(\"id y rubro obligatorios\");\n        }\n        if (importe <= 0 || importe > 5_000_000 || bonificacion < 0 || bonificacion >= importe) {\n            throw new IllegalArgumentException(\"montos incompatibles: \" + importe + \"/\" + bonificacion);\n        }\n        int neto = importe - bonificacion;\n        if (neto > 3_000_000) {\n            throw new IllegalArgumentException(\"centavos fuera de rango: \" + neto);\n        }\n        this.id = id.strip();\n        this.rubro = rubro.strip();\n        this.centavos = neto;\n    }\n\n    public static Consumo desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6) throw new IllegalArgumentException(\"se esperan 5 o 6 columnas\");\n        int importe = Integer.parseInt(c[2]);\n        int bonificacion = Integer.parseInt(c[3]);\n        return new Consumo(c[0], c[1], importe, bonificacion);\n    }\n\n    public String getId() { return id; }\n    public String getRubro() { return rubro; }\n    public int getCentavos() { return centavos; }\n    public int comision() { return centavos * 2 / 100; }\n\n    @Override public boolean equals(Object o) {\n        if (this == o) return true;\n        if (o == null || getClass() != o.getClass()) return false;\n        Consumo c = (Consumo) o;\n        return centavos == c.centavos && id.equals(c.id) && rubro.equals(c.rubro);\n    }\n    @Override public int hashCode() { return java.util.Objects.hash(id, rubro, centavos); }\n    @Override public String toString() {\n        return \"%s %s %d %d\".formatted(id, rubro, centavos, comision());\n    }\n}\n"
+      }
+     ]
+    },
+    {
+     "id": "1.6",
+     "tipo": "codigo",
+     "parte": 1,
+     "tema": "Envíos",
+     "titulo": "5 → 6 columnas, en dos archivos",
+     "proyecto": "env",
+     "donde": "`ParserEnvios.leer(Path)` y `Envio.desdeCampos`",
+     "consigna": "El Parcial 3K2 agrega `modalidad` como 6.ª columna. Aceptá las dos cabeceras con un solo loop; cada fila con el ancho de su cabecera (una de 5 bajo la de 6 es inválida, y al revés). **Precedencia:** primero el ancho, después el descarte de CANCELADO (sin validar pesos ni modalidad). `Envio.desdeCampos` también controla el ancho. (Leer la modalidad es de las partes 2 y 3.)",
+     "csv": {
+      "cabecera": "id,zona,brutoGramos,embalajeGramos,estado,modalidad",
+      "filas": [
+       "A,Norte,1200,200,LISTO,NORMAL",
+       "B,Norte,1200,200,LISTO",
+       "C,Sur,0,0,CANCELADO,URGENTE"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "modalidad"
+      ]
+     },
+     "csvNota": "La fila 2 tiene 5 campos: **inválida**. La 3 se **descarta** aunque el peso sea 0 y la modalidad no exista: el descarte va antes de validar.",
+     "pasos": [
+      "Una constante para la cabecera nueva: la vieja más `\",modalidad\"`.",
+      "Leer la cabecera una vez y guardar el ancho (5 o 6); si no es ninguna, `\"encabezado incorrecto\"`.",
+      "Comparar cada fila con ese ancho, no con un 5 fijo.",
+      "En `Envio.desdeCampos`: aceptar 5 o 6 campos."
+     ],
+     "pistas": [
+      "Es el mismo molde que el parser de Cloud Center o el de Tarjetas: cambian los nombres.",
+      "El descarte de CANCELADO ya está en el lugar correcto: no lo muevas."
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "CABECERA\\s*\\+\\s*\",modalidad\"|\"id,zona,brutoGramos,embalajeGramos,estado,modalidad\"",
+       "ok": "Está la cabecera nueva",
+       "error": "Falta la cabecera nueva (la vieja + `,modalidad`)",
+       "archivo": "ParserEnvios.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "String\\s+\\w+\\s*=\\s*reader\\.readLine\\s*\\(\\s*\\)\\s*;",
+       "ok": "Guarda la cabecera",
+       "error": "Guardá la primera línea en una variable",
+       "archivo": "ParserEnvios.java"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "c\\.length\\s*!=\\s*5\\b",
+       "ok": "Ya no compara contra un 5 fijo",
+       "error": "Todavía comparás contra un 5 fijo",
+       "archivo": "ParserEnvios.java"
+      },
+      {
+       "tipo": "cuenta",
+       "regex": "while\\s*\\(",
+       "ok": "Un solo loop",
+       "error": "Tiene que haber un solo `while`",
+       "archivo": "ParserEnvios.java",
+       "veces": 1
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"CANCELADO\"",
+       "ok": "El descarte de CANCELADO sigue",
+       "error": "No borres el descarte de CANCELADO",
+       "archivo": "ParserEnvios.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "c\\.length\\s*!=\\s*5\\s*&&\\s*c\\.length\\s*!=\\s*6|c\\.length\\s*<\\s*5\\s*\\|\\|\\s*c\\.length\\s*>\\s*6",
+       "ok": "`desdeCampos` acepta 5 o 6",
+       "error": "`Envio.desdeCampos` todavía exige 5 columnas",
+       "archivo": "Envio.java"
+      }
+     ],
+     "archivos": [
+      {
+       "nombre": "ParserEnvios.java",
+       "inicial": "package ar.edu.backend.envios;\n\nimport java.io.BufferedReader;\nimport java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.List;\n\npublic class ParserEnvios {\n    private static final String CABECERA = \"id,zona,brutoGramos,embalajeGramos,estado\";\n\n    public ResultadoParseo leer(Path archivo) throws IOException {\n        List<Envio> envios = new ArrayList<>();\n        List<String> errores = new ArrayList<>();\n        List<String> descartes = new ArrayList<>();\n        int leidas = 0;\n        try (BufferedReader reader = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            if (!CABECERA.equals(reader.readLine())) {\n                throw new IllegalArgumentException(\"encabezado incorrecto\");\n            }\n            String linea;\n            while ((linea = reader.readLine()) != null) {\n                leidas++;\n                int numero = leidas + 1;\n                try {\n                    String[] c = Arrays.stream(linea.split(\",\", -1)).map(String::strip).toArray(String[]::new);\n                    if (c.length != 5) throw new IllegalArgumentException(\"cantidad de columnas incorrecta\");\n                    if (c[4].equals(\"CANCELADO\")) {\n                        descartes.add(\"Línea \" + numero + \": CANCELADO\");\n                        continue;\n                    }\n                    if (!c[4].equals(\"LISTO\")) throw new IllegalArgumentException(\"estado desconocido: \" + c[4]);\n                    envios.add(Envio.desdeCampos(c));\n                } catch (IllegalArgumentException e) {\n                    errores.add(\"Línea \" + numero + \": \" + e.getMessage());\n                }\n            }\n        }\n        return new ResultadoParseo(envios, leidas, descartes.size(), errores, descartes);\n    }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\nimport java.io.BufferedReader;\nimport java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.util.ArrayList;\nimport java.util.Arrays;\nimport java.util.List;\n\npublic class ParserEnvios {\n    private static final String CABECERA = \"id,zona,brutoGramos,embalajeGramos,estado\";\n    private static final String CABECERA_MODALIDAD = CABECERA + \",modalidad\";\n\n    public ResultadoParseo leer(Path archivo) throws IOException {\n        List<Envio> envios = new ArrayList<>();\n        List<String> errores = new ArrayList<>();\n        List<String> descartes = new ArrayList<>();\n        int leidas = 0;\n        try (BufferedReader reader = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            String cabecera = reader.readLine();\n            int columnas;\n            if (CABECERA.equals(cabecera)) columnas = 5;\n            else if (CABECERA_MODALIDAD.equals(cabecera)) columnas = 6;\n            else throw new IllegalArgumentException(\"encabezado incorrecto\");\n            String linea;\n            while ((linea = reader.readLine()) != null) {\n                leidas++;\n                int numero = leidas + 1;\n                try {\n                    String[] c = Arrays.stream(linea.split(\",\", -1)).map(String::strip).toArray(String[]::new);\n                    if (c.length != columnas) throw new IllegalArgumentException(\"cantidad de columnas incorrecta\");\n                    if (c[4].equals(\"CANCELADO\")) {\n                        descartes.add(\"Línea \" + numero + \": CANCELADO\");\n                        continue;\n                    }\n                    if (!c[4].equals(\"LISTO\")) throw new IllegalArgumentException(\"estado desconocido: \" + c[4]);\n                    envios.add(Envio.desdeCampos(c));\n                } catch (IllegalArgumentException e) {\n                    errores.add(\"Línea \" + numero + \": \" + e.getMessage());\n                }\n            }\n        }\n        return new ResultadoParseo(envios, leidas, descartes.size(), errores, descartes);\n    }\n}\n"
+      },
+      {
+       "nombre": "Envio.java",
+       "inicial": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        if (c.length != 5) throw new IllegalArgumentException(\"se esperan 5 columnas\");\n        int bruto = Integer.parseInt(c[2]);\n        int embalaje = Integer.parseInt(c[3]);\n        if (bruto <= 0 || bruto > 50000 || embalaje < 0 || embalaje >= bruto) {\n            throw new IllegalArgumentException(\"pesos incompatibles: \" + c[2] + \"/\" + c[3]);\n        }\n        return new Envio(c[0], c[1], bruto - embalaje);\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6) throw new IllegalArgumentException(\"se esperan 5 o 6 columnas\");\n        int bruto = Integer.parseInt(c[2]);\n        int embalaje = Integer.parseInt(c[3]);\n        if (bruto <= 0 || bruto > 50000 || embalaje < 0 || embalaje >= bruto) {\n            throw new IllegalArgumentException(\"pesos incompatibles: \" + c[2] + \"/\" + c[3]);\n        }\n        return new Envio(c[0], c[1], bruto - embalaje);\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n"
       }
      ]
     }
@@ -1673,6 +1831,84 @@
        "motivo": "Los espacios de afuera se quitan con `strip`"
       }
      ]
+    },
+    {
+     "id": "2.9",
+     "parte": 2,
+     "tema": "Envíos",
+     "titulo": "clasificá las filas",
+     "tipo": "clasificacion",
+     "proyecto": "env",
+     "consigna": "Con las reglas del Parcial 3K2, indicá qué pasa con cada fila. Cabecera de **6 columnas**. Solo se procesan las LISTO; CANCELADO se descarta. Modalidad: exactamente NORMAL o PRIORITARIO. PRIORITARIO: hasta 5000 g netos. **Precedencia:** ancho → descarte CANCELADO → validaciones.",
+     "cabecera": "id,zona,brutoGramos,embalajeGramos,estado,modalidad",
+     "opciones": [
+      "Procesada",
+      "Descartada",
+      "Inválida"
+     ],
+     "resumen": "Resumen esperado: **leídas 12 · procesadas 5 · descartadas 1 · inválidas 6**. El peso neto es el bruto menos el embalaje.",
+     "items": [
+      {
+       "texto": "P001,Norte,1350,350,LISTO,NORMAL",
+       "respuesta": "Procesada",
+       "motivo": "Normal de 1000 g: cuesta 700"
+      },
+      {
+       "texto": "P002,Sur,1425,425,LISTO,PRIORITARIO",
+       "respuesta": "Procesada",
+       "motivo": "Prioritario de 1000 g: 700 + 400 = 1100"
+      },
+      {
+       "texto": "P003,Centro,5750,750,LISTO,PRIORITARIO",
+       "respuesta": "Procesada",
+       "motivo": "Neto 5000: el tope del prioritario es inclusive (cuesta 1900)"
+      },
+      {
+       "texto": "P012,Norte,5201,200,LISTO,PRIORITARIO",
+       "respuesta": "Inválida",
+       "motivo": "Neto 5001: pasa el tope del prioritario"
+      },
+      {
+       "texto": "P005,Sur,30900,900,LISTO,NORMAL",
+       "respuesta": "Procesada",
+       "motivo": "Normal de 30000 g: el tope de los 5000 es solo para los prioritarios"
+      },
+      {
+       "texto": "P013,Centro,1000,0,LISTO,",
+       "respuesta": "Inválida",
+       "motivo": "Modalidad vacía"
+      },
+      {
+       "texto": "P014,Centro,1000,0,LISTO,URGENTE",
+       "respuesta": "Inválida",
+       "motivo": "Modalidad desconocida"
+      },
+      {
+       "texto": "P015,Sur,0,0,CANCELADO,URGENTE",
+       "respuesta": "Descartada",
+       "motivo": "**Trampa:** CANCELADO se descarta sin validar pesos ni modalidad"
+      },
+      {
+       "texto": "P016,Norte,1000,0,LISTO",
+       "respuesta": "Inválida",
+       "motivo": "5 campos bajo una cabecera de 6"
+      },
+      {
+       "texto": "P017,Sur,1000,0,LISTO, PRIORITARIO ",
+       "respuesta": "Procesada",
+       "motivo": "Los espacios se van con `strip()`: vale"
+      },
+      {
+       "texto": "P018,Norte,1000,0,LISTO,prioritario",
+       "respuesta": "Inválida",
+       "motivo": "«Exactamente» PRIORITARIO: las minúsculas no valen"
+      },
+      {
+       "texto": "P019,Centro,100,100,LISTO,NORMAL",
+       "respuesta": "Inválida",
+       "motivo": "Neto 0: el embalaje tiene que ser menor que el bruto"
+      }
+     ]
     }
    ]
   },
@@ -2220,6 +2456,118 @@
        "motivo": "`List.of(...).contains` o un `if`"
       }
      ]
+    },
+    {
+     "id": "3.6",
+     "tipo": "codigo",
+     "parte": 3,
+     "tema": "Envíos",
+     "titulo": "PRIORITARIO: 400 más y hasta 5000 g",
+     "proyecto": "env",
+     "donde": "`EnvioPrioritario.java` (archivo nuevo) y `Envio.desdeCampos`",
+     "consigna": "Si la 6.ª columna dice PRIORITARIO, el envío cuesta **400 pesos más** que uno normal del mismo peso (una sola vez) y no puede pasar de **5000 g netos** (inclusive): validalo en el constructor de la subclase. NORMAL es el envío de siempre, y en el formato de 5 columnas todos son normales. Otro valor, o vacío: `IllegalArgumentException`. Usá polimorfismo: una subclase que redefine `costo()`.",
+     "csv": {
+      "cabecera": "id,zona,brutoGramos,embalajeGramos,estado,modalidad",
+      "filas": [
+       "A,N,1200,200,LISTO,NORMAL",
+       "B,N,1200,200,LISTO,PRIORITARIO",
+       "C,S,5200,200,LISTO,PRIORITARIO",
+       "D,S,5201,200,LISTO,PRIORITARIO"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "modalidad"
+      ]
+     },
+     "csvNota": "A → **700** · B → **1100** · C (5000 g) → **1900** · D (5001 g) es **inválida**. Son los ejemplos de la consigna.",
+     "pasos": [
+      "`class EnvioPrioritario extends Envio`, con un constructor que llame a `super(id, zona, gramos)` y después tire la excepción si `gramos > 5000`.",
+      "`@Override public int costo()` → `super.costo() + 400`.",
+      "En `desdeCampos`: la modalidad es `c[5]` si hay 6 campos y `\"NORMAL\"` si hay 5.",
+      "Un `switch` crea un `Envio` o un `EnvioPrioritario`; el `default` tira la excepción."
+     ],
+     "pistas": [
+      "Primero `super(...)`: así las validaciones de siempre (1 a 30000 g) corren también para los prioritarios.",
+      "`super.costo() + 400` suma el recargo una sola vez, sobre el costo normal del mismo peso.",
+      "Con `switch` y `->`, cada caso devuelve un valor: `case \"NORMAL\" -> new Envio(c[0], c[1], bruto - embalaje);`",
+      "No hace falta tocar `CentralEnvios`: `total()` y `totalesPorZona()` suman `costo()`."
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "class\\s+EnvioPrioritario\\s+extends\\s+Envio\\b",
+       "ok": "Subclase creada",
+       "error": "Falta `EnvioPrioritario extends Envio`",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "super\\s*\\(\\s*\\w+\\s*,\\s*\\w+\\s*,\\s*\\w+\\s*\\)",
+       "ok": "Llama al constructor del padre",
+       "error": "El constructor empieza con `super(id, zona, gramos)`",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\\b5_?000\\b",
+       "ok": "El tope de 5000 g",
+       "error": "Falta el tope: un prioritario pesa como máximo 5000 g netos",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "@Override\\s*public\\s+int\\s+costo",
+       "ok": "Redefine el costo",
+       "error": "Redefiní `costo()` con `@Override`",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "super\\.costo\\s*\\(\\s*\\)\\s*\\+",
+       "ok": "Reutiliza el costo normal",
+       "error": "Usá `super.costo() + 400` en lugar de repetir la cuenta",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\\b400\\b",
+       "ok": "El recargo de 400",
+       "error": "Falta el recargo de 400 pesos",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"PRIORITARIO\"",
+       "ok": "Lee la modalidad",
+       "error": "`desdeCampos` tiene que mirar si la modalidad es \"PRIORITARIO\"",
+       "archivo": "Envio.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "new\\s+EnvioPrioritario\\s*\\(",
+       "ok": "Crea la subclase",
+       "error": "`desdeCampos` tiene que crear un `EnvioPrioritario`",
+       "archivo": "Envio.java"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "instanceof",
+       "ok": "Sin `instanceof`",
+       "error": "Usá polimorfismo en lugar de `instanceof`"
+      }
+     ],
+     "archivos": [
+      {
+       "nombre": "Envio.java",
+       "inicial": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6) throw new IllegalArgumentException(\"se esperan 5 o 6 columnas\");\n        int bruto = Integer.parseInt(c[2]);\n        int embalaje = Integer.parseInt(c[3]);\n        if (bruto <= 0 || bruto > 50000 || embalaje < 0 || embalaje >= bruto) {\n            throw new IllegalArgumentException(\"pesos incompatibles: \" + c[2] + \"/\" + c[3]);\n        }\n        return new Envio(c[0], c[1], bruto - embalaje);\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6) throw new IllegalArgumentException(\"se esperan 5 o 6 columnas\");\n        int bruto = Integer.parseInt(c[2]);\n        int embalaje = Integer.parseInt(c[3]);\n        if (bruto <= 0 || bruto > 50000 || embalaje < 0 || embalaje >= bruto) {\n            throw new IllegalArgumentException(\"pesos incompatibles: \" + c[2] + \"/\" + c[3]);\n        }\n        String modalidad = c.length == 6 ? c[5].strip() : \"NORMAL\";\n        return switch (modalidad) {\n            case \"NORMAL\" -> new Envio(c[0], c[1], bruto - embalaje);\n            case \"PRIORITARIO\" -> new EnvioPrioritario(c[0], c[1], bruto - embalaje);\n            default -> throw new IllegalArgumentException(\"modalidad desconocida: \" + modalidad);\n        };\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n"
+      },
+      {
+       "nombre": "EnvioPrioritario.java",
+       "inicial": "package ar.edu.backend.envios;\n\n// Archivo nuevo: escribí acá la subclase.\n",
+       "solucion": "package ar.edu.backend.envios;\n\n/** Envío PRIORITARIO: hasta 5000 g netos y 400 pesos más que uno normal del mismo peso. */\npublic class EnvioPrioritario extends Envio {\n    private static final int MAXIMO_GRAMOS = 5000;\n    private static final int RECARGO = 400;\n\n    public EnvioPrioritario(String id, String zona, int gramos) {\n        super(id, zona, gramos);\n        if (gramos > MAXIMO_GRAMOS) {\n            throw new IllegalArgumentException(\"prioritario de más de 5000 g: \" + gramos);\n        }\n    }\n\n    @Override\n    public int costo() { return super.costo() + RECARGO; }\n}\n"
+      }
+     ]
     }
    ]
   },
@@ -2615,6 +2963,94 @@
        "nombre": "Cloud.java",
        "inicial": "package ar.edu.backend;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.TreeMap;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class Cloud {\n    private final List<Servidor> servidores;\n\n    public Cloud(List<Servidor> servidores) {\n        this.servidores = List.copyOf(servidores);\n    }\n\n    public List<Servidor> filtrar(Predicate<Servidor> criterio) {\n        return this.servidores.stream().filter(criterio).toList();\n    }\n\n    /**\n     * Metodo que retorna el costo total del riesgo operativo por los servidores que\n     * se estan procesando\n     */\n    public int total() {\n        return this.servidores.stream().mapToInt(Servidor::costoRiesgoOperativo).sum();\n    }\n\n    /**\n     * Metodo que retorna el Map donde por cada region a la que pertence el servidor\n     * \n     * @return\n     */\n    public Map<String, Integer> totalesPorRegion() {\n        return this.servidores.stream()\n                .collect(Collectors.groupingBy(Servidor::getRegion,\n                        Collectors.summingInt(Servidor::costoRiesgoOperativo)));\n    }\n\n    public String panorama() {\n        String reporte = \"Total: %d | Por Region: %s | indice menores a 50: %d\";\n        return reporte.formatted(this.total(), new TreeMap<>(this.totalesPorRegion()),\n                this.filtrar(s -> s.getIndiceCarga() < 50).size());\n    }\n\n}\n",
        "solucion": "package ar.edu.backend;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.TreeMap;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class Cloud {\n    private final List<Servidor> servidores;\n\n    public Cloud(List<Servidor> servidores) {\n        this.servidores = List.copyOf(servidores);\n    }\n\n    public List<Servidor> filtrar(Predicate<Servidor> criterio) {\n        return this.servidores.stream().filter(criterio).toList();\n    }\n\n    /**\n     * Metodo que retorna el costo total del riesgo operativo por los servidores que\n     * se estan procesando\n     */\n    public int total() {\n        return this.servidores.stream().mapToInt(Servidor::costoRiesgoOperativo).sum();\n    }\n\n    /**\n     * Metodo que retorna el Map donde por cada region a la que pertence el servidor\n     * \n     * @return\n     */\n    public Map<String, Integer> totalesPorRegion() {\n        return this.servidores.stream()\n                .collect(Collectors.groupingBy(Servidor::getRegion,\n                        Collectors.summingInt(Servidor::costoRiesgoOperativo)));\n    }\n\n    /**\n     * Cantidad de servidores en cada estado procesado. Vacia si no hay servidores.\n     */\n    public Map<String, Long> conteoPorEstado() {\n        return this.servidores.stream()\n                .collect(Collectors.groupingBy(Servidor::getEstado, TreeMap::new, Collectors.counting()));\n    }\n\n    public String panorama() {\n        String reporte = \"Total: %d | Por Region: %s | indice menores a 50: %d\";\n        return reporte.formatted(this.total(), new TreeMap<>(this.totalesPorRegion()),\n                this.filtrar(s -> s.getIndiceCarga() < 50).size());\n    }\n\n}\n"
+      }
+     ]
+    },
+    {
+     "id": "4.6",
+     "parte": 4,
+     "tema": "Envíos",
+     "titulo": "conteo por modalidad, en tres archivos",
+     "tipo": "codigo",
+     "proyecto": "env",
+     "donde": "`getModalidad()` en `Envio` y `EnvioPrioritario`, y `CentralEnvios` (la operación nueva)",
+     "consigna": "Agregá a `CentralEnvios` un conteo por modalidad: cuántos envíos hay NORMAL y cuántos PRIORITARIO; con la colección vacía, un mapa vacío. La consigna deja elegir el nombre: acá, `conteoPorModalidad()`.\n\nPara saber la modalidad, agregá `getModalidad()` en `Envio` (devuelve `\"NORMAL\"`) y redefinilo en `EnvioPrioritario` (devuelve `\"PRIORITARIO\"`). **Sin `instanceof`.**",
+     "datos": "A (normal) · B (prioritario) · C (prioritario) → `{NORMAL=1, PRIORITARIO=2}`. Sin envíos → `{}`. Con el CSV del parcial: 55 NORMAL y 45 PRIORITARIO.",
+     "pasos": [
+      "`public String getModalidad() { return \"NORMAL\"; }` en `Envio`.",
+      "`@Override public String getModalidad() { return \"PRIORITARIO\"; }` en `EnvioPrioritario`.",
+      "En `CentralEnvios`: `groupingBy(Envio::getModalidad, TreeMap::new, Collectors.counting())`."
+     ],
+     "pistas": [
+      "El tipo de vuelta es `Map<String, Long>`: `counting()` cuenta en `Long`.",
+      "Con `TreeMap::new` como segundo argumento, el mapa sale ordenado.",
+      "Pensá por qué conviene `getModalidad()` y no `instanceof`: si mañana aparece EXPRESS, el colector no cambia."
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "String\\s+getModalidad\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+\"NORMAL\"",
+       "ok": "`getModalidad()` en el padre",
+       "error": "Agregá `getModalidad()` en `Envio`, que devuelva \"NORMAL\"",
+       "archivo": "Envio.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "@Override\\s*public\\s+String\\s+getModalidad",
+       "ok": "La subclase lo redefine",
+       "error": "`EnvioPrioritario` tiene que redefinir `getModalidad()` con `@Override`",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\"PRIORITARIO\"",
+       "ok": "Modalidad prioritaria",
+       "error": "Falta el `getModalidad()` que devuelve \"PRIORITARIO\"",
+       "archivo": "EnvioPrioritario.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "Map<String,\\s*Long>\\s+conteoPorModalidad\\s*\\(\\s*\\)",
+       "ok": "El método nuevo",
+       "error": "Falta `public Map<String, Long> conteoPorModalidad()`",
+       "archivo": "CentralEnvios.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "groupingBy\\s*\\(\\s*Envio::getModalidad",
+       "ok": "Agrupa por modalidad",
+       "error": "Agrupá por `Envio::getModalidad`",
+       "archivo": "CentralEnvios.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "counting\\s*\\(\\s*\\)",
+       "ok": "Cuenta",
+       "error": "Contá cada grupo con `Collectors.counting()`",
+       "archivo": "CentralEnvios.java"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "instanceof",
+       "ok": "Sin `instanceof`",
+       "error": "Usá `getModalidad()` polimórfico en lugar de `instanceof`"
+      }
+     ],
+     "archivos": [
+      {
+       "nombre": "Envio.java",
+       "inicial": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6) throw new IllegalArgumentException(\"se esperan 5 o 6 columnas\");\n        int bruto = Integer.parseInt(c[2]);\n        int embalaje = Integer.parseInt(c[3]);\n        if (bruto <= 0 || bruto > 50000 || embalaje < 0 || embalaje >= bruto) {\n            throw new IllegalArgumentException(\"pesos incompatibles: \" + c[2] + \"/\" + c[3]);\n        }\n        String modalidad = c.length == 6 ? c[5].strip() : \"NORMAL\";\n        return switch (modalidad) {\n            case \"NORMAL\" -> new Envio(c[0], c[1], bruto - embalaje);\n            case \"PRIORITARIO\" -> new EnvioPrioritario(c[0], c[1], bruto - embalaje);\n            default -> throw new IllegalArgumentException(\"modalidad desconocida: \" + modalidad);\n        };\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\npublic class Envio {\n    private final String id;\n    private final String zona;\n    private final int gramos;\n\n    public Envio(String id, String zona, int gramos) {\n        if (id == null || id.isBlank() || zona == null || zona.isBlank()) {\n            throw new IllegalArgumentException(\"id y zona obligatorios\");\n        }\n        if (gramos <= 0 || gramos > 30000) {\n            throw new IllegalArgumentException(\"gramos fuera de rango: \" + gramos);\n        }\n        this.id = id.strip();\n        this.zona = zona.strip();\n        this.gramos = gramos;\n    }\n\n    public static Envio desdeCampos(String[] c) {\n        if (c.length != 5 && c.length != 6) throw new IllegalArgumentException(\"se esperan 5 o 6 columnas\");\n        int bruto = Integer.parseInt(c[2]);\n        int embalaje = Integer.parseInt(c[3]);\n        if (bruto <= 0 || bruto > 50000 || embalaje < 0 || embalaje >= bruto) {\n            throw new IllegalArgumentException(\"pesos incompatibles: \" + c[2] + \"/\" + c[3]);\n        }\n        String modalidad = c.length == 6 ? c[5].strip() : \"NORMAL\";\n        return switch (modalidad) {\n            case \"NORMAL\" -> new Envio(c[0], c[1], bruto - embalaje);\n            case \"PRIORITARIO\" -> new EnvioPrioritario(c[0], c[1], bruto - embalaje);\n            default -> throw new IllegalArgumentException(\"modalidad desconocida: \" + modalidad);\n        };\n    }\n\n    public String getId() { return id; }\n    public String getZona() { return zona; }\n    public int getGramos() { return gramos; }\n    public String getModalidad() { return \"NORMAL\"; }\n    public int costo() { return 500 + 200 * ((gramos + 999) / 1000); }\n}\n"
+      },
+      {
+       "nombre": "EnvioPrioritario.java",
+       "inicial": "package ar.edu.backend.envios;\n\n/** Envío PRIORITARIO: hasta 5000 g netos y 400 pesos más que uno normal del mismo peso. */\npublic class EnvioPrioritario extends Envio {\n    private static final int MAXIMO_GRAMOS = 5000;\n    private static final int RECARGO = 400;\n\n    public EnvioPrioritario(String id, String zona, int gramos) {\n        super(id, zona, gramos);\n        if (gramos > MAXIMO_GRAMOS) {\n            throw new IllegalArgumentException(\"prioritario de más de 5000 g: \" + gramos);\n        }\n    }\n\n    @Override\n    public int costo() { return super.costo() + RECARGO; }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\n/** Envío PRIORITARIO: hasta 5000 g netos y 400 pesos más que uno normal del mismo peso. */\npublic class EnvioPrioritario extends Envio {\n    private static final int MAXIMO_GRAMOS = 5000;\n    private static final int RECARGO = 400;\n\n    public EnvioPrioritario(String id, String zona, int gramos) {\n        super(id, zona, gramos);\n        if (gramos > MAXIMO_GRAMOS) {\n            throw new IllegalArgumentException(\"prioritario de más de 5000 g: \" + gramos);\n        }\n    }\n\n    @Override\n    public String getModalidad() { return \"PRIORITARIO\"; }\n\n    @Override\n    public int costo() { return super.costo() + RECARGO; }\n}\n"
+      },
+      {
+       "nombre": "CentralEnvios.java",
+       "inicial": "package ar.edu.backend.envios;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class CentralEnvios {\n    private final List<Envio> envios;\n    public CentralEnvios(List<Envio> envios) { this.envios = List.copyOf(envios); }\n    public int total() { return envios.stream().mapToInt(Envio::costo).sum(); }\n    public List<Envio> filtrar(Predicate<Envio> criterio) {\n        return envios.stream().filter(criterio).toList();\n    }\n    public Map<String, Integer> totalesPorZona() {\n        return envios.stream().collect(Collectors.groupingBy(Envio::getZona, Collectors.summingInt(Envio::costo)));\n    }\n    public String panorama() {\n        return \"Total: \" + total() + \" | por zona: \" + new java.util.TreeMap<>(totalesPorZona())\n                + \" | hasta 1000 g: \" + filtrar(e -> e.getGramos() <= 1000).size();\n    }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class CentralEnvios {\n    private final List<Envio> envios;\n    public CentralEnvios(List<Envio> envios) { this.envios = List.copyOf(envios); }\n    public int total() { return envios.stream().mapToInt(Envio::costo).sum(); }\n    public List<Envio> filtrar(Predicate<Envio> criterio) {\n        return envios.stream().filter(criterio).toList();\n    }\n    public Map<String, Integer> totalesPorZona() {\n        return envios.stream().collect(Collectors.groupingBy(Envio::getZona, Collectors.summingInt(Envio::costo)));\n    }\n    public Map<String, Long> conteoPorModalidad() {\n        return envios.stream().collect(Collectors.groupingBy(Envio::getModalidad, java.util.TreeMap::new, Collectors.counting()));\n    }\n    public String panorama() {\n        return \"Total: \" + total() + \" | por zona: \" + new java.util.TreeMap<>(totalesPorZona())\n                + \" | hasta 1000 g: \" + filtrar(e -> e.getGramos() <= 1000).size();\n    }\n}\n"
       }
      ]
     }
@@ -3044,6 +3480,87 @@
        "nombre": "LiquidadorTarjetas.java",
        "inicial": "package utnfc.backend.parcial;\n\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Optional;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic class LiquidadorTarjetas {\n    private final List<Consumo> consumos;\n    public LiquidadorTarjetas(List<Consumo> consumos) { this.consumos = List.copyOf(consumos); }\n    public List<Consumo> getConsumos() { return consumos; }\n    public int getTotalLiquidacion() { return consumos.stream().mapToInt(Consumo::comision).sum(); }\n    public int getPromedioComision() {\n        return consumos.isEmpty() ? 0 : getTotalLiquidacion() / consumos.size();\n    }\n    public Optional<Consumo> getMaximo() {\n        return consumos.stream().max(Comparator.comparingInt(Consumo::comision));\n    }\n    public Optional<Consumo> getMinimo() {\n        return consumos.stream().min(Comparator.comparingInt(Consumo::comision));\n    }\n    public List<Consumo> filtrar(Predicate<Consumo> criterio) {\n        return consumos.stream().filter(criterio).toList();\n    }\n    public Map<String, Integer> totalesPorRubro() {\n        return consumos.stream().collect(Collectors.groupingBy(Consumo::getRubro, Collectors.summingInt(Consumo::comision)));\n    }\n    public Map<String, Long> cantidadesPorModalidad() {\n        return consumos.stream().collect(Collectors.groupingBy(Consumo::modalidad, Collectors.counting()));\n    }\n    public String panorama() {\n        return \"Total: \" + getTotalLiquidacion()\n                + \" | promedio: \" + getPromedioComision()\n                + \" | por rubro: \" + new java.util.TreeMap<>(totalesPorRubro())\n                + \" | hasta $1000: \" + filtrar(c -> c.getCentavos() <= 100_000).size();\n    }\n}\n",
        "soloLectura": true
+      }
+     ]
+    },
+    {
+     "id": "5.6",
+     "tipo": "codigo",
+     "parte": 5,
+     "tema": "Envíos",
+     "titulo": "el main del parcial",
+     "proyecto": "env",
+     "donde": "`Main` → `main`",
+     "consigna": "El main del Parcial 3K2: usar `datos/datos-parcial.csv` por defecto (y seguir aceptando un argumento) y mostrar el resumen, la cantidad de objetos, las cantidades NORMAL y PRIORITARIO (**en cero** si no hay), el total y los totales por zona. El total y los totales por zona ya están en `panorama()`; el conteo, en `conteoPorModalidad()` (parte 4). El main no calcula.",
+     "datos": "Con el CSV del parcial: `Leídas: 140 | procesadas: 100 | descartadas: 16 | inválidas: 24 | objetos: 100`, `NORMAL: 55 | PRIORITARIO: 45` y `Total: 214800 | por zona: {Centro=74100, Norte=72800, Sur=67900} | hasta 1000 g: 29`.",
+     "pasos": [
+      "Cambiar la ruta por defecto a `datos/datos-parcial.csv`.",
+      "Guardar `central.conteoPorModalidad()` en un `Map<String, Long>`.",
+      "Imprimir `\"Objetos: \" + resultado.getEnvios().size()`.",
+      "Imprimir NORMAL y PRIORITARIO con `getOrDefault(..., 0L)`.",
+      "Dejar el `panorama()`: ya tiene el total y los totales por zona."
+     ],
+     "pistas": [
+      "`getOrDefault(\"PRIORITARIO\", 0L)`: si en el archivo no hay ninguno, la clave no está en el mapa y `get` daría `null`.",
+      "Importá `java.util.Map`.",
+      "Los descartes y los errores se siguen mostrando como en el preenunciado."
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "\"datos/datos-parcial\\.csv\"",
+       "ok": "El CSV del parcial por defecto",
+       "error": "La ruta por defecto tiene que ser `datos/datos-parcial.csv`",
+       "archivo": "Main.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "conteoPorModalidad\\s*\\(",
+       "ok": "Usa el conteo del colector",
+       "error": "Pedile el conteo al colector: `central.conteoPorModalidad()`",
+       "archivo": "Main.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getOrDefault\\s*\\(\\s*\"NORMAL\"\\s*,\\s*0L?\\s*\\)",
+       "ok": "NORMAL, en cero si no hay",
+       "error": "Mostrá NORMAL con `getOrDefault(\"NORMAL\", 0L)`",
+       "archivo": "Main.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getOrDefault\\s*\\(\\s*\"PRIORITARIO\"\\s*,\\s*0L?\\s*\\)",
+       "ok": "PRIORITARIO, en cero si no hay",
+       "error": "Mostrá PRIORITARIO con `getOrDefault(\"PRIORITARIO\", 0L)`",
+       "archivo": "Main.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getEnvios\\(\\)\\s*\\.size\\(\\)|getProcesadas\\(\\)",
+       "ok": "Muestra la cantidad de objetos",
+       "error": "Mostrá la cantidad de objetos: `resultado.getEnvios().size()`",
+       "archivo": "Main.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "panorama\\s*\\(",
+       "ok": "Muestra el panorama",
+       "error": "El main tiene que imprimir `central.panorama()`",
+       "archivo": "Main.java"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bfor\\s*\\(|\\bwhile\\s*\\(|\\.stream\\(\\)",
+       "ok": "El main no calcula",
+       "error": "El main no tiene que recorrer ni calcular",
+       "archivo": "Main.java"
+      }
+     ],
+     "archivos": [
+      {
+       "nombre": "Main.java",
+       "inicial": "package ar.edu.backend.envios;\n\nimport java.io.IOException;\nimport java.nio.file.Path;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        Path archivo = Path.of(args.length == 0 ? \"datos/datos.csv\" : args[0]);\n        ResultadoParseo resultado = new ParserEnvios().leer(archivo);\n        CentralEnvios central = new CentralEnvios(resultado.getEnvios());\n        System.out.println(resultado.resumen());\n        resultado.getDescartes().forEach(System.out::println);\n        resultado.getErrores().forEach(System.out::println);\n        System.out.println(central.panorama());\n    }\n}\n",
+       "solucion": "package ar.edu.backend.envios;\n\nimport java.io.IOException;\nimport java.nio.file.Path;\nimport java.util.Map;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        Path archivo = Path.of(args.length == 0 ? \"datos/datos-parcial.csv\" : args[0]);\n        ResultadoParseo resultado = new ParserEnvios().leer(archivo);\n        CentralEnvios central = new CentralEnvios(resultado.getEnvios());\n        System.out.println(resultado.resumen());\n        resultado.getDescartes().forEach(System.out::println);\n        resultado.getErrores().forEach(System.out::println);\n        Map<String, Long> porModalidad = central.conteoPorModalidad();\n        System.out.println(\"Objetos: \" + resultado.getEnvios().size());\n        System.out.println(\"NORMAL: \" + porModalidad.getOrDefault(\"NORMAL\", 0L)\n                + \" | PRIORITARIO: \" + porModalidad.getOrDefault(\"PRIORITARIO\", 0L));\n        System.out.println(central.panorama());\n    }\n}\n"
       }
      ]
     }
