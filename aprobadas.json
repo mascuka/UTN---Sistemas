@@ -148,6 +148,14 @@
         "tipo": "Recuperatorio",
         "nombre": "Recuperatorio · DAO - TP"
       }
+    ],
+    "2026-12-01": [
+      {
+        "k": "206",
+        "tipo": "Recuperatorio",
+        "nombre": "Recuperatorio",
+        "hasta": "2026-12-11"
+      }
     ]
   },
   "notasCursada": {
