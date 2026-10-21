@@ -2562,7 +2562,7 @@ const MATERIAS = {
       {
         id: "tpi",
         titulo: "TPI",
-        descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway y seguridad.",
+        descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway, seguridad y el despliegue con Docker, logs y monitoreo.",
         secciones: ["teorico", "tpi"],
         temas: {
           titulo: "Temas que entran",
@@ -2572,7 +2572,8 @@ const MATERIAS = {
             { titulo: "Spring", contenidos: ["Diseño de APIs REST: HTTP, verbos, idempotencia y códigos de respuesta", "Spring Container, inyección de dependencias y beans", "Spring Boot: controladores, servicios y repositorios", "ResponseEntity, validaciones, manejo global de errores y Swagger/OpenAPI"] },
             { titulo: "Spring Data", contenidos: ["JpaRepository y CrudRepository", "Consultas derivadas, @Query y repositorios personalizados"] },
             { titulo: "API Gateway", contenidos: ["Consumo de APIs externas y entre microservicios con RestClient", "API Gateway con Spring Cloud Gateway: ruteo y configuración"] },
-            { titulo: "Seguridad", contenidos: ["Autenticación, autorización, encriptación, firma digital y HTTPS", "OAuth2 y tokens JWT", "Spring Security como Resource Server con Keycloak"] }
+            { titulo: "Seguridad", contenidos: ["Autenticación, autorización, encriptación, firma digital y HTTPS", "OAuth2 y tokens JWT", "Spring Security como Resource Server con Keycloak"] },
+            { titulo: "Despliegue", contenidos: ["Contenerización: máquinas virtuales vs contenedores, imágenes, Dockerfile, Docker Hub y una app Spring Boot en un contenedor", "Docker Compose: el backend como un bloque, docker-compose.yml, volúmenes, redes y variables en .env", "Logging: manejo global de excepciones con @ControllerAdvice, SLF4J, Logback y buenas prácticas de logs", "Monitoreo: logs en Docker, trazabilidad entre microservicios, centralización (ELK o Loki + Grafana) y Spring Boot Actuator"] }
           ]
         },
         teorico: {
@@ -2598,6 +2599,12 @@ const MATERIAS = {
               { titulo: "Seguridad", archivos: [
                 { n: 20, nombre: "Apunte 20 · Seguridad en el backend", detalle: "Autenticación, autorización, codificación, encriptación, firma digital, HTTPS, OAuth2 y JWT", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-20-seguridad-en-el-backend.pdf" },
                 { n: 21, nombre: "Apunte 21 · Spring Security", detalle: "Spring Security en Spring Boot como Resource Server, con Keycloak y obtención de tokens", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-21-spring-security.pdf" }
+              ] },
+              { titulo: "Despliegue", archivos: [
+                { n: 22, nombre: "Apunte 22 · Introducción a Docker", detalle: "Contenerización: máquinas virtuales vs contenedores, arquitectura de Docker, instalación, imágenes y Dockerfile, Docker Hub y dos laboratorios hasta una app Spring Boot en un contenedor (38 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-22-introduccion-a-docker.pdf" },
+                { n: 22, nombre: "Apunte 22 · Despliegue con Docker Compose", detalle: "El backend como un bloque: docker-compose.yml en detalle, volúmenes, redes, variables en .env y un laboratorio con microservicios y gateway (24 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-22-despliegue-con-docker-compose.pdf" },
+                { n: 23, nombre: "Apunte 23 · Excepciones y logging local", detalle: "Manejo global de excepciones con @ControllerAdvice, logging con SLF4J y Logback, logs por capa y anti-patrones (17 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-23-excepciones-y-logging-local.pdf" },
+                { n: 24, nombre: "Apunte 24 · Centralización de logs y monitoreo", detalle: "Logs en Docker, trazabilidad entre microservicios, centralización con ELK o Loki + Grafana, Spring Boot Actuator y métricas (20 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/tpi/teorico/apunte-24-centralizacion-de-logs-y-monitoreo.pdf" }
               ] }
             ] }
           ],
