@@ -141,6 +141,13 @@
         "tipo": "TP",
         "nombre": "Limite de Entraga TP"
       }
+    ],
+    "2026-11-24": [
+      {
+        "k": "206",
+        "tipo": "Recuperatorio",
+        "nombre": "Recuperatorio · DAO - TP"
+      }
     ]
   },
   "notasCursada": {
