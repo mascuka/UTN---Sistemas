@@ -85,6 +85,8 @@ Por ahora está en el Simulacro 4 de Backend (`material/backend-de-aplicaciones/
 ## Parciales y simulacros en filas
 Un grupo con `filas: true` y `partes` muestra cada parte en una sola fila: "Parcial 3K1 · 2026 — Cloud Center", con el detalle abajo y cuántos archivos tiene. Al tocarla se despliega con sus archivos (y el panel del modo simulacro, si la parte tiene `simulacro`; si hay uno en curso, la fila ya aparece abierta). Cada parte: `{ titulo, tema, detalle, archivos, simulacro? }` (ver Parciales / Simulacros del 1º Parcial de Backend, `201`).
 
+En Backend, los ZIP de la cátedra que venían con errores están corregidos: tests nuevos que no compilaban o contradecían la consigna, carpetas y nombres de CSV distintos de los de la consigna y cuentas mal en los ejemplos (3K1, 3K8 / Simulacro 1 y Simulacro 2). Cada uno lleva un `CORRECCIONES.md` en la carpeta del enunciado con lo que se cambió, y el detalle de la fila lo dice. Para revisar uno: copiar los tests nuevos al proyecto inicial (tienen que compilar, salvo que usen clases que pide el parcial) y al proyecto resuelto (tienen que pasar todos con `mvn -o test`). Las soluciones propuestas (hechas por nosotros) llevan un `DECISIONES.md`.
+
 ## Práctica por partes
 Un parcial puede tener `practica: [{ id, titulo, origen, detalle, pasos, url }]` (ver DAO, `206`, 1º Parcial). En la página del parcial aparece primero la tarjeta "Práctica por partes" (`#/m206/p1/practica`), con la lista de ejercicios y cuánto lleva hecho cada uno.
 

@@ -2522,9 +2522,9 @@ const MATERIAS = {
             { grupo: "Parciales y simulacros", descripcion: "Tocá uno para ver sus archivos. Para practicar, hacé cada simulacro en 45 minutos.", filas: true, partes: [
               { titulo: "Parcial 3K1 · 2026", tema: "Cloud Center", detalle: "Telemetría de servidores; el día del parcial, el ingreso promedio por servidor (19/09/2026)", archivos: [
                 { n: 2, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: el sistema de servidores para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/preenunciado.pdf" },
-                { n: 3, nombre: "Enunciado", detalle: "El cambio a programar en el parcial (45 min)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/enunciado.pdf" },
+                { n: 3, nombre: "Enunciado", detalle: "El cambio a programar en el parcial (45 min). Corregido: el ejemplo decía 877 USD y la cuenta da 845", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/enunciado.pdf" },
                 { n: 4, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
-                { n: 5, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos_parcial.csv y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
+                { n: 5, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos-parcial.csv y los tests nuevos. Corregido para seguir la consigna tal cual: el test venía suelto, sin su carpeta, y el CSV con otro nombre (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
                 { n: 6, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia, probada con los 12 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Parcial 3K2 · 2026", tema: "Central de envíos", detalle: "Paquetes, peso neto y costo por zona; el día del parcial, los envíos PRIORITARIO (17/09/2026)", archivos: [
@@ -2535,20 +2535,22 @@ const MATERIAS = {
                 { n: 11, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (EnvioPrioritario), probada con los 15 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Parcial 3K8 · 2026", tema: "Fintech", detalle: "El mismo que se dio como Simulacro 1 en 3K1: solicitudes de crédito, score y tasa; el día del parcial, el nivel de morosidad", archivos: [
-                { n: 12, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/preenunciado.pdf" },
-                { n: 13, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/enunciado.pdf" },
-                { n: 14, nombre: "Todo el parcial", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
-                { n: 15, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: sin herencia (solo cambian las validaciones), probada con 18 tests. Ojo: el test nuevo de la cátedra no compila y uno de sus casos contradice la consigna; en DECISIONES.md está qué se corrigió y por qué", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k8/03-solucion-propuesta.zip" }
+                { n: 12, nombre: "Preenunciado", detalle: "Corregido: los comandos y el nombre de una clase", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/preenunciado.pdf" },
+                { n: 13, nombre: "Enunciado", detalle: "Corregido: dónde copiar los tests, el comando y qué muestra el main", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/enunciado.pdf" },
+                { n: 14, nombre: "Todo el parcial", detalle: "El proyecto, el CSV del parcial y los tests nuevos. Corregido: el test de la cátedra no compilaba y uno de sus casos contradecía la consigna (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
+                { n: 15, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: sin herencia (solo cambian las validaciones), probada con 18 tests (los de la cátedra, con el test nuevo corregido, y los propios). En DECISIONES.md está el porqué de cada decisión", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k8/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Simulacro 2 · 3K3", tema: "Taller de reparaciones", detalle: "Órdenes de reparación; en el parcial se agregan las EXPRESS, la garantía y los repuestos", archivos: [
                 { n: 16, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/preenunciado.pdf" },
                 { n: 17, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/enunciado.pdf" },
-                { n: 18, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" }
+                { n: 18, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación. Corregido: el test nuevo no compilaba contra el proyecto inicial y sus filas tenían una columna menos (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
+                { n: 19, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (ReparacionExpress), probada con los tests viejos, los nuevos y los ejemplos de la consigna", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Simulacro 3 · 3K4", tema: "Juegos de mesa", detalle: "Catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", archivos: [
-                { n: 19, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
-                { n: 20, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
-                { n: 21, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" }
+                { n: 20, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
+                { n: 21, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
+                { n: 22, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
+                { n: 23, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (JuegoCooperativo), con los nombres de métodos que exige el test nuevo; pasan los tests viejos y los nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Simulacro 4 · 3K7", tema: "Tarjetas de crédito", detalle: "Liquidación de consumos; en el parcial se agrega la protección de compras. Tiene modo simulacro y la solución", 
                 // Modo simulacro: con reloj, el enunciado al empezar y la solución al terminar
@@ -2560,7 +2562,7 @@ const MATERIAS = {
                   control: "Para corregirte: copiá los tests nuevos al proyecto y corré mvn test; tienen que pasar los viejos y los nuevos. Después mirá la solución."
                 },
                 archivos: [
-                { n: 22, nombre: "Todo el simulacro", detalle: "El preenunciado, el enunciado, el proyecto, el CSV del parcial y la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
+                { n: 24, nombre: "Todo el simulacro", detalle: "El preenunciado, el enunciado, el proyecto, el CSV del parcial y la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
               ] }
             ] }
           ],
@@ -7406,11 +7408,11 @@ HERRAMIENTAS.pasos = {
           `Corré ${c("mvn test")} y anotá qué falla. Lo esperable: los viejos pasan y algunos nuevos fallan. Esa es tu línea base.`],
         term: { t: "Terminal", cod: `
  # Desde la raíz del proyecto (la carpeta que tiene el pom.xml)
- cp -R tests-nuevos/ar src/test/java/          # Cloud Center y Fintech: el paquete es ar
+ cp -R tests-nuevos/ar src/test/java/          # Cloud Center, Envíos, Fintech y Juegos: el paquete es ar
  cp -R tests-nuevos/utnfc src/test/java/       # Taller y Tarjetas: el paquete es utnfc
  cp datos-parcial.csv datos/datos-parcial.csv
  mvn test` },
-        cajas: [["trampa", "Trampa", `el ZIP del Parcial 3K1 traía ${c("datos_parcial.csv")} (guion bajo) y la consigna pedía ${c("datos-parcial.csv")} (guion medio). Si el nombre no coincide, el main no lo encuentra. Usá el de la consigna.`],
+        cajas: [["trampa", "Trampa", `el ZIP original del Parcial 3K1 traía ${c("datos_parcial.csv")} (guion bajo) y la consigna pedía ${c("datos-parcial.csv")} (guion medio); en el de esta página ya está corregido. Si el nombre no coincide, el main no lo encuentra. Usá el de la consigna.`],
                 ["dato", "Dato", `si un test nuevo no compila, mirá primero la línea ${c("package")}: tiene que ser igual a la carpeta donde lo copiaste.`]],
         pp: ["0.1", "Practicá dónde va cada cambio"] },
       { fase: "Cambios", t: "Parser: aceptar las dos cabeceras", donde: `La clase Parser, método ${c("procesar(Path)")} o ${c("leer(Path)")}.`, req: ["cab"],
@@ -7660,9 +7662,9 @@ HERRAMIENTAS.pasos = {
           ["una clave que no es un campo (Tarjetas: SIN_SEGURO / ASEGURADO)", "La clave se calcula con una lambda. \"No se pide agrupar por plazo\": leé bien qué clave quieren.", `
 +groupingBy(c -> c.isAsegurado() ? "ASEGURADO" : "SIN_SEGURO", Collectors.counting())`],
           ["\"por tipo\" cuando el tipo es la clase (Juegos: Normal / Cooperativo)", `Un ${c("getTipo()")} en el padre que la subclase redefine, y se agrupa por eso. Sin ${c("instanceof")}.`, `
-+public String getTipo() { return "NORMAL"; }                  // en Juego
-+@Override public String getTipo() { return "COOPERATIVO"; }   // en JuegoCooperativo
-+groupingBy(Juego::getTipo, Collectors.counting())`],
++public String getTipo() { return "Normal"; }                  // en JuegoMesa
++@Override public String getTipo() { return "Cooperativo"; }   // en JuegoCooperativo
++groupingBy(JuegoMesa::getTipo, Collectors.counting())        // en contarJuegosPorTipo(): ese nombre lo pide el test`],
           ["un total de un estado y un agrupamiento (Taller: ENTREGADA y por dispositivo)", "Leé bien el campo: \"dispositivo\" y \"marca\" son columnas distintas.", `
 +reparaciones.stream().filter(r -> r.getEstado().equals("ENTREGADA")).mapToDouble(Reparacion::importe).sum();
 +reparaciones.stream().collect(Collectors.groupingBy(Reparacion::[[getDispositivo]], Collectors.counting()));`]],

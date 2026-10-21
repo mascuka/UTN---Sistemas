@@ -16,6 +16,10 @@ public class JuegoCooperativo extends JuegoMesa {
 
     @Override
     public String getTipo() {
-        return "COOPERATIVO";
+        return "Cooperativo";
+    }
+
+    public int getDificultadCooperativa() {
+        return dificultad;
     }
 }

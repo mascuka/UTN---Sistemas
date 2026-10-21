@@ -59,7 +59,7 @@ public class JuegoMesa {
     }
 
     public String getTipo() {
-        return "NORMAL";
+        return "Normal";
     }
 
     public String getId() { return id; }

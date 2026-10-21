@@ -2342,10 +2342,10 @@
      "titulo": "total de puntuación y conteo por tipo",
      "tipo": "codigo",
      "donde": "`ServicioJuegos` (las dos operaciones) y `getTipo()` en `Juego` y `JuegoCooperativo`",
-     "consigna": "Agregá:\n1. `totalPuntuacionAjustada()`: la suma de `getPuntuacionAjustada()` de todos los juegos.\n2. `cantidadPorTipo()`: cuántos juegos hay de tipo `NORMAL` y `COOPERATIVO`.\n\nPara el tipo, agregá `getTipo()` en `Juego` (devuelve `\"NORMAL\"`) y redefinilo en `JuegoCooperativo` (devuelve `\"COOPERATIVO\"`). **Sin `instanceof`.**",
-     "datos": "Pandemic (coop, 23.0) · Catan (normal, 14.0) · Spirit Island (coop, 37.2) → total **74.2** · `{COOPERATIVO=2, NORMAL=1}`",
+     "consigna": "Agregá:\n1. `calcularSumaPuntuacionAjustada()`: la suma de `getPuntuacionAjustada()` de todos los juegos.\n2. `contarJuegosPorTipo()`: cuántos juegos hay de tipo `Normal` y `Cooperativo`.\n\nPara el tipo, agregá `getTipo()` en `Juego` (devuelve `\"Normal\"`) y redefinilo en `JuegoCooperativo` (devuelve `\"Cooperativo\"`). **Sin `instanceof`.** Usá estos nombres: son los que pide el test nuevo del Simulacro 3.",
+     "datos": "Pandemic (coop, 23.0) · Catan (normal, 14.0) · Spirit Island (coop, 37.2) → total **74.2** · `{Cooperativo=2, Normal=1}`",
      "pasos": [
-      "`public String getTipo() { return \"NORMAL\"; }` en `Juego`; `@Override` en `JuegoCooperativo`.",
+      "`public String getTipo() { return \"Normal\"; }` en `Juego`; `@Override` en `JuegoCooperativo`.",
       "Total: `mapToDouble(Juego::getPuntuacionAjustada).sum()`.",
       "Conteo: `groupingBy(Juego::getTipo, Collectors.counting())`."
      ],
@@ -2369,9 +2369,9 @@
       },
       {
        "tipo": "contiene",
-       "regex": "String\\s+getTipo\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+\"NORMAL\"",
+       "regex": "String\\s+getTipo\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+\"Normal\"",
        "ok": "`getTipo()` en el padre",
-       "error": "Agregá `getTipo()` en `Juego`, que devuelva \"NORMAL\"",
+       "error": "Agregá `getTipo()` en `Juego`, que devuelva \"Normal\"",
        "archivo": "Juego.java"
       },
       {
@@ -2383,9 +2383,9 @@
       },
       {
        "tipo": "contiene",
-       "regex": "\"COOPERATIVO\"",
+       "regex": "\"Cooperativo\"",
        "ok": "Tipo cooperativo",
-       "error": "Falta el `getTipo()` que devuelve \"COOPERATIVO\"",
+       "error": "Falta el `getTipo()` que devuelve \"Cooperativo\"",
        "archivo": "JuegoCooperativo.java"
       },
       {
@@ -2398,18 +2398,18 @@
      "archivos": [
       {
        "nombre": "ServicioJuegos.java",
-       "inicial": "public class ServicioJuegos {\n    private final List<Juego> juegos;\n\n    public ServicioJuegos(List<Juego> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public List<Juego> filtrar(Predicate<Juego> criterio) {\n        return juegos.stream().filter(criterio).toList();\n    }\n\n    // TODO: totalPuntuacionAjustada()\n    // TODO: cantidadPorTipo()\n}\n",
-       "solucion": "public class ServicioJuegos {\n    private final List<Juego> juegos;\n\n    public ServicioJuegos(List<Juego> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public List<Juego> filtrar(Predicate<Juego> criterio) {\n        return juegos.stream().filter(criterio).toList();\n    }\n\n    public double totalPuntuacionAjustada() {\n        return juegos.stream().mapToDouble(Juego::getPuntuacionAjustada).sum();\n    }\n\n    public Map<String, Long> cantidadPorTipo() {\n        return juegos.stream().collect(Collectors.groupingBy(Juego::getTipo, Collectors.counting()));\n    }\n}\n"
+       "inicial": "public class ServicioJuegos {\n    private final List<Juego> juegos;\n\n    public ServicioJuegos(List<Juego> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public List<Juego> filtrar(Predicate<Juego> criterio) {\n        return juegos.stream().filter(criterio).toList();\n    }\n\n    // TODO: calcularSumaPuntuacionAjustada()\n    // TODO: contarJuegosPorTipo()\n}\n",
+       "solucion": "public class ServicioJuegos {\n    private final List<Juego> juegos;\n\n    public ServicioJuegos(List<Juego> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public List<Juego> filtrar(Predicate<Juego> criterio) {\n        return juegos.stream().filter(criterio).toList();\n    }\n\n    public double calcularSumaPuntuacionAjustada() {\n        return juegos.stream().mapToDouble(Juego::getPuntuacionAjustada).sum();\n    }\n\n    public Map<String, Long> contarJuegosPorTipo() {\n        return juegos.stream().collect(Collectors.groupingBy(Juego::getTipo, Collectors.counting()));\n    }\n}\n"
       },
       {
        "nombre": "Juego.java",
        "inicial": "public class Juego {\n    private final String id;\n    private final String nombre;\n    private final double rating;\n    private final double peso;\n\n    public Juego(String id, String nombre, double rating, double peso) {\n        if (rating < 0 || rating > 10) throw new IllegalArgumentException(\"rating inválido\");\n        this.id = id;\n        this.nombre = nombre;\n        this.rating = rating;\n        this.peso = peso;\n    }\n\n    public double getPuntuacionAjustada() { return rating * peso; }\n    public String getNombre() { return nombre; }\n\n    // c: id;nombre;anio;min;max;duracion;rating;peso;categoria[;dificultad_cooperativa]\n    public static Juego desdeCampos(String[] c) {\n        if (c.length != 9 && c.length != 10) throw new IllegalArgumentException(\"ancho inválido\");\n        double rating = Double.parseDouble(c[6]);\n        double peso = Double.parseDouble(c[7]);\n        boolean cooperativo = c.length == 10 && !c[9].isEmpty();\n        if (!cooperativo)\n            return new Juego(c[0], c[1], rating, peso);\n        int dificultad = Integer.parseInt(c[9]);\n        if (dificultad < 1 || dificultad > 10)\n            throw new IllegalArgumentException(\"dificultad cooperativa fuera de rango: \" + dificultad);\n        return new JuegoCooperativo(c[0], c[1], rating, peso, dificultad);\n    }\n}\n",
-       "solucion": "public class Juego {\n    private final String id;\n    private final String nombre;\n    private final double rating;\n    private final double peso;\n\n    public Juego(String id, String nombre, double rating, double peso) {\n        if (rating < 0 || rating > 10) throw new IllegalArgumentException(\"rating inválido\");\n        this.id = id;\n        this.nombre = nombre;\n        this.rating = rating;\n        this.peso = peso;\n    }\n\n    public double getPuntuacionAjustada() { return rating * peso; }\n    public String getNombre() { return nombre; }\n    public String getTipo() { return \"NORMAL\"; }\n\n    // c: id;nombre;anio;min;max;duracion;rating;peso;categoria[;dificultad_cooperativa]\n    public static Juego desdeCampos(String[] c) {\n        if (c.length != 9 && c.length != 10) throw new IllegalArgumentException(\"ancho inválido\");\n        double rating = Double.parseDouble(c[6]);\n        double peso = Double.parseDouble(c[7]);\n        boolean cooperativo = c.length == 10 && !c[9].isEmpty();\n        if (!cooperativo)\n            return new Juego(c[0], c[1], rating, peso);\n        int dificultad = Integer.parseInt(c[9]);\n        if (dificultad < 1 || dificultad > 10)\n            throw new IllegalArgumentException(\"dificultad cooperativa fuera de rango: \" + dificultad);\n        return new JuegoCooperativo(c[0], c[1], rating, peso, dificultad);\n    }\n}\n"
+       "solucion": "public class Juego {\n    private final String id;\n    private final String nombre;\n    private final double rating;\n    private final double peso;\n\n    public Juego(String id, String nombre, double rating, double peso) {\n        if (rating < 0 || rating > 10) throw new IllegalArgumentException(\"rating inválido\");\n        this.id = id;\n        this.nombre = nombre;\n        this.rating = rating;\n        this.peso = peso;\n    }\n\n    public double getPuntuacionAjustada() { return rating * peso; }\n    public String getNombre() { return nombre; }\n    public String getTipo() { return \"Normal\"; }\n\n    // c: id;nombre;anio;min;max;duracion;rating;peso;categoria[;dificultad_cooperativa]\n    public static Juego desdeCampos(String[] c) {\n        if (c.length != 9 && c.length != 10) throw new IllegalArgumentException(\"ancho inválido\");\n        double rating = Double.parseDouble(c[6]);\n        double peso = Double.parseDouble(c[7]);\n        boolean cooperativo = c.length == 10 && !c[9].isEmpty();\n        if (!cooperativo)\n            return new Juego(c[0], c[1], rating, peso);\n        int dificultad = Integer.parseInt(c[9]);\n        if (dificultad < 1 || dificultad > 10)\n            throw new IllegalArgumentException(\"dificultad cooperativa fuera de rango: \" + dificultad);\n        return new JuegoCooperativo(c[0], c[1], rating, peso, dificultad);\n    }\n}\n"
       },
       {
        "nombre": "JuegoCooperativo.java",
        "inicial": "public class JuegoCooperativo extends Juego {\n    private final int dificultad;\n\n    public JuegoCooperativo(String id, String nombre, double rating, double peso, int dificultad) {\n        super(id, nombre, rating, peso);\n        this.dificultad = dificultad;\n    }\n\n    @Override\n    public double getPuntuacionAjustada() {\n        return super.getPuntuacionAjustada() + dificultad / 2.0;\n    }\n}",
-       "solucion": "public class JuegoCooperativo extends Juego {\n    private final int dificultad;\n\n    public JuegoCooperativo(String id, String nombre, double rating, double peso, int dificultad) {\n        super(id, nombre, rating, peso);\n        this.dificultad = dificultad;\n    }\n\n    @Override\n    public double getPuntuacionAjustada() {\n        return super.getPuntuacionAjustada() + dificultad / 2.0;\n    }\n\n    @Override\n    public String getTipo() {\n        return \"COOPERATIVO\";\n    }\n}\n"
+       "solucion": "public class JuegoCooperativo extends Juego {\n    private final int dificultad;\n\n    public JuegoCooperativo(String id, String nombre, double rating, double peso, int dificultad) {\n        super(id, nombre, rating, peso);\n        this.dificultad = dificultad;\n    }\n\n    @Override\n    public double getPuntuacionAjustada() {\n        return super.getPuntuacionAjustada() + dificultad / 2.0;\n    }\n\n    @Override\n    public String getTipo() {\n        return \"Cooperativo\";\n    }\n}\n"
       }
      ],
      "compilar": "solo"
@@ -2904,29 +2904,36 @@
      "titulo": "el panorama y el main",
      "proyecto": "jue",
      "donde": "`ServicioJuegos.panorama()` y la ruta por defecto en `Main`",
-     "consigna": "El servicio ya tiene `totalPuntuacionAjustada()` y `contarPorTipo()` (parte 4). El main tiene que usar `datos/datos-parcial.csv` por defecto y mostrar un **panorama completo** con el total de puntos y los conteos por tipo. El texto se arma en el **servicio** (`panorama()`), y el main solo lo imprime: son dos pestañas.",
+     "consigna": "El servicio ya tiene `calcularSumaPuntuacionAjustada()` y `contarJuegosPorTipo()` (parte 4). El main tiene que usar `datos/datos-parcial.csv` por defecto y mostrar un **panorama completo** con el total de puntos y los conteos por tipo. El test nuevo pide que el panorama diga `Total Puntos`. El texto se arma en el **servicio** (`panorama()`), y el main solo lo imprime: son dos pestañas.",
      "pasos": [
-      "En `panorama()`: sumar el total (`%.2f`) y los conteos por tipo al texto.",
+      "En `panorama()`: sumar `Total Puntos` (con `%.2f`) y los conteos por tipo al texto.",
       "En `Main`: cambiar la ruta por defecto.",
       "El main ya imprime `servicio.panorama()`: no hace falta más."
      ],
      "pistas": [
-      "`new java.util.TreeMap<>(contarPorTipo())` deja los tipos ordenados.",
+      "`new java.util.TreeMap<>(contarJuegosPorTipo())` deja los tipos ordenados.",
       "No dupliques las cuentas en el main: el panorama ya las tiene."
      ],
      "checks": [
       {
        "tipo": "contiene",
-       "regex": "String\\s+panorama\\s*\\(\\s*\\)\\s*\\{[^}]*totalPuntuacionAjustada\\s*\\(",
+       "regex": "String\\s+panorama\\s*\\(\\s*\\)\\s*\\{[^}]*calcularSumaPuntuacionAjustada\\s*\\(",
        "ok": "El panorama tiene el total",
-       "error": "Sumá `totalPuntuacionAjustada()` al panorama",
+       "error": "Sumá `calcularSumaPuntuacionAjustada()` al panorama",
        "archivo": "ServicioJuegos.java"
       },
       {
        "tipo": "contiene",
-       "regex": "String\\s+panorama\\s*\\(\\s*\\)\\s*\\{[^}]*contarPorTipo\\s*\\(",
+       "regex": "String\\s+panorama\\s*\\(\\s*\\)\\s*\\{[^}]*contarJuegosPorTipo\\s*\\(",
        "ok": "El panorama tiene los conteos por tipo",
-       "error": "Sumá `contarPorTipo()` al panorama",
+       "error": "Sumá `contarJuegosPorTipo()` al panorama",
+       "archivo": "ServicioJuegos.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "Total Puntos",
+       "ok": "Dice `Total Puntos`",
+       "error": "El test nuevo busca el texto `Total Puntos` en el panorama",
        "archivo": "ServicioJuegos.java"
       },
       {
@@ -2954,8 +2961,8 @@
      "archivos": [
       {
        "nombre": "ServicioJuegos.java",
-       "inicial": "package ar.edu.backend.juegos;\n\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Optional;\nimport java.util.stream.Collectors;\n\npublic class ServicioJuegos {\n    private final List<JuegoMesa> juegos;\n\n    public ServicioJuegos(List<JuegoMesa> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public double calcularPromedioRating() {\n        return juegos.stream()\n                .mapToDouble(JuegoMesa::getRating)\n                .average()\n                .orElse(0.0);\n    }\n\n    public Optional<JuegoMesa> obtenerMasComplejo() {\n        return juegos.stream()\n                .max(Comparator.comparingDouble(JuegoMesa::getPeso));\n    }\n\n    public Map<String, Long> contarJuegosPorCategoria() {\n        return juegos.stream()\n                .collect(Collectors.groupingBy(JuegoMesa::getCategoria, Collectors.counting()));\n    }\n\n    public List<JuegoMesa> filtrarPorJugadores(int cantidad) {\n        return juegos.stream()\n                .filter(j -> cantidad >= j.getMinJugadores() && cantidad <= j.getMaxJugadores())\n                .collect(Collectors.toList());\n    }\n\n    public double totalPuntuacionAjustada() {\n        return juegos.stream().mapToDouble(JuegoMesa::getPuntuacionAjustada).sum();\n    }\n\n    public Map<String, Long> contarPorTipo() {\n        return juegos.stream().collect(Collectors.groupingBy(JuegoMesa::getTipo, Collectors.counting()));\n    }\n\n    public String panorama() {\n        return String.format(\"Panorama: %d juegos | Categorías: %s\", \n                juegos.size(), new java.util.TreeMap<>(contarJuegosPorCategoria()));\n    }\n}\n",
-       "solucion": "package ar.edu.backend.juegos;\n\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Optional;\nimport java.util.stream.Collectors;\n\npublic class ServicioJuegos {\n    private final List<JuegoMesa> juegos;\n\n    public ServicioJuegos(List<JuegoMesa> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public double calcularPromedioRating() {\n        return juegos.stream()\n                .mapToDouble(JuegoMesa::getRating)\n                .average()\n                .orElse(0.0);\n    }\n\n    public Optional<JuegoMesa> obtenerMasComplejo() {\n        return juegos.stream()\n                .max(Comparator.comparingDouble(JuegoMesa::getPeso));\n    }\n\n    public Map<String, Long> contarJuegosPorCategoria() {\n        return juegos.stream()\n                .collect(Collectors.groupingBy(JuegoMesa::getCategoria, Collectors.counting()));\n    }\n\n    public List<JuegoMesa> filtrarPorJugadores(int cantidad) {\n        return juegos.stream()\n                .filter(j -> cantidad >= j.getMinJugadores() && cantidad <= j.getMaxJugadores())\n                .collect(Collectors.toList());\n    }\n\n    public double totalPuntuacionAjustada() {\n        return juegos.stream().mapToDouble(JuegoMesa::getPuntuacionAjustada).sum();\n    }\n\n    public Map<String, Long> contarPorTipo() {\n        return juegos.stream().collect(Collectors.groupingBy(JuegoMesa::getTipo, Collectors.counting()));\n    }\n\n    public String panorama() {\n        return String.format(\"Panorama: %d juegos | Categorías: %s | Puntuación total: %.2f | Por tipo: %s\",\n                juegos.size(), new java.util.TreeMap<>(contarJuegosPorCategoria()),\n                totalPuntuacionAjustada(), new java.util.TreeMap<>(contarPorTipo()));\n    }\n}\n"
+       "inicial": "package ar.edu.backend.juegos;\n\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Optional;\nimport java.util.stream.Collectors;\n\npublic class ServicioJuegos {\n    private final List<JuegoMesa> juegos;\n\n    public ServicioJuegos(List<JuegoMesa> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public double calcularPromedioRating() {\n        return juegos.stream()\n                .mapToDouble(JuegoMesa::getRating)\n                .average()\n                .orElse(0.0);\n    }\n\n    public Optional<JuegoMesa> obtenerMasComplejo() {\n        return juegos.stream()\n                .max(Comparator.comparingDouble(JuegoMesa::getPeso));\n    }\n\n    public Map<String, Long> contarJuegosPorCategoria() {\n        return juegos.stream()\n                .collect(Collectors.groupingBy(JuegoMesa::getCategoria, Collectors.counting()));\n    }\n\n    public List<JuegoMesa> filtrarPorJugadores(int cantidad) {\n        return juegos.stream()\n                .filter(j -> cantidad >= j.getMinJugadores() && cantidad <= j.getMaxJugadores())\n                .collect(Collectors.toList());\n    }\n\n    public double calcularSumaPuntuacionAjustada() {\n        return juegos.stream().mapToDouble(JuegoMesa::getPuntuacionAjustada).sum();\n    }\n\n    public Map<String, Long> contarJuegosPorTipo() {\n        return juegos.stream().collect(Collectors.groupingBy(JuegoMesa::getTipo, Collectors.counting()));\n    }\n\n    public String panorama() {\n        return String.format(\"Panorama: %d juegos | Categorías: %s\", \n                juegos.size(), new java.util.TreeMap<>(contarJuegosPorCategoria()));\n    }\n}\n",
+       "solucion": "package ar.edu.backend.juegos;\n\nimport java.util.Comparator;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Optional;\nimport java.util.stream.Collectors;\n\npublic class ServicioJuegos {\n    private final List<JuegoMesa> juegos;\n\n    public ServicioJuegos(List<JuegoMesa> juegos) {\n        this.juegos = List.copyOf(juegos);\n    }\n\n    public double calcularPromedioRating() {\n        return juegos.stream()\n                .mapToDouble(JuegoMesa::getRating)\n                .average()\n                .orElse(0.0);\n    }\n\n    public Optional<JuegoMesa> obtenerMasComplejo() {\n        return juegos.stream()\n                .max(Comparator.comparingDouble(JuegoMesa::getPeso));\n    }\n\n    public Map<String, Long> contarJuegosPorCategoria() {\n        return juegos.stream()\n                .collect(Collectors.groupingBy(JuegoMesa::getCategoria, Collectors.counting()));\n    }\n\n    public List<JuegoMesa> filtrarPorJugadores(int cantidad) {\n        return juegos.stream()\n                .filter(j -> cantidad >= j.getMinJugadores() && cantidad <= j.getMaxJugadores())\n                .collect(Collectors.toList());\n    }\n\n    public double calcularSumaPuntuacionAjustada() {\n        return juegos.stream().mapToDouble(JuegoMesa::getPuntuacionAjustada).sum();\n    }\n\n    public Map<String, Long> contarJuegosPorTipo() {\n        return juegos.stream().collect(Collectors.groupingBy(JuegoMesa::getTipo, Collectors.counting()));\n    }\n\n    public String panorama() {\n        return String.format(\"Panorama: %d juegos | Categorías: %s | Total Puntos: %.2f | Por tipo: %s\",\n                juegos.size(), new java.util.TreeMap<>(contarJuegosPorCategoria()),\n                calcularSumaPuntuacionAjustada(), new java.util.TreeMap<>(contarJuegosPorTipo()));\n    }\n}\n"
       },
       {
        "nombre": "Main.java",
