@@ -1,13 +1,17 @@
-# Revisa los ejercicios de "El parcial por partes" (practica/bk-parcial/ejercicios.json). Desde la raíz del repo:
+# Revisa los ejercicios de "El parcial por partes" (practica/bk-parcial/ejercicios.json) y de la Práctica por partes
+# (practica/bk-practica/ejercicios.json: lo que trae el preenunciado). Desde la raíz del repo:
 #   python3 herramientas/parcial-por-partes/validar.py
 # 1) Código: la solución pasa todas sus verificaciones y el código inicial no (las mismas reglas que la página:
 #    sin comentarios, y un check sin "archivo" mira todos los archivos que se pueden editar).
 # 2) Los que tienen "proyecto" (código real de un parcial): el inicial y la solución compilan con javac sobre ese
 #    proyecto (sacado del ZIP del preenunciado), y pruebas/<id>/Prueba.java corre contra la solución e imprime OK.
 #    pruebas/<id>/base/ son los archivos de otras partes que ese ejercicio da por hechos.
-#    Los que tienen "compilar": "solo" se compilan solos (con los imports de java.util).
-# 3) Clasificación con pruebas/<id>/: se corre la solución completa del parcial con esas filas y tiene que dar las
-#    mismas respuestas.
+#    Los que tienen "compilar": "solo" se compilan solos (con los imports de java.util) y, si hay pruebas/<id>/Prueba.java,
+#    se corre contra la solución.
+# 3) Clasificación con pruebas/<id>/: se corre la solución completa del parcial con esas filas (o con los "new" del
+#    ejercicio) y tiene que dar las mismas respuestas.
+# 4) Que los id de las partes y de los ejercicios no se repitan entre los dos archivos, y que el código de cada
+#    explicación marque líneas que existen y elementos de "consta de".
 # Necesita el JDK 21 (javac y java).
 import json, os, re, shutil, subprocess, sys, tempfile, zipfile
 RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -91,10 +95,34 @@ def correr(salida, paquete, *args):
     err = '\n'.join(l for l in r.stderr.splitlines() if not l.startswith('Picked up JAVA_TOOL_OPTIONS'))
     return (r.stdout + err).strip()
 
+ARCHIVOS = ['bk-practica', 'bk-parcial']
+
+def lecciones(datos):
+    """Ids sin repetir y el código de cada explicación bien marcado"""
+    mal, partes, ejs = 0, set(), set()
+    for d in datos:
+        for p in d['partes']:
+            if p.get('id') in partes: mal += 1; print('✗ parte repetida:', p.get('id'))
+            partes.add(p.get('id'))
+            for e in p['ejercicios']:
+                if e['id'] in ejs: mal += 1; print('✗ ejercicio repetido:', e['id'])
+                ejs.add(e['id'])
+            l = p.get('leccion')
+            if not l: continue
+            ej = l['ejemplo']; n = len(ej['codigo'].split('\n'))
+            for g, a, b in ej['marcas']:
+                if not (1 <= a <= b <= n) or not (1 <= g <= len(l['consta'])):
+                    mal += 1; print(f"✗ {p['id']}: marca fuera de lugar {g} {a}-{b}")
+            sin = set(range(1, len(l['consta']) + 1)) - {g for g, _, _ in ej['marcas']}
+            if sin: mal += 1; print(f"✗ {p['id']}: elementos sin marcar en el código: {sorted(sin)}")
+    print(f'{len(partes)} partes y {len(ejs)} ejercicios, sin repetir' if not mal else '')
+    return mal
+
 def main():
-    d = json.load(open(os.path.join(RAIZ, 'practica', 'bk-parcial', 'ejercicios.json'), encoding='utf-8'))
-    mal = 0
-    for p in d['partes']:
+    datos = [json.load(open(os.path.join(RAIZ, 'practica', a, 'ejercicios.json'), encoding='utf-8')) for a in ARCHIVOS]
+    mal = lecciones(datos)
+    for d in datos:
+      for p in d['partes']:
         for e in p['ejercicios']:
             notas = []
             if e['tipo'] == 'codigo':
@@ -121,6 +149,7 @@ def main():
                         else: notas.append('compila y la prueba da OK')
                     else: notas.append('compila')
                 elif e.get('compilar') == 'solo':
+                    prueba = os.path.join(PRUEBAS, e['id'], 'Prueba.java')
                     for cual in ('inicial', 'solucion'):
                         tmp = tempfile.mkdtemp(prefix='pp-')
                         fs = []
@@ -128,8 +157,13 @@ def main():
                             t = a['inicial'] if cual == 'inicial' or a.get('soloLectura') else a['solucion']
                             if 'import ' not in t and 'package ' not in t: t = IMPORTS + t
                             f = os.path.join(tmp, a['nombre']); open(f, 'w', encoding='utf-8').write(t); fs.append(f)
+                        if cual == 'solucion' and os.path.isfile(prueba): fs.append(prueba)
                         ok, msg = compilar(fs, os.path.join(tmp, 'clases'))
                         if not ok: mal += 1; notas.append(f'✗ {cual} no compila:\n' + msg[:1500])
+                        elif cual == 'solucion' and os.path.isfile(prueba):
+                            r = subprocess.run(['java', '-cp', os.path.join(tmp, 'clases'), 'Prueba'], capture_output=True, text=True, timeout=60)
+                            if r.stdout.strip().splitlines()[-1:] != ['OK']: mal += 1; notas.append('✗ la prueba falla:\n' + (r.stdout + r.stderr)[:1500])
+                            else: notas.append('la prueba da OK')
                     notas.append('compila solo')
             elif e['tipo'] == 'texto':
                 rs = verificar({'t': e['solucion']}, e['checks'], texto=True)
@@ -138,7 +172,7 @@ def main():
                 ok, msg, salida, paquete = armar({**e, 'archivos': []}, 'solucion', True)
                 if not ok: mal += 1; notas.append('✗ no compila:\n' + msg[:1500])
                 else:
-                    out = correr(salida, paquete, '|'.join([e['cabecera'], *[i['texto'] for i in e['items']]]))
+                    out = correr(salida, paquete, '|'.join([e.get('cabecera', ''), *[i['texto'] for i in e['items']]]))
                     esperado = ','.join(i['respuesta'] for i in e['items'])
                     if out != esperado:
                         mal += 1; notas.append('✗ las respuestas no coinciden con el proyecto:\n  da       ' + out + '\n  esperado ' + esperado)
@@ -146,7 +180,7 @@ def main():
             if e['tipo'] in ('ubicacion', 'clasificacion'):
                 for i in e['items']:
                     if i['respuesta'] not in e['opciones']: mal += 1; notas.append('✗ respuesta fuera de las opciones: ' + i['respuesta'])
-            print(f"{e['id']:<4} {e['tipo']:<13} " + ' · '.join(notas))
+            print(f"{e['id']:<5} {e['tipo']:<13} " + ' · '.join(notas))
     print('\n' + (f'{mal} PROBLEMAS' if mal else 'TODO BIEN'))
     sys.exit(1 if mal else 0)
 

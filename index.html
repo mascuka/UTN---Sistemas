@@ -1394,6 +1394,64 @@
   .ejp-cabecera code{word-break:break-all}
   .ejp-acc{display:flex;flex-wrap:wrap;gap:6px}
   .ejp-ejemplo{font:12.5px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;white-space:pre-wrap;width:100%;margin:0}
+  .ejp-ws[hidden],.ejp-lec[hidden]{display:none}
+  /* Práctica por partes: el resumen en PDF arriba, los grupos de partes y la explicación de cada parte */
+  .ejp-ceja{display:block;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:2px}
+  .ejp-cab-der{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+  .ejp-pdf{display:inline-flex;align-items:center;gap:7px;font-size:.84rem;font-weight:600;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 11px;white-space:nowrap}
+  .ejp-pdf svg{width:16px;height:16px;color:var(--accent);flex:none}
+  .ejp-pdf small{font-weight:500;color:var(--muted)}
+  .ejp-pdf:hover{border-color:var(--accent)}
+  .ejp-grupo{flex:none;align-self:center;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap;padding:0 2px}
+  .ejp-grupo:not(:first-child){margin-left:6px;padding-left:12px;border-left:1px solid var(--line2)}
+  .ejp-ej.lec{display:inline-flex;align-items:center;gap:6px;color:var(--accent)}
+  .ejp-ej.lec svg{width:14px;height:14px}
+  :root{--g1:#5fb8c3;--g2:#e0a458;--g3:#b18cf0;--g4:#7fc97f;--g5:#f08c8c;--g6:#6fa8f5;--g7:#e8d36b;--g8:#f0a3d0}
+  .ejp-lec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);grid-template-areas:"que cod" "consta cod" "ojo cod" "parcial cod" "acc acc";grid-template-rows:auto auto auto 1fr auto;gap:16px 24px;align-items:start}
+  .ejp-lec-que{grid-area:que}.ejp-lec-consta{grid-area:consta}.ejp-lec-ojo{grid-area:ojo}.ejp-lec-parcial{grid-area:parcial}.ejp-lec-cod{grid-area:cod}.ejp-lec-acc{grid-area:acc}
+  .ejp-lec-t{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:8px}
+  .ejp-lec-t small{font-size:inherit;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted)}
+  .ejp-lec-que .ejp-md p{font:400 1.04rem/1.65 var(--serif);color:var(--text);margin:0 0 8px}
+  .ejp-consta{list-style:none;display:grid;gap:6px;padding:0;margin:0}
+  .ejp-consta li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;cursor:pointer;outline:none;transition:border-color .15s,box-shadow .15s}
+  .ejp-consta li > b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.76rem;font-weight:800;color:#16191d;background:var(--g)}
+  .ejp-consta li div > b{display:block;font-size:.92rem;margin-bottom:1px}
+  .ejp-consta li div > span{display:block;font-size:.86rem;line-height:1.5;color:var(--text2)}
+  .ejp-consta li:hover,.ejp-consta li.on,.ejp-consta li:focus-visible{border-color:var(--g);box-shadow:inset 3px 0 0 var(--g)}
+  .ejp-lec-ojo ul{list-style:none;display:grid;gap:7px;padding:0;margin:0}
+  .ejp-lec-ojo li{position:relative;font-size:.88rem;line-height:1.5;padding-left:26px}
+  .ejp-lec-ojo li::before{content:"!";position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--rojo-f);color:var(--rojo);font-size:.72rem;font-weight:800}
+  .ejp-lec-parcial{margin:0;font-size:.88rem;line-height:1.55;background:var(--accent-soft);border-radius:12px;padding:10px 14px}
+  .ejp-lec-parcial b{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:3px}
+  .ejp-lec-cod{position:sticky;top:calc(var(--barra-h, 64px) + 12px);display:flex;flex-direction:column;gap:8px;min-width:0}
+  .ejp-lec-cod .ed{position:relative;flex:none;max-height:calc(100vh - var(--barra-h, 64px) - 96px);overflow:auto;font-size:12.5px}
+  .ejp-lec-cod .ejp-l{transition:opacity .15s}
+  .ejp-lec-cod.ver .ejp-l:not(.ver){opacity:.25}
+  .ejp-lec-cod .ejp-l[data-g]{box-shadow:inset 3px 0 0 var(--g)}
+  .ejp-lec-cod .ejp-l.ver{background:color-mix(in srgb, var(--g) 16%, transparent)}
+  .ejp-lec-cod .ejp-l em{display:inline-block;width:18px;height:18px;margin:0 8px 0 -8px;vertical-align:-2px;border-radius:50%;font:800 .66rem/18px var(--sans);text-align:center;font-style:normal;color:#16191d;background:var(--g)}
+  .ejp-lec-cod .ejp-l em:empty{background:none}
+  .ejp-lec-cod.texto .ejp-sol pre{min-width:0}
+  .ejp-lec-cod.texto .ejp-l{display:flex;align-items:baseline;white-space:normal;font-family:var(--sans)}
+  .ejp-lec-cod.texto .ejp-l > i,.ejp-lec-cod.texto .ejp-l > em{flex:none}
+  .ejp-lec-cod.texto .ejp-l > span{color:#e6e6e6;padding:1px 0}
+  .ejp-lec-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px;border-top:1px solid var(--line);padding-top:16px}
+  .ejp-lec-acc .pr-fuerte{display:inline-flex;align-items:baseline;gap:8px;padding:10px 20px}
+  .ejp-lec-acc .pr-fuerte small{font-size:.78rem;font-weight:600;opacity:.85}
+  .ejp-lec-acc .pr-chico{display:inline-flex;align-items:center;gap:7px}
+  .ejp-lec-acc .pr-chico svg{width:15px;height:15px;color:var(--accent);flex:none}
+  /* Con el PDF abierto al costado la página queda angosta: la explicación va en una columna, como en el celular */
+  body.con-visor .ejp-lec{grid-template-columns:minmax(0,1fr);grid-template-areas:"que" "consta" "cod" "ojo" "parcial" "acc";grid-template-rows:none}
+  body.con-visor .ejp-lec-cod{position:static}
+  @media (max-width:900px){
+    .ejp-lec{grid-template-columns:minmax(0,1fr);grid-template-areas:"que" "consta" "cod" "ojo" "parcial" "acc";grid-template-rows:none;gap:16px}
+    .ejp-lec-cod{position:static}
+    .ejp-lec-cod .ed{max-height:70vh;font-size:12px}
+    .ejp-lec-cod .ejp-l i{width:30px;padding-right:4px;margin-right:12px}
+    .ejp-lec-acc .pr-fuerte{width:100%;justify-content:center}
+    .ejp-lec-acc .pr-chico{white-space:normal}
+    .ejp-cab-der{width:100%}
+  }
   @media (max-width:900px){
     .ejp-ws{display:flex;flex-direction:column;gap:12px;height:auto}
     .ejp-ejs{margin-left:0;width:100%}
@@ -2321,9 +2379,16 @@ const MATERIAS = {
         nombres: { parcial: "Parciales / Simulacros" },
         quizEn: "parcial",          // el quiz y el paso a paso se muestran arriba de esta sección
         herramientasParcial: ["pasos"],   // herramientas que van arriba de Parciales (no en la Práctica)
-        practicaParcial: "practica/bk-parcial/ejercicios.json",   // "El parcial por partes": las 7 partes con ejercicios de todos los parciales
-        // Práctica: ejercicios de a pasos con Java que corre en el navegador (practica/java/, practica/bk-p1/*.json),
-        // ordenados por tema; cada tema trae su explicación (herramientas). El quiz va en Parciales / Simulacros.
+        practicaParcial: "practica/bk-parcial/ejercicios.json",   // "El parcial por partes": las 6 partes con ejercicios de todos los parciales
+        // Práctica por partes: lo que trae el preenunciado (practica/bk-practica) y lo que agrega el parcial (los mismos
+        // ejercicios de "El parcial por partes"), cada parte con su explicación antes de practicar y el resumen en PDF a mano.
+        practicaPartes: {
+          fuentes: ["practica/bk-practica/ejercicios.json", "practica/bk-parcial/ejercicios.json"],
+          resumen: { nombre: "Resumen de lo básico · guía rápida", url: "material/backend-de-aplicaciones/p1/parcial/guia-rapida-para-el-parcial-windows.pdf", paginas: 16 }
+        },
+        // Los ejercicios de a pasos con Java que corre en el navegador (practica/java/, practica/bk-p1/*.json) siguen en
+        // .../practica/<id>: las explicaciones de cada parte los enlazan. practicaGrupos y practicaTemas ordenan ese
+        // material (la guía rápida va en la descarga de la materia; cada tema dice su herramienta y su parte).
         practicaLenguaje: "java",
         practicaGrupos: [
           { id: "basico", titulo: "Básico", detalle: "Lo que ya trae el preenunciado: la clase del dominio, leer el CSV y las consultas con Streams.", material: [
@@ -2333,8 +2398,8 @@ const MATERIAS = {
         ],
         practicaTemas: [
           { id: "clases", grupo: "basico", titulo: "Clases y validaciones", detalle: "Atributos final, constructor, getters, IllegalArgumentException y la fábrica desdeCampos.", herramientas: [] },
-          { id: "csv", grupo: "basico", titulo: "Lectura de CSV", detalle: "BufferedReader, el encabezado, split(\",\", -1) y un try/catch por fila.", herramientas: ["csv"] },
-          { id: "streams", grupo: "basico", titulo: "Colecciones y Streams", detalle: "List.copyOf, mapToInt, filter, groupingBy y los Collectors que salen en las preguntas.", herramientas: ["streams"] },
+          { id: "csv", grupo: "basico", titulo: "Lectura de CSV", detalle: "BufferedReader, el encabezado, split(\",\", -1) y un try/catch por fila.", herramientas: ["csv"], parte: ["parser", "Parte 4 · Leer el CSV"] },
+          { id: "streams", grupo: "basico", titulo: "Colecciones y Streams", detalle: "List.copyOf, mapToInt, filter, groupingBy y los Collectors que salen en las preguntas.", herramientas: ["streams"], parte: ["streams", "Parte 5 · La colección y los Streams"] },
           { id: "parcial", grupo: "parcial", titulo: "Los cambios del parcial", detalle: "El parcial y un simulacro resueltos de a pasos, con Java en el navegador." }
         ],
         practica: [
@@ -4184,7 +4249,7 @@ function cuentaParte(p, propia){
   return [
     a && `${ICON_DOC}${a} archivo${a === 1 ? "" : "s"}`,
     v && `${ICON_VIDEO}${v} video${v === 1 ? "" : "s"}`,
-    p.practica && p.practica.length && `${ICON_CODIGO}${p.practica.length} ejercicio${p.practica.length === 1 ? "" : "s"}`,
+    p.practicaPartes ? `${ICON_CODIGO}Práctica por partes` : p.practica && p.practica.length && `${ICON_CODIGO}${p.practica.length} ejercicio${p.practica.length === 1 ? "" : "s"}`,
     p.quiz && `${ICON_CHECK}Quiz`
   ].filter(Boolean).map(x => `<span>${x}</span>`).join("");
 }
@@ -4769,6 +4834,7 @@ async function mostrarVisor(){
     vz.pags = hojas.map(p => ({ p, vp: p.getViewport({ scale: 1 }), el: null, canvas: null, render: null, escala: 1 }));
     $("#visorInfo").textContent = `${pdf.numPages} ${pdf.numPages === 1 ? "página" : "páginas"}`;
     armarPaginas();
+    if(+a.dataset.pag > 1) irAPagina(+a.dataset.pag);   // un enlace puede abrir el PDF en una página (data-pag)
     armarMiniaturas();
     actualizarPag(true);
     doc.focus({ preventScroll: true });
@@ -5914,25 +5980,40 @@ function clicPractica(e){
   return false;
 }
 
-/* ---------- El parcial por partes (campo "practicaParcial" de la parte: practica/bk-parcial/ejercicios.json) ----------
-   Las 7 partes de siempre, de leer la consigna a la entrega, cada una con ejercicios de distintos parciales; "Otro
-   ejemplo" pasa al siguiente de la misma parte. Tipos: codigo (editor y verificación), ubicacion y clasificacion
-   (una opción por fila y "Corregir"), texto (escribir y autoevaluarse). En el navegador no se corre Java: la
-   verificación busca con expresiones regulares en el código sin comentarios, y es orientativa.
-   El código, las respuestas y los resueltos quedan en este navegador. */
-let ejp = null;   // { m, p, d, ej, est, ed, tab, pista, sol (0 oculta, 1 vista, 2 mirándola), corregido }
-const claveEjp = p => "isi-pp:" + p.practicaParcial;
-function leerEjp(p){
+/* ---------- El parcial por partes y la Práctica por partes ----------
+   Dos pantallas con el mismo motor:
+   - "El parcial por partes" (campo "practicaParcial", ruta .../pp/<ejercicio>): las partes del parcial.
+   - La Práctica por partes (campo "practicaPartes", ruta .../practica/<ejercicio o parte>): las partes de varios
+     archivos seguidas (lo que trae el preenunciado y lo que agrega el parcial). Cada parte arranca con su explicación
+     ("leccion": qué es, de qué consta con un código marcado, errores comunes) y el resumen en PDF está a mano.
+   Cada parte tiene ejercicios de distintos parciales; "Otro ejemplo" pasa al siguiente de la misma parte. Tipos:
+   codigo (editor y verificación), ubicacion y clasificacion (una opción por fila y "Corregir"), texto (escribir y
+   autoevaluarse). En el navegador no se corre Java: la verificación busca con expresiones regulares en el código sin
+   comentarios, y es orientativa.
+   El código, las respuestas, los resueltos y las explicaciones leídas quedan en este navegador, guardados por archivo
+   de ejercicios: lo resuelto en una pantalla aparece resuelto en la otra. */
+let ejp = null;   // { m, p, tipo, partes, parteDe, fuentes, est, pa, ej (null en la explicación), ed, tab, pista, sol (0 oculta, 1 vista, 2 mirándola), corregido, g }
+const claveFuente = url => "isi-pp:" + url;
+function leerEst(url){
   let e = null;
-  try { e = JSON.parse(leerLocal(claveEjp(p))); } catch(err){}
+  try { e = JSON.parse(leerLocal(claveFuente(url))); } catch(err){}
   e = e && typeof e === "object" ? e : {};
-  const obj = x => x && typeof x === "object" && !Array.isArray(x) ? x : {};
-  return { codigo: obj(e.codigo), resp: obj(e.resp), marcas: obj(e.marcas), hechos: Array.isArray(e.hechos) ? e.hechos : [], ultimo: e.ultimo || null };
+  const obj = x => x && typeof x === "object" && !Array.isArray(x) ? x : {}, lista = x => Array.isArray(x) ? x : [];
+  return { codigo: obj(e.codigo), resp: obj(e.resp), marcas: obj(e.marcas), hechos: lista(e.hechos), leidas: lista(e.leidas), ultimo: e.ultimo || null };
 }
-const guardarEjp = () => { if(ejp) guardarLocal(claveEjp(ejp.p), JSON.stringify(ejp.est)); };
-const ejsEjp = () => ejp.d.partes.flatMap(x => x.ejercicios);
-const parteEjp = ej => ejp.d.partes.find(x => x.n === ej.parte);
-const hayOtroEjp = () => parteEjp(ejp.ej).ejercicios.length > 1;
+/* Cada archivo guarda lo suyo. Dónde se quedó: el de "El parcial por partes" va en su archivo; el de la Práctica, aparte */
+function guardarEjp(){
+  if(!ejp) return;
+  const e = ejp.est, de = (o, f) => Object.fromEntries(Object.entries(o).filter(([k]) => f.ids.has(k)));
+  ejp.fuentes.forEach(f => guardarLocal(f.clave, JSON.stringify({ codigo: de(e.codigo, f), resp: de(e.resp, f), marcas: de(e.marcas, f),
+    hechos: e.hechos.filter(x => f.ids.has(x)), leidas: e.leidas.filter(x => f.partes.has(x)), ultimo: ejp.claveUltimo ? f.ultimo : e.ultimo })));
+  if(ejp.claveUltimo) guardarLocal(ejp.claveUltimo, e.ultimo);
+}
+const ejsEjp = () => ejp.partes.flatMap(x => x.ejercicios);
+const parteEjp = ej => ejp.parteDe.get(ej);
+const hayOtroEjp = () => ejp.pa.ejercicios.length > 1;
+const conLecciones = () => ejp.tipo === "practica";
+const ICON_LIBRO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>';
 /* Los archivos de un ejercicio de código (una pestaña cada uno; los de solo lectura son para mirar) y lo que
    escribió en cada uno. Solo se guarda lo que cambió respecto del código inicial. */
 const archivosEj = ej => ej.archivos || [];
@@ -5951,7 +6032,13 @@ function guardarCodigoEjp(ej, nombre, v){
 }
 
 /* Markdown corto de los textos: `código`, **negrita** y listas numeradas o con guiones */
-const mdLinea = t => String(t).split(/(`[^`]+`)/).map(s => s.length > 1 && s[0] === "`" && s.endsWith("`") ? `<code>${esc(s.slice(1, -1))}</code>` : esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")).join("");
+/* El código va aparte (con una marca) para que la negrita pueda envolverlo (**`Map`**) y un asterisco del código no
+   cuente como cursiva */
+function mdLinea(t){
+  const cods = [];
+  const txt = String(t).split(/(`[^`]+`)/).map(s => s.length > 1 && s[0] === "`" && s.endsWith("`") ? (cods.push(`<code>${esc(s.slice(1, -1))}</code>`), `\u0000${cods.length - 1}\u0000`) : esc(s)).join("");
+  return txt.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/(^|[^\w*])\*([^\s*](?:[^*]*?[^\s*])?)\*(?![\w*])/g, "$1<i>$2</i>").replace(/\u0000(\d+)\u0000/g, (_, i) => cods[i]);
+}
 function mdBloque(t){
   let out = "", lista = null;
   for(const l of String(t).split("\n")){
@@ -5997,54 +6084,162 @@ function verificarEjp(textoDe, checks){
   });
 }
 
-function viewEjp(m, p){
-  const kp = seccionesDe(p).find(k => esSeccionParcial(p, k));
-  return `
-    <div class="ejp">
+function viewEjp(m, p, tipo = "pp"){
+  const kp = seccionesDe(p).find(k => esSeccionParcial(p, k)), r = tipo === "practica" && p.practicaPartes.resumen;
+  // En la Práctica: el resumen en PDF arriba, al lado del avance (se abre en el visor de la página)
+  const cab = tipo === "practica" ? `
+      <div class="ejp-cab"><div><small class="ejp-ceja">${esc(p.titulo)}</small><h1>Práctica por partes</h1></div>
+        <div class="ejp-cab-der">${r ? `<a class="ejp-pdf" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" target="_blank" rel="noopener">${ICON_DOC}<span>Resumen en PDF</span>${r.paginas ? `<small>${r.paginas} págs.</small>` : ""}</a>` : ""}<div class="ejp-prog" id="ejpProg"></div></div></div>` : `
       <div class="crumbs"><span data-go="m${m.n}/${p.id}${kp ? `/${kp}/material` : ""}">‹ ${esc(kp ? nombreSec(p, kp) : p.titulo)}</span></div>
-      <div class="ejp-cab"><h1>El parcial por partes</h1><div class="ejp-prog" id="ejpProg"></div></div>
+      <div class="ejp-cab"><h1>El parcial por partes</h1><div class="ejp-prog" id="ejpProg"></div></div>`;
+  return `
+    <div class="ejp">${cab}
       <div class="ejp-partes" id="ejpPartes"></div>
       <div class="ejp-expl" id="ejpExpl"></div>
+      <div class="ejp-lec" id="ejpLec" hidden></div>
       <div class="pr-ws ejp-ws" id="ejpWs">
         <section class="pr-izq ejp-izq" id="ejpIzq"><div class="empty">Cargando los ejercicios…</div></section>
         <section class="pr-der ejp-der" id="ejpDer"></section>
       </div>
     </div>`;
 }
-async function montarEjp(m, p, id){
-  let d;
-  try { d = await cargarEjercicio(p.practicaParcial); }
+async function montarEjp(m, p, id, tipo = "pp"){
+  const urls = tipo === "practica" ? p.practicaPartes.fuentes : [p.practicaParcial];
+  let ds;
+  try { ds = await Promise.all(urls.map(cargarEjercicio)); }
   catch(e){ const c = $("#ejpIzq"); if(c) c.innerHTML = `<div class="empty">No se pudieron cargar los ejercicios. Probá recargar la página.</div>`; return; }
   if(!$("#ejpWs")) return;   // se cambió de página mientras cargaba
-  ejp = { m, p, d, est: leerEjp(p) };
-  const todos = ejsEjp();
-  abrirEjp(todos.find(x => x.id === id) || todos.find(x => x.id === ejp.est.ultimo) || todos[0], false);
+  // Las partes de todos los archivos, numeradas de corrido (con un solo archivo, con su número de siempre)
+  const partes = [], parteDe = new Map();
+  ds.forEach((d, f) => d.partes.forEach(x => {
+    const pa = { ...x, f, grupo: ds.length > 1 ? d.grupo : null, num: ds.length > 1 ? partes.length + 1 : x.n };
+    partes.push(pa);
+    pa.ejercicios.forEach(e => parteDe.set(e, pa));
+  }));
+  const ests = urls.map(leerEst), junto = k => Object.assign({}, ...ests.map(e => e[k]));
+  const claveUltimo = tipo === "practica" ? `isi-pp:practica:${m.n}/${p.id}` : null;
+  ejp = { m, p, tipo, partes, parteDe, claveUltimo,
+    fuentes: urls.map((url, f) => ({ clave: claveFuente(url), ultimo: ests[f].ultimo, ids: new Set(ds[f].partes.flatMap(x => x.ejercicios.map(e => e.id))), partes: new Set(ds[f].partes.map(x => x.id)) })),
+    est: { codigo: junto("codigo"), resp: junto("resp"), marcas: junto("marcas"), hechos: ests.flatMap(e => e.hechos), leidas: ests.flatMap(e => e.leidas), ultimo: claveUltimo ? leerLocal(claveUltimo) : ests[0].ultimo } };
+  irEjp(id || ejp.est.ultimo, false);
 }
-/* Abre un ejercicio sin recargar la página (la dirección cambia, sin sumar pasos al "atrás") */
+/* Lo que pide la dirección: un ejercicio, la explicación de una parte (por su id) o, si no hay nada, el principio */
+function irEjp(x, mover = true){
+  const ej = ejsEjp().find(e => e.id === x);
+  if(ej) return abrirEjp(ej, mover);
+  const pa = ejp.partes.find(q => q.id === x || "@" + q.id === x);
+  if(pa) return conLecciones() && pa.leccion ? abrirLecEjp(pa, mover) : abrirEjp(pa.ejercicios[0], mover);
+  const p0 = ejp.partes[0];
+  conLecciones() && p0.leccion ? abrirLecEjp(p0, mover) : abrirEjp(p0.ejercicios[0], mover);
+}
+/* Al entrar a una parte: su explicación si todavía no se leyó; si no, el primer ejercicio sin resolver */
+function entrarParte(pa, mover = true){
+  if(conLecciones() && pa.leccion && !ejp.est.leidas.includes(pa.id)) abrirLecEjp(pa, mover);
+  else abrirEjp(pa.ejercicios.find(x => !ejp.est.hechos.includes(x.id)) || pa.ejercicios[0], mover);
+}
+/* La dirección cambia sin recargar y sin sumar pasos al "atrás" */
+function rutaEjp(x){
+  const r = `m${ejp.m.n}/${ejp.p.id}/${ejp.tipo === "practica" ? "practica" : "pp"}/${x}`;
+  if(ruta !== r){ ruta = r; history.replaceState(history.state, "", "#/" + r); }
+}
+const subirEjp = () => { const w = $("#ejpPartes"); if(w.getBoundingClientRect().top < 0) w.scrollIntoView({ block: "start" }); };
 function abrirEjp(ej, mover = true){
-  Object.assign(ejp, { ej, tab: "consigna", pista: 0, sol: 0, corregido: false, ed: null, verif: null, arch: Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura)) });
+  Object.assign(ejp, { ej, pa: parteEjp(ej), tab: "consigna", pista: 0, sol: 0, corregido: false, ed: null, verif: null, arch: Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura)) });
   ejp.est.ultimo = ej.id;
   guardarEjp();
-  const r = `m${ejp.m.n}/${ejp.p.id}/pp/${ej.id}`;
-  if(ruta !== r){ ruta = r; history.replaceState(history.state, "", "#/" + r); }
+  rutaEjp(ej.id);
+  $("#ejpLec").hidden = true;
+  $("#ejpWs").hidden = false;
   pintarPartesEjp();
   pintarIzqEjp();
   pintarDerEjp();
-  if(mover){ const w = $("#ejpPartes"); if(w.getBoundingClientRect().top < 0) w.scrollIntoView({ block: "start" }); }
+  if(mover) subirEjp();
+}
+function abrirLecEjp(pa, mover = true){
+  Object.assign(ejp, { ej: null, pa, ed: null, verif: null, g: 0 });
+  ejp.est.ultimo = "@" + pa.id;
+  guardarEjp();
+  rutaEjp(pa.id);
+  $("#ejpWs").hidden = true;
+  $("#ejpLec").hidden = false;
+  pintarPartesEjp();
+  pintarLecEjp();
+  if(mover) subirEjp();
 }
 function pintarPartesEjp(){
-  const { d, ej, est } = ejp, todos = ejsEjp(), hechos = todos.filter(x => est.hechos.includes(x.id)).length;
+  const { partes, pa, ej, est } = ejp, todos = ejsEjp(), hechos = todos.filter(x => est.hechos.includes(x.id)).length;
   $("#ejpProg").innerHTML = `<span>Resueltos <b>${hechos} / ${todos.length}</b></span><span class="bar"><i style="width:${Math.round(hechos / todos.length * 100)}%"></i></span>`;
-  $("#ejpPartes").innerHTML = d.partes.map(x => {
+  // Con varios archivos, el nombre de cada grupo va antes de su primera parte
+  $("#ejpPartes").innerHTML = partes.map((x, i) => {
     const h = x.ejercicios.filter(e => est.hechos.includes(e.id)).length, todo = h === x.ejercicios.length;
-    return `<button class="pr-p ejp-parte ${x.n === ej.parte ? "on" : ""} ${todo ? "ok" : ""}" data-ejp-parte="${x.n}" title="Parte ${x.n} · ${esc(x.titulo)}"><b>${todo ? "✓" : x.n}</b><span>${esc(x.pestana || x.titulo)}</span><small>${h}/${x.ejercicios.length}</small></button>`;
+    const grupo = x.grupo && (!i || partes[i - 1].f !== x.f) ? `<span class="ejp-grupo">${esc(x.grupo)}</span>` : "";
+    return `${grupo}<button class="pr-p ejp-parte ${x === pa ? "on" : ""} ${todo ? "ok" : ""}" data-ejp-parte="${i}" title="Parte ${x.num} · ${esc(x.titulo)}"><b>${todo ? "✓" : x.num}</b><span>${esc(x.pestana || x.titulo)}</span><small>${h}/${x.ejercicios.length}</small></button>`;
   }).join("");
   centrarEn($("#ejpPartes"), $("#ejpPartes .on"));
-  const pa = parteEjp(ej);
+  const lec = conLecciones() && pa.leccion;
   $("#ejpExpl").innerHTML = `
-    <div class="ejp-expl-t"><span class="ejp-n">Parte ${pa.n}</span><b>${esc(pa.titulo)}</b>
-      <div class="ejp-ejs">${pa.ejercicios.map(e => `<button class="ejp-ej ${e.id === ej.id ? "on" : ""} ${est.hechos.includes(e.id) ? "ok" : ""}" data-ejp-ir="${esc(e.id)}">${est.hechos.includes(e.id) ? "✓ " : ""}${esc(e.id)} · ${esc(e.tema || e.titulo)}</button>`).join("")}</div></div>
-    ${pa.explicacion ? `<p>${mdLinea(pa.explicacion)}</p>` : ""}`;
+    <div class="ejp-expl-t"><span class="ejp-n">Parte ${pa.num}</span><b>${esc(pa.titulo)}</b>
+      <div class="ejp-ejs">${lec ? `<button class="ejp-ej lec ${ej ? "" : "on"}" data-ejp="leccion">${ICON_LIBRO}Explicación</button>` : ""}${pa.ejercicios.map((e, i) => `<button class="ejp-ej ${e === ej ? "on" : ""} ${est.hechos.includes(e.id) ? "ok" : ""}" data-ejp-ir="${esc(e.id)}">${est.hechos.includes(e.id) ? "✓ " : ""}${pa.num}.${i + 1} · ${esc(e.tema || e.titulo)}</button>`).join("")}</div></div>
+    ${pa.explicacion && ej ? `<p>${mdLinea(pa.explicacion)}</p>` : ""}`;
+}
+
+/* ---- La explicación de la parte (solo en la Práctica): qué es, de qué consta, el código con cada elemento marcado
+   (al pasar o tocar un elemento se resalta en el código), en qué fijarse y lo que ya trae el resumen en PDF */
+function pintarLecEjp(){
+  const { pa, p, m } = ejp, l = pa.leccion, n = pa.ejercicios.length, h = pa.ejercicios.filter(e => ejp.est.hechos.includes(e.id)).length;
+  const r = p.practicaPartes.resumen, herr = l.herramienta && HERRAMIENTAS[l.herramienta] && (p.herramientas || []).includes(l.herramienta) ? l.herramienta : null;
+  const javas = (l.java || []).map(id => (p.practica || []).find(x => x.id === id)).filter(Boolean);
+  $("#ejpLec").innerHTML = `
+    <div class="ejp-lec-que"><span class="ejp-lec-t">¿Qué es?</span><div class="ejp-md">${mdBloque(l.que)}</div></div>
+    <div class="ejp-lec-consta"><span class="ejp-lec-t">Consta de ${l.consta.length} elementos <small>· tocá uno para verlo en el código</small></span>
+      <ol class="ejp-consta">${l.consta.map(([t, d], i) => `<li data-ejp-g="${i + 1}" tabindex="0" style="--g:var(--g${i + 1})"><b>${i + 1}</b><div><b>${mdLinea(t)}</b><span>${mdLinea(d)}</span></div></li>`).join("")}</ol></div>
+    ${(l.ojo || []).length ? `<div class="ejp-lec-ojo"><span class="ejp-lec-t">Ojo con</span><ul>${l.ojo.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
+    ${l.parcial ? `<p class="ejp-lec-parcial"><b>En el parcial</b>${mdLinea(l.parcial)}</p>` : ""}
+    <div class="ejp-lec-cod ${l.ejemplo.texto ? "texto" : ""}">
+      <div class="pr-tabs"><span class="pr-tab on">${esc(l.ejemplo.archivo)}</span><span class="ejp-leng">${esc(l.ejemplo.origen)}</span></div>
+      ${codigoLecEjp(l.ejemplo)}
+    </div>
+    <div class="ejp-lec-acc">
+      <button class="pr-fuerte" data-ejp="practicar">${h === n ? "Repasar los ejercicios" : h ? "Seguir practicando" : "Empezar a practicar"} →<small>${n} ejercicio${n === 1 ? "" : "s"}${h ? ` · ${h} resuelto${h === 1 ? "" : "s"}` : ""}</small></button>
+      ${l.pdf && r ? `<a class="pr-chico" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" data-pag="${l.pdf}" target="_blank" rel="noopener">${ICON_DOC}En el resumen · pág. ${l.pdf}</a>` : ""}
+      ${herr ? `<span class="pr-chico" data-go="m${m.n}/${p.id}/h/${herr}">${ICON_TOOL}${esc(HERRAMIENTAS[herr].titulo)}</span>` : ""}
+      ${javas.map(x => `<span class="pr-chico" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}Con Java de verdad: ${esc(x.titulo)}</span>`).join("")}
+    </div>`;
+  const lista = $("#ejpLec .ejp-consta"), cod = $("#ejpLec .ejp-lec-cod");
+  const g = e => { const x = e.target.closest("[data-ejp-g],[data-g]"); return x ? +(x.dataset.ejpG || x.dataset.g) : 0; };
+  [lista, cod].forEach(x => {
+    x.addEventListener("mouseover", e => { if(g(e)) verGrupoEjp(g(e)); });
+    x.addEventListener("mouseleave", () => verGrupoEjp(ejp.g));
+  });
+  lista.addEventListener("focusin", e => { if(g(e)) verGrupoEjp(g(e)); });
+  lista.addEventListener("focusout", () => verGrupoEjp(ejp.g));
+  lista.addEventListener("keydown", e => { if((e.key === "Enter" || e.key === " ") && e.target.matches("[data-ejp-g]")){ e.preventDefault(); fijarGrupoEjp(+e.target.dataset.ejpG); } });
+}
+/* El código de la explicación: cada línea marcada lleva el color de su elemento y el número en la primera de cada tramo */
+function codigoLecEjp(x){
+  const de = [], num = new Set();
+  x.marcas.forEach(([g, a, b]) => { num.add(a); for(let i = a; i <= b; i++) de[i] = g; });
+  return `<div class="ed lectura ejp-sol"><pre>${x.codigo.split("\n").map((l, i) => {
+    const g = de[i + 1];
+    return `<span class="ejp-l"${g ? ` data-g="${g}" style="--g:var(--g${g})"` : ""}><i>${i + 1}</i><em>${g && num.has(i + 1) ? g : ""}</em><span>${x.texto ? esc(l) : resaltarJava(l)}</span></span>`;
+  }).join("")}</pre></div>`;
+}
+/* Resalta un elemento (0: ninguno). Si sus líneas no se ven en el recuadro del código, lo corre hasta ellas */
+function verGrupoEjp(g){
+  const cod = $("#ejpLec .ejp-lec-cod");
+  if(!cod) return;
+  cod.classList.toggle("ver", !!g);
+  cod.querySelectorAll(".ejp-l").forEach(l => l.classList.toggle("ver", !!g && l.dataset.g === String(g)));
+  document.querySelectorAll("#ejpLec [data-ejp-g]").forEach(li => li.classList.toggle("on", +li.dataset.ejpG === g));
+  const l = g && cod.querySelector(".ejp-l.ver"), ed = cod.querySelector(".ed");
+  if(l && (l.offsetTop < ed.scrollTop || l.offsetTop > ed.scrollTop + ed.clientHeight - 40)) ed.scrollTop = l.offsetTop - 24;
+}
+/* Tocar un elemento lo deja resaltado (tocarlo otra vez lo suelta); en el celular, además, muestra el código */
+function fijarGrupoEjp(g){
+  ejp.g = ejp.g === g ? 0 : g;
+  verGrupoEjp(ejp.g);
+  const cod = $("#ejpLec .ejp-lec-cod"), r = cod.getBoundingClientRect();
+  if(ejp.g && innerWidth <= 900 && (r.top > innerHeight - 160 || r.bottom < 120)) cod.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 /* ---- Panel izquierdo: el ejercicio, "Dónde" y las pestañas Consigna / CSV / Pasos / Pistas */
@@ -6164,7 +6359,7 @@ function lineasNuevas(a, b){
 function opcionesEjp(){
   const ej = ejp.ej, r = ejp.est.resp[ej.id] || {}, corr = ejp.corregido;
   return `
-    <div class="ejp-op-cab"><b>${ej.tipo === "clasificacion" ? "¿Qué pasa con cada fila?" : ej.opciones.includes("Parser") ? "¿Dónde va cada cambio?" : "Elegí una opción en cada fila"}</b><span>${Object.keys(r).length} de ${ej.items.length} respondidas</span></div>
+    <div class="ejp-op-cab"><b>${ej.pregunta ? esc(ej.pregunta) : ej.tipo === "clasificacion" ? "¿Qué pasa con cada fila?" : ej.opciones.includes("Parser") ? "¿Dónde va cada cambio?" : "Elegí una opción en cada fila"}</b><span>${Object.keys(r).length} de ${ej.items.length} respondidas</span></div>
     ${ej.cabecera ? `<div class="ejp-cabecera"><span>Cabecera</span><code>${esc(ej.cabecera)}</code></div>` : ""}
     <ol class="ejp-items">${ej.items.map((it, i) => {
       const ok = r[i] === it.respuesta;
@@ -6197,9 +6392,17 @@ function pintarBtnVerif(){
 
 /* ---- Lo que hacen los botones */
 function accionEjp(a){
-  if(!ejp || !ejp.ej || !$("#ejpWs")) return;
+  if(!ejp || !$("#ejpWs")) return;
+  if(a === "leccion"){ abrirLecEjp(ejp.pa); return; }
+  if(a === "practicar"){   // la explicación queda leída: la próxima vez la parte abre directo en los ejercicios
+    const pa = ejp.pa;
+    if(!ejp.est.leidas.includes(pa.id)) ejp.est.leidas.push(pa.id);
+    abrirEjp(pa.ejercicios.find(x => !ejp.est.hechos.includes(x.id)) || pa.ejercicios[0]);
+    return;
+  }
+  if(!ejp.ej) return;
   const ej = ejp.ej;
-  if(a === "otro"){ const xs = parteEjp(ej).ejercicios; abrirEjp(xs[(xs.indexOf(ej) + 1) % xs.length]); return; }
+  if(a === "otro"){ const xs = ejp.pa.ejercicios; abrirEjp(xs[(xs.indexOf(ej) + 1) % xs.length]); return; }
   if(a === "pista"){
     const ps = ej.pistas || [];
     if(!ps.length){ resEjp(`<div class="pr-info">Este ejercicio no tiene pistas: mirá los pasos.</div>`); return; }
@@ -6267,8 +6470,8 @@ function marcarEjp(si){
 }
 /* Lo que sigue cuando sale todo bien: otro ejemplo de la parte o la parte siguiente */
 function seguirEjp(){
-  const pa = parteEjp(ejp.ej), sig = ejp.d.partes[ejp.d.partes.indexOf(pa) + 1];
-  return `${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}${sig ? `<button class="linkbtn" data-ejp-parte="${sig.n}">Parte ${sig.n}: ${esc(sig.pestana || sig.titulo)} →</button>` : ""}`;
+  const i = ejp.partes.indexOf(ejp.pa), sig = ejp.partes[i + 1];
+  return `${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}${sig ? `<button class="linkbtn" data-ejp-parte="${i + 1}">Parte ${sig.num}: ${esc(sig.pestana || sig.titulo)} →</button>` : ""}`;
 }
 function pintarChecksEjp(r, verif = false){
   const bien = r.filter(x => x.ok).length, todo = bien === r.length, varios = editablesEj(ejp.ej).length > 1;
@@ -6290,18 +6493,16 @@ function corregirEjp(){
     ${[ej.resumen, ej.extra].filter(Boolean).map(t => `<div class="pr-info"><p>${mdLinea(t)}</p></div>`).join("")}`);
   if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
-/* Clics dentro de la práctica del parcial */
+/* Clics dentro de la práctica por partes */
 function clicEjp(e){
-  const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-tab],[data-ejp-ed],[data-ejp-arch],[data-ejp-op],[data-ejp-tecla]");
-  if(!t || !ejp || !ejp.ej) return false;
+  const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-g],[data-ejp-tab],[data-ejp-ed],[data-ejp-arch],[data-ejp-op],[data-ejp-tecla]");
+  if(!t || !ejp || !ejp.pa) return false;
   const ds = t.dataset;
   if(ds.ejp){ accionEjp(ds.ejp); return true; }
-  if(ds.ejpParte != null){
-    const pa = ejp.d.partes.find(x => x.n === +ds.ejpParte);
-    if(pa) abrirEjp(pa.ejercicios.find(x => !ejp.est.hechos.includes(x.id)) || pa.ejercicios[0]);
-    return true;
-  }
+  if(ds.ejpParte != null){ const pa = ejp.partes[+ds.ejpParte]; if(pa) entrarParte(pa); return true; }
   if(ds.ejpIr){ const x = ejsEjp().find(y => y.id === ds.ejpIr); if(x) abrirEjp(x); return true; }
+  if(ds.ejpG){ fijarGrupoEjp(+ds.ejpG); return true; }
+  if(!ejp.ej) return false;
   if(ds.ejpTab){ ejp.tab = ds.ejpTab; pintarIzqEjp(); return true; }
   if(ds.ejpEd){ ejp.sol = ds.ejpEd === "sol" ? 2 : 1; if((archivosEj(ejp.ej)[ejp.arch] || {}).soloLectura) ejp.arch = archivosEj(ejp.ej).findIndex(x => !x.soloLectura); pintarEdEjp(); return true; }
   if(ds.ejpArch != null){ ejp.arch = +ds.ejpArch; pintarEdEjp(); return true; }
@@ -7641,11 +7842,12 @@ function viewHerramienta(m, p, id){
   if(p.practicaTemas){
     const temas = p.practicaTemas.filter(t => (t.herramientas || []).includes(id));
     const ejs = p.practica.filter(x => temas.some(t => t.id === x.tema));
+    const partes = p.practicaPartes ? temas.map(t => t.parte).filter(Boolean) : [];   // [id, título] de su parte en la Práctica
     return `
     <div class="crumbs"><span data-go="m${m.n}/${p.id}/practica">‹ Práctica</span></div>
     <h1>${esc(h.titulo)}</h1>
     <p class="lead">${h.desc}</p>
-    ${ejs.length ? `<p class="herr-ir">Después, practicalo: ${ejs.map(x => `<span class="pill" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}${esc(x.titulo)}</span>`).join("")}</p>` : ""}
+    ${ejs.length || partes.length ? `<p class="herr-ir">Después, practicalo: ${partes.map(([id, t]) => `<span class="pill" data-go="m${m.n}/${p.id}/practica/${id}">${ICON_CODIGO}${esc(t)}</span>`).join("")}${ejs.map(x => `<span class="pill" data-go="m${m.n}/${p.id}/practica/${x.id}">${ICON_CODIGO}${esc(x.titulo)}</span>`).join("")}</p>` : ""}
     <div id="herr" class="herr"></div>
     ${ejs.length ? `<section class="herr-otras"><h2 class="pr-h2">Practicalo</h2><div class="pr-lista">${ejs.map(x => filaEjercicio(m, p, x, p.practica.indexOf(x) + 1)).join("")}</div></section>` : ""}
     <p class="pr-nota"><span class="linkbtn" data-go="m${m.n}/${p.id}/practica">← Todos los temas de la Práctica</span></p>`;
@@ -8234,10 +8436,17 @@ function render(arriba = true){
     vista = { t: `Quiz del ${p.titulo}`, s: m.nombre, quiz: true };
   } else if(p && c === "pp" && p.practicaParcial){
     ruta = `${a}/${b}/pp${d ? "/" + d : ""}`;
-    app.innerHTML = viewEjp(m, p);
-    montarEjp(m, p, d);
+    app.innerHTML = viewEjp(m, p, "pp");
+    montarEjp(m, p, d, "pp");
     titulo = `El parcial por partes · ${p.titulo} · ${m.nombre}`;
     vista = { t: "El parcial por partes", s: `${m.nombre} · ${p.titulo}` };
+  } else if(p && c === "practica" && p.practicaPartes && !(d && (p.practica || []).some(e => e.id === d))){
+    // La Práctica por partes; los ejercicios de a pasos con Java (p.practica) siguen en su dirección de siempre
+    ruta = `${a}/${b}/practica${d ? "/" + d : ""}`;
+    app.innerHTML = viewEjp(m, p, "practica");
+    montarEjp(m, p, d, "practica");
+    titulo = `Práctica · ${p.titulo} · ${m.nombre}`;
+    vista = { t: "Práctica por partes", s: `${m.nombre} · ${p.titulo}` };
   } else if(p && c === "practica" && p.practica){
     const x = d && p.practica.find(e => e.id === d);
     if(x){

@@ -1,0 +1,42 @@
+package utnfc.backend.parcial;
+
+public class Prueba {
+    static java.nio.file.Path csv(String... lineas) throws Exception {
+        java.nio.file.Path p = java.nio.file.Files.createTempFile("pp", ".csv");
+        java.nio.file.Files.writeString(p, String.join("\n", lineas) + "\n");
+        return p;
+    }
+    static void igual(Object esperado, Object real, String que) {
+        if (!java.util.Objects.equals(esperado, real)) throw new AssertionError(que + ": se esperaba " + esperado + " y dio " + real);
+    }
+    static void cerca(double esperado, double real, String que) {
+        if (Math.abs(esperado - real) > 1e-6) throw new AssertionError(que + ": se esperaba " + esperado + " y dio " + real);
+    }
+    static void lanza(Runnable r, String que) {
+        try { r.run(); } catch (IllegalArgumentException e) { return; }
+        throw new AssertionError(que + ": tenía que lanzar IllegalArgumentException");
+    }
+    static void anda(Runnable r, String que) {
+        try { r.run(); } catch (RuntimeException e) { throw new AssertionError(que + ": no tenía que fallar y tiró " + e); }
+    }
+    static String salida(Runnable r) {
+        java.io.PrintStream antes = System.out;
+        java.io.ByteArrayOutputStream b = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(b, true));
+        try { r.run(); } finally { System.setOut(antes); }
+        return b.toString();
+    }
+    static void contiene(String texto, String parte) {
+        if (!texto.contains(parte)) throw new AssertionError("la salida no tiene \"" + parte + "\":\n" + texto);
+    }
+    static Reparacion r(String id, int prioridad, int horas, double costo) {
+        return new Reparacion(id, "Ana", "celular", "Nexo", prioridad, horas, "ABIERTA", costo);
+    }
+    public static void main(String[] a) {
+        Taller t = new Taller(java.util.List.of(r("R1", 1, 2, 1000), r("R2", 2, 3, 1100), r("R3", 3, 1, 0)));
+        cerca(3000 + 4250 + 1750, t.facturacion(), "facturación");
+        igual(1L, t.contar(x -> x.getPrioridad() == 3), "urgentes"); igual(2L, t.contar(x -> x.getHoras() >= 2), "de 2 horas o más");
+        cerca(0, new Taller(java.util.List.of()).facturacion(), "sin reparaciones");
+        System.out.println("OK");
+    }
+}

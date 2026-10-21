@@ -1,10 +1,92 @@
 {
+ "grupo": "Lo que agrega el parcial",
  "partes": [
   {
    "n": 0,
+   "id": "ubicar",
    "titulo": "¿Dónde va cada cambio?",
    "explicacion": "Antes de escribir código hay que ubicar cada pedido: la estructura del CSV va en el **Parser**; las validaciones y cálculos del dato nuevo, en el **dominio**; conteos y totales, en el **colector**; mostrar, en el **Main**.",
    "corto": "Leer la consigna",
+   "pestana": "Consigna",
+   "guia": [
+    [
+     "Parser",
+     "La forma del archivo: las cabeceras, el ancho de cada fila, el separador, los descartes (BLACK, ESTABLE, CANCELADA, ANULADO) y qué estados se aceptan."
+    ],
+    [
+     "Dominio",
+     "El dato nuevo: `desdeCampos`, el constructor, el atributo y su getter, las validaciones del valor y los cálculos. Si cambia un cálculo, una subclase."
+    ],
+    [
+     "Colector",
+     "Lo que se calcula sobre todos: conteos, totales y agrupamientos (`groupingBy`)."
+    ],
+    [
+     "Main",
+     "Solo mostrar: la ruta por defecto y qué se imprime, llamando métodos."
+    ]
+   ],
+   "leccion": {
+    "que": "El día del parcial te dan el preenunciado que ya estudiaste **más un enunciado nuevo** con tres o cuatro pedidos. Antes de escribir una línea, cada pedido se **ubica** en la clase que le corresponde.\nSi un cambio queda en otra clase, aunque el programa funcione, el profe lo corrige como mal diseño: cada clase tiene una sola responsabilidad.",
+    "consta": [
+     [
+      "Parser",
+      "La **forma del archivo**: las cabeceras, cuántas columnas tiene cada fila, el separador, los descartes y qué estados se aceptan."
+     ],
+     [
+      "Dominio",
+      "El **dato nuevo**: el atributo, el constructor, `desdeCampos`, las validaciones del valor y los cálculos. Si cambia un cálculo, una subclase."
+     ],
+     [
+      "Colector",
+      "Lo que se calcula sobre **todos**: conteos, totales y agrupamientos."
+     ],
+     [
+      "Main",
+      "Solo **mostrar**: la ruta por defecto y qué se imprime, llamando métodos."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "Enunciado",
+     "origen": "Parcial 3K1, ubicado",
+     "codigo": "Aceptar las cabeceras de 5 y de 6 columnas (la nueva trae «ingresos»)\nUna fila de 5 campos bajo la cabecera de 6 es inválida\nDescartar los servidores ESTABLE\ndesdeCampos acepta 5 o 6 campos\nALERTA y CRITICO: 1000 ≤ ingresos < 1900\nEl costo de riesgo usa los ingresos de la fila → subclase\nGuardar el estado en el servidor para poder contarlo\nConteo de servidores por estado\nEl CSV del parcial por defecto\nMostrar ALERTA / CRITICO, el total y los totales por región",
+     "marcas": [
+      [
+       1,
+       1,
+       3
+      ],
+      [
+       2,
+       4,
+       7
+      ],
+      [
+       3,
+       8,
+       8
+      ],
+      [
+       4,
+       9,
+       10
+      ]
+     ],
+     "texto": true
+    },
+    "ojo": [
+     "Validar el dato nuevo en el parser: las reglas del valor van en el dominio.",
+     "Contar en el main con un `for`: el conteo va en el colector.",
+     "Un `if (s instanceof ...)` en el colector: si cambia un cálculo, la subclase lo redefine y el colector no se toca.",
+     "Un mismo pedido puede tocar dos clases: la columna nueva es parser **y** dominio."
+    ],
+    "parcial": "Hacelo en los primeros minutos, con el enunciado a mano: anotá al lado de cada pedido la clase que toca. Después vas parte por parte, en el orden de esta práctica.",
+    "herramienta": "pasos",
+    "java": [
+     "bk-parcial-3k1",
+     "bk-simulacro-4"
+    ]
+   },
    "ejercicios": [
     {
      "id": "0.1",
@@ -341,32 +423,70 @@
       }
      ]
     }
-   ],
-   "pestana": "Consigna",
-   "guia": [
-    [
-     "Parser",
-     "La forma del archivo: las cabeceras, el ancho de cada fila, el separador, los descartes (BLACK, ESTABLE, CANCELADA, ANULADO) y qué estados se aceptan."
-    ],
-    [
-     "Dominio",
-     "El dato nuevo: `desdeCampos`, el constructor, el atributo y su getter, las validaciones del valor y los cálculos. Si cambia un cálculo, una subclase."
-    ],
-    [
-     "Colector",
-     "Lo que se calcula sobre todos: conteos, totales y agrupamientos (`groupingBy`)."
-    ],
-    [
-     "Main",
-     "Solo mostrar: la ruta por defecto y qué se imprime, llamando métodos."
-    ]
    ]
   },
   {
    "n": 1,
+   "id": "formatos",
    "titulo": "Lectura de dos formatos (Parser)",
    "explicacion": "El parser reconoce dos cabeceras y la primera línea define cuántas columnas tiene que tener **cada** fila. Un **solo loop** para los dos formatos. El orden es siempre: ancho → descarte → validaciones. Duplicar el loop por formato está mal.",
    "corto": "Lectura de dos formatos",
+   "pestana": "CSV",
+   "leccion": {
+    "que": "El parcial agrega una columna al CSV, pero el programa tiene que seguir leyendo el archivo **viejo**: los tests del preenunciado lo usan. Entonces el parser acepta **dos cabeceras**, y la que viene en la primera línea decide cuántas columnas tiene que tener **cada** fila.\nEs un solo loop para los dos formatos: lo único que cambia es el número contra el que se compara.",
+    "consta": [
+     [
+      "Dos cabeceras",
+      "Una constante para cada una. La nueva suele ser la vieja más la columna: `CABECERA + \",ingresos\"`."
+     ],
+     [
+      "El ancho según la cabecera",
+      "Se lee la primera línea una sola vez y se guarda cuántas columnas se esperan (5 o 6). Si no es ninguna de las dos, `\"encabezado incorrecto\"`."
+     ],
+     [
+      "El mismo loop",
+      "Cada fila se compara contra esa variable (`tokens.length != columnas`), no contra un 5 fijo."
+     ],
+     [
+      "El orden de siempre",
+      "Ancho → descarte → estado → `desdeCampos`. Una fila de 5 campos bajo la cabecera de 6 es inválida."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "ParserServidores.java",
+     "origen": "Parcial 3K1, resuelto",
+     "codigo": "private static final String CABECERA = \"id,region,porcentajeCPU,usoMemoria,estado\";\nprivate static final String CABECERA_INGRESOS = CABECERA + \",ingresos\";\n\npublic ResultadoParseo leer(Path archivo) throws IOException {\n    // ... las listas y el contador, como antes\n    try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n        String cabecera = lector.readLine();\n        int columnas;\n        if (CABECERA.equals(cabecera))\n            columnas = 5;\n        else if (CABECERA_INGRESOS.equals(cabecera))\n            columnas = 6;\n        else\n            throw new IllegalArgumentException(\"encabezado incorrecto\");\n\n        String linea;\n        while ((linea = lector.readLine()) != null) {\n            leidas++;\n            int numero = leidas + 1;\n            try {\n                String[] tokens = Arrays.stream(linea.split(\",\", -1)).map(String::strip).toArray(String[]::new);\n                if (tokens.length != columnas)\n                    throw new IllegalArgumentException(\"cantidad de columnas incorrecta\");\n                if (tokens[4].equals(\"ESTABLE\")) {\n                    descartes.add(log.formatted(numero, \"ESTABLE\"));\n                    continue;\n                }\n                // ... el estado y desdeCampos, como antes",
+     "marcas": [
+      [
+       1,
+       1,
+       2
+      ],
+      [
+       2,
+       7,
+       14
+      ],
+      [
+       3,
+       22,
+       23
+      ],
+      [
+       4,
+       24,
+       27
+      ]
+     ]
+    },
+    "ojo": [
+     "Duplicar el loop, uno por formato: el mismo código dos veces, y un error se arregla en uno solo.",
+     "Comparar con `tokens.length < 5` o `>= 5`: una fila de 6 en el archivo viejo tiene que ser inválida.",
+     "Mirar la cabecera con `contains` o `startsWith`: tiene que ser **exactamente** una de las dos.",
+     "Si el parcial cambia el separador (`;`), cambia el `split`; no hace falta otro parser."
+    ],
+    "parcial": "Es lo primero que se toca: sin esto, el CSV del parcial ni siquiera se lee."
+   },
    "ejercicios": [
     {
      "id": "1.1",
@@ -780,14 +900,94 @@
       }
      ]
     }
-   ],
-   "pestana": "CSV"
+   ]
   },
   {
    "n": 2,
+   "id": "dominio",
    "titulo": "Columna nueva en el dominio",
    "explicacion": "Atributo + getter nuevos; constructor nuevo, con el viejo **delegando** con `this(...)` (los tests viejos lo usan); `desdeCampos` acepta los dos anchos y lee la columna nueva **solo si existe** (si no, usa un valor por defecto). Las validaciones nuevas van acá, no en el parser. Leer `tokens[5]` en una fila de 5 tira `ArrayIndexOutOfBoundsException`, que el parser no atrapa.",
    "corto": "Columna nueva en el dominio",
+   "pestana": "Dominio",
+   "leccion": {
+    "que": "La columna nueva se convierte en un **dato nuevo del objeto**. Pero hay que agregarlo **sin romper nada**: el archivo viejo (sin esa columna) se tiene que seguir leyendo, y los tests del preenunciado siguen creando objetos con el constructor de antes.",
+    "consta": [
+     [
+      "Atributo y getter",
+      "`private final String nivelMorosidad;` y su `getNivelMorosidad()`."
+     ],
+     [
+      "El constructor nuevo",
+      "Con un parámetro más: las validaciones y las asignaciones van acá."
+     ],
+     [
+      "El viejo delega",
+      "El constructor de antes llama al nuevo con un valor por defecto: `this(..., \"NORMAL\");`. Así los tests viejos siguen andando."
+     ],
+     [
+      "desdeCampos con dos anchos",
+      "Acepta 5 o 6 campos y lee la columna nueva **solo si existe**: `tokens.length == 6 ? tokens[5] : \"NORMAL\"`."
+     ],
+     [
+      "Las reglas nuevas",
+      "Las validaciones del dato nuevo van en el dominio, no en el parser."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "SolicitudCredito.java",
+     "origen": "Simulacro 1, resuelto",
+     "codigo": "private final String nivelMorosidad;\n\npublic SolicitudCredito(String idCliente, String tipoCliente, double scoreFinanciero, String estado) {\n    this(idCliente, tipoCliente, scoreFinanciero, estado, \"NORMAL\");\n}\n\npublic SolicitudCredito(String idCliente, String tipoCliente, double scoreFinanciero, String estado,\n                        String nivelMorosidad) {\n    // ... las validaciones de antes y las asignaciones\n    this.nivelMorosidad = nivelMorosidad;\n}\n\npublic static SolicitudCredito desdeCampos(String[] tokens) {\n    if (tokens.length != 5 && tokens.length != 6)\n        throw new IllegalArgumentException(\"Se esperan 5 o 6 columnas\");\n    double ingresos = Double.parseDouble(tokens[2]);\n    double deudas = Double.parseDouble(tokens[3]);\n    String nivelMorosidad = tokens.length == 6 ? tokens[5] : \"NORMAL\";\n    if (nivelMorosidad.equals(\"EN_MORA\")) {\n        if (ingresos <= 25000 || deudas < 0 || deudas > ingresos * 0.12)\n            throw new IllegalArgumentException(\"EN_MORA: ingresos o deudas no aptos\");\n    } else {\n        // ... las reglas de antes\n    }\n    double score = (1 - (deudas / ingresos)) * 100;\n    return new SolicitudCredito(tokens[0], tokens[1], score, tokens[4], nivelMorosidad);\n}\n\npublic String getNivelMorosidad() { return nivelMorosidad; }",
+     "marcas": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       3,
+       3,
+       5
+      ],
+      [
+       2,
+       7,
+       11
+      ],
+      [
+       4,
+       14,
+       15
+      ],
+      [
+       4,
+       18,
+       18
+      ],
+      [
+       5,
+       19,
+       24
+      ],
+      [
+       4,
+       26,
+       26
+      ],
+      [
+       1,
+       29,
+       29
+      ]
+     ]
+    },
+    "ojo": [
+     "Leer `tokens[5]` sin preguntar: con una fila de 5 campos tira `ArrayIndexOutOfBoundsException`, que el parser **no** atrapa y corta toda la carga.",
+     "Cambiar el constructor viejo en vez de agregar uno: los tests del preenunciado dejan de compilar.",
+     "Pasarle `tokens[5]` al constructor: usá la variable con el valor por defecto.",
+     "Dejar `tokens.length != 5` en `desdeCampos`: todas las filas nuevas salen inválidas."
+    ],
+    "parcial": "Es el corazón del parcial: casi todo lo demás depende de que el objeto tenga el dato nuevo."
+   },
    "ejercicios": [
     {
      "id": "2.1",
@@ -1474,14 +1674,84 @@
       }
      ]
     }
-   ],
-   "pestana": "Dominio"
+   ]
   },
   {
    "n": 3,
+   "id": "polimorfismo",
    "titulo": "Cálculo distinto con polimorfismo",
    "explicacion": "Cuando el dato nuevo cambia un **cálculo**, se crea una subclase que redefine el método (`@Override`) y reutiliza el del padre con `super`. `desdeCampos` decide qué clase crear. El colector no cambia ni usa `instanceof`.",
    "corto": "Polimorfismo",
+   "pestana": "Polimorfismo",
+   "leccion": {
+    "que": "Cuando el dato nuevo **cambia un cálculo** («el costo de riesgo usa los ingresos de la fila»), no se agrega un `if` en el método: se crea una **subclase** que redefine ese método.\nCada objeto sabe calcular lo suyo, y el que llama (el colector) no necesita saber de qué clase es: eso es el *polimorfismo*.",
+    "consta": [
+     [
+      "La subclase",
+      "`public class ServidorConIngresos extends Servidor`: hereda todo y agrega el dato nuevo."
+     ],
+     [
+      "Su constructor",
+      "Llama al del padre con `super(...)` en la primera línea; después valida y guarda lo propio."
+     ],
+     [
+      "El gancho en el padre",
+      "Un método `protected` chico que la subclase puede cambiar (`ingresoPorHora()`), así la cuenta grande no se repite."
+     ],
+     [
+      "@Override",
+      "La subclase redefine ese método. Si le sirve, reutiliza el del padre con `super.metodo()`."
+     ],
+     [
+      "desdeCampos elige",
+      "Según la fila, crea el padre o la subclase. El colector sigue igual, sin `instanceof`."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "ServidorConIngresos.java · Servidor.java",
+     "origen": "Parcial 3K1, resuelto",
+     "codigo": "public class ServidorConIngresos extends Servidor {\n    private final int ingresos;\n\n    public ServidorConIngresos(String id, String region, int indiceCarga, int ingresos) {\n        super(id, region, indiceCarga);\n        if (ingresos < 1000 || ingresos >= 1900)\n            throw new IllegalArgumentException(\"los ingresos estan fuera de rango\");\n        this.ingresos = ingresos;\n    }\n\n    @Override\n    protected int ingresoPorHora() {\n        return ingresos;\n    }\n}\n\n// En Servidor:\nprotected int ingresoPorHora() {\n    return INGRESO_PROMEDIO;\n}\n\npublic int costoRiesgoOperativo() {\n    return (this.ingresoPorHora() * this.indiceCarga) / 100;\n}\n\n// Al final de desdeCampos:\nif (tokens.length == 6)\n    return new ServidorConIngresos(tokens[0], tokens[1], indiceCarga, Integer.parseInt(tokens[5]));\nreturn new Servidor(tokens[0], tokens[1], indiceCarga);",
+     "marcas": [
+      [
+       1,
+       1,
+       2
+      ],
+      [
+       2,
+       4,
+       9
+      ],
+      [
+       4,
+       11,
+       14
+      ],
+      [
+       3,
+       18,
+       20
+      ],
+      [
+       3,
+       22,
+       24
+      ],
+      [
+       5,
+       27,
+       29
+      ]
+     ]
+    },
+    "ojo": [
+     "Un `if (tipo.equals(\"EXPRESS\"))` adentro del cálculo: funciona, pero no es lo que se evalúa.",
+     "`instanceof` en el colector para calcular distinto: la gracia es que el colector no cambie.",
+     "`super(...)` tiene que ser la **primera** línea del constructor de la subclase.",
+     "Si el método del padre es `private`, la subclase no lo puede redefinir: tiene que ser `protected` o `public`."
+    ],
+    "parcial": "Si el dato nuevo solo agrega una **regla** (qué valores valen), alcanza con validar. Si cambia una **cuenta**, va subclase."
+   },
    "ejercicios": [
     {
      "id": "3.1",
@@ -1951,14 +2221,74 @@
       }
      ]
     }
-   ],
-   "pestana": "Polimorfismo"
+   ]
   },
   {
    "n": 4,
+   "id": "colector-nuevo",
    "titulo": "Operación nueva en el colector",
    "explicacion": "Conteos y totales con Streams: `groupingBy(..., counting())`, `summingDouble`, `filter(...).mapToDouble(...).sum()`. Una colección vacía da un mapa vacío o 0.",
    "corto": "Colector",
+   "pestana": "Colector",
+   "leccion": {
+    "que": "El parcial siempre pide **una cuenta nueva sobre todos**: cuántos hay de cada estado, el total de los que cumplen algo. Va en el colector, como un método nuevo, con streams.",
+    "consta": [
+     [
+      "Un método nuevo",
+      "Con un nombre que diga qué devuelve: `conteoPorEstado()`, `totalEntregadas()`."
+     ],
+     [
+      "«Cuántos por…»",
+      "`groupingBy(Reparacion::getDispositivo, Collectors.counting())` da un `Map<String, Long>`."
+     ],
+     [
+      "«El total de los que…»",
+      "`filter(...)` y después `mapToDouble(...).sum()`."
+     ],
+     [
+      "Vacío sin datos",
+      "Sin elementos, el mapa queda vacío y la suma da 0: no hace falta ningún `if`."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "Taller.java",
+     "origen": "Simulacro 2, resuelto",
+     "codigo": "public double totalEntregadas() {\n    return reparaciones.stream()\n            .filter(r -> r.getEstado().equals(\"ENTREGADA\"))\n            .mapToDouble(Reparacion::importe)\n            .sum();\n}\n\npublic Map<String, Long> cantidadPorDispositivo() {\n    return reparaciones.stream()\n            .collect(Collectors.groupingBy(Reparacion::getDispositivo, Collectors.counting()));\n}",
+     "marcas": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       3,
+       2,
+       4
+      ],
+      [
+       4,
+       5,
+       5
+      ],
+      [
+       1,
+       8,
+       8
+      ],
+      [
+       2,
+       9,
+       10
+      ]
+     ]
+    },
+    "ojo": [
+     "Un `for` con un contador: es lo que el profe marca, tiene que ser con streams.",
+     "Contar en el main: la cuenta es del colector, el main solo la muestra.",
+     "Si para contar hace falta un dato que el objeto no guarda (el estado), primero va al dominio: atributo, getter y el constructor viejo que delega."
+    ],
+    "parcial": "Mirá si el dato que hay que agrupar ya está en el objeto. Si no está, este cambio también toca el dominio."
+   },
    "ejercicios": [
     {
      "id": "4.1",
@@ -2288,14 +2618,83 @@
       }
      ]
     }
-   ],
-   "pestana": "Colector"
+   ]
   },
   {
    "n": 5,
+   "id": "main-delegando",
    "titulo": "Main delegando",
    "explicacion": "CSV del parcial por defecto; se imprime todo **llamando métodos**. Si en el main hay un `for`, un `stream` o una cuenta, eso va en otra clase.",
    "corto": "Main",
+   "pestana": "Main",
+   "leccion": {
+    "que": "Al final, el main muestra lo nuevo. Sigue siendo un main que **solo orquesta**: cambia la ruta por defecto al CSV del parcial y agrega una línea por cada cosa que hay que mostrar, llamando a los métodos que ya escribiste.",
+    "consta": [
+     [
+      "La ruta del parcial",
+      "`Path.of(args.length == 0 ? \"datos/datos-parcial.csv\" : args[0])`."
+     ],
+     [
+      "Pedir, no calcular",
+      "El conteo se le pide al colector: `colector.conteoPorEstado()`."
+     ],
+     [
+      "getOrDefault",
+      "Si un estado no aparece, `getOrDefault(\"CRITICO\", 0L)` da 0 en vez de `null`."
+     ],
+     [
+      "Lo de antes, igual",
+      "El informe, los descartes, los errores y el panorama no se tocan."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "App.java",
+     "origen": "Parcial 3K1, resuelto",
+     "codigo": "public static void main(String[] args) throws IOException {\n    Path archivo = Path.of(args.length == 0 ? \"datos/datos-parcial.csv\" : args[0]);\n    ResultadoParseo resultado = new ParserServidores().leer(archivo);\n    Cloud colector = new Cloud(resultado.getServidores());\n\n    System.out.println(resultado.informe());\n    resultado.getDescartes().forEach(System.out::println);\n    resultado.getErrores().forEach(System.out::println);\n\n    Map<String, Long> porEstado = colector.conteoPorEstado();\n    System.out.println(\"ALERTA: %d | CRITICO: %d\".formatted(\n            porEstado.getOrDefault(\"ALERTA\", 0L), porEstado.getOrDefault(\"CRITICO\", 0L)));\n    System.out.println(colector.panorama());\n}",
+     "marcas": [
+      [
+       1,
+       2,
+       2
+      ],
+      [
+       4,
+       3,
+       4
+      ],
+      [
+       4,
+       6,
+       8
+      ],
+      [
+       2,
+       10,
+       10
+      ],
+      [
+       3,
+       11,
+       12
+      ],
+      [
+       4,
+       13,
+       13
+      ]
+     ]
+    },
+    "ojo": [
+     "Un `for` o un stream en el main para contar: va en el colector.",
+     "`porEstado.get(\"CRITICO\")` sin valor por defecto imprime `null` si no hay ninguno.",
+     "Olvidarse de cambiar la ruta: el profe corre el programa sin argumentos."
+    ],
+    "parcial": "Con esto el parcial está completo. Probalo de punta a punta con el paso a paso con Java real.",
+    "java": [
+     "bk-parcial-3k1",
+     "bk-simulacro-4"
+    ]
+   },
    "ejercicios": [
     {
      "id": "5.1",
@@ -2641,8 +3040,7 @@
       }
      ]
     }
-   ],
-   "pestana": "Main"
+   ]
   }
  ]
 }
