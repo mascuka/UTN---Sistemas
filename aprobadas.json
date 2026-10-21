@@ -146,6 +146,13 @@
         "tipo": "Recuperatorio",
         "nombre": "Recuperatorio"
       }
+    ],
+    "2026-10-29": [
+      {
+        "k": "29",
+        "tipo": "TP",
+        "nombre": "Presentar TPI - Leo"
+      }
     ]
   },
   "notasCursada": {
