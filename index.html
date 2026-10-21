@@ -2970,7 +2970,8 @@ const MATERIAS = {
     ]
   },
   // Tecnologías para la Automatización: 2 parciales de robótica, 1 de IoT y el TP con la ESP32.
-  // Cada parcial tiene solo Material y Videos (secciones: []).
+  // Cada parcial: Temas · Teórico (solo la teoría y los videos) · Práctica · Videos · Parciales (las herramientas y el
+  // quiz arriba; el resumen, el banco de preguntas y lo de Octave). El TP es una sola página.
   29: {
     // Sin "regular": no se sabe la nota de regularidad, así que no se muestra
     condiciones: {
@@ -2993,7 +2994,10 @@ const MATERIAS = {
         quiz: "quiz/tpa-1er-parcial.json",
         herramientas: ["rotaciones"],
         descripcion: "Robots y sus partes, ubicación espacial, matrices de rotación y homogéneas, composición de transformaciones y Denavit–Hartenberg. Se rinde en el campus resolviendo con Octave/Matlab.",
-        secciones: [],
+        secciones: ["teorico", "parcial"],
+        nombres: { parcial: "Parciales" },
+        quizEn: "parcial",                  // el quiz y las herramientas van arriba de Parciales
+        herramientasParcial: ["rotaciones"],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -3013,54 +3017,67 @@ const MATERIAS = {
             ] }
           ]
         },
-        material: [
-          { nivel: "esencial", grupo: "Para estudiar", descripcion: "Empezá por acá: la teoría justa, ejercicios modelo paso a paso y todas las preguntas de los parciales anteriores resueltas.", archivos: [
-            { n: 1, nombre: "Resumen y ejercicios modelo", nota: "Empezá por acá", detalle: "Definiciones, rotaciones, matrices homogéneas, composición (fijo vs. móvil), Denavit–Hartenberg y 5 ejercicios tipo parcial resueltos con Octave (7 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/01-resumen-y-ejercicios-modelo-1er-parcial.pdf" },
-            { n: 2, nombre: "Banco de preguntas", detalle: "Los ejercicios de los parciales 2023–2026 como en el campus: 8 de rotaciones, 4 de DH con figura y 16 de opción múltiple, con la respuesta, el porqué y el código (16 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/02-banco-de-preguntas-1er-parcial.pdf" }
-          ] },
-          { nivel: "profundizar", grupo: "Material del profe", descripcion: "Las presentaciones de 2026: con estas tres se cubre la teoría.", archivos: [
-            { n: 3, nombre: "Definiciones", detalle: "Robot, partes, grados de libertad y tipos de robots (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/03-definiciones-2026.pdf" },
-            { n: 4, nombre: "Herramientas matemáticas", detalle: "Rotaciones, traslaciones, matrices homogéneas y composición (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/04-herramientas-matematicas-2026.pdf" },
-            { n: 5, nombre: "Denavit–Hartenberg", detalle: "El algoritmo paso a paso y la cinemática directa (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/05-denavit-hartenberg-2026.pdf" }
-          ] },
-          { nivel: "profundizar", grupo: "Ejemplos resueltos", descripcion: "Para practicar lo que se toma: robots, sistemas y tablas DH.", archivos: [
-            { n: 6, nombre: "Partes y tipos de robots", detalle: "Con las figuras de cada tipo de robot (sirve para las preguntas de “cómo se llama el robot de la figura”)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/06-partes-y-tipos-de-robots.pdf" },
-            { n: 7, nombre: "Denavit–Hartenberg · teoría y robot cilíndrico", detalle: "Las reglas del algoritmo y el ejemplo del robot cilíndrico de 4 GDL", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/07-denavit-hartenberg-teoria-y-robot-cilindrico.pdf" },
-            { n: 8, nombre: "Denavit–Hartenberg · ejemplo robot 2R", detalle: "Ubicación de los sistemas y tabla, paso a paso", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/08-denavit-hartenberg-ejemplo-robot-2r.pdf" },
-            { n: 9, nombre: "Denavit–Hartenberg · ejemplo Robot 1", detalle: "Otro ejemplo de clase (va con el script robntan_1_grados.m)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/09-denavit-hartenberg-ejemplo-robot-1.pdf" },
-            { n: 10, nombre: "Composición de matrices homogéneas", detalle: "Premultiplicar y posmultiplicar, con ejemplos (clase de sistemas)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/10-composicion-de-matrices-homogeneas.pdf" },
-            { n: 11, nombre: "El problema del avión", detalle: "Ver un punto desde distintos sistemas de referencia", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/11-problema-del-avion.pdf" },
-            { n: 12, nombre: "Guía de ejercicios resueltos con código", detalle: "Los ejercicios de parcial resueltos en Octave, con las funciones de rotación y traslación (hecha por alumnos)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/12-guia-de-ejercicios-resueltos-con-codigo.pdf" }
-          ] },
-          { nivel: "esencial", grupo: "Octave / Matlab", descripcion: "Instalá Octave y tené estas funciones en la carpeta de trabajo durante el parcial.", archivos: [
-            { nombre: "Descargar Octave", detalle: "Gratis. Alternativa a Matlab: corre las mismas funciones", tipo: "LINK", url: "https://octave.org/download" },
-            { nombre: "Funciones del 1º parcial", detalle: "Rotx, Roty, Rotz, Traslacion, matrizDenavitHartenberg, DibujarEjes y dibujarOrigen + los scripts de clase", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p1/funciones-octave-1er-parcial.zip" }
-          ] },
-          { nivel: "extra", grupo: "Adicional", descripcion: "Solo si querés profundizar.", archivos: [
-            { n: 13, nombre: "Apunte de la cátedra · Herramientas matemáticas para la robótica", detalle: "El apunte largo de años anteriores (mismos temas que las presentaciones)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/13-apunte-catedra-herramientas-matematicas.pdf" }
-          ] }
-        ],
-        videos: [
-          { bloque: "Matrices homogéneas y cambio de sistema", nota: "Empezá por acá", titulo: "Matrices de transformación homogénea: teoría + ejercicio del cubo", detalle: "25 min · canal Sistemas Dinámicos y Control · H₁₂, H₂₃, H₁₃ = H₁₂·H₂₃, la inversa y un mismo punto visto desde 3 sistemas. El mejor resumen del tema", url: "https://www.youtube.com/watch?v=Hk1iOttyYQw" },
-          { bloque: "Matrices homogéneas y cambio de sistema", titulo: "¿Qué representa H (o T)?", detalle: "13 min · rotar y después trasladar ≠ trasladar y después rotar; H lleva puntos del sistema 1 al 0 y H⁻¹ al revés", url: "https://www.youtube.com/watch?v=UgIAyjZXHoY" },
-          { bloque: "Matrices homogéneas y cambio de sistema", titulo: "El problema del avión", detalle: "42 min · va con el PDF 11 · H cabina→avión, inv(H) avión→cabina y qué significa cada columna de H", url: "https://www.youtube.com/watch?v=axAkOwRArgo" },
-          { bloque: "Matrices homogéneas y cambio de sistema", titulo: "Composición de rotaciones: el orden importa", detalle: "Clase 4K3 del 21/8 · arranca en 11:00 (13 min) · Rz y después Rx, por qué no conmuta y en qué orden se multiplica", url: "https://www.youtube.com/watch?v=4ddJq4sm158&t=660s" },
-          { bloque: "Matrices homogéneas y cambio de sistema", nota: "Opcional", titulo: "Rotar y trasladar vs. trasladar y rotar, con números", detalle: "15 min · canal Proyectos JC · estructura de H y el mismo ejemplo hecho en los dos órdenes", url: "https://www.youtube.com/watch?v=TEVZZqU3790" },
-          { bloque: "Matrices homogéneas y cambio de sistema", nota: "Opcional", titulo: "Inversa y cambio de sistema (clase completa)", detalle: "Arranca en 22:30 y sirve hasta 1:15 · la versión larga y en Matlab de lo del cubo", url: "https://www.youtube.com/watch?v=it4IbByUGYs&t=1350s" },
-          { bloque: "Matrices homogéneas y cambio de sistema", nota: "Opcional", titulo: "De dónde sale la matriz de rotación", detalle: "Clase 4K3 del 14/8 · 37 min · la traslación como matriz 4×4 y la deducción de Rz con trigonometría", url: "https://www.youtube.com/watch?v=JEuZNeoOQDg" },
-          { bloque: "Denavit–Hartenberg", nota: "Empezá por acá", titulo: "Algoritmo de Denavit–Hartenberg: modelo cinemático directo", detalle: "Clase 2023 · 58 min · las 4 transformaciones, qué es cada parámetro, la tabla de un robot R-R-P y cómo validar la matriz leyendo sus columnas", url: "https://www.youtube.com/watch?v=L3FBrdQIzMk" },
-          { bloque: "Denavit–Hartenberg", titulo: "DH del robot cilíndrico de 4 GDL", detalle: "Clase 2024 · 35 min · la tabla par por par, el script y cómo encontrar un error de signo · es el robot del ejercicio 2 del 2º parcial", url: "https://www.youtube.com/watch?v=H3Xny0xnaTI" },
-          { bloque: "Denavit–Hartenberg", titulo: "DH del robot 2R plano", detalle: "40 min · va con el PDF 08 · tabla, T total y lectura de los versores con q = 0, π/2…", url: "https://www.youtube.com/watch?v=G_olotbuN2E" },
-          { bloque: "Denavit–Hartenberg", nota: "Opcional", titulo: "DH del robot «no tan elemental» (R + P)", detalle: "21 min · va con el PDF 09 y el script robntan_1_grados.m", url: "https://www.youtube.com/watch?v=9c2SzYhY0-o" },
-          { bloque: "Denavit–Hartenberg", nota: "Opcional", titulo: "Cómo se ubican los ejes en DH (animación)", detalle: "3 min · en inglés · usa «r» para el parámetro a", url: "https://www.youtube.com/watch?v=rA9tm0gTln8" }
-        ]
+        teorico: {
+          material: [
+            { nivel: "esencial", grupo: "Presentaciones de clase (2026)", descripcion: "Las presentaciones del profe: con estas tres se cubre la teoría del parcial.", archivos: [
+              { n: 1, nombre: "Definiciones", detalle: "Robot, partes, grados de libertad y tipos de robots (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/03-definiciones-2026.pdf" },
+              { n: 2, nombre: "Herramientas matemáticas", detalle: "Rotaciones, traslaciones, matrices homogéneas y composición (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/04-herramientas-matematicas-2026.pdf" },
+              { n: 3, nombre: "Denavit–Hartenberg", detalle: "El algoritmo paso a paso y la cinemática directa (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/05-denavit-hartenberg-2026.pdf" }
+            ] },
+            { nivel: "profundizar", grupo: "Apuntes 2026", descripcion: "Los capítulos nuevos de la cátedra: la misma teoría, explicada de corrido y con ejemplos resueltos en Octave.", archivos: [
+              { n: 4, nombre: "Capítulo 1 · Herramientas matemáticas", detalle: "Del punto a la matriz de transformación homogénea: rotaciones, traslaciones, composición y cambio de sistema (53 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/14-apunte-2026-cap1-herramientas-matematicas.pdf" },
+              { n: 5, nombre: "Capítulo 2 · Cinemática directa y Denavit–Hartenberg", detalle: "Del robot como cadena cinemática a la matriz del extremo: el algoritmo DH y ejemplos (54 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/15-apunte-2026-cap2-cinematica-directa-y-dh.pdf" }
+            ] },
+            { nivel: "profundizar", grupo: "Ejemplos de clase", descripcion: "Robots, sistemas de referencia y tablas DH resueltos en clase.", archivos: [
+              { n: 6, nombre: "Partes y tipos de robots", detalle: "Con las figuras de cada tipo de robot (sirve para las preguntas de “cómo se llama el robot de la figura”)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/06-partes-y-tipos-de-robots.pdf" },
+              { n: 7, nombre: "Denavit–Hartenberg · teoría y robot cilíndrico", detalle: "Las reglas del algoritmo y el ejemplo del robot cilíndrico de 4 GDL", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/07-denavit-hartenberg-teoria-y-robot-cilindrico.pdf" },
+              { n: 8, nombre: "Denavit–Hartenberg · ejemplo robot 2R", detalle: "Ubicación de los sistemas y tabla, paso a paso", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/08-denavit-hartenberg-ejemplo-robot-2r.pdf" },
+              { n: 9, nombre: "Denavit–Hartenberg · ejemplo Robot 1", detalle: "Otro ejemplo de clase (va con el script robntan_1_grados.m)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/09-denavit-hartenberg-ejemplo-robot-1.pdf" },
+              { n: 10, nombre: "Composición de matrices homogéneas", detalle: "Premultiplicar y posmultiplicar, con ejemplos (clase de sistemas)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/10-composicion-de-matrices-homogeneas.pdf" },
+              { n: 11, nombre: "El problema del avión", detalle: "Ver un punto desde distintos sistemas de referencia", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/11-problema-del-avion.pdf" }
+            ] },
+            { nivel: "extra", grupo: "Adicional", descripcion: "Solo si querés profundizar.", archivos: [
+              { n: 12, nombre: "Apunte de la cátedra · Herramientas matemáticas para la robótica", detalle: "El apunte largo de años anteriores (mismos temas que las presentaciones)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/13-apunte-catedra-herramientas-matematicas.pdf" }
+            ] }
+          ],
+          videos: [
+            { bloque: "Matrices homogéneas y cambio de sistema", nota: "Empezá por acá", titulo: "Matrices de transformación homogénea: teoría + ejercicio del cubo", detalle: "25 min · canal Sistemas Dinámicos y Control · H₁₂, H₂₃, H₁₃ = H₁₂·H₂₃, la inversa y un mismo punto visto desde 3 sistemas. El mejor resumen del tema", url: "https://www.youtube.com/watch?v=Hk1iOttyYQw" },
+            { bloque: "Matrices homogéneas y cambio de sistema", titulo: "¿Qué representa H (o T)?", detalle: "13 min · rotar y después trasladar ≠ trasladar y después rotar; H lleva puntos del sistema 1 al 0 y H⁻¹ al revés", url: "https://www.youtube.com/watch?v=UgIAyjZXHoY" },
+            { bloque: "Matrices homogéneas y cambio de sistema", titulo: "El problema del avión", detalle: "42 min · va con el PDF 11 · H cabina→avión, inv(H) avión→cabina y qué significa cada columna de H", url: "https://www.youtube.com/watch?v=axAkOwRArgo" },
+            { bloque: "Matrices homogéneas y cambio de sistema", titulo: "Composición de rotaciones: el orden importa", detalle: "Clase 4K3 del 21/8 · arranca en 11:00 (13 min) · Rz y después Rx, por qué no conmuta y en qué orden se multiplica", url: "https://www.youtube.com/watch?v=4ddJq4sm158&t=660s" },
+            { bloque: "Matrices homogéneas y cambio de sistema", nota: "Opcional", titulo: "Rotar y trasladar vs. trasladar y rotar, con números", detalle: "15 min · canal Proyectos JC · estructura de H y el mismo ejemplo hecho en los dos órdenes", url: "https://www.youtube.com/watch?v=TEVZZqU3790" },
+            { bloque: "Matrices homogéneas y cambio de sistema", nota: "Opcional", titulo: "Inversa y cambio de sistema (clase completa)", detalle: "Arranca en 22:30 y sirve hasta 1:15 · la versión larga y en Matlab de lo del cubo", url: "https://www.youtube.com/watch?v=it4IbByUGYs&t=1350s" },
+            { bloque: "Matrices homogéneas y cambio de sistema", nota: "Opcional", titulo: "De dónde sale la matriz de rotación", detalle: "Clase 4K3 del 14/8 · 37 min · la traslación como matriz 4×4 y la deducción de Rz con trigonometría", url: "https://www.youtube.com/watch?v=JEuZNeoOQDg" },
+            { bloque: "Denavit–Hartenberg", nota: "Empezá por acá", titulo: "Algoritmo de Denavit–Hartenberg: modelo cinemático directo", detalle: "Clase 2023 · 58 min · las 4 transformaciones, qué es cada parámetro, la tabla de un robot R-R-P y cómo validar la matriz leyendo sus columnas", url: "https://www.youtube.com/watch?v=L3FBrdQIzMk" },
+            { bloque: "Denavit–Hartenberg", titulo: "DH del robot cilíndrico de 4 GDL", detalle: "Clase 2024 · 35 min · la tabla par por par, el script y cómo encontrar un error de signo · es el robot del ejercicio 2 del 2º parcial", url: "https://www.youtube.com/watch?v=H3Xny0xnaTI" },
+            { bloque: "Denavit–Hartenberg", titulo: "DH del robot 2R plano", detalle: "40 min · va con el PDF 08 · tabla, T total y lectura de los versores con q = 0, π/2…", url: "https://www.youtube.com/watch?v=G_olotbuN2E" },
+            { bloque: "Denavit–Hartenberg", nota: "Opcional", titulo: "DH del robot «no tan elemental» (R + P)", detalle: "21 min · va con el PDF 09 y el script robntan_1_grados.m", url: "https://www.youtube.com/watch?v=9c2SzYhY0-o" },
+            { bloque: "Denavit–Hartenberg", nota: "Opcional", titulo: "Cómo se ubican los ejes en DH (animación)", detalle: "3 min · en inglés · usa «r» para el parámetro a", url: "https://www.youtube.com/watch?v=rA9tm0gTln8" }
+          ]
+        },
+        parcial: {
+          material: [
+            { grupo: "Para estudiar", descripcion: "El resumen con los ejercicios modelo y todas las preguntas de los parciales anteriores, resueltas.", archivos: [
+              { n: 1, nombre: "Resumen y ejercicios modelo", nota: "Empezá por acá", detalle: "Definiciones, rotaciones, matrices homogéneas, composición (fijo vs. móvil), Denavit–Hartenberg y 5 ejercicios tipo parcial resueltos con Octave (7 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/01-resumen-y-ejercicios-modelo-1er-parcial.pdf" },
+              { n: 2, nombre: "Banco de preguntas", detalle: "Los ejercicios de los parciales 2023–2026 como en el campus: 8 de rotaciones, 4 de DH con figura y 16 de opción múltiple, con la respuesta, el porqué y el código (16 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/02-banco-de-preguntas-1er-parcial.pdf" },
+              { n: 3, nombre: "Guía de ejercicios resueltos con código", detalle: "Los ejercicios de parcial resueltos en Octave, con las funciones de rotación y traslación (hecha por alumnos)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p1/12-guia-de-ejercicios-resueltos-con-codigo.pdf" }
+            ] },
+            { grupo: "Octave / Matlab", descripcion: "Instalá Octave y tené estas funciones en la carpeta de trabajo durante el parcial.", archivos: [
+              { nombre: "Descargar Octave", detalle: "Gratis. Alternativa a Matlab: corre las mismas funciones", tipo: "LINK", url: "https://octave.org/download" },
+              { nombre: "Funciones del 1º parcial", detalle: "Rotx, Roty, Rotz, Traslacion, matrizDenavitHartenberg, DibujarEjes y dibujarOrigen + los scripts de clase", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p1/funciones-octave-1er-parcial.zip" }
+            ] }
+          ]
+        }
       },
       {
         id: "p2",
         titulo: "2º Parcial · Robótica",
         herramientas: ["robot2r"],
         descripcion: "Martes 6/10, online. Tres ejercicios: cinemática inversa geométrica de un robot RRR, cinemática inversa numérica (DLS) de un robot cilíndrico de hasta 4 GDL con resultados a completar, y generación de trayectorias respondida con código.",
-        secciones: [],
+        secciones: ["teorico", "parcial"],
+        nombres: { parcial: "Parciales" },
+        quizEn: "parcial",
+        herramientasParcial: ["robot2r"],
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -3081,45 +3098,64 @@ const MATERIAS = {
             ] }
           ]
         },
-        material: [
-          { nivel: "esencial", grupo: "Para estudiar", descripcion: "Empezá por acá: la teoría justa y los 3 ejercicios del parcial resueltos paso a paso.", archivos: [
-            { n: 1, nombre: "Resumen y ejercicios modelo", nota: "Empezá por acá", detalle: "Teoría resumida, los 3 ejercicios tipo parcial resueltos con las funciones del profe, ejercicios para practicar con respuesta y errores típicos (14 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/01-resumen-y-ejercicios-modelo-2do-parcial.pdf" },
-            { n: 2, nombre: "El parcial 2026 resuelto", nota: "Enunciados reales", detalle: "Los 5 ejercicios del 6/10 como salieron en el campus (capturas tal cual): cilíndrico, RPR, RPP e IRB2400 para completar la tabla, y la trayectoria circular con código. Respuestas verificadas en Octave (9 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/02-parcial-2026-resuelto.pdf" },
-            { nombre: "Funciones del 2º parcial + ejercicios modelo", detalle: "Las funciones del profe (cinemática directa e inversa, jacobianos, trayectorias, animación), los 3 scripts del resumen y los del parcial 2026 (IRB2400 y círculo)", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p2/funciones-octave-2do-parcial.zip" }
-          ] },
-          { nivel: "profundizar", grupo: "Material del profe", descripcion: "Para profundizar un tema puntual.", archivos: [
-            { n: 3, nombre: "Guías del profe · robot 3R", detalle: "Las 7 guías de clase unidas: 3R, rectas, círculo, cuadrado, Jacobiano, CI numérica y DLS (35 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/03-guias-del-profe-robot-3r.pdf" },
-            { n: 4, nombre: "Cinemática · métodos geométricos", detalle: "Presentación 2026: directa e inversa del robot 2R, con código Octave", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/04-cinematica-metodos-geometricos-2026.pdf" },
-            { nombre: "Scripts de las clases 4 a 9", detalle: "Robot 2R, robot 3R, rectas, círculo, cuadrado y CI numérica", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p2/scripts-de-clase-robot-3r.zip" }
-          ] },
-          { nivel: "extra", grupo: "Adicional", descripcion: "TPs de robótica de la comisión 4K1: un robot RRR que dibuja una figura (sirven para practicar el ejercicio 1).", archivos: [
-            { nombre: "Grupo 7 · Pac-Man", detalle: "Google Drive · archivos de Matlab y presentación (el video está en la pestaña Videos)", tipo: "LINK", url: "https://drive.google.com/drive/folders/1FpaZFuejbIwEwrou9kXIN-7LV-60-itD" },
-            { nombre: "Grupo 9 · Helado", detalle: "Google Drive · archivos de Matlab y presentación", tipo: "LINK", url: "https://drive.google.com/drive/folders/1j49I03Oz7oHyBZxDb4DIsfouaXyN-RSB?usp=drive_link" }
-          ] }
-        ],
-        videos: [
-          { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Empezá por acá", titulo: "Cinemática inversa del robot antropomórfico de 3 GDL", detalle: "14 min · canal Proyectos JC · exactamente el ejercicio 1: se pasa al plano, ley del coseno para q3 y q2 = α − β. Usa atan(y/x): en Octave usá atan2d", url: "https://www.youtube.com/watch?v=BH5b2Hwibn8" },
-          { bloque: "Ejercicio 1 · CI geométrica del RRR", titulo: "CI geométrica del 2R: ley del coseno y atan2", detalle: "13 min · canal Sistemas Dinámicos y Control · por qué atan2 y no acos; q1 = γ − β", url: "https://www.youtube.com/watch?v=9zSRNXRuX0g" },
-          { bloque: "Ejercicio 1 · CI geométrica del RRR", titulo: "CI del 2R en Matlab: codo arriba y codo abajo", detalle: "Clase 4K3 del 28/8 · 27 min · CD, dibujo del robot y las dos soluciones dibujadas", url: "https://www.youtube.com/watch?v=UpizWib2kaI" },
-          { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Opcional", titulo: "Deducción de la CI geométrica paso a paso", detalle: "Clase · arranca en 42:00 (30 min) · ley del coseno, por qué atan2 es más preciso que acos y q1 = β − α", url: "https://www.youtube.com/watch?v=LrkNO4Pwk_w&t=2520s" },
-          { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Opcional", titulo: "El RRR de la cátedra dibujando un Pac-Man", detalle: "12 min · TP de robótica de la 4K1 · CD, CI con chequeo de alcance y codo arriba, y recorrido de puntos", url: "https://www.youtube.com/watch?v=870U96D82I8" },
-          { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Opcional", titulo: "CI despejando desde la matriz T (otro robot)", detalle: "2025 · 59 min · robot R-R-P tipo SCARA con matemática simbólica; sirve para el concepto, no es el método del parcial", url: "https://www.youtube.com/watch?v=8MibzriXvHY" },
-          { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", titulo: "El robot cilíndrico R-P-P-R y su tabla DH", detalle: "Clase 2024 · 35 min · es el robot del ejercicio 2", url: "https://www.youtube.com/watch?v=H3Xny0xnaTI" },
-          { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", titulo: "Qué es el Jacobiano", detalle: "32 min · se arma derivando la posición; cada columna = cuánto se mueve la punta si muevo una sola articulación (ejemplo R + P con números)", url: "https://www.youtube.com/watch?v=-7mtdh5fnnk" },
-          { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", nota: "Clave", titulo: "Cómo cargar el robot en cinematica_inversa: q_offset, d_offset y tipo", detalle: "Tutorial con las funciones del profe · arranca en 10:00 y llega hasta 22:30 · la parte que más se confunde del ejercicio 2", url: "https://www.youtube.com/watch?v=sSqFN1hitdM&t=600s" },
-          { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", nota: "Opcional", titulo: "Jacobiano geométrico: z × (p − p) para R, z para P", detalle: "11 min · audio doblado al español · es la regla que usa jacobiano_analitico", url: "https://www.youtube.com/watch?v=wwd7jYw2HUs" },
-          { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", nota: "Opcional", titulo: "El ciclo de la CI numérica (Newton, pseudoinversa y DLS)", detalle: "10 min · audio doblado al español · DLS aparece en 6:45; para DLS en sí alcanza la pág. 5 del resumen", url: "https://www.youtube.com/watch?v=-_r2pSpeh2g" },
-          { bloque: "Ejercicio 3 · Generación de trayectorias", titulo: "Trayectoria articular sincronizada", detalle: "Clase 2026 · arranca en 27:00 (35 min) · q(t) = q0 + ω·t con paso h; desde 51:00 el cálculo del ejercicio: T = máx(|Δq|/wmax) y ω = Δq/T", url: "https://www.youtube.com/watch?v=jWmj9z2U3VI&t=1620s" },
-          { bloque: "Ejercicio 3 · Generación de trayectorias", titulo: "Tutorial: CI punto a punto + generacion_de_trayectorias + animación", detalle: "Clase 2026 · arranca en 40:00 · semillas encadenadas, trayectoria tramo a tramo con wmax y h, y por qué la punta no va en línea recta", url: "https://www.youtube.com/watch?v=sSqFN1hitdM&t=2400s" },
-          { bloque: "Preguntas conceptuales", nota: "Opcional", titulo: "Qué tomó Pailos en el parcial de su comisión (4K1)", detalle: "28 min · NO es la comisión 4K3 · sirve como lista de conceptos: leer una matriz DH, por qué CI numérica, por qué DLS", url: "https://www.youtube.com/watch?v=as2gtgnephI" }
-        ]
+        teorico: {
+          material: [
+            { nivel: "esencial", grupo: "Presentación y guías de clase (2026)", descripcion: "La teoría de cinemática y las guías del profe con el robot 3R: alcanzan para el parcial.", archivos: [
+              { n: 1, nombre: "Cinemática · métodos geométricos", detalle: "Presentación 2026: directa e inversa del robot 2R, con código Octave", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/04-cinematica-metodos-geometricos-2026.pdf" },
+              { n: 2, nombre: "Guías del profe · robot 3R", detalle: "Las 7 guías de clase unidas: 3R, rectas, círculo, cuadrado, Jacobiano, CI numérica y DLS (35 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/03-guias-del-profe-robot-3r.pdf" },
+              { nombre: "Scripts de las clases 4 a 9", detalle: "Robot 2R, robot 3R, rectas, círculo, cuadrado y CI numérica", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p2/scripts-de-clase-robot-3r.zip" }
+            ] },
+            { nivel: "profundizar", grupo: "Sistemas de control", descripcion: "Lo que sigue a la cinemática: realimentación, PID, control digital y el control de un robot móvil. En el 2º parcial 2026 no se tomó.", archivos: [
+              { n: 3, nombre: "Sistemas de control", detalle: "Lazo abierto y cerrado, realimentación, estabilidad, sobreimpulso, error en estado estable, PID y control digital (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/05-sistemas-de-control-2026.pdf" },
+              { n: 4, nombre: "Robot móvil con geometría de Ackermann", detalle: "Un auto LEGO que sigue una trayectoria: modelo de bicicleta, dos lazos PI, odometría y caminos de Reeds–Shepp (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/06-robot-movil-ackermann.pdf" }
+            ] },
+            { nivel: "extra", grupo: "Presentaciones de años anteriores", descripcion: "Las versiones previas a 2026. La de control cinemático explica los tipos de trayectoria y la interpolación, que sirve para el ejercicio 3.", archivos: [
+              { n: 5, nombre: "Control cinemático · trayectorias", detalle: "Trayectorias punto a punto, coordinadas y continuas, e interpolación lineal (versión anterior)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/07-control-cinematico-trayectorias.pdf" },
+              { n: 6, nombre: "Sistemas de control · versión anterior", detalle: "Lazo abierto y cerrado, sistemas autorregulados y estabilidad", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/08-sistemas-de-control-version-anterior.pdf" }
+            ] }
+          ],
+          videos: [
+            { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Empezá por acá", titulo: "Cinemática inversa del robot antropomórfico de 3 GDL", detalle: "14 min · canal Proyectos JC · exactamente el ejercicio 1: se pasa al plano, ley del coseno para q3 y q2 = α − β. Usa atan(y/x): en Octave usá atan2d", url: "https://www.youtube.com/watch?v=BH5b2Hwibn8" },
+            { bloque: "Ejercicio 1 · CI geométrica del RRR", titulo: "CI geométrica del 2R: ley del coseno y atan2", detalle: "13 min · canal Sistemas Dinámicos y Control · por qué atan2 y no acos; q1 = γ − β", url: "https://www.youtube.com/watch?v=9zSRNXRuX0g" },
+            { bloque: "Ejercicio 1 · CI geométrica del RRR", titulo: "CI del 2R en Matlab: codo arriba y codo abajo", detalle: "Clase 4K3 del 28/8 · 27 min · CD, dibujo del robot y las dos soluciones dibujadas", url: "https://www.youtube.com/watch?v=UpizWib2kaI" },
+            { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Opcional", titulo: "Deducción de la CI geométrica paso a paso", detalle: "Clase · arranca en 42:00 (30 min) · ley del coseno, por qué atan2 es más preciso que acos y q1 = β − α", url: "https://www.youtube.com/watch?v=LrkNO4Pwk_w&t=2520s" },
+            { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Opcional", titulo: "El RRR de la cátedra dibujando un Pac-Man", detalle: "12 min · TP de robótica de la 4K1 · CD, CI con chequeo de alcance y codo arriba, y recorrido de puntos", url: "https://www.youtube.com/watch?v=870U96D82I8" },
+            { bloque: "Ejercicio 1 · CI geométrica del RRR", nota: "Opcional", titulo: "CI despejando desde la matriz T (otro robot)", detalle: "2025 · 59 min · robot R-R-P tipo SCARA con matemática simbólica; sirve para el concepto, no es el método del parcial", url: "https://www.youtube.com/watch?v=8MibzriXvHY" },
+            { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", titulo: "El robot cilíndrico R-P-P-R y su tabla DH", detalle: "Clase 2024 · 35 min · es el robot del ejercicio 2", url: "https://www.youtube.com/watch?v=H3Xny0xnaTI" },
+            { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", titulo: "Qué es el Jacobiano", detalle: "32 min · se arma derivando la posición; cada columna = cuánto se mueve la punta si muevo una sola articulación (ejemplo R + P con números)", url: "https://www.youtube.com/watch?v=-7mtdh5fnnk" },
+            { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", nota: "Clave", titulo: "Cómo cargar el robot en cinematica_inversa: q_offset, d_offset y tipo", detalle: "Tutorial con las funciones del profe · arranca en 10:00 y llega hasta 22:30 · la parte que más se confunde del ejercicio 2", url: "https://www.youtube.com/watch?v=sSqFN1hitdM&t=600s" },
+            { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", nota: "Opcional", titulo: "Jacobiano geométrico: z × (p − p) para R, z para P", detalle: "11 min · audio doblado al español · es la regla que usa jacobiano_analitico", url: "https://www.youtube.com/watch?v=wwd7jYw2HUs" },
+            { bloque: "Ejercicio 2 · CI numérica (Jacobiano + DLS)", nota: "Opcional", titulo: "El ciclo de la CI numérica (Newton, pseudoinversa y DLS)", detalle: "10 min · audio doblado al español · DLS aparece en 6:45; para DLS en sí alcanza la pág. 5 del resumen", url: "https://www.youtube.com/watch?v=-_r2pSpeh2g" },
+            { bloque: "Ejercicio 3 · Generación de trayectorias", titulo: "Trayectoria articular sincronizada", detalle: "Clase 2026 · arranca en 27:00 (35 min) · q(t) = q0 + ω·t con paso h; desde 51:00 el cálculo del ejercicio: T = máx(|Δq|/wmax) y ω = Δq/T", url: "https://www.youtube.com/watch?v=jWmj9z2U3VI&t=1620s" },
+            { bloque: "Ejercicio 3 · Generación de trayectorias", titulo: "Tutorial: CI punto a punto + generacion_de_trayectorias + animación", detalle: "Clase 2026 · arranca en 40:00 · semillas encadenadas, trayectoria tramo a tramo con wmax y h, y por qué la punta no va en línea recta", url: "https://www.youtube.com/watch?v=sSqFN1hitdM&t=2400s" },
+            { bloque: "Preguntas conceptuales", nota: "Opcional", titulo: "Qué tomó Pailos en el parcial de su comisión (4K1)", detalle: "28 min · NO es la comisión 4K3 · sirve como lista de conceptos: leer una matriz DH, por qué CI numérica, por qué DLS", url: "https://www.youtube.com/watch?v=as2gtgnephI" }
+          ]
+        },
+        parcial: {
+          material: [
+            { grupo: "Para estudiar", descripcion: "La teoría justa con los 3 ejercicios tipo parcial resueltos, y el parcial 2026 tal cual salió.", archivos: [
+              { n: 1, nombre: "Resumen y ejercicios modelo", nota: "Empezá por acá", detalle: "Teoría resumida, los 3 ejercicios tipo parcial resueltos con las funciones del profe, ejercicios para practicar con respuesta y errores típicos (14 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/01-resumen-y-ejercicios-modelo-2do-parcial.pdf" },
+              { n: 2, nombre: "El parcial 2026 resuelto", nota: "Enunciados reales", detalle: "Los 5 ejercicios del 6/10 como salieron en el campus (capturas tal cual): cilíndrico, RPR, RPP e IRB2400 para completar la tabla, y la trayectoria circular con código. Respuestas verificadas en Octave (9 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p2/02-parcial-2026-resuelto.pdf" }
+            ] },
+            { grupo: "Octave / Matlab", descripcion: "Las funciones del profe, los ejercicios modelo y las dos plantillas vacías que dio para el parcial.", archivos: [
+              { nombre: "Descargar Octave", detalle: "Gratis. Alternativa a Matlab: corre las mismas funciones", tipo: "LINK", url: "https://octave.org/download" },
+              { nombre: "Funciones del 2º parcial + ejercicios modelo", detalle: "Las funciones del profe (cinemática directa e inversa, jacobianos, trayectorias, animación), los 3 scripts del resumen los del parcial 2026 (IRB2400 y círculo) y las plantillas vacías del profe", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/p2/funciones-octave-2do-parcial.zip" }
+            ] },
+            { grupo: "Para practicar más", descripcion: "TPs de robótica de la comisión 4K1: un robot RRR que dibuja una figura (sirven para practicar el ejercicio 1).", archivos: [
+              { nombre: "Grupo 7 · Pac-Man", detalle: "Google Drive · archivos de Matlab y presentación (el video está en la pestaña Videos)", tipo: "LINK", url: "https://drive.google.com/drive/folders/1FpaZFuejbIwEwrou9kXIN-7LV-60-itD" },
+              { nombre: "Grupo 9 · Helado", detalle: "Google Drive · archivos de Matlab y presentación", tipo: "LINK", url: "https://drive.google.com/drive/folders/1j49I03Oz7oHyBZxDb4DIsfouaXyN-RSB?usp=drive_link" }
+            ] }
+          ]
+        }
       },
       {
         id: "p3",
         titulo: "3º Parcial · IoT",
         quiz: "quiz/tpa-3er-parcial.json",
         descripcion: "Internet de las cosas con la ESP32: arquitectura, entradas y salidas, sensores, protocolos de comunicación, WiFi y la nube. Es un cuestionario en el campus.",
-        secciones: [],
+        secciones: ["teorico", "parcial"],
+        nombres: { parcial: "Parciales" },
+        quizEn: "parcial",
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -3139,38 +3175,47 @@ const MATERIAS = {
             ] }
           ]
         },
-        material: [
-          { nivel: "esencial", grupo: "Para estudiar", descripcion: "Empezá por acá: el resumen y todas las preguntas que ya salieron, resueltas.", archivos: [
-            { n: 1, nombre: "Resumen de IoT", nota: "Empezá por acá", detalle: "La ESP32 en números, qué se conecta dónde, PWM, ADC y DAC, millis vs. delay, UART/I2C/SPI, WiFi, MQTT y la nube, y los sketches de los prácticos (6 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/01-resumen-iot.pdf" },
-            { n: 2, nombre: "Banco de preguntas", detalle: "Las 20 preguntas de los parciales de IoT 2025 como en el campus, con la respuesta y el porqué, más 33 de práctica del apunte 2026 (19 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/02-banco-de-preguntas-iot.pdf" },
-            { n: 3, nombre: "Apunte IoT 2026", detalle: "El apunte completo del profe (51 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/03-apunte-iot-2026.pdf" }
-          ] },
-          { nivel: "profundizar", grupo: "Material de clase", descripcion: "Presentaciones y apuntes cortos de las clases de IoT.", archivos: [
-            { n: 4, nombre: "Clase 1 · Presentación de la ESP32", detalle: "Qué es IoT, la placa, sus pines y periféricos", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/04-clase-1-presentacion-de-la-esp32.pdf" },
-            { n: 5, nombre: "Clase 2 · Introducción a C++", detalle: "Lo básico del lenguaje para programar la ESP32", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/05-clase-2-introduccion-a-cpp.pdf" },
-            { n: 6, nombre: "Diferencia entre I2C y SPI", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/06-diferencia-entre-i2c-y-spi.pdf" },
-            { n: 7, nombre: "Ejemplo de uso de protocolos de comunicación", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/07-ejemplo-de-protocolos-de-comunicacion.pdf" },
-            { n: 8, nombre: "Esquema de pines de la ESP32", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/08-esquema-de-pines-esp32.pdf" },
-            { n: 9, nombre: "Instructivo MQTT", detalle: "Broker Mosquitto y dos ESP32 que se mandan mensajes", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/09-instructivo-mqtt.pdf" },
-            { nombre: "Sketch de conexión MQTT", detalle: "El código del instructivo", tipo: "INO", url: "material/tecnologias-para-la-automatizacion/p3-iot/conexion-mqtt.ino" }
-          ] },
-          { nivel: "extra", grupo: "Adicional", descripcion: "Presentaciones de otro profe de la cátedra, por si querés repasar con otras explicaciones.", archivos: [
-            { n: 10, nombre: "ESP32 · características", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/10-esp32-caracteristicas.pdf" },
-            { n: 11, nombre: "ESP32 · periféricos", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/11-esp32-perifericos.pdf" },
-            { n: 12, nombre: "LEDs", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/12-leds.pdf" }
-          ] }
-        ],
-        videos: [
-          { bloque: "La ESP32 (teoría)", titulo: "La ESP32 por dentro: especificaciones", detalle: "Clase de Pailos (4K1) · 0:00 a 15:00 · núcleos, memorias, GPIO, ADC, UART/I2C/SPI, PWM, WiFi y BLE", url: "https://www.youtube.com/watch?v=JP3MYHkmt64" },
-          { bloque: "La ESP32 (teoría)", titulo: "3,3 V vs. 5 V, divisor resistivo y corriente máxima", detalle: "Misma clase · arranca en 22:30 · por qué no se le meten 5 V, divisor 10k/5,1k, 40 mA por pin (20 recomendado, 120 en total) y la resistencia del LED", url: "https://www.youtube.com/watch?v=JP3MYHkmt64&t=1350s" },
-          { bloque: "La ESP32 (teoría)", titulo: "ADC de 12 bits, DAC de 8 bits y PWM de 16 bits", detalle: "Misma clase · arranca en 53:10 · 4096 niveles, DAC en solo 2 pines, PWM y servos", url: "https://www.youtube.com/watch?v=JP3MYHkmt64&t=3190s" },
-          { bloque: "La ESP32 (teoría)", titulo: "Fines de carrera, pull-up y pull-down", detalle: "Misma clase · arranca en 67:30 · contactos NA/NC y cómo leer un pulsador", url: "https://www.youtube.com/watch?v=JP3MYHkmt64&t=4050s" },
-          { bloque: "Programación (lo que más se pregunta)", nota: "Empezá por acá", titulo: "De cero en Wokwi: LED, millis, pulsador, potenciómetro, PWM y OLED", detalle: "Clase 2026 · 50 min · setup/loop, blink sin delay con millis(), INPUT_PULLUP, analogRead 0–4095 y analogReadResolution, map(), analogWrite y display OLED por I2C", url: "https://www.youtube.com/watch?v=AikESh4O6tM" },
-          { bloque: "Programación (lo que más se pregunta)", titulo: "Entradas y salidas digitales, pull-up/pull-down y millis", detalle: "Prof. Laboret · 26 min · LED activo en alto o en bajo, y medir tiempos sin delay", url: "https://www.youtube.com/watch?v=zNTOv31Uegc" },
-          { bloque: "Programación (lo que más se pregunta)", titulo: "Interrupciones y entradas analógicas", detalle: "Prof. Laboret · 16 min · attachInterrupt, ISR y volatile; relé; potenciómetro con 8 bits; DAC en GPIO25/26", url: "https://www.youtube.com/watch?v=LnO2KQlGYgQ" },
-          { bloque: "Programación (lo que más se pregunta)", titulo: "El bus I2C explicado (con LCD y sensor ultrasónico)", detalle: "Prof. Laboret · 22 min · SDA 21 / SCL 22, direcciones de cada dispositivo, I2C vs. SPI", url: "https://www.youtube.com/watch?v=Ep4r9y9aA3k" },
-          { bloque: "Programación (lo que más se pregunta)", nota: "Opcional", titulo: "Cómo se ve una señal PWM", detalle: "Prof. Laboret · 11 min · analizador lógico de Wokwi: frecuencia fija y ciclo de trabajo variable; tone() en un buzzer", url: "https://www.youtube.com/watch?v=o5VfJEeFZqg" }
-        ]
+        teorico: {
+          material: [
+            { nivel: "esencial", grupo: "Apunte y clases", descripcion: "El apunte del profe y las presentaciones de las primeras clases.", archivos: [
+              { n: 1, nombre: "Apunte IoT 2026", detalle: "El apunte completo del profe (51 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/03-apunte-iot-2026.pdf" },
+              { n: 2, nombre: "Clase 1 · Presentación de la ESP32", detalle: "Qué es IoT, la placa, sus pines y periféricos", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/04-clase-1-presentacion-de-la-esp32.pdf" },
+              { n: 3, nombre: "Clase 2 · Introducción a C++", detalle: "Lo básico del lenguaje para programar la ESP32", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/05-clase-2-introduccion-a-cpp.pdf" },
+              { n: 4, nombre: "Conceptos básicos de electrónica", detalle: "Tensión, corriente, resistencia, ley de Ohm, LEDs y resistencias limitadoras: lo justo para conectar la placa (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/13-conceptos-basicos-de-electronica.pdf" }
+            ] },
+            { nivel: "profundizar", grupo: "Apuntes cortos", descripcion: "Protocolos, pines y MQTT.", archivos: [
+              { n: 5, nombre: "Diferencia entre I2C y SPI", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/06-diferencia-entre-i2c-y-spi.pdf" },
+              { n: 6, nombre: "Ejemplo de uso de protocolos de comunicación", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/07-ejemplo-de-protocolos-de-comunicacion.pdf" },
+              { n: 7, nombre: "Esquema de pines de la ESP32", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/08-esquema-de-pines-esp32.pdf" },
+              { n: 8, nombre: "Instructivo MQTT", detalle: "Broker Mosquitto y dos ESP32 que se mandan mensajes", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/09-instructivo-mqtt.pdf" },
+              { nombre: "Sketch de conexión MQTT", detalle: "El código del instructivo", tipo: "INO", url: "material/tecnologias-para-la-automatizacion/p3-iot/conexion-mqtt.ino" }
+            ] },
+            { nivel: "extra", grupo: "Adicional", descripcion: "Presentaciones de otro profe de la cátedra, por si querés repasar con otras explicaciones.", archivos: [
+              { n: 9, nombre: "ESP32 · características", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/10-esp32-caracteristicas.pdf" },
+              { n: 10, nombre: "ESP32 · periféricos", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/11-esp32-perifericos.pdf" },
+              { n: 11, nombre: "LEDs", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/12-leds.pdf" }
+            ] }
+          ],
+          videos: [
+            { bloque: "La ESP32 (teoría)", titulo: "La ESP32 por dentro: especificaciones", detalle: "Clase de Pailos (4K1) · 0:00 a 15:00 · núcleos, memorias, GPIO, ADC, UART/I2C/SPI, PWM, WiFi y BLE", url: "https://www.youtube.com/watch?v=JP3MYHkmt64" },
+            { bloque: "La ESP32 (teoría)", titulo: "3,3 V vs. 5 V, divisor resistivo y corriente máxima", detalle: "Misma clase · arranca en 22:30 · por qué no se le meten 5 V, divisor 10k/5,1k, 40 mA por pin (20 recomendado, 120 en total) y la resistencia del LED", url: "https://www.youtube.com/watch?v=JP3MYHkmt64&t=1350s" },
+            { bloque: "La ESP32 (teoría)", titulo: "ADC de 12 bits, DAC de 8 bits y PWM de 16 bits", detalle: "Misma clase · arranca en 53:10 · 4096 niveles, DAC en solo 2 pines, PWM y servos", url: "https://www.youtube.com/watch?v=JP3MYHkmt64&t=3190s" },
+            { bloque: "La ESP32 (teoría)", titulo: "Fines de carrera, pull-up y pull-down", detalle: "Misma clase · arranca en 67:30 · contactos NA/NC y cómo leer un pulsador", url: "https://www.youtube.com/watch?v=JP3MYHkmt64&t=4050s" },
+            { bloque: "Programación (lo que más se pregunta)", nota: "Empezá por acá", titulo: "De cero en Wokwi: LED, millis, pulsador, potenciómetro, PWM y OLED", detalle: "Clase 2026 · 50 min · setup/loop, blink sin delay con millis(), INPUT_PULLUP, analogRead 0–4095 y analogReadResolution, map(), analogWrite y display OLED por I2C", url: "https://www.youtube.com/watch?v=AikESh4O6tM" },
+            { bloque: "Programación (lo que más se pregunta)", titulo: "Entradas y salidas digitales, pull-up/pull-down y millis", detalle: "Prof. Laboret · 26 min · LED activo en alto o en bajo, y medir tiempos sin delay", url: "https://www.youtube.com/watch?v=zNTOv31Uegc" },
+            { bloque: "Programación (lo que más se pregunta)", titulo: "Interrupciones y entradas analógicas", detalle: "Prof. Laboret · 16 min · attachInterrupt, ISR y volatile; relé; potenciómetro con 8 bits; DAC en GPIO25/26", url: "https://www.youtube.com/watch?v=LnO2KQlGYgQ" },
+            { bloque: "Programación (lo que más se pregunta)", titulo: "El bus I2C explicado (con LCD y sensor ultrasónico)", detalle: "Prof. Laboret · 22 min · SDA 21 / SCL 22, direcciones de cada dispositivo, I2C vs. SPI", url: "https://www.youtube.com/watch?v=Ep4r9y9aA3k" },
+            { bloque: "Programación (lo que más se pregunta)", nota: "Opcional", titulo: "Cómo se ve una señal PWM", detalle: "Prof. Laboret · 11 min · analizador lógico de Wokwi: frecuencia fija y ciclo de trabajo variable; tone() en un buzzer", url: "https://www.youtube.com/watch?v=o5VfJEeFZqg" }
+          ]
+        },
+        parcial: {
+          material: [
+            { grupo: "Para estudiar", descripcion: "El resumen y todas las preguntas que ya salieron, resueltas.", archivos: [
+              { n: 1, nombre: "Resumen de IoT", nota: "Empezá por acá", detalle: "La ESP32 en números, qué se conecta dónde, PWM, ADC y DAC, millis vs. delay, UART/I2C/SPI, WiFi, MQTT y la nube, y los sketches de los prácticos (6 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/01-resumen-iot.pdf" },
+              { n: 2, nombre: "Banco de preguntas", detalle: "Las 20 preguntas de los parciales de IoT 2025 como en el campus, con la respuesta y el porqué, más 33 de práctica del apunte 2026 (19 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/02-banco-de-preguntas-iot.pdf" }
+            ] }
+          ]
+        }
       },
       {
         id: "tp",
@@ -3178,6 +3223,9 @@ const MATERIAS = {
         descripcion: "Los casos prácticos con la ESP32, con la placa real o simulada en Wokwi: instalación, los prácticos y videos para resolverlos.",
         secciones: [],
         material: [
+          { nivel: "esencial", grupo: "El TP integrador", descripcion: "Lo que hay que entregar: dos sketches, uno manda datos a ThingSpeak y habilita OTA, y el otro (subido por OTA) los lee y los muestra.", archivos: [
+            { nombre: "TPI 4K3 · ThingSpeak y programación OTA", nota: "Entrega 28/10", detalle: "La consigna: potenciómetro y touch con PWM de 12 bits, DHT22 y display, 6 campos a ThingSpeak cada 16 s, y el segundo sketch por OTA con el pulsador (2 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf" }
+          ] },
           { nivel: "esencial", grupo: "Instalación (en este orden)", descripcion: "Para programar la placa real desde la PC.", archivos: [
             { n: 1, nombre: "Arduino IDE 2 · instalación y primeros pasos", detalle: "Guía oficial de Arduino", tipo: "LINK", url: "https://docs.arduino.cc/software/ide-v2/tutorials/getting-started-ide-v2/" },
             { n: 2, nombre: "Agregar la placa ESP32 al Arduino IDE", detalle: "Random Nerd Tutorials · paso a paso en Windows", tipo: "LINK", url: "https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/" },
@@ -3189,10 +3237,11 @@ const MATERIAS = {
           ] },
           { nivel: "esencial", grupo: "Los prácticos", descripcion: "Los casos a resolver y los tutoriales que piden.", archivos: [
             { n: 5, nombre: "Prácticos 2026", detalle: "Los casos prácticos: LEDs, potenciómetro, relay, OLED, DHT22, servidor web, Arduino Cloud, ThingSpeak y Telegram", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf" },
-            { n: 6, nombre: "Tutorial ThingSpeak", detalle: "Campus UV · hay que tener la sesión iniciada", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/pluginfile.php/1302650/mod_resource/content/3/Tutorial%20Thingspeak.pdf" },
-            { n: 7, nombre: "Tutorial Arduino", detalle: "Campus UV · hay que tener la sesión iniciada", tipo: "LINK", url: "https://uv.frc.utn.edu.ar/pluginfile.php/1302651/mod_resource/content/3/Tutorial%20Arduino.pdf" },
+            { n: 6, nombre: "Tutorial ThingSpeak", detalle: "Crear el canal, los campos y las claves, y mandar datos desde la ESP32 (8 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/06-tutorial-thingspeak.pdf" },
+            { n: 7, nombre: "Tutorial Arduino Cloud", detalle: "Conectar la ESP32 a Arduino Cloud IoT: el dispositivo, la cosa, las variables y el dashboard (17 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/05-tutorial-arduino-cloud.pdf" },
             { n: 8, nombre: "Bot de Telegram · pasos", detalle: "Crear el bot con BotFather y obtener el token", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/03-bot-de-telegram-pasos.pdf" },
-            { nombre: "Carpeta del profe · TPA 2026", detalle: "Google Drive · casos prácticos resueltos", tipo: "LINK", url: "https://drive.google.com/drive/folders/1KVsZRQPkf5vP_og6_A4SRP-ZS0_novFM" }
+            { nombre: "Casos resueltos del profe", detalle: "El código de los 20 casos y los sketches de clase (OTA, MQTT, ThingSpeak, servidor web, EEPROM). Las claves de WiFi, ThingSpeak y Telegram se cambiaron por marcadores: poné las tuyas", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/tp-esp32/casos-resueltos-del-profe.zip" },
+            { nombre: "Carpeta del profe · TPA 2026", detalle: "Google Drive · lo mismo, tal cual lo subió el profe", tipo: "LINK", url: "https://drive.google.com/drive/folders/1KVsZRQPkf5vP_og6_A4SRP-ZS0_novFM" }
           ] }
         ],
         videos: [
