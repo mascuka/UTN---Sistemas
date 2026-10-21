@@ -141,6 +141,13 @@
         "tipo": "TP",
         "nombre": "Presentar TPI - Leo"
       }
+    ],
+    "2026-11-02": [
+      {
+        "k": "206",
+        "tipo": "TP",
+        "nombre": "Limite de Entraga TP"
+      }
     ]
   },
   "notasCursada": {
