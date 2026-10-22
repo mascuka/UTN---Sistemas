@@ -1,0 +1,2262 @@
+{
+ "grupo": "IoT · 3º parcial",
+ "partes": [
+  {
+   "n": 1,
+   "id": "esp32",
+   "titulo": "La ESP32",
+   "explicacion": "Un SoC de Espressif con WiFi y Bluetooth integrados: doble núcleo de 32 bits a 240 MHz, 3,3 V, ADC de 12 bits, 16 canales PWM y el LED integrado en el GPIO 2. Sus números salen siempre en el parcial.",
+   "corto": "La ESP32",
+   "pestana": "La ESP32",
+   "leccion": {
+    "que": "La **ESP32** es un SoC (System on Chip) de Espressif: un microcontrolador de bajo costo y bajo consumo con **WiFi y Bluetooth integrados** («un Arduino con esteroides»). Es un **sistema embebido**: hace una tarea dedicada, normalmente en tiempo real, a diferencia de una PC.\nEn el parcial se preguntan sus números (núcleos, tensión, memorias, periféricos) y para qué sirve cada cosa de la placa.",
+    "consta": [
+     [
+      "El procesador",
+      "Xtensa LX6 de Tensilica: doble núcleo, 32 bits, hasta 240 MHz; los núcleos pueden trabajar en paralelo."
+     ],
+     [
+      "La tensión",
+      "3,3 V. Por USB entran 5 V y el regulador los baja; más de 3,3 V en un pin la puede dañar."
+     ],
+     [
+      "Las memorias",
+      "Flash hasta 4 MB (el programa) · SRAM 520 KB (datos, volátil) · ROM 448 KB (bootloader) · EEPROM (configuraciones)."
+     ],
+     [
+      "La conectividad",
+      "WiFi 802.11 b/g/n en 2,4 GHz y Bluetooth 4.2 (clásico y BLE)."
+     ],
+     [
+      "Los periféricos",
+      "2 ADC de 12 bits, 2 DAC de 8 bits (GPIO25 y 26), 16 canales PWM, 3 UART, 2 I2C, 3 SPI y pines touch."
+     ],
+     [
+      "Botones y LED",
+      "EN = reset, BOOT = modo de carga de firmware y el LED integrado en el GPIO 2."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "placa.ino",
+     "origen": "Lo que hay que saber de la placa (DOIT DevKit V1)",
+     "codigo": "// Procesador: Xtensa LX6, 2 núcleos de 32 bits, hasta 240 MHz\n// Trabaja a 3,3 V: más tensión en un pin la puede dañar\n// Flash 4 MB (programa) · SRAM 520 KB (datos) · ROM 448 KB (bootloader)\n// WiFi 2,4 GHz y Bluetooth 4.2 + BLE, sin módulos externos\n// ADC 12 bits · DAC 8 bits en GPIO25/26 · 16 PWM · 3 UART · 2 I2C · 3 SPI\nconst int LED = 2;            // el LED integrado (LED_BUILTIN)\n// EN = reset · BOOT = modo de carga de firmware\nvoid setup() { pinMode(LED, OUTPUT); }\nvoid loop()  { digitalWrite(LED, HIGH); }",
+     "marcas": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       3,
+       3,
+       3
+      ],
+      [
+       4,
+       4,
+       4
+      ],
+      [
+       5,
+       5,
+       5
+      ],
+      [
+       6,
+       6,
+       7
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "16 MHz y 5 V son del Arduino UNO, no de la ESP32.",
+     "El chip no tiene USB nativo: la placa trae un conversor USB–UART (CP210x), por eso hay que instalar el driver. Igual, para el campus «no tiene interfaz USB directa» es incorrecta.",
+     "GPIO34 a GPIO39 son solo de entrada: no sirven como salida ni para PWM.",
+     "BOOT no reinicia: el que reinicia es EN."
+    ],
+    "parcial": "10 preguntas de opción múltiple, casi todas con varias correctas y puntaje parcial. Las de la ESP32 salen siempre: arquitectura, LED integrado, botones y tensión.",
+    "pdf": 2
+   },
+   "ejercicios": [
+    {
+     "id": "1.1",
+     "tema": "Los números",
+     "titulo": "la ESP32 en números",
+     "tipo": "respuestas",
+     "consigna": "Completá los números de la ESP32 de la cátedra (DOIT DevKit V1).",
+     "pistas": [
+      "Están todos en la explicación de la parte."
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Tensión de trabajo",
+       "valor": 3.3,
+       "unidad": "V",
+       "motivo": "Por USB entran 5 V y el regulador los baja.",
+       "tol": 0.1,
+       "mostrar": "3,3"
+      },
+      {
+       "pregunta": "Núcleos del procesador",
+       "valor": 2,
+       "motivo": "Xtensa LX6 de doble núcleo.",
+       "tol": 1,
+       "mostrar": "2"
+      },
+      {
+       "pregunta": "Bits del procesador",
+       "valor": 32,
+       "motivo": "El Arduino UNO es de 8.",
+       "tol": 1,
+       "mostrar": "32"
+      },
+      {
+       "pregunta": "Frecuencia máxima",
+       "valor": 240,
+       "unidad": "MHz",
+       "motivo": "El UNO va a 16 MHz.",
+       "tol": 1,
+       "mostrar": "240"
+      },
+      {
+       "pregunta": "SRAM",
+       "valor": 520,
+       "unidad": "KB",
+       "motivo": "Los datos mientras el programa corre.",
+       "tol": 1,
+       "mostrar": "520"
+      },
+      {
+       "pregunta": "Canales PWM",
+       "valor": 16,
+       "motivo": "Cada uno con su frecuencia y resolución.",
+       "tol": 1,
+       "mostrar": "16"
+      },
+      {
+       "pregunta": "Pin del LED integrado",
+       "valor": 2,
+       "motivo": "LED_BUILTIN = 2 (en la mayoría de los Arduino es el 13).",
+       "tol": 1,
+       "mostrar": "2"
+      }
+     ],
+     "parte": 1
+    },
+    {
+     "id": "1.2",
+     "tema": "Arquitectura",
+     "titulo": "arquitectura y procesador (parcial 2025)",
+     "tipo": "ubicacion",
+     "consigna": "Las opciones de dos preguntas del parcial 2025: «¿Qué afirmaciones sobre la arquitectura de la ESP32 son verdaderas?» y «¿Qué características tiene el procesador Xtensa LX6?». ¿Cuáles marcarías?",
+     "opciones": [
+      "Correcta",
+      "Incorrecta"
+     ],
+     "items": [
+      {
+       "texto": "Puede manejar hasta 16 canales PWM",
+       "respuesta": "Correcta",
+       "motivo": "Tiene 16 canales."
+      },
+      {
+       "texto": "Posee coprocesadores para ciertas tareas",
+       "respuesta": "Correcta",
+       "motivo": "El coprocesador ULP lee sensores con muy bajo consumo y despierta al sistema."
+      },
+      {
+       "texto": "Solo soporta un núcleo de ejecución",
+       "respuesta": "Incorrecta",
+       "motivo": "Es de doble núcleo."
+      },
+      {
+       "texto": "Tiene soporte para múltiples ADC y DAC",
+       "respuesta": "Correcta",
+       "motivo": "2 ADC y 2 DAC."
+      },
+      {
+       "texto": "No tiene interfaz USB directa",
+       "respuesta": "Incorrecta",
+       "motivo": "Para el campus es incorrecta, aunque el chip no tiene USB nativo (la placa usa un conversor USB–UART). No la marques."
+      },
+      {
+       "texto": "El Xtensa LX6 es de doble núcleo y 32 bits",
+       "respuesta": "Correcta",
+       "motivo": "Hasta 240 MHz."
+      },
+      {
+       "texto": "Lo fabrica Texas Instruments",
+       "respuesta": "Incorrecta",
+       "motivo": "El chip es de Espressif Systems (el núcleo, de Tensilica)."
+      },
+      {
+       "texto": "Corre a 16 MHz",
+       "respuesta": "Incorrecta",
+       "motivo": "Eso es el Arduino UNO."
+      },
+      {
+       "texto": "Tiene capacidad para procesamiento paralelo",
+       "respuesta": "Correcta",
+       "motivo": "Los dos núcleos pueden trabajar juntos."
+      }
+     ],
+     "pregunta": "¿La marcarías?",
+     "parte": 1
+    },
+    {
+     "id": "1.3",
+     "tema": "Botones y memorias",
+     "titulo": "botones y memorias",
+     "tipo": "ubicacion",
+     "consigna": "¿Qué botón o qué memoria es?",
+     "opciones": [
+      "EN",
+      "BOOT",
+      "Flash",
+      "SRAM",
+      "ROM",
+      "EEPROM"
+     ],
+     "items": [
+      {
+       "texto": "Reinicia la placa",
+       "respuesta": "EN",
+       "motivo": "EN (ENABLE) es el reset."
+      },
+      {
+       "texto": "Pone la placa en modo de carga de firmware",
+       "respuesta": "BOOT",
+       "motivo": "Pregunta del recuperatorio 2025: no «carga el bootloader» ni reinicia."
+      },
+      {
+       "texto": "Guarda el programa y no se borra al apagar",
+       "respuesta": "Flash",
+       "motivo": "Hasta 4 MB."
+      },
+      {
+       "texto": "Guarda los datos mientras el programa corre; se borra al apagar",
+       "respuesta": "SRAM",
+       "motivo": "520 KB, volátil."
+      },
+      {
+       "texto": "Tiene el bootloader",
+       "respuesta": "ROM",
+       "motivo": "448 KB."
+      },
+      {
+       "texto": "Guarda configuraciones que sobreviven al reinicio y a un apagón",
+       "respuesta": "EEPROM",
+       "motivo": "Por ejemplo, el último estado de un LED."
+      }
+     ],
+     "pregunta": "¿Qué es?",
+     "parte": 1
+    },
+    {
+     "id": "1.4",
+     "tema": "Blink",
+     "titulo": "el LED integrado parpadea",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "El primer programa de todos: que el **LED integrado** parpadee, medio segundo prendido y medio segundo apagado.",
+     "pasos": [
+      "En el setup: `pinMode(LED, OUTPUT)`.",
+      "En el loop: HIGH, esperar, LOW, esperar."
+     ],
+     "pistas": [
+      "Es el sketch A del resumen."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int LED = 2;          // el LED integrado\n\nvoid setup() {\n  // configurá el pin del LED como salida\n}\n\nvoid loop() {\n  // prendelo medio segundo y apagalo medio segundo\n}\n",
+       "solucion": "const int LED = 2;          // el LED integrado\n\nvoid setup() {\n  pinMode(LED, OUTPUT);\n}\n\nvoid loop() {\n  digitalWrite(LED, HIGH);   // 3,3 V: prende\n  delay(500);\n  digitalWrite(LED, LOW);    // 0 V: apaga\n  delay(500);\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "pinMode\\s*\\(\\s*LED\\s*,\\s*OUTPUT\\s*\\)",
+       "ok": "El LED es una salida",
+       "error": "Falta `pinMode(LED, OUTPUT)` en el setup"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "digitalWrite\\s*\\(\\s*LED\\s*,\\s*HIGH\\s*\\)",
+       "ok": "Lo prende con HIGH",
+       "error": "Falta prenderlo: `digitalWrite(LED, HIGH)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "digitalWrite\\s*\\(\\s*LED\\s*,\\s*LOW\\s*\\)",
+       "ok": "Lo apaga con LOW",
+       "error": "Falta apagarlo: `digitalWrite(LED, LOW)`"
+      },
+      {
+       "tipo": "cuenta",
+       "regex": "delay\\s*\\(\\s*500\\s*\\)",
+       "veces": 2,
+       "ok": "Espera medio segundo en cada estado",
+       "error": "Hacen falta dos `delay(500)`: uno prendido y otro apagado"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿Cuántas veces parpadea por segundo?",
+       "valor": 1,
+       "tol": 1,
+       "mostrar": "1"
+      },
+      {
+       "pregunta": "¿Qué tensión hay en el pin con HIGH?",
+       "valor": 3.3,
+       "unidad": "V",
+       "tol": 0.1,
+       "mostrar": "3,3"
+      }
+     ],
+     "parte": 1
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "id": "pines",
+   "titulo": "Entradas y salidas",
+   "explicacion": "Cada pin es entrada o salida, digital (HIGH o LOW) o analógica (0 a 3,3 V). La pregunta que sale siempre: qué se conecta dónde.",
+   "corto": "Entradas y salidas",
+   "pestana": "Entradas y salidas",
+   "leccion": {
+    "que": "Cada pin se programa como **entrada** o **salida**, **digital** (dos estados: HIGH ≈ 3,3 V y LOW ≈ 0 V) o **analógica** (una tensión entre 0 y 3,3 V que el ADC convierte en un número).\nLa pregunta que sale siempre es **qué se conecta dónde**. En la placa de la cátedra: el potenciómetro en el 32, el DHT22 en el 33, el pulsador en el 19, el relé en el 14 y un LED en el 23.",
+    "consta": [
+     [
+      "Entrada digital",
+      "Pulsador, llave, fin de carrera, touch: `digitalRead(pin)`. Con `INPUT_PULLUP` queda en HIGH si está suelto."
+     ],
+     [
+      "Entrada analógica",
+      "Potenciómetro, LDR, sensor con salida de tensión: `analogRead(pin)` da 0 a 4095."
+     ],
+     [
+      "Salida digital",
+      "LED (prender y apagar), relé, LCD, transistor: `digitalWrite(pin, HIGH)`."
+     ],
+     [
+      "Salida PWM",
+      "Brillo de un LED, posición de un servo, tono de un buzzer, velocidad de un motor (con driver)."
+     ],
+     [
+      "Sensor digital",
+      "DHT22 y sensores I2C/SPI: el dato llega «procesado», sin pasar por el ADC y más robusto al ruido."
+     ],
+     [
+      "Cuidado eléctrico",
+      "Más de 3,3 V daña el pin; un motor o una tira de LEDs van con transistor o relé."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "placa_utn.ino",
+     "origen": "La placa de la cátedra: qué hay en cada pin",
+     "codigo": "const int BOTON = 19;            // pulsador: entrada digital\nconst int POT = 32;              // potenciómetro: entrada analógica\nconst int RELAY = 14;            // relé: salida digital\nconst int LED = 23;              // LED: salida, se le puede dar PWM\nvoid setup() {\n  pinMode(BOTON, INPUT_PULLUP);  // suelto = HIGH, apretado = LOW\n  pinMode(RELAY, OUTPUT);\n  pinMode(LED, OUTPUT);\n}\nvoid loop() {\n  if (digitalRead(BOTON) == LOW) digitalWrite(RELAY, HIGH);   // apretado: prende\n  int valor = analogRead(POT);   // 0..4095\n  analogWrite(LED, valor / 16);  // 0..255: el brillo\n  // el DHT22 (pin 33) se lee con su librería: no pasa por el ADC\n  // un motor DC nunca directo al pin: transistor o driver\n}",
+     "marcas": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       3,
+       3,
+       3
+      ],
+      [
+       4,
+       4,
+       4
+      ],
+      [
+       1,
+       6,
+       6
+      ],
+      [
+       3,
+       7,
+       7
+      ],
+      [
+       1,
+       11,
+       11
+      ],
+      [
+       2,
+       12,
+       12
+      ],
+      [
+       4,
+       13,
+       13
+      ],
+      [
+       5,
+       14,
+       14
+      ],
+      [
+       6,
+       15,
+       15
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Un pulsador es una entrada **digital**, aunque esté en un pin con ADC.",
+     "Una entrada sin conectar queda flotante: usá pull-up o pull-down.",
+     "Un relé es todo o nada: salida digital, no PWM."
+    ],
+    "parcial": "«¿Qué se puede conectar a una entrada analógica?», «¿Qué componentes se controlan con salidas digitales?», «¿Qué se puede usar con PWM?»: salen todos los años, con varias correctas.",
+    "pdf": 3
+   },
+   "ejercicios": [
+    {
+     "id": "2.1",
+     "tema": "Qué va dónde",
+     "titulo": "¿qué se conecta dónde?",
+     "tipo": "ubicacion",
+     "consigna": "Para cada componente: ¿a qué tipo de pin va?",
+     "opciones": [
+      "Entrada digital",
+      "Entrada analógica",
+      "Salida digital",
+      "Salida PWM"
+     ],
+     "items": [
+      {
+       "texto": "Pulsador",
+       "respuesta": "Entrada digital",
+       "motivo": "Dos estados: apretado o suelto."
+      },
+      {
+       "texto": "Potenciómetro",
+       "respuesta": "Entrada analógica",
+       "motivo": "Una tensión que varía entre 0 y 3,3 V."
+      },
+      {
+       "texto": "LDR (sensor de luz)",
+       "respuesta": "Entrada analógica",
+       "motivo": "Su tensión varía con la luz."
+      },
+      {
+       "texto": "Fin de carrera",
+       "respuesta": "Entrada digital",
+       "motivo": "Un sensor discreto: tocó o no tocó."
+      },
+      {
+       "texto": "Relé",
+       "respuesta": "Salida digital",
+       "motivo": "Todo o nada."
+      },
+      {
+       "texto": "LED que solo se prende y se apaga",
+       "respuesta": "Salida digital",
+       "motivo": "`digitalWrite`."
+      },
+      {
+       "texto": "LED al que se le regula el brillo",
+       "respuesta": "Salida PWM",
+       "motivo": "El duty cycle da el brillo."
+      },
+      {
+       "texto": "Servo",
+       "respuesta": "Salida PWM",
+       "motivo": "El ancho del pulso da la posición."
+      },
+      {
+       "texto": "Buzzer (para hacer un tono)",
+       "respuesta": "Salida PWM",
+       "motivo": "La frecuencia da el tono."
+      },
+      {
+       "texto": "Sensor de temperatura con salida de tensión variable",
+       "respuesta": "Entrada analógica",
+       "motivo": "Se lee con `analogRead`."
+      },
+      {
+       "texto": "Pantalla LCD",
+       "respuesta": "Salida digital",
+       "motivo": "Así la da el apunte."
+      }
+     ],
+     "pregunta": "¿A qué pin va?",
+     "parte": 2
+    },
+    {
+     "id": "2.2",
+     "tema": "Parcial 2025",
+     "titulo": "entradas, salidas y sensores (parcial 2025)",
+     "tipo": "ubicacion",
+     "consigna": "Opciones de las preguntas de 2025 sobre entradas analógicas, sensores, la señal LOW y las salidas digitales. ¿Son correctas?",
+     "opciones": [
+      "Correcta",
+      "Incorrecta"
+     ],
+     "items": [
+      {
+       "texto": "A un pin de entrada analógica se puede conectar un potenciómetro",
+       "respuesta": "Correcta",
+       "motivo": "Es el ejemplo típico (pin 32 de la placa)."
+      },
+      {
+       "texto": "A un pin de entrada analógica se puede conectar un pulsador",
+       "respuesta": "Incorrecta",
+       "motivo": "El pulsador es una entrada digital."
+      },
+      {
+       "texto": "Los sensores analógicos varían su salida en voltaje y se leen con analogRead()",
+       "respuesta": "Correcta",
+       "motivo": "El ADC convierte esa tensión en un número."
+      },
+      {
+       "texto": "Los sensores digitales no requieren conversión ADC",
+       "respuesta": "Correcta",
+       "motivo": "La salida ya viene en unos y ceros."
+      },
+      {
+       "texto": "Los sensores digitales siempre usan menos corriente",
+       "respuesta": "Incorrecta",
+       "motivo": "No se puede afirmar en general."
+      },
+      {
+       "texto": "LOW equivale a una tensión cercana a 0 V y apaga una salida digital",
+       "respuesta": "Correcta",
+       "motivo": "Es el 0 lógico."
+      },
+      {
+       "texto": "LOW representa un 1 lógico",
+       "respuesta": "Incorrecta",
+       "motivo": "El 1 lógico es HIGH (≈ 3,3 V)."
+      },
+      {
+       "texto": "Con salidas digitales se controlan LEDs, relés y pantallas LCD",
+       "respuesta": "Correcta",
+       "motivo": "Así lo da el apunte."
+      },
+      {
+       "texto": "Un motor DC se conecta directo a una salida digital",
+       "respuesta": "Incorrecta",
+       "motivo": "Un GPIO da poca corriente: hace falta un transistor o un driver."
+      }
+     ],
+     "pregunta": "¿La marcarías?",
+     "parte": 2
+    },
+    {
+     "id": "2.3",
+     "tema": "Pulsador",
+     "titulo": "el pulsador prende el LED",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "Con la placa de la cátedra: mientras el **pulsador** (pin 19) está apretado, el LED integrado se prende; cuando lo soltás, se apaga. Usá el pull-up interno.",
+     "pasos": [
+      "En el setup: `INPUT_PULLUP` para el pulsador y `OUTPUT` para el LED.",
+      "En el loop: un if con `digitalRead(BOTON) == LOW`."
+     ],
+     "pistas": [
+      "Con pull-up la lógica queda «al revés»: apretado es LOW."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int BOTON = 19;      // el pulsador de la placa de la cátedra\nconst int LED = 2;         // el LED integrado\n\nvoid setup() {\n  // el pulsador con pull-up interno y el LED como salida\n  Serial.begin(115200);\n}\n\nvoid loop() {\n  // si está apretado (LOW), prendé el LED; si no, apagalo\n}\n",
+       "solucion": "const int BOTON = 19;      // el pulsador de la placa de la cátedra\nconst int LED = 2;         // el LED integrado\n\nvoid setup() {\n  pinMode(BOTON, INPUT_PULLUP);   // suelto = HIGH, apretado = LOW\n  pinMode(LED, OUTPUT);\n  Serial.begin(115200);\n}\n\nvoid loop() {\n  if (digitalRead(BOTON) == LOW) {\n    digitalWrite(LED, HIGH);\n  } else {\n    digitalWrite(LED, LOW);\n  }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "pinMode\\s*\\(\\s*BOTON\\s*,\\s*INPUT_PULLUP\\s*\\)",
+       "ok": "El pulsador con pull-up",
+       "error": "Configurá el pulsador con `pinMode(BOTON, INPUT_PULLUP)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "pinMode\\s*\\(\\s*LED\\s*,\\s*OUTPUT\\s*\\)",
+       "ok": "El LED es una salida",
+       "error": "Falta `pinMode(LED, OUTPUT)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "digitalRead\\s*\\(\\s*BOTON\\s*\\)\\s*==\\s*LOW|!\\s*digitalRead\\s*\\(\\s*BOTON\\s*\\)",
+       "ok": "Apretado es LOW",
+       "error": "Con pull-up, apretado es LOW: `digitalRead(BOTON) == LOW`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "digitalWrite\\s*\\(\\s*LED\\s*,\\s*HIGH\\s*\\)",
+       "ok": "Prende el LED",
+       "error": "Falta prender el LED con HIGH"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "digitalWrite\\s*\\(\\s*LED\\s*,\\s*LOW\\s*\\)",
+       "ok": "Apaga el LED",
+       "error": "Falta apagar el LED con LOW cuando lo soltás"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿Qué lee digitalRead con el pulsador suelto?",
+       "opciones": [
+        "HIGH",
+        "LOW"
+       ],
+       "valor": "HIGH",
+       "motivo": "El pull-up deja la entrada en HIGH mientras nadie la lleve a 0 V.",
+       "mostrar": "HIGH"
+      }
+     ],
+     "parte": 2
+    },
+    {
+     "id": "2.4",
+     "tema": "DHT22",
+     "titulo": "leer el DHT22",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "El DHT22 de la placa (pin 33) es un **sensor digital** de temperatura y humedad. Con la librería `DHT.h` (como el caso del profe), leé la temperatura y la humedad cada 2 segundos y mostralas en el monitor serie. Si la lectura falla (`isnan`), avisá y salí del loop.",
+     "pasos": [
+      "`DHT dht(DHTPIN, DHTTYPE);` arriba del setup.",
+      "`dht.begin()` en el setup.",
+      "`float t = dht.readTemperature();` y `float h = dht.readHumidity();`."
+     ],
+     "pistas": [
+      "Es el caso «Sensor_Hum_y_Temp» del profe."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include \"DHT.h\"\n\n#define DHTPIN 33\n#define DHTTYPE DHT22\n// creá el objeto dht\n\nvoid setup() {\n  Serial.begin(115200);\n  // iniciá el sensor\n}\n\nvoid loop() {\n  delay(2000);              // el DHT22 es lento: una lectura cada 2 s\n  // leé la humedad y la temperatura\n  // si alguna falla, avisá y return\n  // mostralas por el monitor serie\n}\n",
+       "solucion": "#include \"DHT.h\"\n\n#define DHTPIN 33\n#define DHTTYPE DHT22\nDHT dht(DHTPIN, DHTTYPE);\n\nvoid setup() {\n  Serial.begin(115200);\n  dht.begin();\n}\n\nvoid loop() {\n  delay(2000);\n  float h = dht.readHumidity();\n  float t = dht.readTemperature();\n  if (isnan(h) || isnan(t)) {\n    Serial.println(\"Error al leer el DHT22\");\n    return;\n  }\n  Serial.print(\"Humedad: \");\n  Serial.print(h);\n  Serial.print(\" %  Temperatura: \");\n  Serial.print(t);\n  Serial.println(\" C\");\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "DHT\\s+dht\\s*\\(\\s*DHTPIN\\s*,\\s*DHTTYPE\\s*\\)",
+       "ok": "Crea el objeto dht",
+       "error": "Creá el objeto: `DHT dht(DHTPIN, DHTTYPE);`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "dht\\.begin\\s*\\(\\s*\\)",
+       "ok": "Inicia el sensor",
+       "error": "Falta `dht.begin()` en el setup"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "dht\\.readTemperature\\s*\\(",
+       "ok": "Lee la temperatura",
+       "error": "Falta `dht.readTemperature()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "dht\\.readHumidity\\s*\\(",
+       "ok": "Lee la humedad",
+       "error": "Falta `dht.readHumidity()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "isnan\\s*\\(",
+       "ok": "Controla si falló",
+       "error": "Controlá la lectura con `isnan(...)`"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿El DHT22 pasa por el ADC?",
+       "opciones": [
+        "Sí",
+        "No"
+       ],
+       "valor": "No",
+       "motivo": "Es un sensor digital: la lectura llega procesada.",
+       "mostrar": "No"
+      },
+      {
+       "pregunta": "¿En qué pin está en la placa de la cátedra?",
+       "valor": 33,
+       "tol": 1,
+       "mostrar": "33"
+      }
+     ],
+     "parte": 2
+    },
+    {
+     "id": "2.5",
+     "tema": "¿Se puede?",
+     "titulo": "¿se puede hacer?",
+     "tipo": "ubicacion",
+     "consigna": "Cosas que podés querer hacer con la placa. ¿Se puede?",
+     "opciones": [
+      "Sí",
+      "No"
+     ],
+     "items": [
+      {
+       "texto": "Usar el GPIO 34 como salida para un LED",
+       "respuesta": "No",
+       "motivo": "GPIO34 a GPIO39 son solo de entrada."
+      },
+      {
+       "texto": "Generar una tensión continua de 1,5 V en el GPIO 25",
+       "respuesta": "Sí",
+       "motivo": "El GPIO25 tiene DAC."
+      },
+      {
+       "texto": "Usar el GPIO 36 para PWM",
+       "respuesta": "No",
+       "motivo": "Es solo de entrada."
+      },
+      {
+       "texto": "Leer el potenciómetro en el pin 32",
+       "respuesta": "Sí",
+       "motivo": "Es entrada analógica (ADC1)."
+      },
+      {
+       "texto": "Leer un pin del ADC2 con el WiFi encendido",
+       "respuesta": "No",
+       "motivo": "Con WiFi, evitá el ADC2."
+      },
+      {
+       "texto": "Conectar un motor DC directo a un GPIO",
+       "respuesta": "No",
+       "motivo": "Hace falta un transistor o un relé y una fuente aparte."
+      },
+      {
+       "texto": "Meterle 5 V a un pin de entrada",
+       "respuesta": "No",
+       "motivo": "Puede dañar el microcontrolador: divisor de tensión o conversor de nivel."
+      },
+      {
+       "texto": "Despertar la placa del deep sleep con un pin touch",
+       "respuesta": "Sí",
+       "motivo": "Los touch pueden despertarla."
+      }
+     ],
+     "pregunta": "¿Se puede?",
+     "parte": 2
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "id": "adc",
+   "titulo": "ADC, map y PWM: las cuentas",
+   "explicacion": "Con N bits hay 2ᴺ valores (12 bits → 0 a 4095). `map` pasa de un rango a otro con cuentas enteras, y el PWM da una tensión promedio igual al duty por la tensión.",
+   "corto": "ADC y PWM",
+   "pestana": "ADC y PWM",
+   "leccion": {
+    "que": "El **ADC** convierte una tensión en un número: con N bits hay 2ᴺ valores (12 bits → 0 a 4095). `map` lleva ese número a otro rango, y el **PWM** «simula» una tensión con una onda cuadrada: lo que importa es el **duty cycle**, el porcentaje del tiempo en HIGH.\nSaber hacer estas cuentas sirve para entender qué hace un sketch y qué pasa si se cambia algo.",
+    "consta": [
+     [
+      "2ᴺ valores",
+      "8 bits → 256 · 10 bits → 1024 · 12 bits → 4096."
+     ],
+     [
+      "De lectura a volts",
+      "`volt = lectura * 3.3 / 4095`. La resolución es 3,3 V / 4096 ≈ 0,8 mV."
+     ],
+     [
+      "map",
+      "`map(x, 0, 4095, 0, 255)` escala de un rango a otro con cuentas enteras (corta los decimales)."
+     ],
+     [
+      "El duty cycle",
+      "duty = t_alto / T. Tensión promedio = duty × tensión: con 5 V y 20 %, 1 V."
+     ],
+     [
+      "analogWrite",
+      "`analogWrite(pin, 0…255)` con 8 bits: 0 es 0 % y 255 es 100 %."
+     ],
+     [
+      "El DAC",
+      "Una tensión continua de verdad, en el GPIO25 y el 26, con 8 bits: `dacWrite(25, valor)`."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "pote_led.ino",
+     "origen": "Sketch C del resumen: el potenciómetro le da el brillo al LED",
+     "codigo": "const int POT = 32, LED = 26;\nvoid setup() { pinMode(LED, OUTPUT); }\nvoid loop() {\n  int lectura = analogRead(POT);                // 0..4095: 12 bits = 4096 valores\n  float volt = lectura * 3.3 / 4095;            // de 0 a 3,3 V\n  int brillo = map(lectura, 0, 4095, 0, 255);   // con 2048 da 127\n  // 127 de 255: duty ≈ 50 %, tensión promedio ≈ 1,64 V\n  analogWrite(LED, brillo);\n  // dacWrite(25, 127) daría 1,64 V continuos de verdad\n}",
+     "marcas": [
+      [
+       1,
+       4,
+       4
+      ],
+      [
+       2,
+       5,
+       5
+      ],
+      [
+       3,
+       6,
+       6
+      ],
+      [
+       4,
+       7,
+       7
+      ],
+      [
+       5,
+       8,
+       8
+      ],
+      [
+       6,
+       9,
+       9
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "PWM **no** es una salida analógica: es una onda cuadrada. La analógica de verdad es el DAC.",
+     "`map` trabaja con enteros: map(2048, 0, 4095, 0, 255) da 127, no 127,5.",
+     "Con el WiFi encendido, no uses los pines del ADC2 para leer."
+    ],
+    "parcial": "Salen el rango de analogRead (0 a 4095), qué hace el DAC y qué se puede manejar con PWM. Las cuentas sirven para entender qué pasa si cambiás algo del sketch.",
+    "pdf": 3
+   },
+   "ejercicios": [
+    {
+     "id": "3.1",
+     "tema": "Bits",
+     "titulo": "cuántos valores",
+     "tipo": "respuestas",
+     "consigna": "Completá cuántos valores distintos da un conversor de cada cantidad de bits, y la resolución del ADC de la ESP32.",
+     "pistas": [
+      "N bits → 2ᴺ valores."
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Con 8 bits",
+       "valor": 256,
+       "motivo": "2⁸ = 256 (0 a 255).",
+       "tol": 1,
+       "mostrar": "256"
+      },
+      {
+       "pregunta": "Con 10 bits",
+       "valor": 1024,
+       "motivo": "2¹⁰ = 1024 (0 a 1023).",
+       "tol": 1,
+       "mostrar": "1024"
+      },
+      {
+       "pregunta": "Con 12 bits (el ADC de la ESP32)",
+       "valor": 4096,
+       "motivo": "2¹² = 4096 (0 a 4095).",
+       "tol": 1,
+       "mostrar": "4096"
+      },
+      {
+       "pregunta": "Resolución del ADC de 12 bits con 3,3 V",
+       "valor": 0.8056640625,
+       "unidad": "mV",
+       "motivo": "3,3 V / 4096 ≈ 0,8 mV por cuenta.",
+       "tol": 0.01,
+       "mostrar": "0,81"
+      }
+     ],
+     "parte": 3
+    },
+    {
+     "id": "3.2",
+     "tema": "Leer el sketch",
+     "titulo": "leé el sketch del potenciómetro",
+     "tipo": "respuestas",
+     "consigna": "Con el sketch de al lado, el potenciómetro está en la mitad y `analogRead` devuelve **2048**. ¿Cuánto valen `brillo` y `volt`, y qué duty cycle tiene el LED?",
+     "lenguaje": "cpp",
+     "pistas": [
+      "map(x, 0, 4095, 0, 255) = x × 255 / 4095, cortando los decimales.",
+      "duty = brillo / 255."
+     ],
+     "respuestas": [
+      {
+       "pregunta": "brillo",
+       "valor": 127,
+       "motivo": "map con enteros: 2048 × 255 / 4095 = 127,5 → 127.",
+       "tol": 1,
+       "mostrar": "127"
+      },
+      {
+       "pregunta": "volt",
+       "valor": 1.6504029304029304,
+       "unidad": "V",
+       "tol": 0.01,
+       "mostrar": "1,65"
+      },
+      {
+       "pregunta": "duty cycle",
+       "valor": 49.80392156862745,
+       "unidad": "%",
+       "motivo": "127 de 255.",
+       "tol": 0.1,
+       "mostrar": "49,8"
+      }
+     ],
+     "codigo": {
+      "nombre": "pote_led.ino",
+      "texto": "const int POT = 32, LED = 26;\nvoid setup() { pinMode(LED, OUTPUT); }\nvoid loop() {\n  int lectura = analogRead(POT);                // 0..4095\n  int brillo = map(lectura, 0, 4095, 0, 255);\n  analogWrite(LED, brillo);                     // duty 0..100 %\n  float volt = lectura * 3.3 / 4095;\n}"
+     },
+     "parte": 3
+    },
+    {
+     "id": "3.3",
+     "tema": "PWM",
+     "titulo": "la tensión promedio del PWM",
+     "tipo": "respuestas",
+     "consigna": "Calculá la tensión promedio y el duty de cada señal PWM.",
+     "pistas": [
+      "Tensión promedio = duty × tensión.",
+      "Con 8 bits, el duty es valor / 255."
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Con 5 V y un duty de 20 %: tensión promedio",
+       "valor": 1,
+       "unidad": "V",
+       "motivo": "5 V × 0,2 = 1 V (el ejemplo del apunte).",
+       "tol": 0.1,
+       "mostrar": "1"
+      },
+      {
+       "pregunta": "analogWrite(LED, 64) con 8 bits: duty",
+       "valor": 25.098039215686274,
+       "unidad": "%",
+       "tol": 0.1,
+       "mostrar": "25,1"
+      },
+      {
+       "pregunta": "Con 3,3 V y analogWrite(LED, 191): tensión promedio",
+       "valor": 2.471764705882353,
+       "unidad": "V",
+       "tol": 0.01,
+       "mostrar": "2,47"
+      },
+      {
+       "pregunta": "¿Qué valor de analogWrite da 100 %?",
+       "valor": 255,
+       "tol": 1,
+       "mostrar": "255"
+      }
+     ],
+     "parte": 3
+    },
+    {
+     "id": "3.4",
+     "tema": "Pote → LED",
+     "titulo": "el potenciómetro regula el LED",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "El potenciómetro de la placa (pin 32) tiene que regular el brillo del LED del pin 23: leé el ADC, escalalo de 0–4095 a 0–255 con `map` y mandalo con `analogWrite`.",
+     "pasos": [
+      "`int lectura = analogRead(POT);`",
+      "`int brillo = map(lectura, 0, 4095, 0, 255);`",
+      "`analogWrite(LED, brillo);`"
+     ],
+     "pistas": [
+      "En el caso del profe se invierte el sentido con map(x, 0, 4095, 255, 0)."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int POT = 32;       // potenciómetro de la placa\nconst int LED = 23;       // LED de la placa\n\nvoid setup() {\n  pinMode(LED, OUTPUT);\n}\n\nvoid loop() {\n  // 1) leé el potenciómetro (0..4095)\n  // 2) pasalo a 0..255 con map\n  // 3) mandalo al LED con analogWrite\n}\n",
+       "solucion": "const int POT = 32;       // potenciómetro de la placa\nconst int LED = 23;       // LED de la placa\n\nvoid setup() {\n  pinMode(LED, OUTPUT);\n}\n\nvoid loop() {\n  int lectura = analogRead(POT);\n  int brillo = map(lectura, 0, 4095, 0, 255);\n  analogWrite(LED, brillo);\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "analogRead\\s*\\(\\s*POT\\s*\\)",
+       "ok": "Lee el potenciómetro",
+       "error": "Leé el potenciómetro con `analogRead(POT)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "map\\s*\\([^;]*0\\s*,\\s*4095\\s*,\\s*0\\s*,\\s*255\\s*\\)",
+       "ok": "Escala con map",
+       "error": "Escalá con `map(lectura, 0, 4095, 0, 255)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "analogWrite\\s*\\(\\s*LED\\s*,",
+       "ok": "Manda el PWM al LED",
+       "error": "Mandá el valor con `analogWrite(LED, brillo)`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "digitalWrite\\s*\\(\\s*LED",
+       "ok": "Sin digitalWrite en el LED",
+       "error": "Con `digitalWrite` el LED solo se prende o se apaga: usá `analogWrite`"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Si la lectura es 3000, ¿qué valor le manda al LED?",
+       "valor": 186,
+       "motivo": "3000 × 255 / 4095 = 186,8 → 186.",
+       "tol": 1,
+       "mostrar": "186"
+      }
+     ],
+     "parte": 3
+    },
+    {
+     "id": "3.5",
+     "tema": "ADC, DAC o PWM",
+     "titulo": "¿ADC, DAC o PWM?",
+     "tipo": "ubicacion",
+     "consigna": "¿De cuál es cada frase?",
+     "opciones": [
+      "ADC",
+      "DAC",
+      "PWM"
+     ],
+     "items": [
+      {
+       "texto": "Convierte una tensión en un número de 0 a 4095",
+       "respuesta": "ADC",
+       "motivo": "Analógico → digital."
+      },
+      {
+       "texto": "Genera una tensión continua de verdad, en el GPIO25 y el GPIO26",
+       "respuesta": "DAC",
+       "motivo": "Digital → analógico."
+      },
+      {
+       "texto": "Onda cuadrada de frecuencia fija y ancho de pulso variable",
+       "respuesta": "PWM",
+       "motivo": "Lo que cambia es el duty."
+      },
+      {
+       "texto": "Se usa con analogRead()",
+       "respuesta": "ADC",
+       "motivo": "Lee la tensión del pin."
+      },
+      {
+       "texto": "analogWrite() a un LED",
+       "respuesta": "PWM",
+       "motivo": "Regula el brillo con el duty."
+      },
+      {
+       "texto": "8 bits (0 a 255), en solo dos pines",
+       "respuesta": "DAC",
+       "motivo": "Las únicas salidas analógicas «puras»."
+      },
+      {
+       "texto": "16 canales, con frecuencia y resolución por canal",
+       "respuesta": "PWM",
+       "motivo": "Pregunta del recuperatorio 2025."
+      },
+      {
+       "texto": "Con el WiFi encendido, conviene no usar el número 2",
+       "respuesta": "ADC",
+       "motivo": "El ADC2 comparte recursos con el WiFi."
+      }
+     ],
+     "pregunta": "¿De cuál es?",
+     "parte": 3
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "id": "programacion",
+   "titulo": "Programar la ESP32: setup, loop y millis",
+   "explicacion": "C++ adaptado para Arduino. `setup()` corre una vez y `loop()` se repite para siempre. Para esperar sin frenar todo se usa `millis()` (en un `unsigned long`), no `delay()`.",
+   "corto": "Programación",
+   "pestana": "Programación",
+   "leccion": {
+    "que": "La ESP32 se programa en **C++ adaptado para Arduino**: compilado, fuertemente tipado y con la memoria a cargo del programador. Un sketch tiene dos funciones: `setup()`, que corre una vez al arrancar, y `loop()`, que se repite para siempre.\nPara esperar sin frenar todo se usa `millis()`, no `delay()`: se guarda el tiempo y se compara.",
+    "consta": [
+     [
+      "setup()",
+      "Corre una sola vez: los pines, `Serial.begin(115200)`, el WiFi."
+     ],
+     [
+      "loop()",
+      "Se repite para siempre: leer, decidir, actuar."
+     ],
+     [
+      "delay()",
+      "Frena todo el programa: mientras espera no lee sensores ni atiende el WiFi."
+     ],
+     [
+      "millis()",
+      "Los ms desde que arrancó, en un `unsigned long`: temporizadores sin bloquear."
+     ],
+     [
+      "El monitor serie",
+      "`Serial.available()` dice si llegó algo y `Serial.readStringUntil('\\n')` lo lee."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "temporizador.ino",
+     "origen": "Sketches D y E del resumen",
+     "codigo": "unsigned long antes = 0;               // millis() se guarda en unsigned long\nvoid setup() {\n  Serial.begin(115200);                // una sola vez\n  pinMode(2, OUTPUT);\n}\nvoid loop() {                          // se repite para siempre\n  if (millis() - antes >= 1000) {      // ¿pasó 1 s?\n    antes = millis();\n    // leer el sensor, enviar el dato...\n  }\n  // delay(1000) acá frenaría todo, también el WiFi\n  if (Serial.available()) {            // ¿llegó algo por el monitor serie?\n    String cmd = Serial.readStringUntil('\\n');\n    cmd.trim();\n  }\n}",
+     "marcas": [
+      [
+       4,
+       1,
+       1
+      ],
+      [
+       1,
+       3,
+       4
+      ],
+      [
+       2,
+       6,
+       6
+      ],
+      [
+       4,
+       7,
+       8
+      ],
+      [
+       3,
+       11,
+       11
+      ],
+      [
+       5,
+       12,
+       14
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Si guardás millis() en un int, se desborda mucho antes: usá unsigned long.",
+     "La cátedra da el int de 16 bits (es el del Arduino UNO); en la ESP32 es de 32.",
+     "Las interrupciones (ISR) tienen que ser cortas y no bloqueantes: nada de delay adentro."
+    ],
+    "parcial": "«¿Qué afirmaciones son correctas sobre millis()?» y «¿sobre delay()?» salen siempre. También setup() y loop(), y cómo es el lenguaje.",
+    "pdf": 4
+   },
+   "ejercicios": [
+    {
+     "id": "4.1",
+     "tema": "setup o loop",
+     "titulo": "¿en setup() o en loop()?",
+     "tipo": "ubicacion",
+     "consigna": "¿Dónde va cada cosa?",
+     "opciones": [
+      "setup()",
+      "loop()"
+     ],
+     "items": [
+      {
+       "texto": "Serial.begin(115200)",
+       "respuesta": "setup()",
+       "motivo": "El puerto serie se abre una vez."
+      },
+      {
+       "texto": "pinMode(LED, OUTPUT)",
+       "respuesta": "setup()",
+       "motivo": "Los pines se configuran al arrancar."
+      },
+      {
+       "texto": "WiFi.begin(ssid, password)",
+       "respuesta": "setup()",
+       "motivo": "La conexión se arma una vez."
+      },
+      {
+       "texto": "Leer el potenciómetro todo el tiempo",
+       "respuesta": "loop()",
+       "motivo": "Lo que se repite."
+      },
+      {
+       "texto": "client.loop() de MQTT",
+       "respuesta": "loop()",
+       "motivo": "Atiende los mensajes en cada vuelta."
+      },
+      {
+       "texto": "Se ejecuta una sola vez al arrancar",
+       "respuesta": "setup()",
+       "motivo": "Pregunta del parcial 2025."
+      },
+      {
+       "texto": "Se repite indefinidamente",
+       "respuesta": "loop()",
+       "motivo": "Pregunta del parcial 2025."
+      }
+     ],
+     "pregunta": "¿Dónde va?",
+     "parte": 4
+    },
+    {
+     "id": "4.2",
+     "tema": "millis",
+     "titulo": "parpadear sin delay",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "Que el LED integrado cambie de estado **cada 1000 ms sin usar `delay()`**: el loop tiene que quedar libre para hacer otras cosas (leer sensores, atender el WiFi).",
+     "pasos": [
+      "`if (millis() - antes >= 1000) { ... }`",
+      "Adentro: `antes = millis();`, `estado = !estado;` y `digitalWrite(LED, estado);`."
+     ],
+     "pistas": [
+      "Es el sketch D del resumen."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int LED = 2;\nunsigned long antes = 0;\nint estado = LOW;\n\nvoid setup() {\n  pinMode(LED, OUTPUT);\n}\n\nvoid loop() {\n  // cada 1000 ms: guardá el tiempo, cambiá el estado y mandalo al LED\n  // sin delay()\n}\n",
+       "solucion": "const int LED = 2;\nunsigned long antes = 0;\nint estado = LOW;\n\nvoid setup() {\n  pinMode(LED, OUTPUT);\n}\n\nvoid loop() {\n  if (millis() - antes >= 1000) {   // ¿pasó 1 s?\n    antes = millis();\n    estado = !estado;\n    digitalWrite(LED, estado);\n  }\n  // el loop sigue libre para otras tareas\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "millis\\s*\\(\\s*\\)\\s*-\\s*antes\\s*>=?\\s*1000",
+       "ok": "Compara cuánto pasó",
+       "error": "Compará: `if (millis() - antes >= 1000)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "antes\\s*=\\s*millis\\s*\\(\\s*\\)",
+       "ok": "Guarda el tiempo",
+       "error": "Guardá el tiempo: `antes = millis();`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "estado\\s*=\\s*!\\s*estado|estado\\s*=\\s*\\(?\\s*estado\\s*==\\s*LOW",
+       "ok": "Cambia el estado",
+       "error": "Cambiá el estado: `estado = !estado;`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "digitalWrite\\s*\\(\\s*LED\\s*,\\s*estado\\s*\\)",
+       "ok": "Lo manda al LED",
+       "error": "Mandá el estado al LED: `digitalWrite(LED, estado)`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bdelay\\s*\\(",
+       "ok": "Sin delay",
+       "error": "Sin `delay()`: frena todo el programa"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿En qué tipo se guarda millis()?",
+       "opciones": [
+        "int",
+        "unsigned long",
+        "float",
+        "byte"
+       ],
+       "valor": "unsigned long",
+       "motivo": "Es un número que crece siempre y no tiene signo.",
+       "mostrar": "unsigned long"
+      }
+     ],
+     "parte": 4
+    },
+    {
+     "id": "4.3",
+     "tema": "Tipos",
+     "titulo": "los tipos y el desborde de millis",
+     "tipo": "respuestas",
+     "consigna": "Los tamaños que da la cátedra y una cuenta: `millis()` se guarda en un `unsigned long` de 32 bits, así que después de 2³² ms vuelve a 0.",
+     "pistas": [
+      "Un día tiene 86.400.000 ms."
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Bits de un unsigned long",
+       "valor": 32,
+       "tol": 1,
+       "mostrar": "32"
+      },
+      {
+       "pregunta": "Bits de un int según la cátedra (Arduino UNO)",
+       "valor": 16,
+       "motivo": "En la ESP32 el int es de 32 bits; el apunte da el del UNO.",
+       "tol": 1,
+       "mostrar": "16"
+      },
+      {
+       "pregunta": "Bits de un bool, un byte o un char",
+       "valor": 8,
+       "tol": 1,
+       "mostrar": "8"
+      },
+      {
+       "pregunta": "¿Cuántos días tarda millis() en volver a 0?",
+       "valor": 49.71026962962963,
+       "unidad": "días",
+       "motivo": "2³² ms = 4.294.967.296 ms ≈ 49,7 días.",
+       "tol": 0.1,
+       "mostrar": "49,7"
+      }
+     ],
+     "parte": 4
+    },
+    {
+     "id": "4.4",
+     "tema": "Parcial 2025",
+     "titulo": "millis, delay, setup y el lenguaje (parcial 2025)",
+     "tipo": "ubicacion",
+     "consigna": "Opciones de las preguntas de 2025 sobre millis(), delay(), setup() y loop(), y el lenguaje. ¿Son correctas?",
+     "opciones": [
+      "Correcta",
+      "Incorrecta"
+     ],
+     "items": [
+      {
+       "texto": "millis() devuelve el tiempo en milisegundos desde que inició el programa",
+       "respuesta": "Correcta",
+       "motivo": "En un unsigned long."
+      },
+      {
+       "texto": "millis() permite crear temporizadores sin bloquear el loop principal",
+       "respuesta": "Correcta",
+       "motivo": "Se guarda el tiempo y se compara."
+      },
+      {
+       "texto": "millis() detiene el programa hasta que pasa el tiempo",
+       "respuesta": "Incorrecta",
+       "motivo": "Eso es delay()."
+      },
+      {
+       "texto": "delay() detiene completamente la ejecución por ese tiempo",
+       "respuesta": "Correcta",
+       "motivo": "No lee sensores ni atiende el WiFi."
+      },
+      {
+       "texto": "El uso excesivo de delay() puede afectar el rendimiento",
+       "respuesta": "Correcta",
+       "motivo": "Todo lo demás espera."
+      },
+      {
+       "texto": "setup() se ejecuta en cada vuelta del loop",
+       "respuesta": "Incorrecta",
+       "motivo": "Una sola vez al arrancar."
+      },
+      {
+       "texto": "Se programa en C++ adaptado para Arduino: compilado y fuertemente tipado",
+       "respuesta": "Correcta",
+       "motivo": "La memoria la maneja el programador."
+      },
+      {
+       "texto": "Una interrupción (ISR) puede tener un delay largo adentro",
+       "respuesta": "Incorrecta",
+       "motivo": "Tienen que ser cortas y no bloqueantes."
+      }
+     ],
+     "pregunta": "¿La marcarías?",
+     "parte": 4
+    },
+    {
+     "id": "4.5",
+     "tema": "Monitor serie",
+     "titulo": "un comando por el monitor serie",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "Prender y apagar el **relé** de la placa (pin 14) escribiendo en el monitor serie: con `LUZ_ON` se prende y con `LUZ_OFF` se apaga.",
+     "pasos": [
+      "`Serial.begin(115200)` en el setup.",
+      "`if (Serial.available()) { ... }` en el loop.",
+      "Adentro: leer, `trim()` y comparar con `==`."
+     ],
+     "pistas": [
+      "Es el sketch E del resumen. Sin `trim()`, el \"\\r\" del final hace que no coincida."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int RELAY = 14;      // el relé de la placa de la cátedra\n\nvoid setup() {\n  pinMode(RELAY, OUTPUT);\n  // abrí el puerto serie a 115200\n}\n\nvoid loop() {\n  // si llegó algo: leé la línea hasta el '\\n', sacale los espacios\n  // y con \"LUZ_ON\" prendé el relé, con \"LUZ_OFF\" apagalo\n}\n",
+       "solucion": "const int RELAY = 14;      // el relé de la placa de la cátedra\n\nvoid setup() {\n  pinMode(RELAY, OUTPUT);\n  Serial.begin(115200);\n}\n\nvoid loop() {\n  if (Serial.available()) {\n    String cmd = Serial.readStringUntil('\\n');\n    cmd.trim();\n    if (cmd == \"LUZ_ON\")  digitalWrite(RELAY, HIGH);\n    if (cmd == \"LUZ_OFF\") digitalWrite(RELAY, LOW);\n  }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "Serial\\.begin\\s*\\(\\s*115200\\s*\\)",
+       "ok": "Abre el puerto serie",
+       "error": "Abrí el puerto serie: `Serial.begin(115200)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "Serial\\.available\\s*\\(\\s*\\)",
+       "ok": "Se fija si llegó algo",
+       "error": "Fijate si llegó algo con `Serial.available()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "readStringUntil\\s*\\(",
+       "ok": "Lee la línea",
+       "error": "Leé la línea con `Serial.readStringUntil('\\n')`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\\.trim\\s*\\(\\s*\\)",
+       "ok": "Le saca los espacios",
+       "error": "Sacale los espacios y el fin de línea con `.trim()`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "==\\s*\"LUZ_ON\"[^;]*digitalWrite\\s*\\(\\s*RELAY\\s*,\\s*HIGH",
+       "ok": "LUZ_ON prende",
+       "error": "Con \"LUZ_ON\", `digitalWrite(RELAY, HIGH)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "==\\s*\"LUZ_OFF\"[^;]*digitalWrite\\s*\\(\\s*RELAY\\s*,\\s*LOW",
+       "ok": "LUZ_OFF apaga",
+       "error": "Con \"LUZ_OFF\", `digitalWrite(RELAY, LOW)`"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿Qué protocolo usa el monitor serie?",
+       "opciones": [
+        "UART",
+        "I2C",
+        "SPI"
+       ],
+       "valor": "UART",
+       "motivo": "Asíncrono, por TX y RX.",
+       "mostrar": "UART"
+      }
+     ],
+     "parte": 4
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "id": "protocolos",
+   "titulo": "Protocolos: UART, I2C y SPI",
+   "explicacion": "Síncrona (con reloj: I2C y SPI) o asíncrona (sin reloj: UART). I2C usa 2 líneas y direcciones de 7 bits; SPI, 4 líneas y es la más rápida; UART, TX y RX cruzadas.",
+   "corto": "Protocolos",
+   "pestana": "Protocolos",
+   "leccion": {
+    "que": "Para hablar con otros chips y con la PC, la ESP32 tiene hardware para tres protocolos. **Síncrona**: emisor y receptor comparten un reloj (I2C, SPI). **Asíncrona**: sin reloj, cada dato lleva bits de inicio y parada (UART).\nEn la placa de la cátedra, el display OLED va por I2C (SDA en el 21 y SCL en el 22) y el monitor serie por UART.",
+    "consta": [
+     [
+      "UART",
+      "Asíncrona, TX y RX cruzadas, punto a punto, el mismo baudrate en los dos: el monitor serie."
+     ],
+     [
+      "I2C",
+      "Síncrona, 2 líneas (SDA y SCL), bus con dirección de 7 bits: muchos dispositivos con 2 cables. Librería Wire."
+     ],
+     [
+      "SPI",
+      "Síncrona, 4 líneas (MOSI, MISO, SCLK y CS), la más rápida: tarjeta SD, pantallas gráficas."
+     ],
+     [
+      "La dirección I2C",
+      "Cada dispositivo tiene la suya: el display de la placa es el 0x3C."
+     ],
+     [
+      "Cuántos tiene",
+      "3 UART, 2 I2C y 3 SPI, con hardware dedicado."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "display.ino",
+     "origen": "El display OLED de la placa (casos del profe)",
+     "codigo": "#include <Wire.h>                  // I2C: SDA en el pin 21 y SCL en el 22\n#include <Adafruit_SH110X.h>\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire);\nvoid setup() {\n  Serial.begin(115200);            // UART: el monitor serie, por TX y RX\n  display.begin(0x3C, true);       // la dirección I2C del display\n  display.clearDisplay();\n  display.setTextColor(SH110X_WHITE);\n  display.setCursor(0, 0);\n  display.println(\"Hola\");\n  display.display();               // recién acá se ve\n}\n// una tarjeta SD iría por SPI: MOSI, MISO, SCLK y CS\n// la ESP32 tiene 3 UART, 2 I2C y 3 SPI",
+     "marcas": [
+      [
+       2,
+       1,
+       1
+      ],
+      [
+       1,
+       5,
+       5
+      ],
+      [
+       4,
+       6,
+       6
+      ],
+      [
+       3,
+       13,
+       13
+      ],
+      [
+       5,
+       14,
+       14
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "En la UART las líneas van cruzadas: el TX de uno al RX del otro.",
+     "I2C y SPI son maestro–esclavo: en I2C se elige el esclavo por su dirección y en SPI por la línea CS.",
+     "Los videos usan el display SSD1306: el código es casi igual, cambian la librería y el objeto."
+    ],
+    "parcial": "Siempre sale una de SPI, I2C o UART («¿Qué afirmaciones describen el bus SPI?») y la diferencia entre síncrona y asíncrona.",
+    "pdf": 4
+   },
+   "ejercicios": [
+    {
+     "id": "5.1",
+     "tema": "Cuál es",
+     "titulo": "¿UART, I2C o SPI?",
+     "tipo": "ubicacion",
+     "consigna": "¿De qué protocolo es cada frase?",
+     "opciones": [
+      "UART",
+      "I2C",
+      "SPI"
+     ],
+     "items": [
+      {
+       "texto": "TX y RX, cruzadas entre los dos dispositivos",
+       "respuesta": "UART",
+       "motivo": "Punto a punto."
+      },
+      {
+       "texto": "SDA (datos) y SCL (reloj)",
+       "respuesta": "I2C",
+       "motivo": "Dos líneas."
+      },
+      {
+       "texto": "MOSI, MISO, SCLK y CS",
+       "respuesta": "SPI",
+       "motivo": "Cuatro líneas."
+      },
+      {
+       "texto": "Asíncrona: sin reloj, con bits de inicio y de parada",
+       "respuesta": "UART",
+       "motivo": "Las otras dos son síncronas."
+      },
+      {
+       "texto": "Dirección de 7 bits: muchos dispositivos con 2 cables",
+       "respuesta": "I2C",
+       "motivo": "Es un bus."
+      },
+      {
+       "texto": "La más rápida: tarjeta SD, pantallas gráficas",
+       "respuesta": "SPI",
+       "motivo": "Alta velocidad."
+      },
+      {
+       "texto": "El monitor serie",
+       "respuesta": "UART",
+       "motivo": "Serial.begin(115200)."
+      },
+      {
+       "texto": "El display OLED de la placa de la cátedra",
+       "respuesta": "I2C",
+       "motivo": "Librería Wire, dirección 0x3C."
+      },
+      {
+       "texto": "Los dos extremos tienen que usar el mismo baudrate",
+       "respuesta": "UART",
+       "motivo": "No hay reloj compartido."
+      },
+      {
+       "texto": "La línea CS elige con qué esclavo se habla",
+       "respuesta": "SPI",
+       "motivo": "Chip Select."
+      }
+     ],
+     "pregunta": "¿De cuál es?",
+     "parte": 5
+    },
+    {
+     "id": "5.2",
+     "tema": "Números",
+     "titulo": "los números de los protocolos",
+     "tipo": "respuestas",
+     "consigna": "Completá.",
+     "pistas": [
+      "Los pines del display están en el esquema de pines de la placa (Teórico)."
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Líneas de I2C",
+       "valor": 2,
+       "motivo": "SDA y SCL.",
+       "tol": 1,
+       "mostrar": "2"
+      },
+      {
+       "pregunta": "Líneas de SPI",
+       "valor": 4,
+       "motivo": "MOSI, MISO, SCLK y CS.",
+       "tol": 1,
+       "mostrar": "4"
+      },
+      {
+       "pregunta": "Direcciones posibles con 7 bits",
+       "valor": 128,
+       "motivo": "2⁷ = 128.",
+       "tol": 1,
+       "mostrar": "128"
+      },
+      {
+       "pregunta": "UART de la ESP32",
+       "valor": 3,
+       "tol": 1,
+       "mostrar": "3"
+      },
+      {
+       "pregunta": "Pin SDA del display de la placa",
+       "valor": 21,
+       "tol": 1,
+       "mostrar": "21"
+      },
+      {
+       "pregunta": "Pin SCL del display de la placa",
+       "valor": 22,
+       "tol": 1,
+       "mostrar": "22"
+      }
+     ],
+     "parte": 5
+    },
+    {
+     "id": "5.3",
+     "tema": "Parcial 2025",
+     "titulo": "SPI, I2C y UART (preguntas del banco)",
+     "tipo": "ubicacion",
+     "consigna": "Opciones de las preguntas sobre los buses. ¿Son correctas?",
+     "opciones": [
+      "Correcta",
+      "Incorrecta"
+     ],
+     "items": [
+      {
+       "texto": "SPI usa las líneas CLK, MISO, MOSI y SS",
+       "respuesta": "Correcta",
+       "motivo": "SS es el CS."
+      },
+      {
+       "texto": "SPI es una comunicación síncrona",
+       "respuesta": "Correcta",
+       "motivo": "Comparte el reloj CLK."
+      },
+      {
+       "texto": "SPI usa solo dos cables",
+       "respuesta": "Incorrecta",
+       "motivo": "Ese es I2C."
+      },
+      {
+       "texto": "En I2C cada dispositivo tiene una dirección de 7 bits, así que varios comparten el bus",
+       "respuesta": "Correcta",
+       "motivo": "Con dos cables."
+      },
+      {
+       "texto": "En Arduino, I2C se usa con la librería Wire",
+       "respuesta": "Correcta",
+       "motivo": "`#include <Wire.h>`."
+      },
+      {
+       "texto": "La UART es síncrona",
+       "respuesta": "Incorrecta",
+       "motivo": "Es asíncrona: no hay reloj."
+      },
+      {
+       "texto": "En la síncrona, emisor y receptor comparten una señal de reloj",
+       "respuesta": "Correcta",
+       "motivo": "SPI e I2C."
+      },
+      {
+       "texto": "En la asíncrona, cada dato lleva bits de inicio y de parada",
+       "respuesta": "Correcta",
+       "motivo": "UART."
+      }
+     ],
+     "pregunta": "¿La marcarías?",
+     "parte": 5
+    },
+    {
+     "id": "5.4",
+     "tema": "Display",
+     "titulo": "el potenciómetro en el display",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "Mostrá en el display OLED de la placa (I2C, dirección 0x3C) la tensión del potenciómetro (pin 32), actualizada cada 100 ms. Usá la librería del caso del profe (Adafruit SH110X).",
+     "pasos": [
+      "En el setup: `display.begin(0x3C, true)` y el color.",
+      "En el loop: clearDisplay, setCursor, print y display()."
+     ],
+     "pistas": [
+      "Es el caso «Display_con_Pote» del profe."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nconst int POT = 32;\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire);\n\nvoid setup() {\n  Serial.begin(115200);\n  // iniciá el display en la dirección 0x3C\n  // color de texto blanco\n}\n\nvoid loop() {\n  float volt = analogRead(POT) * 3.3 / 4095;\n  // borrá, poné el cursor arriba a la izquierda,\n  // escribí la tensión y mostralo\n  delay(100);\n}\n",
+       "solucion": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nconst int POT = 32;\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire);\n\nvoid setup() {\n  Serial.begin(115200);\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n}\n\nvoid loop() {\n  float volt = analogRead(POT) * 3.3 / 4095;\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.printf(\"Tension: %.2f V\", volt);\n  display.display();\n  delay(100);\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "display\\.begin\\s*\\(\\s*0x3C",
+       "ok": "Inicia el display en 0x3C",
+       "error": "Iniciá el display con `display.begin(0x3C, true)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "display\\.clearDisplay\\s*\\(\\s*\\)",
+       "ok": "Borra la pantalla",
+       "error": "Borrá con `display.clearDisplay()` antes de escribir"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "display\\.setCursor\\s*\\(\\s*0\\s*,\\s*0\\s*\\)",
+       "ok": "Pone el cursor arriba",
+       "error": "Poné el cursor con `display.setCursor(0, 0)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "display\\.(print|println|printf)\\s*\\(",
+       "ok": "Escribe el valor",
+       "error": "Escribí con `display.print(...)` o `display.printf(...)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "display\\.display\\s*\\(\\s*\\)",
+       "ok": "Lo muestra",
+       "error": "Sin `display.display()` no se ve nada"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿Por qué protocolo va el display?",
+       "opciones": [
+        "UART",
+        "I2C",
+        "SPI"
+       ],
+       "valor": "I2C",
+       "motivo": "SDA y SCL, librería Wire.",
+       "mostrar": "I2C"
+      }
+     ],
+     "parte": 5
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "id": "redes",
+   "titulo": "WiFi, MQTT y la nube",
+   "explicacion": "La ESP32 se conecta al WiFi (STA) o crea su red (AP). Desde ahí: servidor web por HTTP, datos a ThingSpeak con la API key, o MQTT con un broker (puerto 1883).",
+   "corto": "Redes y nube",
+   "pestana": "Redes y nube",
+   "leccion": {
+    "que": "Con el WiFi integrado, la ESP32 se conecta a una red (modo **STA**) o crea la suya (**AP**), y desde ahí habla con la nube: como **servidor web**, mandando datos por **HTTP** a ThingSpeak, o con **MQTT** a través de un broker.\nEn el parcial se pregunta qué protocolo conviene para qué y cómo funciona cada plataforma; en el TP se usa todo junto.",
+    "consta": [
+     [
+      "Conectarse al WiFi",
+      "`WiFi.begin(ssid, password)` y esperar `WL_CONNECTED`. Hacen falta el SSID y la contraseña."
+     ],
+     [
+      "TCP o UDP",
+      "TCP: con conexión, ordenado y sin errores. UDP: sin conexión, rápido, para telemetría."
+     ],
+     [
+      "HTTP y el servidor web",
+      "`WiFiServer server(80)`: el navegador manda un GET (/ledon) y la ESP32 responde con HTML."
+     ],
+     [
+      "MQTT",
+      "Publicador/suscriptor por topics, con un broker (Mosquitto) en el puerto 1883 (8883 con TLS). Librería PubSubClient."
+     ],
+     [
+      "Las plataformas",
+      "ThingSpeak (canales de 8 campos, API key), Arduino IoT Cloud (Device Key) y bots de Telegram (TOKEN de @BotFather)."
+     ],
+     [
+      "Seguridad",
+      "Aceleradores de cifrado (AES, SHA, RSA), secure boot y cifrado del firmware."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "mqtt.ino",
+     "origen": "Sketch F del resumen: publicar y suscribirse",
+     "codigo": "#include <WiFi.h>\n#include <PubSubClient.h>\nWiFiClient esp;  PubSubClient client(esp);    // MQTT va sobre TCP\nvoid setup() {\n  WiFi.begin(ssid, password);                 // 1) el WiFi\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  client.setServer(broker, 1883);             // 2) el broker\n  client.setCallback(callback);               // 3) lo que llega\n}\nvoid loop() {\n  if (!client.connected()) {\n    client.connect(\"esp-a\");                  // un id único por placa\n    client.subscribe(\"casa/luz\");             // escucha un topic\n  }\n  client.loop();\n  client.publish(\"casa/temp\", \"23.5\");        // publica en otro\n  // un servidor web: WiFiServer server(80) y el navegador pide /ledon\n  // ThingSpeak: ThingSpeak.setField(1, t); ThingSpeak.writeFields(canal, apiKey);\n  // con TLS (puerto 8883) los datos viajan cifrados\n}",
+     "marcas": [
+      [
+       2,
+       3,
+       3
+      ],
+      [
+       1,
+       5,
+       6
+      ],
+      [
+       4,
+       7,
+       8
+      ],
+      [
+       4,
+       12,
+       13
+      ],
+      [
+       4,
+       16,
+       16
+      ],
+      [
+       3,
+       17,
+       17
+      ],
+      [
+       5,
+       18,
+       18
+      ],
+      [
+       6,
+       19,
+       19
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "UDP no garantiza la entrega: conviene cuando perder un dato no importa.",
+     "Para ver la página de la ESP32, el navegador tiene que estar en la misma red (o la placa, con IP pública).",
+     "Nunca subas el SSID, la contraseña o la API key a un repositorio: van en un secrets.h aparte."
+    ],
+    "parcial": "MQTT, TCP y UDP, ThingSpeak, Telegram y los modos del WiFi salen como opción múltiple. En el TP se usa todo junto: ThingSpeak y la programación OTA.",
+    "pdf": 5
+   },
+   "ejercicios": [
+    {
+     "id": "6.1",
+     "tema": "WiFi",
+     "titulo": "conectarse al WiFi",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "Conectá la ESP32 al WiFi y mostrá su IP en el monitor serie. Mientras no esté conectada, imprimí un punto cada medio segundo.",
+     "pasos": [
+      "`#include <WiFi.h>`.",
+      "`WiFi.begin(ssid, password);`",
+      "Un while hasta `WL_CONNECTED`."
+     ],
+     "pistas": [
+      "Es lo primero de todos los casos del profe con WiFi."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "// conectate al WiFi (incluí la librería)\n\nconst char* ssid = \"TU_RED_WIFI\";\nconst char* password = \"TU_CLAVE\";\n\nvoid setup() {\n  Serial.begin(115200);\n  // 1) empezá la conexión\n  // 2) esperá hasta que esté conectada (un punto cada 500 ms)\n  // 3) mostrá la IP\n}\n\nvoid loop() {\n}\n",
+       "solucion": "#include <WiFi.h>\n\nconst char* ssid = \"TU_RED_WIFI\";\nconst char* password = \"TU_CLAVE\";\n\nvoid setup() {\n  Serial.begin(115200);\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println(WiFi.localIP());\n}\n\nvoid loop() {\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "#include\\s*[<\"]WiFi\\.h[>\"]",
+       "ok": "Incluye WiFi.h",
+       "error": "Incluí la librería: `#include <WiFi.h>`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "WiFi\\.begin\\s*\\(\\s*ssid\\s*,\\s*password\\s*\\)",
+       "ok": "Empieza la conexión",
+       "error": "Empezá con `WiFi.begin(ssid, password)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "while\\s*\\(\\s*WiFi\\.status\\s*\\(\\s*\\)\\s*!=\\s*WL_CONNECTED\\s*\\)",
+       "ok": "Espera a estar conectada",
+       "error": "Esperá con `while (WiFi.status() != WL_CONNECTED)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "WiFi\\.localIP\\s*\\(\\s*\\)",
+       "ok": "Muestra la IP",
+       "error": "Mostrá la IP con `WiFi.localIP()`"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿En qué modo está la ESP32?",
+       "opciones": [
+        "STA (estación)",
+        "AP (punto de acceso)"
+       ],
+       "valor": "STA (estación)",
+       "motivo": "Se conecta al router como un celular.",
+       "mostrar": "STA (estación)"
+      },
+      {
+       "pregunta": "¿En qué banda trabaja el WiFi de la ESP32?",
+       "valor": 2.4,
+       "unidad": "GHz",
+       "tol": 0.1,
+       "mostrar": "2,4"
+      }
+     ],
+     "parte": 6
+    },
+    {
+     "id": "6.2",
+     "tema": "ThingSpeak",
+     "titulo": "mandar datos a ThingSpeak",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "Mandá a ThingSpeak la tensión del potenciómetro en el campo 1 y la temperatura del DHT22 en el campo 2, **cada 16 segundos y sin `delay()`** (como pide el TPI). El WiFi ya está conectado en el setup.",
+     "pasos": [
+      "`ThingSpeak.begin(client)` en el setup.",
+      "En el loop, con millis cada 16000 ms: `setField(1, ...)`, `setField(2, ...)` y `writeFields(canal, writeAPIKey)`."
+     ],
+     "pistas": [
+      "Con `setField` se cargan varios campos y con `writeFields` se mandan juntos; `writeField` (sin s) manda uno solo.",
+      "La cuenta gratis de ThingSpeak no acepta datos más seguido que cada 15 s."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include \"ThingSpeak.h\"\n#include \"DHT.h\"\n\nunsigned long canal = 0;                  // el número de tu canal\nconst char* writeAPIKey = \"TU_API_KEY\";\nWiFiClient client;\nDHT dht(33, DHT22);\nunsigned long antes = 0;\n\nvoid setup() {\n  Serial.begin(115200);\n  WiFi.begin(\"TU_RED_WIFI\", \"TU_CLAVE\");\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  dht.begin();\n  // iniciá ThingSpeak con el cliente WiFi\n}\n\nvoid loop() {\n  // cada 16000 ms: cargá los dos campos y escribilos en el canal\n}\n",
+       "solucion": "#include <WiFi.h>\n#include \"ThingSpeak.h\"\n#include \"DHT.h\"\n\nunsigned long canal = 0;                  // el número de tu canal\nconst char* writeAPIKey = \"TU_API_KEY\";\nWiFiClient client;\nDHT dht(33, DHT22);\nunsigned long antes = 0;\n\nvoid setup() {\n  Serial.begin(115200);\n  WiFi.begin(\"TU_RED_WIFI\", \"TU_CLAVE\");\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  dht.begin();\n  ThingSpeak.begin(client);\n}\n\nvoid loop() {\n  if (millis() - antes >= 16000) {\n    antes = millis();\n    float volt = analogRead(32) * 3.3 / 4095;\n    float temp = dht.readTemperature();\n    ThingSpeak.setField(1, volt);\n    ThingSpeak.setField(2, temp);\n    int x = ThingSpeak.writeFields(canal, writeAPIKey);\n    Serial.println(x == 200 ? \"Canal actualizado\" : \"Error \" + String(x));\n  }\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "ThingSpeak\\.begin\\s*\\(\\s*client\\s*\\)",
+       "ok": "Inicia ThingSpeak",
+       "error": "Iniciá con `ThingSpeak.begin(client)` en el setup"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "ThingSpeak\\.setField\\s*\\(\\s*1\\s*,",
+       "ok": "Carga el campo 1",
+       "error": "Cargá el potenciómetro con `ThingSpeak.setField(1, ...)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "ThingSpeak\\.setField\\s*\\(\\s*2\\s*,",
+       "ok": "Carga el campo 2",
+       "error": "Cargá la temperatura con `ThingSpeak.setField(2, ...)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "ThingSpeak\\.writeFields\\s*\\(\\s*canal\\s*,\\s*writeAPIKey\\s*\\)",
+       "ok": "Escribe el canal",
+       "error": "Escribí con `ThingSpeak.writeFields(canal, writeAPIKey)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "millis\\s*\\(\\s*\\)\\s*-\\s*antes\\s*>=?\\s*16000",
+       "ok": "Cada 16 s con millis",
+       "error": "Usá `if (millis() - antes >= 16000)`"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bdelay\\s*\\(\\s*16000",
+       "ok": "Sin delay de 16 s",
+       "error": "Sin `delay(16000)`: usá millis"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿Cuántos campos de datos tiene un canal?",
+       "valor": 8,
+       "tol": 1,
+       "mostrar": "8"
+      },
+      {
+       "pregunta": "¿Qué devuelve writeFields si salió bien?",
+       "valor": 200,
+       "motivo": "El código HTTP de éxito.",
+       "tol": 1,
+       "mostrar": "200"
+      }
+     ],
+     "parte": 6
+    },
+    {
+     "id": "6.3",
+     "tema": "MQTT",
+     "titulo": "publicar y suscribirse con MQTT",
+     "tipo": "codigo",
+     "lenguaje": "cpp",
+     "consigna": "Completá el cliente MQTT: el broker en el puerto 1883, la función que recibe los mensajes, la reconexión suscribiéndose a `casa/luz` y la publicación de la temperatura en `casa/temp`.",
+     "pasos": [
+      "En el setup: `setServer` y `setCallback`.",
+      "En el loop: reconectar y suscribirse, `client.loop()` y `publish`."
+     ],
+     "pistas": [
+      "Es el sketch F del resumen y el caso «MQTT_Publicar_Mosquitto» del profe.",
+      "El id del cliente tiene que ser único: dos placas con el mismo id se desconectan entre sí."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <PubSubClient.h>\n\nconst char* broker = \"192.168.0.14\";   // la PC con Mosquitto\nWiFiClient esp;\nPubSubClient client(esp);\n\nvoid callback(char* topic, byte* mensaje, unsigned int largo) {\n  // llegó un mensaje de un topic al que estamos suscriptos\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  WiFi.begin(\"TU_RED_WIFI\", \"TU_CLAVE\");\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  // el broker (puerto 1883) y la función que recibe\n}\n\nvoid loop() {\n  // si se desconectó: conectate con un id y suscribite a \"casa/luz\"\n  // atendé los mensajes\n  // publicá la temperatura en \"casa/temp\"\n  delay(5000);\n}\n",
+       "solucion": "#include <WiFi.h>\n#include <PubSubClient.h>\n\nconst char* broker = \"192.168.0.14\";   // la PC con Mosquitto\nWiFiClient esp;\nPubSubClient client(esp);\n\nvoid callback(char* topic, byte* mensaje, unsigned int largo) {\n  // llegó un mensaje de un topic al que estamos suscriptos\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  WiFi.begin(\"TU_RED_WIFI\", \"TU_CLAVE\");\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  client.setServer(broker, 1883);\n  client.setCallback(callback);\n}\n\nvoid loop() {\n  if (!client.connected()) {\n    client.connect(\"esp-a\");\n    client.subscribe(\"casa/luz\");\n  }\n  client.loop();\n  client.publish(\"casa/temp\", \"23.5\");\n  delay(5000);\n}\n"
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "client\\.setServer\\s*\\(\\s*broker\\s*,\\s*1883\\s*\\)",
+       "ok": "El broker en el 1883",
+       "error": "Configurá el broker: `client.setServer(broker, 1883)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "client\\.setCallback\\s*\\(\\s*callback\\s*\\)",
+       "ok": "La función que recibe",
+       "error": "Falta `client.setCallback(callback)`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "!\\s*client\\.connected\\s*\\(\\s*\\)",
+       "ok": "Se fija si está conectado",
+       "error": "Fijate si se desconectó: `if (!client.connected())`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "client\\.connect\\s*\\(\\s*\"",
+       "ok": "Se conecta con un id",
+       "error": "Conectate con un id: `client.connect(\"esp-a\")`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "client\\.subscribe\\s*\\(\\s*\"casa/luz\"\\s*\\)",
+       "ok": "Se suscribe a casa/luz",
+       "error": "Suscribite: `client.subscribe(\"casa/luz\")`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "client\\.loop\\s*\\(\\s*\\)",
+       "ok": "Atiende los mensajes",
+       "error": "Sin `client.loop()` no llegan los mensajes"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "client\\.publish\\s*\\(\\s*\"casa/temp\"",
+       "ok": "Publica en casa/temp",
+       "error": "Publicá: `client.publish(\"casa/temp\", ...)`"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Puerto estándar de MQTT",
+       "valor": 1883,
+       "tol": 1,
+       "mostrar": "1883"
+      },
+      {
+       "pregunta": "Puerto de MQTT con TLS",
+       "valor": 8883,
+       "tol": 1,
+       "mostrar": "8883"
+      },
+      {
+       "pregunta": "¿Quién recibe y reparte los mensajes?",
+       "opciones": [
+        "El broker",
+        "El publicador",
+        "El suscriptor"
+       ],
+       "valor": "El broker",
+       "motivo": "Por ejemplo, Mosquitto en la PC.",
+       "mostrar": "El broker"
+      }
+     ],
+     "parte": 6
+    },
+    {
+     "id": "6.4",
+     "tema": "Protocolos de red",
+     "titulo": "¿qué protocolo es?",
+     "tipo": "ubicacion",
+     "consigna": "¿De qué protocolo es cada frase?",
+     "opciones": [
+      "TCP",
+      "UDP",
+      "HTTP",
+      "MQTT",
+      "WebSockets"
+     ],
+     "items": [
+      {
+       "texto": "Orientado a conexión: entrega ordenada y sin errores",
+       "respuesta": "TCP",
+       "motivo": "Usa más memoria y CPU."
+      },
+      {
+       "texto": "Sin conexión, «dispara y olvida»: ideal para telemetría",
+       "respuesta": "UDP",
+       "motivo": "Si se pierde un paquete, no importa."
+      },
+      {
+       "texto": "El navegador pide /ledon con un GET y la ESP32 responde con HTML",
+       "respuesta": "HTTP",
+       "motivo": "El servidor web en el puerto 80."
+      },
+      {
+       "texto": "Publicador/suscriptor por topics, con un broker",
+       "respuesta": "MQTT",
+       "motivo": "Liviano, para miles de dispositivos."
+      },
+      {
+       "texto": "Una conexión persistente y bidireccional, en tiempo real",
+       "respuesta": "WebSockets",
+       "motivo": "Para paneles de control."
+      },
+      {
+       "texto": "Ideal para conexiones inestables y muchos dispositivos",
+       "respuesta": "MQTT",
+       "motivo": "Por eso es el de IoT."
+      },
+      {
+       "texto": "ThingSpeak recibe los datos así, con la API key",
+       "respuesta": "HTTP",
+       "motivo": "La ESP32 como cliente."
+      }
+     ],
+     "pregunta": "¿Cuál es?",
+     "parte": 6
+    },
+    {
+     "id": "6.5",
+     "tema": "Plataformas",
+     "titulo": "¿qué plataforma es?",
+     "tipo": "ubicacion",
+     "consigna": "Las plataformas de los prácticos. ¿De cuál es cada frase?",
+     "opciones": [
+      "ThingSpeak",
+      "Arduino IoT Cloud",
+      "Bot de Telegram"
+     ],
+     "items": [
+      {
+       "texto": "Canales con 8 campos de datos",
+       "respuesta": "ThingSpeak",
+       "motivo": "Más 3 de ubicación y 1 de estado."
+      },
+      {
+       "texto": "Gráficos y análisis con MATLAB",
+       "respuesta": "ThingSpeak",
+       "motivo": "Es de MathWorks."
+      },
+      {
+       "texto": "Se crea con @BotFather (/newbot), que da el TOKEN",
+       "respuesta": "Bot de Telegram",
+       "motivo": "Pregunta del banco."
+      },
+      {
+       "texto": "Librería UniversalTelegramBot",
+       "respuesta": "Bot de Telegram",
+       "motivo": "Se manda la orden desde el celular."
+      },
+      {
+       "texto": "Un dashboard web para prender el LED; la placa se identifica con su Device Key",
+       "respuesta": "Arduino IoT Cloud",
+       "motivo": "Librerías ArduinoIoTCloud y Arduino_ConnectionHandler."
+      },
+      {
+       "texto": "Se mandan los datos por HTTP con la API key",
+       "respuesta": "ThingSpeak",
+       "motivo": "Con ThingSpeak.writeFields."
+      }
+     ],
+     "pregunta": "¿De cuál es?",
+     "parte": 6
+    },
+    {
+     "id": "6.6",
+     "tema": "Banco",
+     "titulo": "redes, Bluetooth y seguridad (preguntas del banco)",
+     "tipo": "ubicacion",
+     "consigna": "Opciones de las preguntas del banco sobre redes, Bluetooth y seguridad. ¿Son correctas?",
+     "opciones": [
+      "Correcta",
+      "Incorrecta"
+     ],
+     "items": [
+      {
+       "texto": "Para conectarse a una red WiFi hacen falta, como mínimo, el SSID y la contraseña",
+       "respuesta": "Correcta",
+       "motivo": "Con WiFi.begin(ssid, password)."
+      },
+      {
+       "texto": "En modo AP la ESP32 crea su propia red",
+       "respuesta": "Correcta",
+       "motivo": "También existe el modo mixto (STA + AP)."
+      },
+      {
+       "texto": "Para ver la página del servidor web de la ESP32 alcanza con cualquier conexión a internet",
+       "respuesta": "Incorrecta",
+       "motivo": "El navegador tiene que estar en la misma red local (o la placa con IP pública)."
+      },
+      {
+       "texto": "UDP garantiza que los paquetes lleguen en orden",
+       "respuesta": "Incorrecta",
+       "motivo": "Eso es TCP."
+      },
+      {
+       "texto": "En MQTT los mensajes se organizan en topics",
+       "respuesta": "Correcta",
+       "motivo": "Ej.: casa/temp."
+      },
+      {
+       "texto": "BLE está pensado para muy bajo consumo; sus roles son central y periférico",
+       "respuesta": "Correcta",
+       "motivo": "Los datos van en GATT."
+      },
+      {
+       "texto": "Los sistemas embebidos son vulnerables por sus recursos limitados y sus ciclos de vida largos",
+       "respuesta": "Correcta",
+       "motivo": "Y por la exposición física."
+      },
+      {
+       "texto": "La ESP32 tiene aceleradores de cifrado por hardware",
+       "respuesta": "Correcta",
+       "motivo": "AES, SHA, RSA y un generador de números aleatorios."
+      }
+     ],
+     "pregunta": "¿La marcarías?",
+     "parte": 6
+    }
+   ]
+  }
+ ]
+}

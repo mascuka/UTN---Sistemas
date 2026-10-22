@@ -3190,6 +3190,13 @@ const MATERIAS = {
         secciones: ["teorico", "parcial"],
         nombres: { parcial: "Parciales" },
         quizEn: "parcial",
+        // Práctica por partes con C++ de la ESP32 (no se corre: se revisa la estructura), cuentas y conceptos del banco.
+        // Se arma con herramientas/tpa-practica/armar_p3.py.
+        practicaPartes: {
+          fuentes: ["practica/tpa-p3/ejercicios.json"],
+          resumen: { nombre: "Resumen de la ESP32 y la IoT", url: "material/tecnologias-para-la-automatizacion/p3-iot/01-resumen-iot.pdf", paginas: 6 }
+        },
+        practicaLenguaje: "cpp",
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -6836,7 +6843,8 @@ function seguirEjp(){
 function pintarChecksEjp(r, verif = false, salida = ""){
   const bien = r.filter(x => x.ok).length, todo = bien === r.length, varios = editablesEj(ejp.ej).length > 1, ej = ejp.ej;
   if(todo) marcarEjp(true);
-  const aviso = ej.tipo === "octave" ? "Se corrió tu código con Octave del navegador y se compararon los resultados." : ej.tipo === "respuestas" ? "" : "Verificación orientativa: compará también con la solución.";
+  const aviso = ej.tipo === "octave" ? "Se corrió tu código con Octave del navegador y se compararon los resultados." : ej.tipo === "respuestas" ? ""
+    : lengEj(ej) === "cpp" ? "No se corre en la placa: se revisa que el código tenga lo que pide. Probalo en Wokwi o en tu ESP32." : "Verificación orientativa: compará también con la solución.";
   resEjp(`
     <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ ${r.length === 1 ? "Está bien" : `Pasa las ${r.length} verificaciones`}` : `${bien} de ${r.length} verificaciones bien`}</b>${todo ? seguirEjp() : ""}</div>
     <ul class="pr-checks">${r.map(x => `<li class="${x.ok ? "ok" : "mal"}"><span>${x.ok ? "✓" : "✗"}</span><div><b>${mdLinea(x.msg)}</b>${varios && x.archivo ? `<small class="ejp-arch">${esc(x.archivo)}</small>` : ""}</div></li>`).join("")}</ul>

@@ -122,6 +122,27 @@ def oct_ej(id, tema, titulo, consigna, inicial, solucion, vars=(), respuestas=()
     if ocultar: e['ocultar'] = list(ocultar)
     return e
 
+def cod_ej(id, tema, titulo, consigna, inicial, solucion, checks, respuestas=(), pasos=(), pistas=(), imagen=None, datos=None,
+           donde=None, archivo='sketch.ino', lenguaje='cpp'):
+    """Un ejercicio de código que no se corre (C++ de la ESP32): se verifica con los checks (expresiones regulares en el
+    código sin comentarios) y, si tiene, las respuestas: [{pregunta, valor, dec, unidad, motivo}] u [{pregunta, opciones, valor}]"""
+    e = {'id': id, 'tema': tema, 'titulo': titulo, 'tipo': 'codigo', 'lenguaje': lenguaje, 'consigna': consigna}
+    if donde: e['donde'] = donde
+    if imagen: e['imagen'] = imagen
+    if datos: e['datos'] = datos
+    if pasos: e['pasos'] = list(pasos)
+    if pistas: e['pistas'] = list(pistas)
+    e['archivos'] = [{'nombre': archivo, 'inicial': j(inicial), 'solucion': j(solucion)}]
+    e['checks'] = list(checks)
+    if respuestas:
+        e['respuestas'] = []
+        for r in respuestas:
+            x = {kk: vv for kk, vv in r.items() if kk != 'dec'}
+            if 'opciones' not in x: x.setdefault('tol', 10 ** -r['dec'] if 'dec' in r else 1e-3)
+            x['mostrar'] = mostrar(x['valor'], r.get('dec', 4))
+            e['respuestas'].append(x)
+    return e
+
 def resp_ej(id, tema, titulo, consigna, respuestas, imagen=None, codigo=None, calc=None, pistas=(), datos=None, lenguaje=None):
     """Un ejercicio solo de respuestas (números o una opción). Con calc, los valores salen de correr ese código en Octave:
     cada respuesta con 'expr'. codigo: {nombre, texto} para mirar al costado; si texto es '@salida', es lo que muestra calc."""

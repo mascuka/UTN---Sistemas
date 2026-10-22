@@ -12,8 +12,8 @@ const fuente = nombre => {
   if(i < 0) throw new Error(`no está ${nombre} en index.html`);
   return html.slice(i + 1, html.indexOf("\n}\n", i) + 2);
 };
-const { sinComentariosOct, verificarEjp, compararVar } = new Function(
-  ["sinComentariosOct", "verificarEjp", "compararVar"].map(fuente).join("\n") + "\nreturn { sinComentariosOct, verificarEjp, compararVar };")();
+const { sinComentarios, sinComentariosOct, verificarEjp, compararVar } = new Function(
+  ["sinComentarios", "sinComentariosOct", "verificarEjp", "compararVar"].map(fuente).join("\n") + "\nreturn { sinComentarios, sinComentariosOct, verificarEjp, compararVar };")();
 const leerNumero = new Function(`return ${html.match(/const leerNumero = (s => .*);\n/)[1]}`)();
 const respuestaOk = (x, v) => x.opciones ? v === x.valor
   : Math.abs(leerNumero(v) - x.valor) <= (x.tol ?? 0.01) * (x.relativa ? Math.max(1, Math.abs(x.valor)) : 1);
@@ -38,6 +38,13 @@ for(const f of archivos){
   for(const p of d.partes) for(const ej of p.ejercicios){
     total++;
     const probs = [];
+    if(ej.tipo === "codigo"){
+      // No se corre (C++ de la ESP32): la solución tiene que pasar los checks y el código inicial no
+      const pasa = cual => verificarEjp(ej.archivos.map(a => sinComentarios(a[cual])).join("\n"), ej.checks || []);
+      pasa("solucion").filter(c => !c.ok).forEach(c => probs.push(`la solución no pasa: ${c.msg}`));
+      if(!(ej.checks || []).length) probs.push("no tiene checks");
+      else if(pasa("inicial").every(c => c.ok)) probs.push("el código inicial ya pasa");
+    }
     if(ej.tipo === "octave"){
       const s = correr(ej, "solucion");
       s.checks.filter(c => !c.ok).forEach(c => probs.push(`la solución no pasa: ${c.msg}`));
