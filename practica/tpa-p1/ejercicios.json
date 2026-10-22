@@ -1113,7 +1113,6 @@
        ],
        "valor": "No",
        "motivo": "a = (2, 1, 0) y b = (0, 3, 0): el producto de matrices no conmuta.",
-       "tol": 0.001,
        "mostrar": "No"
       }
      ],

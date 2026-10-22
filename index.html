@@ -3106,6 +3106,12 @@ const MATERIAS = {
         nombres: { parcial: "Parciales" },
         quizEn: "parcial",
         herramientasParcial: ["robot2r"],
+        // Práctica por partes con Octave en el navegador (se arma con herramientas/tpa-practica/armar_p2.py)
+        practicaPartes: {
+          fuentes: ["practica/tpa-p2/ejercicios.json"],
+          resumen: { nombre: "Resumen y ejercicios modelo del 2º parcial", url: "material/tecnologias-para-la-automatizacion/p2/01-resumen-y-ejercicios-modelo-2do-parcial.pdf", paginas: 14 }
+        },
+        practicaLenguaje: "octave",
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -6612,7 +6618,7 @@ async function ejecutarEjp(){
 /* Compara una variable del código con lo esperado (números con tolerancia relativa) */
 function compararVar(v, vars){
   const x = vars[v.nombre], e = v.valor, tol = v.tol ?? 1e-3;
-  const dim = y => Array.isArray(y) ? (Array.isArray(y[0]) ? `${y.length}×${y[0].length}` : `1×${y.length}`) : "1×1";
+  const dim = y => Array.isArray(y) ? (!y.length ? "0×0" : Array.isArray(y[0]) ? `${y.length}×${y[0].length}` : `1×${y.length}`) : "1×1";
   const cerca = (a, b) => typeof a === "number" && typeof b === "number" ? (Number.isNaN(b) ? Number.isNaN(a) : Math.abs(a - b) <= tol * Math.max(1, Math.abs(b))) : a === b;
   let ok = false, msg = v.error || `\`${v.nombre}\` no da lo esperado`;
   if(x === undefined) msg = v.falta || `No hay una variable \`${v.nombre}\`: guardá el resultado con ese nombre`;
@@ -6620,13 +6626,16 @@ function compararVar(v, vars){
   else if(typeof e === "boolean") ok = (x === true || x === 1) === e;
   else if(!Array.isArray(e)) ok = cerca(Array.isArray(x) && x.length === 1 && x[0].length === 1 ? x[0][0] : x, e);
   else {
-    const xx = Array.isArray(x) ? x : [[x]], ee = Array.isArray(e[0]) ? e : [e];
+    const xx = Array.isArray(x) ? (Array.isArray(x[0]) || !x.length ? x : [x]) : [[x]], ee = Array.isArray(e[0]) ? e : [e];
     // Un vector se acepta en fila o en columna
     const plano = y => y.flat();
-    const mismo = xx.length === ee.length && xx[0].length === ee[0].length;
-    const vector = (ee.length === 1 || ee[0].length === 1) && (xx.length === 1 || xx[0].length === 1) && plano(xx).length === plano(ee).length;
-    if(!mismo && !vector) msg = `\`${v.nombre}\` tiene que ser de ${dim(ee)} y la tuya es de ${dim(xx)}`;
-    else ok = plano(xx).every((a, i) => cerca(a, plano(ee)[i]));
+    if(!xx.length || !xx[0].length) msg = `\`${v.nombre}\` está vacía: tiene que ser de ${dim(ee)}`;
+    else {
+      const mismo = xx.length === ee.length && xx[0].length === ee[0].length;
+      const vector = (ee.length === 1 || ee[0].length === 1) && (xx.length === 1 || xx[0].length === 1) && plano(xx).length === plano(ee).length;
+      if(!mismo && !vector) msg = `\`${v.nombre}\` tiene que ser de ${dim(ee)} y la tuya es de ${dim(xx)}`;
+      else ok = plano(xx).every((a, i) => cerca(a, plano(ee)[i]));
+    }
   }
   return { ok, msg: ok ? (v.ok || `\`${v.nombre}\` da lo que tiene que dar`) : msg };
 }

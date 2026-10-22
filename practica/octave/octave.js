@@ -1465,7 +1465,17 @@ def("dibujarSistemasDeEjesCoordenadosDeRobot", function(args){
   dibujar(T, 0);
   args.slice(1).forEach((A, k) => { if(!esMat(A) || A.r !== 4 || A.c !== 4) err("Cada argumento debe ser una matriz 4x4 (A01, A12, ...)"); T = mult(T, A); dibujar(T, k + 1); });
 });
-def("animar_trayectoria Dibujar_Temporal", function(){ this.avisar("(la animación no se muestra en el navegador: probala en Octave)"); });
+def("animar_trayectoria", function(){ this.avisar("(la animación no se muestra en el navegador: probala en Octave)"); });
+// Como la del profe: posiciones y velocidades en el tiempo, una figura para cada una
+def("Dibujar_Temporal", function(args){
+  if(args.length < 3) err("Dibujar_Temporal: se esperan (T_total, Q_total, DQ_total)");
+  [[args[1], "Posiciones"], [args[2], "Velocidades"]].forEach(([m, tit]) => {
+    this.fig = null;
+    const f = this.figura();
+    seriesPlot([args[0], m], false).forEach((x, k) => this.serie({ ...x, ancho: 2, extra: k > 0 }));
+    Object.assign(f, { titulo: tit, grilla: true }); f.ejes[0] = "tiempo";
+  });
+});
 
 /* ---- Las funciones del profe (1º y 2º parcial), con los mismos cálculos que sus .m ---- */
 const eye4 = () => { const m = ceros(4, 4); for(let i = 0; i < 4; i++) m.d[i * 5] = 1; return m; };

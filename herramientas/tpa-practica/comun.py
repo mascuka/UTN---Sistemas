@@ -39,7 +39,14 @@ def _funciones():
     tmp = tempfile.mkdtemp(prefix='tpa-')
     for z in ['p1/funciones-octave-1er-parcial.zip', 'p2/funciones-octave-2do-parcial.zip']:
         with zipfile.ZipFile(os.path.join(MAT, z)) as f: f.extractall(tmp)
-    _carpetas = [os.path.join(tmp, 'funciones-1er-parcial'), os.path.join(tmp, 'funciones-2do-parcial')]
+    # Sin pantalla, octave-cli no puede graficar: los gráficos no hacen nada (solo importan los números)
+    mudas = os.path.join(tmp, 'sin-graficos')
+    os.makedirs(mudas)
+    for n in ['plot', 'plot3', 'figure', 'subplot', 'title', 'xlabel', 'ylabel', 'zlabel', 'grid', 'hold', 'axis', 'view',
+              'legend', 'text', 'quiver3', 'line', 'Dibujar_Temporal', 'animar_trayectoria', 'DibujarEjes', 'dibujarOrigen',
+              'dibujarSistemasDeEjesCoordenadosDeRobot', 'drawnow', 'pause']:
+        open(os.path.join(mudas, n + '.m'), 'w').write(f'function varargout = {n}(varargin)\n  varargout = cell(1, nargout);\nend\n')
+    _carpetas = [mudas, os.path.join(tmp, 'funciones-1er-parcial'), os.path.join(tmp, 'funciones-2do-parcial')]
     return _carpetas
 
 def octave(codigo):
@@ -83,7 +90,8 @@ def oct_ej(id, tema, titulo, consigna, inicial, solucion, vars=(), respuestas=()
            imagen=None, ocultar=None, datos=None, donde=None, archivo='ejercicio.m', tolvars=1e-3, mensajes=None):
     """Un ejercicio de Octave: se escribe y se corre en el navegador.
     vars: nombres de variables que se comparan con lo que da la solución.
-    respuestas: [{pregunta, expr (Octave, después de la solución), tol, unidad, motivo}]"""
+    respuestas: [{pregunta, expr (Octave, después de la solución), dec (decimales: 4), tol (10^-dec), unidad, motivo}]
+    o con opciones: [{pregunta, opciones, valor, motivo}]"""
     nombres = list(vars)
     exprs = [r['expr'] for r in respuestas if 'expr' in r]
     vs, es, _ = valores(j(solucion), nombres, exprs)
@@ -104,11 +112,11 @@ def oct_ej(id, tema, titulo, consigna, inicial, solucion, vars=(), respuestas=()
         e['respuestas'] = []
         k = 0
         for r in respuestas:
-            x = {kk: vv for kk, vv in r.items() if kk not in ('expr',)}
+            x = {kk: vv for kk, vv in r.items() if kk not in ('expr', 'dec')}
             if 'expr' in r:
                 x['valor'] = es[k]; k += 1
-            x.setdefault('tol', 1e-3)
-            x['mostrar'] = mostrar(x['valor'])
+            if 'opciones' not in x: x.setdefault('tol', 10 ** -r['dec'] if 'dec' in r else 1e-3)
+            x['mostrar'] = mostrar(x['valor'], r.get('dec', 4))
             e['respuestas'].append(x)
     if checks: e['checks'] = list(checks)
     if ocultar: e['ocultar'] = list(ocultar)
@@ -128,10 +136,10 @@ def resp_ej(id, tema, titulo, consigna, respuestas, imagen=None, codigo=None, ca
         _, es, salida = valores(j(calc), (), exprs)
     k, out = 0, []
     for r in respuestas:
-        x = {kk: vv for kk, vv in r.items() if kk != 'expr'}
+        x = {kk: vv for kk, vv in r.items() if kk not in ('expr', 'dec')}
         if 'expr' in r: x['valor'] = es[k]; k += 1
-        if 'opciones' not in x: x.setdefault('tol', 1e-3)
-        x['mostrar'] = mostrar(x['valor'])
+        if 'opciones' not in x: x.setdefault('tol', 10 ** -r['dec'] if 'dec' in r else 1e-3)
+        x['mostrar'] = mostrar(x['valor'], r.get('dec', 4))
         out.append(x)
     e['respuestas'] = out
     if codigo:
