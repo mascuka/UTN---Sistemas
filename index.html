@@ -1318,6 +1318,10 @@
   .ejp-tabs small{font-weight:600;color:var(--muted)}
   .ejp-md p,.ejp-md li{font-size:.93rem;line-height:1.6;margin:0 0 8px}
   .ejp-md ol,.ejp-md ul{padding-left:20px;margin:0 0 8px}
+  .ejp-img{margin:12px 0;display:grid;gap:5px;justify-items:center}
+  .ejp-img a{display:block;max-width:100%}
+  .ejp-img img{display:block;max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);background:#fff;padding:6px}
+  .ejp-img figcaption{font-size:.78rem;color:var(--muted);text-align:center}
   .ejp-datos{font-size:.88rem;line-height:1.5;background:var(--mark);color:var(--mark-t);border-radius:10px;padding:8px 12px;margin:10px 0}
   .ejp-tabla{margin:12px 0}
   .ejp-tabla-t{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
@@ -1377,6 +1381,23 @@
   .ejp-check{display:grid;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.87rem;line-height:1.45}
   .ejp-check label{display:flex;gap:9px;align-items:flex-start;cursor:pointer}
   .ejp-check input{margin-top:3px;accent-color:var(--accent);flex:none}
+  /* Práctica con Octave (TPA): las respuestas, la salida del código y los gráficos */
+  .ejp-resp{display:grid;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+  .ejp-resp > b{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .ejp-resp label{display:grid;grid-template-columns:minmax(0,1fr) minmax(96px,150px) 34px;align-items:center;gap:4px 10px;font-size:.87rem;line-height:1.4}
+  .ejp-resp input,.ejp-resp select{font:600 .9rem ui-monospace,Menlo,Consolas,monospace;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 9px;width:100%;min-width:0}
+  .ejp-resp select{font-family:inherit;font-weight:500}
+  .ejp-resp input:focus,.ejp-resp select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .ejp-resp label.ok input,.ejp-resp label.ok select{border-color:var(--ok);background:var(--ok-soft)}
+  .ejp-resp label.mal input,.ejp-resp label.mal select{border-color:var(--error)}
+  .ejp-resp small{color:var(--muted);font-size:.78rem}
+  .ejp-consola .err{color:#ff8a80}
+  .ejp-consola .vacio{color:#7f8b96;font-style:italic}
+  .ejp-graf{display:grid;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
+  .ejp-graf svg{width:100%;max-width:520px;height:auto;display:block;margin:0 auto;color:var(--text)}
+  .ejp-graf small{display:block;text-align:center;font-size:.75rem;color:var(--muted)}
+  .ejp-salida-v summary{cursor:pointer;font-size:.82rem;color:var(--muted);padding:2px 0}
+  @media (max-width:600px){ .ejp-resp label{grid-template-columns:minmax(0,1fr) 118px 24px} .ejp-resp label.larga{grid-template-columns:minmax(0,1fr) 24px} .ejp-resp label.larga > span{grid-column:1 / -1} }
   .ejp-aviso{font-size:.78rem;color:var(--muted);margin:0}
   .ejp-enun{margin:12px 0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
   .ejp-enun ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:.88rem;line-height:1.5}
@@ -2998,6 +3019,13 @@ const MATERIAS = {
         nombres: { parcial: "Parciales" },
         quizEn: "parcial",                  // el quiz y las herramientas van arriba de Parciales
         herramientasParcial: ["rotaciones"],
+        // Práctica por partes con Octave en el navegador (practica/octave/octave.js): cada parte con su explicación y
+        // ejercicios de código y de respuestas. Se arma con herramientas/tpa-practica/armar_p1.py.
+        practicaPartes: {
+          fuentes: ["practica/tpa-p1/ejercicios.json"],
+          resumen: { nombre: "Resumen y ejercicios modelo del 1º parcial", url: "material/tecnologias-para-la-automatizacion/p1/01-resumen-y-ejercicios-modelo-1er-parcial.pdf", paginas: 7 }
+        },
+        practicaLenguaje: "octave",
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -3831,7 +3859,7 @@ function pestanasDe(p){
   return [
     ...temas,
     ...ks.filter(k => !esSeccionParcial(p, k) && conArch(k)).map(tab),
-    ...(p.practica ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h" && !deParcial(d)) }]
+    ...(p.practica || p.practicaPartes ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h" && !deParcial(d)) }]
       : !kp && tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
     ...(conVideos ? [{ go: `/${conVideos}/videos`, t: "Videos", on: d => d[1] === "videos" }] : []),
     ...ks.filter(k => esSeccionParcial(p, k) && (conArch(k) || (k === kp && (tieneHerramientas(p) || p.practicaParcial)))).map(tab)
@@ -5597,7 +5625,48 @@ function resaltarJava(t){
   });
   return out + esc(t.slice(i));
 }
-const resaltar = (t, leng) => leng === "java" ? resaltarJava(t) : resaltarPy(t);
+/* Octave: la comilla simple es un texto, salvo justo después de un valor (ahí es la traspuesta: A') */
+const OCT_CLAVES = new Set("function end endfunction if elseif else endif for endfor while endwhile switch case otherwise endswitch break continue return try catch do until global persistent".split(" "));
+const OCT_FUNCS = new Set(("Rotx Roty Rotz Traslacion matrizDenavitHartenberg cinematica_directa cinematica_inversa jacobiano_analitico jacobiano_numerico generacion_de_trayectorias animar_trayectoria "
+  + "DibujarEjes dibujarEjes dibujarOrigen dibujarSistemasDeEjesCoordenadosDeRobot sin cos tan sind cosd tand asin acos atan atan2 asind acosd atand atan2d sqrt abs exp log round floor ceil fix mod rem "
+  + "deg2rad rad2deg zeros ones eye inv det transpose norm cross dot sum prod max min mean size numel length linspace repmat disp fprintf printf sprintf num2str mat2str plot plot3 figure hold grid axis "
+  + "xlabel ylabel zlabel title legend isfield struct pi isempty find any all sort clc clear close format error").split(" "));
+function resaltarOct(t){
+  let out = "", i = 0, valor = false;
+  const n = t.length;
+  while(i < n){
+    const ch = t[i];
+    if(ch === "%" || ch === "#"){ const f = t.indexOf("\n", i), j = f < 0 ? n : f; out += `<span class="t-com">${esc(t.slice(i, j))}</span>`; i = j; valor = false; continue; }
+    if(ch === '"' || (ch === "'" && !valor)){
+      let j = i + 1;
+      while(j < n && t[j] !== "\n"){ if(ch === '"' && t[j] === "\\"){ j += 2; continue; } if(t[j] === ch){ if(t[j + 1] === ch){ j += 2; continue; } j++; break; } j++; }
+      out += `<span class="t-cad">${esc(t.slice(i, j))}</span>`; i = j; valor = true; continue;
+    }
+    const num = /^(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?/.exec(t.slice(i, i + 40));
+    if(num && !/[A-Za-z_]/.test(t[i - 1] || "")){ out += `<span class="t-num">${num[0]}</span>`; i += num[0].length; valor = true; continue; }
+    const id = /^[A-Za-z_]\w*/.exec(t.slice(i, i + 80));
+    if(id){ const w = id[0]; out += OCT_CLAVES.has(w) ? `<span class="t-cla">${w}</span>` : OCT_FUNCS.has(w) ? `<span class="t-fun">${w}</span>` : esc(w); i += w.length; valor = !OCT_CLAVES.has(w) || w === "end"; continue; }
+    out += esc(ch);
+    if(/[)\]}']/.test(ch)) valor = true; else if(!/[ \t]/.test(ch)) valor = false;
+    i++;
+  }
+  return out;
+}
+const CPP_CLAVES = "auto|bool|boolean|break|byte|case|char|class|const|continue|default|delete|do|double|else|enum|extern|false|float|for|if|inline|int|long|new|nullptr|private|protected|public|return|short|signed|sizeof|static|String|struct|switch|this|true|typedef|unsigned|void|volatile|while|uint8_t|uint16_t|uint32_t|int16_t|int32_t|HIGH|LOW|INPUT|OUTPUT|INPUT_PULLUP";
+const RE_CPP = new RegExp(String.raw`(\/\/[^\n]*|\/\*[\s\S]*?(?:\*\/|$))|("(?:\\.|[^"\\\n])*"?|'(?:\\.|[^'\\\n])*'?)|(#\s*\w+(?:\s*<[^>\n]*>)?)|\b(\d+(?:\.\d+)?[fFuUlL]?)\b|\b(${CPP_CLAVES})\b|\b([A-Z]\w*)\b|\b(\w+)(?=\s*\()`, "g");
+function resaltarCpp(t){
+  let out = "", i = 0;
+  t.replace(RE_CPP, (todo, com, cad, pre, num, cla, tipo, fun, pos) => {
+    out += esc(t.slice(i, pos));
+    out += com ? `<span class="t-com">${esc(com)}</span>` : cad ? `<span class="t-cad">${esc(cad)}</span>` : pre ? `<span class="t-dec">${esc(pre)}</span>`
+      : num ? `<span class="t-num">${num}</span>` : cla ? `<span class="t-cla">${cla}</span>` : tipo ? `<span class="t-nom">${tipo}</span>` : `<span class="t-fun">${fun}</span>`;
+    i = pos + todo.length;
+    return todo;
+  });
+  return out + esc(t.slice(i));
+}
+const resaltar = (t, leng) => leng === "java" ? resaltarJava(t) : leng === "octave" ? resaltarOct(t) : leng === "cpp" ? resaltarCpp(t) : resaltarPy(t);
+const NOMBRE_LENG = { java: "Java", octave: "Octave", cpp: "C++ · Arduino", python: "Python" };
 function montarEditor(caja, valor, soloLectura, alCambiar, leng = "python", alEnter = () => accionPr("seguir")){
   caja.innerHTML = `<div class="ed ${soloLectura ? "lectura" : ""}"><div class="ed-num" aria-hidden="true"></div><div class="ed-cuerpo">
     <pre class="ed-hl" aria-hidden="true"></pre>
@@ -5624,7 +5693,7 @@ function montarEditor(caja, valor, soloLectura, alCambiar, leng = "python", alEn
       e.preventDefault();
       const ini = ta.value.lastIndexOf("\n", ta.selectionStart - 1) + 1, linea = ta.value.slice(ini, ta.selectionStart);
       let s = linea.match(/^ */)[0];
-      if(leng === "java"){
+      if(leng === "java" || leng === "cpp"){
         // Después de { (o de un paréntesis abierto) se entra un nivel; si la llave ya está cerrada, queda abajo
         if(/[{(\[]\s*(\/\/.*)?$/.test(linea)){
           const cierra = /^[})\]]/.test(ta.value.slice(ta.selectionEnd));
@@ -5632,12 +5701,15 @@ function montarEditor(caja, valor, soloLectura, alCambiar, leng = "python", alEn
           if(cierra){ const pos = ta.selectionStart - 1 - s.length; ta.setSelectionRange(pos, pos); }
           return;
         }
+      } else if(leng === "octave"){
+        // Después de for, if, while, function… se entra un nivel (salvo que la línea ya cierre con end)
+        if(/^\s*(for|if|while|function|switch|else|elseif|case|otherwise|try|catch|do)\b/.test(linea) && !/\bend\s*;?\s*([%#].*)?$/.test(linea)) s += "    ";
       } else if(/:\s*(#.*)?$/.test(linea)) s += "    ";
       else if(/^\s*(return|pass|break|continue|raise)\b/.test(linea)) s = s.slice(4);
       escribir(ta, "\n" + s);
       return;
     }
-    if(leng === "java" && e.key === "}" && ta.selectionStart === ta.selectionEnd){
+    if((leng === "java" || leng === "cpp") && e.key === "}" && ta.selectionStart === ta.selectionEnd){
       // La llave que cierra vuelve un nivel atrás
       const ini = ta.value.lastIndexOf("\n", ta.selectionStart - 1) + 1, antes = ta.value.slice(ini, ta.selectionStart);
       if(antes.length >= 4 && /^ +$/.test(antes)){ e.preventDefault(); ta.selectionStart = ta.selectionStart - 4; escribir(ta, "}"); return; }
@@ -6133,6 +6205,19 @@ function sinComentarios(c){
   }
   return out;
 }
+// Lo mismo en Octave: los comentarios empiezan con % o #; la comilla simple después de un valor es la traspuesta
+function sinComentariosOct(c){
+  let out = "", i = 0, valor = false;
+  while(i < c.length){
+    const ch = c[i];
+    if(ch === "%" || ch === "#"){ while(i < c.length && c[i] !== "\n") i++; continue; }
+    if(ch === '"' || (ch === "'" && !valor)){ let j = i + 1; while(j < c.length && c[j] !== "\n" && c[j] !== ch) j++; out += c.slice(i, j + 1); i = j + 1; valor = true; continue; }
+    out += ch;
+    if(/[\w)\]}'.]/.test(ch)) valor = true; else if(!/[ \t]/.test(ch)) valor = false;
+    i++;
+  }
+  return out;
+}
 /* Cada verificación: contiene / noContiene / cuenta (exactamente "veces") / lineas (entre min y max, sin contar vacías).
    textoDe(k) da el texto donde se busca: el de su "archivo" o, si no dice, el de todos los que se editan. */
 function verificarEjp(textoDe, checks){
@@ -6287,7 +6372,7 @@ function codigoLecEjp(x){
   x.marcas.forEach(([g, a, b]) => { num.add(a); for(let i = a; i <= b; i++) de[i] = g; });
   return `<div class="ed lectura ejp-sol"><pre>${x.codigo.split("\n").map((l, i) => {
     const g = de[i + 1];
-    return `<span class="ejp-l"${g ? ` data-g="${g}" style="--g:var(--g${g})"` : ""}><i>${i + 1}</i><em>${g && num.has(i + 1) ? g : ""}</em><span>${x.texto ? esc(l) : resaltarJava(l)}</span></span>`;
+    return `<span class="ejp-l"${g ? ` data-g="${g}" style="--g:var(--g${g})"` : ""}><i>${i + 1}</i><em>${g && num.has(i + 1) ? g : ""}</em><span>${x.texto ? esc(l) : resaltar(l, x.lenguaje || ejp.p.practicaLenguaje || "java")}</span></span>`;
   }).join("")}</pre></div>`;
 }
 /* Resalta un elemento (0: ninguno). Si sus líneas no se ven en el recuadro del código, lo corre hasta ellas */
@@ -6335,7 +6420,9 @@ function cuerpoIzqEjp(){
       ${n < ps.length ? `<button class="pr-chico" data-ejp="pista">💡 ${n ? "Otra pista" : "Ver la primera pista"} (${n + 1} de ${ps.length})</button>` : `<p class="ejp-vacio">No hay más pistas.${ej.tipo === "codigo" ? " Si seguís trabado, mirá la solución." : ""}</p>`}`;
   }
   const guia = parteEjp(ej).guia;
+  const im = ej.imagen;
   return `<div class="ejp-md">${mdBloque(ej.consigna || "")}</div>
+    ${im ? `<figure class="ejp-img"><a href="${esc(im.url)}" target="_blank" rel="noopener" title="Ver más grande"><img src="${esc(im.url)}" alt="${esc(im.alt || "")}" loading="lazy"></a>${im.pie ? `<figcaption>${esc(im.pie)}</figcaption>` : ""}</figure>` : ""}
     ${ej.enunciado ? `<div class="ejp-enun"><div class="ejp-tabla-t">Lo que pide el enunciado</div><ul>${ej.enunciado.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
     ${guia && ej.tipo === "ubicacion" ? `<div class="ejp-guia"><div class="ejp-tabla-t">Cómo decidir dónde va</div>${guia.map(([t, d]) => `<div><b>${esc(t)}</b><span>${mdLinea(d)}</span></div>`).join("")}</div>` : ""}
     ${ej.tabla ? tablaEjp(ej.tabla) : ""}
@@ -6362,22 +6449,41 @@ const tablaEjp = t => `<div class="ejp-tabla"><div class="ejp-tabla-t">${mdLinea
   <tbody>${t.filas.map(f => `<tr>${f.map(x => `<td>${mdLinea(x)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>`;
 
 /* ---- Panel derecho, según el tipo de ejercicio */
+/* El lenguaje de un ejercicio: el suyo o el de la práctica (Java en Backend, Octave en TPA) */
+const lengEj = ej => ej.lenguaje || (ej.tipo === "octave" ? "octave" : ejp && ejp.p.practicaLenguaje) || "java";
+const TECLAS = { java: ["⇥", "⇤", "{}", "()", ";", "\"\"", "=", "this.", "->", "<>", "::"], cpp: ["⇥", "⇤", "{}", "()", ";", "\"\"", "=", "==", "[]", "<", ">"],
+  octave: ["⇥", "⇤", "()", "[]", ";", ",", "'", ":", "*", "^", "=", "end"] };
 function pintarDerEjp(){
   const ej = ejp.ej, otro = hayOtroEjp() ? `<button class="pr-chico" data-ejp="otro">Otro ejemplo →</button>` : "";
   const res = `<div class="pr-res" id="ejpRes" aria-live="polite"></div>`;
-  if(ej.tipo === "codigo"){
+  ejp.respEstado = {};
+  if(ej.tipo === "codigo" || ej.tipo === "octave"){
+    const oct = ej.tipo === "octave";
     $("#ejpDer").innerHTML = `
       <div class="pr-tabs" id="ejpTabs"></div>
       <div class="pr-ed" id="ejpEd"></div>
-      <div class="pr-teclas">${["⇥", "⇤", "{}", "()", ";", "\"\"", "=", "this.", "->", "<>", "::"].map(t => `<button data-ejp-tecla="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+      <div class="pr-teclas">${(TECLAS[lengEj(ej)] || TECLAS.java).map(t => `<button data-ejp-tecla="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+      ${respuestasEjp(ej)}
       <div class="pr-barra">
-        <button class="pr-fuerte" data-ejp="verificar" title="Ctrl + Enter">Verificar</button>
+        ${oct ? `<button class="pr-fuerte" data-ejp="ejecutar" title="Ctrl + Enter">▶ Ejecutar</button><button class="pr-chico" data-ejp="verificar">Verificar</button>` : `<button class="pr-fuerte" data-ejp="verificar" title="Ctrl + Enter">Verificar</button>`}
         <button class="pr-chico" data-ejp="pista">💡 Pista</button>
         <button class="pr-chico" data-ejp="solucion">Ver solución</button>
         <button class="pr-chico" data-ejp="reiniciar">↺ Reiniciar código</button>
         <span class="sim-esp"></span>${otro}
       </div>${res}`;
     pintarEdEjp();
+  } else if(ej.tipo === "respuestas"){
+    // Solo respuestas (con un código para mirar, si hace falta)
+    const c = ej.codigo;
+    $("#ejpDer").innerHTML = `
+      ${c ? `<div class="pr-tabs"><span class="pr-tab on">${esc(c.nombre)}</span><span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span></div><div class="pr-ed">${codigoLecturaEjp(c.texto, null, lengEj(ej))}</div>` : ""}
+      ${respuestasEjp(ej)}
+      <div class="pr-barra">
+        <button class="pr-fuerte" data-ejp="verificar">Verificar</button>
+        ${(ej.pistas || []).length ? `<button class="pr-chico" data-ejp="pista">💡 Pista</button>` : ""}
+        <button class="pr-chico" data-ejp="solucion">Ver las respuestas</button>
+        <span class="sim-esp"></span>${otro}
+      </div>${res}`;
   } else if(ej.tipo === "texto"){
     $("#ejpDer").innerHTML = `
       <div class="pr-tabs"><span class="pr-tab on">DECISIONES.md</span></div>
@@ -6402,15 +6508,16 @@ function pintarDerEjp(){
 function pintarEdEjp(){
   const ej = ejp.ej, as = archivosEj(ej), a = as[ejp.arch] || as[0], viendo = ejp.sol === 2 && !a.soloLectura;
   $("#ejpTabs").innerHTML = as.map((x, i) => `<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="Para mirar: no se edita"` : ""}>${esc(x.nombre)}</button>`).join("")
-    + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">Java</span>`);
+    + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span>`);
   centrarEn($("#ejpTabs"), $("#ejpTabs .pr-tab.on"));
-  if(viendo || a.soloLectura){ ejp.ed = null; $("#ejpEd").innerHTML = codigoLecturaEjp(viendo ? a.solucion : a.inicial, viendo ? a.inicial : null); return; }
-  ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); }, "java", () => accionEjp("verificar"));
+  const leng = lengEj(ej);
+  if(viendo || a.soloLectura){ ejp.ed = null; $("#ejpEd").innerHTML = codigoLecturaEjp(viendo ? a.solucion : a.inicial, viendo ? a.inicial : null, leng); return; }
+  ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); }, leng, () => accionEjp(ej.tipo === "octave" ? "ejecutar" : "verificar"));
 }
 /* Código en solo lectura; con "inicial", las líneas que no estaban ahí se marcan (así se ve la solución) */
-function codigoLecturaEjp(texto, inicial){
+function codigoLecturaEjp(texto, inicial, leng = "java"){
   const ls = (texto || "").split("\n"), nuevas = inicial == null ? [] : lineasNuevas(inicial.split("\n").map(l => l.trim()), ls.map(l => l.trim()));
-  return `<div class="ed lectura ejp-sol"><pre>${ls.map((l, i) => `<span class="ejp-l ${nuevas[i] && l.trim() ? "nueva" : ""}"><i>${i + 1}</i>${resaltarJava(l)}</span>`).join("")}</pre></div>`;
+  return `<div class="ed lectura ejp-sol"><pre>${ls.map((l, i) => `<span class="ejp-l ${nuevas[i] && l.trim() ? "nueva" : ""}"><i>${i + 1}</i>${resaltar(l, leng)}</span>`).join("")}</pre></div>`;
 }
 /* Diferencia por líneas (la subsecuencia común más larga): true en las líneas de b que no vienen de a */
 function lineasNuevas(a, b){
@@ -6437,6 +6544,176 @@ function opcionesEjp(){
       </li>`; }).join("")}</ol>`;
 }
 
+/* ---- Las respuestas (números, o una opción) que se escriben al costado del código */
+function respuestasEjp(ej){
+  const rs = ej.respuestas || [];
+  if(!rs.length) return "";
+  const r = ejp.est.resp[ej.id] || {}, est = ejp.respEstado || {};
+  return `<div class="ejp-resp" id="ejpResp"><b>${rs.length === 1 ? "Tu respuesta" : "Tus respuestas"}</b>${rs.map((x, i) => `
+    <label class="${est[i] || ""} ${x.opciones || x.pregunta.length > 22 ? "larga" : ""}"><span>${mdLinea(x.pregunta)}</span>${x.opciones
+      ? `<select data-ejp-resp="${i}"><option value="">Elegí…</option>${x.opciones.map(o => `<option ${r["r" + i] === o ? "selected" : ""}>${esc(o)}</option>`).join("")}</select>`
+      : `<input type="text" inputmode="decimal" data-ejp-resp="${i}" value="${esc(r["r" + i] ?? "")}" placeholder="${esc(x.ejemplo || "")}" autocomplete="off" spellcheck="false" aria-label="${esc(x.pregunta.replace(/[`*]/g, ""))}">`}<small>${esc(x.unidad || "")}</small></label>`).join("")}</div>`;
+}
+const leerNumero = s => { const t = String(s ?? "").trim().replace(/\s+/g, "").replace(/,/g, "."); return t === "" || !/^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(t) ? NaN : parseFloat(t); };
+function compararRespuestas(ej){
+  const r = ejp.est.resp[ej.id] || {};
+  return (ej.respuestas || []).map((x, i) => {
+    const v = r["r" + i];
+    let ok;
+    if(x.opciones) ok = v === x.valor;
+    else { const n = leerNumero(v); ok = Number.isFinite(n) && Math.abs(n - x.valor) <= (x.tol ?? 0.01) * (x.relativa ? Math.max(1, Math.abs(x.valor)) : 1); }
+    ejp.respEstado[i] = v === undefined || v === "" ? "" : ok ? "ok" : "mal";
+    const q = x.pregunta.replace(/\s*[:?¿]\s*$/, "");
+    return { ok, msg: ok ? `${q}: bien` : v === undefined || v === "" ? `Falta: ${q}` : (x.error || (x.opciones ? `${q}: no es esa` : `${q}: no da. Revisá la cuenta`)) };
+  });
+}
+/* ---- Octave en el navegador (practica/octave/octave.js, se carga la primera vez) */
+let cargaOctave = null;
+function cargarOctave(){
+  if(window.Octave) return Promise.resolve(window.Octave);
+  return cargaOctave || (cargaOctave = new Promise((ok, mal) => {
+    const s = document.createElement("script");
+    s.src = "practica/octave/octave.js";
+    s.onload = () => window.Octave ? ok(window.Octave) : mal(new Error("no cargó"));
+    s.onerror = () => { cargaOctave = null; s.remove(); mal(new Error("no cargó")); };
+    document.head.appendChild(s);
+  }));
+}
+/* El código de todos los archivos juntos (las funciones pueden ir en cualquiera) y de qué archivo es cada línea */
+function codigoOctEj(ej){
+  const t = codigoEjp(ej), as = archivosEj(ej), partes = [], de = [];
+  as.forEach(a => { const c = a.soloLectura ? a.inicial : t[a.nombre]; c.split("\n").forEach((_, i) => de.push([a.nombre, i + 1])); partes.push(c); });
+  return { codigo: partes.join("\n"), lineaDe: n => de[n - 1] || null, varios: as.length > 1 };
+}
+function errorOct(r, lineaDe, varios){
+  if(!r.error) return "";
+  const l = r.error.linea && lineaDe(r.error.linea);
+  return `error: ${r.error.msg}${l ? `  (línea ${l[1]}${varios ? ` de ${l[0]}` : ""})` : ""}`;
+}
+function salidaOctEjp(r, lineaDe, varios){
+  const txt = r.salida.replace(/\n+$/, ""), er = errorOct(r, lineaDe, varios);
+  const graf = r.graficos.map(svgGrafico).join("");
+  const vacio = !txt && !er ? `<span class="vacio">No mostró nada: sacale el ";" del final a una línea para ver su valor.</span>` : "";
+  // Si solo dibujó, va solo el gráfico
+  const consola = graf && vacio ? "" : `<div class="pr-salida"><div>Salida</div><pre class="ejp-consola">${esc(txt)}${txt && er ? "\n" : ""}${er ? `<span class="err">${esc(er)}</span>` : ""}${vacio}</pre></div>`;
+  return `${consola}${graf ? `<div class="ejp-graf">${graf}</div>` : ""}`;
+}
+async function ejecutarEjp(){
+  const ej = ejp.ej;
+  if(ejp.sol === 2){ ejp.sol = 1; pintarEdEjp(); }
+  resEjp(`<div class="pr-corre"><span class="giro"></span>Corriendo…</div>`);
+  let O;
+  try { O = await cargarOctave(); } catch(e){ resEjp(`<div class="pr-mal"><b>No se pudo cargar Octave del navegador.</b><p>Revisá la conexión y probá de nuevo.</p></div>`); return; }
+  if(!ejp || ejp.ej !== ej) return;
+  const { codigo, lineaDe, varios } = codigoOctEj(ej);
+  resEjp(salidaOctEjp(O.correr(codigo, { ocultar: ej.ocultar }), lineaDe, varios));
+  if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+/* Compara una variable del código con lo esperado (números con tolerancia relativa) */
+function compararVar(v, vars){
+  const x = vars[v.nombre], e = v.valor, tol = v.tol ?? 1e-3;
+  const dim = y => Array.isArray(y) ? (Array.isArray(y[0]) ? `${y.length}×${y[0].length}` : `1×${y.length}`) : "1×1";
+  const cerca = (a, b) => typeof a === "number" && typeof b === "number" ? (Number.isNaN(b) ? Number.isNaN(a) : Math.abs(a - b) <= tol * Math.max(1, Math.abs(b))) : a === b;
+  let ok = false, msg = v.error || `\`${v.nombre}\` no da lo esperado`;
+  if(x === undefined) msg = v.falta || `No hay una variable \`${v.nombre}\`: guardá el resultado con ese nombre`;
+  else if(typeof e === "string") ok = typeof x === "string" && x.trim() === e.trim();
+  else if(typeof e === "boolean") ok = (x === true || x === 1) === e;
+  else if(!Array.isArray(e)) ok = cerca(Array.isArray(x) && x.length === 1 && x[0].length === 1 ? x[0][0] : x, e);
+  else {
+    const xx = Array.isArray(x) ? x : [[x]], ee = Array.isArray(e[0]) ? e : [e];
+    // Un vector se acepta en fila o en columna
+    const plano = y => y.flat();
+    const mismo = xx.length === ee.length && xx[0].length === ee[0].length;
+    const vector = (ee.length === 1 || ee[0].length === 1) && (xx.length === 1 || xx[0].length === 1) && plano(xx).length === plano(ee).length;
+    if(!mismo && !vector) msg = `\`${v.nombre}\` tiene que ser de ${dim(ee)} y la tuya es de ${dim(xx)}`;
+    else ok = plano(xx).every((a, i) => cerca(a, plano(ee)[i]));
+  }
+  return { ok, msg: ok ? (v.ok || `\`${v.nombre}\` da lo que tiene que dar`) : msg };
+}
+async function verificarTodoEjp(firma){
+  const ej = ejp.ej, checks = [];
+  let salida = "";
+  if(ej.tipo === "octave"){
+    resEjp(`<div class="pr-corre"><span class="giro"></span>Corriendo tu código…</div>`);
+    let O;
+    try { O = await cargarOctave(); } catch(e){ resEjp(`<div class="pr-mal"><b>No se pudo cargar Octave del navegador.</b><p>Revisá la conexión y probá de nuevo.</p></div>`); return; }
+    if(!ejp || ejp.ej !== ej) return;
+    const { codigo, lineaDe, varios } = codigoOctEj(ej), r = O.correr(codigo, { ocultar: ej.ocultar });
+    if(r.error) checks.push({ ok: false, msg: `Tu código da un error: ${errorOct(r, lineaDe, varios).replace(/^error: /, "")}` });
+    (ej.vars || []).forEach(v => checks.push(compararVar(v, r.vars)));
+    salida = salidaOctEjp(r, lineaDe, varios);
+  }
+  const t = codigoEjp(ej), sin = lengEj(ej) === "octave" ? sinComentariosOct : sinComentarios;
+  if((ej.checks || []).length) checks.push(...verificarEjp(k => sin(k.archivo ? t[k.archivo] ?? "" : Object.values(t).join("\n")), ej.checks));
+  checks.push(...compararRespuestas(ej));
+  if($("#ejpResp")) $("#ejpResp").outerHTML = respuestasEjp(ej);
+  ejp.verif = firma;
+  pintarChecksEjp(checks, true, salida);
+}
+/* Gráfico en SVG de lo que dibujó el código (plot, plot3, DibujarEjes…): 2D, o 3D con la vista de Octave (az -37.5°, el 30°) */
+function svgGrafico(f){
+  const W = 440, H = 320, PAL = ["#0072BD", "#D95319", "#EDB120", "#7E2F8E", "#77AC30", "#4DBEEE", "#A2142F"];
+  const tres = f.tres || f.series.some(s => s.z);
+  const S = f.series.map(s => ({ ...s, z: s.z || s.x.map(() => 0) }));
+  const todos = k => S.flatMap(s => s[k]).filter(Number.isFinite);
+  const lim = k => { const v = todos(k); let a = Math.min(...v), b = Math.max(...v); if(!v.length){ a = 0; b = 1; } if(a === b){ a -= 1; b += 1; } return [a, b]; };
+  const [x0, x1] = lim("x"), [y0, y1] = lim("y"), [z0, z1] = lim("z");
+  const top = f.titulo ? 28 : 12, M = { l: 52, r: 16, t: top, b: 40 };
+  let pr, ejesSvg = "";
+  const fmtN = v => Math.abs(v) >= 1e4 || (Math.abs(v) < 1e-3 && v !== 0) ? v.toExponential(1) : String(+v.toFixed(3));
+  const marcas = (a, b) => { const paso = Math.pow(10, Math.floor(Math.log10((b - a) / 4))), p = [1, 2, 5, 10].map(k => k * paso).find(k => (b - a) / k <= 6) || paso * 10, out = []; for(let v = Math.ceil(a / p) * p; v <= b + p * 1e-9; v += p) out.push(+v.toFixed(10)); return out; };
+  if(!tres){
+    let ax = [x0, x1], ay = [y0, y1];
+    const pw = W - M.l - M.r, ph = H - M.t - M.b;
+    if(f.igual){ const k = Math.max((x1 - x0) / pw, (y1 - y0) / ph), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2; ax = [cx - k * pw / 2, cx + k * pw / 2]; ay = [cy - k * ph / 2, cy + k * ph / 2]; }
+    const X = x => M.l + (x - ax[0]) / (ax[1] - ax[0]) * pw, Y = y => H - M.b - (y - ay[0]) / (ay[1] - ay[0]) * ph;
+    pr = (x, y) => [X(x), Y(y)];
+    const tx = marcas(ax[0], ax[1]), ty = marcas(ay[0], ay[1]);
+    ejesSvg = (f.grilla ? [...tx.map(v => `<line x1="${X(v)}" y1="${M.t}" x2="${X(v)}" y2="${H - M.b}" stroke="currentColor" stroke-opacity=".12"/>`), ...ty.map(v => `<line x1="${M.l}" y1="${Y(v)}" x2="${W - M.r}" y2="${Y(v)}" stroke="currentColor" stroke-opacity=".12"/>`)].join("") : "")
+      + `<rect x="${M.l}" y="${M.t}" width="${pw}" height="${ph}" fill="none" stroke="currentColor" stroke-opacity=".5"/>`
+      + tx.map(v => `<text x="${X(v)}" y="${H - M.b + 14}" font-size="10" text-anchor="middle" fill="currentColor" fill-opacity=".75">${fmtN(v)}</text>`).join("")
+      + ty.map(v => `<text x="${M.l - 6}" y="${Y(v) + 3}" font-size="10" text-anchor="end" fill="currentColor" fill-opacity=".75">${fmtN(v)}</text>`).join("")
+      + (f.ejes[0] ? `<text x="${M.l + pw / 2}" y="${H - 6}" font-size="11" text-anchor="middle" fill="currentColor">${esc(f.ejes[0])}</text>` : "")
+      + (f.ejes[1] ? `<text x="12" y="${M.t + ph / 2}" font-size="11" text-anchor="middle" fill="currentColor" transform="rotate(-90 12 ${M.t + ph / 2})">${esc(f.ejes[1])}</text>` : "");
+  } else {
+    const [az, el] = (f.vista || [-37.5, 30]).map(v => v * Math.PI / 180);
+    // Sin "axis equal", cada eje se estira a la misma medida (como Octave); con "axis equal", todos en las mismas unidades
+    const esc3 = f.igual ? [1, 1, 1].map(() => 1 / Math.max(x1 - x0, y1 - y0, z1 - z0)) : [1 / (x1 - x0), 1 / (y1 - y0), 1 / (z1 - z0)];
+    const P = (x, y, z) => { const u = (x - x0) * esc3[0], v = (y - y0) * esc3[1], w = (z - z0) * esc3[2]; return [Math.cos(az) * u + Math.sin(az) * v, -Math.sin(el) * Math.sin(az) * u + Math.sin(el) * Math.cos(az) * v + Math.cos(el) * w]; };
+    const esquinas = [];
+    for(const a of [x0, x1]) for(const b of [y0, y1]) for(const c of [z0, z1]) esquinas.push(P(a, b, c));
+    const sx = esquinas.map(p => p[0]), sy = esquinas.map(p => p[1]);
+    const mx = [Math.min(...sx), Math.max(...sx)], my = [Math.min(...sy), Math.max(...sy)];
+    const pw = W - M.l - M.r, ph = H - M.t - M.b, k = Math.min(pw / (mx[1] - mx[0] || 1), ph / (my[1] - my[0] || 1));
+    const ox = M.l + (pw - (mx[1] - mx[0]) * k) / 2, oy = H - M.b - (ph - (my[1] - my[0]) * k) / 2;
+    pr = (x, y, z) => { const p = P(x, y, z); return [ox + (p[0] - mx[0]) * k, oy - (p[1] - my[0]) * k]; };
+    const linea = (a, b, extra = "") => { const p = pr(...a), q = pr(...b); return `<line x1="${p[0].toFixed(1)}" y1="${p[1].toFixed(1)}" x2="${q[0].toFixed(1)}" y2="${q[1].toFixed(1)}" ${extra}/>`; };
+    const base = [x0, y0, z0];
+    // Los tres ejes desde la esquina, con sus marcas
+    const ejes3 = [[x1, y0, z0, "x", 0], [x0, y1, z0, "y", 1], [x0, y0, z1, "z", 2]];
+    ejesSvg = ejes3.map(([a, b, c, n, i]) => linea(base, [a, b, c], `stroke="currentColor" stroke-opacity=".55"`)
+      + marcas(...[[x0, x1], [y0, y1], [z0, z1]][i]).map(v => { const pt = [x0, y0, z0]; pt[i] = v; const p = pr(...pt); return `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="1.4" fill="currentColor" fill-opacity=".55"/><text x="${(p[0] + (i === 2 ? -6 : 0)).toFixed(1)}" y="${(p[1] + (i === 2 ? 3 : 12)).toFixed(1)}" font-size="9" text-anchor="${i === 2 ? "end" : "middle"}" fill="currentColor" fill-opacity=".7">${fmtN(v)}</text>`; }).join("")
+      + (() => { const p = pr(a, b, c); return `<text x="${(p[0] + (i === 0 ? 10 : i === 1 ? -10 : 0)).toFixed(1)}" y="${(p[1] + (i === 2 ? -6 : 4)).toFixed(1)}" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">${esc(f.ejes[i] || n)}</text>`; })()).join("");
+    if(f.grilla) ejesSvg = [[x1, y1, z0], [x1, y0, z1], [x0, y1, z1]].map(q => linea(base, q, `stroke="currentColor" stroke-opacity=".08"`)).join("") + ejesSvg;
+  }
+  let col = 0;
+  const cuerpo = S.map(s => {
+    const c = s.color || PAL[col++ % PAL.length], pts = s.x.map((x, i) => pr(x, s.y[i], s.z[i])).filter(p => p.every(Number.isFinite));
+    if(!pts.length) return "";
+    const dash = s.linea === "--" ? ` stroke-dasharray="6 4"` : s.linea === ":" ? ` stroke-dasharray="2 3"` : s.linea === "-." ? ` stroke-dasharray="7 3 2 3"` : "";
+    let out = s.linea !== "" && pts.length > 1 ? `<polyline points="${pts.map(p => p.map(v => v.toFixed(1)).join(",")).join(" ")}" fill="none" stroke="${c}" stroke-width="${s.ancho ? Math.min(3, s.ancho * .8) : 1.6}"${dash} stroke-linejoin="round"/>` : "";
+    if(s.marca) out += pts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${s.marca === "." ? 2.4 : 3}" fill="${s.marca === "o" ? "none" : c}" stroke="${c}"/>`).join("");
+    if(s.flecha && pts.length === 2){
+      const [a, b] = pts, ang = Math.atan2(b[1] - a[1], b[0] - a[0]), L = 8;
+      out += `<polygon points="${b[0]},${b[1]} ${b[0] - L * Math.cos(ang - .4)},${b[1] - L * Math.sin(ang - .4)} ${b[0] - L * Math.cos(ang + .4)},${b[1] - L * Math.sin(ang + .4)}" fill="${c}"/>`;
+    }
+    return out;
+  }).join("");
+  const textos = (f.textos || []).map(x => { const p = tres ? pr(x.x, x.y, x.z) : pr(x.x, x.y); return `<text x="${(p[0] + 4).toFixed(1)}" y="${(p[1] - 4).toFixed(1)}" font-size="11" font-weight="600" fill="currentColor">${esc(x.t)}</text>`; }).join("");
+  const titulo = f.titulo ? `<text x="${W / 2}" y="17" font-size="12.5" font-weight="700" text-anchor="middle" fill="currentColor">${esc(f.titulo)}</text>` : "";
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(f.titulo || "Gráfico")}">${titulo}${ejesSvg}${cuerpo}${textos}</svg>${tres ? `<small>Vista 3D como la de Octave (view(3)). X rojo, Y verde, Z azul en los sistemas de ejes.</small>` : ""}`;
+}
+
 /* Lo que se muestra abajo del editor. "verif" es la verificación: el mismo botón la oculta (y el editor vuelve
    a su tamaño) mientras el código no cambie; si cambió, el botón verifica de nuevo. */
 function resEjp(html, que = ""){
@@ -6447,10 +6724,10 @@ function resEjp(html, que = ""){
   if(que !== "verif") ejp.verif = null;
   pintarBtnVerif();
 }
-const firmaEjp = () => JSON.stringify(codigoEjp(ejp.ej));
+const firmaEjp = () => JSON.stringify([codigoEjp(ejp.ej), ejp.est.resp[ejp.ej.id] || {}]);
 function pintarBtnVerif(){
   const b = $('#ejpDer [data-ejp="verificar"]');
-  if(!b || ejp.ej.tipo !== "codigo") return;
+  if(!b || !["codigo", "octave", "respuestas"].includes(ejp.ej.tipo)) return;
   const visible = ejp.verif != null && ejp.verif === firmaEjp();
   b.textContent = visible ? "Ocultar verificación" : "Verificar";
   b.classList.toggle("ocultar", visible);
@@ -6478,10 +6755,17 @@ function accionEjp(a){
     resEjp(`<div class="pr-info"><b>💡 Pista ${ejp.pista} de ${ps.length}</b><p>${mdLinea(ps[ejp.pista - 1])}</p>${ejp.pista < ps.length ? `<button class="linkbtn" data-ejp="pista">Otra pista</button>` : ""}</div>`);
     return;
   }
+  if(a === "ejecutar"){ ejecutarEjp(); return; }
   if(a === "solucion"){
     if(!ejp.sol && !confirm(ej.tipo === "texto" ? "¿Ver un ejemplo de respuesta? Escribí primero la tuya." : "¿Ver la solución? Probá primero solo: resolverlo es lo que sirve para el parcial.")) return;
     ejp.sol = 2;
     const marcar = ejp.est.hechos.includes(ej.id) ? "" : `<button class="pr-chico" data-ejp="marcar">✓ Marcar como resuelto</button>`;
+    // Las respuestas esperadas, con su explicación
+    const resp = (ej.respuestas || []).length ? `<ul class="pr-checks">${ej.respuestas.map(x => `<li class="ok"><span>✓</span><div><b>${mdLinea(x.pregunta)} <code>${esc(String(x.mostrar ?? x.valor))}${x.unidad ? " " + esc(x.unidad) : ""}</code></b>${x.motivo ? `<p>${mdLinea(x.motivo)}</p>` : ""}</div></li>`).join("")}</ul>` : "";
+    if(ej.tipo === "respuestas"){
+      resEjp(`<div class="pr-info"><b>Las respuestas</b>${resp}<div class="ejp-acc">${marcar}</div></div>`);
+      return;
+    }
     if(ej.tipo === "texto"){
       resEjp(`<div class="pr-info"><b>Un ejemplo de respuesta</b><pre class="ejp-ejemplo">${esc(ej.solucion)}</pre><div class="ejp-acc">${marcar}</div></div>`);
       return;
@@ -6489,7 +6773,7 @@ function accionEjp(a){
     if((archivosEj(ej)[ejp.arch] || {}).soloLectura) ejp.arch = archivosEj(ej).findIndex(x => !x.soloLectura);
     pintarEdEjp();
     resEjp(`<div class="pr-info"><b>Solución</b><p>Lo nuevo está marcado en color.${editablesEj(ej).length > 1 ? " Mirá cada pestaña: el cambio está en más de un archivo." : ""} Comparalo con tu código y, si lo entendiste, marcalo como resuelto.</p>
-      <div class="ejp-acc"><button class="pr-chico" data-ejp-ed="tuyo">← Volver a mi código</button>${marcar}</div></div>`);
+      ${resp}<div class="ejp-acc"><button class="pr-chico" data-ejp-ed="tuyo">← Volver a mi código</button>${marcar}</div></div>`);
     return;
   }
   if(a === "marcar" || a === "desmarcar"){
@@ -6520,7 +6804,8 @@ function accionEjp(a){
     if(ej.tipo === "texto"){ pintarChecksEjp(verificarEjp(ejp.est.codigo[ej.id] || "", ej.checks || [])); return; }
     const firma = firmaEjp();
     if(ejp.verif === firma && $("#ejpRes").dataset.que === "verif"){ resEjp(""); return; }   // el mismo botón la oculta
-    if(ejp.sol === 2){ ejp.sol = 1; pintarEdEjp(); }
+    if(ejp.sol === 2 && ej.tipo !== "respuestas"){ ejp.sol = 1; pintarEdEjp(); }
+    if(ej.tipo === "octave" || ej.tipo === "respuestas" || (ej.respuestas || []).length){ verificarTodoEjp(firma); return; }
     const t = codigoEjp(ej);
     ejp.verif = firma;
     pintarChecksEjp(verificarEjp(k => sinComentarios(k.archivo ? t[k.archivo] ?? "" : Object.values(t).join("\n")), ej.checks || []), true);
@@ -6539,13 +6824,15 @@ function seguirEjp(){
   const i = ejp.partes.indexOf(ejp.pa), sig = ejp.partes[i + 1];
   return `${hayOtroEjp() ? `<button class="pr-fuerte" data-ejp="otro">Otro ejemplo →</button>` : ""}${sig ? `<button class="linkbtn" data-ejp-parte="${i + 1}">Parte ${sig.num}: ${esc(sig.pestana || sig.titulo)} →</button>` : ""}`;
 }
-function pintarChecksEjp(r, verif = false){
-  const bien = r.filter(x => x.ok).length, todo = bien === r.length, varios = editablesEj(ejp.ej).length > 1;
+function pintarChecksEjp(r, verif = false, salida = ""){
+  const bien = r.filter(x => x.ok).length, todo = bien === r.length, varios = editablesEj(ejp.ej).length > 1, ej = ejp.ej;
   if(todo) marcarEjp(true);
+  const aviso = ej.tipo === "octave" ? "Se corrió tu código con Octave del navegador y se compararon los resultados." : ej.tipo === "respuestas" ? "" : "Verificación orientativa: compará también con la solución.";
   resEjp(`
-    <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ Pasa las ${r.length} verificaciones` : `${bien} de ${r.length} verificaciones bien`}</b>${todo ? seguirEjp() : ""}</div>
+    <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ ${r.length === 1 ? "Está bien" : `Pasa las ${r.length} verificaciones`}` : `${bien} de ${r.length} verificaciones bien`}</b>${todo ? seguirEjp() : ""}</div>
     <ul class="pr-checks">${r.map(x => `<li class="${x.ok ? "ok" : "mal"}"><span>${x.ok ? "✓" : "✗"}</span><div><b>${mdLinea(x.msg)}</b>${varios && x.archivo ? `<small class="ejp-arch">${esc(x.archivo)}</small>` : ""}</div></li>`).join("")}</ul>
-    <p class="ejp-aviso">Verificación orientativa: compará también con la solución.</p>`, verif ? "verif" : "");
+    ${salida ? `<details class="ejp-salida-v"${todo ? "" : " open"}><summary>Lo que mostró tu código</summary>${salida}</details>` : ""}
+    ${aviso ? `<p class="ejp-aviso">${aviso}</p>` : ""}`, verif ? "verif" : "");
   if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 function corregirEjp(){
@@ -6583,12 +6870,26 @@ function clicEjp(e){
     const ta = ejp.ed && ejp.ed.ta, k = ds.ejpTecla;
     if(!ta) return true;
     if(k === "⇥" || k === "⇤") sangrar(ta, k === "⇥" ? 1 : -1);
-    else if(["()", "\"\"", "{}", "<>"].includes(k)){ escribir(ta, k); ta.setSelectionRange(ta.selectionStart - 1, ta.selectionStart - 1); }
+    else if(["()", "\"\"", "{}", "<>", "[]"].includes(k)){ escribir(ta, k); ta.setSelectionRange(ta.selectionStart - 1, ta.selectionStart - 1); }
     else escribir(ta, k);
     return true;
   }
   return false;
 }
+// Las respuestas se guardan al escribirlas (y pierden el color de la verificación anterior)
+function guardarRespEjp(el){
+  if(!ejp || !ejp.ej) return;
+  const r = ejp.est.resp[ejp.ej.id] || (ejp.est.resp[ejp.ej.id] = {}), i = el.dataset.ejpResp;
+  if(el.value === "") delete r["r" + i]; else r["r" + i] = el.value;
+  if(!Object.keys(r).length) delete ejp.est.resp[ejp.ej.id];
+  el.closest("label").classList.remove("ok", "mal");
+  if(ejp.respEstado) delete ejp.respEstado[i];
+  clearTimeout(ejp.tGuardar); ejp.tGuardar = setTimeout(guardarEjp, 300);
+  pintarBtnVerif();
+}
+document.addEventListener("input", e => { if(e.target.matches && e.target.matches("[data-ejp-resp]")) guardarRespEjp(e.target); });
+document.addEventListener("change", e => { if(e.target.matches && e.target.matches("select[data-ejp-resp]")) guardarRespEjp(e.target); });
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches("input[data-ejp-resp]")){ e.preventDefault(); accionEjp("verificar"); } });
 document.addEventListener("input", e => {
   if(e.target.id !== "ejpTexto" || !ejp || !ejp.ej) return;
   ejp.est.codigo[ejp.ej.id] = e.target.value;

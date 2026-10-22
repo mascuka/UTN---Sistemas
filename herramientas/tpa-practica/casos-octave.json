@@ -1,0 +1,158 @@
+[
+ {
+  "nombre": "escalares",
+  "codigo": "x = 5\nx = 0.70710678\nx = 12.3456\nx = 1234.5678\nx = 123456.789\nx = -0.5\nx = 1e-5\nx = 100.5\nx = 0.012\nx = 0.0012\nx = -123.456\nx = 1/3\nx = 1e10"
+ },
+ {
+  "nombre": "matrices",
+  "codigo": "A = [1 2; 3 4]\nB = [0.7071 -0.7071; 0.7071 0.7071]\nC = [1 2.5; 100 3]\nD = [1000.5 2]\nE = [1 6.1232e-17; 0 1]\nF = [1 -2 3]\nG = [0.5; 100000]\nI = -[1 2; 3 4]\nJ = [1.5 NaN Inf]\nK = []\nL = zeros(0,3)\nv = [100 200.25; -3 4]\nz = [1;2;3]*1e5\nB2 = [0.866 -0.5 0 10.5; 0.5 0.866 0 3; 0 0 1 0; 0 0 0 1]\nA9 = [-0.7071 0.7071 0 300; 0.7071 0.7071 0 1000; 0 0 1 -200; 0 0 0 1]"
+ },
+ {
+  "nombre": "logicos y texto",
+  "codigo": "M = true\nN = [true false]\nb = false(2,1)\ns = \"hola\"\nt = 'chau'\nu = [s ' ' t]\nn = numel(u)\nq = 3 > 2\nw = [1 2 3] >= 2"
+ },
+ {
+  "nombre": "rotaciones del profe",
+  "codigo": "R = Rotz(30)*Rotx(45)\nT = Traslacion([1 2 3])*Rotz(90)\np = T*[1;0;0;1]\nRy = Roty(-60)\nH = Traslacion([300 1000 -200])*Rotz(180)\niH = inv(H)\nP = H*[0;0;-12;1]"
+ },
+ {
+  "nombre": "traslacion corta",
+  "codigo": "T1 = Traslacion(5)\nT2 = Traslacion([1 2])"
+ },
+ {
+  "nombre": "DH del profe",
+  "codigo": "A1 = matrizDenavitHartenberg(30, 100, 50, 90)\nA2 = matrizDenavitHartenberg(-45, 0, 200, 0);\nA3 = matrizDenavitHartenberg(pi/4, 10, 0, pi/2, 'rad')\nT = A1*A2\npos = T(1:3,4)"
+ },
+ {
+  "nombre": "indices y end",
+  "codigo": "A = magic4 = [16 2 3 13; 5 11 10 8; 9 7 6 12; 4 14 15 1];\nA(2,3)\nA(end,1)\nA(:,end)\nA(2,:)\nA(1:2,3:4)\nA(end)\nA([1 end])\nv = 10:10:50;\nv(end)\nv([2 4])\nv(v > 25)\nA(:)'"
+ },
+ {
+  "nombre": "asignacion con indices",
+  "codigo": "x = [];\nx(3) = 5\ny = zeros(2);\ny(3,3) = 1\nz = 1:5;\nz(2) = []\nw = [1 2; 3 4];\nw(:,1) = []\nM = eye(3);\nM(2,:) = [7 8 9]\nQ = [];\nQ(:,1) = [1;2;3];\nQ(:,2) = [4;5;6]"
+ },
+ {
+  "nombre": "rangos",
+  "codigo": "a = 0:0.25:1\nb = 10:-3:1\nc = 1:0\nd = linspace(0,1,5)\nn = numel(0:0.1:1)"
+ },
+ {
+  "nombre": "for while if",
+  "codigo": "s = 0;\nfor k = 1:10\n  if mod(k, 2) == 0\n    s = s + k;\n  elseif k == 5\n    s = s + 100;\n  else\n    continue\n  end\nend\ns\nn = 0;\nwhile true\n  n = n + 1;\n  if n >= 7, break; end\nend\nn\nfor col = [1 2; 3 4]\n  col\nend"
+ },
+ {
+  "nombre": "switch",
+  "codigo": "for t = 'RPX'\n  switch t\n    case 'R'\n      disp('rotacional')\n    case {'P', 'p'}\n      disp('prismatica')\n    otherwise\n      disp('otra')\n  end\nend"
+ },
+ {
+  "nombre": "funciones propias",
+  "codigo": "function T = miRotz(a)\n  T = [cosd(a) -sind(a) 0 0; sind(a) cosd(a) 0 0; 0 0 1 0; 0 0 0 1];\nend\nfunction [s, p] = sumaYprod(a, b)\n  s = a + b;\n  if nargout > 1\n    p = a * b;\n  end\nend\nR = miRotz(90)\n[s, p] = sumaYprod(3, 4)\ns2 = sumaYprod(1, 1)"
+ },
+ {
+  "nombre": "anonimas",
+  "codigo": "f = @(x) x.^2 + 1;\ny = f(3)\ng = @(a, b) a + b;\nz = g(2, [1 2 3])\nh = @sind;\nw = h(30)"
+ },
+ {
+  "nombre": "structs",
+  "codigo": "s.a = 1;\ns.b = [1 2 3];\ns.c = \"hola\";\ns\nopts = struct();\nopts.verbose = 0;\nisfield(opts, 'verbose')\nisfield(opts, 'lambda')\ns.b(2)"
+ },
+ {
+  "nombre": "printf",
+  "codigo": "fprintf('%d %d\\n', [1 2; 3 4])\nfprintf('x = %.3f\\n', pi)\nfprintf('%6.2f|', [1.5 -2.25 3]); fprintf('\\n')\nfprintf(\"hola %s, tenes %d anios\\n\", \"Ana\", 20)\ns = sprintf('%e', 12345.678)\ns = sprintf('%g %g %g', 0.0001, 1e6, 123456789)\ns = sprintf('%5.1f', 2.25)\ns = sprintf('%+d', 5)\ns = sprintf('%05.1f', -2.5)\ndisp(sprintf('%d', 42))\nnum2str(pi)\nnum2str(3)\nnum2str([1 2 3])\nnum2str(-0.5)\nmat2str([1 2; 3 4.5])"
+ },
+ {
+  "nombre": "disp",
+  "codigo": "disp(pi)\ndisp([1 2; 3 4.5])\ndisp('texto')\ndisp([1 2 3])\ndisp(true)"
+ },
+ {
+  "nombre": "operaciones",
+  "codigo": "A = [2 1; 1 3];\nb = [3; 5];\nx = A \\ b\ny = b' / A\nprintf(\"%.6f\\n\", det(A))\nn = norm([3 4])\nk = cross([1 0 0], [0 1 0])\np = dot([1 2 3], [4 5 6])\nt = trace(A)\nq = A^2\nr = A.^2\nm = max([3 7 2])\n[m, i] = max([3 7 2])\nmn = min([3 7 2; 1 9 0])\ns = sum([1 2; 3 4])\ns2 = sum([1 2; 3 4], 2)\nmu = mean([1 2 3 4])\nab = abs([-1 2 -3])\nr2 = round(2.5)\nr3 = round(-2.5)\nfl = floor(-2.5)\nmd = mod(-370, 360)\nmd2 = mod(370, 360)\nat = atan2d(1, -1)\nac = acosd(0.5)\nss = sqrt(16)"
+ },
+ {
+  "nombre": "trigonometria en grados",
+  "codigo": "a = cosd(90)\nb = sind(180)\nc = cosd(60)\nd = sind(30)\ne1 = cos(pi/2)\nf = tand(45)\ng = [cosd(0) cosd(90) cosd(180) cosd(270)]"
+ },
+ {
+  "nombre": "broadcasting",
+  "codigo": "a = [1 2 3] + [10; 20]\nb = [1 2 3] .* 2\nc = [1;2] - [1 1 1]"
+ },
+ {
+  "nombre": "repmat y 3D",
+  "codigo": "T = repmat(eye(2), [1 1 3]);\nsize(T)\nT(:,:,2) = [1 2; 3 4];\nT(:,:,2)\nT(2,1,2)\nx = repmat([1 2], 2, 2)"
+ },
+ {
+  "nombre": "cinematica directa del profe",
+  "codigo": "theta = [30 45 -20]; d = [100 0 0]; a = [0 200 150]; alpha = [90 0 0];\n[T, origins, Tsist] = cinematica_directa(theta, d, a, alpha, 'deg');\nT\norigins\nA2 = Tsist(:,:,2)"
+ },
+ {
+  "nombre": "jacobianos del profe",
+  "codigo": "q = [30 50 20];\nJ = jacobiano_analitico(q, 'RPR', [0 0 0], [100 0 0], [0 0 50], [90 -90 0], 'deg')\nJn = jacobiano_numerico(q, 'RPR', [0 0 0], [100 0 0], [0 0 50], [90 -90 0], 'deg');\ndif = max(max(abs(J(1:3,:) - Jn(1:3,:)))) < 1e-4"
+ },
+ {
+  "nombre": "cinematica inversa del profe",
+  "codigo": "pd = [150; 100; 200];\nq0 = [10 100 50 0];\ntipo = 'RPPR';\nq_offset = [0 0 -90 0]; d_offset = [0 0 0 0]; a = [0 0 0 0]; alpha = [0 -90 0 0];\nopts.verbose = 0;\n[q_sol, theta, d, ok, info] = cinematica_inversa(pd, q0, tipo, q_offset, d_offset, a, alpha, 'deg', opts);\nprintf(\"%.3f\\n\", q_sol)\nok\ninfo.iters\ninfo.err_pos < 1e-3\n[T, origins] = cinematica_directa(theta', d', a, alpha, 'deg');\nprintf(\"%.3f\\n\", T(1:3,4))"
+ },
+ {
+  "nombre": "cinematica inversa verbose y limites",
+  "codigo": "o.verbose = 1; o.max_iter = 5;\n[q, th, d, ok] = cinematica_inversa([200; 0; 100], [0 0], 'RR', [0 0], [0 0], [150 150], [0 0], 'deg', o);\nq\no2.q_min = [-90 -90]; o2.q_max = [90 0];\nq2 = cinematica_inversa([100; 150; 0], [10 -10], 'RR', [0 0], [0 0], [150 150], [0 0], 'deg', o2)"
+ },
+ {
+  "nombre": "trayectorias del profe",
+  "codigo": "[q, Dq, t] = generacion_de_trayectorias([0 0 0], [90 -45 30], [30 30 30], 0.5);\nsize(q)\nq(end,:)\nt(1:3)'\nDq(1,:)\n[q2, D2, t2] = generacion_de_trayectorias([1 2], [1 2], [10 10], 0.1)"
+ },
+ {
+  "nombre": "errores: undefined",
+  "codigo": "x = y + 1"
+ },
+ {
+  "nombre": "errores: nonconformant",
+  "codigo": "a = [1 2 3] * [4 5 6]"
+ },
+ {
+  "nombre": "errores: indice fuera",
+  "codigo": "A = eye(3); A(4,1)"
+ },
+ {
+  "nombre": "errores: horzcat",
+  "codigo": "x = [1 2; 3]"
+ },
+ {
+  "nombre": "format long y bank",
+  "codigo": "format long\na = 0.70710678\nb = [0.7071 -0.7071; 0.7071 0.7071]\nformat bank\nx = 0.70710678\ny = [1 2.5; 100 -3]\nformat short\nz = 0.5"
+ },
+ {
+  "nombre": "columnas largas",
+  "codigo": "x = 1:20\ny = (1:12)*1.5"
+ },
+ {
+  "nombre": "comentarios y continuacion",
+  "codigo": "%{\nbloque de comentario\n%}\nx = [1 2 ... sigue\n     3 4]   % comentario\ny = [1, 2; # numeral\n     3, 4];\ny\nz = [1 -2]   % dos elementos\nw = [1 - 2]  % uno solo\nq = [x' x']"
+ },
+ {
+  "nombre": "transpuesta y cadenas",
+  "codigo": "a = [1 2 3]'\nb = 'it''s'\nc = [\"ab\" 'cd']\nd = a'"
+ },
+ {
+  "nombre": "try catch",
+  "codigo": "try\n  error('algo salio mal: %d', 5);\ncatch err\n  disp(err.message)\nend"
+ },
+ {
+  "nombre": "ans",
+  "codigo": "3 + 4\nans * 2\npi"
+ },
+ {
+  "nombre": "size y numel",
+  "codigo": "A = zeros(3, 4);\n[f, k] = size(A)\nsize(A, 2)\nnumel(A)\nlength(A)\nisempty([])"
+ },
+ {
+  "nombre": "min max dos args y find",
+  "codigo": "a = max([1 5 3], [4 2 6])\nb = min([1 5 3], 2)\nidx = find([0 3 0 5])\n[r, cc] = find([0 1; 1 0])"
+ },
+ {
+  "nombre": "logicos",
+  "codigo": "a = true && false\nb = [1 0 1] & [1 1 0]\nc = ~[1 0 2]\nd = xor_manual = ([1 0] | [0 0])\nany([0 0 1])\nall([1 1 0])"
+ },
+ {
+  "nombre": "empates y rangos",
+  "codigo": "printf(\"%.1f %.2f %.0f %.0f %.3e\\n\", 0.25, 0.125, 2.5, 3.5, 1.2345)\nb = -1:0.5:1\nd = 2:-0.5:0\nk = -2:1:2\nx = 0.125\ny = 2.25\nt = (0:0.5:1)'"
+ }
+]
