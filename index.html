@@ -3676,7 +3676,7 @@ const nombreSec = (p, k) => (p.nombres && p.nombres[k]) || NOMBRES[k] || k;
 const descSec = k => DESC_SECCION[k] || "";
 const iconoSec = k => ({ teorico: ICON_BOOK, practico: ICON_PEN, tpi: ICON_LAYER })[k] || ICON_CHECK;
 /* Si una sección no está cargada en los datos, se muestra vacía */
-const seccion = (p, k) => p[k] || { material: [], videos: [] };
+const seccion = (p, k) => ({ material: [], videos: [], ...(p[k] || {}) });   // una sección puede tener solo material o solo videos
 const MOD = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatrimestre", "2C": "2º cuatrimestre", "1C-2C": "1º o 2º cuatrimestre" };
 const MOD_CORTO = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatr.", "2C": "2º cuatr.", "1C-2C": "1º o 2º cuatr." };
 const materia = n => CARRERA.materias.find(m => m.n === n) || CARRERA.electivas.find(e => e.n === n);
