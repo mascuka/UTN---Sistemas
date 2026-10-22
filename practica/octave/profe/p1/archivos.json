@@ -1,0 +1,35 @@
+[
+ {
+  "nombre": "DibujarEjes.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "Rotx.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "Roty.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "Rotz.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "Traslacion.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "dibujarOrigen.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "matrizDenavitHartenberg.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "cinematica_directa.m",
+  "ejecuta": true,
+  "nota": "Es de la carpeta del 2º parcial: multiplica las matrices DH de todas las filas de una vez."
+ }
+]

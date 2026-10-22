@@ -1210,6 +1210,14 @@
   .pr-tab:hover{color:#e6e6e6}
   .pr-tab.on{background:#1e2228;color:#fff}
   .pr-tab.dato{color:#7f8b96;font-style:italic}
+  .pr-tab.profe{font-size:.74rem;padding:7px 9px}
+  .pr-tab.dato.profe::after{content:none}
+  /* Con la carpeta del profe, mi archivo queda siempre a la vista a la izquierda */
+  .pr-tabs:has(.pr-tab.profe) > .pr-tab:first-child{position:sticky;left:0;z-index:1;background:#16191d;box-shadow:-6px 0 0 #16191d, 6px 0 8px -4px #0008}
+  .pr-tabs:has(.pr-tab.profe) > .pr-tab:first-child.on{background:#1e2228}
+  .pr-carpeta{flex:none;align-self:center;margin:0 2px 4px 10px;padding:2px 8px;border-left:1px solid #39404a;font:600 .64rem var(--sans);color:#8d97a2;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+  .ejp-profe{display:flex;flex-direction:column}
+  .ejp-profe-nota{margin:0;padding:8px 14px;font:500 .74rem/1.45 var(--sans);color:#b9c2cc;background:#1b2a30;border-bottom:1px solid #2c3a40}
   .pr-tab.dato::after{content:"solo lectura";font-family:ui-sans-serif,system-ui,sans-serif;font-style:normal;font-size:.62rem;color:#6b7480}
   .pr-punto{width:7px;height:7px;border-radius:50%;background:#5fb8c3}
   .pr-ed{flex:1;min-height:0;display:flex}
@@ -3026,6 +3034,7 @@ const MATERIAS = {
           resumen: { nombre: "Resumen y ejercicios modelo del 1º parcial", url: "material/tecnologias-para-la-automatizacion/p1/01-resumen-y-ejercicios-modelo-1er-parcial.pdf", paginas: 7 }
         },
         practicaLenguaje: "octave",
+        carpetaProfe: "practica/octave/profe/p1/",   // los .m del ZIP del profe: pestañas en el editor y se cargan al correr
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -3112,6 +3121,7 @@ const MATERIAS = {
           resumen: { nombre: "Resumen y ejercicios modelo del 2º parcial", url: "material/tecnologias-para-la-automatizacion/p2/01-resumen-y-ejercicios-modelo-2do-parcial.pdf", paginas: 14 }
         },
         practicaLenguaje: "octave",
+        carpetaProfe: "practica/octave/profe/p2/",
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -6150,13 +6160,13 @@ function leerEst(url){
   try { e = JSON.parse(leerLocal(claveFuente(url))); } catch(err){}
   e = e && typeof e === "object" ? e : {};
   const obj = x => x && typeof x === "object" && !Array.isArray(x) ? x : {}, lista = x => Array.isArray(x) ? x : [];
-  return { codigo: obj(e.codigo), resp: obj(e.resp), marcas: obj(e.marcas), hechos: lista(e.hechos), leidas: lista(e.leidas), ultimo: e.ultimo || null };
+  return { codigo: obj(e.codigo), resp: obj(e.resp), marcas: obj(e.marcas), azar: obj(e.azar), hechos: lista(e.hechos), leidas: lista(e.leidas), ultimo: e.ultimo || null };
 }
 /* Cada archivo guarda lo suyo. Dónde se quedó: el de "El parcial por partes" va en su archivo; el de la Práctica, aparte */
 function guardarEjp(){
   if(!ejp) return;
   const e = ejp.est, de = (o, f) => Object.fromEntries(Object.entries(o).filter(([k]) => f.ids.has(k)));
-  ejp.fuentes.forEach(f => guardarLocal(f.clave, JSON.stringify({ codigo: de(e.codigo, f), resp: de(e.resp, f), marcas: de(e.marcas, f),
+  ejp.fuentes.forEach(f => guardarLocal(f.clave, JSON.stringify({ codigo: de(e.codigo, f), resp: de(e.resp, f), marcas: de(e.marcas, f), azar: de(e.azar, f),
     hechos: e.hechos.filter(x => f.ids.has(x)), leidas: e.leidas.filter(x => f.partes.has(x)), ultimo: ejp.claveUltimo ? f.ultimo : e.ultimo })));
   if(ejp.claveUltimo) guardarLocal(ejp.claveUltimo, e.ultimo);
 }
@@ -6167,7 +6177,20 @@ const conLecciones = () => ejp.tipo === "practica";
 const ICON_LIBRO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>';
 /* Los archivos de un ejercicio de código (una pestaña cada uno; los de solo lectura son para mirar) y lo que
    escribió en cada uno. Solo se guarda lo que cambió respecto del código inicial. */
-const archivosEj = ej => ej.archivos || [];
+const archivosEj = ej => {
+  const as = ej.archivos || [];
+  if(ej.tipo !== "octave" || !ejp || !(ejp.profe || []).length) return as;
+  // En Octave, después de los míos van los .m de la carpeta del profe (menos la función que el ejercicio pide escribir)
+  const ocultas = new Set((ej.ocultar || []).map(n => n + ".m"));
+  return [...as, ...ejp.profe.filter(a => !ocultas.has(a.nombre)).map(a => ({ nombre: a.nombre, inicial: a.texto, soloLectura: true, profe: a }))];
+};
+/* La carpeta del profe de un parcial (practica/octave/profe/pN/): archivos.json dice qué .m hay y cuáles se corren */
+const cacheProfe = {};
+function cargarProfe(carpeta){
+  return cacheProfe[carpeta] || (cacheProfe[carpeta] = fetch(carpeta + "archivos.json").then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(xs => Promise.all(xs.map(a => fetch(carpeta + a.nombre).then(r => { if(!r.ok) throw new Error(r.status); return r.text(); }).then(texto => ({ ...a, texto })))))
+    .catch(() => { delete cacheProfe[carpeta]; return []; }));
+}
 const editablesEj = ej => archivosEj(ej).filter(a => !a.soloLectura);
 function codigoEjp(ej){
   let c = ejp.est.codigo[ej.id];
@@ -6284,7 +6307,15 @@ async function montarEjp(m, p, id, tipo = "pp"){
   const claveUltimo = tipo === "practica" ? `isi-pp:practica:${m.n}/${p.id}` : null;
   ejp = { m, p, tipo, partes, parteDe, claveUltimo,
     fuentes: urls.map((url, f) => ({ clave: claveFuente(url), ultimo: ests[f].ultimo, ids: new Set(ds[f].partes.flatMap(x => x.ejercicios.map(e => e.id))), partes: new Set(ds[f].partes.map(x => x.id)) })),
-    est: { codigo: junto("codigo"), resp: junto("resp"), marcas: junto("marcas"), hechos: ests.flatMap(e => e.hechos), leidas: ests.flatMap(e => e.leidas), ultimo: claveUltimo ? leerLocal(claveUltimo) : ests[0].ultimo } };
+    est: { codigo: junto("codigo"), resp: junto("resp"), marcas: junto("marcas"), azar: junto("azar"), hechos: ests.flatMap(e => e.hechos), leidas: ests.flatMap(e => e.leidas), ultimo: claveUltimo ? leerLocal(claveUltimo) : ests[0].ultimo } };
+  if(p.carpetaProfe){
+    const yo = ejp;
+    ejp.cargaProfe = cargarProfe(p.carpetaProfe).then(xs => {
+      if(ejp !== yo) return;
+      ejp.profe = xs;
+      if(ejp.ej && ejp.ej.tipo === "octave" && $("#ejpTabs")) pintarTabsEjp();   // el editor sigue como está
+    });
+  }
   irEjp(id || ejp.est.ultimo, false);
 }
 /* Lo que pide la dirección: un ejercicio, la explicación de una parte (por su id) o, si no hay nada, el principio */
@@ -6518,12 +6549,22 @@ function pintarDerEjp(){
   }
 }
 /* Las pestañas del editor (una por archivo) y, si ya se vio la solución, "Mi código | Solución" del archivo abierto */
-function pintarEdEjp(){
+/* Las pestañas: los archivos del ejercicio y, en Octave, la carpeta del profe */
+function pintarTabsEjp(){
   const ej = ejp.ej, as = archivosEj(ej), a = as[ejp.arch] || as[0], viendo = ejp.sol === 2 && !a.soloLectura;
-  $("#ejpTabs").innerHTML = as.map((x, i) => `<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="Para mirar: no se edita"` : ""}>${esc(x.nombre)}</button>`).join("")
+  const p0 = as.findIndex(x => x.profe);
+  $("#ejpTabs").innerHTML = as.map((x, i) => `${i === p0 ? `<span class="pr-carpeta" title="Los .m del ZIP del profe, tal cual: ya están cargados, llamalos desde tu código">Carpeta del profe</span>` : ""}<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
     + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span>`);
   centrarEn($("#ejpTabs"), $("#ejpTabs .pr-tab.on"));
-  const leng = lengEj(ej);
+  return { ej, as, a, viendo };
+}
+function pintarEdEjp(){
+  const { ej, a, viendo } = pintarTabsEjp(), leng = lengEj(ej);
+  if(a.profe){
+    ejp.ed = null;
+    $("#ejpEd").innerHTML = `<div class="ed lectura ejp-sol ejp-profe"><p class="ejp-profe-nota">📁 Función del profe, tal cual está en su ZIP. Ya está cargada: llamala desde tu código${a.profe.nota ? `. ${esc(a.profe.nota)}` : "."}</p>${codigoLecturaEjp(a.inicial, null, leng).replace(/^<div class="ed lectura ejp-sol">|<\/div>$/g, "")}</div>`;
+    return;
+  }
   if(viendo || a.soloLectura){ ejp.ed = null; $("#ejpEd").innerHTML = codigoLecturaEjp(viendo ? a.solucion : a.inicial, viendo ? a.inicial : null, leng); return; }
   ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); }, leng, () => accionEjp(ej.tipo === "octave" ? "ejecutar" : "verificar"));
 }
@@ -6594,12 +6635,17 @@ function cargarOctave(){
 }
 /* El código de todos los archivos juntos (las funciones pueden ir en cualquiera) y de qué archivo es cada línea */
 function codigoOctEj(ej){
-  const t = codigoEjp(ej), as = archivosEj(ej), partes = [], de = [];
-  as.forEach(a => { const c = a.soloLectura ? a.inicial : t[a.nombre]; c.split("\n").forEach((_, i) => de.push([a.nombre, i + 1])); partes.push(c); });
-  return { codigo: partes.join("\n"), lineaDe: n => de[n - 1] || null, varios: as.length > 1 };
+  const t = codigoEjp(ej), as = archivosEj(ej), partes = [], de = [], archivos = [];
+  as.forEach(a => {
+    // Los .m del profe van aparte, como archivos de la carpeta (sus funciones le ganan a las del intérprete)
+    if(a.profe){ if(a.profe.ejecuta) archivos.push({ nombre: a.nombre, texto: a.inicial }); return; }
+    const c = a.soloLectura ? a.inicial : t[a.nombre]; c.split("\n").forEach((_, i) => de.push([a.nombre, i + 1])); partes.push(c);
+  });
+  return { codigo: partes.join("\n"), lineaDe: n => de[n - 1] || null, varios: as.filter(a => !a.profe).length > 1, archivos };
 }
 function errorOct(r, lineaDe, varios){
   if(!r.error) return "";
+  if(r.error.archivo) return `error: ${r.error.msg}  (${r.error.linea ? `línea ${r.error.linea} de ` : ""}${r.error.archivo}, del profe)`;
   const l = r.error.linea && lineaDe(r.error.linea);
   return `error: ${r.error.msg}${l ? `  (línea ${l[1]}${varios ? ` de ${l[0]}` : ""})` : ""}`;
 }
@@ -6617,9 +6663,10 @@ async function ejecutarEjp(){
   resEjp(`<div class="pr-corre"><span class="giro"></span>Corriendo…</div>`);
   let O;
   try { O = await cargarOctave(); } catch(e){ resEjp(`<div class="pr-mal"><b>No se pudo cargar Octave del navegador.</b><p>Revisá la conexión y probá de nuevo.</p></div>`); return; }
+  if(ejp.cargaProfe) await ejp.cargaProfe;
   if(!ejp || ejp.ej !== ej) return;
-  const { codigo, lineaDe, varios } = codigoOctEj(ej);
-  resEjp(salidaOctEjp(O.correr(codigo, { ocultar: ej.ocultar }), lineaDe, varios));
+  const { codigo, lineaDe, varios, archivos } = codigoOctEj(ej);
+  resEjp(salidaOctEjp(O.correr(codigo, { ocultar: ej.ocultar, archivos }), lineaDe, varios));
   if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 /* Compara una variable del código con lo esperado (números con tolerancia relativa) */
@@ -6653,8 +6700,9 @@ async function verificarTodoEjp(firma){
     resEjp(`<div class="pr-corre"><span class="giro"></span>Corriendo tu código…</div>`);
     let O;
     try { O = await cargarOctave(); } catch(e){ resEjp(`<div class="pr-mal"><b>No se pudo cargar Octave del navegador.</b><p>Revisá la conexión y probá de nuevo.</p></div>`); return; }
+    if(ejp.cargaProfe) await ejp.cargaProfe;
     if(!ejp || ejp.ej !== ej) return;
-    const { codigo, lineaDe, varios } = codigoOctEj(ej), r = O.correr(codigo, { ocultar: ej.ocultar });
+    const { codigo, lineaDe, varios, archivos } = codigoOctEj(ej), r = O.correr(codigo, { ocultar: ej.ocultar, archivos });
     if(r.error) checks.push({ ok: false, msg: `Tu código da un error: ${errorOct(r, lineaDe, varios).replace(/^error: /, "")}` });
     (ej.vars || []).forEach(v => checks.push(compararVar(v, r.vars)));
     salida = salidaOctEjp(r, lineaDe, varios);

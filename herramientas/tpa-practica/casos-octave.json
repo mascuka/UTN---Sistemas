@@ -154,5 +154,21 @@
  {
   "nombre": "empates y rangos",
   "codigo": "printf(\"%.1f %.2f %.0f %.0f %.3e\\n\", 0.25, 0.125, 2.5, 3.5, 1.2345)\nb = -1:0.5:1\nd = 2:-0.5:0\nk = -2:1:2\nx = 0.125\ny = 2.25\nt = (0:0.5:1)'"
+ },
+ {
+  "nombre": "profe: 2º parcial completo (DLS con verbose, jacobianos, trayectoria, IRB2400)",
+  "codigo": "l1 = 400;  l4 = 100;\ntipo     = 'RPPR';\nq_offset = [0; 90; 0; 0];\nd_offset = [l1; 0; 0; l4];\na        = [0; 0; 0; 0];\nalpha    = [0; 90; 0; 0];\npd = [300; 250; 650];\nq0 = [0; 100; 100; 0];\nJ = jacobiano_analitico(q0, tipo, q_offset, d_offset, a, alpha, 'deg');\nprintf('%.6f ', J(1:3,:)); printf('\\n');\n[q_sol, theta, d, success, info] = cinematica_inversa(pd, q0, tipo, q_offset, d_offset, a, alpha, 'deg');\nprintf('%.6f ', q_sol, success, info.iters, info.err_pos); printf('\\n');\nopts.verbose = true;\n[q_sol, theta, d, success, info] = cinematica_inversa(pd, q0, tipo, q_offset, d_offset, a, alpha, 'deg', opts);\nopts = struct(); opts.max_iter = 1;\n[q1it, ~, ~, s1] = cinematica_inversa(pd, q0, tipo, q_offset, d_offset, a, alpha, 'deg', opts);\nprintf('%.6f ', q1it, s1); printf('\\n');\n[q3,~,~,ok3,i3] = cinematica_inversa([-150;200;550], [90;50;50;0], tipo, q_offset, d_offset, a, alpha, 'deg');\nprintf('%.6f ', q3, ok3, i3.iters); printf('\\n');\n[q4,~,~,ok4,i4] = cinematica_inversa([-150;200;550], [0;100;100;0], tipo, q_offset, d_offset, a, alpha, 'deg');\nprintf('%.6f ', q4, ok4, i4.iters); printf('\\n');\no.q_min = [-180;0;0;-180]; o.q_max = [180;600;600;180];\n[q5,~,~,ok5,i5] = cinematica_inversa([-150;200;550], [0;100;100;0], tipo, q_offset, d_offset, a, alpha, 'deg', o);\nprintf('%.6f ', q5, ok5, i5.iters); printf('\\n');\n[q6,~,~,ok6,i6] = cinematica_inversa([250;-250;500], [-45;100;100], 'RPP', [0;90;0], [300;0;0], [0;0;0], [0;90;0], 'deg');\nprintf('%.6f ', q6, ok6, i6.iters); printf('\\n');\n[q, Dq, t] = generacion_de_trayectorias([10 0 50], [-50 40 20], [25 25 25], 0.15);\nprintf('%.6f ', t(end), size(q,1), t(2)-t(1), Dq(1,:), q(5,:)); printf('\\n');\nl1 = 770; l2 = 420; l3 = 400; l4 = 250;\no2.q_min = [-360; -360; -360; 0; 0; 0]; o2.q_max = [ 360;  360;  360; 0; 0; 0];\nP = [-87.59 -17.50 1221.98];\nq1g = atan2d(P(2), P(1));\n[qA,~,~,okA,iA] = cinematica_inversa(P', [q1g; 20; -45; 0; 0; 0], 'RRRPRR', zeros(6,1), [l1;0;0;l3;0;l4], [0;l2;0;0;0;0], [-90;0;90;-90;90;0], 'deg', o2);\nprintf('%.6f ', qA, okA, iA.iters); printf('\\n');\nJn = jacobiano_numerico(q0, 'RPPR', q_offset, [400;0;0;100], a, alpha, 'deg');\nprintf('%.6f ', Jn(1:3,:)); printf('\\n');\n"
+ },
+ {
+  "nombre": "profe: DH y directa con los orígenes",
+  "codigo": "T = Traslacion([1 2 3])*Rotz(30);\nA = matrizDenavitHartenberg(30, 10, 5, 90)\nB = matrizDenavitHartenberg(pi/6, 1, 2, -pi/2, 'rad')\n[Tt, o] = cinematica_directa([30 40], [1 0], [2 3], [90 0]);\no\nTt\n"
+ },
+ {
+  "nombre": "profe: Traslacion con tres números sueltos da error",
+  "codigo": "T = Traslacion(1, 2, 3)\n"
+ },
+ {
+  "nombre": "profe: Traslacion con uno y dos valores",
+  "codigo": "T1 = Traslacion(5)\nT2 = Traslacion([1 2])\n"
  }
 ]

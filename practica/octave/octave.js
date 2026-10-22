@@ -7,8 +7,10 @@
    Los gráficos (plot, plot3, DibujarEjes, dibujarOrigen…) se guardan para que la página los dibuje.
    No hace números complejos, celdas ni matemática simbólica: si aparecen, lo avisa con un error claro.
 
-   Uso:  Octave.correr(codigo, { ocultar: ["Rotz"] })
-         → { salida, vars: { nombre: valor en JS }, error: null | { msg, linea }, graficos }
+   Uso:  Octave.correr(codigo, { ocultar: ["Rotz"], archivos: [{ nombre: "Rotx.m", texto }] })
+         → { salida, vars: { nombre: valor en JS }, error: null | { msg, linea, archivo }, graficos }
+   archivos: los .m de funciones que están «en la carpeta» (los del profe). Cada uno se lee aparte, como en Octave,
+   y sus funciones le ganan a las que ya trae el intérprete.
    Un valor en JS: número (escalar), texto, true/false, matriz como arreglo de filas, o un objeto (struct).
    Se prueba contra el Octave de verdad con herramientas/tpa-practica/probar_octave.js. */
 (function(raiz){
@@ -857,6 +859,8 @@ class Interprete {
     this.funcs = new Map();
     this.prof = 0;
     this.linea = 0;
+    this.archivo = null;       // el .m de la carpeta donde se está ejecutando (null: el script)
+    this.archivos = opts.archivos || [];
     this.ctxEnd = [];
   }
   escribir(s){ this.salida.push(s); }
@@ -865,6 +869,18 @@ class Interprete {
     if(++this.pasos % 2000 === 0 && Date.now() - this.t0 > this.limiteMs) err(`el programa tardó más de ${this.limiteMs / 1000} segundos y se cortó (¿un while que nunca termina?)`);
   }
   correr(src){
+    // Primero los .m de la carpeta: cada archivo se lee solo (una función sin "end" termina donde termina el archivo)
+    for(const a of this.archivos){
+      this.archivo = a.nombre; this.linea = 0;
+      const pa = sintaxis(lexico(String(a.texto).replace(/\r\n?/g, "\n")), a.texto).programa();
+      let primera = true;
+      for(const [k, f] of pa.funcs){
+        f.archivo = a.nombre; this.funcs.set(k, f);
+        // Como en Octave, la primera función del archivo se llama como el archivo (DibujarEjes.m define dibujarEjes)
+        if(primera){ this.funcs.set(a.nombre.replace(/\.m$/, ""), f); primera = false; }
+      }
+    }
+    this.archivo = null;
     const toks = lexico(src);
     const { programa } = sintaxis(toks, src);
     const p = programa();
@@ -942,9 +958,11 @@ class Interprete {
         return s.otro ? this.bloque(s.otro, sc) : 0;
       }
       case "try": {
+        const archivo = this.archivo;
         try { return this.bloque(s.cuerpo, sc); }
         catch(e){
           if(!(e instanceof OctErr)) throw e;
+          this.archivo = archivo;
           if(s.v){ const st = new Est(); st.c.set("message", texto(e.message)); sc.vars.set(s.v, st); }
           return this.bloque(s.captura, sc);
         }
@@ -1118,9 +1136,10 @@ class Interprete {
       if(nout > Math.max(1, f.salidas.length)) err(`${f.nombre}: function called with too many outputs`);
       const sc = { vars: new Map(), nargin: args.length, nargout: nout };
       f.params.forEach((p, i) => { if(i < args.length && p !== "~") sc.vars.set(p, args[i]); });
-      const lineaAntes = this.linea;
+      const lineaAntes = this.linea, archivoAntes = this.archivo;
+      this.archivo = f.archivo || null;
       this.bloque(f.cuerpo, sc);
-      this.linea = lineaAntes;
+      this.linea = lineaAntes; this.archivo = archivoAntes;
       const outs = [];
       for(let i = 0; i < Math.max(1, nout); i++){
         const o = f.salidas[i];
@@ -1629,7 +1648,7 @@ function correr(codigo, opts = {}){
   catch(e){
     if(!(e instanceof OctErr) && !(e instanceof RangeError)) throw e;
     const msg = e instanceof RangeError ? "el cálculo se fue de tamaño (¿una recursión sin fin?)" : e.message;
-    error = { msg, linea: it.linea || null };
+    error = { msg, linea: it.linea || null, archivo: it.archivo };
     sc = it.raiz;
   }
   const vars = {};

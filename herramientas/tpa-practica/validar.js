@@ -18,9 +18,18 @@ const leerNumero = new Function(`return ${html.match(/const leerNumero = (s => .
 const respuestaOk = (x, v) => x.opciones ? v === x.valor
   : Math.abs(leerNumero(v) - x.valor) <= (x.tol ?? 0.01) * (x.relativa ? Math.max(1, Math.abs(x.valor)) : 1);
 
+// Como en la página: los .m de la carpeta del profe de ese parcial (practica/octave/profe/pN) se cargan al correr
+let profe = [];
+const carpetaProfe = f => {
+  const c = path.join(RAIZ, "practica/octave/profe", (f.match(/tpa-(p\d)/) || [])[1] || "-");
+  if(!fs.existsSync(path.join(c, "archivos.json"))) return [];
+  return JSON.parse(fs.readFileSync(path.join(c, "archivos.json"), "utf8")).filter(a => a.ejecuta)
+    .map(a => ({ nombre: a.nombre, texto: fs.readFileSync(path.join(c, a.nombre), "utf8") }));
+};
 function correr(ej, cual){
   const codigo = ej.archivos.map(a => a[cual] ?? a.inicial).join("\n");
-  const r = Octave.correr(codigo, { ocultar: ej.ocultar, limiteMs: 20000 });
+  const archivos = profe.filter(a => !(ej.ocultar || []).includes(a.nombre.replace(/\.m$/, "")));
+  const r = Octave.correr(codigo, { ocultar: ej.ocultar, archivos, limiteMs: 20000 });
   const checks = [];
   if(r.error) checks.push({ ok: false, msg: `error: ${r.error.msg} (línea ${r.error.linea})` });
   (ej.vars || []).forEach(v => checks.push(compararVar(v, r.vars)));
@@ -34,7 +43,8 @@ const archivos = process.argv.slice(2).length ? process.argv.slice(2) : fs.readd
   .filter(d => d.startsWith("tpa-")).map(d => `practica/${d}/ejercicios.json`).filter(f => fs.existsSync(path.join(RAIZ, f)));
 for(const f of archivos){
   const d = JSON.parse(fs.readFileSync(path.join(RAIZ, f), "utf8"));
-  console.log(`\n${f} · ${d.grupo}`);
+  profe = carpetaProfe(f);
+  console.log(`\n${f} · ${d.grupo}${profe.length ? ` · con ${profe.length} .m del profe` : ""}`);
   for(const p of d.partes) for(const ej of p.ejercicios){
     total++;
     const probs = [];

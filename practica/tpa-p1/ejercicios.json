@@ -422,7 +422,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "function T = Rotz(a)\n  % completá: la matriz 4x4 de un giro de a grados alrededor de Z\n\nend\n\nR30 = Rotz(30)\nR90 = Rotz(90)\n",
        "solucion": "function T = Rotz(a)\n  ca = cosd(a);\n  sa = sind(a);\n  T = [ ca -sa 0 0;\n        sa  ca 0 0;\n         0   0 1 0;\n         0   0 0 1];\nend\n\nR30 = Rotz(30)\nR90 = Rotz(90)\n"
       }
@@ -519,7 +519,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "p = [3; 1; 2; 1];   % el 1 del final es para multiplicar por una 4x4\n% q = ...           % el punto girado 90° alrededor de Z\n",
        "solucion": "p = [3; 1; 2; 1];\nq = Rotz(90) * p\n"
       }
@@ -634,7 +634,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "q1 = pi/6;  q2 = pi/7;   % en radianes\n% R  = ...   el giro total alrededor de Z (Rotz recibe grados)\n% jp = ...   la columna de y'\n",
        "solucion": "q1 = pi/6;  q2 = pi/7;\nR  = Rotz(rad2deg(q1 + q2));\njp = R(1:3, 2)\n"
       }
@@ -695,7 +695,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "R  = Roty(35) * Rotx(-50);\n% R3 = ...   la parte 3x3\n% E  = ...   la traspuesta por R3\n% d  = ...   el determinante\n",
        "solucion": "R  = Roty(35) * Rotx(-50);\nR3 = R(1:3, 1:3);\nE  = R3' * R3\nd  = det(R3)\n"
       }
@@ -837,7 +837,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "% T  = [ ... ]                         % a mano, fila por fila\n% T2 = Traslacion([1 2 3]) * Rotz(90)  % con las funciones del profe\n",
        "solucion": "T  = [0 -1 0 1;\n      1  0 0 2;\n      0  0 1 3;\n      0  0 0 1]\nT2 = Traslacion([1 2 3]) * Rotz(90)\n"
       }
@@ -985,7 +985,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "p = [3; 3; 3; 1];\n% p1 = ...   trasladado -4 en X\n% p2 = ...   y después girado 180° alrededor de X\n",
        "solucion": "p  = [3; 3; 3; 1];\np1 = Traslacion([-4 0 0]) * p\np2 = Rotx(180) * p1\n"
       }
@@ -1061,7 +1061,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "r = [1; 0; 0; 1];\n% a = ...   gira y después traslada\n% b = ...   traslada y después gira\n",
        "solucion": "r = [1; 0; 0; 1];\na = Traslacion([2 0 0]) * Rotz(90) * r\nb = Rotz(90) * Traslacion([2 0 0]) * r\n"
       }
@@ -1211,7 +1211,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "ruvw = [2; -1; 3];\n% T = ...   respecto del fijo: lo último a la izquierda\n% r = ...\n",
        "solucion": "ruvw = [2; -1; 3];\nT = Traslacion([1 4 -2]) * Roty(-60) * Traslacion([3 -2 1]) * Rotx(25);\nr = T * [ruvw; 1]\n"
       }
@@ -1286,7 +1286,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "ruvw = [-4; 7; 5];\n% T = ...\n% r = ...\n",
        "solucion": "ruvw = [-4; 7; 5];\nT = Rotz(110) * Rotx(-35) * Roty(20);\nr = T * [ruvw; 1]\n"
       }
@@ -1362,7 +1362,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "ruvw = [1; 3; -2];\n% T = ...   ojo: primero traslada\n% r = ...\n",
        "solucion": "ruvw = [1; 3; -2];\nT = Rotz(30) * Traslacion([2 -4 1]);\nr = T * [ruvw; 1]\n"
       }
@@ -1436,7 +1436,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "ruvw = [1; 0; 0];\n% T = ...   respecto del móvil: en el orden en que se hace\n% r = ...\n",
        "solucion": "ruvw = [1; 0; 0];\nT = Rotz(90) * Traslacion([5 0 0]);\nr = T * [ruvw; 1]\n"
       }
@@ -1627,7 +1627,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "% T = ...       el avión visto desde la torre\n% torre = ...   el origen de la torre, visto desde el avión\n",
        "solucion": "T = Traslacion([2500 -1800 600]) * Rotz(90);\ntorre = inv(T) * [0; 0; 0; 1]\n"
       }
@@ -1717,7 +1717,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "% T01 = ...\n% T12 = ...\n% T02 = ...\n% p0  = ...\n",
        "solucion": "T01 = Traslacion([2 0 1]) * Rotz(90);\nT12 = Traslacion([0 3 0]) * Rotx(-90);\nT02 = T01 * T12;\np0  = T02 * [1; 1; 1; 1]\n"
       }
@@ -1807,7 +1807,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "T = Traslacion([3 -1 2]) * Roty(40);\n% R = ...    la rotación\n% p = ...    la posición\n% Ti = ...   la inversa con la fórmula\n% I = T * Ti\n",
        "solucion": "T = Traslacion([3 -1 2]) * Roty(40);\nR = T(1:3, 1:3);\np = T(1:3, 4);\nTi = [R' -R'*p; 0 0 0 1]\nI = T * Ti\n"
       }
@@ -1971,7 +1971,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "th = 30; d = 10; a = 5; al = 90;\n% A1 = ...   las 4 transformaciones\n% A2 = ...   la función del profe\n",
        "solucion": "th = 30; d = 10; a = 5; al = 90;\nA1 = Rotz(th) * Traslacion([0 0 d]) * Traslacion([a 0 0]) * Rotx(al)\nA2 = matrizDenavitHartenberg(th, d, a, al)\n"
       }
@@ -2079,7 +2079,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "l1 = 4; l4 = 2; t1 = 30; d2 = 5; d3 = 6; t4 = 60;\n% una matriz por fila de la tabla (θ, d, a, α):\n% A1 = matrizDenavitHartenberg( ... );\n% ...\n% T = ...\n% p = T(1:3, 4)\n",
        "solucion": "l1 = 4; l4 = 2; t1 = 30; d2 = 5; d3 = 6; t4 = 60;\n%  art   θ    d    a   α\n%   1    t1   l1   0   0\n%   2    90   d2   0   90\n%   3    0    d3   0   0\n%   4    t4   l4   0   0\nA1 = matrizDenavitHartenberg(t1, l1, 0, 0);\nA2 = matrizDenavitHartenberg(90, d2, 0, 90);\nA3 = matrizDenavitHartenberg(0,  d3, 0, 0);\nA4 = matrizDenavitHartenberg(t4, l4, 0, 0);\nT = A1 * A2 * A3 * A4;\np = T(1:3, 4)\n"
       }
@@ -2141,7 +2141,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "A = 5; B = 3; q1 = 30; d = 4; q2 = 60;\n% A1 = ...\n% A2 = ...\n% A3 = ...\n% T = ...\n% p = T(1:3, 4)\n",
        "solucion": "A = 5; B = 3; q1 = 30; d = 4; q2 = 60;\nA1 = matrizDenavitHartenberg(q1,      A, 0, -90);\nA2 = matrizDenavitHartenberg(-90,     d, 0, -90);\nA3 = matrizDenavitHartenberg(q2 - 90, 0, B,   0);\nT = A1 * A2 * A3;\np = T(1:3, 4)\n"
       }
@@ -2206,7 +2206,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "L1 = 0.7; L2 = 0.3; q1 = 30; q2 = 30;\n% A1 = ...\n% A2 = ...\n% T = ...\n% p = T(1:3, 4)\n",
        "solucion": "L1 = 0.7; L2 = 0.3; q1 = 30; q2 = 30;\nA1 = matrizDenavitHartenberg(q1, 0, L1, 0);\nA2 = matrizDenavitHartenberg(q2, 0, L2, 0);\nT = A1 * A2;\np = T(1:3, 4)\n"
       }
@@ -2270,7 +2270,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "l1 = 6; l2 = 5; l3 = 4; l4 = 2;\nq1 = 30; q2 = 30; q3 = 60; d4 = 2; q5 = 30; q6 = 0;\n% th = [ ... ];  d = [ ... ];  a = [ ... ];  al = [ ... ];\n% T = cinematica_directa(th, d, a, al, 'deg');\n% p = T(1:3, 4)\n",
        "solucion": "l1 = 6; l2 = 5; l3 = 4; l4 = 2;\nq1 = 30; q2 = 30; q3 = 60; d4 = 2; q5 = 30; q6 = 0;\nth = [q1 q2 q3 0 q5 q6];\nd  = [l1 0 0 l3+d4 0 l4];\na  = [0 l2 0 0 0 0];\nal = [-90 0 90 -90 90 0];\nT = cinematica_directa(th, d, a, al, 'deg');\np = T(1:3, 4)\n"
       }
@@ -2338,7 +2338,7 @@
      ],
      "archivos": [
       {
-       "nombre": "ejercicio.m",
+       "nombre": "mi_codigo.m",
        "inicial": "L1 = 8; L2 = 4; L4 = 2;\nq1 = pi/4; q2 = pi/6; d3 = 6; q4 = pi/3; q5 = -pi/6;\n% th = ...;  d = ...;  a = ...;  al = ...;\n% T = cinematica_directa(th, d, a, al, 'rad');\n% p = T(1:3, 4)\n",
        "solucion": "L1 = 8; L2 = 4; L4 = 2;\nq1 = pi/4; q2 = pi/6; d3 = 6; q4 = pi/3; q5 = -pi/6;\nth = [q1 q2+pi/2 0 q4 q5];\nd  = [L1 L2 d3 0 L4];\na  = [0 0 0 0 0];\nal = [pi/2 pi/2 -pi/2 pi/2 0];\nT = cinematica_directa(th, d, a, al, 'rad');\np = T(1:3, 4)\n"
       }

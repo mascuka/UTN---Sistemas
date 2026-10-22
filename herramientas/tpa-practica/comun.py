@@ -87,7 +87,7 @@ def mostrar(v, dec=4):
 
 # ---------- Ejercicios ----------
 def oct_ej(id, tema, titulo, consigna, inicial, solucion, vars=(), respuestas=(), pasos=(), pistas=(), checks=(),
-           imagen=None, ocultar=None, datos=None, donde=None, archivo='ejercicio.m', tolvars=1e-3, mensajes=None):
+           imagen=None, ocultar=None, datos=None, donde=None, archivo='mi_codigo.m', tolvars=1e-3, mensajes=None):
     """Un ejercicio de Octave: se escribe y se corre en el navegador.
     vars: nombres de variables que se comparan con lo que da la solución.
     respuestas: [{pregunta, expr (Octave, después de la solución), dec (decimales: 4), tol (10^-dec), unidad, motivo}]

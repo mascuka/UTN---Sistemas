@@ -1,0 +1,40 @@
+[
+ {
+  "nombre": "Dibujar_Temporal.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "animar_trayectoria.m",
+  "ejecuta": false,
+  "nota": "La animación no corre en el navegador: probala en Octave. Acá solo avisa."
+ },
+ {
+  "nombre": "cinematica_directa.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "cinematica_inversa.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "dibujarSistemasDeEjesCoordenadosDeRobot.m",
+  "ejecuta": false,
+  "nota": "Usa celdas y flechas de Octave: en el navegador se dibuja con una versión propia (mismos ejes, mismos colores)."
+ },
+ {
+  "nombre": "generacion_de_trayectorias.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "jacobiano_analitico.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "jacobiano_numerico.m",
+  "ejecuta": true
+ },
+ {
+  "nombre": "matrizDenavitHartenberg.m",
+  "ejecuta": true
+ }
+]
