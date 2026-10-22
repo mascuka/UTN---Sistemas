@@ -16,7 +16,7 @@ const { sinComentarios, sinComentariosOct, verificarEjp, compararVar } = new Fun
   ["sinComentarios", "sinComentariosOct", "verificarEjp", "compararVar"].map(fuente).join("\n") + "\nreturn { sinComentarios, sinComentariosOct, verificarEjp, compararVar };")();
 const leerNumero = new Function(`return ${html.match(/const leerNumero = (s => .*);\n/)[1]}`)();
 const respuestaOk = (x, v) => x.opciones ? v === x.valor
-  : Math.abs(leerNumero(v) - x.valor) <= (x.tol ?? 0.01) * (x.relativa ? Math.max(1, Math.abs(x.valor)) : 1);
+  : Math.abs(leerNumero(v) - x.valor) <= Math.max((x.tol ?? 0.01) * (x.relativa ? Math.max(1, Math.abs(x.valor)) : 1), (x.tolRel || 0) * Math.abs(x.valor));
 
 // Como en la página: los .m de la carpeta del profe de ese parcial (practica/octave/profe/pN) se cargan al correr
 let profe = [];
@@ -73,5 +73,66 @@ for(const f of archivos){
     console.log(`${probs.length ? "✗" : "✓"} ${ej.id} ${ej.titulo}${probs.map(t => `\n    ${t}`).join("")}`);
   }
 }
+
+// ---- El simulacro (practica/tpa-pN/simulacro.json): problemas con números al azar.
+// Se arma cada problema con varias semillas, como la página (con sus mismas funciones), y las respuestas se comparan
+// con las del Octave de verdad (octave-cli con la carpeta del profe). Si alguna semilla da un caso raro, la página
+// prueba con otra: acá se avisa si pasa seguido.
+const { execFileSync } = require("child_process"), os = require("os");
+const AZ = new Function(["azarRng", "valoresAzar", "numAzar", "plantilla", "mostrarAzar", "instanciarAzar"].map(fuente).join("\n")
+  + "\nreturn { instanciarAzar };")();
+const SEMILLAS = +(process.env.SEMILLAS || 12);
+const mudas = fs.mkdtempSync(path.join(os.tmpdir(), "sin-graficos-"));
+for(const n of ["plot", "plot3", "figure", "subplot", "title", "xlabel", "ylabel", "zlabel", "grid", "hold", "axis", "view", "legend", "text", "quiver3", "Dibujar_Temporal", "animar_trayectoria", "DibujarEjes", "dibujarOrigen", "dibujarSistemasDeEjesCoordenadosDeRobot"])
+  fs.writeFileSync(path.join(mudas, n + ".m"), `function varargout = ${n}(varargin)\n  varargout = cell(1, nargout);\nend\n`);
+const simulacros = process.argv.slice(2).length ? [] : fs.readdirSync(path.join(RAIZ, "practica")).filter(d => d.startsWith("tpa-"))
+  .map(d => `practica/${d}/simulacro.json`).filter(f => fs.existsSync(path.join(RAIZ, f)));
+for(const f of simulacros){
+  const d = JSON.parse(fs.readFileSync(path.join(RAIZ, f), "utf8"));
+  profe = carpetaProfe(f);
+  const carpeta = path.join(RAIZ, "practica/octave/profe", f.match(/tpa-(p\d)/)[1]);
+  console.log(`\n${f} · ${d.grupo} · ${SEMILLAS} semillas por problema, contra octave-cli`);
+  for(const p of d.partes) for(const ej of p.ejercicios){
+    total++;
+    const probs = [], raras = [];
+    ej._base = { consigna: ej.consigna, datos: ej.datos, tabla: ej.tabla, archivos: ej.archivos, respuestas: ej.respuestas, pistas: ej.pistas, pasos: ej.pasos };
+    let script = "", buenas = [];
+    for(let s = 1; s <= SEMILLAS; s++){
+      const inst = AZ.instanciarAzar(Octave, ej, s * 7919, profe);
+      if(inst.error){ raras.push(`${s}: ${inst.error}`); continue; }
+      const malas = inst.respuestas.filter(x => x.opciones ? !x.opciones.includes(x.valor) : !Number.isFinite(x.valor));
+      if(malas.length){ raras.push(`${s}: sin valor en ${malas.map(x => x.pregunta).join(", ")}`); continue; }
+      const sobra = [inst.consigna, inst.datos, ...(inst.tabla ? inst.tabla.filas.flat() : []), inst.archivos[0].inicial, inst.archivos[0].solucion, ...inst.respuestas.map(x => x.pregunta)].join(" ").match(/\{\w+(\|\w+)?\}/);
+      if(sobra) probs.push(`semilla ${s}: quedó ${sobra[0]} sin reemplazar`);
+      const ini = Octave.correr(inst.archivos[0].inicial, { archivos: profe });
+      if(ini.error) probs.push(`semilla ${s}: el código inicial da error: ${ini.error.msg}`);
+      inst.respuestas.forEach(x => { if(!x.opciones && !respuestaOk(x, x.mostrar)) probs.push(`semilla ${s}: lo que se muestra (${x.mostrar}) no pasa: ${x.pregunta}`); });
+      buenas.push([s, inst]);
+      script += `\nclear;\n${inst.archivos[0].solucion}\n` + ej._base.respuestas.map((x, i) => x.expr ? `printf('@@${s}_${i}=%s\\n', mat2str(double(${plantilla_(x.expr, inst.v)}), 17));\n` : "").join("");
+    }
+    if(raras.length > SEMILLAS / 5) probs.push(`demasiadas semillas raras (${raras.length}): ${raras.slice(0, 2).join(" · ")}`);
+    // El Octave de verdad, con la misma carpeta del profe
+    const arch = path.join(mudas, "simulacro.m");
+    fs.writeFileSync(arch, "1;\n" + script);
+    let real = "";
+    try { real = execFileSync("octave-cli", ["-q", "--no-window-system", "--eval", `addpath('${carpeta}'); addpath('${mudas}'); source('${arch}');`], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], timeout: 300000 }); }
+    catch(e){ probs.push("octave-cli dio error: " + String(e.stderr || e.message).split("\n").slice(0, 3).join(" ")); }
+    const vals = Object.fromEntries([...real.matchAll(/^@@(\d+_\d+)=(.*)$/gm)].map(m => [m[1], m[2]]));
+    const comparadas = Object.keys(vals).length;
+    for(const [s, inst] of buenas) inst.respuestas.forEach((x, i) => {
+      if(!ej._base.respuestas[i].expr) return;
+      const r = vals[`${s}_${i}`];
+      if(r === undefined){ if(real) probs.push(`semilla ${s}: Octave no dio ${x.pregunta}`); return; }
+      const n = parseFloat(r);
+      const esperado = x.opciones ? x.opciones.indexOf(x.valor) + 1 : x.valor;
+      if(!(Math.abs(n - esperado) <= 1e-6 * Math.max(1, Math.abs(n)))) probs.push(`semilla ${s}: ${x.pregunta} da ${esperado} en el navegador y ${r} en Octave`);
+    });
+    if(ej.imagen && !fs.existsSync(path.join(RAIZ, ej.imagen.url))) probs.push(`falta la imagen ${ej.imagen.url}`);
+    mal += probs.length > 0;
+    console.log(`${probs.length ? "✗" : "✓"} ${ej.id} ${ej.titulo} (${buenas.length}/${SEMILLAS} semillas${raras.length ? `, ${raras.length} raras` : ""}, ${comparadas} respuestas iguales a Octave)${probs.slice(0, 6).map(t => `\n    ${t}`).join("")}`);
+  }
+}
+function plantilla_(t, v){ return t.replace(/\{(\w+)(?:\|(\w+))?\}/g, (m, k) => k in v ? String(v[k]) : m); }
+
 console.log(`\n${mal ? `${mal} de ${total} con problemas` : `TODO BIEN (${total} ejercicios)`}`);
 process.exit(mal ? 1 : 0);
