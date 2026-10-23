@@ -731,7 +731,7 @@ partes.append(parte(4, 'display', 'El display OLED', 'Display',
     esp('4.1', 'Texto', 'LUZ_ON y LUZ_OFF en el display', '''
       Al arrancar, el display muestra `Esperando...`. Con `LUZ_ON` por el monitor serie: LED verde y relé prendidos y el display muestra `RELAY ON!`; con `LUZ_OFF`: los dos apagados y `RELAY OFF!`.
 
-      Completá la función `mostrar(texto)`, que limpia, escribe y muestra. Es el caso 7.
+      Completá la función `mostrar(texto)`, que limpia, escribe y muestra. Es el caso 7 (la guía dice `RELAY_ON!` y el profe escribe `RELAY ON!`: vale cualquiera de los dos).
     ''', DISPLAY + '''
       const int VERDE = 23;
       const int RELE = 14;
@@ -795,7 +795,7 @@ partes.append(parte(4, 'display', 'El display OLED', 'Display',
           }
         }
       }
-    ''', [P('Arranca, y llegan LUZ_ON y LUZ_OFF', 2500, [display(r'Esperando', t=500), display(r'RELAY ON!', t=1200), pin(14, 1200, 1), pin(23, 1200, 1), display(r'RELAY OFF!', t=2200), pin(14, 2200, 0)],
+    ''', [P('Arranca, y llegan LUZ_ON y LUZ_OFF', 2500, [display(r'Esperando', t=500), display(r'RELAY[ _]ON!', t=1200), pin(14, 1200, 1), pin(23, 1200, 1), display(r'RELAY[ _]OFF!', t=2200), pin(14, 2200, 0)],
             entradas=[{'t': 800, 'serial': 'LUZ_ON\n'}, {'t': 1600, 'serial': 'LUZ_OFF\n'}])],
     profe=['caso_07_display_led_externo_relay.ino'],
     pasos=['`mostrar`: `display.clearDisplay(); display.setCursor(0, 0); display.println(txt); display.display();`', 'En el loop, como en el ejercicio 1.3, pero llamando a `mostrar("RELAY ON!")`.'],
@@ -1929,6 +1929,53 @@ partes.append(parte(9, 'tpi', 'El TPI resuelto', 'El TPI',
       OP('¿Las pulsaciones se mandan a ThingSpeak?', ['No: el contador queda en la placa', 'Sí, en el campo 7'], 'No: el contador queda en la placa', 'Se cuenta en RAM y se reinicia al reiniciar la placa.'),
     ]),
   ]))
+
+# ======================= El caso de la guía (Prácticos 2026) y los enlaces de cada ejercicio =======================
+# Lo que dice la guía (o el TPI), para que se vea al lado del ejercicio que lo practica
+GUIA = {
+    1: 'Desarrollar un sketch que permita encender/apagar el LED azul propio de la placa.',
+    2: 'Desarrollar un sketch que permita aumentar/disminuir el LED verde incorporado en la placa.',
+    3: 'Desarrollar un sketch que permita encender/apagar LEDs el azul y el verde, procesando las siguientes entradas en el monitor serial: v o V para encender el LED verde y apagar el azul si este está encendido, y a o A para encender el LED azul y apagar el verde, si este está encendido.',
+    4: 'Desarrollar un sketch que permita visualizar en el monitor serial las lecturas de los valores del potenciómetro.',
+    5: 'Desarrollar un sketch que permita activar el relay cuando la lectura de los valores del potenciómetro supere determinado límite.',
+    6: 'Desarrollar un sketch que permita procesar un comando (en formato texto) recibido por el puerto serie tal que: "LUZ_ON" encienda el LED verde y active un relay (que podría estar conectado con el sistema de iluminación de una habitación) y "LUZ_OFF" apague el LED verde y desactive el relay.',
+    7: 'Desarrollar un sketch que permita mostrar en el módulo del display OLED el texto recibido por el puerto serie tal que: "LUZ_ON" encienda el LED verde y active un relay mostrando en el display el mensaje "RELAY_ON!" y "LUZ_OFF" apague el LED verde y desactive el relay mostrando en el display el mensaje "RELAY_OFF!". Nota: para poder utilizar el módulo OLED es necesario importar la librería Adafruit SH110X.',
+    8: 'Desarrollar un sketch para regular la intensidad del LED verde utilizando como entrada los valores obtenidos del potenciómetro. En el módulo OLED se visualizará el mensaje "LED ENCENDIDO" o "LED APAGADO" según corresponda.',
+    9: 'Desarrollar un sketch que aumente y disminuya la intensidad del LED externo a través de los pines touch y mostrar en el monitor serial los valores de los pines touch y visualizar en el serial plotter el gráfico correspondiente. En Wokwi tenemos que usar botones push para simular los touch.',
+    10: 'Desarrollar un sketch que permita leer los valores de Humedad y Temperatura mediante el sensor DHT22 integrado. En todo momento los valores deben ser visualizados en el módulo de display OLED y también en el serial plotter. Nota: hay que importar la librería Adafruit SH110X y la librería DHT sensor library.',
+    13: 'Desarrollar un sketch que permita, utilizando ThingSpeak (que pertenece a Matlab), mostrar en una gráfica el valor de temperatura detectado por el sensor de temperatura y humedad y en otra gráfica el valor de humedad. Nota: para poder utilizar ThingSpeak deben registrarse como usuarios estudiantes con su email institucional.',
+}
+TPI = {
+    'pote': 'Ajustar el brillo del LED integrado de la ESP32 usando el potenciómetro y mostrando el valor de PWM en pantalla. Trabajar con 12 bits.',
+    'touch': 'Ajustar el brillo del LED EXTERNO (en la placa de la cátedra), usando dos pines touch capacitivos como entrada (a través de cable o tocando el propio pin). Un pin aumenta la señal y otro pin la disminuye. Mostrar el porcentaje de brillo correspondiente en pantalla. Trabajar con 12 bits.',
+    'ts': 'Enviar cada 16 segundos a un canal de ThingSpeak los siguientes valores: 1) un valor aleatorio entre 100 y 500, 2) temperatura, 3) humedad, 4) tiempo transcurrido desde el inicio, en segundos, 5) valor PWM del LED integrado y 6) porcentaje de brillo del LED externo.',
+    's2': 'Sketch 2 (subido por OTA): leer datos del mismo canal de ThingSpeak, contar las presiones realizadas al pulsador y mostrar en el display los valores leídos desde el canal, como así también la cantidad de pulsaciones realizadas hasta el momento, de forma legible (puede ser de a 3 campos por pantalla rotativa).',
+    's1': 'Sketch 1 (por USB): el LED integrado con el potenciómetro y el valor de PWM en pantalla (12 bits); temperatura y humedad en pantalla en tiempo real; el LED externo con dos pines touch (uno sube y otro baja) y su porcentaje en pantalla (12 bits); cada 16 segundos los 6 campos a ThingSpeak; y habilitar OTA para subir el sketch 2.',
+}
+CASO = {'1.1': 1, '1.2': 3, '1.3': 6, '2.1': 4, '2.2': 5, '3.1': 2, '3.2': 8, '4.1': 7, '4.2': 8, '5.1': 10, '5.2': 9, '7.1': 13, '7.2': 13}
+DEL_TPI = {'3.3': 'pote', '7.3': 'ts', '7.4': 's2', '9.1': 's1', '9.2': 's2'}
+DE_CLASE = {'2.3': 'Pulsador_enciende_y_apaga_LED', '8.1': 'MQTT_Publicar_Mosquitto', '8.2': 'MQTT_Suscriber_Mosquitto_graba_ThingSpeak', '8.3': 'Memoria_EEPROM'}
+
+PDF_TP = 'material/tecnologias-para-la-automatizacion/tp-esp32/'
+WOKWI = {'t': 'Wokwi · proyecto ESP32 nuevo', 'url': 'https://wokwi.com/projects/new/esp32'}
+WOKWI_WIFI = {'t': 'Wokwi · WiFi de la ESP32', 'url': 'https://docs.wokwi.com/guides/esp32-wifi'}
+THINGSPEAK = {'t': 'ThingSpeak · mis canales', 'url': 'https://thingspeak.mathworks.com/channels'}
+TS_TUTORIAL = {'t': 'Tutorial ThingSpeak', 'url': PDF_TP + '06-tutorial-thingspeak.pdf', 'pdf': True}
+HIVEMQ = {'t': 'Cliente MQTT web (HiveMQ)', 'url': 'https://www.hivemq.com/demos/websocket-client/'}
+PRACTICOS = {'t': 'Prácticos 2026', 'url': PDF_TP + '01-practicos-2026.pdf', 'pdf': True}
+TPI_PDF = {'t': 'Consigna del TPI', 'url': PDF_TP + '04-tpi-4k3-thingspeak-y-ota.pdf', 'pdf': True}
+ENLACES_PARTE = {1: [WOKWI, PRACTICOS], 2: [WOKWI, PRACTICOS], 3: [WOKWI, PRACTICOS], 4: [WOKWI, PRACTICOS], 5: [WOKWI, PRACTICOS], 6: [WOKWI],
+                 7: [WOKWI, WOKWI_WIFI, THINGSPEAK, TS_TUTORIAL], 8: [WOKWI, HIVEMQ], 9: [WOKWI, THINGSPEAK, TPI_PDF]}
+
+for pa in partes:
+    for e in pa['ejercicios']:
+        if e['tipo'] != 'esp32': continue
+        if e['id'] in CASO: e['guia'] = {'titulo': f"Caso práctico {CASO[e['id']]:02d} de la guía", 'texto': GUIA[CASO[e['id']]]}
+        elif e['id'] in DEL_TPI: e['guia'] = {'titulo': 'Lo que pide el TPI', 'texto': TPI[DEL_TPI[e['id']]]}
+        elif e['id'] in DE_CLASE: e['guia'] = {'titulo': 'Ejemplo de clase del profe', 'texto': f"Está en el ZIP de casos resueltos: {DE_CLASE[e['id']]}. Abrilo en la pestaña de al lado (Del profe) y corrélo en la placa."}
+        enl = list(ENLACES_PARTE.get(pa['n'], [WOKWI]))
+        if e['id'] in DEL_TPI and TPI_PDF not in enl: enl.append(TPI_PDF)
+        e['enlaces'] = enl
 
 if __name__ == '__main__':
     copiar_profe()

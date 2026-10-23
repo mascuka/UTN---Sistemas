@@ -409,6 +409,15 @@
   @media (hover:none){ .file .go{opacity:1} }
   .tag.nota{margin-left:6px;vertical-align:1px;background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
   .file .name small{display:block;font-size:.8rem;font-weight:400;color:var(--muted);margin-top:1px}
+  /* El archivo más importante de la sección: borde de color, fondo suave y un cartel */
+  .file.destacado{background:var(--mark);box-shadow:inset 4px 0 0 var(--mark-l);padding-top:14px;padding-bottom:14px}
+  .file.destacado:hover{background:var(--mark)}
+  .file.destacado .name{font-weight:700}
+  .file.destacado .mini{width:46px;height:60px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .dest-cartel{display:inline-flex;align-items:center;gap:5px;margin:0 8px 3px 0;padding:2px 9px 2px 7px;border-radius:999px;background:var(--mark-l);color:#fff;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;vertical-align:1px}
+  .dest-cartel svg{width:11px;height:11px}
+  .dest-txt{display:block;margin-top:4px;font-style:normal;font-size:.86rem;font-weight:600;color:var(--mark-t)}
+  .file.destacado .go{opacity:1;color:var(--mark-t)}
   .grupo + .grupo{margin-top:30px}
   .grupo-head{margin-bottom:10px}
   .grupo-head h3{font-size:1rem;font-weight:500}
@@ -1406,52 +1415,119 @@
   .ejp-graf{display:grid;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
   .ejp-graf svg{width:100%;max-width:520px;height:auto;display:block;margin:0 auto;color:var(--text)}
   .ejp-graf small{display:block;text-align:center;font-size:.75rem;color:var(--muted)}
-  /* ---------- La placa de la ESP32 simulada (pestaña Placa de los ejercicios "esp32") ---------- */
-  .placa{display:grid;gap:10px}
-  .pla-cab{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-  .pla-estado{display:inline-flex;align-items:center;gap:7px;font-size:.84rem;font-weight:600;color:var(--text2)}
-  .pla-estado i{width:9px;height:9px;border-radius:50%;background:var(--line2)}
-  .pla-estado.on i{background:#3fb950;animation:plLat 1.6s infinite}
-  .pla-estado.pausa i{background:#d4a72c}
-  .pla-estado.error i{background:var(--error)}
-  @keyframes plLat{50%{opacity:.35}}
-  .pla-t{font:600 .82rem ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
-  .pla-quien{font-size:.8rem;color:var(--muted);margin:0}
-  .pla-err{background:var(--rojo-f);color:var(--rojo);border-radius:10px;padding:8px 12px;font:12.5px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
-  .pla-err[hidden],.pla-nube[hidden]{display:none}
-  .pla-tablero{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:10px}
-  .placa.apagada .pla-tablero{opacity:.55;pointer-events:none}
-  .pla-bloque{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px;align-content:start;min-width:0}
-  .pla-tit{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 6px;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-  .pla-tit em{font-style:normal;font-weight:500;text-transform:none;letter-spacing:0}
-  .pla-tit .linkbtn{margin-left:auto;font-size:.72rem;text-transform:none;letter-spacing:0;font-weight:500}
-  .pla-sal{display:flex;align-items:center;gap:10px;font-size:.86rem;min-height:30px}
-  .pla-sal i{position:relative;flex:none;width:20px;height:20px;border-radius:50%;background:var(--line2);border:1px solid rgba(0,0,0,.12)}
-  .pla-sal i::after{content:"";position:absolute;inset:-1px;border-radius:inherit;background:var(--c);opacity:var(--b,0);box-shadow:0 0 14px 3px var(--c)}
-  .pla-sal.azul{--c:#3b82f6}.pla-sal.verde{--c:#22c55e}.pla-sal.rele{--c:#e5534b}
-  .pla-sal.rele i{border-radius:5px}
-  .pla-sal span{display:grid;line-height:1.2}
-  .pla-sal em,.pla-boton em,.pla-rango em{font-style:normal;font-size:.68rem;font-weight:500;color:var(--muted)}
-  .pla-sal b{margin-left:auto;font:600 .74rem ui-monospace,Menlo,Consolas,monospace;color:var(--muted);text-align:right}
-  .pla-sal.on b{color:var(--text)}
-  .pla-sal:not(.usado){opacity:.6}
-  .pla-botones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-  .pla-boton{display:grid;justify-items:center;gap:1px;min-width:0;font:600 .8rem var(--sans);color:var(--text);background:var(--card);border:1px solid var(--line2);border-bottom-width:3px;border-radius:10px;padding:6px 4px;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
-  .pla-boton.on{transform:translateY(2px);border-bottom-width:1px;margin-bottom:2px;background:var(--accent-soft);border-color:var(--accent)}
-  /* Con la placa a la vista, las dos columnas mitad y mitad */
-  .pr-ws.ejp-ws:has(#placa){grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  .pla-rango{display:grid;grid-template-columns:62px minmax(0,1fr) 62px 18px;align-items:center;gap:6px;font-size:.8rem;font-weight:600}
-  .pla-rango span{display:grid;line-height:1.15}
+  /* ---------- Los ejercicios de la ESP32, como en Wokwi: el ejercicio y el código a la izquierda, la placa a la derecha ---------- */
+  .pr-ws.ejp-ws.wok-ws{grid-template-columns:minmax(0,1fr) minmax(0,1.22fr);height:max(620px, calc(100vh - var(--barra-h, 64px) - 240px))}
+  .wok-ws [hidden]{display:none !important}
+  .wok-ws .ejp-izq{display:flex;flex-direction:column;padding:0;overflow:hidden}
+  .wok-izq-cab{padding:14px 18px 10px}
+  .wok-izq-cab .ejp-tit{margin:0}
+  .wok-tabs-izq{flex:none;margin:0;border-radius:0;padding:6px 8px 0}
+  .wok-tabs-izq .wok-info-tab{font-family:var(--sans);font-size:.8rem;font-weight:600}
+  .wok-tabs-izq .wok-info-tab small{font-weight:500;opacity:.7}
+  .wok-sep{flex:none;width:1px;align-self:stretch;margin:4px 6px 8px;background:#39404a}
+  .wok-arch{display:contents}
+  .wok-cuerpo{flex:1;min-height:0;display:flex;flex-direction:column}
+  .wok-info{flex:1;overflow:auto;padding:14px 18px}
+  .wok-ws .ejp-izq .pr-ed{flex:1;min-height:0}
+  .wok-ws .ejp-izq .ed{border-radius:0}
+  .wok-ws .ejp-izq .pr-teclas,.wok-ws .ejp-izq .pr-barra{flex:none;padding:8px 12px}
+  .wok-ws .ejp-izq .pr-barra{border-top:1px solid var(--line)}
+  .wok-al-codigo{margin-top:12px}
+  .wok-ws .ejp-der{padding:0;gap:0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow-y:auto}
+  .wok{display:flex;flex-direction:column;min-height:100%}
+  .wok-bar{position:sticky;top:0;z-index:3;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+  .wok-play{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:0;background:#1aa35a;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(26,163,90,.35)}
+  .wok-play svg{width:20px;height:20px}
+  .wok-play:hover{background:#17914f}
+  .wok-play.stop{background:#d9534a;box-shadow:0 2px 6px rgba(217,83,74,.3)}
+  .wok-play.stop:hover{background:#c4463d}
+  .wok-b{flex:none;font:600 .86rem var(--sans);min-width:32px;height:32px;padding:0 9px;border-radius:8px;border:1px solid var(--line2);background:var(--card);color:var(--text);cursor:pointer}
+  .wok-b:hover{background:var(--hover)}
+  .wok-t{font:600 .86rem ui-monospace,Menlo,Consolas,monospace;color:var(--text2);min-width:84px}
+  .wok-est{font-size:.78rem;font-weight:600;color:var(--muted)}
+  .wok-est.on{color:var(--ok)}.wok-est.pausa{color:#b7791f}.wok-est.error{color:var(--error)}
+  .wok-ayuda{font-size:.84rem;color:var(--muted)}
+  .wok-cambio{font-size:.74rem;font-weight:600;color:var(--mark-t);background:var(--mark);border-radius:999px;padding:2px 9px}
+  .wok-llevar{padding:10px 14px;background:var(--accent-soft);border-bottom:1px solid var(--line);font-size:.84rem}
+  .wok-llevar-cab,.wok-pop-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+  .wok-llevar ol{display:grid;gap:6px;padding-left:18px;margin:0}
+  .wok-llevar li > *{vertical-align:middle}
+  .wok-llevar li span{margin-right:8px}
+  .wok-llevar code{font-size:.78rem}
+  .wok-notas{margin:8px 0 0;font-size:.78rem;color:var(--text2)}
+  .wok-x{border:0;background:none;color:var(--muted);font-size:.9rem;cursor:pointer;padding:2px 6px;border-radius:6px}
+  .wok-x:hover{background:var(--hover)}
+  .wok-err{margin:8px 10px 0;background:var(--rojo-f);color:var(--rojo);border-radius:10px;padding:8px 12px;font:12.5px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+  .wok-lienzo{position:relative;background:#f1f1ee}
+  .wk-svg{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none}
+  .wk-punto{fill:#c9c9c3}
+  .wk-et{font:600 12.5px var(--sans);fill:#55544f}
+  .wk-val{font:700 13px ui-monospace,Menlo,Consolas,monospace;fill:#1f1e1c}
+  .wk-tx{font:600 9px var(--sans)}
+  .wk-silk{font:600 7.5px ui-monospace,Menlo,Consolas,monospace;fill:#e8e8e8}
+  .wk-mini{font:600 6px var(--sans);fill:#e8eefb}
+  .wk-chip{font:800 11px var(--sans);fill:#3a3a3a}.wk-chip2{font:700 7px var(--sans);fill:#4a4a4a}
+  .wk-pin{fill:#d4a95a;stroke:#8a6a2a;stroke-width:1}
+  .wk-pwr{fill:#4a1515}
+  .wok:not(.apagada) .wk-pwr{fill:#ff3b30}
+  .wk-led-azul{fill:#1b2e55}
+  #wkL2c.on .wk-led-azul{fill:#9cc7ff}
+  .wk-led-verde{fill:#1e6b3c;stroke:#14532b;stroke-width:1}
+  #wkL23c.on{fill:#57f59a}
+  .wk-rele-led{fill:#4a1515}.wk-rele-brillo{opacity:0}
+  .wk-rele.on .wk-rele-led{fill:#ff3b30}.wk-rele.on .wk-rele-brillo{opacity:1}
+  .wk-boton-cap{fill:#d83a3a;stroke:#9e2424;stroke-width:2;transition:fill .05s}
+  .wk-boton.on .wk-boton-cap{fill:#a32424}
+  .wk-dedo{fill:#3b82f6;opacity:0;transition:opacity .08s}
+  .wk-touch.on .wk-dedo{opacity:.5}
+  .wk-comp,.wk-boton,.wk-touch,.wk-btn-en{cursor:pointer}
+  .wk-comp:hover,.wk-boton:hover,.wk-touch:hover{filter:brightness(1.06)}
+  .wk-comp:focus-visible,.wk-boton:focus-visible,.wk-touch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .wok-pop{position:absolute;z-index:4;width:min(290px,calc(100% - 12px));background:var(--card);color:var(--text);border:1px solid var(--line2);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:10px 12px;display:grid;gap:8px;font-size:.84rem}
+  .wok-sal{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line)}
+  .wok-sal:empty{display:none}
+  .wok-ficha{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;padding:3px 9px 3px 7px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--text2)}
+  .wok-ficha em{font-style:normal;color:var(--muted)}
+  .wok-ficha b{font:600 .74rem ui-monospace,Menlo,Consolas,monospace;color:var(--text)}
+  .wok-ficha i{width:8px;height:8px;border-radius:50%;background:var(--line2)}
+  .wok-ficha.on i{background:#1aa35a}
+  .wok-ficha.nada{opacity:.55}
+  .wok .pla-avisos{padding:8px 10px 0}
+  .wok-abajo{flex:1;display:flex;flex-direction:column;border-top:1px solid var(--line);margin-top:8px;min-height:230px}
+  .wok-tabs{display:flex;align-items:center;gap:2px;padding:4px 8px 0;border-bottom:1px solid var(--line)}
+  .wok-tabs [data-wok-tab]{font:600 .8rem var(--sans);color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;padding:7px 10px;cursor:pointer}
+  .wok-tabs [data-wok-tab].on{color:var(--text);border-bottom-color:var(--accent)}
+  .wok-tabs em{font-style:normal;font-weight:500;font-size:.72rem;color:var(--muted)}
+  .wok-tabs i{font-style:normal;font-size:.68rem;background:var(--accent);color:#fff;border-radius:999px;padding:0 6px}
+  .wok-tabs i:empty{display:none}
+  .wok-tabs .linkbtn{font-size:.74rem}
+  .wok-panel{flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:6px;min-height:0}
+  .wok-panel .pla-serial{flex:1;min-height:140px;height:auto}
+  .wok-panel .pr-res{max-height:none;overflow:visible}
+  .wok-panel .pr-res:empty{display:block}
+  .wok-panel .pr-res:empty::before{content:"Tocá Verificar: se corren las pruebas del ejercicio (apretar el pulsador, mover el pote, mandar por el monitor serie…) y acá ves qué dio bien.";display:block;font-size:.84rem;color:var(--muted);padding:6px 2px}
+  /* Arriba de la Práctica y en el ejercicio: las herramientas y el caso de la guía */
+  .ejp-herr,.ejp-enlaces{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+  .ejp-herr{margin:-4px 0 12px}
+  .ejp-enlaces{margin:12px 0 4px}
+  .ejp-herr > span,.ejp-enlaces > span{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:2px}
+  .ejp-enl{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--text);background:var(--card);border:1px solid var(--line2);border-radius:999px;padding:4px 11px}
+  .ejp-enl:hover{border-color:var(--accent);color:var(--accent)}
+  .ejp-enl svg{width:14px;height:14px}
+  .ejp-caso{margin:12px 0 4px;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--accent)}
+  .ejp-caso-t{display:flex;align-items:center;gap:6px;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
+  .ejp-caso-t svg{width:15px;height:15px}
+  .ejp-caso p{margin:4px 0 0;font-size:.88rem;line-height:1.5;color:var(--text2)}
+  /* Lo de la placa que se sigue usando: el monitor serie, la nube, los avisos y el resumen de las pruebas */
+  .pla-rango{display:grid;grid-template-columns:54px minmax(0,1fr) 66px 20px;align-items:center;gap:6px;font-size:.8rem;font-weight:600}
   .pla-rango input[type=range]{width:100%;min-width:0;accent-color:var(--accent)}
   .pla-rango input[type=number]{width:100%;font:500 .8rem ui-monospace,Menlo,Consolas,monospace;padding:3px 5px;border:1px solid var(--line2);border-radius:6px;background:var(--card);color:var(--text)}
   .pla-rango small{font-size:.72rem;color:var(--muted);font-weight:500}
-  .pla-oled{width:100%;max-width:330px;height:auto;display:block;margin:0 auto;border-radius:6px;border:6px solid #11151a;background:#05080b}
-  .pla-oled text{font-family:ui-monospace,Menlo,Consolas,monospace;white-space:pre}
-  .pla-serial{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#16191d;color:#d6dde4;border-radius:8px;padding:8px 10px;height:128px;overflow:auto;white-space:pre-wrap;word-break:break-word;margin:0}
+  .pla-serial{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#16191d;color:#d6dde4;border-radius:8px;padding:8px 10px;height:140px;overflow:auto;white-space:pre-wrap;word-break:break-word;margin:0}
   .pla-serial.vacio{color:#7f8b96;font-style:italic}
   .pla-enviar{display:flex;flex-wrap:wrap;gap:6px}
   .pla-enviar input{flex:1;min-width:90px;font:12.5px ui-monospace,Menlo,Consolas,monospace;padding:6px 8px;border:1px solid var(--line2);border-radius:8px;background:var(--card);color:var(--text)}
-  .pla-nube{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:10px;font-size:.82rem}
+  .pla-nube{display:grid;gap:10px;font-size:.82rem}
   .pla-nube > div > b{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:6px}
   .pla-ts table{width:100%;border-collapse:collapse;font-size:.76rem;margin-top:4px}
   .pla-ts th{font-weight:600;color:var(--muted)}
@@ -1461,18 +1537,32 @@
   .pla-mqtt ul{list-style:none;display:grid;gap:2px;margin:4px 0 8px;max-height:130px;overflow:auto;font-size:.78rem}
   .pla-mqtt li span,.pla-avisos li span{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--muted);margin-right:6px}
   .pla-avisos li span{color:inherit;opacity:.7}
-  .pla-nada{color:var(--muted);font-size:.78rem}
+  .pla-nada{color:var(--muted);font-size:.8rem}
   .pla-nota{display:block;font-size:.72rem;color:var(--muted);margin-top:4px}
   .pla-avisos{list-style:none;display:grid;gap:4px}
   .pla-avisos:empty{display:none}
-  .pla-avisos li{font-size:.78rem;background:var(--mark);color:var(--mark-t);border-radius:8px;padding:5px 9px}
-  .pla-corre{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;font-size:.86rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
-  .pla-corre > i{width:9px;height:9px;border-radius:50%;background:#3fb950;flex:none;animation:plLat 1.6s infinite}
-  .pla-corre span{flex:1;min-width:200px}
+  .pla-avisos li{font-size:.76rem;background:var(--mark);color:var(--mark-t);border-radius:8px;padding:4px 9px}
   .pla-prueba{display:grid;gap:4px;margin-top:6px}
   .pla-prueba b{font-size:.8rem}
   .pla-prueba pre{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#16191d;color:#d6dde4;border-radius:8px;padding:8px 10px;max-height:200px;overflow:auto;white-space:pre-wrap;margin:0}
-  @media (prefers-reduced-motion: reduce){ .pla-estado.on i,.pla-corre > i{animation:none} }
+  @media (prefers-color-scheme: dark){
+    .wok-lienzo{background:#26261f}
+    .wk-punto{fill:#3d3d36}
+    .wk-et{fill:#b9b5aa}
+    .wk-val{fill:#ece9e1}
+  }
+  @media (max-width:600px){
+    /* En el celular el dibujo se hace más grande y se corre de costado: así el pulsador y los touch se pueden tocar */
+    .wok-lienzo{overflow-x:auto}
+    .wk-svg{min-width:640px}
+  }
+  @media (max-width:900px){
+    .pr-ws.ejp-ws.wok-ws{display:flex;flex-direction:column;height:auto}
+    .wok-ws .ejp-izq .pr-ed{height:56vh;min-height:300px;flex:none}
+    .wok-info{max-height:none}
+    .wok-ws .ejp-der{overflow:visible}
+    .wok-bar{position:static}
+  }
   .ejp-salida-v summary{cursor:pointer;font-size:.82rem;color:var(--muted);padding:2px 0}
   @media (max-width:600px){ .ejp-resp label{grid-template-columns:minmax(0,1fr) 118px 24px} .ejp-resp label.larga{grid-template-columns:minmax(0,1fr) 24px} .ejp-resp label.larga > span{grid-column:1 / -1} }
   .ejp-aviso{font-size:.78rem;color:var(--muted);margin:0}
@@ -3300,7 +3390,7 @@ const MATERIAS = {
         teorico: {
           material: [
             { nivel: "esencial", grupo: "Apunte y clases", descripcion: "El apunte del profe y las presentaciones de las primeras clases.", archivos: [
-              { n: 1, nombre: "Apunte IoT 2026", detalle: "El apunte completo del profe (51 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/03-apunte-iot-2026.pdf" },
+              { n: 1, nombre: "Apunte IoT 2026", detalle: "El apunte completo del profe (51 págs.)", destacado: "Todo lo que toma el parcial sale de acá: leelo entero", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/03-apunte-iot-2026.pdf" },
               { n: 2, nombre: "Clase 1 · Presentación de la ESP32", detalle: "Qué es IoT, la placa, sus pines y periféricos", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/04-clase-1-presentacion-de-la-esp32.pdf" },
               { n: 3, nombre: "Clase 2 · Introducción a C++", detalle: "Lo básico del lenguaje para programar la ESP32", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/05-clase-2-introduccion-a-cpp.pdf" },
               { n: 4, nombre: "Conceptos básicos de electrónica", detalle: "Tensión, corriente, resistencia, ley de Ohm, LEDs y resistencias limitadoras: lo justo para conectar la placa (2026)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/p3-iot/13-conceptos-basicos-de-electronica.pdf" }
@@ -3349,7 +3439,15 @@ const MATERIAS = {
         // Los casos del profe van al lado, para mirar o correr. Se arma con herramientas/tpa-practica/armar_tp.py.
         practicaPartes: {
           fuentes: ["practica/tpa-tp/ejercicios.json"],
-          resumen: { nombre: "Prácticos 2026", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf", paginas: 2 }
+          resumen: { nombre: "Prácticos 2026", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf", paginas: 2 },
+          // Arriba de la Práctica: donde se hace de verdad (en clase se usa Wokwi o el Arduino IDE con la placa)
+          enlaces: [
+            { t: "Wokwi · ESP32", url: "https://wokwi.com/projects/new/esp32" },
+            { t: "ThingSpeak", url: "https://thingspeak.mathworks.com/channels" },
+            { t: "Cliente MQTT (HiveMQ)", url: "https://www.hivemq.com/demos/websocket-client/" },
+            { t: "Arduino IDE", url: "https://www.arduino.cc/en/software" },
+            { t: "Prácticos 2026", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf", pdf: true }
+          ]
         },
         practicaLenguaje: "cpp",
         carpetaProfe: "practica/esp32/profe/",
@@ -4810,15 +4908,16 @@ function filaExamen(x){
 const esPdfLocal = f => /^material\/.+\.pdf$/i.test(f.url || "");
 const miniDe = url => "miniaturas/" + url.slice(9).replace(/\.pdf$/i, ".jpg");
 function sinMini(img){ img.replaceWith(Object.assign(document.createElement("span"), { className: "badge", textContent: "PDF" })); }
+const ICON_ESTRELLA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>';
 function filaArchivo(f, conNum){
   const bajar = /^(ZIP|INO)$/.test(f.tipo);
   const pdf = esPdfLocal(f);
   return `
-    <a class="file" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>
+    <a class="file${f.destacado ? " destacado" : ""}" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>
       ${f.n || conNum ? `<span class="fnum">${f.n ? String(f.n).padStart(2, "0") : ""}</span>` : ""}${pdf
         ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onload="this.classList.add('ok')" onerror="sinMini(this)">`
         : `<span class="badge">${esc(f.tipo || "LINK")}</span>`}
-      <span class="name">${esc(f.nombre)}${f.nota ? ` <span class="tag nota">${esc(f.nota)}</span>` : ""}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
+      <span class="name">${f.destacado ? `<span class="dest-cartel">${ICON_ESTRELLA}Lo más importante</span>` : ""}${esc(f.nombre)}${f.nota ? ` <span class="tag nota">${esc(f.nota)}</span>` : ""}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}${f.destacado ? `<em class="dest-txt">${esc(f.destacado)}</em>` : ""}</span>
       <span class="go">${bajar ? `<span class="go-t">Descargar </span>↓` : `<span class="go-t">Abrir </span>↗`}</span>
     </a>`;
 }
@@ -6363,7 +6462,8 @@ function viewEjp(m, p, tipo = "pp"){
   // En la Práctica: el resumen en PDF arriba, al lado del avance (se abre en el visor de la página)
   const cab = tipo === "practica" ? `
       <div class="ejp-cab"><div><small class="ejp-ceja">${esc(p.titulo)}</small><h1>Práctica por partes</h1></div>
-        <div class="ejp-cab-der">${r ? `<a class="ejp-pdf" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" target="_blank" rel="noopener">${ICON_DOC}<span>Resumen en PDF</span>${r.paginas ? `<small>${r.paginas} págs.</small>` : ""}</a>` : ""}<div class="ejp-prog" id="ejpProg"></div></div></div>` : `
+        <div class="ejp-cab-der">${r ? `<a class="ejp-pdf" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" target="_blank" rel="noopener">${ICON_DOC}<span>Resumen en PDF</span>${r.paginas ? `<small>${r.paginas} págs.</small>` : ""}</a>` : ""}<div class="ejp-prog" id="ejpProg"></div></div></div>
+      ${(p.practicaPartes.enlaces || []).length ? `<div class="ejp-herr"><span>Para hacerlo de verdad</span>${p.practicaPartes.enlaces.map(enlaceHtml).join("")}</div>` : ""}` : `
       <div class="crumbs"><span data-go="m${m.n}/${p.id}${kp ? `/${kp}/material` : ""}">‹ ${esc(kp ? nombreSec(p, kp) : p.titulo)}</span></div>
       <div class="ejp-cab"><h1>${esc((p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</h1><div class="ejp-prog" id="ejpProg"></div></div>`;
   return `
@@ -6544,12 +6644,13 @@ function abrirEjp(ej, mover = true){
   if(ej.azar && (!semillaAzar(ej) || ej._semilla !== semillaAzar(ej))){
     prepararAzar(ej).then(() => { if(ejp && ejp.ej === ej){ pintarIzqEjp(); pintarDerEjp(); } });
   }
-  Object.assign(ejp, { ej, pa: parteEjp(ej), tab: "consigna", pista: 0, sol: 0, corregido: false, ed: null, verif: null, arch: Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura)) });
+  Object.assign(ejp, { ej, pa: parteEjp(ej), tab: "consigna", vista: "info", pista: 0, sol: 0, corregido: false, ed: null, verif: null, arch: Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura)) });
   ejp.est.ultimo = ej.id;
   guardarEjp();
   rutaEjp(ej.id);
   $("#ejpLec").hidden = true;
   $("#ejpWs").hidden = false;
+  $("#ejpWs").classList.toggle("wok-ws", esWokwi(ej));
   pintarPartesEjp();
   pintarIzqEjp();
   pintarDerEjp();
@@ -6643,9 +6744,37 @@ function fijarGrupoEjp(g){
 }
 
 /* ---- Panel izquierdo: el ejercicio, "Dónde" y las pestañas Consigna / CSV / Pasos / Pistas */
+/* En los ejercicios de la ESP32, como en Wokwi: el ejercicio y el código a la izquierda, con sus pestañas */
+function pintarIzqWok(){
+  const ej = ejp.ej, pa = parteEjp(ej);
+  const info = [["consigna", "Ejercicio"], ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", `Pistas <small>${ejp.pista}/${ej.pistas.length}</small>`]] : [])];
+  if(!info.some(t => t[0] === ejp.tab)) ejp.tab = "consigna";
+  const enInfo = ejp.vista !== "codigo", mio = Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura));
+  $("#ejpIzq").innerHTML = `
+    <div class="wok-izq-cab"><div class="ejp-num">Ejercicio ${pa.ejercicios.indexOf(ej) + 1} de ${pa.ejercicios.length}${ej.tema ? ` · ${esc(ej.tema)}` : ""}<span id="ejpHecho"></span></div><h2 class="ejp-tit">${mdLinea(ej.titulo)}</h2></div>
+    <div class="pr-tabs wok-tabs-izq">${info.map(([k, t]) => `<button class="pr-tab wok-info-tab ${enInfo && ejp.tab === k ? "on" : ""}" data-ejp-tab="${k}">${t}</button>`).join("")}<span class="wok-sep"></span><span class="wok-arch" id="ejpTabs"></span></div>
+    <div class="wok-cuerpo">
+      <div class="wok-info ejp-cuerpo" id="ejpInfo"${enInfo ? "" : " hidden"}>${enInfo ? cuerpoIzqEjp() + (ejp.tab === "consigna" ? respuestasEjp(ej) + `<button class="pr-fuerte wok-al-codigo" data-ejp-arch="${mio}">Escribir el código →</button>` : "") : ""}</div>
+      <div class="pr-ed" id="ejpEd"${enInfo ? " hidden" : ""}></div>
+    </div>
+    <div class="pr-teclas"${enInfo ? " hidden" : ""}>${TECLAS.cpp.map(t => `<button data-ejp-tecla="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+    <div class="pr-barra">
+      <button class="pr-fuerte" data-ejp="verificar" title="Corre las pruebas del ejercicio">Verificar</button>
+      <button class="pr-chico" data-ejp="pista">💡 Pista</button>
+      <button class="pr-chico" data-ejp="solucion">Ver solución</button>
+      <button class="pr-chico" data-ejp="reiniciar">↺ Reiniciar código</button>
+      <span class="sim-esp"></span>${hayOtroEjp() ? `<button class="pr-chico" data-ejp="otro">Otro ejemplo →</button>` : ""}
+    </div>`;
+  pintarTabsEjp();
+  if(!enInfo) pintarEdEjp();
+  pintarHechoEjp();
+  pintarBtnVerif();
+  if(!(placa && placa.ej === ej)) pintarBarraSim();
+}
 function pintarIzqEjp(){
   const ej = ejp.ej, pa = parteEjp(ej);
-  const tabs = [["consigna", "Consigna"], ...(ej.tipo === "esp32" ? [["placa", "🔌 Placa"]] : []), ...(ej.csv ? [["csv", "CSV"]] : []), ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", "Pistas"]] : [])];
+  if(esWokwi(ej)) return pintarIzqWok();
+  const tabs = [["consigna", "Consigna"], ...(ej.csv ? [["csv", "CSV"]] : []), ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", "Pistas"]] : [])];
   if(!tabs.some(t => t[0] === ejp.tab)) ejp.tab = "consigna";
   $("#ejpIzq").innerHTML = `
     <div class="ejp-num">Ejercicio ${pa.ejercicios.indexOf(ej) + 1} de ${pa.ejercicios.length}${ej.tema ? ` · ${esc(ej.tema)}` : ""}<span id="ejpHecho"></span></div>
@@ -6663,7 +6792,6 @@ function pintarHechoEjp(){
 function cuerpoIzqEjp(){
   const ej = ejp.ej;
   if(ejp.tab === "csv") return csvEjp(ej);
-  if(ejp.tab === "placa") return viewPlaca();
   if(ejp.tab === "pasos") return `<ol class="ejp-lista">${ej.pasos.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ol>`;
   if(ejp.tab === "pistas"){
     const ps = ej.pistas, n = ejp.pista;
@@ -6677,6 +6805,8 @@ function cuerpoIzqEjp(){
     ${guia && ej.tipo === "ubicacion" ? `<div class="ejp-guia"><div class="ejp-tabla-t">Cómo decidir dónde va</div>${guia.map(([t, d]) => `<div><b>${esc(t)}</b><span>${mdLinea(d)}</span></div>`).join("")}</div>` : ""}
     ${ej.tabla ? tablaEjp(ej.tabla) : ""}
     ${ej.datos ? `<p class="ejp-datos">${mdLinea(ej.datos)}</p>` : ""}
+    ${ej.guia ? `<div class="ejp-caso"><span class="ejp-caso-t">${ICON_LIBRO}${esc(ej.guia.titulo)}</span><p>${mdLinea(ej.guia.texto)}</p></div>` : ""}
+    ${(ej.enlaces || []).length ? `<div class="ejp-enlaces"><span>Para hacerlo de verdad</span>${ej.enlaces.map(enlaceHtml).join("")}</div>` : ""}
     ${im ? `<figure class="ejp-img"><a href="${esc(im.url)}" target="_blank" rel="noopener" title="Ver más grande"><img src="${esc(im.url)}" alt="${esc(im.alt || "")}" loading="lazy"></a>${im.pie ? `<figcaption>${esc(im.pie)}</figcaption>` : ""}</figure>` : ""}
     ${ej.csv ? `<button class="linkbtn" data-ejp-tab="csv">Ver el CSV de ejemplo →</button>` : ""}`;
 }
@@ -6708,6 +6838,13 @@ function pintarDerEjp(){
   const ej = ejp.ej, otro = hayOtroEjp() ? `<button class="pr-chico" data-ejp="otro">Otro ejemplo →</button>` : "";
   const res = `<div class="pr-res" id="ejpRes" aria-live="polite"></div>`;
   ejp.respEstado = {};
+  if(esWokwi(ej)){
+    $("#ejpDer").innerHTML = viewSimEjp();
+    pintarBarraSim();
+    pintarEntradas();
+    if(placa && placa.ej === ej){ $("#placa").classList.remove("apagada"); placa.el = null; pintarPlaca(); }
+    return;
+  }
   if(ej.tipo === "codigo" || ej.tipo === "octave" || ej.tipo === "esp32"){
     const oct = ej.tipo === "octave" || ej.tipo === "esp32";   // se corren: Octave del navegador o la placa simulada
     $("#ejpDer").innerHTML = `
@@ -6762,12 +6899,13 @@ function pintarTabsEjp(){
   const esp = ej.tipo === "esp32";
   const etiqueta = x => x.profe ? x.profe.etiqueta || (esp ? "Del profe" : "Carpeta del profe") : null;
   const titulo = x => x.profe.etiqueta ? "Para mirar o correr en la placa (con las claves tapadas)" : esp ? "Los casos resueltos del profe, tal cual (con las claves tapadas): miralos o correlos en la placa" : "Los .m del ZIP del profe, tal cual: ya están cargados, llamalos desde tu código";
-  $("#ejpTabs").innerHTML = as.map((x, i) => `${x.profe && etiqueta(x) !== etiqueta(as[i - 1] || {}) ? `<span class="pr-carpeta" title="${titulo(x)}">${esc(etiqueta(x))}</span>` : ""}<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
+  $("#ejpTabs").innerHTML = as.map((x, i) => `${x.profe && etiqueta(x) !== etiqueta(as[i - 1] || {}) ? `<span class="pr-carpeta" title="${titulo(x)}">${esc(etiqueta(x))}</span>` : ""}<button class="pr-tab ${i === ejp.arch && !(esp && ejp.vista !== "codigo") ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
     + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span>`);
   centrarEn($("#ejpTabs"), $("#ejpTabs .pr-tab.on"));
   return { ej, as, a, viendo };
 }
 function pintarEdEjp(){
+  if(esWokwi(ejp.ej) && ejp.vista !== "codigo"){ ejp.vista = "codigo"; pintarIzqEjp(); return; }
   const { ej, a, viendo } = pintarTabsEjp(), leng = lengEj(ej);
   if(a.profe){
     ejp.ed = null;
@@ -6778,7 +6916,7 @@ function pintarEdEjp(){
     return;
   }
   if(viendo || a.soloLectura){ ejp.ed = null; $("#ejpEd").innerHTML = codigoLecturaEjp(viendo ? a.solucion : a.inicial, viendo ? a.inicial : null, leng); return; }
-  ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); }, leng, () => accionEjp(ej.tipo === "octave" || ej.tipo === "esp32" ? "ejecutar" : "verificar"));
+  ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); if(esWokwi(ej)) codigoCambioPlaca(); }, leng, () => accionEjp(ej.tipo === "octave" || ej.tipo === "esp32" ? "ejecutar" : "verificar"));
 }
 /* Código en solo lectura; con "inicial", las líneas que no estaban ahí se marcan (así se ve la solución) */
 function codigoLecturaEjp(texto, inicial, leng = "java"){
@@ -6845,10 +6983,12 @@ function cargarOctave(){
     document.head.appendChild(s);
   }));
 }
-/* ---- La placa de la cátedra simulada (practica/esp32/esp32.js, se carga la primera vez). En los ejercicios "esp32",
-   ▶ Ejecutar prende la placa en la pestaña Placa (a la izquierda): los LEDs, el relé, el display, el monitor serie y la nube
-   se ven en vivo y el pulsador, el pote, el DHT22 y los touch se manejan con el mouse. Verificar corre las pruebas del
-   ejercicio (sin pantalla, más rápido que el reloj) y compara lo que pasó con lo esperado. */
+/* ---- La placa de la cátedra simulada, como en Wokwi (practica/esp32/esp32.js, se carga la primera vez). En los ejercicios
+   "esp32" la pantalla se arma como en Wokwi: a la izquierda el ejercicio (con sus pestañas: el enunciado, los pasos, las
+   pistas) y el código; a la derecha la ESP32 dibujada con lo que tiene conectado la placa de la cátedra, la barra para
+   correrla y abajo el monitor serie, la nube y el resultado de Verificar. El pulsador y los touch se mantienen apretados con
+   el mouse; el pote y el DHT22 se cambian tocándolos. Verificar corre las pruebas del ejercicio (sin pantalla, más rápido
+   que el reloj) y compara lo que pasó con lo esperado. */
 let cargaESP32 = null;
 function cargarESP32(){
   if(window.ESP32) return Promise.resolve(window.ESP32);
@@ -6860,15 +7000,18 @@ function cargarESP32(){
     document.head.appendChild(s);
   }));
 }
+const esWokwi = ej => !!ej && ej.tipo === "esp32";
 /* El sketch que se corre: el .ino mío (o el del profe que se está mirando, si "delProfe") y los .h del ejercicio */
 function codigoEspEj(ej, delProfe = false){
   const t = codigoEjp(ej), as = archivosEj(ej), a = as[ejp.arch] || as[0];
-  if(delProfe && a && a.profe) return { codigo: a.inicial, archivos: (a.profe.h || []).map(n => ejp.profe.find(x => x.nombre === n)).filter(Boolean).map(x => ({ nombre: x.nombre, texto: x.texto })), nombre: a.nombre, profe: true, de: a.profe.etiqueta ? "del grupo" : "del profe" };
+  if(delProfe && a && a.profe && ejp.vista === "codigo") return { codigo: a.inicial, archivos: (a.profe.h || []).map(n => ejp.profe.find(x => x.nombre === n)).filter(Boolean).map(x => ({ nombre: x.nombre, texto: x.texto })), nombre: a.nombre, profe: true, de: a.profe.etiqueta ? "del grupo" : "del profe" };
   const ed = editablesEj(ej), ino = ed.find(x => /\.ino$/.test(x.nombre)) || ed[0];
   const archivos = as.filter(x => x !== ino && !x.profe && /\.(h|cpp)$/.test(x.nombre)).map(x => ({ nombre: x.nombre, texto: x.soloLectura ? x.inicial : t[x.nombre] }));
   return { codigo: t[ino.nombre], archivos, nombre: ino.nombre, profe: false };
 }
 let placa = null;   // la placa prendida: { ej, sim, c, pausa, ultimo, raf, el, ... }
+// Lo que se eligió en la placa (pote, temperatura, humedad): queda para la próxima vez que se prende
+const entradasPlaca = { pote: 2048, temp: 24.5, hum: 55 };
 function pararPlaca(){ if(placa){ cancelAnimationFrame(placa.raf); placa = null; } }
 async function ejecutarPlaca(){
   const ej = ejp.ej;
@@ -6878,14 +7021,20 @@ async function ejecutarPlaca(){
   if(!ejp || ejp.ej !== ej) return;
   const c = codigoEspEj(ej, true);
   pararPlaca();
-  const sim = E.crear(c.codigo, { archivos: c.archivos, nombre: c.nombre, vivo: true, ...(ej.placa || {}) });
+  const sim = E.crear(c.codigo, { archivos: c.archivos, nombre: c.nombre, vivo: true, ...(ej.placa || {}), ...entradasPlaca });
   placa = { ej, sim, c, E, pausa: false, ultimo: performance.now() };
-  ejp.tab = "placa";
-  pintarIzqEjp();
+  pintarBarraSim();
+  $("#placa").classList.remove("apagada");
   if(sim.error) resEjp(`<div class="pr-mal"><b>${c.profe ? `El ${esc(c.nombre)} ${c.de} no compila en el simulador` : "Tu sketch no compila"}</b><pre>${esc(errorEsp(sim.error, c))}</pre></div>`);
-  else resEjp(`<div class="pla-corre"><i></i><span>${c.profe ? `Corre <b>${esc(c.nombre)}</b>, el ${c.de}.` : "Tu sketch corre en la placa."} Mirala ${innerWidth > 900 ? "a la izquierda" : "arriba"}: apretá el pulsador, mové el pote, escribí en el monitor serie.</span><button class="linkbtn" data-ejp-tab="placa">Ver la placa</button></div>`);
-  if(innerWidth <= 900) $("#ejpIzq").scrollIntoView({ behavior: "smooth", block: "start" });
+  else if($("#ejpRes") && $("#ejpRes").dataset.que !== "verif") resEjp("");
+  verTabSim("serial");
+  if(innerWidth <= 900) $("#placa").scrollIntoView({ behavior: "smooth", block: "start" });
   placa.raf = requestAnimationFrame(cuadroPlaca);
+}
+function detenerPlaca(){
+  pararPlaca();
+  const el = $("#placa");
+  if(el){ el.classList.add("apagada"); pintarBarraSim(); }
 }
 const errorEsp = (e, c) => `${e.compilacion ? "error" : "se cortó"}: ${e.msg}${e.linea ? `  (línea ${e.linea}${e.archivo && e.archivo !== c.nombre && e.archivo !== "sketch.ino" ? ` de ${e.archivo}` : ""})` : ""}`;
 /* Un cuadro de la animación: el tiempo de la placa avanza con el reloj (si el sketch hace muchas cuentas, más lento) */
@@ -6895,51 +7044,261 @@ function cuadroPlaca(){
   const ahora = performance.now(), dt = Math.min(250, ahora - placa.ultimo), s = placa.sim;
   placa.ultimo = ahora;
   if(!placa.pausa && !s.error && !s.terminado){
-    const antes = s.error;
     s.avanzar(s.t + dt, Infinity, 14);
-    if(s.error && !antes) resEjp(`<div class="pr-mal"><b>${placa.c.profe ? `El sketch ${placa.c.de} se cortó` : "Tu sketch se cortó"}</b><pre>${esc(errorEsp(s.error, placa.c))}</pre></div>`);
+    if(s.error) resEjp(`<div class="pr-mal"><b>${placa.c.profe ? `El sketch ${placa.c.de} se cortó` : "Tu sketch se cortó"}</b><pre>${esc(errorEsp(s.error, placa.c))}</pre></div>`);
   }
   pintarPlaca();
   placa.raf = requestAnimationFrame(cuadroPlaca);
 }
 const segP = ms => (ms / 1000).toFixed(1).replace(".", ",") + " s";
-/* La placa (en la pestaña Placa de la izquierda). Si no está prendida, apagada con el botón para prenderla */
-function viewPlaca(){
-  const on = placa && placa.ej === ejp.ej, s = on && placa.sim, ent = s ? s.ent : { pote: 2048, dht: { t: 24.5, h: 55 } };
-  const sal = (pin, nombre, clase) => `<div class="pla-sal ${clase}" data-pl-pin="${pin}"><i></i><span>${nombre}<em>GPIO ${pin}</em></span><b>—</b></div>`;
-  const rango = (k, t, min, max, paso, v, u, pin) => `<label class="pla-rango"><span>${t}<em>${pin}</em></span><input type="range" min="${min}" max="${max}" step="${paso}" value="${v}" data-placa-${k}><input type="number" min="${min}" max="${max}" step="${paso}" value="${v}" data-placa-${k} aria-label="${t}"><small>${u}</small></label>`;
+const relojSim = ms => { const t = Math.max(0, Math.floor(ms)); return `${String(Math.floor(t / 60000)).padStart(2, "0")}:${String(Math.floor(t / 1000) % 60).padStart(2, "0")}.${String(t % 1000).padStart(3, "0")}`; };
+const ICON_SIM_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>';
+const ICON_SIM_STOP = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/></svg>';
+
+/* ---- La placa dibujada: la ESP32 DevKit V1 (30 pines) y lo que tiene la placa de la cátedra, con sus cables */
+const PINES_IZQ = ["EN", "VP", "VN", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "D13", "GND", "VIN"];
+const PINES_DER = ["D23", "D22", "TX0", "RX0", "D21", "D19", "D18", "D5", "TX2", "RX2", "D4", "D2", "D15", "GND", "3V3"];
+const pinY = i => 112 + 20 * i;
+function svgPlaca(){
+  const cable = (pts, color) => `<polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="${color}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${pts[pts.length - 1][0]}" cy="${pts[pts.length - 1][1]}" r="2.6" fill="${color}"/>`;
+  const texto = (x, y, t, k = "wk-tx", ancla = "middle") => `<text x="${x}" y="${y}" class="${k}" text-anchor="${ancla}">${t}</text>`;
+  // Los pines de la placa
+  const pines = [...PINES_IZQ.map((n, i) => `<circle cx="342" cy="${pinY(i)}" r="4.6" class="wk-pin"/><circle cx="342" cy="${pinY(i)}" r="1.8" fill="#111"/>${texto(352, pinY(i) + 3, n, "wk-silk", "start")}`),
+    ...PINES_DER.map((n, i) => `<circle cx="468" cy="${pinY(i)}" r="4.6" class="wk-pin"/><circle cx="468" cy="${pinY(i)}" r="1.8" fill="#111"/>${texto(458, pinY(i) + 3, n, "wk-silk", "end")}`)].join("");
+  const ranuras = [...Array(15)].map((_, i) => `<rect x="${71 + (i % 3) * 16}" y="${200 + Math.floor(i / 3) * 11}" width="11" height="7" rx="1.5" fill="#cfd2d6"/>`).join("");
   return `
-    <div class="placa ${on ? "" : "apagada"}" id="placa">
-      <div class="pla-cab">
-        <span class="pla-estado" id="plEstado"><i></i><span>${on ? "Prendida" : "Apagada"}</span></span>
-        <b class="pla-t" id="plT">${on ? segP(s.t) : ""}</b>
-        <span class="sim-esp"></span>
-        ${on ? `<button class="pr-chico" data-placa="pausa" id="plPausa">${placa.pausa ? "▶ Seguir" : "⏸ Pausa"}</button><button class="pr-chico" data-placa="reiniciar" title="Vuelve a cargar el código y arranca de cero">↺ Reiniciar</button>`
-          : `<button class="pr-fuerte" data-ejp="ejecutar">▶ Prender con mi sketch</button>`}
-      </div>
-      ${on && placa.c.profe ? `<p class="pla-quien">Corre <b>${esc(placa.c.nombre)}</b>, el ${placa.c.de}. Para correr el tuyo, volvé a tu pestaña y tocá ▶ Ejecutar.</p>` : ""}
-      <div class="pla-err" id="plErr" hidden></div>
-      <div class="pla-nube" id="plNube" hidden></div>
-      <div class="pla-tablero">
-        <div class="pla-bloque"><small class="pla-tit">Salidas</small>
-          ${sal(2, "LED azul", "azul")}${sal(23, "LED verde", "verde")}${sal(14, "Relé", "rele")}
+  <svg class="wk-svg" id="wkSvg" viewBox="34 26 780 432" role="img" aria-label="La ESP32 de la cátedra con sus componentes">
+    <defs>
+      <radialGradient id="wkBrilloAzul"><stop offset="0" stop-color="#5aa2ff" stop-opacity=".95"/><stop offset="1" stop-color="#5aa2ff" stop-opacity="0"/></radialGradient>
+      <radialGradient id="wkBrilloVerde"><stop offset="0" stop-color="#3ee67a" stop-opacity=".95"/><stop offset="1" stop-color="#3ee67a" stop-opacity="0"/></radialGradient>
+      <radialGradient id="wkBrilloRojo"><stop offset="0" stop-color="#ff4d3d" stop-opacity=".95"/><stop offset="1" stop-color="#ff4d3d" stop-opacity="0"/></radialGradient>
+      <pattern id="wkPuntos" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="wk-punto"/></pattern>
+    </defs>
+    <rect width="820" height="470" fill="url(#wkPuntos)"/>
+
+    <!-- Los cables -->
+    ${cable([[342, pinY(5)], [300, pinY(5)], [300, 182], [220, 182], [220, 166]], "#2e9e4f")}
+    ${cable([[342, pinY(6)], [130, pinY(6)]], "#e8892c")}
+    ${cable([[342, pinY(10)], [274, pinY(10)]], "#8e44ad")}
+    ${cable([[342, pinY(12)], [300, pinY(12)], [300, 410], [220, 410]], "#c9a400")}
+    ${cable([[468, pinY(0)], [512, pinY(0)]], "#2e9e4f")}
+    ${cable([[552, pinY(0)], [586, pinY(0)], [586, 104]], "#2e9e4f")}
+    ${cable([[468, pinY(1)], [494, pinY(1)], [494, 212], [512, 212]], "#2f7fd8")}
+    ${cable([[468, pinY(4)], [484, pinY(4)], [484, 226], [512, 226]], "#14a3a3")}
+    ${cable([[468, pinY(5)], [476, pinY(5)], [476, 400], [530, 400]], "#e14a8b")}
+    ${cable([[468, pinY(10)], [700, pinY(10)], [700, 382]], "#c9a400")}
+
+    <!-- La ESP32 DevKit V1 -->
+    <g class="wk-placa">
+      <rect x="330" y="30" width="150" height="420" rx="9" fill="#151515"/>
+      <circle cx="342" cy="42" r="6" fill="#e9e9e9"/><circle cx="468" cy="42" r="6" fill="#e9e9e9"/><circle cx="342" cy="438" r="6" fill="#e9e9e9"/><circle cx="468" cy="438" r="6" fill="#e9e9e9"/>
+      <rect x="368" y="34" width="74" height="46" fill="#262626"/>
+      <polyline points="374,74 374,42 384,42 384,62 394,62 394,42 404,42 404,62 414,62 414,42 424,42 424,62 434,62 434,42 436,42" fill="none" stroke="#c9a545" stroke-width="2"/>
+      <rect x="372" y="84" width="66" height="96" rx="2" fill="#bcbcbc" stroke="#8e8e8e"/>
+      <text x="405" y="128" class="wk-chip" text-anchor="middle">ESP32</text><text x="405" y="141" class="wk-chip2" text-anchor="middle">WROOM-32</text>
+      ${pines}
+      <rect x="390" y="352" width="30" height="22" rx="2" fill="#2a2a2a"/>
+      <circle cx="380" cy="398" r="4" class="wk-pwr"/>${texto(380, 410, "PWR", "wk-silk")}
+      <g id="wkL2c"><circle cx="430" cy="398" r="14" fill="url(#wkBrilloAzul)" id="wkL2" opacity="0"/><circle cx="430" cy="398" r="4" class="wk-led-azul"/></g>${texto(430, 410, "IO2", "wk-silk")}
+      <g data-placa="reiniciar" class="wk-btn-en" role="button" tabindex="0" aria-label="EN: reinicia la placa"><title>EN: reinicia la placa</title><rect x="350" y="418" width="18" height="14" rx="2" fill="#ddd"/><circle cx="359" cy="425" r="4" fill="#555"/></g>${texto(359, 444, "EN", "wk-silk")}
+      <rect x="442" y="418" width="18" height="14" rx="2" fill="#ddd"/><circle cx="451" cy="425" r="4" fill="#555"/>${texto(451, 444, "BOOT", "wk-silk")}
+      <rect x="390" y="430" width="30" height="18" rx="2" fill="#c8c8c8" stroke="#8a8a8a"/>
+    </g>
+
+    <!-- El potenciómetro (GPIO 32) -->
+    <g class="wk-comp" data-wk="pote" role="button" tabindex="0" aria-label="Potenciómetro: tocalo para cambiar el valor">
+      <title>Potenciómetro · GPIO 32: tocalo para cambiar el valor</title>
+      ${texto(220, 60, "Pote · GPIO 32", "wk-et")}
+      <rect x="182" y="72" width="76" height="76" rx="7" fill="#2463c9"/>
+      <circle cx="220" cy="110" r="28" fill="#e9eaec" stroke="#b9bcc2" stroke-width="2"/>
+      <g id="wkKnob" transform="rotate(0 220 110)"><circle cx="220" cy="110" r="19" fill="#d6d8dc"/><rect x="217.5" y="88" width="5" height="16" rx="2" fill="#4a4d52"/></g>
+      ${[200, 220, 240].map(x => `<rect x="${x - 2}" y="148" width="4" height="18" fill="#b0b0b0"/>`).join("")}
+      <text x="220" y="196" class="wk-val" id="wkPoteV" text-anchor="middle">2048</text>
+    </g>
+
+    <!-- El DHT22 (GPIO 33) -->
+    <g class="wk-comp" data-wk="dht" role="button" tabindex="0" aria-label="DHT22: tocalo para cambiar la temperatura y la humedad">
+      <title>DHT22 · GPIO 33: tocalo para cambiar la temperatura y la humedad</title>
+      ${texto(97, 178, "DHT22 · GPIO 33", "wk-et")}
+      <rect x="62" y="188" width="70" height="88" rx="5" fill="#f4f5f6" stroke="#c4c8cc" stroke-width="1.5"/>
+      ${ranuras}
+      <text x="97" y="268" class="wk-tx" text-anchor="middle" fill="#666">DHT22</text>
+      ${[214, 232, 250, 268].map(y => `<rect x="132" y="${y - 1.5}" width="12" height="3" fill="#b0b0b0"/>`).join("")}
+      <text x="97" y="294" class="wk-val" id="wkDhtV" text-anchor="middle">24,5 °C · 55 %</text>
+    </g>
+
+    <!-- El relé (GPIO 14) -->
+    <g class="wk-rele" id="wkRele">
+      ${texto(214, 290, "Relé · GPIO 14", "wk-et")}
+      <rect x="140" y="298" width="122" height="62" rx="4" fill="#1f56b5"/>
+      <rect x="144" y="306" width="26" height="46" rx="2" fill="#1f9e5b"/>
+      ${[316, 329, 342].map(y => `<circle cx="157" cy="${y}" r="4" fill="#cfd8d2" stroke="#6b7d72"/>`).join("")}
+      <rect x="176" y="304" width="62" height="48" rx="3" fill="#2f6fe0" stroke="#1a3f85"/>
+      <text x="207" y="325" class="wk-mini" text-anchor="middle">SRD-05VDC</text><text x="207" y="336" class="wk-mini" text-anchor="middle">SL-C</text>
+      <circle cx="250" cy="310" r="13" fill="url(#wkBrilloRojo)" class="wk-rele-brillo"/><circle cx="250" cy="310" r="3.6" class="wk-rele-led"/>
+      ${[300, 312, 324].map(y => `<rect x="262" y="${y - 1.5}" width="12" height="3" fill="#b0b0b0"/>`).join("")}
+      <text x="200" y="378" class="wk-val" id="wkReleT" text-anchor="middle">abierto</text>
+    </g>
+
+    <!-- Touch 13 -->
+    <g class="wk-touch" data-placa-touch="13" role="button" tabindex="0" aria-label="Touch 13: mantenelo tocado">
+      <title>Touch · GPIO 13: mantené el dedo</title>
+      <circle cx="200" cy="410" r="20" fill="#c8863a" stroke="#8a5a20" stroke-width="2"/><circle cx="200" cy="410" r="12" fill="#d99b52"/>
+      <circle cx="200" cy="410" r="16" class="wk-dedo"/>
+      ${texto(200, 448, "Touch · GPIO 13", "wk-et")}
+    </g>
+
+    <!-- El LED verde (GPIO 23) con su resistencia -->
+    <g>
+      ${texto(596, 40, "LED verde · GPIO 23", "wk-et")}
+      <rect x="512" y="${pinY(0) - 5}" width="40" height="10" rx="4" fill="#d9c49a" stroke="#a8925f"/>
+      <rect x="520" y="${pinY(0) - 5}" width="4" height="10" fill="#7b4a12"/><rect x="528" y="${pinY(0) - 5}" width="4" height="10" fill="#cc2020"/><rect x="536" y="${pinY(0) - 5}" width="4" height="10" fill="#7b4a12"/><rect x="544" y="${pinY(0) - 5}" width="3" height="10" fill="#c9a545"/>
+      <circle cx="592" cy="78" r="30" fill="url(#wkBrilloVerde)" id="wkL23" opacity="0"/>
+      <rect x="584" y="86" width="16" height="6" rx="1" fill="#2f8f4e"/>
+      <path d="M582 88 v-14 a10 10 0 0 1 20 0 v14 z" class="wk-led-verde" id="wkL23c"/>
+      <rect x="585" y="92" width="3" height="14" fill="#b0b0b0"/><rect x="596" y="92" width="3" height="18" fill="#b0b0b0"/>
+    </g>
+
+    <!-- El display OLED SH1106 (I2C 0x3C, GPIO 21 y 22) -->
+    <g>
+      <rect x="520" y="146" width="282" height="154" rx="7" fill="#17365c"/>
+      ${["GND", "VCC", "SCL", "SDA"].map((n, i) => `<rect x="512" y="${182 + i * 14}" width="10" height="4" fill="#b0b0b0"/>${texto(528, 186 + i * 14, n, "wk-silk", "start")}`).join("")}
+      <rect x="548" y="156" width="248" height="134" rx="3" fill="#000"/>
+      <svg x="550" y="158" width="244" height="130" viewBox="0 0 128 64" preserveAspectRatio="none" id="wkOled">${svgOled(null)}</svg>
+      ${texto(661, 138, "Display OLED SH1106 · 128×64 · I2C 0x3C", "wk-et")}
+    </g>
+
+    <!-- El pulsador (GPIO 19) -->
+    <g class="wk-boton" data-placa-boton role="button" tabindex="0" aria-label="Pulsador: mantenelo apretado">
+      <title>Pulsador · GPIO 19: mantenelo apretado</title>
+      <rect x="530" y="372" width="56" height="56" rx="5" fill="#3a3a3a"/>
+      ${[[530, 378], [530, 422], [586, 378], [586, 422]].map(([x, y]) => `<rect x="${x === 530 ? x - 8 : x}" y="${y - 2}" width="8" height="4" fill="#b0b0b0"/>`).join("")}
+      <circle cx="558" cy="400" r="18" class="wk-boton-cap"/>
+      ${texto(558, 448, "Pulsador · GPIO 19", "wk-et")}
+    </g>
+
+    <!-- Touch 4 -->
+    <g class="wk-touch" data-placa-touch="4" role="button" tabindex="0" aria-label="Touch 4: mantenelo tocado">
+      <title>Touch · GPIO 4: mantené el dedo</title>
+      <circle cx="700" cy="400" r="20" fill="#c8863a" stroke="#8a5a20" stroke-width="2"/><circle cx="700" cy="400" r="12" fill="#d99b52"/>
+      <circle cx="700" cy="400" r="16" class="wk-dedo"/>
+      ${texto(700, 448, "Touch · GPIO 4", "wk-et")}
+    </g>
+  </svg>`;
+}
+/* La barra de arriba de la simulación: ▶ para prender; prendida, ⏹ ↺ ⏸, el reloj y el estado */
+function pintarBarraSim(){
+  const b = $("#wokBar");
+  if(!b) return;
+  const on = placa && placa.ej === ejp.ej;
+  const a = archivosEj(ejp.ej)[ejp.arch], quien = ejp.vista === "codigo" && a && a.profe ? `<b>${esc(a.nombre)}</b> (${a.profe.etiqueta ? "del grupo" : "del profe"})` : "tu sketch";
+  const llevar = `<button class="wok-b wok-llevar-b" data-placa="wokwi" title="Cómo probarlo en wokwi.com">Probalo en Wokwi ↗</button>`;
+  b.innerHTML = on ? `
+    <button class="wok-play stop" data-placa="detener" title="Detener la simulación">${ICON_SIM_STOP}</button>
+    <button class="wok-b" data-placa="reiniciar" title="Reiniciar con el código de la pestaña abierta (Ctrl + Enter)">↺</button>
+    <button class="wok-b" data-placa="pausa" id="plPausa" title="${placa.pausa ? "Seguir" : "Pausa"}">${placa.pausa ? "▶" : "⏸"}</button>
+    <span class="wok-t" id="plT">${relojSim(placa.sim.t)}</span>
+    <span class="wok-est on" id="plEstado"></span>
+    <span class="wok-cambio" id="wokCambio" hidden>Cambiaste el código: ↺ para correrlo</span>
+    <span class="sim-esp"></span>${llevar}`
+    : `<button class="wok-play" data-ejp="ejecutar" title="Iniciar la simulación (Ctrl + Enter)">${ICON_SIM_PLAY}</button>
+    <span class="wok-ayuda">Tocá ▶ para correr ${quien}</span><span class="sim-esp"></span>${llevar}`;
+  placa && (placa.est = null);
+}
+/* Todo el panel de la derecha */
+function viewSimEjp(){
+  return `
+    <div class="wok apagada" id="placa">
+      <div class="wok-bar" id="wokBar"></div>
+      <div class="wok-llevar" id="wokLlevar" hidden></div>
+      <div class="wok-err" id="plErr" hidden></div>
+      <div class="wok-lienzo" id="wokLienzo">${svgPlaca()}<div class="wok-pop" id="wokPop" hidden></div></div>
+      <div class="wok-sal" id="wokSal"></div>
+      <ul class="pla-avisos" id="plAvisos"></ul>
+      <div class="wok-abajo">
+        <div class="wok-tabs" role="tablist">
+          <button class="on" data-wok-tab="serial" role="tab">Monitor serie <em id="plBaud"></em></button>
+          <button data-wok-tab="nube" role="tab">Nube <i id="wokNubeN"></i></button>
+          <button data-wok-tab="res" role="tab">Resultado <i id="wokResN"></i></button>
+          <span class="sim-esp"></span><button class="linkbtn" data-placa="limpiar">limpiar</button>
         </div>
-        <div class="pla-bloque"><small class="pla-tit">Entradas</small>
-          <div class="pla-botones"><button class="pla-boton" data-placa-boton title="Mantenelo apretado">Pulsador<em>GPIO 19</em></button><button class="pla-boton" data-placa-touch="13" title="Mantené el dedo">Touch<em>GPIO 13</em></button><button class="pla-boton" data-placa-touch="4" title="Mantené el dedo">Touch<em>GPIO 4</em></button></div>
-          ${rango("pote", "Pote", 0, 4095, 1, ent.pote, "", "GPIO 32")}
-          ${rango("temp", "Temp.", -10, 50, 0.5, ent.dht.t, "°C", "DHT22 · 33")}
-          ${rango("hum", "Hum.", 0, 100, 1, ent.dht.h, "%", "DHT22 · 33")}
-        </div>
-        <div class="pla-bloque pla-oled-b"><small class="pla-tit">Display OLED <em>SH1106 · 128×64 · I2C 0x3C</em></small>
-          <svg class="pla-oled" id="plOled" viewBox="0 0 128 64" role="img" aria-label="El display">${svgOled(on && s.display && s.display.cuadro)}</svg>
-        </div>
-        <div class="pla-bloque pla-serial-b"><small class="pla-tit">Monitor serie <em id="plBaud"></em><button class="linkbtn" data-placa="limpiar">limpiar</button></small>
-          <pre class="pla-serial" id="plSerial"></pre>
+        <div class="wok-panel" data-wok-panel="serial">
+          <pre class="pla-serial vacio" id="plSerial">El monitor serie aparece cuando la placa está prendida.</pre>
           <form class="pla-enviar" data-placa-serial><input placeholder="Escribí y Enter (por ej. LUZ_ON)" aria-label="Mandar por el monitor serie" autocomplete="off" spellcheck="false"><button class="pr-chico">Enviar</button></form>
         </div>
+        <div class="wok-panel" data-wok-panel="nube" hidden><div class="pla-nube" id="plNube"><span class="pla-nada">Acá se ve el WiFi, ThingSpeak y MQTT cuando el sketch los usa.</span></div></div>
+        <div class="wok-panel" data-wok-panel="res" hidden><div class="pr-res" id="ejpRes" aria-live="polite"></div></div>
       </div>
-      <ul class="pla-avisos" id="plAvisos"></ul>
     </div>`;
+}
+function verTabSim(k){
+  const abajo = $("#placa .wok-abajo");
+  if(!abajo) return;
+  const actual = (abajo.querySelector("[data-wok-tab].on") || {}).dataset;
+  if(!k){ if(actual && actual.wokTab === "res") k = "serial"; else return; }
+  abajo.querySelectorAll("[data-wok-tab]").forEach(b => b.classList.toggle("on", b.dataset.wokTab === k));
+  abajo.querySelectorAll("[data-wok-panel]").forEach(p => p.hidden = p.dataset.wokPanel !== k);
+}
+/* Los valores del pote y del DHT22 en el dibujo (con la placa prendida, los del simulador) */
+function pintarEntradas(){
+  const ent = placa && placa.ej === ejp.ej ? { pote: placa.sim.ent.pote, temp: placa.sim.ent.dht.t, hum: placa.sim.ent.dht.h } : entradasPlaca;
+  const k = $("#wkKnob"), coma = x => String(+(+x).toFixed(1)).replace(".", ",");
+  if(!k) return;
+  k.setAttribute("transform", `rotate(${(-135 + 270 * ent.pote / 4095).toFixed(1)} 220 110)`);
+  $("#wkPoteV").textContent = String(Math.round(ent.pote));
+  $("#wkDhtV").textContent = `${coma(ent.temp)} °C · ${coma(ent.hum)} %`;
+}
+/* Lo que cambió desde el último cuadro */
+function pintarPlaca(){
+  const el = $("#placa");
+  if(!el || !placa || placa.ej !== ejp.ej) return;
+  const s = placa.sim, nuevo = placa.el !== el;
+  placa.el = el;
+  const t = $("#plT");
+  if(t) t.textContent = relojSim(s.t);
+  const est = s.error ? "Se cortó" : placa.pausa ? "En pausa" : s.wifiEstado() === 3 ? "WiFi conectado" : s.wifi.desde != null ? "Conectando el WiFi…" : "Corriendo";
+  const ke = est + (placa.c.profe ? ` · ${placa.c.nombre} (${placa.c.de})` : "");
+  const pe = $("#plEstado");
+  if(pe && placa.est !== ke){ placa.est = ke; pe.textContent = ke; pe.className = "wok-est " + (s.error ? "error" : placa.pausa ? "pausa" : "on"); }
+  // Las salidas: el brillo en el dibujo y el valor en las fichas de abajo
+  const fichas = [];
+  for(const [pin, nombre] of [[2, "LED azul"], [23, "LED verde"], [14, "Relé"]]){
+    const usado = s.modos[pin] === 3 || pin in s.pwmv;
+    const b = pin in s.pwmv ? s.pwmv[pin] : (s.salidas[pin] || 0);
+    const pwm = s.h.pwm[pin] && s.h.pwm[pin].length ? s.h.pwm[pin][s.h.pwm[pin].length - 1].v : null;
+    const txt = !usado ? "sin usar" : pin === 14 ? (b ? "cerrado · ON" : "abierto · OFF") : pin in s.pwmv ? `PWM ${pwm} · ${Math.round(b * 100)} %` : b ? "encendido" : "apagado";
+    fichas.push(`<span class="wok-ficha ${usado ? "" : "nada"} ${b > 0 ? "on" : ""}" data-pin="${pin}"><i></i>${nombre} <em>GPIO ${pin}</em><b>${txt}</b></span>`);
+    if(pin === 2){ $("#wkL2").setAttribute("opacity", b.toFixed(3)); $("#wkL2c").classList.toggle("on", b > 0); }
+    if(pin === 23){ $("#wkL23").setAttribute("opacity", b.toFixed(3)); $("#wkL23c").classList.toggle("on", b > 0); }
+    if(pin === 14){ $("#wkRele").classList.toggle("on", b > 0); $("#wkReleT").textContent = !usado ? "sin usar" : b ? "cerrado · ON" : "abierto · OFF"; }
+  }
+  const kf = fichas.join("");
+  if(nuevo || placa.kf !== kf){ placa.kf = kf; $("#wokSal").innerHTML = kf; }
+  // El display
+  const c = s.display && s.display.cuadro;
+  if(nuevo || c !== placa.cuadro){ placa.cuadro = c; $("#wkOled").innerHTML = svgOled(c); }
+  if(nuevo) pintarEntradas();
+  // El monitor serie (sigue abajo, salvo que se haya subido a leer)
+  if(nuevo || s.serialTexto !== placa.ser){
+    const pre = $("#plSerial"), abajo = nuevo || pre.scrollHeight - pre.scrollTop - pre.clientHeight < 30;
+    placa.ser = s.serialTexto;
+    pre.textContent = s.serialTexto.slice(-8000) || (s.serialAbierto ? "" : "(sin Serial.begin: no sale nada)");
+    pre.classList.toggle("vacio", !s.serialTexto);
+    if(abajo) pre.scrollTop = pre.scrollHeight;
+    $("#plBaud").textContent = s.serialAbierto ? `${s.baudios || ""} baudios` : "";
+  }
+  // La nube: WiFi, ThingSpeak y MQTT (solo si el sketch los usa). El formulario de MQTT queda: se actualiza lo de arriba
+  const nube = s.libs.has("WiFi") || s.libs.has("ThingSpeak") || s.libs.has("PubSubClient");
+  if(nuevo){ $("#plNube").innerHTML = nube ? nubePlaca(s) : `<span class="pla-nada">Este sketch no usa WiFi, ThingSpeak ni MQTT.</span>`; placa.kn = null; }
+  const kn = `${s.wifiEstado()}|${s.h.thingspeak.length}|${s.h.mqtt.length}`;
+  if(nube && placa.kn !== kn){
+    placa.kn = kn; pintarNube(s);
+    const n = s.h.thingspeak.length + s.h.mqtt.filter(x => x.tipo === "pub" || x.tipo === "llega").length;
+    $("#wokNubeN").textContent = n ? String(n) : "";
+  }
+  // Los avisos y el error
+  if(nuevo || s.h.avisos.length !== placa.nav){ placa.nav = s.h.avisos.length; $("#plAvisos").innerHTML = s.h.avisos.slice(-3).map(a => `<li><span>${segP(a.t)}</span>${esc(a.s)}</li>`).join(""); }
+  if(nuevo || !!s.error !== placa.err){ placa.err = !!s.error; const e = $("#plErr"); e.hidden = !s.error; if(s.error) e.textContent = errorEsp(s.error, placa.c); }
 }
 /* El display: lo que dibujó el último display.display() (texto de 6×8 por tamaño, rectángulos, líneas y círculos) */
 function svgOled(c){
@@ -6956,57 +7315,13 @@ function svgOled(c){
   }).join("");
   return `<rect width="128" height="64" fill="${fondo}"/>${ops}`;
 }
-/* Lo que cambió desde el último cuadro */
-function pintarPlaca(){
-  const el = $("#placa");
-  if(!el || !placa || el.classList.contains("apagada")) return;
-  const s = placa.sim, nuevo = placa.el !== el;
-  placa.el = el;
-  $("#plT").textContent = segP(s.t);
-  const est = s.error ? ["error", "Se cortó"] : placa.pausa ? ["pausa", "En pausa"] : ["on", s.wifiEstado() === 3 ? "Prendida · WiFi conectado" : s.wifi.desde != null ? "Prendida · conectando el WiFi…" : "Prendida"];
-  if(nuevo || placa.est !== est[1]){ placa.est = est[1]; $("#plEstado").className = "pla-estado " + est[0]; $("#plEstado span").textContent = est[1]; }
-  // Las salidas: brillo con el PWM, o prendido/apagado
-  for(const pin of [2, 23, 14]){
-    const x = el.querySelector(`[data-pl-pin="${pin}"]`), usado = s.modos[pin] === 3 || pin in s.pwmv;
-    const b = pin in s.pwmv ? s.pwmv[pin] : (s.salidas[pin] || 0);
-    const pwm = s.h.pwm[pin] && s.h.pwm[pin].length ? s.h.pwm[pin][s.h.pwm[pin].length - 1].v : null;
-    const txt = !usado ? "sin usar" : pin === 14 ? (b ? "cerrado · ON" : "abierto · OFF") : pin in s.pwmv ? `PWM ${pwm} · ${Math.round(b * 100)} %` : b ? "encendido" : "apagado";
-    const k = `${b}|${txt}`;
-    if(!nuevo && x.dataset.k === k) continue;
-    x.dataset.k = k;
-    x.style.setProperty("--b", b);
-    x.classList.toggle("on", b > 0);
-    x.classList.toggle("usado", usado);
-    x.querySelector("b").textContent = txt;
-  }
-  // El display
-  const c = s.display && s.display.cuadro;
-  if(nuevo || c !== placa.cuadro){ placa.cuadro = c; $("#plOled").innerHTML = svgOled(c); }
-  // El monitor serie (sigue abajo, salvo que se haya subido a leer)
-  if(nuevo || s.serialTexto !== placa.ser){
-    const pre = $("#plSerial"), abajo = nuevo || pre.scrollHeight - pre.scrollTop - pre.clientHeight < 30;
-    placa.ser = s.serialTexto;
-    pre.textContent = s.serialTexto.slice(-8000) || (s.serialAbierto ? "" : "(sin Serial.begin)");
-    pre.classList.toggle("vacio", !s.serialTexto);
-    if(abajo) pre.scrollTop = pre.scrollHeight;
-    $("#plBaud").textContent = s.serialAbierto ? `${s.baudios || ""} baudios` : "";
-  }
-  // La nube: WiFi, ThingSpeak y MQTT (solo si el sketch los usa). El formulario de MQTT queda: se actualiza lo de arriba
-  const nube = s.libs.has("WiFi") || s.libs.has("ThingSpeak") || s.libs.has("PubSubClient");
-  if(nuevo){ const n = $("#plNube"); n.hidden = !nube; n.innerHTML = nube ? nubePlaca(s) : ""; placa.kn = null; }
-  const kn = `${s.wifiEstado()}|${s.h.thingspeak.length}|${s.h.mqtt.length}`;
-  if(nube && placa.kn !== kn){ placa.kn = kn; pintarNube(s); }
-  // Los avisos y el error
-  if(nuevo || s.h.avisos.length !== placa.nav){ placa.nav = s.h.avisos.length; $("#plAvisos").innerHTML = s.h.avisos.slice(-5).map(a => `<li><span>${segP(a.t)}</span>${esc(a.s)}</li>`).join(""); }
-  if(nuevo || !!s.error !== placa.err){ placa.err = !!s.error; const e = $("#plErr"); e.hidden = !s.error; if(s.error) e.textContent = errorEsp(s.error, placa.c); }
-}
 function nubePlaca(s){
   return `
     <div class="pla-wifi"><b>WiFi</b> <span id="plWifi"></span></div>
-    ${s.libs.has("ThingSpeak") ? `<div class="pla-ts"><b>ThingSpeak</b><div id="plTs"></div></div>` : ""}
+    ${s.libs.has("ThingSpeak") || s.libs.has("HTTPClient") ? `<div class="pla-ts"><b>ThingSpeak</b><div id="plTs"></div></div>` : ""}
     ${s.libs.has("PubSubClient") ? `<div class="pla-mqtt"><b>MQTT</b><div id="plMq"></div>
       <form class="pla-enviar" data-placa-mqtt><input name="topic" placeholder="topic" aria-label="Topic" autocomplete="off" spellcheck="false"><input name="payload" placeholder="mensaje (ej. ON)" aria-label="Mensaje" autocomplete="off" spellcheck="false"><button class="pr-chico">Publicar</button></form>
-      <small class="pla-nota">Publicar manda el mensaje al broker, como otro cliente (por ejemplo, mosquitto_pub).</small></div>` : ""}`;
+      <small class="pla-nota">Publicar manda el mensaje al broker, como otro cliente (por ejemplo, el cliente web de HiveMQ).</small></div>` : ""}`;
 }
 function pintarNube(s){
   $("#plWifi").textContent = s.wifiEstado() === 3 ? `conectado a «${s.wifi.ssid}» · IP 192.168.0.57` : s.wifi.desde != null ? "conectando…" : "sin conectar (falta WiFi.begin)";
@@ -7024,8 +7339,95 @@ function pintarNube(s){
     if(t && !t.value && sub && document.activeElement !== t) t.value = sub;
   }
 }
+/* ---- Llevarlo a Wokwi: el sketch, la placa de la cátedra (diagram.json) y las librerías, para copiar y pegar */
+const WOKWI_NUEVO = "https://wokwi.com/projects/new/esp32";
+const DIAGRAMA_WOKWI = {
+  version: 1, author: "Placa de la cátedra · TPA", editor: "wokwi",
+  parts: [
+    { type: "board-esp32-devkit-c-v4", id: "esp", top: 0, left: 0, attrs: {} },
+    { type: "wokwi-led", id: "ledAzul", top: -80, left: -120, attrs: { color: "blue", label: "GPIO 2" } },
+    { type: "wokwi-resistor", id: "r2", top: 20, left: -140, rotate: 90, attrs: { value: "220" } },
+    { type: "wokwi-led", id: "ledVerde", top: -80, left: 200, attrs: { color: "green", label: "GPIO 23" } },
+    { type: "wokwi-resistor", id: "r1", top: 20, left: 180, rotate: 90, attrs: { value: "220" } },
+    { type: "wokwi-relay-module", id: "rele", top: 200, left: -260, attrs: {} },
+    { type: "wokwi-pushbutton", id: "pulsador", top: 220, left: 200, attrs: { color: "red", label: "GPIO 19" } },
+    { type: "wokwi-potentiometer", id: "pote", top: -60, left: -260, attrs: {} },
+    { type: "wokwi-dht22", id: "dht", top: 60, left: -330, attrs: { temperature: "24.5", humidity: "55" } },
+    { type: "board-ssd1306", id: "oled", top: 60, left: 260, attrs: { i2cAddress: "0x3c" } }
+  ],
+  connections: [
+    ["esp:TX", "$serialMonitor:RX", "", []], ["esp:RX", "$serialMonitor:TX", "", []],
+    ["esp:2", "r2:1", "blue", []], ["r2:2", "ledAzul:A", "blue", []], ["ledAzul:C", "esp:GND.1", "black", []],
+    ["esp:23", "r1:1", "green", []], ["r1:2", "ledVerde:A", "green", []], ["ledVerde:C", "esp:GND.1", "black", []],
+    ["esp:14", "rele:IN", "purple", []], ["rele:VCC", "esp:5V", "red", []], ["rele:GND", "esp:GND.1", "black", []],
+    ["esp:19", "pulsador:1.l", "magenta", []], ["pulsador:2.l", "esp:GND.1", "black", []],
+    ["esp:32", "pote:SIG", "green", []], ["pote:VCC", "esp:3V3", "red", []], ["pote:GND", "esp:GND.1", "black", []],
+    ["esp:33", "dht:SDA", "orange", []], ["dht:VCC", "esp:3V3", "red", []], ["dht:GND", "esp:GND.1", "black", []],
+    ["esp:22", "oled:SCL", "blue", []], ["esp:21", "oled:SDA", "cyan", []], ["oled:VCC", "esp:3V3", "red", []], ["oled:GND", "esp:GND.1", "black", []]
+  ],
+  dependencies: {}
+};
+// Las librerías que pide el sketch (por sus #include), con el nombre del Library Manager
+function libreriasWokwi(codigo){
+  const L = [];
+  const usa = re => re.test(codigo);
+  if(usa(/#include\s*[<"]DHT/)) L.push("DHT sensor library", "Adafruit Unified Sensor");
+  if(usa(/#include\s*[<"]Adafruit_SH110X/)) L.push("Adafruit SH110X", "Adafruit GFX Library");
+  if(usa(/#include\s*[<"]Adafruit_SSD1306/)) L.push("Adafruit SSD1306", "Adafruit GFX Library");
+  if(usa(/#include\s*[<"]ThingSpeak/)) L.push("ThingSpeak");
+  if(usa(/#include\s*[<"]PubSubClient/)) L.push("PubSubClient");
+  if(usa(/#include\s*[<"]ArduinoJson/)) L.push("ArduinoJson");
+  if(usa(/#include\s*[<"]ESP32Servo/)) L.push("ESP32Servo");
+  return [...new Set(L)];
+}
+function pintarLlevar(){
+  const p = $("#wokLlevar"), c = codigoEspEj(ejp.ej, true), libs = libreriasWokwi(c.codigo);
+  const wifi = /WiFi\.begin/.test(c.codigo);
+  p.innerHTML = `
+    <div class="wok-llevar-cab"><b>Probalo en Wokwi, como en clase</b><button class="wok-x" data-placa="wokwi" aria-label="Cerrar">✕</button></div>
+    <ol>
+      <li><span>Copiá ${c.profe ? `<b>${esc(c.nombre)}</b>` : "tu sketch"}</span><button class="pr-chico" data-wok-copiar="sketch">Copiar el código</button></li>
+      <li><span>Abrí un proyecto nuevo de ESP32 y pegalo en <code>sketch.ino</code></span><a class="pr-chico" href="${WOKWI_NUEVO}" target="_blank" rel="noopener">wokwi.com ↗</a></li>
+      <li><span>En la pestaña <code>diagram.json</code>, pegá la placa de la cátedra (los LEDs, el relé, el pulsador, el pote, el DHT22 y el display, con los mismos pines)</span><button class="pr-chico" data-wok-copiar="diagram">Copiar diagram.json</button></li>
+      ${libs.length ? `<li><span>Las librerías (Library Manager, el +): ${libs.map(l => `<code>${esc(l)}</code>`).join(" ")}</span><button class="pr-chico" data-wok-copiar="libs">Copiar libraries.txt</button></li>` : ""}
+    </ol>
+    <p class="wok-notas">En Wokwi: ${wifi ? "la red es <b>Wokwi-GUEST</b>, sin clave · " : ""}el touch no se simula (el caso 9 de la guía usa pulsadores) · el display es un SSD1306 y anda igual con Adafruit_SH110X${/ThingSpeak/.test(c.codigo) ? " · ThingSpeak anda con tu canal y tu Write API Key de verdad" : ""}.</p>`;
+}
+async function copiarTexto(t, boton){
+  try { await navigator.clipboard.writeText(t); }
+  catch(e){ const a = Object.assign(document.createElement("textarea"), { value: t }); document.body.appendChild(a); a.select(); try { document.execCommand("copy"); } catch(err){} a.remove(); }
+  if(boton){ const v = boton.textContent; boton.textContent = "✓ Copiado"; setTimeout(() => { boton.textContent = v; }, 1400); }
+}
+function copiarWokwi(que, boton){
+  const c = codigoEspEj(ejp.ej, true);
+  copiarTexto(que === "diagram" ? JSON.stringify(DIAGRAMA_WOKWI, null, 2) : que === "libs" ? libreriasWokwi(c.codigo).join("\n") + "\n" : c.codigo, boton);
+}
+/* ---- El pote y el DHT22: al tocarlos, un cartelito con su valor (como en Wokwi) */
+function abrirPopPlaca(que, g){
+  const pop = $("#wokPop"), lz = $("#wokLienzo");
+  if(!pop) return;
+  if(!pop.hidden && pop.dataset.que === que){ pop.hidden = true; return; }
+  const ent = placa && placa.ej === ejp.ej ? { pote: placa.sim.ent.pote, temp: placa.sim.ent.dht.t, hum: placa.sim.ent.dht.h } : entradasPlaca;
+  const rango = (k, t, min, max, paso, v, u) => `<label class="pla-rango"><span>${t}</span><input type="range" min="${min}" max="${max}" step="${paso}" value="${v}" data-placa-${k}><input type="number" min="${min}" max="${max}" step="${paso}" value="${v}" data-placa-${k} aria-label="${t}"><small>${u}</small></label>`;
+  pop.dataset.que = que;
+  pop.innerHTML = `<div class="wok-pop-cab"><b>${que === "pote" ? "Potenciómetro · GPIO 32" : "DHT22 · GPIO 33"}</b><button class="wok-x" data-wk-cerrar aria-label="Cerrar">✕</button></div>${que === "pote"
+    ? rango("pote", "Valor", 0, 4095, 1, Math.round(ent.pote), "")
+    : rango("temp", "Temp.", -40, 80, 0.5, ent.temp, "°C") + rango("hum", "Hum.", 0, 100, 1, ent.hum, "%")}`;
+  pop.hidden = false;
+  const r = g.getBoundingClientRect(), rl = lz.getBoundingClientRect();
+  const x = Math.max(6, Math.min(lz.clientWidth - pop.offsetWidth - 6, r.left - rl.left + r.width / 2 - pop.offsetWidth / 2));
+  pop.style.left = x + lz.scrollLeft + "px";
+  pop.style.top = Math.min(rl.height - pop.offsetHeight - 6, r.bottom - rl.top + 6) + "px";
+  const i = pop.querySelector("input[type=number]");
+  if(i && matchMedia("(pointer:fine)").matches) i.focus();
+}
 /* Lo que se toca en la placa */
-function entradaPlaca(x){ if(placa && placa.ej === (ejp && ejp.ej) && !placa.sim.error) placa.sim.entrada(x); }
+function entradaPlaca(x){
+  if("pote" in x) entradasPlaca.pote = x.pote;
+  if(x.dht){ if("t" in x.dht) entradasPlaca.temp = x.dht.t; if("h" in x.dht) entradasPlaca.hum = x.dht.h; }
+  if(placa && placa.ej === (ejp && ejp.ej) && !placa.sim.error) placa.sim.entrada(x);
+  if("pote" in x || x.dht) pintarEntradas();
+}
 function apretarPlaca(t, si){
   if(t.dataset.placaBoton != null) entradaPlaca({ boton: si });
   else entradaPlaca({ touch: { [t.dataset.placaTouch]: si ? ESP32.TOUCH_TOCADO : ESP32.TOUCH_SUELTO } });
@@ -7033,7 +7435,7 @@ function apretarPlaca(t, si){
 }
 document.addEventListener("pointerdown", e => {
   const t = e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]");
-  if(!t) return;
+  if(!t || !window.ESP32) return;
   e.preventDefault();
   try { t.setPointerCapture(e.pointerId); } catch(err){}
   apretarPlaca(t, true);
@@ -7041,8 +7443,14 @@ document.addEventListener("pointerdown", e => {
   t.addEventListener("pointerup", soltar);
   t.addEventListener("pointercancel", soltar);
 });
-document.addEventListener("keydown", e => { const t = (e.key === " " || e.key === "Enter") && !e.repeat && e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]"); if(t){ e.preventDefault(); apretarPlaca(t, true); } });
-document.addEventListener("keyup", e => { const t = (e.key === " " || e.key === "Enter") && e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]"); if(t){ e.preventDefault(); apretarPlaca(t, false); } });
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && $("#wokPop") && !$("#wokPop").hidden){ $("#wokPop").hidden = true; return; }
+  const t = (e.key === " " || e.key === "Enter") && !e.repeat && e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]");
+  if(t && window.ESP32){ e.preventDefault(); apretarPlaca(t, true); return; }
+  const c = (e.key === " " || e.key === "Enter") && e.target.closest && e.target.closest("[data-wk]");
+  if(c){ e.preventDefault(); abrirPopPlaca(c.dataset.wk, c); }
+});
+document.addEventListener("keyup", e => { const t = (e.key === " " || e.key === "Enter") && e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]"); if(t && window.ESP32){ e.preventDefault(); apretarPlaca(t, false); } });
 document.addEventListener("input", e => {
   const t = e.target, k = t.matches && (t.matches("[data-placa-pote]") ? "pote" : t.matches("[data-placa-temp]") ? "temp" : t.matches("[data-placa-hum]") ? "hum" : null);
   if(!k) return;
@@ -7065,11 +7473,31 @@ document.addEventListener("submit", e => {
     if(topic) entradaPlaca({ mqtt: { topic, payload: f.payload.value } });
   }
 });
+/* Los clics del panel de la simulación (data-placa, data-wk, data-wok-tab, data-wok-copiar) */
 function clicPlaca(a){
+  if(a === "wokwi"){ const p = $("#wokLlevar"); if(p){ p.hidden = !p.hidden; if(!p.hidden) pintarLlevar(); } return; }
+  if(a === "reiniciar"){ ejecutarPlaca(); return; }   // con el código de la pestaña abierta, como ▶ (EN también)
+  if(a === "detener"){ detenerPlaca(); return; }
   if(!placa) return;
-  if(a === "pausa"){ placa.pausa = !placa.pausa; placa.ultimo = performance.now(); const b = $("#plPausa"); if(b) b.textContent = placa.pausa ? "▶ Seguir" : "⏸ Pausa"; }
-  if(a === "reiniciar"){ pararPlaca(); ejecutarPlaca(); }   // con el código de la pestaña abierta, como ▶ Ejecutar
+  if(a === "pausa"){ placa.pausa = !placa.pausa; placa.ultimo = performance.now(); pintarBarraSim(); }
   if(a === "limpiar"){ placa.sim.serialTexto = ""; }
+}
+function clicSim(e){
+  const t = e.target.closest("[data-wk],[data-wk-cerrar],[data-wok-tab],[data-wok-copiar]");
+  const pop = $("#wokPop");
+  if(pop && !pop.hidden && !e.target.closest("#wokPop") && !(t && t.dataset.wk)) pop.hidden = true;
+  if(!t) return false;
+  if(t.dataset.wk){ abrirPopPlaca(t.dataset.wk, t); return true; }
+  if(t.dataset.wkCerrar != null){ pop.hidden = true; return true; }
+  if(t.dataset.wokTab){ verTabSim(t.dataset.wokTab); return true; }
+  if(t.dataset.wokCopiar){ copiarWokwi(t.dataset.wokCopiar, t); return true; }
+  return false;
+}
+/* El código cambió con la placa prendida: se avisa que hay que reiniciarla para correrlo */
+function codigoCambioPlaca(){
+  if(!placa || placa.ej !== ejp.ej || placa.c.profe) return;
+  const c = $("#wokCambio");
+  if(c) c.hidden = codigoEspEj(ejp.ej).codigo === placa.c.codigo;
 }
 /* Verificar: las pruebas del ejercicio, sin pantalla. Devuelve los controles y un resumen de lo que pasó en cada prueba */
 function probarEspEj(E, ej){
@@ -7251,6 +7679,9 @@ function svgGrafico(f){
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(f.titulo || "Gráfico")}">${titulo}${ejesSvg}${cuerpo}${textos}</svg>${tres ? `<small>Vista 3D como la de Octave (view(3)). X rojo, Y verde, Z azul en los sistemas de ejes.</small>` : ""}`;
 }
 
+/* Un enlace a una herramienta (Wokwi, ThingSpeak…) o a un PDF del material (se abre en el visor) */
+const enlaceHtml = x => x.pdf ? `<a class="ejp-enl" href="${esc(x.url)}" data-pdf="${esc(x.t)}" target="_blank" rel="noopener">${ICON_DOC}<span>${esc(x.t)}</span></a>`
+  : `<a class="ejp-enl" href="${esc(x.url)}" target="_blank" rel="noopener"><span>${esc(x.t)}</span>↗</a>`;
 /* Lo que se muestra abajo del editor. "verif" es la verificación: el mismo botón la oculta (y el editor vuelve
    a su tamaño) mientras el código no cambie; si cambió, el botón verifica de nuevo. */
 function resEjp(html, que = ""){
@@ -7260,10 +7691,11 @@ function resEjp(html, que = ""){
   res.dataset.que = que;
   if(que !== "verif") ejp.verif = null;
   pintarBtnVerif();
+  if(ejp.ej && esWokwi(ejp.ej)) verTabSim(html ? "res" : null);
 }
 const firmaEjp = () => JSON.stringify([codigoEjp(ejp.ej), ejp.est.resp[ejp.ej.id] || {}]);
 function pintarBtnVerif(){
-  const b = $('#ejpDer [data-ejp="verificar"]');
+  const b = $('#ejpWs [data-ejp="verificar"]');
   if(!b || !["codigo", "octave", "esp32", "respuestas"].includes(ejp.ej.tipo)) return;
   const visible = ejp.verif != null && ejp.verif === firmaEjp();
   b.textContent = visible ? "Ocultar verificación" : "Verificar";
@@ -7289,6 +7721,7 @@ function accionEjp(a){
     if(!ps.length){ resEjp(`<div class="pr-info">Este ejercicio no tiene pistas: mirá los pasos.</div>`); return; }
     ejp.pista = Math.min(ps.length, ejp.pista + 1);
     ejp.tab = "pistas";
+    if(esWokwi(ej)){ ejp.vista = "info"; pintarIzqEjp(); return; }
     pintarIzqEjp();
     resEjp(`<div class="pr-info"><b>💡 Pista ${ejp.pista} de ${ps.length}</b><p>${mdLinea(ps[ejp.pista - 1])}</p>${ejp.pista < ps.length ? `<button class="linkbtn" data-ejp="pista">Otra pista</button>` : ""}</div>`);
     return;
@@ -7392,6 +7825,7 @@ function corregirEjp(){
 /* Clics dentro de la práctica por partes */
 function clicEjp(e){
   const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-g],[data-ejp-tab],[data-ejp-ed],[data-ejp-arch],[data-ejp-op],[data-ejp-tecla],[data-placa]");
+  if(ejp && ejp.ej && esWokwi(ejp.ej) && clicSim(e)) return true;
   if(!t || !ejp || !ejp.pa) return false;
   const ds = t.dataset;
   if(ds.placa){ clicPlaca(ds.placa); return true; }
@@ -7400,9 +7834,9 @@ function clicEjp(e){
   if(ds.ejpIr){ const x = ejsEjp().find(y => y.id === ds.ejpIr); if(x) abrirEjp(x); return true; }
   if(ds.ejpG){ fijarGrupoEjp(+ds.ejpG); return true; }
   if(!ejp.ej) return false;
-  if(ds.ejpTab){ ejp.tab = ds.ejpTab; pintarIzqEjp(); return true; }
+  if(ds.ejpTab){ ejp.tab = ds.ejpTab; if(esWokwi(ejp.ej)) ejp.vista = "info"; pintarIzqEjp(); return true; }
   if(ds.ejpEd){ ejp.sol = ds.ejpEd === "sol" ? 2 : 1; if((archivosEj(ejp.ej)[ejp.arch] || {}).soloLectura) ejp.arch = archivosEj(ejp.ej).findIndex(x => !x.soloLectura); pintarEdEjp(); return true; }
-  if(ds.ejpArch != null){ ejp.arch = +ds.ejpArch; pintarEdEjp(); return true; }
+  if(ds.ejpArch != null){ ejp.arch = +ds.ejpArch; if(esWokwi(ejp.ej)){ ejp.vista = "codigo"; pintarIzqEjp(); } else pintarEdEjp(); return true; }
   if(ds.ejpOp != null){
     const r = ejp.est.resp[ejp.ej.id] || (ejp.est.resp[ejp.ej.id] = {});
     r[ds.ejpOp] = ds.v;

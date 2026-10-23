@@ -141,7 +141,22 @@
        "mostrar": "1,67"
       }
      ],
-     "parte": 1
+     "parte": 1,
+     "guia": {
+      "titulo": "Caso práctico 01 de la guía",
+      "texto": "Desarrollar un sketch que permita encender/apagar el LED azul propio de la placa."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "1.2",
@@ -267,7 +282,22 @@
        "mostrar": "2"
       }
      ],
-     "parte": 1
+     "parte": 1,
+     "guia": {
+      "titulo": "Caso práctico 03 de la guía",
+      "texto": "Desarrollar un sketch que permita encender/apagar LEDs el azul y el verde, procesando las siguientes entradas en el monitor serial: v o V para encender el LED verde y apagar el azul si este está encendido, y a o A para encender el LED azul y apagar el verde, si este está encendido."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "1.3",
@@ -366,7 +396,22 @@
        ]
       }
      ],
-     "parte": 1
+     "parte": 1,
+     "guia": {
+      "titulo": "Caso práctico 06 de la guía",
+      "texto": "Desarrollar un sketch que permita procesar un comando (en formato texto) recibido por el puerto serie tal que: \"LUZ_ON\" encienda el LED verde y active un relay (que podría estar conectado con el sistema de iluminación de una habitación) y \"LUZ_OFF\" apague el LED verde y desactive el relay."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     }
    ]
   },
@@ -522,7 +567,22 @@
        "mostrar": "0,99"
       }
      ],
-     "parte": 2
+     "parte": 2,
+     "guia": {
+      "titulo": "Caso práctico 04 de la guía",
+      "texto": "Desarrollar un sketch que permita visualizar en el monitor serial las lecturas de los valores del potenciómetro."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "2.2",
@@ -621,7 +681,22 @@
        "mostrar": "1,61"
       }
      ],
-     "parte": 2
+     "parte": 2,
+     "guia": {
+      "titulo": "Caso práctico 05 de la guía",
+      "texto": "Desarrollar un sketch que permita activar el relay cuando la lectura de los valores del potenciómetro supere determinado límite."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "2.3",
@@ -735,7 +810,22 @@
        "mostrar": "LOW (0)"
       }
      ],
-     "parte": 2
+     "parte": 2,
+     "guia": {
+      "titulo": "Ejemplo de clase del profe",
+      "texto": "Está en el ZIP de casos resueltos: Pulsador_enciende_y_apaga_LED. Abrilo en la pestaña de al lado (Del profe) y corrélo en la placa."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     }
    ]
   },
@@ -870,7 +960,22 @@
        "mostrar": "2048"
       }
      ],
-     "parte": 3
+     "parte": 3,
+     "guia": {
+      "titulo": "Caso práctico 02 de la guía",
+      "texto": "Desarrollar un sketch que permita aumentar/disminuir el LED verde incorporado en la placa."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "3.2",
@@ -953,7 +1058,22 @@
        "mostrar": "186"
       }
      ],
-     "parte": 3
+     "parte": 3,
+     "guia": {
+      "titulo": "Caso práctico 08 de la guía",
+      "texto": "Desarrollar un sketch para regular la intensidad del LED verde utilizando como entrada los valores obtenidos del potenciómetro. En el módulo OLED se visualizará el mensaje \"LED ENCENDIDO\" o \"LED APAGADO\" según corresponda."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "3.3",
@@ -1034,7 +1154,27 @@
        "mostrar": "61"
       }
      ],
-     "parte": 3
+     "parte": 3,
+     "guia": {
+      "titulo": "Lo que pide el TPI",
+      "texto": "Ajustar el brillo del LED integrado de la ESP32 usando el potenciómetro y mostrando el valor de PWM en pantalla. Trabajar con 12 bits."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      },
+      {
+       "t": "Consigna del TPI",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf",
+       "pdf": true
+      }
+     ]
     }
    ]
   },
@@ -1109,7 +1249,7 @@
      "titulo": "LUZ_ON y LUZ_OFF en el display",
      "tipo": "esp32",
      "lenguaje": "cpp",
-     "consigna": "Al arrancar, el display muestra `Esperando...`. Con `LUZ_ON` por el monitor serie: LED verde y relé prendidos y el display muestra `RELAY ON!`; con `LUZ_OFF`: los dos apagados y `RELAY OFF!`.\n\nCompletá la función `mostrar(texto)`, que limpia, escribe y muestra. Es el caso 7.",
+     "consigna": "Al arrancar, el display muestra `Esperando...`. Con `LUZ_ON` por el monitor serie: LED verde y relé prendidos y el display muestra `RELAY ON!`; con `LUZ_OFF`: los dos apagados y `RELAY OFF!`.\n\nCompletá la función `mostrar(texto)`, que limpia, escribe y muestra. Es el caso 7 (la guía dice `RELAY_ON!` y el profe escribe `RELAY ON!`: vale cualquiera de los dos).",
      "pasos": [
       "`mostrar`: `display.clearDisplay(); display.setCursor(0, 0); display.println(txt); display.display();`",
       "En el loop, como en el ejercicio 1.3, pero llamando a `mostrar(\"RELAY ON!\")`."
@@ -1149,7 +1289,7 @@
         },
         {
          "k": "display",
-         "re": "RELAY ON!",
+         "re": "RELAY[ _]ON!",
          "t": 1200
         },
         {
@@ -1166,7 +1306,7 @@
         },
         {
          "k": "display",
-         "re": "RELAY OFF!",
+         "re": "RELAY[ _]OFF!",
          "t": 2200
         },
         {
@@ -1178,7 +1318,22 @@
        ]
       }
      ],
-     "parte": 4
+     "parte": 4,
+     "guia": {
+      "titulo": "Caso práctico 07 de la guía",
+      "texto": "Desarrollar un sketch que permita mostrar en el módulo del display OLED el texto recibido por el puerto serie tal que: \"LUZ_ON\" encienda el LED verde y active un relay mostrando en el display el mensaje \"RELAY_ON!\" y \"LUZ_OFF\" apague el LED verde y desactive el relay mostrando en el display el mensaje \"RELAY_OFF!\". Nota: para poder utilizar el módulo OLED es necesario importar la librería Adafruit SH110X."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "4.2",
@@ -1257,7 +1412,22 @@
        "mostrar": "64"
       }
      ],
-     "parte": 4
+     "parte": 4,
+     "guia": {
+      "titulo": "Caso práctico 08 de la guía",
+      "texto": "Desarrollar un sketch para regular la intensidad del LED verde utilizando como entrada los valores obtenidos del potenciómetro. En el módulo OLED se visualizará el mensaje \"LED ENCENDIDO\" o \"LED APAGADO\" según corresponda."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     }
    ]
   },
@@ -1408,7 +1578,22 @@
        ]
       }
      ],
-     "parte": 5
+     "parte": 5,
+     "guia": {
+      "titulo": "Caso práctico 10 de la guía",
+      "texto": "Desarrollar un sketch que permita leer los valores de Humedad y Temperatura mediante el sensor DHT22 integrado. En todo momento los valores deben ser visualizados en el módulo de display OLED y también en el serial plotter. Nota: hay que importar la librería Adafruit SH110X y la librería DHT sensor library."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "5.2",
@@ -1550,7 +1735,22 @@
        "mostrar": "10"
       }
      ],
-     "parte": 5
+     "parte": 5,
+     "guia": {
+      "titulo": "Caso práctico 09 de la guía",
+      "texto": "Desarrollar un sketch que aumente y disminuya la intensidad del LED externo a través de los pines touch y mostrar en el monitor serial los valores de los pines touch y visualizar en el serial plotter el gráfico correspondiente. En Wokwi tenemos que usar botones push para simular los touch."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Prácticos 2026",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf",
+       "pdf": true
+      }
+     ]
     }
    ]
   },
@@ -1689,7 +1889,13 @@
        "mostrar": "hasta medio segundo"
       }
      ],
-     "parte": 6
+     "parte": 6,
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      }
+     ]
     },
     {
      "id": "6.2",
@@ -1755,7 +1961,13 @@
        "mostrar": "8"
       }
      ],
-     "parte": 6
+     "parte": 6,
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      }
+     ]
     }
    ]
   },
@@ -1887,7 +2099,30 @@
        "mostrar": "se queda para siempre en el while"
       }
      ],
-     "parte": 7
+     "parte": 7,
+     "guia": {
+      "titulo": "Caso práctico 13 de la guía",
+      "texto": "Desarrollar un sketch que permita, utilizando ThingSpeak (que pertenece a Matlab), mostrar en una gráfica el valor de temperatura detectado por el sensor de temperatura y humedad y en otra gráfica el valor de humedad. Nota: para poder utilizar ThingSpeak deben registrarse como usuarios estudiantes con su email institucional."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Wokwi · WiFi de la ESP32",
+       "url": "https://docs.wokwi.com/guides/esp32-wifi"
+      },
+      {
+       "t": "ThingSpeak · mis canales",
+       "url": "https://thingspeak.mathworks.com/channels"
+      },
+      {
+       "t": "Tutorial ThingSpeak",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/06-tutorial-thingspeak.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "7.2",
@@ -1946,7 +2181,30 @@
        "mostrar": "180"
       }
      ],
-     "parte": 7
+     "parte": 7,
+     "guia": {
+      "titulo": "Caso práctico 13 de la guía",
+      "texto": "Desarrollar un sketch que permita, utilizando ThingSpeak (que pertenece a Matlab), mostrar en una gráfica el valor de temperatura detectado por el sensor de temperatura y humedad y en otra gráfica el valor de humedad. Nota: para poder utilizar ThingSpeak deben registrarse como usuarios estudiantes con su email institucional."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Wokwi · WiFi de la ESP32",
+       "url": "https://docs.wokwi.com/guides/esp32-wifi"
+      },
+      {
+       "t": "ThingSpeak · mis canales",
+       "url": "https://thingspeak.mathworks.com/channels"
+      },
+      {
+       "t": "Tutorial ThingSpeak",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/06-tutorial-thingspeak.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "7.3",
@@ -2016,7 +2274,35 @@
        "mostrar": "18"
       }
      ],
-     "parte": 7
+     "parte": 7,
+     "guia": {
+      "titulo": "Lo que pide el TPI",
+      "texto": "Enviar cada 16 segundos a un canal de ThingSpeak los siguientes valores: 1) un valor aleatorio entre 100 y 500, 2) temperatura, 3) humedad, 4) tiempo transcurrido desde el inicio, en segundos, 5) valor PWM del LED integrado y 6) porcentaje de brillo del LED externo."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Wokwi · WiFi de la ESP32",
+       "url": "https://docs.wokwi.com/guides/esp32-wifi"
+      },
+      {
+       "t": "ThingSpeak · mis canales",
+       "url": "https://thingspeak.mathworks.com/channels"
+      },
+      {
+       "t": "Tutorial ThingSpeak",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/06-tutorial-thingspeak.pdf",
+       "pdf": true
+      },
+      {
+       "t": "Consigna del TPI",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "7.4",
@@ -2112,7 +2398,35 @@
        ]
       }
      ],
-     "parte": 7
+     "parte": 7,
+     "guia": {
+      "titulo": "Lo que pide el TPI",
+      "texto": "Sketch 2 (subido por OTA): leer datos del mismo canal de ThingSpeak, contar las presiones realizadas al pulsador y mostrar en el display los valores leídos desde el canal, como así también la cantidad de pulsaciones realizadas hasta el momento, de forma legible (puede ser de a 3 campos por pantalla rotativa)."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Wokwi · WiFi de la ESP32",
+       "url": "https://docs.wokwi.com/guides/esp32-wifi"
+      },
+      {
+       "t": "ThingSpeak · mis canales",
+       "url": "https://thingspeak.mathworks.com/channels"
+      },
+      {
+       "t": "Tutorial ThingSpeak",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/06-tutorial-thingspeak.pdf",
+       "pdf": true
+      },
+      {
+       "t": "Consigna del TPI",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf",
+       "pdf": true
+      }
+     ]
     }
    ]
   },
@@ -2257,7 +2571,21 @@
        "mostrar": "Sí"
       }
      ],
-     "parte": 8
+     "parte": 8,
+     "guia": {
+      "titulo": "Ejemplo de clase del profe",
+      "texto": "Está en el ZIP de casos resueltos: MQTT_Publicar_Mosquitto. Abrilo en la pestaña de al lado (Del profe) y corrélo en la placa."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Cliente MQTT web (HiveMQ)",
+       "url": "https://www.hivemq.com/demos/websocket-client/"
+      }
+     ]
     },
     {
      "id": "8.2",
@@ -2346,7 +2674,21 @@
        ]
       }
      ],
-     "parte": 8
+     "parte": 8,
+     "guia": {
+      "titulo": "Ejemplo de clase del profe",
+      "texto": "Está en el ZIP de casos resueltos: MQTT_Suscriber_Mosquitto_graba_ThingSpeak. Abrilo en la pestaña de al lado (Del profe) y corrélo en la placa."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Cliente MQTT web (HiveMQ)",
+       "url": "https://www.hivemq.com/demos/websocket-client/"
+      }
+     ]
     },
     {
      "id": "8.3",
@@ -2438,7 +2780,21 @@
        "mostrar": "255"
       }
      ],
-     "parte": 8
+     "parte": 8,
+     "guia": {
+      "titulo": "Ejemplo de clase del profe",
+      "texto": "Está en el ZIP de casos resueltos: Memoria_EEPROM. Abrilo en la pestaña de al lado (Del profe) y corrélo en la placa."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "Cliente MQTT web (HiveMQ)",
+       "url": "https://www.hivemq.com/demos/websocket-client/"
+      }
+     ]
     }
    ]
   },
@@ -2661,7 +3017,26 @@
        "error": "Falta `ArduinoOTA.handle()` en el loop: sin eso la subida por OTA no arranca"
       }
      ],
-     "parte": 9
+     "parte": 9,
+     "guia": {
+      "titulo": "Lo que pide el TPI",
+      "texto": "Sketch 1 (por USB): el LED integrado con el potenciómetro y el valor de PWM en pantalla (12 bits); temperatura y humedad en pantalla en tiempo real; el LED externo con dos pines touch (uno sube y otro baja) y su porcentaje en pantalla (12 bits); cada 16 segundos los 6 campos a ThingSpeak; y habilitar OTA para subir el sketch 2."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "ThingSpeak · mis canales",
+       "url": "https://thingspeak.mathworks.com/channels"
+      },
+      {
+       "t": "Consigna del TPI",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "9.2",
@@ -2774,7 +3149,26 @@
        "error": "La URL es la del último envío: `…/feeds/last.json`"
       }
      ],
-     "parte": 9
+     "parte": 9,
+     "guia": {
+      "titulo": "Lo que pide el TPI",
+      "texto": "Sketch 2 (subido por OTA): leer datos del mismo canal de ThingSpeak, contar las presiones realizadas al pulsador y mostrar en el display los valores leídos desde el canal, como así también la cantidad de pulsaciones realizadas hasta el momento, de forma legible (puede ser de a 3 campos por pantalla rotativa)."
+     },
+     "enlaces": [
+      {
+       "t": "Wokwi · proyecto ESP32 nuevo",
+       "url": "https://wokwi.com/projects/new/esp32"
+      },
+      {
+       "t": "ThingSpeak · mis canales",
+       "url": "https://thingspeak.mathworks.com/channels"
+      },
+      {
+       "t": "Consigna del TPI",
+       "url": "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf",
+       "pdf": true
+      }
+     ]
     },
     {
      "id": "9.3",
