@@ -184,8 +184,6 @@ partes.append(parte(1, 'salidas', 'Salidas: LEDs y relé', 'LEDs y relé',
   [
     esp('1.1', 'Parpadeo', 'el LED azul titila', '''
       Hacé titilar el **LED azul** (GPIO 2): **300 ms prendido y 300 ms apagado**. Al arrancar, que el monitor serie muestre `Hola, ESP32!` una sola vez.
-
-      El caso 1 del profe hace lo mismo cada 1 s: está en la pestaña de al lado. Con esa pestaña abierta, **▶ Ejecutar** lo corre en la placa.
     ''', '''
       const int LED = 2;   // LED azul (integrado)
 
@@ -218,14 +216,12 @@ partes.append(parte(1, 'salidas', 'Salidas: LEDs y relé', 'LEDs y relé',
     profe=['caso_01_led_interno.ino'],
     pasos=['En `setup()`: `pinMode(LED, OUTPUT);` y `Serial.println("Hola, ESP32!");` (en el setup sale una sola vez).',
            'En `loop()`: `digitalWrite(LED, HIGH); delay(300); digitalWrite(LED, LOW); delay(300);`',
-           '▶ Ejecutar: mirá el LED azul en la pestaña Placa y el saludo en el monitor serie.'],
+           'Tocá ▶ en la placa: mirá el LED azul y el saludo en el monitor serie.'],
     pistas=['Lo que va en `setup()` pasa una sola vez; lo de `loop()`, siempre.', 'Son cuatro líneas en el loop: prender, esperar, apagar, esperar.'],
     respuestas=[N('Veces que titila por segundo', 1.67, 2, 'Hz', 'Un ciclo dura 300 + 300 = 600 ms: 1000 / 600 = 1,67 por segundo.', tol=0.02)]),
 
     esp('1.2', 'Comandos de una letra', 'v y a por el monitor serie', '''
       Por el monitor serie: con `v` se prende el **LED verde** (GPIO 23) y se apaga el azul; con `a`, al revés: azul prendido y verde apagado. Que acepte también `V` y `A`. Cualquier otra cosa no cambia nada.
-
-      Es el caso 3 de los Prácticos. Probalo: ▶ Ejecutar y escribí `v` en el monitor serie de la placa.
     ''', '''
       const int VERDE = 23;
       const int AZUL = 2;
@@ -278,8 +274,6 @@ partes.append(parte(1, 'salidas', 'Salidas: LEDs y relé', 'LEDs y relé',
 
     esp('1.3', 'Comandos de texto', 'LUZ_ON y LUZ_OFF con el relé', '''
       Leé **comandos de texto** por el monitor serie (uno por línea): `LUZ_ON` prende el LED verde y cierra el **relé** (GPIO 14); `LUZ_OFF` apaga los dos. Respondé `OK` si el comando existe y `Comando desconocido` si no.
-
-      Es el caso 6. El profe arma el texto letra por letra; acá usá `Serial.readStringUntil('\\n')`, que lee hasta el salto de línea.
     ''', '''
       const int VERDE = 23;
       const int RELE = 14;
@@ -374,7 +368,7 @@ partes.append(parte(2, 'entradas', 'Entradas: pulsador y potenciómetro', 'Pulsa
     esp('2.1', 'analogRead', 'leer el potenciómetro', '''
       Cada **200 ms**, mostrá por el monitor serie la lectura del potenciómetro (GPIO 32) y su tensión, así: `Pote: 3000 = 2.42 V`.
 
-      Después: ▶ Ejecutar, poné el pote en **1234** (escribilo en el número al lado del deslizador) y completá lo que muestra.
+      Después corrélo, poné el pote en **1234** (tocá el pote en la placa) y completá la respuesta.
     ''', '''
       const int POTE = 32;
 
@@ -412,15 +406,13 @@ partes.append(parte(2, 'entradas', 'Entradas: pulsador y potenciómetro', 'Pulsa
     ''', [P('Pote en 1000 y después al máximo', 1500, [serial(r'Pote: 1000 = 0\.81 V', hasta=650), serial(r'Pote: 4095 = 3\.30 V', desde=750), serial(r'Pote: ', veces=[6, 9])],
             entradas=[{'t': 700, 'pote': 4095}], pote=1000)],
     profe=['caso_04_leer_pot.ino'],
-    pasos=['`int lectura = analogRead(POTE);`', '`float volt = lectura * 3.3 / 4095;`', '▶ Ejecutar, pote en 1234, y leé la tensión en el monitor serie.'],
+    pasos=['`int lectura = analogRead(POTE);`', '`float volt = lectura * 3.3 / 4095;`', 'Tocá ▶, tocá el pote en la placa, ponelo en 1234 y leé la tensión en el monitor serie.'],
     pistas=['4095 es el máximo del ADC de 12 bits y corresponde a 3,3 V: es una regla de tres.'],
     respuestas=[N('Tensión con el pote en 1234', 0.99, 2, 'V', '1234 × 3,3 / 4095 = 0,994 V: `Serial.print` de un float muestra 2 decimales.', tol=0.011,
                   medir={'opts': {'pote': 1234}, 'hasta': 500, 're': r'= ([\d.]+) V'})]),
 
     esp('2.2', 'Umbral', 'el relé se cierra con el pote', '''
       Cuando el pote pasa de **2000**, cerrá el relé (GPIO 14) y prendé el LED verde (GPIO 23) como aviso; si no, abrí el relé y apagá el LED. Mostrá la lectura por el monitor serie cada 100 ms.
-
-      Es el caso 5 del profe, con el LED de aviso.
     ''', '''
       const int POTE = 32;
       const int RELE = 14;
@@ -562,8 +554,6 @@ partes.append(parte(3, 'pwm', 'PWM: el brillo', 'PWM',
   [
     esp('3.1', 'analogWrite', 'subir y bajar el brillo', '''
       Hacé que el **LED verde** suba de 0 a 255 de a 1, con `delay(4)` entre paso y paso, después baje de 255 a 0 igual, y que repita.
-
-      El caso 2 del profe lo hace con `delay(5)` y una pausa de 1 s.
     ''', '''
       const int VERDE = 23;
 
@@ -600,7 +590,7 @@ partes.append(parte(3, 'pwm', 'PWM: el brillo', 'PWM',
     esp('3.2', 'map()', 'el brillo sigue al pote', '''
       El brillo del **LED verde** sigue al pote: con `map()` pasá la lectura (0–4095) a PWM de 8 bits (0–255). Mostrá `PWM: N` cada 100 ms.
 
-      Después: ▶ Ejecutar, pote en **3000**, y anotá el PWM.
+      Después corrélo con el pote en **3000** y completá la respuesta.
     ''', '''
       const int VERDE = 23;
       const int POTE = 32;
@@ -731,7 +721,7 @@ partes.append(parte(4, 'display', 'El display OLED', 'Display',
     esp('4.1', 'Texto', 'LUZ_ON y LUZ_OFF en el display', '''
       Al arrancar, el display muestra `Esperando...`. Con `LUZ_ON` por el monitor serie: LED verde y relé prendidos y el display muestra `RELAY ON!`; con `LUZ_OFF`: los dos apagados y `RELAY OFF!`.
 
-      Completá la función `mostrar(texto)`, que limpia, escribe y muestra. Es el caso 7 (la guía dice `RELAY_ON!` y el profe escribe `RELAY ON!`: vale cualquiera de los dos).
+      Completá la función `mostrar(texto)`, que limpia, escribe y muestra (la guía dice `RELAY_ON!` y el profe escribe `RELAY ON!`: vale cualquiera de los dos).
     ''', DISPLAY + '''
       const int VERDE = 23;
       const int RELE = 14;
@@ -957,8 +947,6 @@ partes.append(parte(5, 'sensores', 'Sensores: DHT22 y touch', 'DHT22 y touch',
 
     esp('5.2', 'Touch', 'más y menos brillo con los touch, como el TPI', '''
       El **LED verde** con PWM de **12 bits**: cada toque en el **touch 13** sube el brillo **410** (10 %) y cada toque en el **touch 4** lo baja 410, sin pasarse de 0 ni de 4095. Mantener el dedo cuenta **un solo toque**. En cada cambio mostrá `Brillo: P %`.
-
-      Es la parte de los touch del TPI (el caso 9 lo hace con interrupciones).
     ''', '''
       const int VERDE = 23;
       const int T_MAS = 13, T_MENOS = 4;
@@ -1063,8 +1051,6 @@ partes.append(parte(6, 'millis', 'Sin bloquear: millis()', 'millis()',
   [
     esp('6.1', 'millis()', 'titilar sin delay y atender el pulsador', '''
       El código de abajo titila con `delay(500)`: por eso el **LED verde**, que tendría que prenderse **mientras** apretás el pulsador, responde tarde. Pasalo a **millis()**: el LED azul sigue titilando (500 ms y 500 ms) y el verde responde al instante.
-
-      Probalo en la placa antes y después: apretá el pulsador rápido.
     ''', '''
       const int AZUL = 2, VERDE = 23, BOTON = 19;
       bool prendido = false;
@@ -1238,8 +1224,6 @@ partes.append(parte(7, 'thingspeak', 'WiFi y ThingSpeak', 'ThingSpeak',
 
     esp('7.2', 'ThingSpeak', 'temperatura y humedad cada 20 s', '''
       Mandá a ThingSpeak la **temperatura (campo 1)** y la **humedad (campo 2)** cada **20 s**, con millis(). Mostrá el código que devuelve writeFields: `ThingSpeak: 200`.
-
-      En la placa, el cuadro **ThingSpeak** muestra cada envío. Probá cambiar 20000 por 5000: vas a ver el -401.
     ''', TS_INC + WIFI + '''
       unsigned long canal = 1234567;
       const char* clave = "TU_API_KEY";
@@ -1296,7 +1280,7 @@ partes.append(parte(7, 'thingspeak', 'WiFi y ThingSpeak', 'ThingSpeak',
       5. el PWM del LED integrado (el pote, con 12 bits)
       6. el % de brillo del LED externo (acá, la variable `porcExterno`)
 
-      Con millis(), o con un Ticker como el ThingSpeak_DHT_Ticker del profe.
+      Con millis() (o con un Ticker).
     ''', TS_INC + WIFI + '''
       const int AZUL = 2, POTE = 32;
       unsigned long canal = 1234567;
@@ -1522,8 +1506,6 @@ partes.append(parte(8, 'mqtt', 'MQTT y EEPROM', 'MQTT y EEPROM',
   [
     esp('8.1', 'Publicar', 'publicar el pote', '''
       Publicá la lectura del pote en el topic `utn/tpa/pote` cada **2 s** (el mensaje: solo el número). El broker es `broker.hivemq.com`, puerto 1883, y el id del cliente `ESP32_tpa_01`.
-
-      En la placa, el cuadro **MQTT** muestra lo que publica.
     ''', MQTT_INC + WIFI + '''
       const int POTE = 32;
       WiFiClient espClient;
@@ -1576,8 +1558,6 @@ partes.append(parte(8, 'mqtt', 'MQTT y EEPROM', 'MQTT y EEPROM',
 
     esp('8.2', 'Suscribirse', 'prender el LED desde el broker', '''
       Suscribite al topic `utn/tpa/led`: si llega `ON`, prendé el **LED verde**; si llega `OFF`, apagalo.
-
-      Probalo en la placa: en el cuadro **MQTT**, publicá `ON` en `utn/tpa/led` (como otro cliente).
     ''', MQTT_INC + WIFI + '''
       const int VERDE = 23;
       WiFiClient espClient;
@@ -1638,13 +1618,12 @@ partes.append(parte(8, 'mqtt', 'MQTT y EEPROM', 'MQTT y EEPROM',
             entradas=[{'t': 2500, 'mqtt': {'topic': 'utn/tpa/led', 'payload': 'ON'}}, {'t': 3500, 'mqtt': {'topic': 'utn/tpa/led', 'payload': 'OFF'}}]),
           P('Llega otra cosa: no cambia', 3500, [pin(23, 3000, 0)], entradas=[{'t': 2500, 'mqtt': {'topic': 'utn/tpa/led', 'payload': 'HOLA'}}])],
     profe=['MQTT_Suscriber_Mosquitto_graba_ThingSpeak.ino'],
-    pasos=['En el setup: `client.setCallback(callback);`', 'Después de conectar: `client.subscribe("utn/tpa/led");`', 'En el callback: `if (msg == "ON") … else if (msg == "OFF") …`'],
+    pasos=['En el setup: `client.setCallback(callback);`', 'Después de conectar: `client.subscribe("utn/tpa/led");`', 'En el callback: `if (msg == "ON") … else if (msg == "OFF") …`',
+           'Para probarlo: tocá ▶ y, abajo en **Nube**, publicá `ON` en `utn/tpa/led` (como otro cliente).'],
     pistas=['Si no llega nada, revisá que `client.loop()` se llame en cada vuelta.']),
 
     esp('8.3', 'EEPROM', 'recordar el LED después de un reinicio', '''
       El pulsador prende y apaga el **LED azul** (como en la parte 2), y el estado se guarda en la **dirección 0 de la EEPROM**: al prender la placa, el LED arranca como quedó.
-
-      Las pruebas prenden la placa con un 1 guardado (tiene que arrancar prendido) y con un 0.
     ''', '''
       #include <EEPROM.h>
 
@@ -1763,8 +1742,6 @@ partes.append(parte(9, 'tpi', 'El TPI resuelto', 'El TPI',
       - el **display**: el PWM del integrado, la temperatura, la humedad y el % del externo (con la palabra «ext», por ejemplo `LED ext: 40 %`);
       - **ThingSpeak cada 16 s** con los 6 campos de la parte 7.3;
       - **ArduinoOTA**: `begin()` cuando conecta y `handle()` en cada vuelta.
-
-      La solución es la del grupo 1, con las claves tapadas.
     ''', '''
       #include <WiFi.h>
       #include <ThingSpeak.h>
@@ -1900,7 +1877,7 @@ partes.append(parte(9, 'tpi', 'El TPI resuelto', 'El TPI',
     pistas=['En la placa simulada, ThingSpeak contesta con lo que tiene el canal 1234567.', 'El grupo cuenta con `attachInterrupt(…, FALLING)` y un antirrebote de 200 ms; con el flanco en el loop también anda.']),
 
     resp_cod('9.3', 'Defensa · sketch 1', 'preguntas sobre el sketch 1', '''
-      Preguntas de la defensa sobre el **sketch 1 del grupo** (está al costado). Contestalas leyendo el código; si dudás, corrélo en la placa (pestaña TPI del grupo del ejercicio 7.3).
+      Preguntas de la defensa sobre el **sketch 1 del grupo** (está al costado). Contestalas leyendo el código; si dudás, corrélo: es la solución del ejercicio 9.1.
     ''', 'sketch_envio_grupo_1.ino', [
       N('Cada cuántos ms intenta mandar a ThingSpeak', 16000, 0, 'ms', 'THINGSPEAK_INTERVAL_MS: 16 s, más que los 15 s que exige ThingSpeak gratis.'),
       N('Cuánto sube el PWM del LED externo un toque (EXTERNAL_LED_STEP)', 204, 0, None, 'PWM_MAX / 20 = 4095 / 20 = 204,75 → 204 (división entera).'),
@@ -1930,52 +1907,20 @@ partes.append(parte(9, 'tpi', 'El TPI resuelto', 'El TPI',
     ]),
   ]))
 
-# ======================= El caso de la guía (Prácticos 2026) y los enlaces de cada ejercicio =======================
-# Lo que dice la guía (o el TPI), para que se vea al lado del ejercicio que lo practica
-GUIA = {
-    1: 'Desarrollar un sketch que permita encender/apagar el LED azul propio de la placa.',
-    2: 'Desarrollar un sketch que permita aumentar/disminuir el LED verde incorporado en la placa.',
-    3: 'Desarrollar un sketch que permita encender/apagar LEDs el azul y el verde, procesando las siguientes entradas en el monitor serial: v o V para encender el LED verde y apagar el azul si este está encendido, y a o A para encender el LED azul y apagar el verde, si este está encendido.',
-    4: 'Desarrollar un sketch que permita visualizar en el monitor serial las lecturas de los valores del potenciómetro.',
-    5: 'Desarrollar un sketch que permita activar el relay cuando la lectura de los valores del potenciómetro supere determinado límite.',
-    6: 'Desarrollar un sketch que permita procesar un comando (en formato texto) recibido por el puerto serie tal que: "LUZ_ON" encienda el LED verde y active un relay (que podría estar conectado con el sistema de iluminación de una habitación) y "LUZ_OFF" apague el LED verde y desactive el relay.',
-    7: 'Desarrollar un sketch que permita mostrar en el módulo del display OLED el texto recibido por el puerto serie tal que: "LUZ_ON" encienda el LED verde y active un relay mostrando en el display el mensaje "RELAY_ON!" y "LUZ_OFF" apague el LED verde y desactive el relay mostrando en el display el mensaje "RELAY_OFF!". Nota: para poder utilizar el módulo OLED es necesario importar la librería Adafruit SH110X.',
-    8: 'Desarrollar un sketch para regular la intensidad del LED verde utilizando como entrada los valores obtenidos del potenciómetro. En el módulo OLED se visualizará el mensaje "LED ENCENDIDO" o "LED APAGADO" según corresponda.',
-    9: 'Desarrollar un sketch que aumente y disminuya la intensidad del LED externo a través de los pines touch y mostrar en el monitor serial los valores de los pines touch y visualizar en el serial plotter el gráfico correspondiente. En Wokwi tenemos que usar botones push para simular los touch.',
-    10: 'Desarrollar un sketch que permita leer los valores de Humedad y Temperatura mediante el sensor DHT22 integrado. En todo momento los valores deben ser visualizados en el módulo de display OLED y también en el serial plotter. Nota: hay que importar la librería Adafruit SH110X y la librería DHT sensor library.',
-    13: 'Desarrollar un sketch que permita, utilizando ThingSpeak (que pertenece a Matlab), mostrar en una gráfica el valor de temperatura detectado por el sensor de temperatura y humedad y en otra gráfica el valor de humedad. Nota: para poder utilizar ThingSpeak deben registrarse como usuarios estudiantes con su email institucional.',
-}
-TPI = {
-    'pote': 'Ajustar el brillo del LED integrado de la ESP32 usando el potenciómetro y mostrando el valor de PWM en pantalla. Trabajar con 12 bits.',
-    'touch': 'Ajustar el brillo del LED EXTERNO (en la placa de la cátedra), usando dos pines touch capacitivos como entrada (a través de cable o tocando el propio pin). Un pin aumenta la señal y otro pin la disminuye. Mostrar el porcentaje de brillo correspondiente en pantalla. Trabajar con 12 bits.',
-    'ts': 'Enviar cada 16 segundos a un canal de ThingSpeak los siguientes valores: 1) un valor aleatorio entre 100 y 500, 2) temperatura, 3) humedad, 4) tiempo transcurrido desde el inicio, en segundos, 5) valor PWM del LED integrado y 6) porcentaje de brillo del LED externo.',
-    's2': 'Sketch 2 (subido por OTA): leer datos del mismo canal de ThingSpeak, contar las presiones realizadas al pulsador y mostrar en el display los valores leídos desde el canal, como así también la cantidad de pulsaciones realizadas hasta el momento, de forma legible (puede ser de a 3 campos por pantalla rotativa).',
-    's1': 'Sketch 1 (por USB): el LED integrado con el potenciómetro y el valor de PWM en pantalla (12 bits); temperatura y humedad en pantalla en tiempo real; el LED externo con dos pines touch (uno sube y otro baja) y su porcentaje en pantalla (12 bits); cada 16 segundos los 6 campos a ThingSpeak; y habilitar OTA para subir el sketch 2.',
-}
-CASO = {'1.1': 1, '1.2': 3, '1.3': 6, '2.1': 4, '2.2': 5, '3.1': 2, '3.2': 8, '4.1': 7, '4.2': 8, '5.1': 10, '5.2': 9, '7.1': 13, '7.2': 13}
-DEL_TPI = {'3.3': 'pote', '7.3': 'ts', '7.4': 's2', '9.1': 's1', '9.2': 's2'}
+# ======================= El número del caso que practica cada ejercicio (para ubicarlo en la guía) =======================
+CASO = {'1.1': 1, '1.2': 3, '1.3': 6, '2.1': 4, '2.2': 5, '3.1': 2, '3.2': 8, '4.1': 7, '4.2': 8, '5.1': 10, '5.2': 9, '7.1': 13, '7.2': 13}   # Prácticos 2026
+DEL_TPI = {'3.3', '7.3', '7.4', '9.1', '9.2'}
 DE_CLASE = {'2.3': 'Pulsador_enciende_y_apaga_LED', '8.1': 'MQTT_Publicar_Mosquitto', '8.2': 'MQTT_Suscriber_Mosquitto_graba_ThingSpeak', '8.3': 'Memoria_EEPROM'}
-
-PDF_TP = 'material/tecnologias-para-la-automatizacion/tp-esp32/'
-WOKWI = {'t': 'Wokwi · proyecto ESP32 nuevo', 'url': 'https://wokwi.com/projects/new/esp32'}
-WOKWI_WIFI = {'t': 'Wokwi · WiFi de la ESP32', 'url': 'https://docs.wokwi.com/guides/esp32-wifi'}
-THINGSPEAK = {'t': 'ThingSpeak · mis canales', 'url': 'https://thingspeak.mathworks.com/channels'}
-TS_TUTORIAL = {'t': 'Tutorial ThingSpeak', 'url': PDF_TP + '06-tutorial-thingspeak.pdf', 'pdf': True}
-HIVEMQ = {'t': 'Cliente MQTT web (HiveMQ)', 'url': 'https://www.hivemq.com/demos/websocket-client/'}
-PRACTICOS = {'t': 'Prácticos 2026', 'url': PDF_TP + '01-practicos-2026.pdf', 'pdf': True}
-TPI_PDF = {'t': 'Consigna del TPI', 'url': PDF_TP + '04-tpi-4k3-thingspeak-y-ota.pdf', 'pdf': True}
-ENLACES_PARTE = {1: [WOKWI, PRACTICOS], 2: [WOKWI, PRACTICOS], 3: [WOKWI, PRACTICOS], 4: [WOKWI, PRACTICOS], 5: [WOKWI, PRACTICOS], 6: [WOKWI],
-                 7: [WOKWI, WOKWI_WIFI, THINGSPEAK, TS_TUTORIAL], 8: [WOKWI, HIVEMQ], 9: [WOKWI, THINGSPEAK, TPI_PDF]}
 
 for pa in partes:
     for e in pa['ejercicios']:
+        e.pop('pistas', None)
         if e['tipo'] != 'esp32': continue
-        if e['id'] in CASO: e['guia'] = {'titulo': f"Caso práctico {CASO[e['id']]:02d} de la guía", 'texto': GUIA[CASO[e['id']]]}
-        elif e['id'] in DEL_TPI: e['guia'] = {'titulo': 'Lo que pide el TPI', 'texto': TPI[DEL_TPI[e['id']]]}
-        elif e['id'] in DE_CLASE: e['guia'] = {'titulo': 'Ejemplo de clase del profe', 'texto': f"Está en el ZIP de casos resueltos: {DE_CLASE[e['id']]}. Abrilo en la pestaña de al lado (Del profe) y corrélo en la placa."}
-        enl = list(ENLACES_PARTE.get(pa['n'], [WOKWI]))
-        if e['id'] in DEL_TPI and TPI_PDF not in enl: enl.append(TPI_PDF)
-        e['enlaces'] = enl
+        # El ejercicio muestra solo el enunciado, el código y los pasos: el caso de la guía va como número para ubicarlo
+        if e['id'] in CASO: e['caso'] = f"Caso práctico {CASO[e['id']]:02d} de la guía"
+        elif e['id'] in DEL_TPI: e['caso'] = 'TPI 4K3'
+        elif e['id'] in DE_CLASE: e['caso'] = f"Ejemplo de clase: {DE_CLASE[e['id']]}"
+        e.pop('delProfe', None)
 
 if __name__ == '__main__':
     copiar_profe()

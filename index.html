@@ -1315,7 +1315,8 @@
   .ejp-expl-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
   .ejp-n,.ejp-num{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent)}
   .ejp-expl p{margin:0;font-size:.9rem;line-height:1.5}
-  .ejp-ejs{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+  .ejp-ejs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-left:auto}
+  .ejp-ejs-t{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 8px}
   .ejp-ej{font:inherit;font-size:.8rem;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px 11px;cursor:pointer}
   .ejp-ej:hover{border-color:var(--accent)}
   .ejp-ej.ok{color:var(--ok)}
@@ -1424,7 +1425,6 @@
   .wok-tabs-izq{flex:none;margin:0;border-radius:0;padding:6px 8px 0}
   .wok-tabs-izq .wok-info-tab{font-family:var(--sans);font-size:.8rem;font-weight:600}
   .wok-tabs-izq .wok-info-tab small{font-weight:500;opacity:.7}
-  .wok-sep{flex:none;width:1px;align-self:stretch;margin:4px 6px 8px;background:#39404a}
   .wok-arch{display:contents}
   .wok-cuerpo{flex:1;min-height:0;display:flex;flex-direction:column}
   .wok-info{flex:1;overflow:auto;padding:14px 18px}
@@ -1432,7 +1432,6 @@
   .wok-ws .ejp-izq .ed{border-radius:0}
   .wok-ws .ejp-izq .pr-teclas,.wok-ws .ejp-izq .pr-barra{flex:none;padding:8px 12px}
   .wok-ws .ejp-izq .pr-barra{border-top:1px solid var(--line)}
-  .wok-al-codigo{margin-top:12px}
   .wok-ws .ejp-der{padding:0;gap:0;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow-y:auto}
   .wok{display:flex;flex-direction:column;min-height:100%}
   .wok-bar{position:sticky;top:0;z-index:3;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 10px;background:var(--card);border-bottom:1px solid var(--line)}
@@ -1507,17 +1506,14 @@
   .wok-panel .pr-res:empty{display:block}
   .wok-panel .pr-res:empty::before{content:"Tocá Verificar: se corren las pruebas del ejercicio (apretar el pulsador, mover el pote, mandar por el monitor serie…) y acá ves qué dio bien.";display:block;font-size:.84rem;color:var(--muted);padding:6px 2px}
   /* Arriba de la Práctica y en el ejercicio: las herramientas y el caso de la guía */
-  .ejp-herr,.ejp-enlaces{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+  .ejp-herr{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
   .ejp-herr{margin:-4px 0 12px}
-  .ejp-enlaces{margin:12px 0 4px}
-  .ejp-herr > span,.ejp-enlaces > span{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:2px}
+  .ejp-herr > span{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:2px}
   .ejp-enl{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--text);background:var(--card);border:1px solid var(--line2);border-radius:999px;padding:4px 11px}
   .ejp-enl:hover{border-color:var(--accent);color:var(--accent)}
   .ejp-enl svg{width:14px;height:14px}
-  .ejp-caso{margin:12px 0 4px;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--accent)}
-  .ejp-caso-t{display:flex;align-items:center;gap:6px;font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
-  .ejp-caso-t svg{width:15px;height:15px}
-  .ejp-caso p{margin:4px 0 0;font-size:.88rem;line-height:1.5;color:var(--text2)}
+  .ejp-caso-n{display:inline-flex;align-items:center;gap:6px;margin:0 0 10px;padding:3px 10px;border-radius:999px;font-size:.74rem;font-weight:800;letter-spacing:.02em;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent)}
+  .ejp-caso-n svg{width:14px;height:14px;flex:none}
   /* Lo de la placa que se sigue usando: el monitor serie, la nube, los avisos y el resumen de las pruebas */
   .pla-rango{display:grid;grid-template-columns:54px minmax(0,1fr) 66px 20px;align-items:center;gap:6px;font-size:.8rem;font-weight:600}
   .pla-rango input[type=range]{width:100%;min-width:0;accent-color:var(--accent)}
@@ -3436,21 +3432,22 @@ const MATERIAS = {
         secciones: [],
         // Práctica por partes con la placa de la cátedra simulada en el navegador (practica/esp32/esp32.js): el sketch
         // corre de verdad y Verificar lo prueba apretando el pulsador, moviendo el pote, mandando por el monitor serie…
-        // Los casos del profe van al lado, para mirar o correr. Se arma con herramientas/tpa-practica/armar_tp.py.
+        // Cada ejercicio dice qué caso de la guía practica. Se arma con herramientas/tpa-practica/armar_tp.py.
         practicaPartes: {
           fuentes: ["practica/tpa-tp/ejercicios.json"],
-          resumen: { nombre: "Prácticos 2026", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf", paginas: 2 },
+          // Arriba, la guía de ejercicios de la cátedra (en vez del resumen); sin el avance y con la explicación de cada parte al final
+          resumen: { nombre: "Prácticos 2026 · Guía de ejercicios", etiqueta: "Guía de ejercicios completa", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf", paginas: 2 },
+          sinProgreso: true,
+          leccionAlFinal: true,
           // Arriba de la Práctica: donde se hace de verdad (en clase se usa Wokwi o el Arduino IDE con la placa)
           enlaces: [
             { t: "Wokwi · ESP32", url: "https://wokwi.com/projects/new/esp32" },
             { t: "ThingSpeak", url: "https://thingspeak.mathworks.com/channels" },
             { t: "Cliente MQTT (HiveMQ)", url: "https://www.hivemq.com/demos/websocket-client/" },
-            { t: "Arduino IDE", url: "https://www.arduino.cc/en/software" },
-            { t: "Prácticos 2026", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf", pdf: true }
+            { t: "Arduino IDE", url: "https://www.arduino.cc/en/software" }
           ]
         },
         practicaLenguaje: "cpp",
-        carpetaProfe: "practica/esp32/profe/",
         material: [
           { nivel: "esencial", grupo: "El TP integrador", descripcion: "Lo que hay que entregar: dos sketches, uno manda datos a ThingSpeak y habilita OTA, y el otro (subido por OTA) los lee y los muestra.", archivos: [
             { nombre: "TPI 4K3 · ThingSpeak y programación OTA", nota: "Entrega 28/10", detalle: "La consigna: potenciómetro y touch con PWM de 12 bits, DHT22 y display, 6 campos a ThingSpeak cada 16 s, y el segundo sketch por OTA con el pulsador (2 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf" }
@@ -6357,6 +6354,7 @@ const ejsEjp = () => ejp.partes.flatMap(x => x.ejercicios);
 const parteEjp = ej => ejp.parteDe.get(ej);
 const hayOtroEjp = () => ejp.pa.ejercicios.length > 1;
 const conLecciones = () => ejp.tipo === "practica";
+const lecAlFinal = () => conLecciones() && !!ejp.p.practicaPartes.leccionAlFinal;
 const ICON_LIBRO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>';
 /* Los archivos de un ejercicio de código (una pestaña cada uno; los de solo lectura son para mirar) y lo que
    escribió en cada uno. Solo se guarda lo que cambió respecto del código inicial. */
@@ -6459,10 +6457,10 @@ function verificarEjp(textoDe, checks){
 
 function viewEjp(m, p, tipo = "pp"){
   const kp = seccionesDe(p).find(k => esSeccionParcial(p, k)), r = tipo === "practica" && p.practicaPartes.resumen;
-  // En la Práctica: el resumen en PDF arriba, al lado del avance (se abre en el visor de la página)
+  // En la Práctica: el resumen en PDF arriba (o la guía de ejercicios, con "etiqueta"), al lado del avance (se abre en el visor de la página)
   const cab = tipo === "practica" ? `
       <div class="ejp-cab"><div><small class="ejp-ceja">${esc(p.titulo)}</small><h1>Práctica por partes</h1></div>
-        <div class="ejp-cab-der">${r ? `<a class="ejp-pdf" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" target="_blank" rel="noopener">${ICON_DOC}<span>Resumen en PDF</span>${r.paginas ? `<small>${r.paginas} págs.</small>` : ""}</a>` : ""}<div class="ejp-prog" id="ejpProg"></div></div></div>
+        <div class="ejp-cab-der">${r ? `<a class="ejp-pdf" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" target="_blank" rel="noopener">${ICON_DOC}<span>${esc(r.etiqueta || "Resumen en PDF")}</span>${r.paginas ? `<small>${r.paginas} págs.</small>` : ""}</a>` : ""}${p.practicaPartes.sinProgreso ? "" : `<div class="ejp-prog" id="ejpProg"></div>`}</div></div>
       ${(p.practicaPartes.enlaces || []).length ? `<div class="ejp-herr"><span>Para hacerlo de verdad</span>${p.practicaPartes.enlaces.map(enlaceHtml).join("")}</div>` : ""}` : `
       <div class="crumbs"><span data-go="m${m.n}/${p.id}${kp ? `/${kp}/material` : ""}">‹ ${esc(kp ? nombreSec(p, kp) : p.titulo)}</span></div>
       <div class="ejp-cab"><h1>${esc((p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</h1><div class="ejp-prog" id="ejpProg"></div></div>`;
@@ -6509,14 +6507,15 @@ async function montarEjp(m, p, id, tipo = "pp"){
 function irEjp(x, mover = true){
   const ej = ejsEjp().find(e => e.id === x);
   if(ej) return abrirEjp(ej, mover);
+  // Con la explicación al final, la explicación se abre solo por su dirección: si fue lo último que se vio, se vuelve a los ejercicios
   const pa = ejp.partes.find(q => q.id === x || "@" + q.id === x);
-  if(pa) return conLecciones() && pa.leccion ? abrirLecEjp(pa, mover) : abrirEjp(pa.ejercicios[0], mover);
+  if(pa) return conLecciones() && pa.leccion && !(lecAlFinal() && x[0] === "@") ? abrirLecEjp(pa, mover) : abrirEjp(pa.ejercicios[0], mover);
   const p0 = ejp.partes[0];
-  conLecciones() && p0.leccion ? abrirLecEjp(p0, mover) : abrirEjp(p0.ejercicios[0], mover);
+  conLecciones() && p0.leccion && !lecAlFinal() ? abrirLecEjp(p0, mover) : abrirEjp(p0.ejercicios[0], mover);
 }
 /* Al entrar a una parte: su explicación si todavía no se leyó; si no, el primer ejercicio sin resolver */
 function entrarParte(pa, mover = true){
-  if(conLecciones() && pa.leccion && !ejp.est.leidas.includes(pa.id)) abrirLecEjp(pa, mover);
+  if(conLecciones() && pa.leccion && !lecAlFinal() && !ejp.est.leidas.includes(pa.id)) abrirLecEjp(pa, mover);
   else abrirEjp(pa.ejercicios.find(x => !ejp.est.hechos.includes(x.id)) || pa.ejercicios[0], mover);
 }
 /* La dirección cambia sin recargar y sin sumar pasos al "atrás" */
@@ -6644,7 +6643,7 @@ function abrirEjp(ej, mover = true){
   if(ej.azar && (!semillaAzar(ej) || ej._semilla !== semillaAzar(ej))){
     prepararAzar(ej).then(() => { if(ejp && ejp.ej === ej){ pintarIzqEjp(); pintarDerEjp(); } });
   }
-  Object.assign(ejp, { ej, pa: parteEjp(ej), tab: "consigna", vista: "info", pista: 0, sol: 0, corregido: false, ed: null, verif: null, arch: Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura)) });
+  Object.assign(ejp, { ej, pa: parteEjp(ej), tab: "consigna", vista: "info", pista: 0, sol: 0, corregido: false, ed: null, verif: null, deshacer: null, arch: Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura)) });
   ejp.est.ultimo = ej.id;
   guardarEjp();
   rutaEjp(ej.id);
@@ -6668,8 +6667,8 @@ function abrirLecEjp(pa, mover = true){
   if(mover) subirEjp();
 }
 function pintarPartesEjp(){
-  const { partes, pa, ej, est } = ejp, todos = ejsEjp(), hechos = todos.filter(x => est.hechos.includes(x.id)).length;
-  $("#ejpProg").innerHTML = `<span>Resueltos <b>${hechos} / ${todos.length}</b></span><span class="bar"><i style="width:${Math.round(hechos / todos.length * 100)}%"></i></span>`;
+  const { partes, pa, ej, est } = ejp, todos = ejsEjp(), hechos = todos.filter(x => est.hechos.includes(x.id)).length, prog = $("#ejpProg");
+  if(prog) prog.innerHTML = `<span>Resueltos <b>${hechos} / ${todos.length}</b></span><span class="bar"><i style="width:${Math.round(hechos / todos.length * 100)}%"></i></span>`;
   // Con varios archivos, el nombre de cada grupo va antes de su primera parte
   $("#ejpPartes").innerHTML = partes.map((x, i) => {
     const h = x.ejercicios.filter(e => est.hechos.includes(e.id)).length, todo = h === x.ejercicios.length;
@@ -6677,10 +6676,11 @@ function pintarPartesEjp(){
     return `${grupo}<button class="pr-p ejp-parte ${x === pa ? "on" : ""} ${todo ? "ok" : ""}" data-ejp-parte="${i}" title="Parte ${x.num} · ${esc(x.titulo)}"><b>${todo ? "✓" : x.num}</b><span>${esc(x.pestana || x.titulo)}</span><small>${h}/${x.ejercicios.length}</small></button>`;
   }).join("");
   centrarEn($("#ejpPartes"), $("#ejpPartes .on"));
-  const lec = conLecciones() && pa.leccion;
+  const lec = conLecciones() && pa.leccion ? `<button class="ejp-ej lec ${ej ? "" : "on"}" data-ejp="leccion">${ICON_LIBRO}Explicación</button>` : "";
+  const ejs = `<span class="ejp-ejs-t">Ejercicios</span>${pa.ejercicios.map((e, i) => `<button class="ejp-ej ${e === ej ? "on" : ""} ${est.hechos.includes(e.id) ? "ok" : ""}" data-ejp-ir="${esc(e.id)}">${est.hechos.includes(e.id) ? "✓ " : ""}${pa.num}.${i + 1} · ${esc(e.tema || e.titulo)}</button>`).join("")}`;
   $("#ejpExpl").innerHTML = `
     <div class="ejp-expl-t"><span class="ejp-n">Parte ${pa.num}</span><b>${esc(pa.titulo)}</b>
-      <div class="ejp-ejs">${lec ? `<button class="ejp-ej lec ${ej ? "" : "on"}" data-ejp="leccion">${ICON_LIBRO}Explicación</button>` : ""}${pa.ejercicios.map((e, i) => `<button class="ejp-ej ${e === ej ? "on" : ""} ${est.hechos.includes(e.id) ? "ok" : ""}" data-ejp-ir="${esc(e.id)}">${est.hechos.includes(e.id) ? "✓ " : ""}${pa.num}.${i + 1} · ${esc(e.tema || e.titulo)}</button>`).join("")}</div></div>
+      <div class="ejp-ejs">${lecAlFinal() ? ejs + lec : lec + ejs}</div></div>
     ${pa.explicacion && ej ? `<p>${mdLinea(pa.explicacion)}</p>` : ""}`;
 }
 
@@ -6744,24 +6744,22 @@ function fijarGrupoEjp(g){
 }
 
 /* ---- Panel izquierdo: el ejercicio, "Dónde" y las pestañas Consigna / CSV / Pasos / Pistas */
-/* En los ejercicios de la ESP32, como en Wokwi: el ejercicio y el código a la izquierda, con sus pestañas */
+/* En los ejercicios de la ESP32, como en Wokwi: a la izquierda tres pestañas, el enunciado, el código y los pasos */
 function pintarIzqWok(){
-  const ej = ejp.ej, pa = parteEjp(ej);
-  const info = [["consigna", "Ejercicio"], ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", `Pistas <small>${ejp.pista}/${ej.pistas.length}</small>`]] : [])];
-  if(!info.some(t => t[0] === ejp.tab)) ejp.tab = "consigna";
-  const enInfo = ejp.vista !== "codigo", mio = Math.max(0, archivosEj(ej).findIndex(a => !a.soloLectura));
+  const ej = ejp.ej, pa = parteEjp(ej), pasos = (ej.pasos || []).length;
+  if(ejp.tab !== "pasos" || !pasos) ejp.tab = "consigna";
+  const enInfo = ejp.vista !== "codigo", tab = (k, t) => `<button class="pr-tab wok-info-tab ${enInfo && ejp.tab === k ? "on" : ""}" data-ejp-tab="${k}">${t}</button>`;
   $("#ejpIzq").innerHTML = `
     <div class="wok-izq-cab"><div class="ejp-num">Ejercicio ${pa.ejercicios.indexOf(ej) + 1} de ${pa.ejercicios.length}${ej.tema ? ` · ${esc(ej.tema)}` : ""}<span id="ejpHecho"></span></div><h2 class="ejp-tit">${mdLinea(ej.titulo)}</h2></div>
-    <div class="pr-tabs wok-tabs-izq">${info.map(([k, t]) => `<button class="pr-tab wok-info-tab ${enInfo && ejp.tab === k ? "on" : ""}" data-ejp-tab="${k}">${t}</button>`).join("")}<span class="wok-sep"></span><span class="wok-arch" id="ejpTabs"></span></div>
+    <div class="pr-tabs wok-tabs-izq">${tab("consigna", "Enunciado")}<span class="wok-arch" id="ejpTabs"></span>${pasos ? tab("pasos", "Pasos") : ""}</div>
     <div class="wok-cuerpo">
-      <div class="wok-info ejp-cuerpo" id="ejpInfo"${enInfo ? "" : " hidden"}>${enInfo ? cuerpoIzqEjp() + (ejp.tab === "consigna" ? respuestasEjp(ej) + `<button class="pr-fuerte wok-al-codigo" data-ejp-arch="${mio}">Escribir el código →</button>` : "") : ""}</div>
+      <div class="wok-info ejp-cuerpo" id="ejpInfo"${enInfo ? "" : " hidden"}>${enInfo ? cuerpoIzqEjp() + (ejp.tab === "consigna" ? respuestasEjp(ej) : "") : ""}</div>
       <div class="pr-ed" id="ejpEd"${enInfo ? " hidden" : ""}></div>
     </div>
     <div class="pr-teclas"${enInfo ? " hidden" : ""}>${TECLAS.cpp.map(t => `<button data-ejp-tecla="${esc(t)}">${esc(t)}</button>`).join("")}</div>
     <div class="pr-barra">
       <button class="pr-fuerte" data-ejp="verificar" title="Corre las pruebas del ejercicio">Verificar</button>
-      <button class="pr-chico" data-ejp="pista">💡 Pista</button>
-      <button class="pr-chico" data-ejp="solucion">Ver solución</button>
+      <button class="pr-chico" data-ejp="solucion" title="Escribe la solución en tu código">Ver solución</button>
       <button class="pr-chico" data-ejp="reiniciar">↺ Reiniciar código</button>
       <span class="sim-esp"></span>${hayOtroEjp() ? `<button class="pr-chico" data-ejp="otro">Otro ejemplo →</button>` : ""}
     </div>`;
@@ -6800,13 +6798,11 @@ function cuerpoIzqEjp(){
   }
   const guia = parteEjp(ej).guia;
   const im = ej.imagen;
-  return `<div class="ejp-md">${mdBloque(ej.consigna || "")}</div>
+  return `${ej.caso ? `<span class="ejp-caso-n" title="Para ubicarlo en la guía de ejercicios">${ICON_LIBRO}${esc(ej.caso)}</span>` : ""}<div class="ejp-md">${mdBloque(ej.consigna || "")}</div>
     ${ej.enunciado ? `<div class="ejp-enun"><div class="ejp-tabla-t">Lo que pide el enunciado</div><ul>${ej.enunciado.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
     ${guia && ej.tipo === "ubicacion" ? `<div class="ejp-guia"><div class="ejp-tabla-t">Cómo decidir dónde va</div>${guia.map(([t, d]) => `<div><b>${esc(t)}</b><span>${mdLinea(d)}</span></div>`).join("")}</div>` : ""}
     ${ej.tabla ? tablaEjp(ej.tabla) : ""}
     ${ej.datos ? `<p class="ejp-datos">${mdLinea(ej.datos)}</p>` : ""}
-    ${ej.guia ? `<div class="ejp-caso"><span class="ejp-caso-t">${ICON_LIBRO}${esc(ej.guia.titulo)}</span><p>${mdLinea(ej.guia.texto)}</p></div>` : ""}
-    ${(ej.enlaces || []).length ? `<div class="ejp-enlaces"><span>Para hacerlo de verdad</span>${ej.enlaces.map(enlaceHtml).join("")}</div>` : ""}
     ${im ? `<figure class="ejp-img"><a href="${esc(im.url)}" target="_blank" rel="noopener" title="Ver más grande"><img src="${esc(im.url)}" alt="${esc(im.alt || "")}" loading="lazy"></a>${im.pie ? `<figcaption>${esc(im.pie)}</figcaption>` : ""}</figure>` : ""}
     ${ej.csv ? `<button class="linkbtn" data-ejp-tab="csv">Ver el CSV de ejemplo →</button>` : ""}`;
 }
@@ -6900,7 +6896,7 @@ function pintarTabsEjp(){
   const etiqueta = x => x.profe ? x.profe.etiqueta || (esp ? "Del profe" : "Carpeta del profe") : null;
   const titulo = x => x.profe.etiqueta ? "Para mirar o correr en la placa (con las claves tapadas)" : esp ? "Los casos resueltos del profe, tal cual (con las claves tapadas): miralos o correlos en la placa" : "Los .m del ZIP del profe, tal cual: ya están cargados, llamalos desde tu código";
   $("#ejpTabs").innerHTML = as.map((x, i) => `${x.profe && etiqueta(x) !== etiqueta(as[i - 1] || {}) ? `<span class="pr-carpeta" title="${titulo(x)}">${esc(etiqueta(x))}</span>` : ""}<button class="pr-tab ${i === ejp.arch && !(esp && ejp.vista !== "codigo") ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
-    + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span>`);
+    + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : esp ? "" : `<span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span>`);
   centrarEn($("#ejpTabs"), $("#ejpTabs .pr-tab.on"));
   return { ej, as, a, viendo };
 }
@@ -7728,8 +7724,6 @@ function accionEjp(a){
   }
   if(a === "ejecutar"){ ejecutarEjp(); return; }
   if(a === "solucion"){
-    if(!ejp.sol && !confirm(ej.tipo === "texto" ? "¿Ver un ejemplo de respuesta? Escribí primero la tuya." : "¿Ver la solución? Probá primero solo: resolverlo es lo que sirve para el parcial.")) return;
-    ejp.sol = 2;
     const marcar = ejp.est.hechos.includes(ej.id) ? "" : `<button class="pr-chico" data-ejp="marcar">✓ Marcar como resuelto</button>`;
     // Las respuestas esperadas, con su explicación
     const resp = (ej.respuestas || []).length ? `<ul class="pr-checks">${ej.respuestas.map(x => `<li class="ok"><span>✓</span><div><b>${mdLinea(x.pregunta)} <code>${esc(String(x.mostrar ?? x.valor))}${x.unidad ? " " + esc(x.unidad) : ""}</code></b>${x.motivo ? `<p>${mdLinea(x.motivo)}</p>` : ""}</div></li>`).join("")}</ul>` : "";
@@ -7741,6 +7735,21 @@ function accionEjp(a){
       resEjp(`<div class="pr-info"><b>Un ejemplo de respuesta</b><pre class="ejp-ejemplo">${esc(ej.solucion)}</pre><div class="ejp-acc">${marcar}</div></div>`);
       return;
     }
+    // En la ESP32 la solución se escribe en el código (se puede correr y editar) y "Volver a mi código" lo deshace
+    if(esWokwi(ej)){
+      const sol = Object.fromEntries(editablesEj(ej).map(x => [x.nombre, x.solucion ?? x.inicial]));
+      if(JSON.stringify(codigoEjp(ej)) !== JSON.stringify(sol)) ejp.deshacer = { id: ej.id, codigo: ejp.est.codigo[ej.id] };
+      Object.entries(sol).forEach(([n, v]) => guardarCodigoEjp(ej, n, v));
+      ejp.vista = "codigo";
+      ejp.arch = Math.max(0, archivosEj(ej).findIndex(x => !x.soloLectura));
+      pintarIzqEjp();
+      codigoCambioPlaca();
+      const volver = ejp.deshacer ? `<button class="pr-chico" data-ejp="deshacer">↶ Volver a mi código</button>` : "";
+      resEjp(`<div class="pr-info"><b>La solución ya está en tu código</b><p>Leela, tocá ▶ para correrla en la placa y comparala con lo que habías hecho.</p>
+        ${resp}<div class="ejp-acc">${volver}${marcar}</div></div>`);
+      return;
+    }
+    ejp.sol = 2;
     if((archivosEj(ej)[ejp.arch] || {}).soloLectura) ejp.arch = archivosEj(ej).findIndex(x => !x.soloLectura);
     pintarEdEjp();
     resEjp(`<div class="pr-info"><b>Solución</b><p>Lo nuevo está marcado en color.${editablesEj(ej).length > 1 ? " Mirá cada pestaña: el cambio está en más de un archivo." : ""} Comparalo con tu código y, si lo entendiste, marcalo como resuelto.</p>
@@ -7753,20 +7762,36 @@ function accionEjp(a){
     return;
   }
   if(a === "reiniciar"){
-    if(!confirm(`¿Volver al código inicial? Se borra lo que escribiste en este ejercicio${editablesEj(ej).length > 1 ? " (en todas las pestañas)" : ""}.`)) return;
+    const antes = ejp.est.codigo[ej.id];
     delete ejp.est.codigo[ej.id];
     guardarEjp();
     if(ejp.sol) ejp.sol = 1;
+    ejp.deshacer = antes ? { id: ej.id, codigo: antes } : null;
     pintarEdEjp();
-    resEjp("");
+    if(esWokwi(ej)) codigoCambioPlaca();
+    resEjp(antes ? `<div class="pr-info"><b>↺ Volviste al código inicial.</b><div class="ejp-acc"><button class="pr-chico" data-ejp="deshacer">↶ Deshacer</button></div></div>` : "");
     return;
   }
   if(a === "limpiar"){
-    if(!confirm("¿Borrar tus respuestas de este ejercicio?")) return;
+    const antes = ejp.est.resp[ej.id];
     delete ejp.est.resp[ej.id];
     guardarEjp();
     ejp.corregido = false;
+    ejp.deshacer = antes ? { id: ej.id, resp: antes } : null;
     $("#ejpOps").innerHTML = opcionesEjp();
+    resEjp(antes ? `<div class="pr-info"><b>↺ Se borraron tus respuestas.</b><div class="ejp-acc"><button class="pr-chico" data-ejp="deshacer">↶ Deshacer</button></div></div>` : "");
+    return;
+  }
+  // Vuelve a lo que había antes de reiniciar, de poner la solución o de borrar las respuestas
+  if(a === "deshacer"){
+    const d = ejp.deshacer;
+    if(!d || d.id !== ej.id) return;
+    ejp.deshacer = null;
+    if(d.resp){ ejp.est.resp[ej.id] = d.resp; guardarEjp(); $("#ejpOps").innerHTML = opcionesEjp(); resEjp(""); return; }
+    if(d.codigo == null) delete ejp.est.codigo[ej.id]; else ejp.est.codigo[ej.id] = d.codigo;
+    guardarEjp();
+    pintarEdEjp();
+    if(esWokwi(ej)) codigoCambioPlaca();
     resEjp("");
     return;
   }
