@@ -367,8 +367,6 @@ partes.append(parte(2, 'entradas', 'Entradas: pulsador y potenciómetro', 'Pulsa
   [
     esp('2.1', 'analogRead', 'leer el potenciómetro', '''
       Cada **200 ms**, mostrá por el monitor serie la lectura del potenciómetro (GPIO 32) y su tensión, así: `Pote: 3000 = 2.42 V`.
-
-      Después corrélo, poné el pote en **1234** (tocá el pote en la placa) y completá la respuesta.
     ''', '''
       const int POTE = 32;
 
@@ -406,7 +404,7 @@ partes.append(parte(2, 'entradas', 'Entradas: pulsador y potenciómetro', 'Pulsa
     ''', [P('Pote en 1000 y después al máximo', 1500, [serial(r'Pote: 1000 = 0\.81 V', hasta=650), serial(r'Pote: 4095 = 3\.30 V', desde=750), serial(r'Pote: ', veces=[6, 9])],
             entradas=[{'t': 700, 'pote': 4095}], pote=1000)],
     profe=['caso_04_leer_pot.ino'],
-    pasos=['`int lectura = analogRead(POTE);`', '`float volt = lectura * 3.3 / 4095;`', 'Tocá ▶, tocá el pote en la placa, ponelo en 1234 y leé la tensión en el monitor serie.'],
+    pasos=['`int lectura = analogRead(POTE);`', '`float volt = lectura * 3.3 / 4095;`', 'Probalo: tocá ▶, tocá el pote en la placa y ponelo en 1234: el monitor serie tiene que mostrar `Pote: 1234 = 0.99 V`.'],
     pistas=['4095 es el máximo del ADC de 12 bits y corresponde a 3,3 V: es una regla de tres.'],
     respuestas=[N('Tensión con el pote en 1234', 0.99, 2, 'V', '1234 × 3,3 / 4095 = 0,994 V: `Serial.print` de un float muestra 2 decimales.', tol=0.011,
                   medir={'opts': {'pote': 1234}, 'hasta': 500, 're': r'= ([\d.]+) V'})]),
@@ -589,8 +587,6 @@ partes.append(parte(3, 'pwm', 'PWM: el brillo', 'PWM',
 
     esp('3.2', 'map()', 'el brillo sigue al pote', '''
       El brillo del **LED verde** sigue al pote: con `map()` pasá la lectura (0–4095) a PWM de 8 bits (0–255). Mostrá `PWM: N` cada 100 ms.
-
-      Después corrélo con el pote en **3000** y completá la respuesta.
     ''', '''
       const int VERDE = 23;
       const int POTE = 32;
@@ -1916,7 +1912,9 @@ for pa in partes:
     for e in pa['ejercicios']:
         e.pop('pistas', None)
         if e['tipo'] != 'esp32': continue
-        # El ejercicio muestra solo el enunciado, el código y los pasos: el caso de la guía va como número para ubicarlo
+        # El ejercicio muestra solo el enunciado, el código y los pasos (no hay nada que contestar: Verificar prueba el
+        # sketch); el caso de la guía va como número para ubicarlo
+        e.pop('respuestas', None)
         if e['id'] in CASO: e['caso'] = f"Caso práctico {CASO[e['id']]:02d} de la guía"
         elif e['id'] in DEL_TPI: e['caso'] = 'TPI 4K3'
         elif e['id'] in DE_CLASE: e['caso'] = f"Ejemplo de clase: {DE_CLASE[e['id']]}"
