@@ -1406,6 +1406,73 @@
   .ejp-graf{display:grid;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px}
   .ejp-graf svg{width:100%;max-width:520px;height:auto;display:block;margin:0 auto;color:var(--text)}
   .ejp-graf small{display:block;text-align:center;font-size:.75rem;color:var(--muted)}
+  /* ---------- La placa de la ESP32 simulada (pestaña Placa de los ejercicios "esp32") ---------- */
+  .placa{display:grid;gap:10px}
+  .pla-cab{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .pla-estado{display:inline-flex;align-items:center;gap:7px;font-size:.84rem;font-weight:600;color:var(--text2)}
+  .pla-estado i{width:9px;height:9px;border-radius:50%;background:var(--line2)}
+  .pla-estado.on i{background:#3fb950;animation:plLat 1.6s infinite}
+  .pla-estado.pausa i{background:#d4a72c}
+  .pla-estado.error i{background:var(--error)}
+  @keyframes plLat{50%{opacity:.35}}
+  .pla-t{font:600 .82rem ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
+  .pla-quien{font-size:.8rem;color:var(--muted);margin:0}
+  .pla-err{background:var(--rojo-f);color:var(--rojo);border-radius:10px;padding:8px 12px;font:12.5px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap}
+  .pla-err[hidden],.pla-nube[hidden]{display:none}
+  .pla-tablero{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:10px}
+  .placa.apagada .pla-tablero{opacity:.55;pointer-events:none}
+  .pla-bloque{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px;align-content:start;min-width:0}
+  .pla-tit{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 6px;font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .pla-tit em{font-style:normal;font-weight:500;text-transform:none;letter-spacing:0}
+  .pla-tit .linkbtn{margin-left:auto;font-size:.72rem;text-transform:none;letter-spacing:0;font-weight:500}
+  .pla-sal{display:flex;align-items:center;gap:10px;font-size:.86rem;min-height:30px}
+  .pla-sal i{position:relative;flex:none;width:20px;height:20px;border-radius:50%;background:var(--line2);border:1px solid rgba(0,0,0,.12)}
+  .pla-sal i::after{content:"";position:absolute;inset:-1px;border-radius:inherit;background:var(--c);opacity:var(--b,0);box-shadow:0 0 14px 3px var(--c)}
+  .pla-sal.azul{--c:#3b82f6}.pla-sal.verde{--c:#22c55e}.pla-sal.rele{--c:#e5534b}
+  .pla-sal.rele i{border-radius:5px}
+  .pla-sal span{display:grid;line-height:1.2}
+  .pla-sal em,.pla-boton em,.pla-rango em{font-style:normal;font-size:.68rem;font-weight:500;color:var(--muted)}
+  .pla-sal b{margin-left:auto;font:600 .74rem ui-monospace,Menlo,Consolas,monospace;color:var(--muted);text-align:right}
+  .pla-sal.on b{color:var(--text)}
+  .pla-sal:not(.usado){opacity:.6}
+  .pla-botones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .pla-boton{display:grid;justify-items:center;gap:1px;min-width:0;font:600 .8rem var(--sans);color:var(--text);background:var(--card);border:1px solid var(--line2);border-bottom-width:3px;border-radius:10px;padding:6px 4px;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
+  .pla-boton.on{transform:translateY(2px);border-bottom-width:1px;margin-bottom:2px;background:var(--accent-soft);border-color:var(--accent)}
+  /* Con la placa a la vista, las dos columnas mitad y mitad */
+  .pr-ws.ejp-ws:has(#placa){grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .pla-rango{display:grid;grid-template-columns:62px minmax(0,1fr) 62px 18px;align-items:center;gap:6px;font-size:.8rem;font-weight:600}
+  .pla-rango span{display:grid;line-height:1.15}
+  .pla-rango input[type=range]{width:100%;min-width:0;accent-color:var(--accent)}
+  .pla-rango input[type=number]{width:100%;font:500 .8rem ui-monospace,Menlo,Consolas,monospace;padding:3px 5px;border:1px solid var(--line2);border-radius:6px;background:var(--card);color:var(--text)}
+  .pla-rango small{font-size:.72rem;color:var(--muted);font-weight:500}
+  .pla-oled{width:100%;max-width:330px;height:auto;display:block;margin:0 auto;border-radius:6px;border:6px solid #11151a;background:#05080b}
+  .pla-oled text{font-family:ui-monospace,Menlo,Consolas,monospace;white-space:pre}
+  .pla-serial{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#16191d;color:#d6dde4;border-radius:8px;padding:8px 10px;height:128px;overflow:auto;white-space:pre-wrap;word-break:break-word;margin:0}
+  .pla-serial.vacio{color:#7f8b96;font-style:italic}
+  .pla-enviar{display:flex;flex-wrap:wrap;gap:6px}
+  .pla-enviar input{flex:1;min-width:90px;font:12.5px ui-monospace,Menlo,Consolas,monospace;padding:6px 8px;border:1px solid var(--line2);border-radius:8px;background:var(--card);color:var(--text)}
+  .pla-nube{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:10px;font-size:.82rem}
+  .pla-nube > div > b{font-size:.66rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:6px}
+  .pla-ts table{width:100%;border-collapse:collapse;font-size:.76rem;margin-top:4px}
+  .pla-ts th{font-weight:600;color:var(--muted)}
+  .pla-ts th,.pla-ts td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+  .pla-ts td span{display:inline-block;margin-right:8px;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .pla-ts tr.mal td{color:var(--rojo)}
+  .pla-mqtt ul{list-style:none;display:grid;gap:2px;margin:4px 0 8px;max-height:130px;overflow:auto;font-size:.78rem}
+  .pla-mqtt li span,.pla-avisos li span{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--muted);margin-right:6px}
+  .pla-avisos li span{color:inherit;opacity:.7}
+  .pla-nada{color:var(--muted);font-size:.78rem}
+  .pla-nota{display:block;font-size:.72rem;color:var(--muted);margin-top:4px}
+  .pla-avisos{list-style:none;display:grid;gap:4px}
+  .pla-avisos:empty{display:none}
+  .pla-avisos li{font-size:.78rem;background:var(--mark);color:var(--mark-t);border-radius:8px;padding:5px 9px}
+  .pla-corre{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;font-size:.86rem;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+  .pla-corre > i{width:9px;height:9px;border-radius:50%;background:#3fb950;flex:none;animation:plLat 1.6s infinite}
+  .pla-corre span{flex:1;min-width:200px}
+  .pla-prueba{display:grid;gap:4px;margin-top:6px}
+  .pla-prueba b{font-size:.8rem}
+  .pla-prueba pre{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;background:#16191d;color:#d6dde4;border-radius:8px;padding:8px 10px;max-height:200px;overflow:auto;white-space:pre-wrap;margin:0}
+  @media (prefers-reduced-motion: reduce){ .pla-estado.on i,.pla-corre > i{animation:none} }
   .ejp-salida-v summary{cursor:pointer;font-size:.82rem;color:var(--muted);padding:2px 0}
   @media (max-width:600px){ .ejp-resp label{grid-template-columns:minmax(0,1fr) 118px 24px} .ejp-resp label.larga{grid-template-columns:minmax(0,1fr) 24px} .ejp-resp label.larga > span{grid-column:1 / -1} }
   .ejp-aviso{font-size:.78rem;color:var(--muted);margin:0}
@@ -3277,6 +3344,15 @@ const MATERIAS = {
         titulo: "TP · Proyecto con la ESP32",
         descripcion: "Los casos prácticos con la ESP32, con la placa real o simulada en Wokwi: instalación, los prácticos y videos para resolverlos.",
         secciones: [],
+        // Práctica por partes con la placa de la cátedra simulada en el navegador (practica/esp32/esp32.js): el sketch
+        // corre de verdad y Verificar lo prueba apretando el pulsador, moviendo el pote, mandando por el monitor serie…
+        // Los casos del profe van al lado, para mirar o correr. Se arma con herramientas/tpa-practica/armar_tp.py.
+        practicaPartes: {
+          fuentes: ["practica/tpa-tp/ejercicios.json"],
+          resumen: { nombre: "Prácticos 2026", url: "material/tecnologias-para-la-automatizacion/tp-esp32/01-practicos-2026.pdf", paginas: 2 }
+        },
+        practicaLenguaje: "cpp",
+        carpetaProfe: "practica/esp32/profe/",
         material: [
           { nivel: "esencial", grupo: "El TP integrador", descripcion: "Lo que hay que entregar: dos sketches, uno manda datos a ThingSpeak y habilita OTA, y el otro (subido por OTA) los lee y los muestra.", archivos: [
             { nombre: "TPI 4K3 · ThingSpeak y programación OTA", nota: "Entrega 28/10", detalle: "La consigna: potenciómetro y touch con PWM de 12 bits, DHT22 y display, 6 campos a ThingSpeak cada 16 s, y el segundo sketch por OTA con el pulsador (2 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf" }
@@ -3874,7 +3950,7 @@ function pestanasDe(p){
     return [
       ...temas,
       ...(arch || !vids ? [{ go: "/material", t: "Material", on: d => !d[0] || d[0] === "material" }] : []),
-      ...(tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
+      ...(p.practicaPartes || tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
       ...(vids ? [{ go: "/videos", t: "Videos", on: d => d[0] === "videos" }] : [])
     ];
   }
@@ -6183,7 +6259,10 @@ const ICON_LIBRO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
    escribió en cada uno. Solo se guarda lo que cambió respecto del código inicial. */
 const archivosEj = ej => {
   const as = ej.archivos || [];
-  if(ej.tipo !== "octave" || !ejp || !(ejp.profe || []).length) return as;
+  if(!ejp || !(ejp.profe || []).length) return as;
+  // En la ESP32, los casos resueltos del profe que van con el ejercicio (para mirar y correr en la placa)
+  if(ej.tipo === "esp32") return [...as, ...(ej.delProfe || []).map(n => ejp.profe.find(a => a.nombre === n)).filter(Boolean).map(a => ({ nombre: a.nombre, inicial: a.texto, soloLectura: true, profe: a }))];
+  if(ej.tipo !== "octave") return as;
   // En Octave, después de los míos van los .m de la carpeta del profe (menos la función que el ejercicio pide escribir)
   const ocultas = new Set((ej.ocultar || []).map(n => n + ".m"));
   return [...as, ...ejp.profe.filter(a => !ocultas.has(a.nombre)).map(a => ({ nombre: a.nombre, inicial: a.texto, soloLectura: true, profe: a }))];
@@ -6317,7 +6396,7 @@ async function montarEjp(m, p, id, tipo = "pp"){
     ejp.cargaProfe = cargarProfe(p.carpetaProfe).then(xs => {
       if(ejp !== yo) return;
       ejp.profe = xs;
-      if(ejp.ej && ejp.ej.tipo === "octave" && $("#ejpTabs")) pintarTabsEjp();   // el editor sigue como está
+      if(ejp.ej && (ejp.ej.tipo === "octave" || ejp.ej.tipo === "esp32") && $("#ejpTabs")) pintarTabsEjp();   // el editor sigue como está
     });
   }
   irEjp(id || ejp.est.ultimo, false);
@@ -6511,7 +6590,7 @@ function pintarLecEjp(){
     <div class="ejp-lec-consta"><span class="ejp-lec-t">Consta de ${l.consta.length} elementos <small>· tocá uno para verlo en el código</small></span>
       <ol class="ejp-consta">${l.consta.map(([t, d], i) => `<li data-ejp-g="${i + 1}" tabindex="0" style="--g:var(--g${i + 1})"><b>${i + 1}</b><div><b>${mdLinea(t)}</b><span>${mdLinea(d)}</span></div></li>`).join("")}</ol></div>
     ${(l.ojo || []).length ? `<div class="ejp-lec-ojo"><span class="ejp-lec-t">Ojo con</span><ul>${l.ojo.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
-    ${l.parcial ? `<p class="ejp-lec-parcial"><b>En el parcial</b>${mdLinea(l.parcial)}</p>` : ""}
+    ${l.parcial ? `<p class="ejp-lec-parcial"><b>${esc(l.parcialT || "En el parcial")}</b>${mdLinea(l.parcial)}</p>` : ""}
     <div class="ejp-lec-cod ${l.ejemplo.texto ? "texto" : ""}">
       <div class="pr-tabs"><span class="pr-tab on">${esc(l.ejemplo.archivo)}</span><span class="ejp-leng">${esc(l.ejemplo.origen)}</span></div>
       ${codigoLecEjp(l.ejemplo)}
@@ -6562,7 +6641,7 @@ function fijarGrupoEjp(g){
 /* ---- Panel izquierdo: el ejercicio, "Dónde" y las pestañas Consigna / CSV / Pasos / Pistas */
 function pintarIzqEjp(){
   const ej = ejp.ej, pa = parteEjp(ej);
-  const tabs = [["consigna", "Consigna"], ...(ej.csv ? [["csv", "CSV"]] : []), ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", "Pistas"]] : [])];
+  const tabs = [["consigna", "Consigna"], ...(ej.tipo === "esp32" ? [["placa", "🔌 Placa"]] : []), ...(ej.csv ? [["csv", "CSV"]] : []), ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", "Pistas"]] : [])];
   if(!tabs.some(t => t[0] === ejp.tab)) ejp.tab = "consigna";
   $("#ejpIzq").innerHTML = `
     <div class="ejp-num">Ejercicio ${pa.ejercicios.indexOf(ej) + 1} de ${pa.ejercicios.length}${ej.tema ? ` · ${esc(ej.tema)}` : ""}<span id="ejpHecho"></span></div>
@@ -6580,6 +6659,7 @@ function pintarHechoEjp(){
 function cuerpoIzqEjp(){
   const ej = ejp.ej;
   if(ejp.tab === "csv") return csvEjp(ej);
+  if(ejp.tab === "placa") return viewPlaca();
   if(ejp.tab === "pasos") return `<ol class="ejp-lista">${ej.pasos.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ol>`;
   if(ejp.tab === "pistas"){
     const ps = ej.pistas, n = ejp.pista;
@@ -6617,15 +6697,15 @@ const tablaEjp = t => `<div class="ejp-tabla"><div class="ejp-tabla-t">${mdLinea
 
 /* ---- Panel derecho, según el tipo de ejercicio */
 /* El lenguaje de un ejercicio: el suyo o el de la práctica (Java en Backend, Octave en TPA) */
-const lengEj = ej => ej.lenguaje || (ej.tipo === "octave" ? "octave" : ejp && ejp.p.practicaLenguaje) || "java";
+const lengEj = ej => ej.lenguaje || (ej.tipo === "octave" ? "octave" : ej.tipo === "esp32" ? "cpp" : ejp && ejp.p.practicaLenguaje) || "java";
 const TECLAS = { java: ["⇥", "⇤", "{}", "()", ";", "\"\"", "=", "this.", "->", "<>", "::"], cpp: ["⇥", "⇤", "{}", "()", ";", "\"\"", "=", "==", "[]", "<", ">"],
   octave: ["⇥", "⇤", "()", "[]", ";", ",", "'", ":", "*", "^", "=", "end"] };
 function pintarDerEjp(){
   const ej = ejp.ej, otro = hayOtroEjp() ? `<button class="pr-chico" data-ejp="otro">Otro ejemplo →</button>` : "";
   const res = `<div class="pr-res" id="ejpRes" aria-live="polite"></div>`;
   ejp.respEstado = {};
-  if(ej.tipo === "codigo" || ej.tipo === "octave"){
-    const oct = ej.tipo === "octave";
+  if(ej.tipo === "codigo" || ej.tipo === "octave" || ej.tipo === "esp32"){
+    const oct = ej.tipo === "octave" || ej.tipo === "esp32";   // se corren: Octave del navegador o la placa simulada
     $("#ejpDer").innerHTML = `
       <div class="pr-tabs" id="ejpTabs"></div>
       <div class="pr-ed" id="ejpEd"></div>
@@ -6676,7 +6756,8 @@ function pintarDerEjp(){
 function pintarTabsEjp(){
   const ej = ejp.ej, as = archivosEj(ej), a = as[ejp.arch] || as[0], viendo = ejp.sol === 2 && !a.soloLectura;
   const p0 = as.findIndex(x => x.profe);
-  $("#ejpTabs").innerHTML = as.map((x, i) => `${i === p0 ? `<span class="pr-carpeta" title="Los .m del ZIP del profe, tal cual: ya están cargados, llamalos desde tu código">Carpeta del profe</span>` : ""}<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
+  const esp = ej.tipo === "esp32";
+  $("#ejpTabs").innerHTML = as.map((x, i) => `${i === p0 ? `<span class="pr-carpeta" title="${esp ? "Los casos resueltos del profe, tal cual (con las claves tapadas): miralos o correlos en la placa" : "Los .m del ZIP del profe, tal cual: ya están cargados, llamalos desde tu código"}">${esp ? "Del profe" : "Carpeta del profe"}</span>` : ""}<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
     + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span>`);
   centrarEn($("#ejpTabs"), $("#ejpTabs .pr-tab.on"));
   return { ej, as, a, viendo };
@@ -6685,11 +6766,13 @@ function pintarEdEjp(){
   const { ej, a, viendo } = pintarTabsEjp(), leng = lengEj(ej);
   if(a.profe){
     ejp.ed = null;
-    $("#ejpEd").innerHTML = `<div class="ed lectura ejp-sol ejp-profe"><p class="ejp-profe-nota">📁 Función del profe, tal cual está en su ZIP. Ya está cargada: llamala desde tu código${a.profe.nota ? `. ${esc(a.profe.nota)}` : "."}</p>${codigoLecturaEjp(a.inicial, null, leng).replace(/^<div class="ed lectura ejp-sol">|<\/div>$/g, "")}</div>`;
+    const nota = ej.tipo === "esp32" ? `📁 Caso resuelto del profe, tal cual está en su ZIP (las claves, tapadas). Es la base: miralo y adaptalo en tu sketch. Con esta pestaña abierta, ▶ Ejecutar lo corre en la placa${a.profe.nota ? `. ${esc(a.profe.nota)}` : "."}`
+      : `📁 Función del profe, tal cual está en su ZIP. Ya está cargada: llamala desde tu código${a.profe.nota ? `. ${esc(a.profe.nota)}` : "."}`;
+    $("#ejpEd").innerHTML = `<div class="ed lectura ejp-sol ejp-profe"><p class="ejp-profe-nota">${nota}</p>${codigoLecturaEjp(a.inicial, null, leng).replace(/^<div class="ed lectura ejp-sol">|<\/div>$/g, "")}</div>`;
     return;
   }
   if(viendo || a.soloLectura){ ejp.ed = null; $("#ejpEd").innerHTML = codigoLecturaEjp(viendo ? a.solucion : a.inicial, viendo ? a.inicial : null, leng); return; }
-  ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); }, leng, () => accionEjp(ej.tipo === "octave" ? "ejecutar" : "verificar"));
+  ejp.ed = montarEditor($("#ejpEd"), codigoEjp(ej)[a.nombre], false, v => { guardarCodigoEjp(ej, a.nombre, v); pintarBtnVerif(); }, leng, () => accionEjp(ej.tipo === "octave" || ej.tipo === "esp32" ? "ejecutar" : "verificar"));
 }
 /* Código en solo lectura; con "inicial", las líneas que no estaban ahí se marcan (así se ve la solución) */
 function codigoLecturaEjp(texto, inicial, leng = "java"){
@@ -6756,6 +6839,255 @@ function cargarOctave(){
     document.head.appendChild(s);
   }));
 }
+/* ---- La placa de la cátedra simulada (practica/esp32/esp32.js, se carga la primera vez). En los ejercicios "esp32",
+   ▶ Ejecutar prende la placa en la pestaña Placa (a la izquierda): los LEDs, el relé, el display, el monitor serie y la nube
+   se ven en vivo y el pulsador, el pote, el DHT22 y los touch se manejan con el mouse. Verificar corre las pruebas del
+   ejercicio (sin pantalla, más rápido que el reloj) y compara lo que pasó con lo esperado. */
+let cargaESP32 = null;
+function cargarESP32(){
+  if(window.ESP32) return Promise.resolve(window.ESP32);
+  return cargaESP32 || (cargaESP32 = new Promise((ok, mal) => {
+    const s = document.createElement("script");
+    s.src = "practica/esp32/esp32.js";
+    s.onload = () => window.ESP32 ? ok(window.ESP32) : mal(new Error("no cargó"));
+    s.onerror = () => { cargaESP32 = null; s.remove(); mal(new Error("no cargó")); };
+    document.head.appendChild(s);
+  }));
+}
+/* El sketch que se corre: el .ino mío (o el del profe que se está mirando, si "delProfe") y los .h del ejercicio */
+function codigoEspEj(ej, delProfe = false){
+  const t = codigoEjp(ej), as = archivosEj(ej), a = as[ejp.arch] || as[0];
+  if(delProfe && a && a.profe) return { codigo: a.inicial, archivos: (a.profe.h || []).map(n => ejp.profe.find(x => x.nombre === n)).filter(Boolean).map(x => ({ nombre: x.nombre, texto: x.texto })), nombre: a.nombre, profe: true };
+  const ed = editablesEj(ej), ino = ed.find(x => /\.ino$/.test(x.nombre)) || ed[0];
+  const archivos = as.filter(x => x !== ino && !x.profe && /\.(h|cpp)$/.test(x.nombre)).map(x => ({ nombre: x.nombre, texto: x.soloLectura ? x.inicial : t[x.nombre] }));
+  return { codigo: t[ino.nombre], archivos, nombre: ino.nombre, profe: false };
+}
+let placa = null;   // la placa prendida: { ej, sim, c, pausa, ultimo, raf, el, ... }
+function pararPlaca(){ if(placa){ cancelAnimationFrame(placa.raf); placa = null; } }
+async function ejecutarPlaca(){
+  const ej = ejp.ej;
+  let E;
+  try { E = await cargarESP32(); } catch(e){ resEjp(`<div class="pr-mal"><b>No se pudo cargar el simulador de la ESP32.</b><p>Revisá la conexión y probá de nuevo.</p></div>`); return; }
+  if(ejp.cargaProfe) await ejp.cargaProfe;
+  if(!ejp || ejp.ej !== ej) return;
+  const c = codigoEspEj(ej, true);
+  pararPlaca();
+  const sim = E.crear(c.codigo, { archivos: c.archivos, nombre: c.nombre, vivo: true, ...(ej.placa || {}) });
+  placa = { ej, sim, c, E, pausa: false, ultimo: performance.now() };
+  ejp.tab = "placa";
+  pintarIzqEjp();
+  if(sim.error) resEjp(`<div class="pr-mal"><b>${c.profe ? `El ${esc(c.nombre)} del profe no compila en el simulador` : "Tu sketch no compila"}</b><pre>${esc(errorEsp(sim.error, c))}</pre></div>`);
+  else resEjp(`<div class="pla-corre"><i></i><span>${c.profe ? `Corre <b>${esc(c.nombre)}</b>, el del profe.` : "Tu sketch corre en la placa."} Mirala ${innerWidth > 900 ? "a la izquierda" : "arriba"}: apretá el pulsador, mové el pote, escribí en el monitor serie.</span><button class="linkbtn" data-ejp-tab="placa">Ver la placa</button></div>`);
+  if(innerWidth <= 900) $("#ejpIzq").scrollIntoView({ behavior: "smooth", block: "start" });
+  placa.raf = requestAnimationFrame(cuadroPlaca);
+}
+const errorEsp = (e, c) => `${e.compilacion ? "error" : "se cortó"}: ${e.msg}${e.linea ? `  (línea ${e.linea}${e.archivo && e.archivo !== c.nombre && e.archivo !== "sketch.ino" ? ` de ${e.archivo}` : ""})` : ""}`;
+/* Un cuadro de la animación: el tiempo de la placa avanza con el reloj (si el sketch hace muchas cuentas, más lento) */
+function cuadroPlaca(){
+  if(!placa) return;
+  if(!ejp || ejp.ej !== placa.ej || !$("#ejpWs")){ pararPlaca(); return; }
+  const ahora = performance.now(), dt = Math.min(250, ahora - placa.ultimo), s = placa.sim;
+  placa.ultimo = ahora;
+  if(!placa.pausa && !s.error && !s.terminado){
+    const antes = s.error;
+    s.avanzar(s.t + dt, Infinity, 14);
+    if(s.error && !antes) resEjp(`<div class="pr-mal"><b>${placa.c.profe ? "El sketch del profe se cortó" : "Tu sketch se cortó"}</b><pre>${esc(errorEsp(s.error, placa.c))}</pre></div>`);
+  }
+  pintarPlaca();
+  placa.raf = requestAnimationFrame(cuadroPlaca);
+}
+const segP = ms => (ms / 1000).toFixed(1).replace(".", ",") + " s";
+/* La placa (en la pestaña Placa de la izquierda). Si no está prendida, apagada con el botón para prenderla */
+function viewPlaca(){
+  const on = placa && placa.ej === ejp.ej, s = on && placa.sim, ent = s ? s.ent : { pote: 2048, dht: { t: 24.5, h: 55 } };
+  const sal = (pin, nombre, clase) => `<div class="pla-sal ${clase}" data-pl-pin="${pin}"><i></i><span>${nombre}<em>GPIO ${pin}</em></span><b>—</b></div>`;
+  const rango = (k, t, min, max, paso, v, u, pin) => `<label class="pla-rango"><span>${t}<em>${pin}</em></span><input type="range" min="${min}" max="${max}" step="${paso}" value="${v}" data-placa-${k}><input type="number" min="${min}" max="${max}" step="${paso}" value="${v}" data-placa-${k} aria-label="${t}"><small>${u}</small></label>`;
+  return `
+    <div class="placa ${on ? "" : "apagada"}" id="placa">
+      <div class="pla-cab">
+        <span class="pla-estado" id="plEstado"><i></i><span>${on ? "Prendida" : "Apagada"}</span></span>
+        <b class="pla-t" id="plT">${on ? segP(s.t) : ""}</b>
+        <span class="sim-esp"></span>
+        ${on ? `<button class="pr-chico" data-placa="pausa" id="plPausa">${placa.pausa ? "▶ Seguir" : "⏸ Pausa"}</button><button class="pr-chico" data-placa="reiniciar" title="Vuelve a cargar el código y arranca de cero">↺ Reiniciar</button>`
+          : `<button class="pr-fuerte" data-ejp="ejecutar">▶ Prender con mi sketch</button>`}
+      </div>
+      ${on && placa.c.profe ? `<p class="pla-quien">Corre <b>${esc(placa.c.nombre)}</b>, el del profe. Para correr el tuyo, volvé a tu pestaña y tocá ▶ Ejecutar.</p>` : ""}
+      <div class="pla-err" id="plErr" hidden></div>
+      <div class="pla-nube" id="plNube" hidden></div>
+      <div class="pla-tablero">
+        <div class="pla-bloque"><small class="pla-tit">Salidas</small>
+          ${sal(2, "LED azul", "azul")}${sal(23, "LED verde", "verde")}${sal(14, "Relé", "rele")}
+        </div>
+        <div class="pla-bloque"><small class="pla-tit">Entradas</small>
+          <div class="pla-botones"><button class="pla-boton" data-placa-boton title="Mantenelo apretado">Pulsador<em>GPIO 19</em></button><button class="pla-boton" data-placa-touch="13" title="Mantené el dedo">Touch<em>GPIO 13</em></button><button class="pla-boton" data-placa-touch="4" title="Mantené el dedo">Touch<em>GPIO 4</em></button></div>
+          ${rango("pote", "Pote", 0, 4095, 1, ent.pote, "", "GPIO 32")}
+          ${rango("temp", "Temp.", -10, 50, 0.5, ent.dht.t, "°C", "DHT22 · 33")}
+          ${rango("hum", "Hum.", 0, 100, 1, ent.dht.h, "%", "DHT22 · 33")}
+        </div>
+        <div class="pla-bloque pla-oled-b"><small class="pla-tit">Display OLED <em>SH1106 · 128×64 · I2C 0x3C</em></small>
+          <svg class="pla-oled" id="plOled" viewBox="0 0 128 64" role="img" aria-label="El display">${svgOled(on && s.display && s.display.cuadro)}</svg>
+        </div>
+        <div class="pla-bloque pla-serial-b"><small class="pla-tit">Monitor serie <em id="plBaud"></em><button class="linkbtn" data-placa="limpiar">limpiar</button></small>
+          <pre class="pla-serial" id="plSerial"></pre>
+          <form class="pla-enviar" data-placa-serial><input placeholder="Escribí y Enter (por ej. LUZ_ON)" aria-label="Mandar por el monitor serie" autocomplete="off" spellcheck="false"><button class="pr-chico">Enviar</button></form>
+        </div>
+      </div>
+      <ul class="pla-avisos" id="plAvisos"></ul>
+    </div>`;
+}
+/* El display: lo que dibujó el último display.display() (texto de 6×8 por tamaño, rectángulos, líneas y círculos) */
+function svgOled(c){
+  const fondo = c && c.invertido ? "#9fe8ff" : "#05080b", luz = c && c.invertido ? "#05080b" : "#9fe8ff";
+  const col = v => v === 0 ? fondo : luz;
+  const ops = (c ? c.ops : []).map(o => {
+    if(o.k === "txt") return `<text x="${o.x}" y="${o.y + 7 * o.tam}" font-size="${8 * o.tam}" textLength="${o.s.length * 6 * o.tam}" lengthAdjust="spacingAndGlyphs" fill="${col(o.color)}">${esc(o.s)}</text>`;
+    if(o.k === "rect") return `<rect x="${o.x}" y="${o.y}" width="${o.w}" height="${o.h}" rx="${o.r || 0}" ${o.lleno ? `fill="${col(o.color)}"` : `fill="none" stroke="${col(o.color)}"`}/>`;
+    if(o.k === "linea") return `<line x1="${o.x1 + .5}" y1="${o.y1 + .5}" x2="${o.x2 + .5}" y2="${o.y2 + .5}" stroke="${col(o.color)}"/>`;
+    if(o.k === "circ") return `<circle cx="${o.x + .5}" cy="${o.y + .5}" r="${o.r}" ${o.lleno ? `fill="${col(o.color)}"` : `fill="none" stroke="${col(o.color)}"`}/>`;
+    if(o.k === "px") return `<rect x="${o.x}" y="${o.y}" width="1" height="1" fill="${col(o.color)}"/>`;
+    if(o.k === "tri") return `<polygon points="${o.p.join(" ")}" ${o.lleno ? `fill="${col(o.color)}"` : `fill="none" stroke="${col(o.color)}"`}/>`;
+    return "";
+  }).join("");
+  return `<rect width="128" height="64" fill="${fondo}"/>${ops}`;
+}
+/* Lo que cambió desde el último cuadro */
+function pintarPlaca(){
+  const el = $("#placa");
+  if(!el || !placa || el.classList.contains("apagada")) return;
+  const s = placa.sim, nuevo = placa.el !== el;
+  placa.el = el;
+  $("#plT").textContent = segP(s.t);
+  const est = s.error ? ["error", "Se cortó"] : placa.pausa ? ["pausa", "En pausa"] : ["on", s.wifiEstado() === 3 ? "Prendida · WiFi conectado" : s.wifi.desde != null ? "Prendida · conectando el WiFi…" : "Prendida"];
+  if(nuevo || placa.est !== est[1]){ placa.est = est[1]; $("#plEstado").className = "pla-estado " + est[0]; $("#plEstado span").textContent = est[1]; }
+  // Las salidas: brillo con el PWM, o prendido/apagado
+  for(const pin of [2, 23, 14]){
+    const x = el.querySelector(`[data-pl-pin="${pin}"]`), usado = s.modos[pin] === 3 || pin in s.pwmv;
+    const b = pin in s.pwmv ? s.pwmv[pin] : (s.salidas[pin] || 0);
+    const pwm = s.h.pwm[pin] && s.h.pwm[pin].length ? s.h.pwm[pin][s.h.pwm[pin].length - 1].v : null;
+    const txt = !usado ? "sin usar" : pin === 14 ? (b ? "cerrado · ON" : "abierto · OFF") : pin in s.pwmv ? `PWM ${pwm} · ${Math.round(b * 100)} %` : b ? "encendido" : "apagado";
+    const k = `${b}|${txt}`;
+    if(!nuevo && x.dataset.k === k) continue;
+    x.dataset.k = k;
+    x.style.setProperty("--b", b);
+    x.classList.toggle("on", b > 0);
+    x.classList.toggle("usado", usado);
+    x.querySelector("b").textContent = txt;
+  }
+  // El display
+  const c = s.display && s.display.cuadro;
+  if(nuevo || c !== placa.cuadro){ placa.cuadro = c; $("#plOled").innerHTML = svgOled(c); }
+  // El monitor serie (sigue abajo, salvo que se haya subido a leer)
+  if(nuevo || s.serialTexto !== placa.ser){
+    const pre = $("#plSerial"), abajo = nuevo || pre.scrollHeight - pre.scrollTop - pre.clientHeight < 30;
+    placa.ser = s.serialTexto;
+    pre.textContent = s.serialTexto.slice(-8000) || (s.serialAbierto ? "" : "(sin Serial.begin)");
+    pre.classList.toggle("vacio", !s.serialTexto);
+    if(abajo) pre.scrollTop = pre.scrollHeight;
+    $("#plBaud").textContent = s.serialAbierto ? `${s.baudios || ""} baudios` : "";
+  }
+  // La nube: WiFi, ThingSpeak y MQTT (solo si el sketch los usa). El formulario de MQTT queda: se actualiza lo de arriba
+  const nube = s.libs.has("WiFi") || s.libs.has("ThingSpeak") || s.libs.has("PubSubClient");
+  if(nuevo){ const n = $("#plNube"); n.hidden = !nube; n.innerHTML = nube ? nubePlaca(s) : ""; placa.kn = null; }
+  const kn = `${s.wifiEstado()}|${s.h.thingspeak.length}|${s.h.mqtt.length}`;
+  if(nube && placa.kn !== kn){ placa.kn = kn; pintarNube(s); }
+  // Los avisos y el error
+  if(nuevo || s.h.avisos.length !== placa.nav){ placa.nav = s.h.avisos.length; $("#plAvisos").innerHTML = s.h.avisos.slice(-5).map(a => `<li><span>${segP(a.t)}</span>${esc(a.s)}</li>`).join(""); }
+  if(nuevo || !!s.error !== placa.err){ placa.err = !!s.error; const e = $("#plErr"); e.hidden = !s.error; if(s.error) e.textContent = errorEsp(s.error, placa.c); }
+}
+function nubePlaca(s){
+  return `
+    <div class="pla-wifi"><b>WiFi</b> <span id="plWifi"></span></div>
+    ${s.libs.has("ThingSpeak") ? `<div class="pla-ts"><b>ThingSpeak</b><div id="plTs"></div></div>` : ""}
+    ${s.libs.has("PubSubClient") ? `<div class="pla-mqtt"><b>MQTT</b><div id="plMq"></div>
+      <form class="pla-enviar" data-placa-mqtt><input name="topic" placeholder="topic" aria-label="Topic" autocomplete="off" spellcheck="false"><input name="payload" placeholder="mensaje (ej. ON)" aria-label="Mensaje" autocomplete="off" spellcheck="false"><button class="pr-chico">Publicar</button></form>
+      <small class="pla-nota">Publicar manda el mensaje al broker, como otro cliente (por ejemplo, mosquitto_pub).</small></div>` : ""}`;
+}
+function pintarNube(s){
+  $("#plWifi").textContent = s.wifiEstado() === 3 ? `conectado a «${s.wifi.ssid}» · IP 192.168.0.57` : s.wifi.desde != null ? "conectando…" : "sin conectar (falta WiFi.begin)";
+  const ts = $("#plTs"), mq = $("#plMq");
+  if(ts){
+    const xs = s.h.thingspeak.slice(-6).reverse();
+    ts.innerHTML = xs.length ? `<table><tr><th>Tiempo</th><th>Código</th><th>Campos</th></tr>${xs.map(x => `<tr class="${x.codigo === 200 ? "" : "mal"}"><td>${segP(x.t)}</td><td>${x.codigo}${x.codigo === -401 ? " · menos de 15 s" : x.codigo === -301 ? " · sin WiFi" : ""}</td><td>${Object.entries(x.campos).map(([k, v]) => `<span>${k}: ${esc(typeof v === "number" ? String(+v.toFixed(2)) : String(v))}</span>`).join("")}</td></tr>`).join("")}</table>`
+      : `<span class="pla-nada">Todavía no mandó nada.</span>`;
+  }
+  if(mq){
+    const xs = s.h.mqtt.slice(-8).reverse();
+    mq.innerHTML = xs.length ? `<ul>${xs.map(x => `<li><span>${segP(x.t)}</span>${x.tipo === "conn" ? `conectado al broker ${esc(x.servidor || "")}` : x.tipo === "sub" ? `suscripto a <code>${esc(x.topic)}</code>` : x.tipo === "pub" ? `publicó en <code>${esc(x.topic)}</code>: ${esc(x.payload)}` : x.tipo === "llega" ? `llegó a <code>${esc(x.topic)}</code>: ${esc(x.payload)}` : esc(x.texto || x.tipo)}</li>`).join("")}</ul>` : `<span class="pla-nada">Sin actividad.</span>`;
+    // El topic, el primero al que se suscribió el sketch (si no se escribió otro)
+    const t = $("[data-placa-mqtt] [name=topic]"), sub = [...(s.mqttSubs || [])][0];
+    if(t && !t.value && sub && document.activeElement !== t) t.value = sub;
+  }
+}
+/* Lo que se toca en la placa */
+function entradaPlaca(x){ if(placa && placa.ej === (ejp && ejp.ej) && !placa.sim.error) placa.sim.entrada(x); }
+function apretarPlaca(t, si){
+  if(t.dataset.placaBoton != null) entradaPlaca({ boton: si });
+  else entradaPlaca({ touch: { [t.dataset.placaTouch]: si ? 10 : 72 } });
+  t.classList.toggle("on", si);
+}
+document.addEventListener("pointerdown", e => {
+  const t = e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]");
+  if(!t) return;
+  e.preventDefault();
+  try { t.setPointerCapture(e.pointerId); } catch(err){}
+  apretarPlaca(t, true);
+  const soltar = () => { apretarPlaca(t, false); t.removeEventListener("pointerup", soltar); t.removeEventListener("pointercancel", soltar); };
+  t.addEventListener("pointerup", soltar);
+  t.addEventListener("pointercancel", soltar);
+});
+document.addEventListener("keydown", e => { const t = (e.key === " " || e.key === "Enter") && !e.repeat && e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]"); if(t){ e.preventDefault(); apretarPlaca(t, true); } });
+document.addEventListener("keyup", e => { const t = (e.key === " " || e.key === "Enter") && e.target.closest && e.target.closest("[data-placa-boton],[data-placa-touch]"); if(t){ e.preventDefault(); apretarPlaca(t, false); } });
+document.addEventListener("input", e => {
+  const t = e.target, k = t.matches && (t.matches("[data-placa-pote]") ? "pote" : t.matches("[data-placa-temp]") ? "temp" : t.matches("[data-placa-hum]") ? "hum" : null);
+  if(!k) return;
+  const v = parseFloat(t.value);
+  if(!Number.isFinite(v)) return;
+  // El deslizador y el número van juntos
+  t.closest(".pla-rango").querySelectorAll("input").forEach(x => { if(x !== t) x.value = t.value; });
+  entradaPlaca(k === "pote" ? { pote: v } : { dht: k === "temp" ? { t: v } : { h: v } });
+});
+document.addEventListener("submit", e => {
+  const f = e.target;
+  if(f.matches("[data-placa-serial]")){
+    e.preventDefault();
+    const i = f.querySelector("input");
+    entradaPlaca({ serial: i.value + "\n" });   // como el monitor del Arduino IDE con "Nueva línea"
+    i.value = "";
+  } else if(f.matches("[data-placa-mqtt]")){
+    e.preventDefault();
+    const topic = f.topic.value.trim();
+    if(topic) entradaPlaca({ mqtt: { topic, payload: f.payload.value } });
+  }
+});
+function clicPlaca(a){
+  if(!placa) return;
+  if(a === "pausa"){ placa.pausa = !placa.pausa; placa.ultimo = performance.now(); const b = $("#plPausa"); if(b) b.textContent = placa.pausa ? "▶ Seguir" : "⏸ Pausa"; }
+  if(a === "reiniciar"){ pararPlaca(); ejecutarPlaca(); }   // con el código de la pestaña abierta, como ▶ Ejecutar
+  if(a === "limpiar"){ placa.sim.serialTexto = ""; }
+}
+/* Verificar: las pruebas del ejercicio, sin pantalla. Devuelve los controles y un resumen de lo que pasó en cada prueba */
+function probarEspEj(E, ej){
+  const c = codigoEspEj(ej), rs = E.pruebas(c.codigo, ej.pruebas || [], { archivos: c.archivos, nombre: c.nombre, ...(ej.placa || {}) });
+  const checks = [];
+  // Si no compila, el error va una sola vez
+  if(rs.length && rs[0].sim.error && rs[0].sim.error.compilacion) return { checks: [{ ok: false, msg: `Tu sketch no compila: ${errorEsp(rs[0].sim.error, c).replace(/^error: /, "")}` }], salida: "" };
+  rs.forEach(r => r.checks.forEach(x => checks.push({ ...x, msg: rs.length > 1 && r.nombre ? `${x.msg} · *${r.nombre}*` : x.msg })));
+  const salida = rs.map(r => {
+    const s = r.sim, h = s.h;
+    const pines = [2, 23, 14].filter(p => (h.brillo[p] || []).length > 1).map(p => {
+      const l = h.brillo[p], n = l.length;
+      return `${{ 2: "LED azul", 23: "LED verde", 14: "Relé" }[p]}: ${l.slice(0, 8).map(x => `${x.v > 0 && x.v < 1 ? Math.round(x.v * 100) + "%" : x.v ? "ON" : "OFF"} (${segP(x.t)})`).join(" → ")}${n > 8 ? ` … ${n} cambios` : ""}`;
+    });
+    const ser = h.serial.map(x => x.s).join("");
+    const disp = h.display.length ? h.display[h.display.length - 1].texto : "";
+    const ts = h.thingspeak.length ? `ThingSpeak: ${h.thingspeak.map(x => `${segP(x.t)} (${x.codigo})`).slice(0, 8).join(", ")}` : "";
+    const mq = h.mqtt.filter(x => x.tipo === "pub").length ? `MQTT: ${h.mqtt.filter(x => x.tipo === "pub").length} publicaciones` : "";
+    return `<div class="pla-prueba"><b>${esc(r.nombre || "Prueba")}</b><pre class="ejp-consola">${esc([
+      ser ? `Monitor serie:\n${ser.length > 1200 ? "…" + ser.slice(-1200) : ser}`.replace(/\n+$/, "") : "Monitor serie: (nada)",
+      ...pines, disp ? `Display (último): ${disp}` : "", ts, mq, s.error ? errorEsp(s.error, c) : ""].filter(Boolean).join("\n"))}</pre></div>`;
+  }).join("");
+  return { checks, salida };
+}
 /* El código de todos los archivos juntos (las funciones pueden ir en cualquiera) y de qué archivo es cada línea */
 function codigoOctEj(ej){
   const t = codigoEjp(ej), as = archivosEj(ej), partes = [], de = [], archivos = [];
@@ -6783,6 +7115,7 @@ function salidaOctEjp(r, lineaDe, varios){
 async function ejecutarEjp(){
   const ej = ejp.ej;
   if(ejp.sol === 2){ ejp.sol = 1; pintarEdEjp(); }
+  if(ej.tipo === "esp32"){ ejecutarPlaca(); return; }
   resEjp(`<div class="pr-corre"><span class="giro"></span>Corriendo…</div>`);
   let O;
   try { O = await cargarOctave(); } catch(e){ resEjp(`<div class="pr-mal"><b>No se pudo cargar Octave del navegador.</b><p>Revisá la conexión y probá de nuevo.</p></div>`); return; }
@@ -6830,6 +7163,16 @@ async function verificarTodoEjp(firma){
     if(r.error) checks.push({ ok: false, msg: `Tu código da un error: ${errorOct(r, lineaDe, varios).replace(/^error: /, "")}` });
     (ej.vars || []).forEach(v => checks.push(compararVar(v, r.vars)));
     salida = salidaOctEjp(r, lineaDe, varios);
+  }
+  if(ej.tipo === "esp32"){
+    resEjp(`<div class="pr-corre"><span class="giro"></span>Probando tu sketch en la placa…</div>`);
+    let E;
+    try { E = await cargarESP32(); } catch(e){ resEjp(`<div class="pr-mal"><b>No se pudo cargar el simulador de la ESP32.</b><p>Revisá la conexión y probá de nuevo.</p></div>`); return; }
+    await new Promise(r => setTimeout(r, 20));   // que se vea el "Probando…"
+    if(!ejp || ejp.ej !== ej) return;
+    const r = probarEspEj(E, ej);
+    checks.push(...r.checks);
+    salida = r.salida;
   }
   const t = codigoEjp(ej), sin = lengEj(ej) === "octave" ? sinComentariosOct : sinComentarios;
   if((ej.checks || []).length) checks.push(...verificarEjp(k => sin(k.archivo ? t[k.archivo] ?? "" : Object.values(t).join("\n")), ej.checks));
@@ -6915,7 +7258,7 @@ function resEjp(html, que = ""){
 const firmaEjp = () => JSON.stringify([codigoEjp(ejp.ej), ejp.est.resp[ejp.ej.id] || {}]);
 function pintarBtnVerif(){
   const b = $('#ejpDer [data-ejp="verificar"]');
-  if(!b || !["codigo", "octave", "respuestas"].includes(ejp.ej.tipo)) return;
+  if(!b || !["codigo", "octave", "esp32", "respuestas"].includes(ejp.ej.tipo)) return;
   const visible = ejp.verif != null && ejp.verif === firmaEjp();
   b.textContent = visible ? "Ocultar verificación" : "Verificar";
   b.classList.toggle("ocultar", visible);
@@ -6994,7 +7337,7 @@ function accionEjp(a){
     const firma = firmaEjp();
     if(ejp.verif === firma && $("#ejpRes").dataset.que === "verif"){ resEjp(""); return; }   // el mismo botón la oculta
     if(ejp.sol === 2 && ej.tipo !== "respuestas"){ ejp.sol = 1; pintarEdEjp(); }
-    if(ej.tipo === "octave" || ej.tipo === "respuestas" || (ej.respuestas || []).length){ verificarTodoEjp(firma); return; }
+    if(ej.tipo === "octave" || ej.tipo === "esp32" || ej.tipo === "respuestas" || (ej.respuestas || []).length){ verificarTodoEjp(firma); return; }
     const t = codigoEjp(ej);
     ejp.verif = firma;
     pintarChecksEjp(verificarEjp(k => sinComentarios(k.archivo ? t[k.archivo] ?? "" : Object.values(t).join("\n")), ej.checks || []), true);
@@ -7019,12 +7362,13 @@ function pintarChecksEjp(r, verif = false, salida = ""){
   // En el simulacro se cuentan los problemas que salieron bien (una vez por problema)
   const az = ej.azar && ejp.est.azar[ej.id];
   if(todo && az && az.ok !== az.s){ az.ok = az.s; az.bien = (az.bien || 0) + 1; guardarEjp(); pintarIzqEjp(); }
-  const aviso = ej.tipo === "octave" ? "Se corrió tu código con Octave del navegador y se compararon los resultados." : ej.tipo === "respuestas" ? ""
+  const aviso = ej.tipo === "octave" ? "Se corrió tu código con Octave del navegador y se compararon los resultados."
+    : ej.tipo === "esp32" ? "Se corrió tu sketch en la placa simulada con las pruebas del ejercicio (el pulsador, el pote, el monitor serie… en momentos fijos) y se comparó lo que pasó. En la placa de verdad, probalo igual." : ej.tipo === "respuestas" ? ""
     : lengEj(ej) === "cpp" ? "No se corre en la placa: se revisa que el código tenga lo que pide. Probalo en Wokwi o en tu ESP32." : "Verificación orientativa: compará también con la solución.";
   resEjp(`
     <div class="${todo ? "pr-bien" : "pr-resumen"}"><b>${todo ? `✓ ${r.length === 1 ? "Está bien" : `Pasa las ${r.length} verificaciones`}` : `${bien} de ${r.length} verificaciones bien`}</b>${todo ? seguirEjp() : ""}</div>
     <ul class="pr-checks">${r.map(x => `<li class="${x.ok ? "ok" : "mal"}"><span>${x.ok ? "✓" : "✗"}</span><div><b>${mdLinea(x.msg)}</b>${varios && x.archivo ? `<small class="ejp-arch">${esc(x.archivo)}</small>` : ""}</div></li>`).join("")}</ul>
-    ${salida ? `<details class="ejp-salida-v"${todo ? "" : " open"}><summary>Lo que mostró tu código</summary>${salida}</details>` : ""}
+    ${salida ? `<details class="ejp-salida-v"${todo ? "" : " open"}><summary>${ej.tipo === "esp32" ? "Lo que pasó en la placa en cada prueba" : "Lo que mostró tu código"}</summary>${salida}</details>` : ""}
     ${aviso ? `<p class="ejp-aviso">${aviso}</p>` : ""}`, verif ? "verif" : "");
   if(innerWidth <= 900) $("#ejpRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
@@ -7041,9 +7385,10 @@ function corregirEjp(){
 }
 /* Clics dentro de la práctica por partes */
 function clicEjp(e){
-  const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-g],[data-ejp-tab],[data-ejp-ed],[data-ejp-arch],[data-ejp-op],[data-ejp-tecla]");
+  const t = e.target.closest("[data-ejp],[data-ejp-parte],[data-ejp-ir],[data-ejp-g],[data-ejp-tab],[data-ejp-ed],[data-ejp-arch],[data-ejp-op],[data-ejp-tecla],[data-placa]");
   if(!t || !ejp || !ejp.pa) return false;
   const ds = t.dataset;
+  if(ds.placa){ clicPlaca(ds.placa); return true; }
   if(ds.ejp){ accionEjp(ds.ejp); return true; }
   if(ds.ejpParte != null){ const pa = ejp.partes[+ds.ejpParte]; if(pa) entrarParte(pa); return true; }
   if(ds.ejpIr){ const x = ejsEjp().find(y => y.id === ds.ejpIr); if(x) abrirEjp(x); return true; }

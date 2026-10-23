@@ -4,6 +4,7 @@
 const fs = require("fs"), path = require("path");
 const RAIZ = path.join(__dirname, "..", "..");
 const Octave = require(path.join(RAIZ, "practica/octave/octave.js"));
+const ESP32 = require(path.join(RAIZ, "practica/esp32/esp32.js"));
 
 // Las funciones de comparación, tal cual están en index.html
 const html = fs.readFileSync(path.join(RAIZ, "index.html"), "utf8");
@@ -61,6 +62,30 @@ for(const f of archivos){
       const i = correr(ej, "inicial");
       if(i.checks.every(c => c.ok) && (ej.vars || []).length + (ej.checks || []).length) probs.push("el código inicial ya pasa");
       if(i.r.error && !/no está definida|undefined/.test(i.r.error.msg)) probs.push(`el código inicial da error: ${i.r.error.msg}`);
+    }
+    if(ej.tipo === "esp32"){
+      // Se corre en la placa simulada, como en la página: la solución pasa todas las pruebas y el código inicial no
+      const t0 = Date.now(), sketch = cual => ej.archivos[0][cual] ?? ej.archivos[0].inicial;
+      const corre = cual => ESP32.pruebas(sketch(cual), ej.pruebas || [], ej.placa || {});
+      const regex = cual => verificarEjp(sinComentarios(sketch(cual)), ej.checks || []);
+      if(!(ej.pruebas || []).length) probs.push("no tiene pruebas");
+      corre("solucion").forEach(r => r.checks.filter(c => !c.ok).forEach(c => probs.push(`la solución no pasa (${r.nombre}): ${c.msg}`)));
+      regex("solucion").filter(c => !c.ok).forEach(c => probs.push(`la solución no pasa: ${c.msg}`));
+      const ini = corre("inicial");
+      if(ini.some(r => r.sim.error && r.sim.error.compilacion)) probs.push(`el código inicial no compila: ${ini[0].sim.error.msg} (línea ${ini[0].sim.error.linea})`);
+      else if(ini.every(r => r.checks.every(c => c.ok)) && regex("inicial").every(c => c.ok)) probs.push("el código inicial ya pasa");
+      // Lo que se lee en la placa (medir) tiene que dar la respuesta
+      for(const x of ej.respuestas || []) if(x.medir){
+        const sm = ESP32.probar(sketch("solucion"), { hasta: x.medir.hasta || 1000, entradas: x.medir.entradas || [], opts: x.medir.opts || {} }, ej.placa || {});
+        const txt = sm.h.serial.map(y => y.s).join("");
+        let v = NaN;
+        if(x.medir.cuenta) v = (txt.match(new RegExp(x.medir.re, "gm")) || []).length;
+        else { const ms = [...txt.matchAll(new RegExp(x.medir.re, "g"))]; if(ms.length) v = parseFloat(ms[ms.length - 1][1]); }
+        if(!respuestaOk(x, String(v))) probs.push(`en la placa da ${v} y la respuesta es ${x.valor}: ${x.pregunta}`);
+      }
+      for(const n of ej.delProfe || []) if(!fs.existsSync(path.join(RAIZ, "practica/esp32/profe", n))) probs.push(`falta el del profe ${n}`);
+      const ms = Date.now() - t0;
+      if(ms > 4000) probs.push(`las pruebas tardan ${ms} ms: en la página se nota`);
     }
     for(const x of ej.respuestas || []){
       if(x.valor === undefined) probs.push(`respuesta sin valor: ${x.pregunta}`);

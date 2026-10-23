@@ -1,0 +1,2444 @@
+{
+ "grupo": "TP · la ESP32 de la cátedra",
+ "partes": [
+  {
+   "n": 1,
+   "id": "salidas",
+   "titulo": "Salidas: LEDs y relé",
+   "explicacion": "setup() corre una vez y loop() se repite sin fin. pinMode(pin, OUTPUT) y digitalWrite(pin, HIGH/LOW) prenden y apagan; delay(ms) espera. LED azul en el GPIO 2, verde en el 23 y relé en el 14.",
+   "corto": "LEDs y relé",
+   "pestana": "LEDs y relé",
+   "leccion": {
+    "que": "Un sketch tiene dos funciones: **setup()** corre una vez al prender la placa y **loop()** se repite para siempre. Para prender un LED: el pin como salida con **pinMode(pin, OUTPUT)** y **digitalWrite(pin, HIGH)**. **delay(ms)** frena todo el programa esos milisegundos.\nEn la placa de la cátedra: el **LED azul** (el integrado) en el GPIO **2**, el **LED verde** en el **23** y el **relé** en el **14**. El monitor serie (Serial) es la ventana para mandar y recibir texto desde la PC.",
+    "consta": [
+     [
+      "Los pines",
+      "`const int LED = 2;` arriba de todo: si cambia el pin, se cambia en un solo lugar."
+     ],
+     [
+      "setup()",
+      "Corre una vez: `Serial.begin(115200)` y `pinMode(LED, OUTPUT)`."
+     ],
+     [
+      "loop()",
+      "Se repite sin fin: `digitalWrite(LED, HIGH)`, `delay`, `digitalWrite(LED, LOW)`, `delay`."
+     ],
+     [
+      "El monitor serie",
+      "`Serial.println(\"texto\")` manda; `Serial.available()` dice si llegó algo y `Serial.read()` lo lee."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "blink.ino",
+     "origen": "El caso 1 del profe, comentado",
+     "codigo": "const int LED_INT = 2;           // el LED azul\nvoid setup() {\n  Serial.begin(9600);            // la velocidad del monitor serie\n  Serial.println(\"Hello, ESP32!\");\n  pinMode(LED_INT, OUTPUT);\n}\nvoid loop() {\n  digitalWrite(LED_INT, HIGH);\n  delay(1000);\n  digitalWrite(LED_INT, LOW);\n  delay(1000);\n}",
+     "marcas": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       2,
+       3,
+       3
+      ],
+      [
+       4,
+       4,
+       4
+      ],
+      [
+       2,
+       5,
+       5
+      ],
+      [
+       3,
+       8,
+       11
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Sin `pinMode(pin, OUTPUT)` el LED no prende (en el simulador, avisa).",
+     "`delay(1000)` son 1000 ms = 1 s, y mientras dura la placa no hace nada más.",
+     "El monitor serie tiene que estar a la misma velocidad que `Serial.begin` (115200 o 9600): si no, se ven símbolos raros.",
+     "Lo que mandás por el monitor serie llega con un salto de línea al final (`\\n`): también es un carácter."
+    ],
+    "parcial": "Los casos 1, 3 y 6 de los Prácticos. En el TPI, el LED azul (integrado) y el verde (externo) se manejan con PWM, en la parte 3.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "1.1",
+     "tema": "Parpadeo",
+     "titulo": "el LED azul titila",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Hacé titilar el **LED azul** (GPIO 2): **300 ms prendido y 300 ms apagado**. Al arrancar, que el monitor serie muestre `Hola, ESP32!` una sola vez.\n\nEl caso 1 del profe hace lo mismo cada 1 s: está en la pestaña de al lado. Con esa pestaña abierta, **▶ Ejecutar** lo corre en la placa.",
+     "pasos": [
+      "En `setup()`: `pinMode(LED, OUTPUT);` y `Serial.println(\"Hola, ESP32!\");` (en el setup sale una sola vez).",
+      "En `loop()`: `digitalWrite(LED, HIGH); delay(300); digitalWrite(LED, LOW); delay(300);`",
+      "▶ Ejecutar: mirá el LED azul en la pestaña Placa y el saludo en el monitor serie."
+     ],
+     "pistas": [
+      "Lo que va en `setup()` pasa una sola vez; lo de `loop()`, siempre.",
+      "Son cuatro líneas en el loop: prender, esperar, apagar, esperar."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int LED = 2;   // LED azul (integrado)\n\nvoid setup() {\n  Serial.begin(115200);\n  // Configurá el pin del LED como salida y saludá por el monitor serie\n\n}\n\nvoid loop() {\n  // Prendé el LED, esperá 300 ms, apagalo y esperá otros 300 ms\n\n}\n",
+       "solucion": "const int LED = 2;   // LED azul (integrado)\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(LED, OUTPUT);\n  Serial.println(\"Hola, ESP32!\");\n}\n\nvoid loop() {\n  digitalWrite(LED, HIGH);\n  delay(300);\n  digitalWrite(LED, LOW);\n  delay(300);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_01_led_interno.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "La placa corre 4 s",
+       "hasta": 4000,
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 150,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 450,
+         "v": 0
+        },
+        {
+         "k": "periodo",
+         "pin": 2,
+         "ms": 600,
+         "tol": 40
+        },
+        {
+         "k": "serial",
+         "re": "Hola, ESP32!",
+         "veces": [
+          1,
+          1
+         ]
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Veces que titila por segundo",
+       "valor": 1.67,
+       "unidad": "Hz",
+       "motivo": "Un ciclo dura 300 + 300 = 600 ms: 1000 / 600 = 1,67 por segundo.",
+       "tol": 0.02,
+       "mostrar": "1,67"
+      }
+     ],
+     "parte": 1
+    },
+    {
+     "id": "1.2",
+     "tema": "Comandos de una letra",
+     "titulo": "v y a por el monitor serie",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Por el monitor serie: con `v` se prende el **LED verde** (GPIO 23) y se apaga el azul; con `a`, al revés: azul prendido y verde apagado. Que acepte también `V` y `A`. Cualquier otra cosa no cambia nada.\n\nEs el caso 3 de los Prácticos. Probalo: ▶ Ejecutar y escribí `v` en el monitor serie de la placa.",
+     "pasos": [
+      "Los caracteres van entre comillas simples: `c == 'v'`.",
+      "Con `||` (o) aceptás la mayúscula: `if (c == 'v' || c == 'V')`.",
+      "Si no es ninguna de las dos, no hagas nada: así el salto de línea (`\\n`) que llega después no apaga nada."
+     ],
+     "pistas": [
+      "Un `if` para la v, un `else if` para la a y nada más."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int VERDE = 23;\nconst int AZUL = 2;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  pinMode(AZUL, OUTPUT);\n}\n\nvoid loop() {\n  if (Serial.available() > 0) {\n    char c = Serial.read();\n    // Si es 'v' o 'V': verde prendido y azul apagado\n    // Si es 'a' o 'A': azul prendido y verde apagado\n\n  }\n}\n",
+       "solucion": "const int VERDE = 23;\nconst int AZUL = 2;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  pinMode(AZUL, OUTPUT);\n}\n\nvoid loop() {\n  if (Serial.available() > 0) {\n    char c = Serial.read();\n    if (c == 'v' || c == 'V') {\n      digitalWrite(VERDE, HIGH);\n      digitalWrite(AZUL, LOW);\n    } else if (c == 'a' || c == 'A') {\n      digitalWrite(AZUL, HIGH);\n      digitalWrite(VERDE, LOW);\n    }\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_03_control_led_verde_azul.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Mandás v, después a y después V",
+       "hasta": 3000,
+       "entradas": [
+        {
+         "t": 500,
+         "serial": "v\n"
+        },
+        {
+         "t": 1500,
+         "serial": "a\n"
+        },
+        {
+         "t": 2500,
+         "serial": "V\n"
+        }
+       ],
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1000,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 1000,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 2000,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 2000,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 2900,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 2900,
+         "v": 0
+        }
+       ]
+      },
+      {
+       "nombre": "Mandás a y después x: x no cambia nada",
+       "hasta": 1500,
+       "entradas": [
+        {
+         "t": 300,
+         "serial": "a\n"
+        },
+        {
+         "t": 800,
+         "serial": "x\n"
+        }
+       ],
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 1200,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1200,
+         "v": 0
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿Cuántos caracteres llegan al mandar «v» con el monitor en «Nueva línea»?",
+       "opciones": [
+        "1",
+        "2",
+        "3"
+       ],
+       "valor": "2",
+       "motivo": "La `v` y el salto de línea `\\n`: por eso la otra letra no tiene que cambiar nada.",
+       "mostrar": "2"
+      }
+     ],
+     "parte": 1
+    },
+    {
+     "id": "1.3",
+     "tema": "Comandos de texto",
+     "titulo": "LUZ_ON y LUZ_OFF con el relé",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Leé **comandos de texto** por el monitor serie (uno por línea): `LUZ_ON` prende el LED verde y cierra el **relé** (GPIO 14); `LUZ_OFF` apaga los dos. Respondé `OK` si el comando existe y `Comando desconocido` si no.\n\nEs el caso 6. El profe arma el texto letra por letra; acá usá `Serial.readStringUntil('\\n')`, que lee hasta el salto de línea.",
+     "pasos": [
+      "Los `String` se comparan con `==`: `if (cmd == \"LUZ_ON\")`.",
+      "Tres ramas: `if` LUZ_ON, `else if` LUZ_OFF y `else` para lo desconocido."
+     ],
+     "pistas": [
+      "El relé es una salida digital más: `digitalWrite(RELE, HIGH)` lo cierra.",
+      "Sin `trim()`, en Windows el comando llega como \"LUZ_ON\\r\" y no es igual a \"LUZ_ON\"."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int VERDE = 23;\nconst int RELE = 14;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  pinMode(RELE, OUTPUT);\n}\n\nvoid loop() {\n  if (Serial.available() > 0) {\n    String cmd = Serial.readStringUntil('\\n');\n    cmd.trim();   // saca los espacios y el \\r del final\n    // Compará cmd con \"LUZ_ON\" y \"LUZ_OFF\" y respondé por el monitor serie\n\n  }\n}\n",
+       "solucion": "const int VERDE = 23;\nconst int RELE = 14;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  pinMode(RELE, OUTPUT);\n}\n\nvoid loop() {\n  if (Serial.available() > 0) {\n    String cmd = Serial.readStringUntil('\\n');\n    cmd.trim();   // saca los espacios y el \\r del final\n    if (cmd == \"LUZ_ON\") {\n      digitalWrite(VERDE, HIGH);\n      digitalWrite(RELE, HIGH);\n      Serial.println(\"OK\");\n    } else if (cmd == \"LUZ_OFF\") {\n      digitalWrite(VERDE, LOW);\n      digitalWrite(RELE, LOW);\n      Serial.println(\"OK\");\n    } else {\n      Serial.println(\"Comando desconocido\");\n    }\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_06_led_on_off_relay.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "LUZ_ON y después LUZ_OFF",
+       "hasta": 2500,
+       "entradas": [
+        {
+         "t": 500,
+         "serial": "LUZ_ON\n"
+        },
+        {
+         "t": 1500,
+         "serial": "LUZ_OFF\n"
+        }
+       ],
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 1000,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1000,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 2000,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 2000,
+         "v": 0
+        },
+        {
+         "k": "serial",
+         "re": "OK",
+         "veces": [
+          2,
+          2
+         ]
+        }
+       ]
+      },
+      {
+       "nombre": "Un comando que no existe",
+       "hasta": 1500,
+       "entradas": [
+        {
+         "t": 500,
+         "serial": "HOLA\n"
+        }
+       ],
+       "esperar": [
+        {
+         "k": "serial",
+         "re": "Comando desconocido"
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 1000,
+         "v": 0
+        }
+       ]
+      }
+     ],
+     "parte": 1
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "id": "entradas",
+   "titulo": "Entradas: pulsador y potenciómetro",
+   "explicacion": "digitalRead lee HIGH o LOW (el pulsador del GPIO 19, con INPUT_PULLUP, da LOW apretado) y analogRead lee de 0 a 4095 (el pote del GPIO 32, 0 a 3,3 V).",
+   "corto": "Pulsador y pote",
+   "pestana": "Pulsador y pote",
+   "leccion": {
+    "que": "**digitalRead(pin)** lee HIGH o LOW. El pulsador de la placa (GPIO **19**) va a masa: con **INPUT_PULLUP** suelto lee HIGH y apretado lee **LOW**.\n**analogRead(pin)** lee una tensión de 0 a 3,3 V como un número de **0 a 4095** (el ADC es de 12 bits). El potenciómetro está en el GPIO **32**.",
+    "consta": [
+     [
+      "INPUT_PULLUP",
+      "`pinMode(19, INPUT_PULLUP)`: la resistencia interna lo deja en HIGH mientras está suelto."
+     ],
+     [
+      "El flanco",
+      "Para contar pulsaciones se compara con la lectura anterior: HIGH → LOW es «recién apretado»."
+     ],
+     [
+      "analogRead",
+      "0 a 4095. En voltios: `lectura * 3.3 / 4095`."
+     ],
+     [
+      "El umbral",
+      "`if (lectura > 2000)` decide con un límite, como el relé del caso 5."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "entradas.ino",
+     "origen": "Pulsador y pote en un mismo loop",
+     "codigo": "const int BOTON = 19, POTE = 32;\nint anterior = HIGH;\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BOTON, INPUT_PULLUP);\n}\nvoid loop() {\n  int ahora = digitalRead(BOTON);\n  if (anterior == HIGH && ahora == LOW) {\n    Serial.println(\"Apretado\");\n  }\n  anterior = ahora;\n  int pote = analogRead(POTE);\n  float volt = pote * 3.3 / 4095;\n  if (pote > 2000) Serial.println(\"Alto\");\n  delay(20);\n}",
+     "marcas": [
+      [
+       2,
+       2,
+       2
+      ],
+      [
+       1,
+       5,
+       5
+      ],
+      [
+       2,
+       8,
+       10
+      ],
+      [
+       2,
+       12,
+       12
+      ],
+      [
+       3,
+       13,
+       14
+      ],
+      [
+       4,
+       15,
+       15
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Con INPUT_PULLUP, **apretado es LOW** (al revés de lo que uno espera).",
+     "Si leés el botón sin compararlo con la lectura anterior, mientras lo mantenés apretado cuenta una vez por vuelta del loop.",
+     "El pote va en el 32 (ADC1): el ADC2 (pines 0, 2, 4, 12–15, 25–27) no anda con el WiFi prendido.",
+     "En `pote * 3.3 / 4095`, el `3.3` hace que la cuenta sea con decimales; `pote * 3 / 4095` sería entera."
+    ],
+    "parcial": "Los casos 4 y 5, y el contador de pulsaciones del sketch 2 del TPI.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "2.1",
+     "tema": "analogRead",
+     "titulo": "leer el potenciómetro",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Cada **200 ms**, mostrá por el monitor serie la lectura del potenciómetro (GPIO 32) y su tensión, así: `Pote: 3000 = 2.42 V`.\n\nDespués: ▶ Ejecutar, poné el pote en **1234** (escribilo en el número al lado del deslizador) y completá lo que muestra.",
+     "pasos": [
+      "`int lectura = analogRead(POTE);`",
+      "`float volt = lectura * 3.3 / 4095;`",
+      "▶ Ejecutar, pote en 1234, y leé la tensión en el monitor serie."
+     ],
+     "pistas": [
+      "4095 es el máximo del ADC de 12 bits y corresponde a 3,3 V: es una regla de tres."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int POTE = 32;\n\nvoid setup() {\n  Serial.begin(115200);\n}\n\nvoid loop() {\n  int lectura = 0;   // leé el pote\n  float volt = 0;    // pasalo a voltios: 3,3 V es 4095\n  Serial.print(\"Pote: \");\n  Serial.print(lectura);\n  Serial.print(\" = \");\n  Serial.print(volt);   // un float sale con 2 decimales\n  Serial.println(\" V\");\n  delay(200);\n}\n",
+       "solucion": "const int POTE = 32;\n\nvoid setup() {\n  Serial.begin(115200);\n}\n\nvoid loop() {\n  int lectura = analogRead(POTE);\n  float volt = lectura * 3.3 / 4095;\n  Serial.print(\"Pote: \");\n  Serial.print(lectura);\n  Serial.print(\" = \");\n  Serial.print(volt);   // un float sale con 2 decimales\n  Serial.println(\" V\");\n  delay(200);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_04_leer_pot.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Pote en 1000 y después al máximo",
+       "hasta": 1500,
+       "entradas": [
+        {
+         "t": 700,
+         "pote": 4095
+        }
+       ],
+       "opts": {
+        "pote": 1000
+       },
+       "esperar": [
+        {
+         "k": "serial",
+         "re": "Pote: 1000 = 0\\.81 V",
+         "hasta": 650
+        },
+        {
+         "k": "serial",
+         "re": "Pote: 4095 = 3\\.30 V",
+         "desde": 750
+        },
+        {
+         "k": "serial",
+         "re": "Pote: ",
+         "veces": [
+          6,
+          9
+         ]
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Tensión con el pote en 1234",
+       "valor": 0.99,
+       "unidad": "V",
+       "motivo": "1234 × 3,3 / 4095 = 0,994 V: `Serial.print` de un float muestra 2 decimales.",
+       "medir": {
+        "opts": {
+         "pote": 1234
+        },
+        "hasta": 500,
+        "re": "= ([\\d.]+) V"
+       },
+       "tol": 0.011,
+       "mostrar": "0,99"
+      }
+     ],
+     "parte": 2
+    },
+    {
+     "id": "2.2",
+     "tema": "Umbral",
+     "titulo": "el relé se cierra con el pote",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Cuando el pote pasa de **2000**, cerrá el relé (GPIO 14) y prendé el LED verde (GPIO 23) como aviso; si no, abrí el relé y apagá el LED. Mostrá la lectura por el monitor serie cada 100 ms.\n\nEs el caso 5 del profe, con el LED de aviso.",
+     "pasos": [
+      "`if (lectura > LIMITE) { … } else { … }`",
+      "En cada rama, el relé y el LED con el mismo valor."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int POTE = 32;\nconst int RELE = 14;\nconst int VERDE = 23;\nconst int LIMITE = 2000;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(RELE, OUTPUT);\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  int lectura = analogRead(POTE);\n  // Decidí con el límite: relé y LED juntos\n\n  Serial.println(lectura);\n  delay(100);\n}\n",
+       "solucion": "const int POTE = 32;\nconst int RELE = 14;\nconst int VERDE = 23;\nconst int LIMITE = 2000;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(RELE, OUTPUT);\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  int lectura = analogRead(POTE);\n  if (lectura > LIMITE) {\n    digitalWrite(RELE, HIGH);\n    digitalWrite(VERDE, HIGH);\n  } else {\n    digitalWrite(RELE, LOW);\n    digitalWrite(VERDE, LOW);\n  }\n  Serial.println(lectura);\n  delay(100);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_05_rele_pote.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "El pote sube a 2500 y baja a 1500",
+       "hasta": 3000,
+       "entradas": [
+        {
+         "t": 1000,
+         "pote": 2500
+        },
+        {
+         "t": 2000,
+         "pote": 1500
+        }
+       ],
+       "opts": {
+        "pote": 1000
+       },
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 800,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 1500,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1500,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 2500,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 2500,
+         "v": 0
+        }
+       ]
+      },
+      {
+       "nombre": "Justo en 2000: queda abierto",
+       "hasta": 600,
+       "opts": {
+        "pote": 2000
+       },
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 500,
+         "v": 0
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Tensión del límite de 2000",
+       "valor": 1.61,
+       "unidad": "V",
+       "motivo": "2000 × 3,3 / 4095 = 1,61 V.",
+       "tol": 0.011,
+       "mostrar": "1,61"
+      }
+     ],
+     "parte": 2
+    },
+    {
+     "id": "2.3",
+     "tema": "El flanco",
+     "titulo": "el pulsador prende y apaga",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Cada vez que **apretás** el pulsador (GPIO 19), el **LED verde** cambia: si estaba apagado se prende, y al revés. Mantenerlo apretado cuenta **una sola vez**. En cada pulsación, mostrá `Pulsaciones: N`.",
+     "pasos": [
+      "La condición del flanco: `if (anterior == HIGH && ahora == LOW)`.",
+      "Adentro: `prendido = !prendido;`, `digitalWrite(VERDE, prendido);`, `pulsaciones++;` y el print."
+     ],
+     "pistas": [
+      "El ejemplo del profe cambia el LED al **soltar** (cuando vuelve a HIGH); acá va al apretar.",
+      "`anterior = ahora;` ya está al final: guarda la lectura para la vuelta siguiente."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int BOTON = 19;\nconst int VERDE = 23;\nint anterior = HIGH;   // la lectura de la vuelta anterior\nbool prendido = false;\nint pulsaciones = 0;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BOTON, INPUT_PULLUP);   // suelto = HIGH, apretado = LOW\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  int ahora = digitalRead(BOTON);\n  // Si recién se apretó (antes HIGH y ahora LOW): cambiá el LED, contá y mostrá\n\n  anterior = ahora;\n  delay(20);\n}\n",
+       "solucion": "const int BOTON = 19;\nconst int VERDE = 23;\nint anterior = HIGH;   // la lectura de la vuelta anterior\nbool prendido = false;\nint pulsaciones = 0;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BOTON, INPUT_PULLUP);   // suelto = HIGH, apretado = LOW\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  int ahora = digitalRead(BOTON);\n  if (anterior == HIGH && ahora == LOW) {\n    prendido = !prendido;\n    digitalWrite(VERDE, prendido);\n    pulsaciones++;\n    Serial.print(\"Pulsaciones: \");\n    Serial.println(pulsaciones);\n  }\n  anterior = ahora;\n  delay(20);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "Pulsador_enciende_y_apaga_LED.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Tres pulsaciones, la última de 1 s",
+       "hasta": 4000,
+       "entradas": [
+        {
+         "t": 500,
+         "boton": true
+        },
+        {
+         "t": 700,
+         "boton": false
+        },
+        {
+         "t": 1500,
+         "boton": true
+        },
+        {
+         "t": 1700,
+         "boton": false
+        },
+        {
+         "t": 2500,
+         "boton": true
+        },
+        {
+         "t": 3500,
+         "boton": false
+        }
+       ],
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 400,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 900,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1900,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 3800,
+         "v": 1
+        },
+        {
+         "k": "cambios",
+         "pin": 23,
+         "desde": 2400,
+         "hasta": 3900,
+         "min": 1,
+         "max": 1
+        },
+        {
+         "k": "serial",
+         "re": "Pulsaciones: 3"
+        },
+        {
+         "k": "serial",
+         "re": "Pulsaciones: 4",
+         "no": true
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Con el pulsador apretado, digitalRead(19) da",
+       "opciones": [
+        "HIGH (1)",
+        "LOW (0)"
+       ],
+       "valor": "LOW (0)",
+       "motivo": "Con INPUT_PULLUP, apretado conecta el pin a masa.",
+       "mostrar": "LOW (0)"
+      }
+     ],
+     "parte": 2
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "id": "pwm",
+   "titulo": "PWM: el brillo",
+   "explicacion": "analogWrite(pin, valor) da brillo: de 0 a 255 con 8 bits, o de 0 a 4095 con analogWriteResolution(pin, 12), como pide el TPI. map() pasa de una escala a la otra.",
+   "corto": "PWM",
+   "pestana": "PWM",
+   "leccion": {
+    "que": "Un pin digital solo prende o apaga, pero si lo prende y apaga muy rápido el LED se ve más o menos brillante: eso es **PWM**. **analogWrite(pin, valor)** fija cuánto tiempo está prendido: con 8 bits va de **0** (apagado) a **255** (al máximo).\nCon **analogWriteResolution(pin, 12)** el rango pasa a **0–4095**, como pide el TPI. **map(x, 0, 4095, 0, 255)** pasa de una escala a otra.",
+    "consta": [
+     [
+      "analogWrite",
+      "`analogWrite(VERDE, 128)` ≈ 50 % de brillo con 8 bits."
+     ],
+     [
+      "La resolución",
+      "`analogWriteResolution(AZUL, 12)`: de 0 a 4095 (el TPI pide 12 bits)."
+     ],
+     [
+      "map()",
+      "`map(valor, deMin, deMax, aMin, aMax)`: una regla de tres con enteros (corta los decimales)."
+     ],
+     [
+      "El porcentaje",
+      "`brillo * 100 / maximo`, para mostrarlo."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "pwm.ino",
+     "origen": "Los dos LEDs con el pote",
+     "codigo": "const int VERDE = 23, AZUL = 2, POTE = 32;\nvoid setup() {\n  analogWriteResolution(AZUL, 12);\n}\nvoid loop() {\n  int pote = analogRead(POTE);              // 0 a 4095\n  int pwm8 = map(pote, 0, 4095, 0, 255);\n  analogWrite(VERDE, pwm8);\n  analogWrite(AZUL, pote);\n  int porc = pote * 100 / 4095;\n  delay(20);\n}",
+     "marcas": [
+      [
+       2,
+       3,
+       3
+      ],
+      [
+       3,
+       7,
+       7
+      ],
+      [
+       1,
+       8,
+       8
+      ],
+      [
+       2,
+       9,
+       9
+      ],
+      [
+       4,
+       10,
+       10
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "`map()` trabaja con enteros: `map(3000, 0, 4095, 0, 255)` da 186, no 186,8.",
+     "Con 8 bits, 255 es el máximo: `analogWrite(LED, 4095)` queda en 255.",
+     "`analogWrite` y `digitalWrite` en el mismo pin se pisan: manda el último.",
+     "En el core viejo de la ESP32 no había analogWrite: se usaba `ledcSetup` + `ledcAttachPin` + `ledcWrite` (el simulador acepta los dos)."
+    ],
+    "parcial": "Los casos 2 y 8. El TPI pide el LED integrado con el pote y el externo con los touch, los dos con 12 bits y mostrando el valor en el display.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "3.1",
+     "tema": "analogWrite",
+     "titulo": "subir y bajar el brillo",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Hacé que el **LED verde** suba de 0 a 255 de a 1, con `delay(4)` entre paso y paso, después baje de 255 a 0 igual, y que repita.\n\nEl caso 2 del profe lo hace con `delay(5)` y una pausa de 1 s.",
+     "pasos": [
+      "`for (int b = 0; b <= 255; b++) { analogWrite(VERDE, b); delay(4); }`",
+      "El otro baja: `for (int b = 255; b >= 0; b--)`."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int VERDE = 23;\n\nvoid setup() {\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  // Un for que sube de 0 a 255 y otro que baja de 255 a 0, con analogWrite y delay(4)\n\n}\n",
+       "solucion": "const int VERDE = 23;\n\nvoid setup() {\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  for (int b = 0; b <= 255; b++) {\n    analogWrite(VERDE, b);\n    delay(4);\n  }\n  for (int b = 255; b >= 0; b--) {\n    analogWrite(VERDE, b);\n    delay(4);\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_02_aumentar_disminuir_led_externo.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Corre 2,5 s",
+       "hasta": 2500,
+       "esperar": [
+        {
+         "k": "recorre",
+         "pin": 23,
+         "de": 0,
+         "a": 255,
+         "valores": 200,
+         "hasta": 2040
+        },
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 512,
+         "v": 128,
+         "tol": 6
+        },
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 1536,
+         "v": 127,
+         "tol": 6
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Duración de una vuelta del loop (subir y bajar)",
+       "valor": 2048,
+       "unidad": "ms",
+       "motivo": "Cada for hace 256 pasos (de 0 a 255) de 4 ms: 2 × 256 × 4 = 2048 ms.",
+       "tol": 10,
+       "mostrar": "2048"
+      }
+     ],
+     "parte": 3
+    },
+    {
+     "id": "3.2",
+     "tema": "map()",
+     "titulo": "el brillo sigue al pote",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "El brillo del **LED verde** sigue al pote: con `map()` pasá la lectura (0–4095) a PWM de 8 bits (0–255). Mostrá `PWM: N` cada 100 ms.\n\nDespués: ▶ Ejecutar, pote en **3000**, y anotá el PWM.",
+     "pasos": [
+      "`int pwm = map(lectura, 0, 4095, 0, 255);`",
+      "`analogWrite(VERDE, pwm);` y el print."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int VERDE = 23;\nconst int POTE = 32;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  int lectura = analogRead(POTE);\n  int pwm = 0;   // pasá la lectura a 0–255 con map\n  // mandalo al LED y mostralo\n\n  delay(100);\n}\n",
+       "solucion": "const int VERDE = 23;\nconst int POTE = 32;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n}\n\nvoid loop() {\n  int lectura = analogRead(POTE);\n  int pwm = map(lectura, 0, 4095, 0, 255);\n  analogWrite(VERDE, pwm);\n  Serial.print(\"PWM: \");\n  Serial.println(pwm);\n  delay(100);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "LED_con_Potenciometro_AnalogWrite.ino",
+      "caso_08_aumentar_disminuir_led-externo.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Pote en 0, 4095 y 2048",
+       "hasta": 1600,
+       "entradas": [
+        {
+         "t": 500,
+         "pote": 4095
+        },
+        {
+         "t": 1000,
+         "pote": 2048
+        }
+       ],
+       "opts": {
+        "pote": 0
+       },
+       "esperar": [
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 400,
+         "v": 0
+        },
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 900,
+         "v": 255
+        },
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 1500,
+         "v": 127
+        },
+        {
+         "k": "serial",
+         "re": "PWM: 255"
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "PWM con el pote en 3000",
+       "valor": 186,
+       "motivo": "3000 × 255 / 4095 = 186,8 → 186: `map` corta los decimales.",
+       "medir": {
+        "opts": {
+         "pote": 3000
+        },
+        "hasta": 400,
+        "re": "PWM: (\\d+)"
+       },
+       "tol": 1,
+       "mostrar": "186"
+      }
+     ],
+     "parte": 3
+    },
+    {
+     "id": "3.3",
+     "tema": "12 bits",
+     "titulo": "el LED integrado con 12 bits, como el TPI",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Como pide el TPI: el **LED azul** (GPIO 2, el integrado) con el pote y **12 bits**: `analogWriteResolution(2, 12)` y el valor del pote directo, sin `map`. Cada 200 ms mostrá `PWM: N (P %)`, con el porcentaje entero.",
+     "pasos": [
+      "En el setup: `analogWriteResolution(AZUL, 12);`",
+      "En el loop: `analogWrite(AZUL, pwm);` y `int porc = pwm * 100 / 4095;`",
+      "Con printf, el % literal se escribe `%%`: `Serial.printf(\"PWM: %d (%d %%)\\n\", pwm, porc);`"
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int AZUL = 2;\nconst int POTE = 32;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(AZUL, OUTPUT);\n  // 12 bits para el LED azul\n\n}\n\nvoid loop() {\n  int pwm = analogRead(POTE);\n  // mandalo al LED, calculá el porcentaje y mostralo: PWM: 1024 (25 %)\n\n  delay(200);\n}\n",
+       "solucion": "const int AZUL = 2;\nconst int POTE = 32;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(AZUL, OUTPUT);\n  analogWriteResolution(AZUL, 12);\n}\n\nvoid loop() {\n  int pwm = analogRead(POTE);\n  analogWrite(AZUL, pwm);\n  int porc = pwm * 100 / 4095;\n  Serial.printf(\"PWM: %d (%d %%)\\n\", pwm, porc);\n  delay(200);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "LED_con_Potenciometro_AnalogWrite.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Pote en 1024 y al máximo",
+       "hasta": 1000,
+       "entradas": [
+        {
+         "t": 500,
+         "pote": 4095
+        }
+       ],
+       "opts": {
+        "pote": 1024
+       },
+       "esperar": [
+        {
+         "k": "pwm",
+         "pin": 2,
+         "t": 400,
+         "v": 1024
+        },
+        {
+         "k": "brillo",
+         "pin": 2,
+         "t": 400,
+         "v": 0.25,
+         "tol": 0.01
+        },
+        {
+         "k": "pwm",
+         "pin": 2,
+         "t": 900,
+         "v": 4095
+        },
+        {
+         "k": "serial",
+         "re": "PWM: 1024 \\(25 %\\)"
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Porcentaje con el pote en 2500",
+       "valor": 61,
+       "unidad": "%",
+       "motivo": "2500 × 100 / 4095 = 61,05 → 61 (división entera).",
+       "medir": {
+        "opts": {
+         "pote": 2500
+        },
+        "hasta": 400,
+        "re": "PWM: \\d+ \\((\\d+) %\\)"
+       },
+       "tol": 1,
+       "mostrar": "61"
+      }
+     ],
+     "parte": 3
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "id": "display",
+   "titulo": "El display OLED",
+   "explicacion": "OLED SH1106 de 128 × 64 por I2C (0x3C), con Adafruit_SH110X: clearDisplay, setCursor y print dibujan en memoria, y display.display() lo muestra.",
+   "corto": "Display",
+   "pestana": "Display",
+   "leccion": {
+    "que": "El display de la placa es un **OLED SH1106 de 128 × 64** por **I2C** (dirección **0x3C**). Con la librería **Adafruit_SH110X** se dibuja en memoria (clearDisplay, setCursor, print) y **display.display()** lo manda a la pantalla. Sin display() no se ve nada.",
+    "consta": [
+     [
+      "El objeto",
+      "`Adafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);` arriba de todo."
+     ],
+     [
+      "begin",
+      "`display.begin(0x3C, true)` en el setup, y `setTextSize(1)` / `setTextColor(SH110X_WHITE)`."
+     ],
+     [
+      "Dibujar",
+      "`clearDisplay()` borra, `setCursor(x, y)` ubica (en píxeles) y `print` / `println` / `printf` escriben. Con tamaño 1, cada letra ocupa 6 × 8 píxeles."
+     ],
+     [
+      "Mostrar",
+      "`display.display()` pasa todo a la pantalla de una vez."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "display.ino",
+     "origen": "Lo mínimo para escribir",
+     "codigo": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\nvoid setup() {\n  display.begin(0x3C, true);\n  display.setTextSize(1);\n  display.setTextColor(SH110X_WHITE);\n}\nvoid loop() {\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.println(\"Hola!\");\n  display.printf(\"Pote: %d\", analogRead(32));\n  display.display();\n  delay(200);\n}",
+     "marcas": [
+      [
+       1,
+       3,
+       3
+      ],
+      [
+       2,
+       5,
+       7
+      ],
+      [
+       3,
+       10,
+       13
+      ],
+      [
+       4,
+       14,
+       14
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Sin `display.display()` no se ve nada: lo demás dibuja en memoria.",
+     "Sin `clearDisplay()`, lo nuevo se escribe encima de lo viejo.",
+     "La placa de la cátedra usa SH1106 (`Adafruit_SH110X`), no SSD1306: con la librería equivocada se ve basura.",
+     "Con `setTextSize(2)` cada letra pasa a 12 × 16 píxeles: entran 10 por renglón."
+    ],
+    "parcial": "Los casos 7, 8 y 10. El TPI muestra en el display el PWM, la temperatura, la humedad y el % del LED externo; el sketch 2, los campos leídos del canal.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "4.1",
+     "tema": "Texto",
+     "titulo": "LUZ_ON y LUZ_OFF en el display",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Al arrancar, el display muestra `Esperando...`. Con `LUZ_ON` por el monitor serie: LED verde y relé prendidos y el display muestra `RELAY ON!`; con `LUZ_OFF`: los dos apagados y `RELAY OFF!`.\n\nCompletá la función `mostrar(texto)`, que limpia, escribe y muestra. Es el caso 7.",
+     "pasos": [
+      "`mostrar`: `display.clearDisplay(); display.setCursor(0, 0); display.println(txt); display.display();`",
+      "En el loop, como en el ejercicio 1.3, pero llamando a `mostrar(\"RELAY ON!\")`."
+     ],
+     "pistas": [
+      "Si el display queda vacío, falta `display.display()`."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\nconst int VERDE = 23;\nconst int RELE = 14;\n\nvoid mostrar(String txt) {\n  // limpiá, ubicá el cursor arriba a la izquierda, escribí y mostrá\n\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  pinMode(RELE, OUTPUT);\n  display.begin(0x3C, true);\n  display.setTextSize(1);\n  display.setTextColor(SH110X_WHITE);\n  mostrar(\"Esperando...\");\n}\n\nvoid loop() {\n  if (Serial.available() > 0) {\n    String cmd = Serial.readStringUntil('\\n');\n    cmd.trim();\n    // LUZ_ON y LUZ_OFF: los pines y el display\n\n  }\n}\n",
+       "solucion": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\nconst int VERDE = 23;\nconst int RELE = 14;\n\nvoid mostrar(String txt) {\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.println(txt);\n  display.display();\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  pinMode(RELE, OUTPUT);\n  display.begin(0x3C, true);\n  display.setTextSize(1);\n  display.setTextColor(SH110X_WHITE);\n  mostrar(\"Esperando...\");\n}\n\nvoid loop() {\n  if (Serial.available() > 0) {\n    String cmd = Serial.readStringUntil('\\n');\n    cmd.trim();\n    if (cmd == \"LUZ_ON\") {\n      digitalWrite(VERDE, HIGH);\n      digitalWrite(RELE, HIGH);\n      mostrar(\"RELAY ON!\");\n    } else if (cmd == \"LUZ_OFF\") {\n      digitalWrite(VERDE, LOW);\n      digitalWrite(RELE, LOW);\n      mostrar(\"RELAY OFF!\");\n    }\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_07_display_led_externo_relay.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Arranca, y llegan LUZ_ON y LUZ_OFF",
+       "hasta": 2500,
+       "entradas": [
+        {
+         "t": 800,
+         "serial": "LUZ_ON\n"
+        },
+        {
+         "t": 1600,
+         "serial": "LUZ_OFF\n"
+        }
+       ],
+       "esperar": [
+        {
+         "k": "display",
+         "re": "Esperando",
+         "t": 500
+        },
+        {
+         "k": "display",
+         "re": "RELAY ON!",
+         "t": 1200
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 1200,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1200,
+         "v": 1
+        },
+        {
+         "k": "display",
+         "re": "RELAY OFF!",
+         "t": 2200
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 2200,
+         "v": 0
+        }
+       ]
+      }
+     ],
+     "parte": 4
+    },
+    {
+     "id": "4.2",
+     "tema": "Tamaños y una barra",
+     "titulo": "el pote en el display",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Cada 200 ms, mostrá en el display la lectura del pote en **tamaño 2** y abajo, en tamaño 1, la tensión con 2 decimales:\n```\n3000\n2.42 V\n```\nDebajo, una barra: `display.fillRect(0, 40, ancho, 10, SH110X_WHITE)`, con un `ancho` de 0 a 128 según el pote.",
+     "pasos": [
+      "`display.setTextSize(2); display.println(lectura);`",
+      "`display.setTextSize(1); display.printf(\"%.2f V\\n\", volt);`",
+      "`int ancho = map(lectura, 0, 4095, 0, 128);` y `display.fillRect(0, 40, ancho, 10, SH110X_WHITE);`"
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\nconst int POTE = 32;\n\nvoid setup() {\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n}\n\nvoid loop() {\n  int lectura = analogRead(POTE);\n  float volt = lectura * 3.3 / 4095;\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  // la lectura en tamaño 2, la tensión en tamaño 1 y la barra\n\n  display.display();\n  delay(200);\n}\n",
+       "solucion": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\nconst int POTE = 32;\n\nvoid setup() {\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n}\n\nvoid loop() {\n  int lectura = analogRead(POTE);\n  float volt = lectura * 3.3 / 4095;\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.setTextSize(2);\n  display.println(lectura);\n  display.setTextSize(1);\n  display.printf(\"%.2f V\\n\", volt);\n  int ancho = map(lectura, 0, 4095, 0, 128);\n  display.fillRect(0, 40, ancho, 10, SH110X_WHITE);\n  display.display();\n  delay(200);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "Display_con_Pote.ino",
+      "caso_08_aumentar_disminuir_led-externo.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Pote en 3000",
+       "hasta": 600,
+       "opts": {
+        "pote": 3000
+       },
+       "esperar": [
+        {
+         "k": "display",
+         "re": "3000 2\\.42 V",
+         "t": 500
+        }
+       ]
+      },
+      {
+       "nombre": "Pote al máximo",
+       "hasta": 600,
+       "opts": {
+        "pote": 4095
+       },
+       "esperar": [
+        {
+         "k": "display",
+         "re": "4095 3\\.30 V",
+         "t": 500
+        }
+       ]
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "fillRect\\s*\\(",
+       "ok": "Dibuja la barra con fillRect",
+       "error": "Falta la barra: `display.fillRect(0, 40, ancho, 10, SH110X_WHITE);`"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "map\\s*\\([^;]*128\\s*\\)|\\*\\s*128\\s*/\\s*4095",
+       "ok": "El ancho va de 0 a 128",
+       "error": "El ancho de la barra tiene que ir de 0 a 128: `map(lectura, 0, 4095, 0, 128)`"
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Ancho de la barra con el pote en 2048",
+       "valor": 64,
+       "unidad": "píxeles",
+       "motivo": "`map(2048, 0, 4095, 0, 128)` = 2048 × 128 / 4095 = 64,02 → 64.",
+       "tol": 1,
+       "mostrar": "64"
+      }
+     ],
+     "parte": 4
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "id": "sensores",
+   "titulo": "Sensores: DHT22 y touch",
+   "explicacion": "El DHT22 (GPIO 33) da temperatura y humedad con la librería DHT; los pines touch (13 y 4) dan un número que baja al tocarlos.",
+   "corto": "DHT22 y touch",
+   "pestana": "DHT22 y touch",
+   "leccion": {
+    "que": "El **DHT22** (GPIO **33**) mide temperatura y humedad. Con la librería DHT: `DHT dht(33, DHT22);`, **dht.begin()** en el setup y **dht.readTemperature()** / **dht.readHumidity()**, que devuelven float (o **NaN** si falla). Conviene leerlo cada 2 s.\nLos **pines touch** (13 y 4) miden la capacidad: **touchRead(pin)** da un número que **baja al tocarlo**. En el simulador lee 72 suelto y 10 tocado; en la placa, depende del cable: medilo antes de elegir el umbral.",
+    "consta": [
+     [
+      "El sensor",
+      "`DHT dht(33, DHT22);` arriba y `dht.begin();` en el setup."
+     ],
+     [
+      "Leer",
+      "`float t = dht.readTemperature();` y `float h = dht.readHumidity();`, con `if (isnan(t))` por si falla."
+     ],
+     [
+      "El touch",
+      "`touchRead(13) < 40` → tocado. Para contar toques, como el pulsador: comparar con la lectura anterior (o `touchAttachInterrupt`)."
+     ],
+     [
+      "Mostrar",
+      "`printf` con `%.1f`: un decimal (y `%%` para el signo de por ciento)."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "sensores.ino",
+     "origen": "DHT22 y un touch",
+     "codigo": "#include <DHT.h>\nDHT dht(33, DHT22);\nbool antes = false;\nvoid setup() {\n  Serial.begin(115200);\n  dht.begin();\n}\nvoid loop() {\n  float t = dht.readTemperature();\n  float h = dht.readHumidity();\n  if (isnan(t) || isnan(h)) return;\n  bool tocado = touchRead(13) < 40;\n  if (tocado && !antes) Serial.println(\"Toque\");\n  antes = tocado;\n  Serial.printf(\"%.1f C  %.1f %%\\n\", t, h);\n  delay(100);\n}",
+     "marcas": [
+      [
+       1,
+       2,
+       2
+      ],
+      [
+       1,
+       6,
+       6
+      ],
+      [
+       2,
+       9,
+       11
+      ],
+      [
+       3,
+       12,
+       14
+      ],
+      [
+       4,
+       15,
+       15
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Si `readTemperature` da `nan`, el sensor no respondió: el pin equivocado o falta `dht.begin()`.",
+     "El touch no es un botón: no da HIGH/LOW, es un número que baja al tocar.",
+     "Los umbrales 950 y 850 del caso 9 son de otra placa: en el simulador el touch lee 72 suelto.",
+     "Para el % literal en printf va `%%`."
+    ],
+    "parcial": "Los casos 9 y 10. El TPI: temperatura y humedad en tiempo real en el display, y el LED externo con dos touch (uno sube, otro baja).",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "5.1",
+     "tema": "DHT22",
+     "titulo": "temperatura, humedad y un ventilador",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Cada **2 s**, leé el DHT22 y mostrá en el display y en el monitor serie:\n```\nTemp: 24.5 C\nHum: 55.0 %\n```\nSi la temperatura pasa de **28 °C**, cerrá el relé (un ventilador); si no, abrilo.",
+     "pasos": [
+      "`float t = dht.readTemperature(); float h = dht.readHumidity();`",
+      "El display: clear, setCursor(0, 0), `printf(\"Temp: %.1f C\\nHum: %.1f %%\", t, h)` y display().",
+      "El relé: `digitalWrite(RELE, t > 28 ? HIGH : LOW);`"
+     ],
+     "pistas": [
+      "En la placa, mové el deslizador de Temp. por encima de 28 y esperá la próxima lectura (2 s)."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\n#include <DHT.h>\n\nconst int RELE = 14;\nDHT dht(33, DHT22);\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(RELE, OUTPUT);\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n  dht.begin();\n}\n\nvoid loop() {\n  // leé la temperatura y la humedad, mostralas (display y monitor serie) y decidí el relé\n\n  delay(2000);\n}\n",
+       "solucion": "#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\n#include <DHT.h>\n\nconst int RELE = 14;\nDHT dht(33, DHT22);\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(RELE, OUTPUT);\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n  dht.begin();\n}\n\nvoid loop() {\n  float t = dht.readTemperature();\n  float h = dht.readHumidity();\n  if (!isnan(t) && !isnan(h)) {\n    display.clearDisplay();\n    display.setCursor(0, 0);\n    display.printf(\"Temp: %.1f C\\nHum: %.1f %%\", t, h);\n    display.display();\n    Serial.printf(\"Temp: %.1f C\\nHum: %.1f %%\\n\", t, h);\n    digitalWrite(RELE, t > 28 ? HIGH : LOW);\n  }\n  delay(2000);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_10_display_sensor_tyh.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "24,5 °C y después 31 °C",
+       "hasta": 7000,
+       "entradas": [
+        {
+         "t": 3000,
+         "dht": {
+          "t": 31,
+          "h": 40
+         }
+        }
+       ],
+       "opts": {
+        "temp": 24.5,
+        "hum": 55
+       },
+       "esperar": [
+        {
+         "k": "display",
+         "re": "Temp: 24\\.5 C",
+         "t": 1000
+        },
+        {
+         "k": "display",
+         "re": "Hum: 55\\.0 %",
+         "t": 1000
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 2500,
+         "v": 0
+        },
+        {
+         "k": "display",
+         "re": "Temp: 31\\.0 C",
+         "t": 6500
+        },
+        {
+         "k": "pin",
+         "pin": 14,
+         "t": 6500,
+         "v": 1
+        },
+        {
+         "k": "serial",
+         "re": "Temp: 31\\.0 C"
+        }
+       ]
+      }
+     ],
+     "parte": 5
+    },
+    {
+     "id": "5.2",
+     "tema": "Touch",
+     "titulo": "más y menos brillo con los touch, como el TPI",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "El **LED verde** con PWM de **12 bits**: cada toque en el **touch 13** sube el brillo **410** (10 %) y cada toque en el **touch 4** lo baja 410, sin pasarse de 0 ni de 4095. Mantener el dedo cuenta **un solo toque**. En cada cambio mostrá `Brillo: P %`.\n\nEs la parte de los touch del TPI (el caso 9 lo hace con interrupciones).",
+     "pasos": [
+      "`cambiar`: `brillo = constrain(brillo + d, 0, 4095);`, `analogWrite(VERDE, brillo);` y el print con `brillo * 100 / 4095`.",
+      "En el loop, como el flanco del pulsador: `if (mas && !antesMas) cambiar(PASO);` (y lo mismo para el 4).",
+      "Al final: `antesMas = mas; antesMenos = menos;`"
+     ],
+     "pistas": [
+      "En la placa, mantené apretado «Touch 13»: tiene que subir una sola vez."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int VERDE = 23;\nconst int T_MAS = 13, T_MENOS = 4;\nconst int UMBRAL = 40;   // tocado: menos de 40\nconst int PASO = 410;    // 10 % de 4095\nint brillo = 0;\nbool antesMas = false, antesMenos = false;\n\nvoid cambiar(int d) {\n  // sumá d sin salirte de 0..4095, mandalo al LED y mostrá el porcentaje\n\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  analogWriteResolution(VERDE, 12);\n  analogWrite(VERDE, brillo);\n}\n\nvoid loop() {\n  bool mas = touchRead(T_MAS) < UMBRAL;\n  bool menos = touchRead(T_MENOS) < UMBRAL;\n  // llamá a cambiar(PASO) o cambiar(-PASO) solo cuando recién se toca\n\n  delay(20);\n}\n",
+       "solucion": "const int VERDE = 23;\nconst int T_MAS = 13, T_MENOS = 4;\nconst int UMBRAL = 40;   // tocado: menos de 40\nconst int PASO = 410;    // 10 % de 4095\nint brillo = 0;\nbool antesMas = false, antesMenos = false;\n\nvoid cambiar(int d) {\n  brillo = constrain(brillo + d, 0, 4095);\n  analogWrite(VERDE, brillo);\n  Serial.print(\"Brillo: \");\n  Serial.print(brillo * 100 / 4095);\n  Serial.println(\" %\");\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  analogWriteResolution(VERDE, 12);\n  analogWrite(VERDE, brillo);\n}\n\nvoid loop() {\n  bool mas = touchRead(T_MAS) < UMBRAL;\n  bool menos = touchRead(T_MENOS) < UMBRAL;\n  if (mas && !antesMas) cambiar(PASO);\n  if (menos && !antesMenos) cambiar(-PASO);\n  antesMas = mas;\n  antesMenos = menos;\n  delay(20);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_09_sensor_touch.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Tres toques en el 13 (uno largo) y uno en el 4",
+       "hasta": 3500,
+       "entradas": [
+        {
+         "t": 500,
+         "touch": {
+          "13": 10
+         }
+        },
+        {
+         "t": 900,
+         "touch": {
+          "13": 72
+         }
+        },
+        {
+         "t": 1200,
+         "touch": {
+          "13": 10
+         }
+        },
+        {
+         "t": 1300,
+         "touch": {
+          "13": 72
+         }
+        },
+        {
+         "t": 1600,
+         "touch": {
+          "13": 10
+         }
+        },
+        {
+         "t": 1700,
+         "touch": {
+          "13": 72
+         }
+        },
+        {
+         "t": 2500,
+         "touch": {
+          "4": 10
+         }
+        },
+        {
+         "t": 2700,
+         "touch": {
+          "4": 72
+         }
+        }
+       ],
+       "esperar": [
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 1000,
+         "v": 410
+        },
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 2000,
+         "v": 1230
+        },
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 3000,
+         "v": 820
+        },
+        {
+         "k": "serial",
+         "re": "Brillo: 30 %"
+        }
+       ]
+      },
+      {
+       "nombre": "Desde 0, el 4 no baja de 0",
+       "hasta": 1200,
+       "entradas": [
+        {
+         "t": 300,
+         "touch": {
+          "4": 10
+         }
+        },
+        {
+         "t": 500,
+         "touch": {
+          "4": 72
+         }
+        }
+       ],
+       "esperar": [
+        {
+         "k": "pwm",
+         "pin": 23,
+         "t": 1000,
+         "v": 0
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Toques en el 13 para llegar al máximo desde 0",
+       "valor": 10,
+       "motivo": "9 × 410 = 3690 y el décimo pasaría de 4095: `constrain` lo deja en 4095.",
+       "tol": 1,
+       "mostrar": "10"
+      }
+     ],
+     "parte": 5
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "id": "millis",
+   "titulo": "Sin bloquear: millis()",
+   "explicacion": "delay() frena todo; con millis() se pregunta «¿ya pasó el tiempo?» y el loop sigue atendiendo el pulsador, los touch y el display. El TPI lo necesita.",
+   "corto": "millis()",
+   "pestana": "millis()",
+   "leccion": {
+    "que": "**delay()** frena todo: mientras espera, la placa no lee el pulsador ni el monitor serie. Con **millis()** (los ms desde que prendió) se pregunta «¿ya pasó el tiempo?» y el loop sigue dando vueltas: así se hacen varias cosas a la vez, cada una con su intervalo.",
+    "consta": [
+     [
+      "La marca",
+      "`unsigned long antes = 0;` guarda cuándo se hizo la última vez."
+     ],
+     [
+      "La pregunta",
+      "`if (millis() - antes >= 500) { … }`: siempre restando, así anda aunque millis() dé la vuelta."
+     ],
+     [
+      "Actualizar",
+      "`antes = millis();` adentro del if."
+     ],
+     [
+      "Lo demás",
+      "Fuera del if, el loop sigue: el pulsador responde al instante."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "millis.ino",
+     "origen": "Titila y atiende el pulsador a la vez",
+     "codigo": "unsigned long antes = 0;\nbool prendido = false;\nvoid setup() {\n  pinMode(2, OUTPUT);\n  pinMode(19, INPUT_PULLUP);\n}\nvoid loop() {\n  if (millis() - antes >= 500) {\n    antes = millis();\n    prendido = !prendido;\n    digitalWrite(2, prendido);\n  }\n  if (digitalRead(19) == LOW) {\n    Serial.println(\"Apretado\");\n  }\n}",
+     "marcas": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       2,
+       8,
+       8
+      ],
+      [
+       3,
+       9,
+       9
+      ],
+      [
+       4,
+       13,
+       14
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "`millis()` devuelve `unsigned long`: guardalo así (en un Arduino UNO, un int se desborda a los 32 s).",
+     "Nada de delay largos en el loop: arruinan los demás intervalos.",
+     "Un Ticker hace lo mismo con una función: `subirDatos.attach(16, leerySubir)` la llama cada 16 s (ThingSpeak_DHT_Ticker del profe)."
+    ],
+    "parcial": "El TPI hace muchas cosas a la vez: display en tiempo real, touch, pote y ThingSpeak cada 16 s. Con un `delay(16000)` los touch y el display quedarían congelados.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "6.1",
+     "tema": "millis()",
+     "titulo": "titilar sin delay y atender el pulsador",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "El código de abajo titila con `delay(500)`: por eso el **LED verde**, que tendría que prenderse **mientras** apretás el pulsador, responde tarde. Pasalo a **millis()**: el LED azul sigue titilando (500 ms y 500 ms) y el verde responde al instante.\n\nProbalo en la placa antes y después: apretá el pulsador rápido.",
+     "pasos": [
+      "Arriba: `unsigned long antes = 0;`",
+      "El parpadeo adentro de `if (millis() - antes >= 500) { antes = millis(); … }`.",
+      "Sacá el `delay(500)`: la línea del pulsador queda afuera del if."
+     ],
+     "pistas": [
+      "El pulsador tiene que leerse en cada vuelta del loop, no cada medio segundo."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "const int AZUL = 2, VERDE = 23, BOTON = 19;\nbool prendido = false;\n\nvoid setup() {\n  pinMode(AZUL, OUTPUT);\n  pinMode(VERDE, OUTPUT);\n  pinMode(BOTON, INPUT_PULLUP);\n}\n\nvoid loop() {\n  // Así titila, pero el pulsador responde tarde: delay frena todo\n  prendido = !prendido;\n  digitalWrite(AZUL, prendido);\n  delay(500);\n  digitalWrite(VERDE, digitalRead(BOTON) == LOW);\n}\n",
+       "solucion": "const int AZUL = 2, VERDE = 23, BOTON = 19;\nbool prendido = false;\nunsigned long antes = 0;\n\nvoid setup() {\n  pinMode(AZUL, OUTPUT);\n  pinMode(VERDE, OUTPUT);\n  pinMode(BOTON, INPUT_PULLUP);\n}\n\nvoid loop() {\n  if (millis() - antes >= 500) {\n    antes = millis();\n    prendido = !prendido;\n    digitalWrite(AZUL, prendido);\n  }\n  digitalWrite(VERDE, digitalRead(BOTON) == LOW);\n}\n"
+      }
+     ],
+     "pruebas": [
+      {
+       "nombre": "Apretás el pulsador a los 1,23 s y lo soltás a los 1,6 s",
+       "hasta": 3500,
+       "entradas": [
+        {
+         "t": 1230,
+         "boton": true
+        },
+        {
+         "t": 1600,
+         "boton": false
+        }
+       ],
+       "esperar": [
+        {
+         "k": "periodo",
+         "pin": 2,
+         "ms": 1000,
+         "tol": 50
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1260,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 1700,
+         "v": 0
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Con el código inicial (con delay), el LED verde puede tardar en prenderse",
+       "opciones": [
+        "nada: es instantáneo",
+        "hasta medio segundo",
+        "hasta 2 segundos"
+       ],
+       "valor": "hasta medio segundo",
+       "motivo": "El loop se queda 500 ms en el delay: si apretás justo después, recién en la vuelta siguiente se lee el pulsador.",
+       "mostrar": "hasta medio segundo"
+      }
+     ],
+     "parte": 6
+    },
+    {
+     "id": "6.2",
+     "tema": "Dos intervalos",
+     "titulo": "cada cosa a su tiempo",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Con dos marcas de tiempo y **sin delay**: cada **1 s** mostrá `Pote: N` y cada **3 s** mostrá `Temp: T C` (del DHT22, con un decimal).",
+     "pasos": [
+      "Un `if (millis() - antesPote >= 1000) { antesPote = millis(); … }`.",
+      "Otro igual con `antesTemp` y 3000."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <DHT.h>\n\nDHT dht(33, DHT22);\nunsigned long antesPote = 0;\nunsigned long antesTemp = 0;\n\nvoid setup() {\n  Serial.begin(115200);\n  dht.begin();\n}\n\nvoid loop() {\n  // cada 1000 ms: Pote: N\n  // cada 3000 ms: Temp: T C\n\n}\n",
+       "solucion": "#include <DHT.h>\n\nDHT dht(33, DHT22);\nunsigned long antesPote = 0;\nunsigned long antesTemp = 0;\n\nvoid setup() {\n  Serial.begin(115200);\n  dht.begin();\n}\n\nvoid loop() {\n  if (millis() - antesPote >= 1000) {\n    antesPote = millis();\n    Serial.print(\"Pote: \");\n    Serial.println(analogRead(32));\n  }\n  if (millis() - antesTemp >= 3000) {\n    antesTemp = millis();\n    Serial.printf(\"Temp: %.1f C\\n\", dht.readTemperature());\n  }\n}\n"
+      }
+     ],
+     "pruebas": [
+      {
+       "nombre": "Corre 7,5 s",
+       "hasta": 7500,
+       "esperar": [
+        {
+         "k": "serial",
+         "re": "Pote: \\d+",
+         "veces": [
+          7,
+          7
+         ]
+        },
+        {
+         "k": "serial",
+         "re": "Temp: 24\\.5 C",
+         "veces": [
+          2,
+          2
+         ]
+        }
+       ]
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "noContiene",
+       "regex": "\\bdelay\\s*\\(",
+       "ok": "Sin delay",
+       "error": "Sacá los `delay`: con millis() no hacen falta."
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Líneas que muestra en los primeros 6,5 s",
+       "valor": 8,
+       "motivo": "Pote a los 1, 2, 3, 4, 5 y 6 s (6) y Temp a los 3 y 6 s (2): 8.",
+       "medir": {
+        "hasta": 6500,
+        "re": "^(?:Pote|Temp):",
+        "cuenta": true
+       },
+       "tol": 1,
+       "mostrar": "8"
+      }
+     ],
+     "parte": 6
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "id": "thingspeak",
+   "titulo": "WiFi y ThingSpeak",
+   "explicacion": "WiFi.begin y esperar WL_CONNECTED; ThingSpeak guarda hasta 8 campos por canal, con un envío cada 15 s como mínimo: setField y writeFields. El TPI manda 6 campos cada 16 s y el sketch 2 los lee.",
+   "corto": "ThingSpeak",
+   "pestana": "ThingSpeak",
+   "leccion": {
+    "que": "Con **WiFi.begin(red, clave)** la placa se conecta (tarda: se espera con `while (WiFi.status() != WL_CONNECTED)`). **ThingSpeak** guarda y grafica datos en la nube: cada canal tiene hasta **8 campos** y la versión gratis acepta **un envío cada 15 s**. Se cargan los campos con **setField(n, valor)** y se mandan juntos con **writeFields(canal, writeAPIKey)**, que devuelve **200** si salió bien.",
+    "consta": [
+     [
+      "Las claves",
+      "La red, el número de canal y la Write API Key (en el simulador sirven las de mentira: TU_RED_WIFI, TU_API_KEY)."
+     ],
+     [
+      "Conectarse",
+      "`WiFi.begin(ssid, password)` y esperar `WL_CONNECTED`; después `ThingSpeak.begin(cliente)`."
+     ],
+     [
+      "Cargar y mandar",
+      "`ThingSpeak.setField(1, temp);` … y `int codigo = ThingSpeak.writeFields(canal, clave);`"
+     ],
+     [
+      "El intervalo",
+      "Cada 16 s (más de 15) con millis() o un Ticker: antes, ThingSpeak devuelve -401 y no lo guarda."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "thingspeak.ino",
+     "origen": "Lo del caso 13, con millis()",
+     "codigo": "#include <WiFi.h>\n#include <ThingSpeak.h>\nconst char* ssid = \"TU_RED_WIFI\";\nconst char* password = \"\";\nunsigned long canal = 1234567;\nconst char* clave = \"TU_API_KEY\";\nWiFiClient cliente;\nunsigned long antes = 0;\nvoid setup() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  ThingSpeak.begin(cliente);\n}\nvoid loop() {\n  if (millis() - antes >= 16000) {\n    antes = millis();\n    ThingSpeak.setField(1, 24.5);\n    int codigo = ThingSpeak.writeFields(canal, clave);\n  }\n}",
+     "marcas": [
+      [
+       1,
+       3,
+       6
+      ],
+      [
+       2,
+       10,
+       12
+      ],
+      [
+       4,
+       15,
+       16
+      ],
+      [
+       3,
+       17,
+       18
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Con menos de 15 s entre envíos, writeFields devuelve **-401** y ese dato se pierde.",
+     "El número de canal va como `unsigned long`; la API Key, como texto.",
+     "En el simulador el WiFi conecta a los 1,2 s con cualquier red; en la placa poné la tuya (o «Wokwi-GUEST» en Wokwi).",
+     "No subas tus claves de verdad a ningún lado: en la entrega, el canal y la clave van en el .txt."
+    ],
+    "parcial": "El TPI: 6 campos cada 16 s (aleatorio de 100 a 500, temperatura, humedad, segundos desde el inicio, PWM del LED integrado y % del LED externo), y el sketch 2 que los lee y los muestra con las pulsaciones.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "7.1",
+     "tema": "WiFi",
+     "titulo": "conectarse al WiFi",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Conectá la placa al WiFi: mientras no conecta, mostrá un punto (`.`) cada 500 ms; cuando conecta, `WiFi conectado:` y la IP (`WiFi.localIP()`). Después, que el **LED azul** quede prendido como señal de «conectado».",
+     "pasos": [
+      "`WiFi.begin(ssid, password);`",
+      "`while (WiFi.status() != WL_CONNECTED) { delay(500); Serial.print(\".\"); }`",
+      "Después del while: la IP y `digitalWrite(AZUL, HIGH);`"
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int AZUL = 2;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(AZUL, OUTPUT);\n  // WiFi.begin, esperar con puntos, mostrar la IP y prender el LED\n\n}\n\nvoid loop() {\n}\n",
+       "solucion": "#include <WiFi.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int AZUL = 2;\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(AZUL, OUTPUT);\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n  digitalWrite(AZUL, HIGH);\n}\n\nvoid loop() {\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_13_thing_speak_tyh.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Prende y se conecta",
+       "hasta": 3000,
+       "esperar": [
+        {
+         "k": "serial",
+         "re": "\\."
+        },
+        {
+         "k": "serial",
+         "re": "WiFi conectado: 192\\.168\\.\\d+\\.\\d+"
+        },
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 500,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 2500,
+         "v": 1
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Si la red está mal escrita, este sketch",
+       "opciones": [
+        "sigue sin WiFi",
+        "se queda para siempre en el while",
+        "se reinicia solo"
+       ],
+       "valor": "se queda para siempre en el while",
+       "motivo": "El while espera WL_CONNECTED y nunca llega: por eso conviene un límite de intentos.",
+       "mostrar": "se queda para siempre en el while"
+      }
+     ],
+     "parte": 7
+    },
+    {
+     "id": "7.2",
+     "tema": "ThingSpeak",
+     "titulo": "temperatura y humedad cada 20 s",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Mandá a ThingSpeak la **temperatura (campo 1)** y la **humedad (campo 2)** cada **20 s**, con millis(). Mostrá el código que devuelve writeFields: `ThingSpeak: 200`.\n\nEn la placa, el cuadro **ThingSpeak** muestra cada envío. Probá cambiar 20000 por 5000: vas a ver el -401.",
+     "pasos": [
+      "`if (millis() - antes >= 20000) { antes = millis(); … }`",
+      "Adentro: los dos `setField`, `int codigo = ThingSpeak.writeFields(canal, clave);` y el print."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <ThingSpeak.h>\n#include <DHT.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nunsigned long canal = 1234567;\nconst char* clave = \"TU_API_KEY\";\nWiFiClient cliente;\nDHT dht(33, DHT22);\nunsigned long antes = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  conectarWiFi();\n  ThingSpeak.begin(cliente);\n  dht.begin();\n}\n\nvoid loop() {\n  // cada 20 s: los dos campos, writeFields y el código por el monitor serie\n\n}\n",
+       "solucion": "#include <WiFi.h>\n#include <ThingSpeak.h>\n#include <DHT.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nunsigned long canal = 1234567;\nconst char* clave = \"TU_API_KEY\";\nWiFiClient cliente;\nDHT dht(33, DHT22);\nunsigned long antes = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  conectarWiFi();\n  ThingSpeak.begin(cliente);\n  dht.begin();\n}\n\nvoid loop() {\n  if (millis() - antes >= 20000) {\n    antes = millis();\n    ThingSpeak.setField(1, dht.readTemperature());\n    ThingSpeak.setField(2, dht.readHumidity());\n    int codigo = ThingSpeak.writeFields(canal, clave);\n    Serial.print(\"ThingSpeak: \");\n    Serial.println(codigo);\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "caso_13_thing_speak_tyh.ino",
+      "ThingSpeak_DHT_Ticker.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Corre 65 s",
+       "hasta": 65000,
+       "esperar": [
+        {
+         "k": "ts",
+         "min": 3,
+         "max": 3,
+         "cada": [
+          19500,
+          20500
+         ],
+         "campos": {
+          "1": 24.5,
+          "2": 55
+         },
+         "rechazos": 0
+        },
+        {
+         "k": "serial",
+         "re": "ThingSpeak: 200"
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Envíos en una hora",
+       "valor": 180,
+       "motivo": "3600 s / 20 s = 180.",
+       "tol": 1,
+       "mostrar": "180"
+      }
+     ],
+     "parte": 7
+    },
+    {
+     "id": "7.3",
+     "tema": "Los 6 campos",
+     "titulo": "el envío del sketch 1 del TPI",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "La parte de ThingSpeak del **sketch 1 del TPI**: cada **16 s** mandá los 6 campos:\n1. un número al azar de 100 a 500 (`random(100, 501)`)\n2. la temperatura\n3. la humedad\n4. los segundos desde que prendió (`millis() / 1000`)\n5. el PWM del LED integrado (el pote, con 12 bits)\n6. el % de brillo del LED externo (acá, la variable `porcExterno`)\n\nCon millis(), o con un Ticker como el ThingSpeak_DHT_Ticker del profe.",
+     "pasos": [
+      "El if de millis() con 16000.",
+      "Seis `ThingSpeak.setField(n, valor);` y un solo `writeFields` al final."
+     ],
+     "pistas": [
+      "`random(100, 501)` da de 100 a 500: el segundo número no entra."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <ThingSpeak.h>\n#include <DHT.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int AZUL = 2, POTE = 32;\nunsigned long canal = 1234567;\nconst char* clave = \"TU_API_KEY\";\nWiFiClient cliente;\nDHT dht(33, DHT22);\nint pwm = 0;              // el PWM del LED integrado (12 bits)\nint porcExterno = 40;     // el % del LED externo (en el TPI lo cambian los touch)\nunsigned long antes = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  analogWriteResolution(AZUL, 12);\n  conectarWiFi();\n  ThingSpeak.begin(cliente);\n  dht.begin();\n}\n\nvoid loop() {\n  pwm = analogRead(POTE);\n  analogWrite(AZUL, pwm);\n  // cada 16 s: los 6 campos y writeFields\n\n}\n",
+       "solucion": "#include <WiFi.h>\n#include <ThingSpeak.h>\n#include <DHT.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int AZUL = 2, POTE = 32;\nunsigned long canal = 1234567;\nconst char* clave = \"TU_API_KEY\";\nWiFiClient cliente;\nDHT dht(33, DHT22);\nint pwm = 0;              // el PWM del LED integrado (12 bits)\nint porcExterno = 40;     // el % del LED externo (en el TPI lo cambian los touch)\nunsigned long antes = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  analogWriteResolution(AZUL, 12);\n  conectarWiFi();\n  ThingSpeak.begin(cliente);\n  dht.begin();\n}\n\nvoid loop() {\n  pwm = analogRead(POTE);\n  analogWrite(AZUL, pwm);\n  if (millis() - antes >= 16000) {\n    antes = millis();\n    ThingSpeak.setField(1, (int) random(100, 501));\n    ThingSpeak.setField(2, dht.readTemperature());\n    ThingSpeak.setField(3, dht.readHumidity());\n    ThingSpeak.setField(4, (long) (millis() / 1000));\n    ThingSpeak.setField(5, pwm);\n    ThingSpeak.setField(6, porcExterno);\n    int codigo = ThingSpeak.writeFields(canal, clave);\n    Serial.print(\"ThingSpeak: \");\n    Serial.println(codigo);\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "ThingSpeak_DHT_Ticker.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Corre 50 s con el pote en 2048",
+       "hasta": 50000,
+       "opts": {
+        "pote": 2048
+       },
+       "esperar": [
+        {
+         "k": "ts",
+         "min": 3,
+         "cada": [
+          15500,
+          16600
+         ],
+         "campos": {
+          "1": [
+           100,
+           500
+          ],
+          "2": 24.5,
+          "3": 55,
+          "4": [
+           15,
+           50
+          ],
+          "5": 2048,
+          "6": 40
+         },
+         "rechazos": 0
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Envíos en 5 minutos",
+       "valor": 18,
+       "motivo": "300 s / 16 s = 18,75: 18 envíos completos.",
+       "tol": 1,
+       "mostrar": "18"
+      }
+     ],
+     "parte": 7
+    },
+    {
+     "id": "7.4",
+     "tema": "Leer el canal",
+     "titulo": "el sketch 2 del TPI: leer y contar",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "El **sketch 2 del TPI**: leé los 6 campos del canal con `ThingSpeak.readFloatField(canal, n)` al arrancar y después cada 16 s; contá las pulsaciones y mostrá en el display, rotando cada **3 s**, dos pantallas:\n```\nC1: 321.0          C4: 120.0\nC2: 24.5     y     C5: 2048.0\nC3: 55.0           C6: 40.0\nPulsaciones: 2     Pulsaciones: 2\n```\nEn el simulador el canal 1234567 ya tiene datos (los de un sketch 1).",
+     "pasos": [
+      "`leerCanal`: un for de 1 a 6 con `campos[n] = ThingSpeak.readFloatField(canal, n);`",
+      "`mostrar`: `int primero = pantalla == 0 ? 1 : 4;` y un for de tres `display.printf(\"C%d: %.1f\\n\", n, campos[n]);`, más las pulsaciones.",
+      "En el loop: el flanco del pulsador (llamá a `mostrar()` para que se vea al toque), y dos ifs de millis(): 16000 para leer y 3000 para `pantalla = 1 - pantalla; mostrar();`"
+     ],
+     "pistas": [
+      "El TPI dice «puede ser de a 3 campos por pantalla rotativa»: dos pantallas de 3."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <ThingSpeak.h>\n#include <DHT.h>\n\n#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int BOTON = 19;\nunsigned long canal = 1234567;\nWiFiClient cliente;\nfloat campos[7];          // campos[1] a campos[6]\nint pulsaciones = 0;\nint anterior = HIGH;\nint pantalla = 0;         // 0: campos 1 a 3 · 1: campos 4 a 6\nunsigned long antesLeer = 0, antesPantalla = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid leerCanal() {\n  // los 6 campos con readFloatField\n\n}\n\nvoid mostrar() {\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  // tres campos según la pantalla y las pulsaciones\n\n  display.display();\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BOTON, INPUT_PULLUP);\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n  conectarWiFi();\n  ThingSpeak.begin(cliente);\n  leerCanal();\n  mostrar();\n}\n\nvoid loop() {\n  // las pulsaciones (con el flanco), leer cada 16 s y cambiar de pantalla cada 3 s\n\n}\n",
+       "solucion": "#include <WiFi.h>\n#include <ThingSpeak.h>\n#include <DHT.h>\n\n#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int BOTON = 19;\nunsigned long canal = 1234567;\nWiFiClient cliente;\nfloat campos[7];          // campos[1] a campos[6]\nint pulsaciones = 0;\nint anterior = HIGH;\nint pantalla = 0;         // 0: campos 1 a 3 · 1: campos 4 a 6\nunsigned long antesLeer = 0, antesPantalla = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid leerCanal() {\n  for (int n = 1; n <= 6; n++) {\n    campos[n] = ThingSpeak.readFloatField(canal, n);\n  }\n}\n\nvoid mostrar() {\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  int primero = pantalla == 0 ? 1 : 4;\n  for (int n = primero; n < primero + 3; n++) {\n    display.printf(\"C%d: %.1f\\n\", n, campos[n]);\n  }\n  display.printf(\"Pulsaciones: %d\", pulsaciones);\n  display.display();\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BOTON, INPUT_PULLUP);\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n  conectarWiFi();\n  ThingSpeak.begin(cliente);\n  leerCanal();\n  mostrar();\n}\n\nvoid loop() {\n  int ahora = digitalRead(BOTON);\n  if (anterior == HIGH && ahora == LOW) {\n    pulsaciones++;\n    mostrar();\n  }\n  anterior = ahora;\n  if (millis() - antesLeer >= 16000) {\n    antesLeer = millis();\n    leerCanal();\n  }\n  if (millis() - antesPantalla >= 3000) {\n    antesPantalla = millis();\n    pantalla = 1 - pantalla;\n    mostrar();\n  }\n  delay(20);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "ThingSpeak_LeerDatos.ino"
+     ],
+     "placa": {
+      "canales": {
+       "1234567": {
+        "1": 321,
+        "2": 24.5,
+        "3": 55,
+        "4": 120,
+        "5": 2048,
+        "6": 40
+       }
+      }
+     },
+     "pruebas": [
+      {
+       "nombre": "Lee el canal y apretás dos veces",
+       "hasta": 9000,
+       "entradas": [
+        {
+         "t": 2000,
+         "boton": true
+        },
+        {
+         "t": 2200,
+         "boton": false
+        },
+        {
+         "t": 4000,
+         "boton": true
+        },
+        {
+         "t": 4200,
+         "boton": false
+        }
+       ],
+       "opts": {
+        "canales": {
+         "1234567": {
+          "1": 321,
+          "2": 24.5,
+          "3": 55,
+          "4": 120,
+          "5": 2048,
+          "6": 40
+         }
+        }
+       },
+       "esperar": [
+        {
+         "k": "display",
+         "re": "C1: 321\\.0 C2: 24\\.5 C3: 55\\.0"
+        },
+        {
+         "k": "display",
+         "re": "C4: 120\\.0 C5: 2048\\.0 C6: 40\\.0"
+        },
+        {
+         "k": "display",
+         "re": "Pulsaciones: 2",
+         "t": 8500
+        },
+        {
+         "k": "display",
+         "re": "Pulsaciones: 3",
+         "no": true
+        }
+       ]
+      }
+     ],
+     "parte": 7
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "id": "mqtt",
+   "titulo": "MQTT y EEPROM",
+   "explicacion": "MQTT: se publica en un topic y le llega a los suscriptos, a través de un broker (PubSubClient en la ESP32). La EEPROM guarda datos que sobreviven a un reinicio.",
+   "corto": "MQTT y EEPROM",
+   "pestana": "MQTT y EEPROM",
+   "leccion": {
+    "que": "**MQTT** es un protocolo liviano de **publicar / suscribirse**: los clientes no se hablan directo sino a través de un **broker** (Mosquitto, HiveMQ). Uno **publica** un mensaje en un **topic** (`utn/tpa/pote`) y le llega a todos los **suscriptos** a ese topic. En la ESP32 se usa la librería **PubSubClient**.\nLa **EEPROM** (emulada en la flash) guarda datos que sobreviven a un reinicio: `EEPROM.write(dir, byte)` y `EEPROM.commit()`.",
+    "consta": [
+     [
+      "El cliente",
+      "`WiFiClient espClient; PubSubClient client(espClient);` y `client.setServer(broker, 1883)`."
+     ],
+     [
+      "Conectarse",
+      "`client.connect(\"idUnico\")` (y reconectar si se cae); `client.loop()` en cada vuelta."
+     ],
+     [
+      "Publicar y suscribirse",
+      "`client.publish(topic, texto)` · `client.subscribe(topic)` y `client.setCallback(funcion)` para lo que llega."
+     ],
+     [
+      "La EEPROM",
+      "`EEPROM.begin(1)`, `EEPROM.read(0)` al arrancar y `EEPROM.write(0, v)` + `EEPROM.commit()` al cambiar."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "mqtt.ino",
+     "origen": "Suscribirse y recibir (lo del ejemplo del profe)",
+     "codigo": "#include <WiFi.h>\n#include <PubSubClient.h>\nWiFiClient espClient;\nPubSubClient client(espClient);\nvoid callback(char* topic, byte* payload, unsigned int largo) {\n  String msg = \"\";\n  for (unsigned int i = 0; i < largo; i++) msg += (char) payload[i];\n}\nvoid setup() {\n  WiFi.begin(\"TU_RED_WIFI\", \"\");\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  client.setServer(\"broker.hivemq.com\", 1883);\n  client.setCallback(callback);\n}\nvoid loop() {\n  if (!client.connected()) {\n    client.connect(\"ESP32_tpa_01\");\n    client.subscribe(\"utn/tpa/led\");\n  }\n  client.loop();\n}",
+     "marcas": [
+      [
+       1,
+       4,
+       4
+      ],
+      [
+       3,
+       5,
+       5
+      ],
+      [
+       3,
+       7,
+       7
+      ],
+      [
+       1,
+       12,
+       12
+      ],
+      [
+       3,
+       13,
+       13
+      ],
+      [
+       2,
+       16,
+       17
+      ],
+      [
+       3,
+       18,
+       18
+      ],
+      [
+       2,
+       20,
+       20
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Sin `client.loop()` no llegan los mensajes ni se mantiene la conexión.",
+     "El callback recibe el mensaje como bytes (`byte* payload`, `unsigned int largo`): hay que armar el String.",
+     "El id del cliente tiene que ser único en el broker: dos placas con el mismo id se desconectan entre sí.",
+     "`EEPROM.write` sin `EEPROM.commit()` no queda guardado. La flash aguanta unas 100.000 escrituras: no grabes en cada vuelta del loop."
+    ],
+    "parcial": "MQTT y la EEPROM están en los ejemplos de clase del profe (MQTT_Publicar_Mosquitto, MQTT_Suscriber…, Memoria_EEPROM) y en el 3º parcial.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "8.1",
+     "tema": "Publicar",
+     "titulo": "publicar el pote",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Publicá la lectura del pote en el topic `utn/tpa/pote` cada **2 s** (el mensaje: solo el número). El broker es `broker.hivemq.com`, puerto 1883, y el id del cliente `ESP32_tpa_01`.\n\nEn la placa, el cuadro **MQTT** muestra lo que publica.",
+     "pasos": [
+      "En el setup: `client.setServer(\"broker.hivemq.com\", 1883);`",
+      "En el if: `client.connect(\"ESP32_tpa_01\");`",
+      "Cada 2 s: `String msg = String(analogRead(POTE)); client.publish(\"utn/tpa/pote\", msg.c_str());`"
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <PubSubClient.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int POTE = 32;\nWiFiClient espClient;\nPubSubClient client(espClient);\nunsigned long antes = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  conectarWiFi();\n  // el broker\n\n}\n\nvoid loop() {\n  if (!client.connected()) {\n    // conectar con el id\n  }\n  client.loop();\n  // cada 2 s, publicar el pote\n\n}\n",
+       "solucion": "#include <WiFi.h>\n#include <PubSubClient.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int POTE = 32;\nWiFiClient espClient;\nPubSubClient client(espClient);\nunsigned long antes = 0;\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  conectarWiFi();\n  client.setServer(\"broker.hivemq.com\", 1883);\n}\n\nvoid loop() {\n  if (!client.connected()) {\n    client.connect(\"ESP32_tpa_01\");\n  }\n  client.loop();\n  if (millis() - antes >= 2000) {\n    antes = millis();\n    String msg = String(analogRead(POTE));\n    client.publish(\"utn/tpa/pote\", msg.c_str());\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "MQTT_Publicar_Mosquitto.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Corre 7 s con el pote en 1500",
+       "hasta": 7000,
+       "opts": {
+        "pote": 1500
+       },
+       "esperar": [
+        {
+         "k": "mqtt",
+         "tipo": "conn"
+        },
+        {
+         "k": "mqtt",
+         "tipo": "pub",
+         "topic": "utn/tpa/pote",
+         "re": "^1500$",
+         "min": 2
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Si otra placa se suscribe a «utn/tpa/#», ¿recibe estos mensajes?",
+       "opciones": [
+        "Sí",
+        "No"
+       ],
+       "valor": "Sí",
+       "motivo": "`#` es el comodín de varios niveles: `utn/tpa/#` incluye `utn/tpa/pote`.",
+       "mostrar": "Sí"
+      }
+     ],
+     "parte": 8
+    },
+    {
+     "id": "8.2",
+     "tema": "Suscribirse",
+     "titulo": "prender el LED desde el broker",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Suscribite al topic `utn/tpa/led`: si llega `ON`, prendé el **LED verde**; si llega `OFF`, apagalo.\n\nProbalo en la placa: en el cuadro **MQTT**, publicá `ON` en `utn/tpa/led` (como otro cliente).",
+     "pasos": [
+      "En el setup: `client.setCallback(callback);`",
+      "Después de conectar: `client.subscribe(\"utn/tpa/led\");`",
+      "En el callback: `if (msg == \"ON\") … else if (msg == \"OFF\") …`"
+     ],
+     "pistas": [
+      "Si no llega nada, revisá que `client.loop()` se llame en cada vuelta."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <PubSubClient.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int VERDE = 23;\nWiFiClient espClient;\nPubSubClient client(espClient);\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid callback(char* topic, byte* payload, unsigned int largo) {\n  String msg = \"\";\n  for (unsigned int i = 0; i < largo; i++) msg += (char) payload[i];\n  // ON prende y OFF apaga\n\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  conectarWiFi();\n  client.setServer(\"broker.hivemq.com\", 1883);\n  // la función que recibe los mensajes\n\n}\n\nvoid loop() {\n  if (!client.connected()) {\n    client.connect(\"ESP32_tpa_02\");\n    // suscribirse\n\n  }\n  client.loop();\n}\n",
+       "solucion": "#include <WiFi.h>\n#include <PubSubClient.h>\n\nconst char* ssid = \"TU_RED_WIFI\";     // tu red (en el simulador conecta con cualquiera)\nconst char* password = \"TU_CLAVE_WIFI\";\n\nconst int VERDE = 23;\nWiFiClient espClient;\nPubSubClient client(espClient);\n\nvoid conectarWiFi() {\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(500);\n    Serial.print(\".\");\n  }\n  Serial.println();\n  Serial.print(\"WiFi conectado: \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid callback(char* topic, byte* payload, unsigned int largo) {\n  String msg = \"\";\n  for (unsigned int i = 0; i < largo; i++) msg += (char) payload[i];\n  if (msg == \"ON\") digitalWrite(VERDE, HIGH);\n  else if (msg == \"OFF\") digitalWrite(VERDE, LOW);\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(VERDE, OUTPUT);\n  conectarWiFi();\n  client.setServer(\"broker.hivemq.com\", 1883);\n  client.setCallback(callback);\n}\n\nvoid loop() {\n  if (!client.connected()) {\n    client.connect(\"ESP32_tpa_02\");\n    client.subscribe(\"utn/tpa/led\");\n  }\n  client.loop();\n}\n"
+      }
+     ],
+     "delProfe": [
+      "MQTT_Suscriber_Mosquitto_graba_ThingSpeak.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Llegan ON y OFF",
+       "hasta": 5000,
+       "entradas": [
+        {
+         "t": 2500,
+         "mqtt": {
+          "topic": "utn/tpa/led",
+          "payload": "ON"
+         }
+        },
+        {
+         "t": 3500,
+         "mqtt": {
+          "topic": "utn/tpa/led",
+          "payload": "OFF"
+         }
+        }
+       ],
+       "esperar": [
+        {
+         "k": "mqtt",
+         "tipo": "sub",
+         "topic": "utn/tpa/led"
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 3000,
+         "v": 1
+        },
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 4500,
+         "v": 0
+        }
+       ]
+      },
+      {
+       "nombre": "Llega otra cosa: no cambia",
+       "hasta": 3500,
+       "entradas": [
+        {
+         "t": 2500,
+         "mqtt": {
+          "topic": "utn/tpa/led",
+          "payload": "HOLA"
+         }
+        }
+       ],
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 23,
+         "t": 3000,
+         "v": 0
+        }
+       ]
+      }
+     ],
+     "parte": 8
+    },
+    {
+     "id": "8.3",
+     "tema": "EEPROM",
+     "titulo": "recordar el LED después de un reinicio",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "El pulsador prende y apaga el **LED azul** (como en la parte 2), y el estado se guarda en la **dirección 0 de la EEPROM**: al prender la placa, el LED arranca como quedó.\n\nLas pruebas prenden la placa con un 1 guardado (tiene que arrancar prendido) y con un 0.",
+     "pasos": [
+      "En el setup: `estado = EEPROM.read(0) == 1 ? 1 : 0;` y `digitalWrite(AZUL, estado);`",
+      "Al cambiar: `EEPROM.write(0, estado); EEPROM.commit();`"
+     ],
+     "pistas": [
+      "Una EEPROM nueva lee 255 en todas las direcciones: por eso se compara con 1."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <EEPROM.h>\n\nconst int AZUL = 2, BOTON = 19;\nint estado = 0;\nint anterior = HIGH;\n\nvoid setup() {\n  Serial.begin(115200);\n  EEPROM.begin(1);\n  pinMode(AZUL, OUTPUT);\n  pinMode(BOTON, INPUT_PULLUP);\n  // leé el estado guardado y ponelo en el LED\n\n}\n\nvoid loop() {\n  int ahora = digitalRead(BOTON);\n  if (anterior == HIGH && ahora == LOW) {\n    estado = !estado;\n    digitalWrite(AZUL, estado);\n    // guardalo en la EEPROM\n\n  }\n  anterior = ahora;\n  delay(20);\n}\n",
+       "solucion": "#include <EEPROM.h>\n\nconst int AZUL = 2, BOTON = 19;\nint estado = 0;\nint anterior = HIGH;\n\nvoid setup() {\n  Serial.begin(115200);\n  EEPROM.begin(1);\n  pinMode(AZUL, OUTPUT);\n  pinMode(BOTON, INPUT_PULLUP);\n  estado = EEPROM.read(0) == 1 ? 1 : 0;\n  digitalWrite(AZUL, estado);\n}\n\nvoid loop() {\n  int ahora = digitalRead(BOTON);\n  if (anterior == HIGH && ahora == LOW) {\n    estado = !estado;\n    digitalWrite(AZUL, estado);\n    EEPROM.write(0, estado);\n    EEPROM.commit();\n  }\n  anterior = ahora;\n  delay(20);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "Memoria_EEPROM.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Arranca con un 1 guardado",
+       "hasta": 600,
+       "opts": {
+        "eeprom": {
+         "0": 1
+        }
+       },
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 300,
+         "v": 1
+        }
+       ]
+      },
+      {
+       "nombre": "Arranca con un 0 y apretás una vez",
+       "hasta": 1500,
+       "entradas": [
+        {
+         "t": 500,
+         "boton": true
+        },
+        {
+         "t": 700,
+         "boton": false
+        }
+       ],
+       "opts": {
+        "eeprom": {
+         "0": 0
+        }
+       },
+       "esperar": [
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 300,
+         "v": 0
+        },
+        {
+         "k": "pin",
+         "pin": 2,
+         "t": 1000,
+         "v": 1
+        },
+        {
+         "k": "eeprom",
+         "dir": 0,
+         "v": 1
+        }
+       ]
+      }
+     ],
+     "respuestas": [
+      {
+       "pregunta": "¿Qué lee EEPROM.read de una dirección que nunca se escribió?",
+       "valor": 255,
+       "motivo": "La flash borrada tiene todos los bits en 1: 0xFF = 255.",
+       "tol": 1,
+       "mostrar": "255"
+      }
+     ],
+     "parte": 8
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,74 @@
+[
+ {
+  "nombre": "caso_01_led_interno.ino"
+ },
+ {
+  "nombre": "caso_02_aumentar_disminuir_led_externo.ino"
+ },
+ {
+  "nombre": "caso_03_control_led_verde_azul.ino"
+ },
+ {
+  "nombre": "caso_04_leer_pot.ino"
+ },
+ {
+  "nombre": "caso_05_rele_pote.ino"
+ },
+ {
+  "nombre": "caso_06_led_on_off_relay.ino"
+ },
+ {
+  "nombre": "caso_07_display_led_externo_relay.ino"
+ },
+ {
+  "nombre": "caso_08_aumentar_disminuir_led-externo.ino"
+ },
+ {
+  "nombre": "caso_09_sensor_touch.ino",
+  "nota": "Sus umbrales (950 y 850) son de otra placa: en el simulador el touch lee 72 suelto y 10 tocado."
+ },
+ {
+  "nombre": "caso_10_display_sensor_tyh.ino"
+ },
+ {
+  "nombre": "caso_13_thing_speak_tyh.ino",
+  "nota": "Manda con delay(2000) + delay(14000): 16 s entre envíos."
+ },
+ {
+  "nombre": "Pulsador_enciende_y_apaga_LED.ino"
+ },
+ {
+  "nombre": "LED_con_Potenciometro_AnalogWrite.ino"
+ },
+ {
+  "nombre": "Display_con_Pote.ino",
+  "h": [
+   "Display_con_Pote/config.h"
+  ]
+ },
+ {
+  "nombre": "Display_con_Pote/config.h"
+ },
+ {
+  "nombre": "ThingSpeak_DHT_Ticker.ino"
+ },
+ {
+  "nombre": "ThingSpeak_LeerDatos.ino",
+  "h": [
+   "ThingSpeak_LeerDatos/secrets.h"
+  ],
+  "nota": "Las claves están en secrets.h (también tapadas)."
+ },
+ {
+  "nombre": "ThingSpeak_LeerDatos/secrets.h"
+ },
+ {
+  "nombre": "MQTT_Publicar_Mosquitto.ino"
+ },
+ {
+  "nombre": "MQTT_Suscriber_Mosquitto_graba_ThingSpeak.ino"
+ },
+ {
+  "nombre": "Memoria_EEPROM.ino"
+ }
+]
