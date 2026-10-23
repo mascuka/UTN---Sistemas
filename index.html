@@ -3357,6 +3357,10 @@ const MATERIAS = {
           { nivel: "esencial", grupo: "El TP integrador", descripcion: "Lo que hay que entregar: dos sketches, uno manda datos a ThingSpeak y habilita OTA, y el otro (subido por OTA) los lee y los muestra.", archivos: [
             { nombre: "TPI 4K3 · ThingSpeak y programación OTA", nota: "Entrega 28/10", detalle: "La consigna: potenciómetro y touch con PWM de 12 bits, DHT22 y display, 6 campos a ThingSpeak cada 16 s, y el segundo sketch por OTA con el pulsador (2 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/04-tpi-4k3-thingspeak-y-ota.pdf" }
           ] },
+          { nivel: "esencial", grupo: "El TPI resuelto (grupo 1)", descripcion: "Cómo lo resolvió el grupo: los dos sketches y la guía que explica cada parte, el OTA y lo que falta probar en la placa. Las claves están tapadas: poné las tuyas. En la Práctica (parte 9) se corren en la placa simulada y están las preguntas para la defensa.", archivos: [
+            { nombre: "Guía técnica del TPI", detalle: "Requisitos y dónde está cada uno en el código, pines, los 6 campos de ThingSpeak, cada función de los dos sketches, OTA y firewall, y qué se probó en Wokwi y en la placa (19 págs.)", tipo: "PDF", url: "material/tecnologias-para-la-automatizacion/tp-esp32/07-tpi-resuelto-grupo-1-guia-tecnica.pdf" },
+            { nombre: "Los dos sketches", detalle: "sketch_envio_grupo_1 (pote, touch, DHT22, display, ThingSpeak cada 16 s y ArduinoOTA) y sketch_lectura_grupo_1 (lee el canal por HTTP con ArduinoJson y cuenta pulsaciones), cada uno en su carpeta, más la guía en Markdown", tipo: "ZIP", url: "material/tecnologias-para-la-automatizacion/tp-esp32/tpi-resuelto-grupo-1.zip" }
+          ] },
           { nivel: "esencial", grupo: "Instalación (en este orden)", descripcion: "Para programar la placa real desde la PC.", archivos: [
             { n: 1, nombre: "Arduino IDE 2 · instalación y primeros pasos", detalle: "Guía oficial de Arduino", tipo: "LINK", url: "https://docs.arduino.cc/software/ide-v2/tutorials/getting-started-ide-v2/" },
             { n: 2, nombre: "Agregar la placa ESP32 al Arduino IDE", detalle: "Random Nerd Tutorials · paso a paso en Windows", tipo: "LINK", url: "https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/" },
@@ -6755,9 +6759,10 @@ function pintarDerEjp(){
 /* Las pestañas: los archivos del ejercicio y, en Octave, la carpeta del profe */
 function pintarTabsEjp(){
   const ej = ejp.ej, as = archivosEj(ej), a = as[ejp.arch] || as[0], viendo = ejp.sol === 2 && !a.soloLectura;
-  const p0 = as.findIndex(x => x.profe);
   const esp = ej.tipo === "esp32";
-  $("#ejpTabs").innerHTML = as.map((x, i) => `${i === p0 ? `<span class="pr-carpeta" title="${esp ? "Los casos resueltos del profe, tal cual (con las claves tapadas): miralos o correlos en la placa" : "Los .m del ZIP del profe, tal cual: ya están cargados, llamalos desde tu código"}">${esp ? "Del profe" : "Carpeta del profe"}</span>` : ""}<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
+  const etiqueta = x => x.profe ? x.profe.etiqueta || (esp ? "Del profe" : "Carpeta del profe") : null;
+  const titulo = x => x.profe.etiqueta ? "Para mirar o correr en la placa (con las claves tapadas)" : esp ? "Los casos resueltos del profe, tal cual (con las claves tapadas): miralos o correlos en la placa" : "Los .m del ZIP del profe, tal cual: ya están cargados, llamalos desde tu código";
+  $("#ejpTabs").innerHTML = as.map((x, i) => `${x.profe && etiqueta(x) !== etiqueta(as[i - 1] || {}) ? `<span class="pr-carpeta" title="${titulo(x)}">${esc(etiqueta(x))}</span>` : ""}<button class="pr-tab ${i === ejp.arch ? "on" : ""} ${x.soloLectura ? "dato" : ""} ${x.profe ? "profe" : ""}" data-ejp-arch="${i}"${x.soloLectura ? ` title="${x.profe ? "Del profe: para mirar" : "Para mirar: no se edita"}"` : ""}>${esc(x.nombre)}</button>`).join("")
     + (ejp.sol && !a.soloLectura ? `<span class="ejp-ver"><button class="${viendo ? "" : "on"}" data-ejp-ed="tuyo">Mi código</button><button class="${viendo ? "on" : ""}" data-ejp-ed="sol">Solución</button></span>` : `<span class="ejp-leng">${esc(NOMBRE_LENG[lengEj(ej)] || "")}</span>`);
   centrarEn($("#ejpTabs"), $("#ejpTabs .pr-tab.on"));
   return { ej, as, a, viendo };
@@ -6766,7 +6771,8 @@ function pintarEdEjp(){
   const { ej, a, viendo } = pintarTabsEjp(), leng = lengEj(ej);
   if(a.profe){
     ejp.ed = null;
-    const nota = ej.tipo === "esp32" ? `📁 Caso resuelto del profe, tal cual está en su ZIP (las claves, tapadas). Es la base: miralo y adaptalo en tu sketch. Con esta pestaña abierta, ▶ Ejecutar lo corre en la placa${a.profe.nota ? `. ${esc(a.profe.nota)}` : "."}`
+    const nota = a.profe.etiqueta ? `📁 ${esc(a.profe.nota || a.profe.etiqueta)} Con esta pestaña abierta, ▶ Ejecutar lo corre en la placa.`
+      : ej.tipo === "esp32" ? `📁 Caso resuelto del profe, tal cual está en su ZIP (las claves, tapadas). Es la base: miralo y adaptalo en tu sketch. Con esta pestaña abierta, ▶ Ejecutar lo corre en la placa${a.profe.nota ? `. ${esc(a.profe.nota)}` : "."}`
       : `📁 Función del profe, tal cual está en su ZIP. Ya está cargada: llamala desde tu código${a.profe.nota ? `. ${esc(a.profe.nota)}` : "."}`;
     $("#ejpEd").innerHTML = `<div class="ed lectura ejp-sol ejp-profe"><p class="ejp-profe-nota">${nota}</p>${codigoLecturaEjp(a.inicial, null, leng).replace(/^<div class="ed lectura ejp-sol">|<\/div>$/g, "")}</div>`;
     return;
@@ -6857,7 +6863,7 @@ function cargarESP32(){
 /* El sketch que se corre: el .ino mío (o el del profe que se está mirando, si "delProfe") y los .h del ejercicio */
 function codigoEspEj(ej, delProfe = false){
   const t = codigoEjp(ej), as = archivosEj(ej), a = as[ejp.arch] || as[0];
-  if(delProfe && a && a.profe) return { codigo: a.inicial, archivos: (a.profe.h || []).map(n => ejp.profe.find(x => x.nombre === n)).filter(Boolean).map(x => ({ nombre: x.nombre, texto: x.texto })), nombre: a.nombre, profe: true };
+  if(delProfe && a && a.profe) return { codigo: a.inicial, archivos: (a.profe.h || []).map(n => ejp.profe.find(x => x.nombre === n)).filter(Boolean).map(x => ({ nombre: x.nombre, texto: x.texto })), nombre: a.nombre, profe: true, de: a.profe.etiqueta ? "del grupo" : "del profe" };
   const ed = editablesEj(ej), ino = ed.find(x => /\.ino$/.test(x.nombre)) || ed[0];
   const archivos = as.filter(x => x !== ino && !x.profe && /\.(h|cpp)$/.test(x.nombre)).map(x => ({ nombre: x.nombre, texto: x.soloLectura ? x.inicial : t[x.nombre] }));
   return { codigo: t[ino.nombre], archivos, nombre: ino.nombre, profe: false };
@@ -6876,8 +6882,8 @@ async function ejecutarPlaca(){
   placa = { ej, sim, c, E, pausa: false, ultimo: performance.now() };
   ejp.tab = "placa";
   pintarIzqEjp();
-  if(sim.error) resEjp(`<div class="pr-mal"><b>${c.profe ? `El ${esc(c.nombre)} del profe no compila en el simulador` : "Tu sketch no compila"}</b><pre>${esc(errorEsp(sim.error, c))}</pre></div>`);
-  else resEjp(`<div class="pla-corre"><i></i><span>${c.profe ? `Corre <b>${esc(c.nombre)}</b>, el del profe.` : "Tu sketch corre en la placa."} Mirala ${innerWidth > 900 ? "a la izquierda" : "arriba"}: apretá el pulsador, mové el pote, escribí en el monitor serie.</span><button class="linkbtn" data-ejp-tab="placa">Ver la placa</button></div>`);
+  if(sim.error) resEjp(`<div class="pr-mal"><b>${c.profe ? `El ${esc(c.nombre)} ${c.de} no compila en el simulador` : "Tu sketch no compila"}</b><pre>${esc(errorEsp(sim.error, c))}</pre></div>`);
+  else resEjp(`<div class="pla-corre"><i></i><span>${c.profe ? `Corre <b>${esc(c.nombre)}</b>, el ${c.de}.` : "Tu sketch corre en la placa."} Mirala ${innerWidth > 900 ? "a la izquierda" : "arriba"}: apretá el pulsador, mové el pote, escribí en el monitor serie.</span><button class="linkbtn" data-ejp-tab="placa">Ver la placa</button></div>`);
   if(innerWidth <= 900) $("#ejpIzq").scrollIntoView({ behavior: "smooth", block: "start" });
   placa.raf = requestAnimationFrame(cuadroPlaca);
 }
@@ -6891,7 +6897,7 @@ function cuadroPlaca(){
   if(!placa.pausa && !s.error && !s.terminado){
     const antes = s.error;
     s.avanzar(s.t + dt, Infinity, 14);
-    if(s.error && !antes) resEjp(`<div class="pr-mal"><b>${placa.c.profe ? "El sketch del profe se cortó" : "Tu sketch se cortó"}</b><pre>${esc(errorEsp(s.error, placa.c))}</pre></div>`);
+    if(s.error && !antes) resEjp(`<div class="pr-mal"><b>${placa.c.profe ? `El sketch ${placa.c.de} se cortó` : "Tu sketch se cortó"}</b><pre>${esc(errorEsp(s.error, placa.c))}</pre></div>`);
   }
   pintarPlaca();
   placa.raf = requestAnimationFrame(cuadroPlaca);
@@ -6911,7 +6917,7 @@ function viewPlaca(){
         ${on ? `<button class="pr-chico" data-placa="pausa" id="plPausa">${placa.pausa ? "▶ Seguir" : "⏸ Pausa"}</button><button class="pr-chico" data-placa="reiniciar" title="Vuelve a cargar el código y arranca de cero">↺ Reiniciar</button>`
           : `<button class="pr-fuerte" data-ejp="ejecutar">▶ Prender con mi sketch</button>`}
       </div>
-      ${on && placa.c.profe ? `<p class="pla-quien">Corre <b>${esc(placa.c.nombre)}</b>, el del profe. Para correr el tuyo, volvé a tu pestaña y tocá ▶ Ejecutar.</p>` : ""}
+      ${on && placa.c.profe ? `<p class="pla-quien">Corre <b>${esc(placa.c.nombre)}</b>, el ${placa.c.de}. Para correr el tuyo, volvé a tu pestaña y tocá ▶ Ejecutar.</p>` : ""}
       <div class="pla-err" id="plErr" hidden></div>
       <div class="pla-nube" id="plNube" hidden></div>
       <div class="pla-tablero">
@@ -7022,7 +7028,7 @@ function pintarNube(s){
 function entradaPlaca(x){ if(placa && placa.ej === (ejp && ejp.ej) && !placa.sim.error) placa.sim.entrada(x); }
 function apretarPlaca(t, si){
   if(t.dataset.placaBoton != null) entradaPlaca({ boton: si });
-  else entradaPlaca({ touch: { [t.dataset.placaTouch]: si ? 10 : 72 } });
+  else entradaPlaca({ touch: { [t.dataset.placaTouch]: si ? ESP32.TOUCH_TOCADO : ESP32.TOUCH_SUELTO } });
   t.classList.toggle("on", si);
 }
 document.addEventListener("pointerdown", e => {

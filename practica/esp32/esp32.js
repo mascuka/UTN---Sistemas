@@ -19,6 +19,7 @@ const err = (m, t) => { throw new CppErr(m, t && t.linea, t && t.archivo); };
 
 /* ================= Léxico ================= */
 const OPS = ["<<=", ">>=", "...", "==", "!=", "<=", ">=", "&&", "||", "++", "--", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<", ">>", "->", "::"];
+const ALTERNATIVOS = { and: "&&", or: "||", not: "!", not_eq: "!=" };   // and, or, not de C++
 function lexico(src, archivo){
   const toks = [], n = src.length;
   let i = 0, linea = 1, inicio = true;
@@ -55,7 +56,7 @@ function lexico(src, archivo){
     }
     if(/[A-Za-z_]/.test(c)){
       let j = i + 1; while(j < n && /[A-Za-z0-9_]/.test(src[j])) j++;
-      const w = src.slice(i, j), alt = { and: "&&", or: "||", not: "!", not_eq: "!=" }[w];
+      const w = src.slice(i, j), alt = Object.hasOwn(ALTERNATIVOS, w) ? ALTERNATIVOS[w] : null;
       if(alt) add("op", alt); else add("id", w);
       i = j; continue;
     }
@@ -83,6 +84,14 @@ function lexico(src, archivo){
 }
 
 /* ================= Preprocesador: #define, #include "x.h" y #ifdef ================= */
+/* La condición de un #if: defined(X), las macros por su valor (las que no están valen 0) y una cuenta con números */
+function condicionIf(txt, macros){
+  let c = txt.replace(/\/\/.*$|\/\*.*?\*\//g, "").replace(/defined\s*\(?\s*(\w+)\s*\)?/g, (m, n) => macros.has(n) ? "1" : "0");
+  for(let i = 0; i < 5; i++) c = c.replace(/[A-Za-z_]\w*/g, n => { const m = macros.get(n); return m && !m.params ? (m.cuerpo.map(t => t.v).join(" ") || "1") : "0"; });
+  c = c.replace(/(\d+)[uUlL]+/g, "$1");
+  if(!/^[\d\s()+\-*/%<>=!&|^~?:]*$/.test(c) || !c.trim()) return true;
+  try { return !!Function(`"use strict"; return (${c});`)(); } catch(e){ return true; }
+}
 function preprocesar(texto, nombre, archivos, libs){
   const macros = new Map();
   const salida = [];
@@ -95,7 +104,7 @@ function preprocesar(texto, nombre, archivos, libs){
       const m = /^(\w+)\s*(.*)$/.exec(t.v) || ["", "", ""];
       const d = m[1], resto = m[2];
       if(d === "ifdef" || d === "ifndef"){ const def = macros.has(resto.trim()); pila.push(d === "ifdef" ? def : !def); continue; }
-      if(d === "if"){ pila.push(!/^0\b/.test(resto.trim())); continue; }
+      if(d === "if"){ pila.push(condicionIf(resto, macros)); continue; }
       if(d === "else"){ pila[pila.length - 1] = !pila[pila.length - 1]; continue; }
       if(d === "elif"){ pila[pila.length - 1] = false; continue; }
       if(d === "endif"){ pila.pop(); continue; }
@@ -158,15 +167,17 @@ function preprocesar(texto, nombre, archivos, libs){
 
 /* ================= Tipos ================= */
 const ENTEROS = new Set(["int", "long", "short", "char", "byte", "word", "bool", "boolean", "size_t", "uint8_t", "uint16_t", "uint32_t", "uint64_t", "int8_t", "int16_t", "int32_t", "int64_t", "unsigned", "signed"]);
-const PALABRAS_TIPO = new Set([...ENTEROS, "float", "double", "void", "String", "auto", "const", "volatile", "static", "IRAM_ATTR", "unsigned", "signed", "constexpr", "inline", "extern", "struct", "IPAddress"]);
+const PALABRAS_TIPO = new Set([...ENTEROS, "float", "double", "void", "String", "auto", "const", "volatile", "static", "IRAM_ATTR", "unsigned", "signed", "constexpr", "inline", "extern", "struct", "IPAddress",
+  "portMUX_TYPE", "DeserializationError", "JsonVariant", "JsonObject", "JsonArray"]);
 // Las clases de las librerías que entiende el simulador
-const CLASES = new Set(["WiFiConnectionHandler", "DHT", "Adafruit_SH1106G", "Adafruit_SSD1306", "WiFiClient", "WiFiClientSecure", "PubSubClient", "Servo", "Ticker", "WiFiServer", "HTTPClient", "UniversalTelegramBot", "WebServer", "String", "IPAddress"]);
+const CLASES = new Set(["WiFiConnectionHandler", "DHT", "Adafruit_SH1106G", "Adafruit_SSD1306", "WiFiClient", "WiFiClientSecure", "PubSubClient", "Servo", "Ticker", "WiFiServer", "HTTPClient", "UniversalTelegramBot", "WebServer", "String", "IPAddress", "DynamicJsonDocument", "StaticJsonDocument", "JsonDocument"]);
 const LIBRERIAS_CONOCIDAS = new Set(["Arduino", "WiFi", "DHT", "Adafruit_Sensor", "Adafruit_GFX", "Adafruit_SH110X", "Adafruit_SSD1306", "Wire", "SPI", "ThingSpeak", "PubSubClient", "EEPROM", "Ticker", "ESP32Servo", "Servo", "HTTPClient", "WiFiClientSecure", "UniversalTelegramBot", "ArduinoJson", "WebServer", "ArduinoOTA", "ElegantOTA", "AsyncElegantOTA", "Update", "ESPmDNS", "splash", "ArduinoIoTCloud", "Arduino_ConnectionHandler", "thingProperties", "AsyncTCP", "ESPAsyncWebServer", "math", "stdio", "string"]);
 const esEnteroT = t => t && ENTEROS.has(t.replace(/^unsigned /, "").replace(/^signed /, "").replace(/ int$/, "")) || /^unsigned/.test(t || "");
 const esNumT = t => esEnteroT(t) || t === "float" || t === "double";
 const sinSignoT = t => /^unsigned|^uint|^size_t|^byte|^word/.test(t || "");
 /* Convierte un valor al tipo de la variable (como en C: corta los decimales y da la vuelta) */
 function aTipo(v, tipo){
+  if(v && v.clase === "JsonVariant" && tipo && tipo !== "auto" && tipo !== "JsonVariant") v = v.como(tipo);
   if(!tipo || tipo === "auto") return v;
   if(tipo === "String") return aString(v);
   if(tipo === "char*" || tipo === "IPAddress") return typeof v === "string" ? v : aString(v);
@@ -250,7 +261,7 @@ function sintaxis(toks){
     if(PALABRAS_TIPO.has(t.v) || clases.has(t.v)) return true;
     // Una clase que no conozco: "Clase nombre(" o "Clase nombre;" o "Clase nombre ="
     const s = ver(d + 1), s2 = ver(d + 2);
-    return s.t === "id" && !PALABRAS_TIPO.has(s.v) && s2.t === "op" && ["(", "=", ";", ",", "["].includes(s2.v) && /^[A-Z]/.test(t.v);
+    return s.t === "id" && !PALABRAS_TIPO.has(s.v) && s2.t === "op" && ["(", "=", ";", ",", "["].includes(s2.v) && (/^[A-Z]/.test(t.v) || /_t$/.test(t.v));
   }
   function tipo(){
     const quals = [];
@@ -262,7 +273,13 @@ function sintaxis(toks){
       if(v === "long"){ tomar(); largos++; continue; }
       if(v === "short"){ tomar(); base = "short"; continue; }
       if(base || (largos && !["int", "double"].includes(v)) || (uns && !["int", "char", "long", "short"].includes(v))) break;
-      if(PALABRAS_TIPO.has(v) || clases.has(v) || /^[A-Z]/.test(v)){ base = tomar().v; if(!PALABRAS_TIPO.has(base)) clases.add(base); continue; }
+      if(PALABRAS_TIPO.has(v) || clases.has(v) || /^[A-Z]/.test(v) || /_t$/.test(v)){
+        base = tomar().v;
+        if(!PALABRAS_TIPO.has(base) && !/_t$/.test(base)) clases.add(base);
+        // StaticJsonDocument<200>: los argumentos de la plantilla no importan
+        if(op("<") && !PALABRAS_TIPO.has(base)){ let prof = 0; do { if(op("<")) prof++; if(op(">")) prof--; if(op(">>")) prof -= 2; if(es("eof")) break; tomar(); } while(prof > 0); }
+        continue;
+      }
       break;
     }
     if(!base && !uns && !largos) err("falta el tipo", ver());
@@ -324,7 +341,12 @@ function sintaxis(toks){
     for(;;){
       const t = ver();
       if(op("(")){ tomar(); const args = []; while(!op(")")){ args.push(asignacion()); if(!op(")")) espera(",", "entre los argumentos va una coma"); } tomar(); e = { k: "call", f: e, args, linea: t.linea, archivo: t.archivo }; continue; }
-      if(op(".") || op("->")){ tomar(); e = { k: "miembro", o: e, n: nombre("falta el nombre del método"), linea: t.linea, archivo: t.archivo }; continue; }
+      if(op(".") || op("->")){
+        tomar(); e = { k: "miembro", o: e, n: nombre("falta el nombre del método"), linea: t.linea, archivo: t.archivo };
+        // doc["x"].as<float>(), .is<int>(): el tipo va en el nodo
+        if(op("<") && ["as", "is", "to"].includes(e.n)){ tomar(); e.tpl = tipo().t; espera(">"); }
+        continue;
+      }
       if(op("::")){ tomar(); e = { k: "id", n: (e.n || "") + "::" + nombre(), linea: t.linea, archivo: t.archivo }; continue; }
       if(op("[")){ tomar(); const i = exprComa(); espera("]"); e = { k: "idx", a: e, i, linea: t.linea, archivo: t.archivo }; continue; }
       if(op("++") || op("--")){ tomar(); e = { k: "post", op: t.v, a: e, linea: t.linea, archivo: t.archivo }; continue; }
@@ -336,6 +358,10 @@ function sintaxis(toks){
     if(t.t === "num") return { k: "num", v: t.v, flot: t.flot, sinSigno: t.sinSigno, linea: t.linea, archivo: t.archivo };
     if(t.t === "chr") return { k: "chr", v: t.v, linea: t.linea, archivo: t.archivo };
     if(t.t === "str"){ let s = t.v; while(es("str")) s += tomar().v; return { k: "str", v: s, linea: t.linea, archivo: t.archivo }; }
+    if(t.t === "id" && /^(static|reinterpret|const|dynamic)_cast$/.test(t.v) && op("<")){
+      tomar(); const ty = tipo(); espera(">"); espera("("); const a = exprComa(); espera(")");
+      return { k: "cast", t: ty.t, a, linea: t.linea, archivo: t.archivo };
+    }
     if(t.t === "id") return { k: "id", n: t.v, linea: t.linea, archivo: t.archivo };
     if(t.t === "op" && t.v === "("){ const e = exprComa(); espera(")"); return e; }
     if(t.t === "op" && t.v === "["){
@@ -477,9 +503,9 @@ const CONST = {
   DHT11: 11, DHT22: 22, DHT21: 21, AM2301: 21,
   SH110X_WHITE: 1, SH110X_BLACK: 0, SH110X_INVERSE: 2, SSD1306_WHITE: 1, SSD1306_BLACK: 0, SSD1306_INVERSE: 2, WHITE: 1, BLACK: 0, SSD1306_SWITCHCAPVCC: 2,
   T0: 4, T1: 0, T2: 2, T3: 15, T4: 13, T5: 12, T6: 14, T7: 27, T8: 33, T9: 32, A0: 36, A3: 39, A4: 32, A5: 33, A6: 34, A7: 35,
-  GPIO_NUM_0: 0, LED_ROJO: 23, Wire: "Wire", SPI: "SPI", HTTP_GET: 1, HTTP_POST: 3, U_FLASH: 0, U_SPIFFS: 100,
+  GPIO_NUM_0: 0, LED_ROJO: 23, HTTP_GET: 1, HTTP_POST: 3, HTTP_CODE_OK: 200, HTTPC_ERROR_CONNECTION_REFUSED: -1, portMUX_INITIALIZER_UNLOCKED: 0, U_FLASH: 0, U_SPIFFS: 100,
   __DATE__: "Oct 22 2026", __TIME__: "10:00:00", TELEGRAM_CERTIFICATE_ROOT: "-----BEGIN CERTIFICATE-----", READ: 1, WRITE: 2, READ_WRITE: 3,
-  INT8_MAX: 127, INT16_MAX: 32767, INT32_MAX: 2147483647, UINT32_MAX: 4294967295, ULONG_MAX: 4294967295, LONG_MAX: 2147483647
+  NAN: NaN, INFINITY: Infinity, WL_NO_SHIELD: 255, INT8_MAX: 127, INT16_MAX: 32767, INT32_MAX: 2147483647, UINT32_MAX: 4294967295, ULONG_MAX: 4294967295, LONG_MAX: 2147483647
 };
 for(let i = 0; i <= 39; i++) CONST["GPIO_NUM_" + i] = i;
 
@@ -499,6 +525,9 @@ const SOLO_ENTRADA = new Set([34, 35, 36, 37, 38, 39]);
 const ADC2 = new Set([0, 2, 4, 12, 13, 14, 15, 25, 26, 27]);
 
 /* ================= Intérprete ================= */
+// El touch en el simulador: 1200 suelto y 10 tocado. Así anda con cualquier umbral razonable: los 40 de los ejemplos
+// viejos y los 950 / 850 del caso 9 (en la placa de verdad depende del cable: hay que medirlo con touchRead)
+const TOUCH_SUELTO = 1200, TOUCH_TOCADO = 10;
 const COSTO = 0.01;   // ms virtuales por sentencia (la ESP32 es más rápida: alcanza para que millis() avance)
 const BREAK = { s: "break" }, CONTINUE = { s: "continue" };
 class Retorno { constructor(v){ this.v = v; } }
@@ -610,7 +639,7 @@ class Sim {
       if(it.modo === 3 || (it.modo === 2 && b === 0) || (it.modo === 1 && b === 1)) this.pendientes.push(it.fn);
     }
   }
-  touchVal(pin){ return this.ent.touch[pin] ?? 72; }
+  touchVal(pin){ return this.ent.touch[pin] ?? TOUCH_SUELTO; }
   leerPin(pin){
     const modo = this.modos[pin];
     if(modo === 3) return this.salidas[pin] || 0;   // una salida: lee lo que escribió
@@ -728,7 +757,7 @@ class Sim {
     }
     err(`no sé ejecutar "${s.k}"`, s);
   }
-  verdad(v){ return typeof v === "string" ? true : !!v && !Number.isNaN(v); }
+  verdad(v){ if(v && v.clase === "DeserializationError") return !v.ok; if(v && v.clase === "JsonVariant") return !!v.v; return typeof v === "string" ? true : !!v && !Number.isNaN(v); }
   declarar(d, sc){
     if(d.estatico && sc.padre){
       // static adentro de una función: se inicializa una sola vez
@@ -789,7 +818,7 @@ class Sim {
       case "num": return e.flot ? "double" : e.sinSigno ? "unsigned long" : "int";
       case "chr": return "char";
       case "str": return "char*";
-      case "id": { const x = this.buscar(e.n, sc); if(x) return x.arr ? x.t : x.t; if(e.n === "true" || e.n === "false") return "bool"; if(e.n in CONST) return typeof CONST[e.n] === "number" && !Number.isInteger(CONST[e.n]) ? "double" : "int"; return "int"; }
+      case "id": { const x = this.buscar(e.n, sc); if(x) return x.arr ? x.t : x.t; if(e.n === "true" || e.n === "false") return "bool"; if(Object.hasOwn(CONST, e.n)) return typeof CONST[e.n] === "number" && !Number.isInteger(CONST[e.n]) ? "double" : "int"; return "int"; }
       case "cast": return e.t;
       case "tern": { const a = this.tipoDe(e.a, sc), b = this.tipoDe(e.b, sc); return a === "String" || b === "String" ? "String" : !esEnteroT(a) || !esEnteroT(b) ? (esNumT(a) && esNumT(b) ? "double" : a) : a; }
       case "un": return e.op === "!" ? "bool" : this.tipoDe(e.a, sc);
@@ -832,6 +861,7 @@ class Sim {
       if(m === "charAt") return "char";
       if(["connected", "connect", "equals", "startsWith", "endsWith", "begin", "publish", "subscribe", "equalsIgnoreCase", "isEmpty"].includes(m)) return "bool";
       if(m === "toInt" || m === "length" || m === "indexOf" || m === "lastIndexOf") return "long";
+      if((m === "as" || m === "to") && e.f.tpl) return e.f.tpl;
       return "int";
     }
     return "int";
@@ -848,7 +878,7 @@ class Sim {
       case "id": {
         const x = this.buscar(e.n, sc);
         if(x) return x.arr ? x.v : x.v;
-        if(e.n in CONST) return CONST[e.n];
+        if(Object.hasOwn(CONST, e.n)) return CONST[e.n];
         if(this.funcs.has(e.n)) return { funcion: this.funcs.get(e.n) };
         if(OBJETOS_GLOBALES.has(e.n)) return this.global(e.n);
         err(`'${e.n}' no está declarado`, e);
@@ -889,7 +919,9 @@ class Sim {
         return this.binaria(e.op, this.ev(e.a, sc), this.ev(e.b, sc), ta, tb, e, this.tipoDe(e, sc));
       }
       case "idx": {
-        const a = this.ev(e.a, sc), i = Math.trunc(this.num(this.ev(e.i, sc), e));
+        const a = this.ev(e.a, sc);
+        if(a && (a.clase === "JsonDocument" || a.clase === "JsonVariant")) return variante(a.clase === "JsonDocument" ? a.datos : a.v, this.ev(e.i, sc));
+        const i = Math.trunc(this.num(this.ev(e.i, sc), e));
         if(typeof a === "string"){ if(i < 0 || i > a.length) err(`índice ${i} afuera del texto (largo ${a.length})`, e); return i === a.length ? 0 : a.charCodeAt(i); }
         if(Array.isArray(a)){ if(i < 0 || i >= a.length) err(`índice ${i} afuera del arreglo (tiene ${a.length} lugares): en la placa esto puede colgarla`, e); return a[i]; }
         err("eso no es un arreglo", e);
@@ -966,9 +998,9 @@ class Sim {
     if(x && x.v && x.v.funcion) return this.correrSync(x.v.funcion, e.args.map(a => this.evArg(a, sc)));
     const f = this.funcs.get(n);
     if(f) return this.correrSync(f, e.args.map(a => this.evArg(a, sc)));
-    if(n in ESCRIBEN) return ESCRIBEN[n].call(this, e.args, sc, e);
+    if(Object.hasOwn(ESCRIBEN, n)) return ESCRIBEN[n].call(this, e.args, sc, e);
     if(CLASES.has(n) || n === "String"){ const args = e.args.map(a => this.ev(a, sc)); if(n === "String") return args.length > 1 && typeof args[0] === "number" ? (esEnteroT(this.tipoDe(e.args[0], sc)) && args[1] !== undefined ? Math.trunc(args[0]).toString(args[1]) : flotante(args[0], args[1])) : aString(args[0] ?? "", this.tipoDe(e.args[0] || { k: "str" }, sc)); return this.nuevoObjeto(n, args, e); }
-    const b = ARDUINO[n];
+    const b = Object.hasOwn(ARDUINO, n) ? ARDUINO[n] : null;
     if(!b) err(`'${n}' no existe${/^[A-Z]/.test(n) ? "" : " (o no está en el simulador)"}`, e);
     return b.call(this, e.args.map(a => this.ev(a, sc)), e, sc);
   }
@@ -989,7 +1021,7 @@ class Sim {
   }
   global(n){ this.objs = this.objs || {}; if(!this.objs[n]){ const o = crearGlobal(n, this); this.objs[n] = TOLERANTES.has(o.clase) ? tolerante(o, this) : o; } return this.objs[n]; }
   nuevoObjeto(clase, args, nodo){
-    const C = CONSTRUCTORES[clase];
+    const C = Object.hasOwn(CONSTRUCTORES, clase) ? CONSTRUCTORES[clase] : null;
     if(!C) err(`la clase ${clase} no está en el simulador`, nodo);
     const o = C(args, this, nodo);
     return o && TOLERANTES.has(o.clase) ? tolerante(o, this) : o;
@@ -1078,6 +1110,17 @@ const ARDUINO = {
   },
   randomSeed(a){ this.azar = Math.trunc(a[0]) & 0x7fffffff; },
   F(a){ return a[0]; },
+  portENTER_CRITICAL(){}, portEXIT_CRITICAL(){}, portENTER_CRITICAL_ISR(){}, portEXIT_CRITICAL_ISR(){},
+  // ArduinoJson: deserializeJson(doc, texto) llena el documento; el error es falso cuando salió bien
+  deserializeJson(a){
+    const doc = a[0], txt = aString(a[1] ?? "");
+    if(!doc || doc.clase !== "JsonDocument") err("deserializeJson: el primero es el JsonDocument");
+    let ok = true;
+    try { doc.datos = JSON.parse(txt); } catch(e){ ok = false; doc.datos = null; }
+    const msg = ok ? "Ok" : txt.trim() ? "InvalidInput" : "EmptyInput";
+    return { clase: "DeserializationError", ok, c_str(){ return msg; }, aTexto(){ return msg; } };
+  },
+  serializeJson(a, e, sc){ const t = JSON.stringify(a[0] && a[0].datos !== undefined ? a[0].datos : null); return t; },
   digitalPinToInterrupt(a){ return a[0]; },
   attachInterrupt(a, e){
     const [pin, fn, modo] = a;
@@ -1089,10 +1132,7 @@ const ARDUINO = {
   touchAttachInterrupt(a, e){
     const [pin, fn, umbral] = a;
     if(!fn || !fn.funcion) err("touchAttachInterrupt: el segundo argumento es la función", e);
-    // En el simulador el touch lee 72 suelto y 10 tocado (en la placa, depende del cable): un umbral más alto que lo
-    // que lee suelto (como los 950 y 850 del caso 9, medidos en otra placa) se toma como 40
-    let u = umbral ?? 40;
-    if(u >= 72){ this.aviso(`touchAttachInterrupt con umbral ${u}: en el simulador el touch lee 72 suelto y 10 tocado, así que se usa 40 (en tu placa, medilo con touchRead)`); u = 40; }
+    const u = umbral ?? 40;
     this.interrupciones.push({ pin, fn: fn.funcion, umbral: u, touch: true });
   },
   temperatureRead(){ return 47.8; },
@@ -1189,8 +1229,8 @@ function crearGlobal(n, sim){
     case "ArduinoCloud": return { clase: n, begin(){ sim.aviso("Arduino IoT Cloud no se simula: se conecta con el Device ID y la Device Key"); }, update(){}, addCallback(){}, printDebugInfo(){} };
   }
 }
-function escribirTS(sim, canal, campos, e, varios){
-  if(!sim.ts.iniciado) err("ThingSpeak: falta ThingSpeak.begin(client) en el setup", e);
+function escribirTS(sim, canal, campos, e, varios, porHttp){
+  if(!sim.ts.iniciado && !porHttp) err("ThingSpeak: falta ThingSpeak.begin(client) en el setup", e);
   if(sim.wifiEstado() !== 3){ sim.h.thingspeak.push({ t: sim.t, canal, campos, codigo: -301 }); sim.aviso("ThingSpeak: el WiFi no está conectado (código -301)"); return -301; }
   if(!Object.keys(campos).length){ sim.h.thingspeak.push({ t: sim.t, canal, campos, codigo: -210 }); return -210; }
   const dt = sim.t - sim.ts.ultimo;
@@ -1259,7 +1299,15 @@ const CONSTRUCTORES = {
   },
   WiFiServer(args, sim){ return { clase: "WiFiServer", puerto: args[0] || 80, begin(){ sim.aviso(`Servidor web en el puerto ${this.puerto}: en el simulador no llegan pedidos del navegador`); }, available(){ return { clase: "WiFiClient", connected(){ return false; }, available(){ return 0; }, stop(){}, println(){}, print(){}, readStringUntil(){ return ""; }, read(){ return -1; } }; } }; },
   WebServer(args, sim){ return { clase: "WebServer", on(){}, begin(){ sim.aviso("WebServer: en el simulador no llegan pedidos del navegador"); }, handleClient(){}, send(){}, arg(){ return ""; }, uri(){ return "/"; } }; },
-  HTTPClient(args, sim){ return { clase: "HTTPClient", begin(a){ this.url = aString(a[0]); return true; }, GET(){ sim.h.avisos.push({ t: sim.t, s: `HTTP GET ${this.url} (simulado: 200)` }); return 200; }, POST(){ return 200; }, getString(){ return "{}"; }, end(){}, addHeader(){} }; },
+  HTTPClient(args, sim){
+    return { clase: "HTTPClient", url: "", cuerpo: "",
+      begin(a){ this.url = aString(a[a.length - 1] ?? ""); return /^https?:\/\//.test(this.url); },
+      GET(){ return pedidoHttp(sim, this, "GET"); }, POST(a){ return pedidoHttp(sim, this, "POST", aString(a[0] ?? "")); },
+      getString(){ return this.cuerpo; }, getSize(){ return this.cuerpo.length; }, end(){}, addHeader(){}, setTimeout(){}, setReuse(){}, setConnectTimeout(){},
+      errorToString(a){ return `error HTTP ${a[0]}`; }
+    };
+  },
+  DynamicJsonDocument(args){ return nuevoDoc(); }, StaticJsonDocument(args){ return nuevoDoc(); }, JsonDocument(args){ return nuevoDoc(); },
   UniversalTelegramBot(args, sim){ return { clase: "UniversalTelegramBot", getUpdates(){ return 0; }, sendMessage(a){ sim.h.avisos.push({ t: sim.t, s: `Telegram: ${aString(a[1])}` }); return true; }, last_message_received: 0 }; },
   IPAddress(args){ return args.join("."); }
 };
@@ -1269,6 +1317,54 @@ function tolerante(o, sim){
   return new Proxy(o, { get(t, p){ if(p in t || typeof p !== "string") return t[p]; return function(){ sim.aviso(`${t.clase}.${p}() no hace nada en el simulador`); return 0; }; } });
 }
 CONSTRUCTORES.WiFiConnectionHandler = (args, sim) => ({ clase: "WiFiConnectionHandler" });
+
+/* ---- ArduinoJson (lo que se usa para leer ThingSpeak): el documento y los valores que salen de doc["x"] */
+function nuevoDoc(){
+  return { clase: "JsonDocument", datos: null,
+    clear(){ this.datos = null; }, isNull(){ return this.datos == null; }, size(){ return this.datos && typeof this.datos === "object" ? Object.keys(this.datos).length : 0; },
+    containsKey(a){ return !!this.datos && typeof this.datos === "object" && a[0] in this.datos; },
+    aTexto(){ return JSON.stringify(this.datos); } };
+}
+function variante(datos, clave){
+  const v = datos && typeof datos === "object" ? (Array.isArray(datos) ? datos[clave] : datos[clave]) : undefined;
+  return { clase: "JsonVariant", v,
+    isNull(){ return this.v == null; },
+    as(a, sim, e){ return this.como(e && e.f && e.f.tpl || "String"); },
+    is(a, sim, e){ const t = e && e.f && e.f.tpl || ""; return t === "String" || t === "char*" ? typeof this.v === "string" : esNumT(t) ? typeof this.v === "number" : this.v != null; },
+    como(t){
+      const v = this.v;
+      if(t === "String" || t === "char*") return v == null ? (t === "String" ? "null" : "") : typeof v === "object" ? JSON.stringify(v) : String(v);
+      if(t === "bool") return v === true || v === "true" || (typeof v === "number" && v !== 0);
+      if(esNumT(t)){ const n = typeof v === "number" ? v : typeof v === "string" ? parseFloat(v) : v === true ? 1 : 0; return Number.isFinite(n) ? (esEnteroT(t) ? Math.trunc(n) : n) : 0; }
+      return v;
+    },
+    aTexto(){ return this.como("String"); } };
+}
+/* Un pedido HTTP: ThingSpeak contesta con lo que tiene el canal (feeds/last.json, fields/N/last) y guarda con update?api_key=…&fieldN=… */
+function pedidoHttp(sim, c, metodo, cuerpo){
+  c.cuerpo = "";
+  if(sim.wifiEstado() !== 3){ sim.aviso("HTTP sin WiFi: el pedido da -1"); return -1; }
+  const u = c.url, ts = /api\.thingspeak\.com/.test(u);
+  let m;
+  if(ts && (m = /channels\/(\w+)\/feeds\/last(?:\.json)?/.exec(u))){
+    const d = sim.ts.canales[m[1]];
+    if(!d){ c.cuerpo = "-1"; sim.aviso(`ThingSpeak: el canal ${m[1]} no tiene datos (o es privado y falta la clave de lectura)`); return 200; }
+    const o = { created_at: "2026-10-23T12:00:00Z", entry_id: sim.h.thingspeak.filter(x => x.codigo === 200).length || 1 };
+    for(let n = 1; n <= 8; n++) if(d[n] !== undefined) o["field" + n] = String(d[n]);
+    c.cuerpo = JSON.stringify(o);
+    return 200;
+  }
+  if(ts && (m = /channels\/(\w+)\/fields\/(\d)\/last/.exec(u))){ const d = sim.ts.canales[m[1]] || {}; c.cuerpo = d[m[2]] !== undefined ? String(d[m[2]]) : "-1"; return 200; }
+  if(ts && /\/update/.test(u)){
+    const q = new URLSearchParams((u.split("?")[1] || "") + (cuerpo ? "&" + cuerpo : "")), campos = {};
+    for(let n = 1; n <= 8; n++) if(q.has("field" + n)){ const x = q.get("field" + n); campos[n] = Number.isFinite(+x) && x.trim() !== "" ? +x : x; }
+    const r = escribirTS(sim, "api", campos, null, false, true);
+    c.cuerpo = r === 200 ? String(sim.h.thingspeak.filter(x => x.codigo === 200).length) : "0";
+    return 200;
+  }
+  sim.aviso(`HTTP ${metodo} ${u}: el simulador no sale a Internet (contesta 200 sin nada)`);
+  return 200;
+}
 
 /* El display OLED (SH1106 o SSD1306): se guardan las cosas que se dibujan y display() las muestra */
 function nuevoDisplay(sim, ancho, alto, modelo){
@@ -1336,6 +1432,7 @@ function valorEn(lista, t, def = 0){ let v = def; for(const x of lista || []) { 
    mqtt     { tipo, topic, re, min }    conexión, suscripción, publicación o mensaje que llega
    recorre  { pin, de, a, valores, tol } el PWM pasa de "de" a "a" por al menos "valores" valores distintos
    eeprom   { dir, v }                  lo que quedó guardado en la EEPROM (255: nunca se escribió)
+   compara  { pin, t1, t2, que: "sube" | "baja", medida? }  el PWM (o el brillo) en t2 contra t1
    serial con veces: [min, max]         cuántas veces aparece la expresión */
 const seg = ms => String(+(ms / 1000).toFixed(2)).replace(".", ",") + " s";
 const nombrePin = pin => PLACA[pin] ? `${PLACA[pin].nombre} (GPIO ${pin})` : `GPIO ${pin}`;
@@ -1364,6 +1461,10 @@ function controlar(s, c){
       if(!vs.length) return res(false, ["", `${nombrePin(c.pin)} no recibe PWM (¿falta analogWrite?)`]);
       if(distintos < (c.valores ?? 2)) return res(false, ["", `${nombrePin(c.pin)} pasa por ${distintos} valores de PWM: tendría que cambiar de a poco`]);
       return res(mn <= c.de + tol && mx >= c.a - tol, [`${nombrePin(c.pin)} va de ${c.de} a ${c.a}`, `${nombrePin(c.pin)} va de ${mn} a ${mx} y tendría que ir de ${c.de} a ${c.a}`]);
+    }
+    case "compara": {
+      const l = (c.medida === "brillo" ? h.brillo : h.pwm)[c.pin], a = valorEn(l, c.t1, 0), b = valorEn(l, c.t2, 0), sube = c.que !== "baja";
+      return res(sube ? b > a : b < a, [`${nombrePin(c.pin)} ${sube ? "sube" : "baja"} (de ${a} a ${b})`, `Entre t = ${seg(c.t1)} y t = ${seg(c.t2)}, ${nombrePin(c.pin)} tendría que ${sube ? "subir" : "bajar"} y pasó de ${a} a ${b}`]);
     }
     case "eeprom": {
       const v = s.eeprom.has(c.dir) ? s.eeprom.get(c.dir) : 255;
@@ -1435,6 +1536,6 @@ function pruebas(codigo, lista, opts = {}){
   });
 }
 
-const API = { crear: (codigo, opts) => new Sim(codigo, opts), probar, pruebas, controlar, valorEn, PLACA, formatear, version: 1 };
+const API = { crear: (codigo, opts) => new Sim(codigo, opts), probar, pruebas, controlar, valorEn, PLACA, formatear, TOUCH_SUELTO, TOUCH_TOCADO, version: 1 };
 if(typeof module !== "undefined" && module.exports) module.exports = API; else raiz.ESP32 = API;
 })(typeof window !== "undefined" ? window : globalThis);

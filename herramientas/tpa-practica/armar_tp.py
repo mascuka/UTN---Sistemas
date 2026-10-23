@@ -36,10 +36,20 @@ DEL_PROFE = {
 }
 NECESITA = {'Display_con_Pote.ino': ['Display_con_Pote/config.h'], 'ThingSpeak_LeerDatos.ino': ['ThingSpeak_LeerDatos/secrets.h']}
 NOTAS = {
-    'caso_09_sensor_touch.ino': 'Sus umbrales (950 y 850) son de otra placa: en el simulador el touch lee 72 suelto y 10 tocado.',
+    'caso_09_sensor_touch.ino': 'Sus umbrales (950 y 850) los midió el profe en la placa de la cátedra; el simulador lee 1200 suelto y 10 tocado, así que anda igual.',
     'caso_13_thing_speak_tyh.ino': 'Manda con delay(2000) + delay(14000): 16 s entre envíos.',
     'ThingSpeak_LeerDatos.ino': 'Las claves están en secrets.h (también tapadas).',
 }
+
+# La resolución del TPI del grupo 1 (ya con las claves tapadas y el canal de ejemplo): están en practica/esp32/profe/
+GRUPO = {
+    'sketch_envio_grupo_1.ino': 'El sketch 1 del TPI del grupo 1 (envío): pote, touch, DHT22, display, ThingSpeak cada 16 s y ArduinoOTA.',
+    'sketch_lectura_grupo_1.ino': 'El sketch 2 del TPI del grupo 1 (lectura): lee el canal por HTTP con ArduinoJson y cuenta las pulsaciones con una interrupción.',
+}
+def leer_grupo(nombre):
+    t = open(os.path.join(PROFE, nombre), encoding='utf-8').read()
+    assert 'TU_API_KEY' in t or 'WRITE_API_KEY' not in t
+    return t
 
 def copiar_profe():
     z = zipfile.ZipFile(ZIP)
@@ -55,6 +65,9 @@ def copiar_profe():
         if nombre in NECESITA: a['h'] = NECESITA[nombre]
         if nombre in NOTAS: a['nota'] = NOTAS[nombre]
         lista.append(a)
+    for nombre, nota in GRUPO.items():
+        leer_grupo(nombre)
+        lista.append({'nombre': nombre, 'etiqueta': 'TPI del grupo', 'nota': nota})
     json.dump(lista, open(os.path.join(PROFE, 'archivos.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('practica/esp32/profe ·', len(lista), 'archivos del profe')
 
@@ -77,8 +90,9 @@ display = lambda re, **x: _k('display', re=re, **x)
 ts = lambda **x: _k('ts', **x)
 mqtt = lambda **x: _k('mqtt', **x)
 eeprom = lambda d, v, **x: _k('eeprom', dir=d, v=v, **x)
+compara = lambda p, t1, t2, que='sube', **x: _k('compara', pin=p, t1=t1, t2=t2, que=que, **x)
 apretar = lambda t, hasta: [{'t': t, 'boton': True}, {'t': hasta, 'boton': False}]
-tocar = lambda p, t, hasta: [{'t': t, 'touch': {str(p): 10}}, {'t': hasta, 'touch': {str(p): 72}}]
+tocar = lambda p, t, hasta: [{'t': t, 'touch': {str(p): 10}}, {'t': hasta, 'touch': {str(p): 1200}}]
 
 def N(pregunta, valor, dec=0, unidad=None, motivo=None, tol=None, medir=None):
     """Una respuesta numérica. medir: cómo sale en la placa ({opts, entradas, hasta, re}): validar.js corre la
@@ -98,7 +112,7 @@ def codigo(s):
     return s.strip('\n') + '\n'
 
 def esp(id, tema, titulo, consigna, inicial, solucion, pruebas, profe=(), checks=(), respuestas=(), pasos=(), pistas=(), placa=None):
-    for a in profe: assert a in DEL_PROFE, a
+    for a in profe: assert a in DEL_PROFE or a in GRUPO, a
     e = {'id': id, 'tema': tema, 'titulo': titulo, 'tipo': 'esp32', 'lenguaje': 'cpp', 'consigna': j(consigna).strip()}
     if pasos: e['pasos'] = list(pasos)
     if pistas: e['pistas'] = list(pistas)
@@ -852,7 +866,7 @@ partes.append(parte(5, 'sensores', 'Sensores: DHT22 y touch', 'DHT22 y touch',
   'El DHT22 (GPIO 33) da temperatura y humedad con la librería DHT; los pines touch (13 y 4) dan un número que baja al tocarlos.',
   {
     'que': 'El **DHT22** (GPIO **33**) mide temperatura y humedad. Con la librería DHT: `DHT dht(33, DHT22);`, **dht.begin()** en el setup y **dht.readTemperature()** / **dht.readHumidity()**, que devuelven float (o **NaN** si falla). Conviene leerlo cada 2 s.\n'
-           'Los **pines touch** (13 y 4) miden la capacidad: **touchRead(pin)** da un número que **baja al tocarlo**. En el simulador lee 72 suelto y 10 tocado; en la placa, depende del cable: medilo antes de elegir el umbral.',
+           'Los **pines touch** (13 y 4) miden la capacidad: **touchRead(pin)** da un número que **baja al tocarlo**. En el simulador lee 1200 suelto y 10 tocado (anda con cualquier umbral, de 40 a 950); en la placa depende del cable: medilo con touchRead antes de elegir el umbral.',
     'consta': [
       ['El sensor', '`DHT dht(33, DHT22);` arriba y `dht.begin();` en el setup.'],
       ['Leer', '`float t = dht.readTemperature();` y `float h = dht.readHumidity();`, con `if (isnan(t))` por si falla.'],
@@ -880,7 +894,7 @@ partes.append(parte(5, 'sensores', 'Sensores: DHT22 y touch', 'DHT22 y touch',
     ''', 'cpp'),
     'ojo': ['Si `readTemperature` da `nan`, el sensor no respondió: el pin equivocado o falta `dht.begin()`.',
             'El touch no es un botón: no da HIGH/LOW, es un número que baja al tocar.',
-            'Los umbrales 950 y 850 del caso 9 son de otra placa: en el simulador el touch lee 72 suelto.',
+            'Los umbrales 950 y 850 del caso 9 los midió el profe; otros ejemplos usan 40. Antes de elegir, mirá en el monitor serie cuánto lee tu placa suelta y tocada.',
             'Para el % literal en printf va `%%`.'],
     'parcial': 'Los casos 9 y 10. El TPI: temperatura y humedad en tiempo real en el display, y el LED externo con dos touch (uno sube, otro baja).',
   },
@@ -1342,7 +1356,7 @@ partes.append(parte(7, 'thingspeak', 'WiFi y ThingSpeak', 'ThingSpeak',
         }
       }
     ''', [P('Corre 50 s con el pote en 2048', 50000, [ts(min=3, cada=[15500, 16600], campos={'1': [100, 500], '2': 24.5, '3': 55, '4': [15, 50], '5': 2048, '6': 40}, rechazos=0)], pote=2048)],
-    profe=['ThingSpeak_DHT_Ticker.ino'],
+    profe=['ThingSpeak_DHT_Ticker.ino', 'sketch_envio_grupo_1.ino'],
     pasos=['El if de millis() con 16000.', 'Seis `ThingSpeak.setField(n, valor);` y un solo `writeFields` al final.'],
     pistas=['`random(100, 501)` da de 100 a 500: el segundo número no entra.'],
     respuestas=[N('Envíos en 5 minutos', 18, 0, None, '300 s / 16 s = 18,75: 18 envíos completos.')]),
@@ -1452,7 +1466,7 @@ partes.append(parte(7, 'thingspeak', 'WiFi y ThingSpeak', 'ThingSpeak',
       }
     ''', [P('Lee el canal y apretás dos veces', 9000, [display(r'C1: 321\.0 C2: 24\.5 C3: 55\.0'), display(r'C4: 120\.0 C5: 2048\.0 C6: 40\.0'), display(r'Pulsaciones: 2', t=8500), display(r'Pulsaciones: 3', no=True)],
             entradas=apretar(2000, 2200) + apretar(4000, 4200), canales=CANAL)],
-    profe=['ThingSpeak_LeerDatos.ino'],
+    profe=['ThingSpeak_LeerDatos.ino', 'sketch_lectura_grupo_1.ino'],
     placa={'canales': CANAL},
     pasos=['`leerCanal`: un for de 1 a 6 con `campos[n] = ThingSpeak.readFloatField(canal, n);`',
            '`mostrar`: `int primero = pantalla == 0 ? 1 : 4;` y un for de tres `display.printf("C%d: %.1f\\n", n, campos[n]);`, más las pulsaciones.',
@@ -1691,6 +1705,229 @@ partes.append(parte(8, 'mqtt', 'MQTT y EEPROM', 'MQTT y EEPROM',
     pasos=['En el setup: `estado = EEPROM.read(0) == 1 ? 1 : 0;` y `digitalWrite(AZUL, estado);`', 'Al cambiar: `EEPROM.write(0, estado); EEPROM.commit();`'],
     pistas=['Una EEPROM nueva lee 255 en todas las direcciones: por eso se compara con 1.'],
     respuestas=[N('¿Qué lee EEPROM.read de una dirección que nunca se escribió?', 255, 0, None, 'La flash borrada tiene todos los bits en 1: 0xFF = 255.')]),
+  ]))
+
+
+# ======================= 9 · El TPI resuelto =======================
+def resp_cod(id, tema, titulo, consigna, nombre, respuestas, pistas=()):
+    e = {'id': id, 'tema': tema, 'titulo': titulo, 'tipo': 'respuestas', 'lenguaje': 'cpp', 'consigna': j(consigna).strip()}
+    if pistas: e['pistas'] = list(pistas)
+    e['respuestas'] = list(respuestas)
+    e['codigo'] = {'nombre': nombre, 'texto': leer_grupo(nombre).rstrip('\n')}
+    return e
+
+partes.append(parte(9, 'tpi', 'El TPI resuelto', 'El TPI',
+  'Los dos sketches del TPI completos, como los resolvió el grupo 1: armalos juntando las partes anteriores, correlos en la placa y repasá las preguntas para la defensa.',
+  {
+    'que': 'El TPI pide **dos sketches**. El **sketch 1** se sube por USB: maneja el LED integrado con el pote (12 bits), muestra temperatura, humedad y los brillos en el display, sube y baja el LED externo con dos touch, manda **6 campos a ThingSpeak cada 16 s** y deja **ArduinoOTA** escuchando. El **sketch 2** se sube **por OTA** (desde el puerto de red que aparece en el IDE): lee el mismo canal, cuenta las pulsaciones y muestra todo de a 3 campos por pantalla.\n'
+           'Todo junto en un loop **sin delay**: cada tarea con su intervalo de millis(), como en la parte 6.',
+    'consta': [
+      ['Las claves y el canal', 'La red, el canal y la Write API Key arriba de todo (en lo que se comparte, siempre tapadas).'],
+      ['El setup', 'Resolución de 12 bits, display, DHT, ThingSpeak.begin, WiFi y, cuando conecta, `ArduinoOTA.begin()`.'],
+      ['El loop sin delay', '`ArduinoOTA.handle()` en cada vuelta; el pote y los touch siempre; el DHT cada 2 s, el display cada 250 ms y ThingSpeak cada 16 s.'],
+      ['El sketch 2', 'Lee el canal (`readFloatField`, o HTTP a `feeds/last.json` con ArduinoJson), cuenta pulsaciones (flanco o interrupción) y rota las pantallas.'],
+    ],
+    'ejemplo': ejemplo('sketch_envio.ino', 'El loop del sketch 1 del grupo 1', '''
+      const char *THINGSPEAK_WRITE_API_KEY = "TU_API_KEY";   «1»
+      void setup() {
+        analogWriteResolution(INTEGRATED_LED_PIN, 12);       «2»
+        display.begin(0x3C, true);                           «2»
+        dht.begin();                                         «2»
+        ThingSpeak.begin(thingspeakClient);                  «2»
+        connectToWiFi();                                     «2»
+      }
+      void loop() {
+        const unsigned long now = millis();
+        startOtaWhenConnected();                             «3»
+        if (otaStarted) ArduinoOTA.handle();                 «3»
+        updatePotentiometerLed();                            «3»
+        updateTouchControls();                               «3»
+        if (now - lastSensorReadMs >= 2000) { … }            «3»
+        if (now - lastDisplayMs >= 250) { … }                «3»
+        if (now - lastThingSpeakMs >= 16000) { … }           «3»
+      }
+    ''', 'cpp'),
+    'ojo': ['Con un `delay(16000)` para ThingSpeak, los touch, el display y el OTA quedan congelados: todo va con millis().',
+            'Sin `ArduinoOTA.handle()` en cada vuelta, el IDE ve la placa pero la subida por OTA no arranca.',
+            'Para el OTA, la PC y la placa tienen que estar en la misma red (y el firewall dejar pasar la conexión de vuelta).',
+            'El umbral del touch depende de la placa: medí `touchRead` suelto y tocado antes de elegirlo.',
+            'La Write API Key va en el .txt de la entrega, no en un repositorio público ni en capturas.'],
+    'parcial': 'La entrega del TPI y la defensa con todo el grupo: hay que poder explicar cada parte del código. Las preguntas de los ejercicios 9.3 y 9.4 son las típicas.',
+  },
+  [
+    esp('9.1', 'Sketch 1', 'el sketch 1 completo: envío y OTA', '''
+      Armá el **sketch 1 del TPI** entero (lo que hiciste en las partes 3, 5, 6 y 7, todo junto y sin delay):
+      - el **LED integrado** (GPIO 2) con el pote, **12 bits**;
+      - el **LED externo** (GPIO 23, 12 bits): un toque en el **touch 13** sube y uno en el **touch 4** baja, un paso por toque;
+      - el **DHT22** cada 2 s;
+      - el **display**: el PWM del integrado, la temperatura, la humedad y el % del externo (con la palabra «ext», por ejemplo `LED ext: 40 %`);
+      - **ThingSpeak cada 16 s** con los 6 campos de la parte 7.3;
+      - **ArduinoOTA**: `begin()` cuando conecta y `handle()` en cada vuelta.
+
+      La solución es la del grupo 1, con las claves tapadas.
+    ''', '''
+      #include <WiFi.h>
+      #include <ThingSpeak.h>
+      #include <DHT.h>
+      #include <Wire.h>
+      #include <Adafruit_SH110X.h>
+      #include <ArduinoOTA.h>
+
+      const char* ssid = "TU_RED_WIFI";
+      const char* password = "TU_CLAVE_WIFI";
+      unsigned long canal = 1234567;
+      const char* clave = "TU_API_KEY";
+
+      const int LED_INT = 2, LED_EXT = 23, POTE = 32, T_MAS = 13, T_MENOS = 4;
+      const int UMBRAL = 40;   // medilo en tu placa con touchRead
+      const int PASO = 410;    // 10 % de 4095
+
+      Adafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);
+      DHT dht(33, DHT22);
+      WiFiClient cliente;
+
+      int pwmInt = 0, pwmExt = 0;
+      float temp = NAN, hum = NAN;
+      bool antesMas = false, antesMenos = false;
+      unsigned long antesDht = 0, antesDisplay = 0, antesTs = 0;
+
+      void setup() {
+        Serial.begin(115200);
+        analogWriteResolution(LED_INT, 12);
+        analogWriteResolution(LED_EXT, 12);
+        display.begin(0x3C, true);
+        display.setTextColor(SH110X_WHITE);
+        dht.begin();
+        WiFi.begin(ssid, password);
+        while (WiFi.status() != WL_CONNECTED) delay(500);
+        ThingSpeak.begin(cliente);
+        // ArduinoOTA: el nombre y begin()
+
+      }
+
+      void loop() {
+        // ArduinoOTA.handle() en cada vuelta
+        // 1. El pote al LED integrado (12 bits)
+        // 2. Los touch: un paso por toque en el LED externo
+        // 3. Cada 2 s: el DHT22
+        // 4. Cada 250 ms: el display
+        // 5. Cada 16 s: los 6 campos a ThingSpeak
+
+      }
+    ''', leer_grupo('sketch_envio_grupo_1.ino'),
+    [P('Pote en 3000, dos toques en el 13 y uno en el 4', 36000,
+       [pwm(2, 2000, 3000), compara(23, 2500, 4500), compara(23, 4500, 5500, que='baja'),
+        display(r'3000', t=6000), display(r'24\.5', t=6000), display(r'55', t=6000), display(r'ext\D{0,10}\d+ ?%', flags='i', t=6000),
+        ts(min=2, cada=[15500, 17000], campos={'1': [100, 500], '2': 24.5, '3': 55, '4': [10, 40], '5': 3000, '6': [0, 100]}, rechazos=0)],
+       entradas=tocar(13, 3000, 3200) + tocar(13, 4000, 4200) + tocar(4, 5000, 5200), pote=3000)],
+    profe=['ThingSpeak_DHT_Ticker.ino', 'caso_09_sensor_touch.ino'],
+    checks=[C(r'ArduinoOTA\s*\.\s*begin\s*\(', 'Arranca ArduinoOTA', 'Falta `ArduinoOTA.begin()` (cuando ya conectó el WiFi)'),
+            C(r'ArduinoOTA\s*\.\s*handle\s*\(', 'Atiende el OTA en el loop', 'Falta `ArduinoOTA.handle()` en el loop: sin eso la subida por OTA no arranca')],
+    pasos=['En el setup: `ArduinoOTA.setHostname("ESP32_TPI"); ArduinoOTA.begin();` (después de conectar).',
+           'En el loop, primero `ArduinoOTA.handle();` y después: `pwmInt = analogRead(POTE); analogWrite(LED_INT, pwmInt);`',
+           'Los touch como en el 5.2 (con `constrain` y `analogWrite(LED_EXT, pwmExt)`).',
+           'Tres ifs de millis(): 2000 (el DHT), 250 (el display) y 16000 (los 6 `setField` y `writeFields`).'],
+    pistas=['Copiá de a pedazos los ejercicios 3.3, 5.2, 5.1 y 7.3: cada uno es una parte del loop.', 'Ver la solución muestra el sketch del grupo 1, que reparte todo en funciones.']),
+
+    esp('9.2', 'Sketch 2', 'el sketch 2 con HTTP y ArduinoJson, como el grupo', '''
+      El **sketch 2 del TPI** leyendo el canal **por HTTP**, como lo resolvió el grupo 1 (en vez de `readFloatField`): un GET a
+      `http://api.thingspeak.com/channels/1234567/feeds/last.json`, que devuelve el último envío en JSON:
+      ```
+      {"created_at":"…","entry_id":7,"field1":"321","field2":"24.5", … ,"field6":"40"}
+      ```
+      Con **ArduinoJson** (`deserializeJson`) sacá los 6 campos. Leé al arrancar y cada 16 s, contá las pulsaciones y mostrá de a 3 campos por pantalla, rotando cada 5 s, con `Pulsaciones: N` abajo.
+    ''', '''
+      #include <WiFi.h>
+      #include <HTTPClient.h>
+      #include <ArduinoJson.h>
+      #include <Wire.h>
+      #include <Adafruit_SH110X.h>
+
+      const char* ssid = "TU_RED_WIFI";
+      const char* password = "TU_CLAVE_WIFI";
+      const char* canal = "1234567";
+      const int BOTON = 19;
+
+      Adafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);
+      String campos[6] = {"--", "--", "--", "--", "--", "--"};
+      int pulsaciones = 0, anterior = HIGH, pagina = 0;
+      unsigned long antesLeer = 0, antesPagina = 0;
+
+      void leerCanal() {
+        HTTPClient http;
+        String url = String("http://api.thingspeak.com/channels/") + canal + "/feeds/last.json";
+        // http.begin(url), http.GET(): si da 200, http.getString() y deserializeJson
+        // los campos: doc["field1"].as<String>() … doc["field6"]
+
+        http.end();
+      }
+
+      void mostrar() {
+        display.clearDisplay();
+        display.setCursor(0, 0);
+        // tres campos según la página y las pulsaciones
+
+        display.display();
+      }
+
+      void setup() {
+        Serial.begin(115200);
+        pinMode(BOTON, INPUT_PULLUP);
+        display.begin(0x3C, true);
+        display.setTextColor(SH110X_WHITE);
+        WiFi.begin(ssid, password);
+        while (WiFi.status() != WL_CONNECTED) delay(100);
+        leerCanal();
+      }
+
+      void loop() {
+        // las pulsaciones, leer cada 16 s, cambiar de página cada 5 s y mostrar
+
+        delay(20);
+      }
+    ''', leer_grupo('sketch_lectura_grupo_1.ino'),
+    [P('Lee el canal y apretás dos veces', 13000,
+       [display(r'321'), display(r'120'), display(r'puls\w*\W{0,3}2\b', flags='i', t=12500), display(r'puls\w*\W{0,3}3\b', flags='i', no=True)],
+       entradas=apretar(3000, 3200) + apretar(6000, 6200), canales=CANAL)],
+    profe=['ThingSpeak_LeerDatos.ino'],
+    placa={'canales': CANAL},
+    checks=[C(r'deserializeJson\s*\(', 'Lee el JSON con ArduinoJson', 'Falta `deserializeJson(doc, payload)`: acá se lee por HTTP, no con readFloatField'),
+            C(r'feeds/last', 'Pide el último envío', 'La URL es la del último envío: `…/feeds/last.json`')],
+    pasos=['`if (http.begin(url) && http.GET() == 200) { String payload = http.getString(); … }`',
+           '`DynamicJsonDocument doc(1024); if (!deserializeJson(doc, payload)) { … }` (el error es falso cuando salió bien).',
+           'Los campos: `campos[i] = doc["field" + String(i + 1)].as<String>();` (o con un arreglo de claves, como el grupo).',
+           'El loop como el 7.4, pero con páginas cada 5000 ms.'],
+    pistas=['En la placa simulada, ThingSpeak contesta con lo que tiene el canal 1234567.', 'El grupo cuenta con `attachInterrupt(…, FALLING)` y un antirrebote de 200 ms; con el flanco en el loop también anda.']),
+
+    resp_cod('9.3', 'Defensa · sketch 1', 'preguntas sobre el sketch 1', '''
+      Preguntas de la defensa sobre el **sketch 1 del grupo** (está al costado). Contestalas leyendo el código; si dudás, corrélo en la placa (pestaña TPI del grupo del ejercicio 7.3).
+    ''', 'sketch_envio_grupo_1.ino', [
+      N('Cada cuántos ms intenta mandar a ThingSpeak', 16000, 0, 'ms', 'THINGSPEAK_INTERVAL_MS: 16 s, más que los 15 s que exige ThingSpeak gratis.'),
+      N('Cuánto sube el PWM del LED externo un toque (EXTERNAL_LED_STEP)', 204, 0, None, 'PWM_MAX / 20 = 4095 / 20 = 204,75 → 204 (división entera).'),
+      N('Qué % muestra el display después de un solo toque', 4, 0, '%', '`map(204, 0, 4095, 0, 100)` = 4,98 → 4: map corta los decimales. Para que marque 5 % habría que redondear (o usar un paso de 205).'),
+      N('Toques para llegar al 100 % desde 0', 21, 0, None, '20 toques dan 20 × 204 = 4080; el 21 satura en PWM_MAX (4095).'),
+      N('Puerto en el que escucha ArduinoOTA en la ESP32', 3232, 0, None, 'Es el puerto por defecto; el IDE lo encuentra por mDNS (el puerto de red con el hostname ESP32_TPI4K3).'),
+      OP('Si se cae el WiFi, el envío a ThingSpeak', ['se reintenta enseguida', 'se saltea y se prueba a los 16 s', 'cuelga la placa'], 'se saltea y se prueba a los 16 s',
+         '`sendThingSpeakUpdate` vuelve sin mandar, pero `lastThingSpeakMs` ya se actualizó: el próximo intento es en 16 s. Mientras, el loop reintenta el WiFi cada 10 s.'),
+      OP('Para qué está ArduinoOTA.handle() en el loop', ['atiende los pedidos de subida por WiFi', 'manda los datos a ThingSpeak', 'reconecta el WiFi'], 'atiende los pedidos de subida por WiFi',
+         'Si no se llama seguido, el IDE encuentra la placa pero la subida no arranca: por eso el loop no tiene delay.'),
+      OP('Con los umbrales 950/850 en una placa que lee 70 suelto, el LED externo', ['no responde: lo toma como tocado todo el tiempo', 'anda bien', 'sube solo hasta el máximo'],
+         'no responde: lo toma como tocado todo el tiempo', '70 < 950: en la primera vuelta sube y baja un paso y los dos quedan «trabados» (para soltar tiene que leer más de 1050). Por eso hay que medir touchRead en la placa.'),
+    ], pistas=['Las constantes están arriba de todo: THINGSPEAK_INTERVAL_MS, EXTERNAL_LED_STEP, PWM_MAX.']),
+
+    resp_cod('9.4', 'Defensa · sketch 2', 'preguntas sobre el sketch 2', '''
+      Preguntas de la defensa sobre el **sketch 2 del grupo** (está al costado).
+    ''', 'sketch_lectura_grupo_1.ino', [
+      N('Cada cuántos segundos cambia de página', 5, 0, 's', 'PAGE_INTERVAL_MS = 5000.'),
+      N('Campos por página', 3, 0, None, 'Dos páginas: campos 1 a 3 y 4 a 6 (`firstField = currentPage * 3`).'),
+      N('Antirrebote del pulsador', 200, 0, 'ms', 'BUTTON_DEBOUNCE_US = 200000 µs: dos flancos con menos de 200 ms cuentan como uno.'),
+      OP('Qué pide al canal', ['…/channels/<canal>/feeds/last.json', '…/update?api_key=…&field1=…', '…/channels/<canal>/fields/1.json?results=100'], '…/channels/<canal>/feeds/last.json',
+         'El último envío, con los 8 campos en JSON. `update` es para escribir.'),
+      OP('¿Hace falta la Read API Key?', ['No: el canal es público', 'Sí, siempre', 'Solo con HTTPS'], 'No: el canal es público', 'Con un canal privado, se agrega `?api_key=` con la Read API Key.'),
+      OP('Por qué buttonPressCount es volatile', ['lo cambia la interrupción: el compilador no puede guardarlo en un registro', 'para que se guarde en la EEPROM', 'para que sea más rápido'],
+         'lo cambia la interrupción: el compilador no puede guardarlo en un registro', 'Y se lee adentro de una sección crítica (`portENTER_CRITICAL`) para no leerlo a medio escribir.'),
+      OP('¿Las pulsaciones se mandan a ThingSpeak?', ['No: el contador queda en la placa', 'Sí, en el campo 7'], 'No: el contador queda en la placa', 'Se cuenta en RAM y se reinicia al reiniciar la placa.'),
+    ]),
   ]))
 
 if __name__ == '__main__':

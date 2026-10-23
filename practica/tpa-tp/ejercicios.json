@@ -1269,7 +1269,7 @@
    "corto": "DHT22 y touch",
    "pestana": "DHT22 y touch",
    "leccion": {
-    "que": "El **DHT22** (GPIO **33**) mide temperatura y humedad. Con la librería DHT: `DHT dht(33, DHT22);`, **dht.begin()** en el setup y **dht.readTemperature()** / **dht.readHumidity()**, que devuelven float (o **NaN** si falla). Conviene leerlo cada 2 s.\nLos **pines touch** (13 y 4) miden la capacidad: **touchRead(pin)** da un número que **baja al tocarlo**. En el simulador lee 72 suelto y 10 tocado; en la placa, depende del cable: medilo antes de elegir el umbral.",
+    "que": "El **DHT22** (GPIO **33**) mide temperatura y humedad. Con la librería DHT: `DHT dht(33, DHT22);`, **dht.begin()** en el setup y **dht.readTemperature()** / **dht.readHumidity()**, que devuelven float (o **NaN** si falla). Conviene leerlo cada 2 s.\nLos **pines touch** (13 y 4) miden la capacidad: **touchRead(pin)** da un número que **baja al tocarlo**. En el simulador lee 1200 suelto y 10 tocado (anda con cualquier umbral, de 40 a 950); en la placa depende del cable: medilo con touchRead antes de elegir el umbral.",
     "consta": [
      [
       "El sensor",
@@ -1324,7 +1324,7 @@
     "ojo": [
      "Si `readTemperature` da `nan`, el sensor no respondió: el pin equivocado o falta `dht.begin()`.",
      "El touch no es un botón: no da HIGH/LOW, es un número que baja al tocar.",
-     "Los umbrales 950 y 850 del caso 9 son de otra placa: en el simulador el touch lee 72 suelto.",
+     "Los umbrales 950 y 850 del caso 9 los midió el profe; otros ejemplos usan 40. Antes de elegir, mirá en el monitor serie cuánto lee tu placa suelta y tocada.",
      "Para el % literal en printf va `%%`."
     ],
     "parcial": "Los casos 9 y 10. El TPI: temperatura y humedad en tiempo real en el display, y el LED externo con dos touch (uno sube, otro baja).",
@@ -1449,7 +1449,7 @@
         {
          "t": 900,
          "touch": {
-          "13": 72
+          "13": 1200
          }
         },
         {
@@ -1461,7 +1461,7 @@
         {
          "t": 1300,
          "touch": {
-          "13": 72
+          "13": 1200
          }
         },
         {
@@ -1473,7 +1473,7 @@
         {
          "t": 1700,
          "touch": {
-          "13": 72
+          "13": 1200
          }
         },
         {
@@ -1485,7 +1485,7 @@
         {
          "t": 2700,
          "touch": {
-          "4": 72
+          "4": 1200
          }
         }
        ],
@@ -1527,7 +1527,7 @@
         {
          "t": 500,
          "touch": {
-          "4": 72
+          "4": 1200
          }
         }
        ],
@@ -1970,7 +1970,8 @@
       }
      ],
      "delProfe": [
-      "ThingSpeak_DHT_Ticker.ino"
+      "ThingSpeak_DHT_Ticker.ino",
+      "sketch_envio_grupo_1.ino"
      ],
      "pruebas": [
       {
@@ -2040,7 +2041,8 @@
       }
      ],
      "delProfe": [
-      "ThingSpeak_LeerDatos.ino"
+      "ThingSpeak_LeerDatos.ino",
+      "sketch_lectura_grupo_1.ino"
      ],
      "placa": {
       "canales": {
@@ -2437,6 +2439,511 @@
       }
      ],
      "parte": 8
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "id": "tpi",
+   "titulo": "El TPI resuelto",
+   "explicacion": "Los dos sketches del TPI completos, como los resolvió el grupo 1: armalos juntando las partes anteriores, correlos en la placa y repasá las preguntas para la defensa.",
+   "corto": "El TPI",
+   "pestana": "El TPI",
+   "leccion": {
+    "que": "El TPI pide **dos sketches**. El **sketch 1** se sube por USB: maneja el LED integrado con el pote (12 bits), muestra temperatura, humedad y los brillos en el display, sube y baja el LED externo con dos touch, manda **6 campos a ThingSpeak cada 16 s** y deja **ArduinoOTA** escuchando. El **sketch 2** se sube **por OTA** (desde el puerto de red que aparece en el IDE): lee el mismo canal, cuenta las pulsaciones y muestra todo de a 3 campos por pantalla.\nTodo junto en un loop **sin delay**: cada tarea con su intervalo de millis(), como en la parte 6.",
+    "consta": [
+     [
+      "Las claves y el canal",
+      "La red, el canal y la Write API Key arriba de todo (en lo que se comparte, siempre tapadas)."
+     ],
+     [
+      "El setup",
+      "Resolución de 12 bits, display, DHT, ThingSpeak.begin, WiFi y, cuando conecta, `ArduinoOTA.begin()`."
+     ],
+     [
+      "El loop sin delay",
+      "`ArduinoOTA.handle()` en cada vuelta; el pote y los touch siempre; el DHT cada 2 s, el display cada 250 ms y ThingSpeak cada 16 s."
+     ],
+     [
+      "El sketch 2",
+      "Lee el canal (`readFloatField`, o HTTP a `feeds/last.json` con ArduinoJson), cuenta pulsaciones (flanco o interrupción) y rota las pantallas."
+     ]
+    ],
+    "ejemplo": {
+     "archivo": "sketch_envio.ino",
+     "origen": "El loop del sketch 1 del grupo 1",
+     "codigo": "const char *THINGSPEAK_WRITE_API_KEY = \"TU_API_KEY\";\nvoid setup() {\n  analogWriteResolution(INTEGRATED_LED_PIN, 12);\n  display.begin(0x3C, true);\n  dht.begin();\n  ThingSpeak.begin(thingspeakClient);\n  connectToWiFi();\n}\nvoid loop() {\n  const unsigned long now = millis();\n  startOtaWhenConnected();\n  if (otaStarted) ArduinoOTA.handle();\n  updatePotentiometerLed();\n  updateTouchControls();\n  if (now - lastSensorReadMs >= 2000) { … }\n  if (now - lastDisplayMs >= 250) { … }\n  if (now - lastThingSpeakMs >= 16000) { … }\n}",
+     "marcas": [
+      [
+       1,
+       1,
+       1
+      ],
+      [
+       2,
+       3,
+       7
+      ],
+      [
+       3,
+       11,
+       17
+      ]
+     ],
+     "lenguaje": "cpp"
+    },
+    "ojo": [
+     "Con un `delay(16000)` para ThingSpeak, los touch, el display y el OTA quedan congelados: todo va con millis().",
+     "Sin `ArduinoOTA.handle()` en cada vuelta, el IDE ve la placa pero la subida por OTA no arranca.",
+     "Para el OTA, la PC y la placa tienen que estar en la misma red (y el firewall dejar pasar la conexión de vuelta).",
+     "El umbral del touch depende de la placa: medí `touchRead` suelto y tocado antes de elegirlo.",
+     "La Write API Key va en el .txt de la entrega, no en un repositorio público ni en capturas."
+    ],
+    "parcial": "La entrega del TPI y la defensa con todo el grupo: hay que poder explicar cada parte del código. Las preguntas de los ejercicios 9.3 y 9.4 son las típicas.",
+    "parcialT": "En el TP"
+   },
+   "ejercicios": [
+    {
+     "id": "9.1",
+     "tema": "Sketch 1",
+     "titulo": "el sketch 1 completo: envío y OTA",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "Armá el **sketch 1 del TPI** entero (lo que hiciste en las partes 3, 5, 6 y 7, todo junto y sin delay):\n- el **LED integrado** (GPIO 2) con el pote, **12 bits**;\n- el **LED externo** (GPIO 23, 12 bits): un toque en el **touch 13** sube y uno en el **touch 4** baja, un paso por toque;\n- el **DHT22** cada 2 s;\n- el **display**: el PWM del integrado, la temperatura, la humedad y el % del externo (con la palabra «ext», por ejemplo `LED ext: 40 %`);\n- **ThingSpeak cada 16 s** con los 6 campos de la parte 7.3;\n- **ArduinoOTA**: `begin()` cuando conecta y `handle()` en cada vuelta.\n\nLa solución es la del grupo 1, con las claves tapadas.",
+     "pasos": [
+      "En el setup: `ArduinoOTA.setHostname(\"ESP32_TPI\"); ArduinoOTA.begin();` (después de conectar).",
+      "En el loop, primero `ArduinoOTA.handle();` y después: `pwmInt = analogRead(POTE); analogWrite(LED_INT, pwmInt);`",
+      "Los touch como en el 5.2 (con `constrain` y `analogWrite(LED_EXT, pwmExt)`).",
+      "Tres ifs de millis(): 2000 (el DHT), 250 (el display) y 16000 (los 6 `setField` y `writeFields`)."
+     ],
+     "pistas": [
+      "Copiá de a pedazos los ejercicios 3.3, 5.2, 5.1 y 7.3: cada uno es una parte del loop.",
+      "Ver la solución muestra el sketch del grupo 1, que reparte todo en funciones."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <ThingSpeak.h>\n#include <DHT.h>\n#include <Wire.h>\n#include <Adafruit_SH110X.h>\n#include <ArduinoOTA.h>\n\nconst char* ssid = \"TU_RED_WIFI\";\nconst char* password = \"TU_CLAVE_WIFI\";\nunsigned long canal = 1234567;\nconst char* clave = \"TU_API_KEY\";\n\nconst int LED_INT = 2, LED_EXT = 23, POTE = 32, T_MAS = 13, T_MENOS = 4;\nconst int UMBRAL = 40;   // medilo en tu placa con touchRead\nconst int PASO = 410;    // 10 % de 4095\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\nDHT dht(33, DHT22);\nWiFiClient cliente;\n\nint pwmInt = 0, pwmExt = 0;\nfloat temp = NAN, hum = NAN;\nbool antesMas = false, antesMenos = false;\nunsigned long antesDht = 0, antesDisplay = 0, antesTs = 0;\n\nvoid setup() {\n  Serial.begin(115200);\n  analogWriteResolution(LED_INT, 12);\n  analogWriteResolution(LED_EXT, 12);\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n  dht.begin();\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  ThingSpeak.begin(cliente);\n  // ArduinoOTA: el nombre y begin()\n\n}\n\nvoid loop() {\n  // ArduinoOTA.handle() en cada vuelta\n  // 1. El pote al LED integrado (12 bits)\n  // 2. Los touch: un paso por toque en el LED externo\n  // 3. Cada 2 s: el DHT22\n  // 4. Cada 250 ms: el display\n  // 5. Cada 16 s: los 6 campos a ThingSpeak\n\n}\n",
+       "solucion": "#include <Adafruit_GFX.h>\n#include <Adafruit_SH110X.h>\n#include <ArduinoOTA.h>\n#include <DHT.h>\n#include <ThingSpeak.h>\n#include <WiFi.h>\n#include <Wire.h>\n\n// Set to 1 only in the Wokwi copy to emulate touch pads with pushbuttons on GPIO25/26.\n// Keep 0 on the physical ESP32, where GPIO13/4 are capacitive touch inputs.\n#define TOUCH_SIMULATION_MODE 0\n\n// Update these placeholders locally. Do not publish the real Wi-Fi password or key.\nconst char *WIFI_SSID = \"TU_RED_WIFI\";\nconst char *WIFI_PASSWORD = \"TU_CLAVE_WIFI\";\nconst char *THINGSPEAK_WRITE_API_KEY = \"TU_API_KEY\";\nconst unsigned long THINGSPEAK_CHANNEL_ID = 1234567;  // tu número de canal\n\n// Pin assignments from the course board diagram and examples.\nconstexpr uint8_t DHT_PIN = 33;\nconstexpr uint8_t POT_PIN = 32;\nconstexpr uint8_t INTEGRATED_LED_PIN = 2;  // Assumption from caso_1_led_interno.txt.\nconstexpr uint8_t EXTERNAL_LED_PIN = 23;\nconstexpr uint8_t TOUCH_UP_PIN = 13;\nconstexpr uint8_t TOUCH_DOWN_PIN = 4;\nconstexpr uint8_t SIM_TOUCH_UP_BUTTON_PIN = 25;\nconstexpr uint8_t SIM_TOUCH_DOWN_BUTTON_PIN = 26;\nconstexpr uint8_t OLED_SDA_PIN = 21;\nconstexpr uint8_t OLED_SCL_PIN = 22;\n\nconstexpr uint8_t PWM_BITS = 12;\nconstexpr uint16_t PWM_MAX = (1U << PWM_BITS) - 1;\nconstexpr uint16_t TOUCH_UP_THRESHOLD = 950;    // Starting point from the instructor's example.\nconstexpr uint16_t TOUCH_DOWN_THRESHOLD = 850;  // Calibrate on the physical board if needed.\nconstexpr uint16_t TOUCH_RELEASE_MARGIN = 100;\nconstexpr uint16_t EXTERNAL_LED_STEP = PWM_MAX / 20;  // 5% per touch.\nconstexpr unsigned long SENSOR_INTERVAL_MS = 2000;\nconstexpr unsigned long DISPLAY_INTERVAL_MS = 250;\nconstexpr unsigned long THINGSPEAK_INTERVAL_MS = 16000;\nconstexpr unsigned long WIFI_RETRY_INTERVAL_MS = 10000;\n\nAdafruit_SH1106G display(128, 64, &Wire, -1);\nDHT dht(DHT_PIN, DHT22);\nWiFiClient thingspeakClient;\n\nfloat temperatureC = NAN;\nfloat humidityPct = NAN;\nuint16_t integratedPwm = 0;\nuint16_t externalPwm = 0;\nbool touchUpLatched = false;\nbool touchDownLatched = false;\nbool displayAvailable = false;\nbool otaStarted = false;\n\nunsigned long lastSensorReadMs = 0;\nunsigned long lastDisplayMs = 0;\nunsigned long lastThingSpeakMs = 0;\nunsigned long lastWiFiRetryMs = 0;\n\nvoid connectToWiFi() {\n  WiFi.mode(WIFI_STA);\n  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);\n  lastWiFiRetryMs = millis();\n  Serial.printf(\"Connecting to Wi-Fi: %s\\n\", WIFI_SSID);\n}\n\nvoid startOtaWhenConnected() {\n  if (WiFi.status() != WL_CONNECTED || otaStarted) {\n    return;\n  }\n\n  ArduinoOTA.setHostname(\"ESP32_TPI4K3\");\n  ArduinoOTA.onStart([]() { Serial.println(\"OTA upload started\"); });\n  ArduinoOTA.onEnd([]() { Serial.println(\"OTA upload finished; restarting\"); });\n  ArduinoOTA.onError([](ota_error_t error) {\n    Serial.printf(\"OTA error: %u\\n\", static_cast<unsigned>(error));\n  });\n  ArduinoOTA.begin();\n  otaStarted = true;\n  Serial.print(\"OTA ready at \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid updateSensorReadings() {\n  const float newTemperature = dht.readTemperature();\n  const float newHumidity = dht.readHumidity();\n\n  if (isnan(newTemperature) || isnan(newHumidity)) {\n    Serial.println(\"DHT22 read failed; keeping the last valid reading\");\n    return;\n  }\n\n  temperatureC = newTemperature;\n  humidityPct = newHumidity;\n}\n\nvoid updatePotentiometerLed() {\n  const int rawPot = analogRead(POT_PIN);\n  integratedPwm = static_cast<uint16_t>(map(rawPot, 0, 4095, 0, PWM_MAX));\n  analogWrite(INTEGRATED_LED_PIN, integratedPwm);\n}\n\nvoid applyExternalLedBrightness() {\n  analogWrite(EXTERNAL_LED_PIN, externalPwm);\n}\n\nvoid updateTouchControls() {\n  bool upPressed;\n  bool downPressed;\n#if TOUCH_SIMULATION_MODE\n  upPressed = digitalRead(SIM_TOUCH_UP_BUTTON_PIN) == LOW;\n  downPressed = digitalRead(SIM_TOUCH_DOWN_BUTTON_PIN) == LOW;\n#else\n  const uint16_t upReading = touchRead(TOUCH_UP_PIN);\n  const uint16_t downReading = touchRead(TOUCH_DOWN_PIN);\n  static unsigned long lastTouchReportMs = 0;\n  if (millis() - lastTouchReportMs >= 1000) {\n    lastTouchReportMs = millis();\n    Serial.printf(\"Touch GPIO13=%u GPIO4=%u (thresholds %u/%u)\\n\",\n            static_cast<unsigned>(upReading), static_cast<unsigned>(downReading),\n            static_cast<unsigned>(TOUCH_UP_THRESHOLD),\n            static_cast<unsigned>(TOUCH_DOWN_THRESHOLD));\n  }\n  // Capacitive readings normally decrease when touched; use release hysteresis.\n  upPressed = touchUpLatched\n            ? upReading <= TOUCH_UP_THRESHOLD + TOUCH_RELEASE_MARGIN\n            : upReading < TOUCH_UP_THRESHOLD;\n  downPressed = touchDownLatched\n              ? downReading <= TOUCH_DOWN_THRESHOLD + TOUCH_RELEASE_MARGIN\n              : downReading < TOUCH_DOWN_THRESHOLD;\n#endif\n\n  if (!touchUpLatched && upPressed) {\n    externalPwm = (externalPwm > PWM_MAX - EXTERNAL_LED_STEP)\n                ? PWM_MAX\n                : externalPwm + EXTERNAL_LED_STEP;\n    touchUpLatched = true;\n    applyExternalLedBrightness();\n  } else if (touchUpLatched && !upPressed) {\n    touchUpLatched = false;\n  }\n\n  if (!touchDownLatched && downPressed) {\n    externalPwm = (externalPwm > EXTERNAL_LED_STEP) ? externalPwm - EXTERNAL_LED_STEP : 0;\n    touchDownLatched = true;\n    applyExternalLedBrightness();\n  } else if (touchDownLatched && !downPressed) {\n    touchDownLatched = false;\n  }\n\n  // Touch is edge-latched; holding a pad changes brightness only once.\n}\n\nvoid drawStatus() {\n  if (!displayAvailable) {\n    return;\n  }\n\n  const uint8_t externalPercent = static_cast<uint8_t>(map(externalPwm, 0, PWM_MAX, 0, 100));\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.println(\"TPA G1 - IoT ESP32\");\n  display.printf(\"PWM LED int: %u\\n\", static_cast<unsigned>(integratedPwm));\n  if (isnan(temperatureC) || isnan(humidityPct)) {\n    display.println(\"DHT22: esperando\");\n  } else {\n    display.printf(\"Temp: %.1f C\\nHum: %.1f %%\\n\", temperatureC, humidityPct);\n  }\n  display.printf(\"LED ext.: %u%%\\n\", static_cast<unsigned>(externalPercent));\n  if (WiFi.status() == WL_CONNECTED) {\n    display.printf(\"IP: %s\\n\", WiFi.localIP().toString().c_str());\n  } else {\n    display.println(\"WiFi: conectando...\");\n  }\n  display.display();\n}\n\nbool haveValidReadings() {\n  return !isnan(temperatureC) && !isnan(humidityPct);\n}\n\nvoid sendThingSpeakUpdate() {\n  if (WiFi.status() != WL_CONNECTED || !haveValidReadings()) {\n    Serial.println(\"ThingSpeak update skipped: Wi-Fi or sensor data unavailable\");\n    return;\n  }\n  if (String(THINGSPEAK_WRITE_API_KEY) == \"PASTE_WRITE_API_KEY_HERE\") {\n    Serial.println(\"Set THINGSPEAK_WRITE_API_KEY before sending real channel updates\");\n    return;\n  }\n\n  const long randomValue = random(100, 501);\n  const unsigned long elapsedSeconds = millis() / 1000UL;\n  const uint8_t externalPercent = static_cast<uint8_t>(map(externalPwm, 0, PWM_MAX, 0, 100));\n\n  ThingSpeak.setField(1, static_cast<long>(randomValue));\n  ThingSpeak.setField(2, temperatureC);\n  ThingSpeak.setField(3, humidityPct);\n  ThingSpeak.setField(4, static_cast<long>(elapsedSeconds));\n  ThingSpeak.setField(5, static_cast<long>(integratedPwm));\n  ThingSpeak.setField(6, static_cast<long>(externalPercent));\n\n  const int response = ThingSpeak.writeFields(THINGSPEAK_CHANNEL_ID, THINGSPEAK_WRITE_API_KEY);\n  Serial.printf(\"ThingSpeak write status: %d\\n\", response);\n  if (response == 200) {\n    Serial.println(\"All six fields were accepted by ThingSpeak\");\n  }\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  analogReadResolution(PWM_BITS);\n  analogWriteResolution(INTEGRATED_LED_PIN, PWM_BITS);\n  analogWriteResolution(EXTERNAL_LED_PIN, PWM_BITS);\n  pinMode(POT_PIN, INPUT);\n  pinMode(INTEGRATED_LED_PIN, OUTPUT);\n  pinMode(EXTERNAL_LED_PIN, OUTPUT);\n#if TOUCH_SIMULATION_MODE\n  pinMode(SIM_TOUCH_UP_BUTTON_PIN, INPUT_PULLUP);\n  pinMode(SIM_TOUCH_DOWN_BUTTON_PIN, INPUT_PULLUP);\n#endif\n\n  Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);\n  displayAvailable = display.begin(0x3C, true);\n  if (!displayAvailable) {\n    Serial.println(\"OLED unavailable; continuing without display\");\n  } else {\n    display.setTextSize(1);\n    display.setTextColor(SH110X_WHITE);\n  }\n\n  dht.begin();\n  ThingSpeak.begin(thingspeakClient);\n  randomSeed(micros());\n  connectToWiFi();\n\n  updatePotentiometerLed();\n  applyExternalLedBrightness();\n  updateSensorReadings();\n  drawStatus();\n}\n\nvoid loop() {\n  const unsigned long now = millis();\n\n  if (WiFi.status() != WL_CONNECTED && now - lastWiFiRetryMs >= WIFI_RETRY_INTERVAL_MS) {\n    WiFi.reconnect();\n    lastWiFiRetryMs = now;\n  }\n  startOtaWhenConnected();\n  if (otaStarted) {\n    ArduinoOTA.handle();\n  }\n\n  updatePotentiometerLed();\n  updateTouchControls();\n\n  if (now - lastSensorReadMs >= SENSOR_INTERVAL_MS) {\n    lastSensorReadMs = now;\n    updateSensorReadings();\n  }\n  if (now - lastDisplayMs >= DISPLAY_INTERVAL_MS) {\n    lastDisplayMs = now;\n    drawStatus();\n  }\n  if (now - lastThingSpeakMs >= THINGSPEAK_INTERVAL_MS) {\n    lastThingSpeakMs = now;\n    sendThingSpeakUpdate();\n  }\n}\n"
+      }
+     ],
+     "delProfe": [
+      "ThingSpeak_DHT_Ticker.ino",
+      "caso_09_sensor_touch.ino"
+     ],
+     "pruebas": [
+      {
+       "nombre": "Pote en 3000, dos toques en el 13 y uno en el 4",
+       "hasta": 36000,
+       "entradas": [
+        {
+         "t": 3000,
+         "touch": {
+          "13": 10
+         }
+        },
+        {
+         "t": 3200,
+         "touch": {
+          "13": 1200
+         }
+        },
+        {
+         "t": 4000,
+         "touch": {
+          "13": 10
+         }
+        },
+        {
+         "t": 4200,
+         "touch": {
+          "13": 1200
+         }
+        },
+        {
+         "t": 5000,
+         "touch": {
+          "4": 10
+         }
+        },
+        {
+         "t": 5200,
+         "touch": {
+          "4": 1200
+         }
+        }
+       ],
+       "opts": {
+        "pote": 3000
+       },
+       "esperar": [
+        {
+         "k": "pwm",
+         "pin": 2,
+         "t": 2000,
+         "v": 3000
+        },
+        {
+         "k": "compara",
+         "pin": 23,
+         "t1": 2500,
+         "t2": 4500,
+         "que": "sube"
+        },
+        {
+         "k": "compara",
+         "pin": 23,
+         "t1": 4500,
+         "t2": 5500,
+         "que": "baja"
+        },
+        {
+         "k": "display",
+         "re": "3000",
+         "t": 6000
+        },
+        {
+         "k": "display",
+         "re": "24\\.5",
+         "t": 6000
+        },
+        {
+         "k": "display",
+         "re": "55",
+         "t": 6000
+        },
+        {
+         "k": "display",
+         "re": "ext\\D{0,10}\\d+ ?%",
+         "flags": "i",
+         "t": 6000
+        },
+        {
+         "k": "ts",
+         "min": 2,
+         "cada": [
+          15500,
+          17000
+         ],
+         "campos": {
+          "1": [
+           100,
+           500
+          ],
+          "2": 24.5,
+          "3": 55,
+          "4": [
+           10,
+           40
+          ],
+          "5": 3000,
+          "6": [
+           0,
+           100
+          ]
+         },
+         "rechazos": 0
+        }
+       ]
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "ArduinoOTA\\s*\\.\\s*begin\\s*\\(",
+       "ok": "Arranca ArduinoOTA",
+       "error": "Falta `ArduinoOTA.begin()` (cuando ya conectó el WiFi)"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "ArduinoOTA\\s*\\.\\s*handle\\s*\\(",
+       "ok": "Atiende el OTA en el loop",
+       "error": "Falta `ArduinoOTA.handle()` en el loop: sin eso la subida por OTA no arranca"
+      }
+     ],
+     "parte": 9
+    },
+    {
+     "id": "9.2",
+     "tema": "Sketch 2",
+     "titulo": "el sketch 2 con HTTP y ArduinoJson, como el grupo",
+     "tipo": "esp32",
+     "lenguaje": "cpp",
+     "consigna": "El **sketch 2 del TPI** leyendo el canal **por HTTP**, como lo resolvió el grupo 1 (en vez de `readFloatField`): un GET a\n`http://api.thingspeak.com/channels/1234567/feeds/last.json`, que devuelve el último envío en JSON:\n```\n{\"created_at\":\"…\",\"entry_id\":7,\"field1\":\"321\",\"field2\":\"24.5\", … ,\"field6\":\"40\"}\n```\nCon **ArduinoJson** (`deserializeJson`) sacá los 6 campos. Leé al arrancar y cada 16 s, contá las pulsaciones y mostrá de a 3 campos por pantalla, rotando cada 5 s, con `Pulsaciones: N` abajo.",
+     "pasos": [
+      "`if (http.begin(url) && http.GET() == 200) { String payload = http.getString(); … }`",
+      "`DynamicJsonDocument doc(1024); if (!deserializeJson(doc, payload)) { … }` (el error es falso cuando salió bien).",
+      "Los campos: `campos[i] = doc[\"field\" + String(i + 1)].as<String>();` (o con un arreglo de claves, como el grupo).",
+      "El loop como el 7.4, pero con páginas cada 5000 ms."
+     ],
+     "pistas": [
+      "En la placa simulada, ThingSpeak contesta con lo que tiene el canal 1234567.",
+      "El grupo cuenta con `attachInterrupt(…, FALLING)` y un antirrebote de 200 ms; con el flanco en el loop también anda."
+     ],
+     "archivos": [
+      {
+       "nombre": "sketch.ino",
+       "inicial": "#include <WiFi.h>\n#include <HTTPClient.h>\n#include <ArduinoJson.h>\n#include <Wire.h>\n#include <Adafruit_SH110X.h>\n\nconst char* ssid = \"TU_RED_WIFI\";\nconst char* password = \"TU_CLAVE_WIFI\";\nconst char* canal = \"1234567\";\nconst int BOTON = 19;\n\nAdafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);\nString campos[6] = {\"--\", \"--\", \"--\", \"--\", \"--\", \"--\"};\nint pulsaciones = 0, anterior = HIGH, pagina = 0;\nunsigned long antesLeer = 0, antesPagina = 0;\n\nvoid leerCanal() {\n  HTTPClient http;\n  String url = String(\"http://api.thingspeak.com/channels/\") + canal + \"/feeds/last.json\";\n  // http.begin(url), http.GET(): si da 200, http.getString() y deserializeJson\n  // los campos: doc[\"field1\"].as<String>() … doc[\"field6\"]\n\n  http.end();\n}\n\nvoid mostrar() {\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  // tres campos según la página y las pulsaciones\n\n  display.display();\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BOTON, INPUT_PULLUP);\n  display.begin(0x3C, true);\n  display.setTextColor(SH110X_WHITE);\n  WiFi.begin(ssid, password);\n  while (WiFi.status() != WL_CONNECTED) delay(100);\n  leerCanal();\n}\n\nvoid loop() {\n  // las pulsaciones, leer cada 16 s, cambiar de página cada 5 s y mostrar\n\n  delay(20);\n}\n",
+       "solucion": "#include <Adafruit_GFX.h>\n#include <Adafruit_SH110X.h>\n#include <ArduinoJson.h>\n#include <HTTPClient.h>\n#include <WiFi.h>\n#include <Wire.h>\n\nconst char *WIFI_SSID = \"TU_RED_WIFI\";\nconst char *WIFI_PASSWORD = \"TU_CLAVE_WIFI\";\nconst char *THINGSPEAK_CHANNEL_ID = \"1234567\";  // tu número de canal\n// Optional: uncomment and fill this only if the channel is made private.\n// const char *THINGSPEAK_READ_API_KEY = \"PASTE_READ_API_KEY_HERE\";\n\nconstexpr uint8_t BUTTON_PIN = 19;  // Encoder push switch; assumed active LOW.\nconstexpr uint8_t OLED_SDA_PIN = 21;\nconstexpr uint8_t OLED_SCL_PIN = 22;\nconstexpr unsigned long READ_INTERVAL_MS = 16000;\nconstexpr unsigned long PAGE_INTERVAL_MS = 5000;\nconstexpr unsigned long DISPLAY_REFRESH_INTERVAL_MS = 250;\nconstexpr uint32_t BUTTON_DEBOUNCE_US = 200000;\n\nAdafruit_SH1106G display(128, 64, &Wire, -1);\nString fieldValues[6] = {\"--\", \"--\", \"--\", \"--\", \"--\", \"--\"};\nconst char *fieldLabels[6] = {\n    \"Aleatorio\", \"Temp C\", \"Humedad %\", \"Tiempo s\", \"PWM LED int.\", \"LED ext %\"};\n\nvolatile uint32_t buttonPressCount = 0;\nvolatile uint32_t lastButtonInterruptUs = 0;\nportMUX_TYPE buttonMux = portMUX_INITIALIZER_UNLOCKED;\n\nunsigned long lastReadMs = 0;\nunsigned long lastPageChangeMs = 0;\nunsigned long lastDisplayMs = 0;\nuint8_t currentPage = 0;\nbool haveChannelData = false;\nbool displayAvailable = false;\n\nvoid IRAM_ATTR onButtonPressed() {\n  const uint32_t nowUs = micros();\n  portENTER_CRITICAL_ISR(&buttonMux);\n  if (nowUs - lastButtonInterruptUs >= BUTTON_DEBOUNCE_US) {\n    ++buttonPressCount;\n    lastButtonInterruptUs = nowUs;\n  }\n  portEXIT_CRITICAL_ISR(&buttonMux);\n}\n\nuint32_t getButtonPressCount() {\n  portENTER_CRITICAL(&buttonMux);\n  const uint32_t count = buttonPressCount;\n  portEXIT_CRITICAL(&buttonMux);\n  return count;\n}\n\nbool connectToWiFi(unsigned long timeoutMs) {\n  WiFi.mode(WIFI_STA);\n  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);\n  Serial.printf(\"Connecting to Wi-Fi: %s\\n\", WIFI_SSID);\n\n  const unsigned long startedAt = millis();\n  while (WiFi.status() != WL_CONNECTED && millis() - startedAt < timeoutMs) {\n    delay(100);\n  }\n  if (WiFi.status() == WL_CONNECTED) {\n    Serial.print(\"Wi-Fi connected; IP: \");\n    Serial.println(WiFi.localIP());\n    return true;\n  }\n  Serial.println(\"Wi-Fi connection timed out; will retry in loop\");\n  return false;\n}\n\nbool parseChannelResponse(const String &payload) {\n  DynamicJsonDocument doc(1024);\n  const DeserializationError error = deserializeJson(doc, payload);\n  if (error) {\n    Serial.printf(\"ThingSpeak JSON error: %s\\n\", error.c_str());\n    return false;\n  }\n\n  const char *keys[6] = {\"field1\", \"field2\", \"field3\", \"field4\", \"field5\", \"field6\"};\n  for (uint8_t i = 0; i < 6; ++i) {\n    if (doc[keys[i]].isNull()) {\nSerial.printf(\"ThingSpeak response has no %s value\\n\", keys[i]);\nreturn false;\n    }\n  }\n\n  for (uint8_t i = 0; i < 6; ++i) {\n    fieldValues[i] = doc[keys[i]].as<String>();\n  }\n  haveChannelData = true;\n  return true;\n}\n\nvoid readThingSpeak() {\n  if (WiFi.status() != WL_CONNECTED) {\n    Serial.println(\"Cannot read ThingSpeak: Wi-Fi is disconnected\");\n    WiFi.reconnect();\n    return;\n  }\n\n  HTTPClient http;\n  String url = String(\"http://api.thingspeak.com/channels/\") +\n         THINGSPEAK_CHANNEL_ID + \"/feeds/last.json\";\n  // If the channel becomes private, uncomment the read-key declaration above and:\n  // url += String(\"?api_key=\") + THINGSPEAK_READ_API_KEY;\n\n  http.setTimeout(5000);\n  if (!http.begin(url)) {\n    Serial.println(\"Could not start ThingSpeak HTTP request\");\n    return;\n  }\n\n  const int httpCode = http.GET();\n  if (httpCode == HTTP_CODE_OK) {\n    const String payload = http.getString();\n    if (parseChannelResponse(payload)) {\nSerial.println(\"Latest six ThingSpeak fields updated\");\n    }\n  } else {\n    Serial.printf(\"ThingSpeak HTTP error: %d\\n\", httpCode);\n  }\n  http.end();\n}\n\nvoid drawCurrentPage() {\n  if (!displayAvailable) {\n    return;\n  }\n\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.println(\"TPA G1 - IoT ESP32\");\n  display.println(currentPage == 0 ? \"Pagina 1/2\" : \"Pagina 2/2\");\n\n  const uint8_t firstField = currentPage * 3;\n  for (uint8_t i = firstField; i < firstField + 3; ++i) {\n    display.printf(\"%s: %s\\n\", fieldLabels[i],\n             haveChannelData ? fieldValues[i].c_str() : \"waiting\");\n  }\n  display.println(\"Pulsaciones:\");\n  display.println(static_cast<unsigned long>(getButtonPressCount()));\n  display.display();\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BUTTON_PIN, INPUT_PULLUP);\n  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), onButtonPressed, FALLING);\n\n  Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);\n  displayAvailable = display.begin(0x3C, true);\n  if (!displayAvailable) {\n    Serial.println(\"OLED unavailable; continuing without display\");\n  } else {\n    display.setTextSize(1);\n    display.setTextColor(SH110X_WHITE);\n    drawCurrentPage();\n  }\n\n  connectToWiFi(15000);\n  readThingSpeak();\n  lastReadMs = millis();\n  lastPageChangeMs = millis();\n}\n\nvoid loop() {\n  const unsigned long now = millis();\n\n  if (WiFi.status() != WL_CONNECTED) {\n    static unsigned long lastReconnectMs = 0;\n    if (now - lastReconnectMs >= 10000) {\nWiFi.reconnect();\nlastReconnectMs = now;\n    }\n  }\n\n  if (now - lastReadMs >= READ_INTERVAL_MS) {\n    readThingSpeak();\n    lastReadMs = millis();\n  }\n  if (now - lastPageChangeMs >= PAGE_INTERVAL_MS) {\n    currentPage = (currentPage + 1) % 2;\n    lastPageChangeMs = now;\n  }\n  if (now - lastDisplayMs >= DISPLAY_REFRESH_INTERVAL_MS) {\n    drawCurrentPage();\n    lastDisplayMs = now;\n  }\n  delay(20);\n}\n"
+      }
+     ],
+     "delProfe": [
+      "ThingSpeak_LeerDatos.ino"
+     ],
+     "placa": {
+      "canales": {
+       "1234567": {
+        "1": 321,
+        "2": 24.5,
+        "3": 55,
+        "4": 120,
+        "5": 2048,
+        "6": 40
+       }
+      }
+     },
+     "pruebas": [
+      {
+       "nombre": "Lee el canal y apretás dos veces",
+       "hasta": 13000,
+       "entradas": [
+        {
+         "t": 3000,
+         "boton": true
+        },
+        {
+         "t": 3200,
+         "boton": false
+        },
+        {
+         "t": 6000,
+         "boton": true
+        },
+        {
+         "t": 6200,
+         "boton": false
+        }
+       ],
+       "opts": {
+        "canales": {
+         "1234567": {
+          "1": 321,
+          "2": 24.5,
+          "3": 55,
+          "4": 120,
+          "5": 2048,
+          "6": 40
+         }
+        }
+       },
+       "esperar": [
+        {
+         "k": "display",
+         "re": "321"
+        },
+        {
+         "k": "display",
+         "re": "120"
+        },
+        {
+         "k": "display",
+         "re": "puls\\w*\\W{0,3}2\\b",
+         "flags": "i",
+         "t": 12500
+        },
+        {
+         "k": "display",
+         "re": "puls\\w*\\W{0,3}3\\b",
+         "flags": "i",
+         "no": true
+        }
+       ]
+      }
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "deserializeJson\\s*\\(",
+       "ok": "Lee el JSON con ArduinoJson",
+       "error": "Falta `deserializeJson(doc, payload)`: acá se lee por HTTP, no con readFloatField"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "feeds/last",
+       "ok": "Pide el último envío",
+       "error": "La URL es la del último envío: `…/feeds/last.json`"
+      }
+     ],
+     "parte": 9
+    },
+    {
+     "id": "9.3",
+     "tema": "Defensa · sketch 1",
+     "titulo": "preguntas sobre el sketch 1",
+     "tipo": "respuestas",
+     "lenguaje": "cpp",
+     "consigna": "Preguntas de la defensa sobre el **sketch 1 del grupo** (está al costado). Contestalas leyendo el código; si dudás, corrélo en la placa (pestaña TPI del grupo del ejercicio 7.3).",
+     "pistas": [
+      "Las constantes están arriba de todo: THINGSPEAK_INTERVAL_MS, EXTERNAL_LED_STEP, PWM_MAX."
+     ],
+     "respuestas": [
+      {
+       "pregunta": "Cada cuántos ms intenta mandar a ThingSpeak",
+       "valor": 16000,
+       "unidad": "ms",
+       "motivo": "THINGSPEAK_INTERVAL_MS: 16 s, más que los 15 s que exige ThingSpeak gratis.",
+       "tol": 1,
+       "mostrar": "16000"
+      },
+      {
+       "pregunta": "Cuánto sube el PWM del LED externo un toque (EXTERNAL_LED_STEP)",
+       "valor": 204,
+       "motivo": "PWM_MAX / 20 = 4095 / 20 = 204,75 → 204 (división entera).",
+       "tol": 1,
+       "mostrar": "204"
+      },
+      {
+       "pregunta": "Qué % muestra el display después de un solo toque",
+       "valor": 4,
+       "unidad": "%",
+       "motivo": "`map(204, 0, 4095, 0, 100)` = 4,98 → 4: map corta los decimales. Para que marque 5 % habría que redondear (o usar un paso de 205).",
+       "tol": 1,
+       "mostrar": "4"
+      },
+      {
+       "pregunta": "Toques para llegar al 100 % desde 0",
+       "valor": 21,
+       "motivo": "20 toques dan 20 × 204 = 4080; el 21 satura en PWM_MAX (4095).",
+       "tol": 1,
+       "mostrar": "21"
+      },
+      {
+       "pregunta": "Puerto en el que escucha ArduinoOTA en la ESP32",
+       "valor": 3232,
+       "motivo": "Es el puerto por defecto; el IDE lo encuentra por mDNS (el puerto de red con el hostname ESP32_TPI4K3).",
+       "tol": 1,
+       "mostrar": "3232"
+      },
+      {
+       "pregunta": "Si se cae el WiFi, el envío a ThingSpeak",
+       "opciones": [
+        "se reintenta enseguida",
+        "se saltea y se prueba a los 16 s",
+        "cuelga la placa"
+       ],
+       "valor": "se saltea y se prueba a los 16 s",
+       "motivo": "`sendThingSpeakUpdate` vuelve sin mandar, pero `lastThingSpeakMs` ya se actualizó: el próximo intento es en 16 s. Mientras, el loop reintenta el WiFi cada 10 s.",
+       "mostrar": "se saltea y se prueba a los 16 s"
+      },
+      {
+       "pregunta": "Para qué está ArduinoOTA.handle() en el loop",
+       "opciones": [
+        "atiende los pedidos de subida por WiFi",
+        "manda los datos a ThingSpeak",
+        "reconecta el WiFi"
+       ],
+       "valor": "atiende los pedidos de subida por WiFi",
+       "motivo": "Si no se llama seguido, el IDE encuentra la placa pero la subida no arranca: por eso el loop no tiene delay.",
+       "mostrar": "atiende los pedidos de subida por WiFi"
+      },
+      {
+       "pregunta": "Con los umbrales 950/850 en una placa que lee 70 suelto, el LED externo",
+       "opciones": [
+        "no responde: lo toma como tocado todo el tiempo",
+        "anda bien",
+        "sube solo hasta el máximo"
+       ],
+       "valor": "no responde: lo toma como tocado todo el tiempo",
+       "motivo": "70 < 950: en la primera vuelta sube y baja un paso y los dos quedan «trabados» (para soltar tiene que leer más de 1050). Por eso hay que medir touchRead en la placa.",
+       "mostrar": "no responde: lo toma como tocado todo el tiempo"
+      }
+     ],
+     "codigo": {
+      "nombre": "sketch_envio_grupo_1.ino",
+      "texto": "#include <Adafruit_GFX.h>\n#include <Adafruit_SH110X.h>\n#include <ArduinoOTA.h>\n#include <DHT.h>\n#include <ThingSpeak.h>\n#include <WiFi.h>\n#include <Wire.h>\n\n// Set to 1 only in the Wokwi copy to emulate touch pads with pushbuttons on GPIO25/26.\n// Keep 0 on the physical ESP32, where GPIO13/4 are capacitive touch inputs.\n#define TOUCH_SIMULATION_MODE 0\n\n// Update these placeholders locally. Do not publish the real Wi-Fi password or key.\nconst char *WIFI_SSID = \"TU_RED_WIFI\";\nconst char *WIFI_PASSWORD = \"TU_CLAVE_WIFI\";\nconst char *THINGSPEAK_WRITE_API_KEY = \"TU_API_KEY\";\nconst unsigned long THINGSPEAK_CHANNEL_ID = 1234567;  // tu número de canal\n\n// Pin assignments from the course board diagram and examples.\nconstexpr uint8_t DHT_PIN = 33;\nconstexpr uint8_t POT_PIN = 32;\nconstexpr uint8_t INTEGRATED_LED_PIN = 2;  // Assumption from caso_1_led_interno.txt.\nconstexpr uint8_t EXTERNAL_LED_PIN = 23;\nconstexpr uint8_t TOUCH_UP_PIN = 13;\nconstexpr uint8_t TOUCH_DOWN_PIN = 4;\nconstexpr uint8_t SIM_TOUCH_UP_BUTTON_PIN = 25;\nconstexpr uint8_t SIM_TOUCH_DOWN_BUTTON_PIN = 26;\nconstexpr uint8_t OLED_SDA_PIN = 21;\nconstexpr uint8_t OLED_SCL_PIN = 22;\n\nconstexpr uint8_t PWM_BITS = 12;\nconstexpr uint16_t PWM_MAX = (1U << PWM_BITS) - 1;\nconstexpr uint16_t TOUCH_UP_THRESHOLD = 950;    // Starting point from the instructor's example.\nconstexpr uint16_t TOUCH_DOWN_THRESHOLD = 850;  // Calibrate on the physical board if needed.\nconstexpr uint16_t TOUCH_RELEASE_MARGIN = 100;\nconstexpr uint16_t EXTERNAL_LED_STEP = PWM_MAX / 20;  // 5% per touch.\nconstexpr unsigned long SENSOR_INTERVAL_MS = 2000;\nconstexpr unsigned long DISPLAY_INTERVAL_MS = 250;\nconstexpr unsigned long THINGSPEAK_INTERVAL_MS = 16000;\nconstexpr unsigned long WIFI_RETRY_INTERVAL_MS = 10000;\n\nAdafruit_SH1106G display(128, 64, &Wire, -1);\nDHT dht(DHT_PIN, DHT22);\nWiFiClient thingspeakClient;\n\nfloat temperatureC = NAN;\nfloat humidityPct = NAN;\nuint16_t integratedPwm = 0;\nuint16_t externalPwm = 0;\nbool touchUpLatched = false;\nbool touchDownLatched = false;\nbool displayAvailable = false;\nbool otaStarted = false;\n\nunsigned long lastSensorReadMs = 0;\nunsigned long lastDisplayMs = 0;\nunsigned long lastThingSpeakMs = 0;\nunsigned long lastWiFiRetryMs = 0;\n\nvoid connectToWiFi() {\n  WiFi.mode(WIFI_STA);\n  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);\n  lastWiFiRetryMs = millis();\n  Serial.printf(\"Connecting to Wi-Fi: %s\\n\", WIFI_SSID);\n}\n\nvoid startOtaWhenConnected() {\n  if (WiFi.status() != WL_CONNECTED || otaStarted) {\n    return;\n  }\n\n  ArduinoOTA.setHostname(\"ESP32_TPI4K3\");\n  ArduinoOTA.onStart([]() { Serial.println(\"OTA upload started\"); });\n  ArduinoOTA.onEnd([]() { Serial.println(\"OTA upload finished; restarting\"); });\n  ArduinoOTA.onError([](ota_error_t error) {\n    Serial.printf(\"OTA error: %u\\n\", static_cast<unsigned>(error));\n  });\n  ArduinoOTA.begin();\n  otaStarted = true;\n  Serial.print(\"OTA ready at \");\n  Serial.println(WiFi.localIP());\n}\n\nvoid updateSensorReadings() {\n  const float newTemperature = dht.readTemperature();\n  const float newHumidity = dht.readHumidity();\n\n  if (isnan(newTemperature) || isnan(newHumidity)) {\n    Serial.println(\"DHT22 read failed; keeping the last valid reading\");\n    return;\n  }\n\n  temperatureC = newTemperature;\n  humidityPct = newHumidity;\n}\n\nvoid updatePotentiometerLed() {\n  const int rawPot = analogRead(POT_PIN);\n  integratedPwm = static_cast<uint16_t>(map(rawPot, 0, 4095, 0, PWM_MAX));\n  analogWrite(INTEGRATED_LED_PIN, integratedPwm);\n}\n\nvoid applyExternalLedBrightness() {\n  analogWrite(EXTERNAL_LED_PIN, externalPwm);\n}\n\nvoid updateTouchControls() {\n  bool upPressed;\n  bool downPressed;\n#if TOUCH_SIMULATION_MODE\n  upPressed = digitalRead(SIM_TOUCH_UP_BUTTON_PIN) == LOW;\n  downPressed = digitalRead(SIM_TOUCH_DOWN_BUTTON_PIN) == LOW;\n#else\n  const uint16_t upReading = touchRead(TOUCH_UP_PIN);\n  const uint16_t downReading = touchRead(TOUCH_DOWN_PIN);\n  static unsigned long lastTouchReportMs = 0;\n  if (millis() - lastTouchReportMs >= 1000) {\n    lastTouchReportMs = millis();\n    Serial.printf(\"Touch GPIO13=%u GPIO4=%u (thresholds %u/%u)\\n\",\n                  static_cast<unsigned>(upReading), static_cast<unsigned>(downReading),\n                  static_cast<unsigned>(TOUCH_UP_THRESHOLD),\n                  static_cast<unsigned>(TOUCH_DOWN_THRESHOLD));\n  }\n  // Capacitive readings normally decrease when touched; use release hysteresis.\n  upPressed = touchUpLatched\n                  ? upReading <= TOUCH_UP_THRESHOLD + TOUCH_RELEASE_MARGIN\n                  : upReading < TOUCH_UP_THRESHOLD;\n  downPressed = touchDownLatched\n                    ? downReading <= TOUCH_DOWN_THRESHOLD + TOUCH_RELEASE_MARGIN\n                    : downReading < TOUCH_DOWN_THRESHOLD;\n#endif\n\n  if (!touchUpLatched && upPressed) {\n    externalPwm = (externalPwm > PWM_MAX - EXTERNAL_LED_STEP)\n                      ? PWM_MAX\n                      : externalPwm + EXTERNAL_LED_STEP;\n    touchUpLatched = true;\n    applyExternalLedBrightness();\n  } else if (touchUpLatched && !upPressed) {\n    touchUpLatched = false;\n  }\n\n  if (!touchDownLatched && downPressed) {\n    externalPwm = (externalPwm > EXTERNAL_LED_STEP) ? externalPwm - EXTERNAL_LED_STEP : 0;\n    touchDownLatched = true;\n    applyExternalLedBrightness();\n  } else if (touchDownLatched && !downPressed) {\n    touchDownLatched = false;\n  }\n\n  // Touch is edge-latched; holding a pad changes brightness only once.\n}\n\nvoid drawStatus() {\n  if (!displayAvailable) {\n    return;\n  }\n\n  const uint8_t externalPercent = static_cast<uint8_t>(map(externalPwm, 0, PWM_MAX, 0, 100));\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.println(\"TPA G1 - IoT ESP32\");\n  display.printf(\"PWM LED int: %u\\n\", static_cast<unsigned>(integratedPwm));\n  if (isnan(temperatureC) || isnan(humidityPct)) {\n    display.println(\"DHT22: esperando\");\n  } else {\n    display.printf(\"Temp: %.1f C\\nHum: %.1f %%\\n\", temperatureC, humidityPct);\n  }\n  display.printf(\"LED ext.: %u%%\\n\", static_cast<unsigned>(externalPercent));\n  if (WiFi.status() == WL_CONNECTED) {\n    display.printf(\"IP: %s\\n\", WiFi.localIP().toString().c_str());\n  } else {\n    display.println(\"WiFi: conectando...\");\n  }\n  display.display();\n}\n\nbool haveValidReadings() {\n  return !isnan(temperatureC) && !isnan(humidityPct);\n}\n\nvoid sendThingSpeakUpdate() {\n  if (WiFi.status() != WL_CONNECTED || !haveValidReadings()) {\n    Serial.println(\"ThingSpeak update skipped: Wi-Fi or sensor data unavailable\");\n    return;\n  }\n  if (String(THINGSPEAK_WRITE_API_KEY) == \"PASTE_WRITE_API_KEY_HERE\") {\n    Serial.println(\"Set THINGSPEAK_WRITE_API_KEY before sending real channel updates\");\n    return;\n  }\n\n  const long randomValue = random(100, 501);\n  const unsigned long elapsedSeconds = millis() / 1000UL;\n  const uint8_t externalPercent = static_cast<uint8_t>(map(externalPwm, 0, PWM_MAX, 0, 100));\n\n  ThingSpeak.setField(1, static_cast<long>(randomValue));\n  ThingSpeak.setField(2, temperatureC);\n  ThingSpeak.setField(3, humidityPct);\n  ThingSpeak.setField(4, static_cast<long>(elapsedSeconds));\n  ThingSpeak.setField(5, static_cast<long>(integratedPwm));\n  ThingSpeak.setField(6, static_cast<long>(externalPercent));\n\n  const int response = ThingSpeak.writeFields(THINGSPEAK_CHANNEL_ID, THINGSPEAK_WRITE_API_KEY);\n  Serial.printf(\"ThingSpeak write status: %d\\n\", response);\n  if (response == 200) {\n    Serial.println(\"All six fields were accepted by ThingSpeak\");\n  }\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  analogReadResolution(PWM_BITS);\n  analogWriteResolution(INTEGRATED_LED_PIN, PWM_BITS);\n  analogWriteResolution(EXTERNAL_LED_PIN, PWM_BITS);\n  pinMode(POT_PIN, INPUT);\n  pinMode(INTEGRATED_LED_PIN, OUTPUT);\n  pinMode(EXTERNAL_LED_PIN, OUTPUT);\n#if TOUCH_SIMULATION_MODE\n  pinMode(SIM_TOUCH_UP_BUTTON_PIN, INPUT_PULLUP);\n  pinMode(SIM_TOUCH_DOWN_BUTTON_PIN, INPUT_PULLUP);\n#endif\n\n  Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);\n  displayAvailable = display.begin(0x3C, true);\n  if (!displayAvailable) {\n    Serial.println(\"OLED unavailable; continuing without display\");\n  } else {\n    display.setTextSize(1);\n    display.setTextColor(SH110X_WHITE);\n  }\n\n  dht.begin();\n  ThingSpeak.begin(thingspeakClient);\n  randomSeed(micros());\n  connectToWiFi();\n\n  updatePotentiometerLed();\n  applyExternalLedBrightness();\n  updateSensorReadings();\n  drawStatus();\n}\n\nvoid loop() {\n  const unsigned long now = millis();\n\n  if (WiFi.status() != WL_CONNECTED && now - lastWiFiRetryMs >= WIFI_RETRY_INTERVAL_MS) {\n    WiFi.reconnect();\n    lastWiFiRetryMs = now;\n  }\n  startOtaWhenConnected();\n  if (otaStarted) {\n    ArduinoOTA.handle();\n  }\n\n  updatePotentiometerLed();\n  updateTouchControls();\n\n  if (now - lastSensorReadMs >= SENSOR_INTERVAL_MS) {\n    lastSensorReadMs = now;\n    updateSensorReadings();\n  }\n  if (now - lastDisplayMs >= DISPLAY_INTERVAL_MS) {\n    lastDisplayMs = now;\n    drawStatus();\n  }\n  if (now - lastThingSpeakMs >= THINGSPEAK_INTERVAL_MS) {\n    lastThingSpeakMs = now;\n    sendThingSpeakUpdate();\n  }\n}"
+     },
+     "parte": 9
+    },
+    {
+     "id": "9.4",
+     "tema": "Defensa · sketch 2",
+     "titulo": "preguntas sobre el sketch 2",
+     "tipo": "respuestas",
+     "lenguaje": "cpp",
+     "consigna": "Preguntas de la defensa sobre el **sketch 2 del grupo** (está al costado).",
+     "respuestas": [
+      {
+       "pregunta": "Cada cuántos segundos cambia de página",
+       "valor": 5,
+       "unidad": "s",
+       "motivo": "PAGE_INTERVAL_MS = 5000.",
+       "tol": 1,
+       "mostrar": "5"
+      },
+      {
+       "pregunta": "Campos por página",
+       "valor": 3,
+       "motivo": "Dos páginas: campos 1 a 3 y 4 a 6 (`firstField = currentPage * 3`).",
+       "tol": 1,
+       "mostrar": "3"
+      },
+      {
+       "pregunta": "Antirrebote del pulsador",
+       "valor": 200,
+       "unidad": "ms",
+       "motivo": "BUTTON_DEBOUNCE_US = 200000 µs: dos flancos con menos de 200 ms cuentan como uno.",
+       "tol": 1,
+       "mostrar": "200"
+      },
+      {
+       "pregunta": "Qué pide al canal",
+       "opciones": [
+        "…/channels/<canal>/feeds/last.json",
+        "…/update?api_key=…&field1=…",
+        "…/channels/<canal>/fields/1.json?results=100"
+       ],
+       "valor": "…/channels/<canal>/feeds/last.json",
+       "motivo": "El último envío, con los 8 campos en JSON. `update` es para escribir.",
+       "mostrar": "…/channels/<canal>/feeds/last.json"
+      },
+      {
+       "pregunta": "¿Hace falta la Read API Key?",
+       "opciones": [
+        "No: el canal es público",
+        "Sí, siempre",
+        "Solo con HTTPS"
+       ],
+       "valor": "No: el canal es público",
+       "motivo": "Con un canal privado, se agrega `?api_key=` con la Read API Key.",
+       "mostrar": "No: el canal es público"
+      },
+      {
+       "pregunta": "Por qué buttonPressCount es volatile",
+       "opciones": [
+        "lo cambia la interrupción: el compilador no puede guardarlo en un registro",
+        "para que se guarde en la EEPROM",
+        "para que sea más rápido"
+       ],
+       "valor": "lo cambia la interrupción: el compilador no puede guardarlo en un registro",
+       "motivo": "Y se lee adentro de una sección crítica (`portENTER_CRITICAL`) para no leerlo a medio escribir.",
+       "mostrar": "lo cambia la interrupción: el compilador no puede guardarlo en un registro"
+      },
+      {
+       "pregunta": "¿Las pulsaciones se mandan a ThingSpeak?",
+       "opciones": [
+        "No: el contador queda en la placa",
+        "Sí, en el campo 7"
+       ],
+       "valor": "No: el contador queda en la placa",
+       "motivo": "Se cuenta en RAM y se reinicia al reiniciar la placa.",
+       "mostrar": "No: el contador queda en la placa"
+      }
+     ],
+     "codigo": {
+      "nombre": "sketch_lectura_grupo_1.ino",
+      "texto": "#include <Adafruit_GFX.h>\n#include <Adafruit_SH110X.h>\n#include <ArduinoJson.h>\n#include <HTTPClient.h>\n#include <WiFi.h>\n#include <Wire.h>\n\nconst char *WIFI_SSID = \"TU_RED_WIFI\";\nconst char *WIFI_PASSWORD = \"TU_CLAVE_WIFI\";\nconst char *THINGSPEAK_CHANNEL_ID = \"1234567\";  // tu número de canal\n// Optional: uncomment and fill this only if the channel is made private.\n// const char *THINGSPEAK_READ_API_KEY = \"PASTE_READ_API_KEY_HERE\";\n\nconstexpr uint8_t BUTTON_PIN = 19;  // Encoder push switch; assumed active LOW.\nconstexpr uint8_t OLED_SDA_PIN = 21;\nconstexpr uint8_t OLED_SCL_PIN = 22;\nconstexpr unsigned long READ_INTERVAL_MS = 16000;\nconstexpr unsigned long PAGE_INTERVAL_MS = 5000;\nconstexpr unsigned long DISPLAY_REFRESH_INTERVAL_MS = 250;\nconstexpr uint32_t BUTTON_DEBOUNCE_US = 200000;\n\nAdafruit_SH1106G display(128, 64, &Wire, -1);\nString fieldValues[6] = {\"--\", \"--\", \"--\", \"--\", \"--\", \"--\"};\nconst char *fieldLabels[6] = {\n    \"Aleatorio\", \"Temp C\", \"Humedad %\", \"Tiempo s\", \"PWM LED int.\", \"LED ext %\"};\n\nvolatile uint32_t buttonPressCount = 0;\nvolatile uint32_t lastButtonInterruptUs = 0;\nportMUX_TYPE buttonMux = portMUX_INITIALIZER_UNLOCKED;\n\nunsigned long lastReadMs = 0;\nunsigned long lastPageChangeMs = 0;\nunsigned long lastDisplayMs = 0;\nuint8_t currentPage = 0;\nbool haveChannelData = false;\nbool displayAvailable = false;\n\nvoid IRAM_ATTR onButtonPressed() {\n  const uint32_t nowUs = micros();\n  portENTER_CRITICAL_ISR(&buttonMux);\n  if (nowUs - lastButtonInterruptUs >= BUTTON_DEBOUNCE_US) {\n    ++buttonPressCount;\n    lastButtonInterruptUs = nowUs;\n  }\n  portEXIT_CRITICAL_ISR(&buttonMux);\n}\n\nuint32_t getButtonPressCount() {\n  portENTER_CRITICAL(&buttonMux);\n  const uint32_t count = buttonPressCount;\n  portEXIT_CRITICAL(&buttonMux);\n  return count;\n}\n\nbool connectToWiFi(unsigned long timeoutMs) {\n  WiFi.mode(WIFI_STA);\n  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);\n  Serial.printf(\"Connecting to Wi-Fi: %s\\n\", WIFI_SSID);\n\n  const unsigned long startedAt = millis();\n  while (WiFi.status() != WL_CONNECTED && millis() - startedAt < timeoutMs) {\n    delay(100);\n  }\n  if (WiFi.status() == WL_CONNECTED) {\n    Serial.print(\"Wi-Fi connected; IP: \");\n    Serial.println(WiFi.localIP());\n    return true;\n  }\n  Serial.println(\"Wi-Fi connection timed out; will retry in loop\");\n  return false;\n}\n\nbool parseChannelResponse(const String &payload) {\n  DynamicJsonDocument doc(1024);\n  const DeserializationError error = deserializeJson(doc, payload);\n  if (error) {\n    Serial.printf(\"ThingSpeak JSON error: %s\\n\", error.c_str());\n    return false;\n  }\n\n  const char *keys[6] = {\"field1\", \"field2\", \"field3\", \"field4\", \"field5\", \"field6\"};\n  for (uint8_t i = 0; i < 6; ++i) {\n    if (doc[keys[i]].isNull()) {\n      Serial.printf(\"ThingSpeak response has no %s value\\n\", keys[i]);\n      return false;\n    }\n  }\n\n  for (uint8_t i = 0; i < 6; ++i) {\n    fieldValues[i] = doc[keys[i]].as<String>();\n  }\n  haveChannelData = true;\n  return true;\n}\n\nvoid readThingSpeak() {\n  if (WiFi.status() != WL_CONNECTED) {\n    Serial.println(\"Cannot read ThingSpeak: Wi-Fi is disconnected\");\n    WiFi.reconnect();\n    return;\n  }\n\n  HTTPClient http;\n  String url = String(\"http://api.thingspeak.com/channels/\") +\n               THINGSPEAK_CHANNEL_ID + \"/feeds/last.json\";\n  // If the channel becomes private, uncomment the read-key declaration above and:\n  // url += String(\"?api_key=\") + THINGSPEAK_READ_API_KEY;\n\n  http.setTimeout(5000);\n  if (!http.begin(url)) {\n    Serial.println(\"Could not start ThingSpeak HTTP request\");\n    return;\n  }\n\n  const int httpCode = http.GET();\n  if (httpCode == HTTP_CODE_OK) {\n    const String payload = http.getString();\n    if (parseChannelResponse(payload)) {\n      Serial.println(\"Latest six ThingSpeak fields updated\");\n    }\n  } else {\n    Serial.printf(\"ThingSpeak HTTP error: %d\\n\", httpCode);\n  }\n  http.end();\n}\n\nvoid drawCurrentPage() {\n  if (!displayAvailable) {\n    return;\n  }\n\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.println(\"TPA G1 - IoT ESP32\");\n  display.println(currentPage == 0 ? \"Pagina 1/2\" : \"Pagina 2/2\");\n\n  const uint8_t firstField = currentPage * 3;\n  for (uint8_t i = firstField; i < firstField + 3; ++i) {\n    display.printf(\"%s: %s\\n\", fieldLabels[i],\n                   haveChannelData ? fieldValues[i].c_str() : \"waiting\");\n  }\n  display.println(\"Pulsaciones:\");\n  display.println(static_cast<unsigned long>(getButtonPressCount()));\n  display.display();\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(BUTTON_PIN, INPUT_PULLUP);\n  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), onButtonPressed, FALLING);\n\n  Wire.begin(OLED_SDA_PIN, OLED_SCL_PIN);\n  displayAvailable = display.begin(0x3C, true);\n  if (!displayAvailable) {\n    Serial.println(\"OLED unavailable; continuing without display\");\n  } else {\n    display.setTextSize(1);\n    display.setTextColor(SH110X_WHITE);\n    drawCurrentPage();\n  }\n\n  connectToWiFi(15000);\n  readThingSpeak();\n  lastReadMs = millis();\n  lastPageChangeMs = millis();\n}\n\nvoid loop() {\n  const unsigned long now = millis();\n\n  if (WiFi.status() != WL_CONNECTED) {\n    static unsigned long lastReconnectMs = 0;\n    if (now - lastReconnectMs >= 10000) {\n      WiFi.reconnect();\n      lastReconnectMs = now;\n    }\n  }\n\n  if (now - lastReadMs >= READ_INTERVAL_MS) {\n    readThingSpeak();\n    lastReadMs = millis();\n  }\n  if (now - lastPageChangeMs >= PAGE_INTERVAL_MS) {\n    currentPage = (currentPage + 1) % 2;\n    lastPageChangeMs = now;\n  }\n  if (now - lastDisplayMs >= DISPLAY_REFRESH_INTERVAL_MS) {\n    drawCurrentPage();\n    lastDisplayMs = now;\n  }\n  delay(20);\n}"
+     },
+     "parte": 9
     }
    ]
   }

@@ -25,7 +25,7 @@
  },
  {
   "nombre": "caso_09_sensor_touch.ino",
-  "nota": "Sus umbrales (950 y 850) son de otra placa: en el simulador el touch lee 72 suelto y 10 tocado."
+  "nota": "Sus umbrales (950 y 850) los midió el profe en la placa de la cátedra; el simulador lee 1200 suelto y 10 tocado, así que anda igual."
  },
  {
   "nombre": "caso_10_display_sensor_tyh.ino"
@@ -70,5 +70,15 @@
  },
  {
   "nombre": "Memoria_EEPROM.ino"
+ },
+ {
+  "nombre": "sketch_envio_grupo_1.ino",
+  "etiqueta": "TPI del grupo",
+  "nota": "El sketch 1 del TPI del grupo 1 (envío): pote, touch, DHT22, display, ThingSpeak cada 16 s y ArduinoOTA."
+ },
+ {
+  "nombre": "sketch_lectura_grupo_1.ino",
+  "etiqueta": "TPI del grupo",
+  "nota": "El sketch 2 del TPI del grupo 1 (lectura): lee el canal por HTTP con ArduinoJson y cuenta las pulsaciones con una interrupción."
  }
 ]
