@@ -161,6 +161,13 @@
         "nombre": "Recuperatorio",
         "hasta": "2026-12-11"
       }
+    ],
+    "2026-11-11": [
+      {
+        "k": "201",
+        "tipo": "TP",
+        "nombre": "Correccion de TPI"
+      }
     ]
   },
   "notasCursada": {
