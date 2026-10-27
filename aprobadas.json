@@ -126,6 +126,11 @@
         "k": "206",
         "tipo": "TP",
         "nombre": "TPI - 2° op - Oral"
+      },
+      {
+        "k": "201",
+        "tipo": "Recuperatorio",
+        "nombre": "Recuperatorio"
       }
     ],
     "2026-11-02": [
@@ -140,6 +145,12 @@
         "k": "206",
         "tipo": "Recuperatorio",
         "nombre": "Recuperatorio · DAO - TP"
+      },
+      {
+        "k": "201",
+        "tipo": "Parcial",
+        "nombre": "Reentrega del TPI",
+        "hasta": "2026-11-25"
       }
     ],
     "2026-12-01": [
@@ -148,6 +159,13 @@
         "tipo": "Recuperatorio",
         "nombre": "Recuperatorio",
         "hasta": "2026-12-11"
+      }
+    ],
+    "2026-11-11": [
+      {
+        "k": "201",
+        "tipo": "TP",
+        "nombre": "Correccion de TPI"
       }
     ]
   },
