@@ -126,6 +126,11 @@
         "k": "206",
         "tipo": "TP",
         "nombre": "TPI - 2° op - Oral"
+      },
+      {
+        "k": "201",
+        "tipo": "Recuperatorio",
+        "nombre": "Recuperatorio"
       }
     ],
     "2026-11-02": [
