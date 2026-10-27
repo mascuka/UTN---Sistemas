@@ -140,6 +140,12 @@
         "k": "206",
         "tipo": "Recuperatorio",
         "nombre": "Recuperatorio · DAO - TP"
+      },
+      {
+        "k": "201",
+        "tipo": "Parcial",
+        "nombre": "Reentrega del TPI",
+        "hasta": "2026-11-25"
       }
     ],
     "2026-12-01": [
