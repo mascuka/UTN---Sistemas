@@ -8,6 +8,10 @@
     "anio": 2026,
     "nota": "12,10/15,00"
    },
+   "otro": {
+    "nota": "13,10/15,00",
+    "preguntas": 15
+   },
    "preguntas": [
     {
      "origen": "2026",
@@ -89,7 +93,8 @@
      ],
      "estado": "Incorrecta",
      "ex": "Apunte 01: «llamamos cliente al entorno de ejecución de la interfaz de usuario» (el navegador o la app). La c define al frontend y la b, al backend.",
-     "corr": "La b es la definición del backend, no del cliente."
+     "corr": "La b es la definición del backend, no del cliente.",
+     "ojo": "«Donde desarrollaremos la presentación de la información» tampoco va: es la definición del Frontend (en el otro intento se marcó esa y dio mal)."
     },
     {
      "origen": "2026",
@@ -403,6 +408,140 @@
      "ex": "Con endpoints claros, cada servicio sabe qué pedir y qué va a recibir sin conocer cómo está hecho el otro."
     },
     {
+     "origen": "2026",
+     "otro": true,
+     "en": "A que nos referimos cuando hablamos de \"Seguridad\" en el desarrollo backend?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es la capacidad del backend para responder rapidamente a las solicitudes de los usuarios y proporcionar una experiencia fluida y agil.",
+      "Ninguna es correcta",
+      "Se refiere a proteger los datos y recursos del sistema de accesos no autorizados y ataques maliciosos.",
+      "Se refiere a la capacidad del backend para manejar un aumento en la carga de trabajo o el número de usuarios sin degradar el rendimiento o la disponibilidad del sistema."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Seguridad es proteger datos y recursos de accesos no autorizados y ataques. La a es la definición de rendimiento y la d, la de escalabilidad."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Defina la capa Frontend",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es el entorno de ejecucion de la interfaz de usuario.",
+      "Es donde se motorizan las reglas del negocio de la aplicacion a desarrollar.",
+      "Es donde se persisten los datos de nuestra aplicacion.",
+      "Es donde desarrollaremos la presentacion de la informacion al usuario."
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El Frontend es donde se desarrolla la presentación de la información al usuario. La a es la definición de la capa Cliente y la b, la del Backend.",
+     "ojo": "Las dos se parecen: el Cliente es el entorno de ejecución de la interfaz (el navegador, la app) y el Frontend es lo que se desarrolla para presentar la información."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Indique las caracteristicas de Microservicios?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Todas las anteriores",
+      "Comunicacion basada en APIs.",
+      "Independencia.",
+      "Escalabilidad.",
+      "Resiliencia.",
+      "Ninguna de las anteriores."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Las cuatro son características de los microservicios: se comunican por APIs, son independientes, escalan por separado y la falla de uno no tira abajo a los demás (resiliencia). Es de una sola opción: va «Todas las anteriores»."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "A que nos referimos cuando hablamos de \"Escalabilidad\" en el desarrollo backend?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Implica proteger los datos y recursos del sistema de accesos no autorizados y ataques maliciosos.",
+      "Ninguna es correcta",
+      "Es la capacidad del backend para manejar un aumento en la carga de trabajo o el número de usuarios sin degradar el rendimiento o la disponibilidad del sistema.",
+      "Es la capacidad del backend para responder rapidamente a las solicitudes de los usuarios y proporcionar una experiencia fluida y agil."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Escalabilidad es aguantar más carga o más usuarios sin perder rendimiento ni disponibilidad. La a es seguridad y la d, rendimiento."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Que implica cuando hablamos de \"Manejo de la logica de negocio\" en el desarrollo backend?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Implica como se llevaran a cabo las operaciones.",
+      "Implica la implementacion y gestion de la logica de negocio de una aplicacion.",
+      "Todas son correctas.",
+      "Ninguna es correcta.",
+      "Implica definir las reglas y procesos que definen como funcionara el sistema."
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Las tres afirmaciones (a, b y e) describen la lógica de negocio: cómo se hacen las operaciones, su implementación y las reglas y procesos del sistema. Es de una sola opción: va «Todas son correctas»."
+    },
+    {
      "origen": "2023",
      "en": "¿Qué es Hibernate en el contexto del desarrollo backend?",
      "codigo": null,
@@ -526,31 +665,6 @@
      ],
      "estado": "Correcta",
      "ex": "Capas típicas: presentación, aplicación (negocio) y datos. Cada capa habla con la de al lado."
-    },
-    {
-     "origen": "2023",
-     "en": "¿Qué se entiende por seguridad en backend?",
-     "codigo": null,
-     "varias": false,
-     "vf": false,
-     "op": [
-      "La implementación de medidas y prácticas para proteger la aplicación de posibles vulnerabilidades y ataques maliciosos.",
-      "La seguridad no es un aspecto importante en el desarrollo de aplicaciones.",
-      "La seguridad solo se aplica en el frontend de una aplicación.",
-      "La seguridad solo es necesaria en aplicaciones monolíticas."
-     ],
-     "marcadas": [
-      0
-     ],
-     "ok": [
-      0
-     ],
-     "puntos": [
-      1.0,
-      1.0
-     ],
-     "estado": "Correcta",
-     "ex": "Seguridad = medidas para proteger la aplicación de vulnerabilidades y ataques, en cualquier arquitectura."
     },
     {
      "origen": "2023",
@@ -787,6 +901,10 @@
    "intento": {
     "anio": 2026,
     "nota": "8,50/10,00"
+   },
+   "otro": {
+    "nota": "9,50/10,00",
+    "preguntas": 10
    },
    "preguntas": [
     {
@@ -1042,6 +1160,276 @@
      "estado": "Incorrecta",
      "ex": "Apunte 03: declaración declarativa (en el pom.xml), resolución automática (incluye las dependencias transitivas), repositorios centrales y remotos (Maven Central) y repositorio local (.m2).",
      "corr": "Marcaste «Todas son correctas», pero la a (declaración imperativa) no va. Eran b, c, d y e."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Definicion de archetypes: Son plantillas predefinidas para crear las estructuras basicas de los proyectos.",
+     "codigo": null,
+     "varias": false,
+     "vf": true,
+     "op": [
+      "Falso",
+      "Verdadero"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un archetype de Maven es una plantilla de proyecto: mvn archetype:generate arma las carpetas (src/main/java, src/test/java) y el pom.xml."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Como debe ser el nombre del archivo del siguiente script?",
+     "codigo": [
+      "public class Hola {",
+      "    public static void main(String[] args) {",
+      "        System.out.println(\"Hola Mundo\");",
+      "    }",
+      "}"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "El nombre del archivo debera ser \"Hola\"",
+      "El nombre del archivo debera ser \"hola\"",
+      "No tiene correlacion el nombre del archivo y el nombre de la primera funcion en java"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Una clase public tiene que estar en un archivo con su mismo nombre, respetando mayúsculas: Hola.java."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Indica cuales NO son caracteristicas principales del Lenguaje de Programacion java",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Solo compilado",
+      "Dependiente de la plataforma",
+      "Orientado a objetos",
+      "Ninguna es caracteristica de Java",
+      "Todas son caracteristicas de java",
+      "Monohilo"
+     ],
+     "marcadas": [
+      0,
+      1,
+      5
+     ],
+     "ok": [
+      0,
+      1,
+      5
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Java se compila a bytecode y la JVM lo interpreta (no es solo compilado), es independiente de la plataforma y es multihilo. Lo que sí es: orientado a objetos."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Que es Maven?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Es una herramienta para la gestión de nuestros proyectos que permite separar la construcción y administración del proyecto de la gestión de sus dependencias.",
+      "Es un framework que utilizaremos para hacernos cargo de nuestra logica matematica.",
+      "Es una herramienta que utilizaremos en el cursado para la construccion y gestion de nuestros proyectos."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0,
+      2
+     ],
+     "puntos": [
+      0.5,
+      1
+     ],
+     "estado": "Parcialmente correcta",
+     "ex": "Maven es la herramienta de construcción y gestión de proyectos (y de sus dependencias) que se usa en el cursado. No es un framework.",
+     "corr": "Marcaste solo la a y el campus dio 0,50: faltaba la c. La b es la única que no va."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Indique cuales son las ventajas de usar var como tipo de dato",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Facilita el mantenimiento del codigo al cambiar los tipos de variables sin necesidad de modificar las declaraciones de tipo",
+      "Reduce la claridad si se usa de manera excesiva o en contextos donde el tipo no es obvio.",
+      "Reduce la repeticion de tipos verbosos"
+     ],
+     "marcadas": [
+      0,
+      2
+     ],
+     "ok": [
+      0,
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con var el compilador deduce el tipo: no se repiten tipos largos (var mapa = new HashMap<String, List<Integer>>()) y cambiar un tipo toca menos líneas. La b es una desventaja."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Cuales son restricciones para los nombres de las variables?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Puede contener digitos y guion bajo.",
+      "Solo puede contener letras",
+      "Puede comenzar con un digito.",
+      "No debe ser una palabra reservada de java"
+     ],
+     "marcadas": [
+      0,
+      3
+     ],
+     "ok": [
+      0,
+      3
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un identificador puede tener letras, dígitos, _ y $, pero no puede empezar con un dígito ni ser una palabra reservada (int, class…)."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Como añadimos una dependencia en Maven?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Especificamos el GroupId, el ArtifactId y la version en el archivo pom.xml",
+      "Especificamos el ArtifactId y la version en el archivo pom.xml",
+      "Dentro de dependency especificamos el GroupId, el ArtifactId y la version en el archivo pom.xml"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En el pom.xml, adentro de <dependencies>, cada <dependency> lleva <groupId>, <artifactId> y <version>. La a no dice dónde y la b se olvida del groupId."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Seleccione la instruccion correcta.",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "System.out.print(\"El resultado de la variable es: \" + b);",
+      "System.out.print(\"El resultado de la variable es: \", b);",
+      "System.out.print(\"El resultado de la variable es: b\");"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Para mostrar el valor de b se concatena con +. print recibe un solo argumento, así que la b no compila.",
+     "ojo": "La c también compila, pero muestra la letra b, no el valor de la variable."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Cual es el operador de disyuncion logica",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "&&",
+      "||",
+      "!"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "La disyunción es el «o»: ||. && es la conjunción (y) y ! es la negación."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Cual, segun la fuente, es la caracateristica mas destacada de Maven?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Su capacidad de administrar dependencias automaticamente.",
+      "Su compatibilidad multiplataforma.",
+      "Su capacidad de utilizar archetypes."
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Lo que más destaca el apunte de Maven es que baja y administra solo las dependencias (y las de ellas) a partir del pom.xml."
     },
     {
      "origen": "2023",
@@ -5771,6 +6159,10 @@
     "anio": 2026,
     "nota": "15,00/15,00"
    },
+   "otro": {
+    "nota": "9,50/15,00",
+    "preguntas": 15
+   },
    "preguntas": [
     {
      "origen": "2026",
@@ -6170,6 +6562,35 @@
      ],
      "estado": "Correcta",
      "ex": "El docker-compose.yml tiene services (cada uno con su imagen o build, puertos, variables y depends_on), networks y volumes. El kernel es siempre el del host."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Cuál es el beneficio de definir redes personalizadas en Compose?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Mejoran el aislamiento entre entornos",
+      "Deshabilitan el DNS interno",
+      "Impiden que los contenedores se comuniquen",
+      "Permiten comunicación interna por nombre de servicio"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      0,
+      3
+     ],
+     "puntos": [
+      0.5,
+      1
+     ],
+     "estado": "Parcialmente correcta",
+     "ex": "Una red propia separa unos servicios de otros (aislamiento) y adentro los contenedores se encuentran por el nombre del servicio, con el DNS interno de Docker.",
+     "corr": "Marcaste solo la d y el campus dio 0,50: faltaba la a.",
+     "ojo": "Esta revisión del campus no muestra la clave: sale del 0,50, que dice que había dos correctas. La b y la c son falsas, así que la otra es la a."
     },
     {
      "origen": "2025",

@@ -98,7 +98,7 @@ def correcta(p):
 
 def pregunta(p, n, anio_intento):
     tuyo = p['origen'] == str(anio_intento)
-    chip = f'<span class="chip tuyo">Tu intento {p["origen"]}</span>' if tuyo else f'<span class="chip otro">Cuestionario {p["origen"]}</span>'
+    chip = f'<span class="chip tuyo">Tu {"otro " if p.get("otro") else ""}intento {p["origen"]}</span>' if tuyo else f'<span class="chip otro">Cuestionario {p["origen"]}</span>'
     pts, mx = p['puntos']
     info = (f'<div class="info"><div><div class="num">Pregunta<b>{n}</b></div><div class="est">{p["estado"]}</div>'
             f'<div>Puntúa {coma(pts)} sobre {coma(mx)}</div></div>{chip}</div>')
@@ -114,18 +114,24 @@ def pregunta(p, n, anio_intento):
 def documento(c, css_fuentes):
     ps = c['preguntas']
     anio = c['intento']['anio'] if c['intento'] else None
-    grupos = []
-    for origen in [str(anio)] if anio else []:
-        grupos.append((f'Tu intento {origen}', [p for p in ps if p['origen'] == origen]))
-    otros = sorted({p['origen'] for p in ps if p['origen'] != str(anio)})
-    for o in otros:
-        grupos.append((f'Preguntas del cuestionario {o}', [p for p in ps if p['origen'] == o]))
-    filas = [('Preguntas', f'{len(ps)}, sin repetir')]
+    # Primero tu intento; después, del otro intento (c['otro'], las preguntas con "otro"), solo las que no estaban
+    grupos, filas = [], [('Preguntas', f'{len(ps)}, sin repetir')]
+    con_corr = lambda g: sum(1 for p in g if p['estado'] != 'Correcta')
     if anio:
-        mias = grupos[0][1]
-        filas.append((f'Tu intento {anio}', f"{len(mias)} preguntas · {c['intento']['nota']} · {sum(1 for p in mias if p['estado'] != 'Correcta')} con corrección"))
-    for titulo, g in grupos[1 if anio else 0:]:
-        filas.append((titulo.replace('Preguntas del cuestionario', 'Sumadas de'), f'{len(g)} preguntas'))
+        mias = [p for p in ps if p['origen'] == str(anio) and not p.get('otro')]
+        otras = [p for p in ps if p['origen'] == str(anio) and p.get('otro')]
+        grupos.append((f'Tu intento {anio}', mias))
+        filas.append((f'Tu intento {anio}', f"{len(mias)} preguntas · {c['intento']['nota']} · {con_corr(mias)} con corrección"))
+        if otras:
+            grupos.append((f'Tu otro intento {anio}: las que no estaban', otras))
+            ya = c['otro']['preguntas'] - len(otras)
+            n_nuevas = '1 pregunta nueva' if len(otras) == 1 else f'{len(otras)} preguntas nuevas'
+            nuevas = f"{n_nuevas} (las otras {ya} ya están arriba)" if ya else f"{len(otras)} preguntas, todas nuevas"
+            filas.append((f'Tu otro intento {anio}', f"{c['otro']['nota']} · {nuevas} · {con_corr(otras)} con corrección"))
+    for o in sorted({p['origen'] for p in ps if p['origen'] != str(anio)}):
+        g = [p for p in ps if p['origen'] == o]
+        grupos.append((f'Preguntas del cuestionario {o}', g))
+        filas.append((f'Sumadas de {o}', f'{len(g)} preguntas'))
     filas.append(('Cómo leerlo', f'<span class="leyenda">{TILDE} bien marcada · {CRUZ} mal marcada · <span class="falta">{TILDE}faltaba</span> la que había que marcar</span>'))
     tabla = ''.join(f'<tr><th>{k}</th><td>{v}</td></tr>' for k, v in filas)
     cuerpo, n = '', 0
