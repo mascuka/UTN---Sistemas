@@ -1,6 +1,6 @@
 {
  "titulo": "TPA · 3º Parcial · IoT",
- "descripcion": "Las preguntas del parcial y el recuperatorio de IoT 2025, más preguntas de práctica del apunte 2026.",
+ "descripcion": "Las preguntas del parcial y el recuperatorio de IoT 2025 (de los intentos reales del campus), más preguntas de práctica del apunte 2026.",
  "secciones": [
   {
    "titulo": "La ESP32",
@@ -141,6 +141,226 @@
       ],
       [
        "Está conectado por I2C",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué tipo de microcontrolador es la ESP32 DevKit V1?",
+     "ex": "Es un <b>SoC</b> (System on Chip) de <b>bajo consumo</b> con un Xtensa LX6 de <b>doble núcleo</b>. No es ARM ni FPGA, y trae WiFi <b>y</b> Bluetooth.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Microcontrolador de bajo consumo",
+       true
+      ],
+      [
+       "FPGA",
+       false
+      ],
+      [
+       "SoC con doble núcleo",
+       true
+      ],
+      [
+       "Solo funciona con Wi-Fi, no con Bluetooth",
+       false
+      ],
+      [
+       "Microprocesador ARM",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles memorias están presentes en la ESP32?",
+     "ex": "<b>ROM</b> (el bootloader de fábrica), <b>SRAM</b> (variables y pila) y <b>FLASH</b> (el programa y los datos que quedan). No tiene DRAM ni, por supuesto, un SSD.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "SSD",
+       false
+      ],
+      [
+       "SRAM",
+       true
+      ],
+      [
+       "FLASH",
+       true
+      ],
+      [
+       "DRAM",
+       false
+      ],
+      [
+       "ROM",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué ventajas ofrece usar el ESP32 sobre Arduino Uno?",
+     "ex": "WiFi y Bluetooth integrados, <b>FreeRTOS</b> para varias tareas, y mucha más memoria y velocidad (240 MHz contra 16 MHz). Consume <b>más</b>, no menos. <b>Ojo</b>: la DevKit tiene más GPIO que el UNO, pero la clave del campus no cuenta «más pines»: no la marques.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Mayor consumo de energía",
+       false
+      ],
+      [
+       "Soporte para multitarea con RTOS",
+       true
+      ],
+      [
+       "Más memoria y velocidad de procesamiento",
+       true
+      ],
+      [
+       "Mayor número de pines digitales",
+       false
+      ],
+      [
+       "Conectividad Wi-Fi y Bluetooth integradas",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué características hacen a la ESP32 ideal para proyectos de IoT?",
+     "ex": "<b>Bajo costo</b>, <b>WiFi y Bluetooth</b> integrados y una <b>comunidad</b> enorme (librerías, ejemplos). No tiene red celular: para eso hace falta un módulo aparte.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Comunidad activa de desarrollo",
+       true
+      ],
+      [
+       "Soporte de red celular",
+       false
+      ],
+      [
+       "Sin conectividad",
+       false
+      ],
+      [
+       "Conectividad Wi-Fi y Bluetooth",
+       true
+      ],
+      [
+       "Bajo costo",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuál es la función principal del regulador de tensión en la ESP32 DevKit V1?",
+     "ex": "El regulador (AMS1117) baja los 5 V del USB o del pin VIN a los <b>3,3 V</b> que usa el chip, y así lo protege de sobretensiones. No convierte señales ni hace de ADC.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Proteger la placa de sobrevoltajes",
+       true
+      ],
+      [
+       "Reemplazar el puerto USB",
+       false
+      ],
+      [
+       "Actuar como conversor ADC",
+       false
+      ],
+      [
+       "Adaptar el voltaje de entrada a niveles seguros para el microcontrolador",
+       true
+      ],
+      [
+       "Convertir señales digitales en analógicas",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuál es el propósito del botón ENABLE (EN) en la ESP32?",
+     "ex": "EN está conectado al pin de habilitación del chip: al apretarlo <b>se reinicia</b> el microcontrolador (controla su encendido). El que pone la placa en modo de carga es <b>BOOT</b>.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Controlar el encendido de la placa",
+       true
+      ],
+      [
+       "Eliminar el bootloader",
+       false
+      ],
+      [
+       "Activar la memoria EEPROM",
+       false
+      ],
+      [
+       "Conectar el Wi-Fi",
+       false
+      ],
+      [
+       "Reiniciar el microcontrolador",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones describen correctamente la EEPROM en ESP32?",
+     "ex": "Guarda datos que <b>quedan después de un reinicio</b> o de cortar la luz: ideal para configuraciones o el último estado. En la ESP32 se emula en un pedazo de la flash (unos pocos KB, no 1 MB) y no guarda el programa.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Solo almacena código",
+       false
+      ],
+      [
+       "Tiene 1MB por defecto",
+       false
+      ],
+      [
+       "Permite almacenar datos que persisten tras un reinicio",
+       true
+      ],
+      [
+       "Es útil para guardar configuraciones",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué es una protoboard y cuál es su utilidad al usar ESP32?",
+     "ex": "Es la placa de pruebas con agujeros conectados por filas: permite <b>armar circuitos sin soldar</b> y probar prototipos rápido. No reemplaza nada de la ESP32 ni es memoria.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Permite prototipar circuitos fácilmente",
+       true
+      ],
+      [
+       "Reemplaza el GPIO",
+       false
+      ],
+      [
+       "Es una memoria externa",
+       false
+      ],
+      [
+       "Placa para conexiones rápidas sin soldadura",
+       true
+      ],
+      [
+       "Es un tipo de microcontrolador",
        false
       ]
      ]
@@ -463,7 +683,7 @@
      ]
     },
     {
-     "tipo": "una",
+     "tipo": "varias",
      "en": "¿Qué pines pueden usarse para salidas PWM en la ESP32 DevKit V1?",
      "ex": "No todos: los <b>GPIO34 a GPIO39 son solo de entrada</b>, así que no pueden generar PWM.",
      "fuente": "Parcial IoT 2025",
@@ -566,6 +786,198 @@
       ],
       [
        "Leer señales digitales",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son funciones típicas de los pines GPIO?",
+     "ex": "GPIO = <i>General Purpose Input/Output</i>: <b>leer entradas digitales</b> y <b>generar salidas digitales</b> (además de PWM, ADC o touch en algunos). Nada de video ni HDMI.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Uso como tarjeta gráfica",
+       false
+      ],
+      [
+       "Lectura de entradas digitales",
+       true
+      ],
+      [
+       "Generación de salidas digitales",
+       true
+      ],
+      [
+       "Procesamiento de imágenes",
+       false
+      ],
+      [
+       "Conexión directa a HDMI",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre los pines GPIO son verdaderas?",
+     "ex": "Son entradas o salidas digitales, se <b>configuran desde el código</b> (pinMode) y <b>algunos</b> tienen touch capacitivo (T0 a T9). No todos son analógicos, y casi todos sirven para PWM.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "No se pueden usar para PWM",
+       false
+      ],
+      [
+       "Todos soportan funciones analógicas",
+       false
+      ],
+      [
+       "Algunos soportan detección capacitiva (touch)",
+       true
+      ],
+      [
+       "Se usan como entradas o salidas digitales",
+       true
+      ],
+      [
+       "Son configurables desde el código",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué componentes de hardware pueden usarse con entradas digitales?",
+     "ex": "Una entrada digital lee dos estados: sirve para <b>pulsadores</b> y <b>llaves</b>. Motores y relés son cosas que se <b>manejan</b> con salidas.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Pulsadores",
+       true
+      ],
+      [
+       "Motores DC",
+       false
+      ],
+      [
+       "Relés",
+       false
+      ],
+      [
+       "Llaves/interruptores",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué sucede si se conecta un dispositivo de 5V directamente a un pin de entrada de ESP32 (3.3V)?",
+     "ex": "La ESP32 trabaja a <b>3,3 V</b>: 5 V en un pin <b>puede dañarlo</b> o dañar la placa, y la lectura puede no ser confiable. Se usa un divisor de tensión o un conversor de nivel.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "El programa se ejecuta más rápido",
+       false
+      ],
+      [
+       "El microcontrolador podría no reconocer el estado correctamente",
+       true
+      ],
+      [
+       "Puede dañar el pin o la placa",
+       true
+      ],
+      [
+       "Mejora la velocidad de lectura",
+       false
+      ],
+      [
+       "Aumenta la duración de la batería",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué se debe verificar al conectar sensores a pines analógicos del ESP32?",
+     "ex": "Que el pin <b>tenga ADC</b> (no todos tienen) y que la tensión del sensor quede <b>dentro de 0 a 3,3 V</b>. El SPI y el touch no tienen nada que ver.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Que el sensor esté conectado por SPI",
+       false
+      ],
+      [
+       "Que el pin tenga capacidad ADC",
+       true
+      ],
+      [
+       "Que la tensión esté dentro del rango de alimentación",
+       true
+      ],
+      [
+       "Que tenga función capacitiva",
+       false
+      ],
+      [
+       "Que la señal esté modulada",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuál es la resolución típica del ADC en ESP32 al usar analogRead() sin modificarla?",
+     "ex": "Por defecto el ADC es de <b>12 bits</b>: analogRead devuelve de <b>0 a 4095</b> (2<sup>12</sup> = 4096 valores). Se puede cambiar con analogReadResolution().",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Valores entre 0 y 4095",
+       true
+      ],
+      [
+       "16 bits",
+       false
+      ],
+      [
+       "24 bits",
+       false
+      ],
+      [
+       "12 bits",
+       true
+      ],
+      [
+       "8 bits",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué dispositivos utilizan modulación por ancho de pulso (PWM)?",
+     "ex": "Con PWM se regula el brillo de un <b>LED</b>, la velocidad de un <b>motor DC</b> (con su driver) y la posición de un <b>servo</b>. El relé solo prende o apaga.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Motores DC",
+       true
+      ],
+      [
+       "Servos",
+       true
+      ],
+      [
+       "Transistores",
+       false
+      ],
+      [
+       "Leds",
+       true
+      ],
+      [
+       "Relés",
        false
       ]
      ]
@@ -832,6 +1244,246 @@
     },
     {
      "tipo": "varias",
+     "en": "¿Qué lenguajes y entornos se pueden usar para programar una ESP32 DevKit V1?",
+     "ex": "En la materia se programa en <b>C++</b> con el <b>Arduino IDE</b>, y también se puede con <b>PlatformIO</b>. <b>Ojo</b>: la ESP32 acepta MicroPython, pero la clave no cuenta «Python en Visual Studio Code»: no la marques.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Python en Visual Studio Code",
+       false
+      ],
+      [
+       "C++ en PlatformIO",
+       true
+      ],
+      [
+       "Ensamblador en Notepad",
+       false
+      ],
+      [
+       "Scratch",
+       false
+      ],
+      [
+       "C++ en Arduino IDE",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué elementos son necesarios para programar la ESP32 desde un entorno de desarrollo local?",
+     "ex": "Un <b>cable USB de datos</b> (los de solo carga no sirven) y la placa <b>instalada en el gestor de placas</b> del Arduino IDE (el paquete esp32 de Espressif). Nada de HDMI, ZigBee ni IDE en la nube.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Conexión a una red ZigBee",
+       false
+      ],
+      [
+       "Cable USB de datos",
+       true
+      ],
+      [
+       "IDE Visual Studio en la nube",
+       false
+      ],
+      [
+       "Puerto HDMI",
+       false
+      ],
+      [
+       "Placa reconocida en el gestor de placas de Arduino IDE",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué se requiere para cargar un programa en la ESP32 DevKit V1?",
+     "ex": "<b>Cable USB de datos</b>, un <b>IDE</b> como el Arduino IDE y el <b>driver</b> del conversor USB–serie (CP210x o CH340). Anda en cualquier sistema operativo y se alimenta por el USB.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Sistema operativo Linux",
+       false
+      ],
+      [
+       "Fuente externa de 12V",
+       false
+      ],
+      [
+       "IDE compatible como Arduino IDE",
+       true
+      ],
+      [
+       "Cable USB de datos",
+       true
+      ],
+      [
+       "Drivers específicos para la placa",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué herramientas del IDE ayudan a depurar programas en ESP32?",
+     "ex": "El <b>monitor serie</b> (Serial.println para ver qué pasa) y el <b>LED integrado</b> (prenderlo para saber por dónde va el programa). <b>Ojo</b>: el LED no es parte del IDE, pero la clave del campus lo cuenta.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Monitor serial",
+       true
+      ],
+      [
+       "Interfaz I2C",
+       false
+      ],
+      [
+       "LED integrado",
+       true
+      ],
+      [
+       "EEPROM",
+       false
+      ],
+      [
+       "Osciloscopio digital",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre setup() y loop() en Arduino/ESP32 son correctas?",
+     "ex": "<b>setup()</b> corre <b>una sola vez</b> al prender y <b>loop()</b> se repite sin parar. Las dos son obligatorias. <b>Ojo</b>: el núcleo de Arduino es el que llama a loop(), pero la clave del campus no lo cuenta: no lo marques.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "loop() se ejecuta una sola vez",
+       false
+      ],
+      [
+       "loop() es llamado desde el firmware",
+       false
+      ],
+      [
+       "setup() es opcional",
+       false
+      ],
+      [
+       "setup() se ejecuta solo una vez al inicio",
+       true
+      ],
+      [
+       "loop() se repite continuamente mientras la placa esté encendida",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones son correctas sobre el uso de la función pinMode()?",
+     "ex": "pinMode(pin, OUTPUT / INPUT / INPUT_PULLUP) <b>configura el pin</b> y va en el <b>setup()</b>. Funciona en cualquier placa del IDE y no tiene que ver con el I2C.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Se utiliza en el bloque setup()",
+       true
+      ],
+      [
+       "Sirve para inicializar la comunicación I2C",
+       false
+      ],
+      [
+       "Permite configurar un pin como entrada o salida",
+       true
+      ],
+      [
+       "Solo funciona en placas Arduino Uno",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué hace la función digitalRead(pin) en ESP32?",
+     "ex": "Lee si el pin está en <b>HIGH o LOW</b>, y la clave lo toma como un valor <b>booleano</b> (en realidad devuelve un int, 1 o 0). No cambia el pin ni lo configura.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Lee si hay una señal HIGH o LOW en un pin digital",
+       true
+      ],
+      [
+       "Devuelve un valor booleano",
+       true
+      ],
+      [
+       "Inicia una comunicación serial",
+       false
+      ],
+      [
+       "Cambia el estado del pin",
+       false
+      ],
+      [
+       "Configura el pin como salida",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones son válidas sobre digitalRead()?",
+     "ex": "Devuelve <b>HIGH o LOW</b> según la tensión del pin y sirve para leer <b>pulsadores o sensores digitales</b>. Nunca devuelve decimales y no necesita I2C.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Siempre devuelve un número decimal",
+       false
+      ],
+      [
+       "Puede usarse para leer botones o sensores digitales",
+       true
+      ],
+      [
+       "Requiere inicializar I2C",
+       false
+      ],
+      [
+       "Devuelve HIGH o LOW según el voltaje en el pin",
+       true
+      ],
+      [
+       "Solo funciona con entradas analógicas",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué afirmaciones son correctas sobre la función analogWrite() en Arduino IDE con ESP32?",
+     "ex": "analogWrite() <b>genera PWM</b> en un pin de salida (por defecto de 8 bits, 0 a 255). Para leer tensiones se usa analogRead().",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Sirve para leer voltajes analógicos",
+       false
+      ],
+      [
+       "Solo funciona en pines de entrada",
+       false
+      ],
+      [
+       "Se usa para generar PWM",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
      "en": "¿Qué afirmaciones sobre setup() y loop() son correctas?",
      "ex": "Es la estructura de todo sketch.",
      "op": [
@@ -994,6 +1646,90 @@
       ],
       [
        "No requiere configuración de reloj",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué características definen la comunicación I²C?",
+     "ex": "Dos líneas, <b>SDA</b> (datos) y <b>SCL</b> (reloj), cada dispositivo con su <b>dirección</b> (el display, 0x3C) y <b>un maestro con varios esclavos</b>. Es síncrona porque comparte el reloj. <b>Ojo</b>: el estándar admite varios maestros, pero la clave no lo cuenta: no lo marques.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Cada dispositivo tiene una dirección única",
+       true
+      ],
+      [
+       "Es completamente asíncrona",
+       false
+      ],
+      [
+       "Usa líneas SDA y SCL",
+       true
+      ],
+      [
+       "Permite varios maestros simultáneos",
+       false
+      ],
+      [
+       "Permite un maestro y varios esclavos",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué pines de la ESP32 se utilizan para comunicación UART?",
+     "ex": "La UART0, la del USB y el monitor serie, usa <b>GPIO1 (TX)</b> y <b>GPIO3 (RX)</b>. GPIO22 es el SCL del I2C y GPIO18, el reloj del SPI.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "GPIO1 (TX)",
+       true
+      ],
+      [
+       "GPIO18 (CLK)",
+       false
+      ],
+      [
+       "GPIO3 (RX)",
+       true
+      ],
+      [
+       "EN",
+       false
+      ],
+      [
+       "GPIO22 (SCL)",
+       false
+      ],
+      [
+       "GND",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué condiciones son necesarias para comunicación UART?",
+     "ex": "La UART es <b>asíncrona</b>: no comparte reloj, así que los dos lados tienen que usar el <b>mismo baud rate</b> (por ejemplo, 115200). Es serie, no paralela, y los dos pueden transmitir.",
+     "fuente": "Parcial IoT 2025",
+     "op": [
+      [
+       "Solo un dispositivo puede transmitir",
+       false
+      ],
+      [
+       "Baud rate (velocidad) igual entre emisor y receptor",
+       true
+      ],
+      [
+       "Transmisión de datos en paralelo",
+       false
+      ],
+      [
+       "Reloj compartido entre dispositivos",
        false
       ]
      ]
