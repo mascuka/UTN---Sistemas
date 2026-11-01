@@ -1711,6 +1711,41 @@
 
   /* ---------- Inicio ---------- */
   .in{max-width:700px;margin:36px auto 0}
+  .in.in-cal{max-width:1180px}
+  .in-viene{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start;margin-top:10px}
+  .in-lista h3{font:500 .82rem var(--sans);color:var(--muted);margin:4px 0 2px}
+  .ic{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:16px 16px 12px}
+  .ic-cab{display:flex;align-items:center;margin-bottom:10px}
+  .ic-cab h3{font:400 1.55rem var(--serif);margin:0}
+  .ic-cab h3 span{color:var(--muted);font-size:1.1rem}
+  .ic-nav{margin-left:auto;display:flex;align-items:center;gap:2px}
+  .ic-nav button{min-width:32px;height:32px;border-radius:8px;border:0;background:none;color:var(--text2);font-size:1.3rem;cursor:pointer;line-height:1}
+  .ic-nav button:hover{background:var(--hover);color:var(--text)}
+  .ic-nav .ic-hoy{font:500 .82rem var(--sans);padding:0 10px;border:1px solid var(--line);margin-right:6px}
+  .ic-sem,.ic-dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+  .ic-sem span{font-size:.74rem;font-weight:500;color:var(--muted);padding:0 8px 6px}
+  .ic-dias{border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .ic-d{min-height:108px;display:flex;flex-direction:column;align-items:stretch;gap:3px;padding:6px 6px 8px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:none;font:inherit;color:var(--text);text-align:left;cursor:pointer;min-width:0}
+  .ic-d:hover{background:var(--hover)}
+  .ic-d.finde{background:color-mix(in srgb,var(--hover) 45%,transparent)}
+  .ic-n{font-size:.84rem;font-weight:500;color:var(--text2);font-variant-numeric:tabular-nums;padding:1px 3px}
+  .ic-n small{font-size:.72rem;font-weight:400;color:var(--muted)}
+  .ic-d.otro .ic-n{color:var(--muted);font-weight:400}
+  .ic-d.pasado{opacity:.5}
+  .ic-d.hoy .ic-n{align-self:flex-start;background:var(--accent);color:#fff;border-radius:7px;padding:1px 7px}
+  .ic-d.hoy{box-shadow:inset 0 0 0 1.5px var(--accent);opacity:1}
+  .ic-e{display:flex;flex-direction:column;min-width:0;font-size:.74rem;line-height:1.25;padding:3px 6px 4px 7px;border-radius:6px;background:var(--F);color:var(--T);box-shadow:inset 2.5px 0 0 var(--C)}
+  .ic-et{display:flex;align-items:center;gap:5px}
+  .ic-e .ti{width:8px;height:8px;flex:none;color:var(--C)}
+  .ic-e b{font-weight:600}
+  .ic-en{font-size:.7rem;opacity:.85;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+  .ic-e.tent{background:color-mix(in srgb,var(--F) 50%,var(--card));outline:1px dashed color-mix(in srgb,var(--C) 70%,transparent);outline-offset:-1px;box-shadow:none}
+  .ic-mas{font-size:.72rem;color:var(--muted);padding-left:4px}
+  .ic-ley{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:10px;font-size:.76rem;color:var(--muted)}
+  .ic-ley span{display:inline-flex;align-items:center;gap:5px}
+  .ic-ley .ti{width:9px;height:9px}
+  .ic-tent{display:inline-block;width:16px;height:10px;border:1px dashed var(--muted);border-radius:3px}
+  .ic-ayuda{margin-left:auto}
   .in-saludo{display:flex;align-items:center;gap:14px;font:400 2.5rem/1.15 var(--serif);letter-spacing:-.015em;margin:0}
   .in-saludo .l-logo{width:30px;height:35px;color:var(--brand);flex:none}
   .in-saludo .l-logo svg{width:100%;height:100%}
@@ -1718,21 +1753,6 @@
   .in-h2{display:flex;align-items:baseline;font:500 .95rem var(--sans);margin:38px 0 6px}
   .in-h2 a{margin-left:auto;font-weight:400;font-size:.84rem;color:var(--muted);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
   .in-h2 a:hover{color:var(--accent)}
-  .in-clase{display:flex;align-items:center;gap:16px;padding:12px 2px;border-bottom:1px solid var(--line)}
-  .in-clase.ya{opacity:.55}
-  .in-h{width:46px;flex:none;font-weight:500;font-size:.95rem;font-variant-numeric:tabular-nums;line-height:1.25}
-  .in-h small{display:block;color:var(--muted);font-weight:400;font-size:.8rem}
-  .in-barra{width:3px;align-self:stretch;border-radius:4px;background:var(--C);flex:none}
-  .in-t{flex:1;min-width:0}
-  .in-t b{display:block;font-weight:500;font-size:.95rem}
-  .in-t small{color:var(--muted);font-size:.84rem}
-  .in-est{font-size:.84rem;color:var(--muted);white-space:nowrap}
-  .in-est.pronto{color:var(--accent);font-weight:500}
-  .in-vacio{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px dashed var(--line);border-radius:14px}
-  .in-vacio svg{width:22px;height:22px;color:var(--accent);flex:none}
-  .in-vacio b{display:block;font-weight:500}
-  .in-vacio small{color:var(--muted);font-size:.86rem}
-  .in-vacio:hover{border-color:var(--accent)}
   .in-nada{color:var(--text2);font-size:.92rem;padding:8px 2px;line-height:1.55}
   .in-link{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
   .in .fe-f{padding:11px 2px}
@@ -1744,13 +1764,6 @@
   .in-btn{display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid var(--line);border-radius:9px;font-size:.84rem;font-weight:500;background:var(--card);margin-left:12px;white-space:nowrap;flex:none}
   .in-btn:hover{border-color:var(--accent);color:var(--accent)}
   .in-btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
-  .in-seguir{display:flex;align-items:center;gap:14px;padding:12px 2px;border-bottom:1px solid var(--line)}
-  .in-ic{width:36px;height:36px;border-radius:10px;background:var(--hover);color:var(--text2);display:grid;place-items:center;flex:none}
-  .in-ic svg{width:18px;height:18px}
-  .in-ic.ar{background:var(--accent-soft);color:var(--accent)}
-  .in-av{width:110px;height:4px;border-radius:99px;background:var(--hover);overflow:hidden;flex:none}
-  .in-av i{display:block;height:100%;background:var(--accent)}
-  .in-seguir:hover b,.in-clase[data-go]:hover b{color:var(--accent)}
 
   /* ---------- Cronograma ---------- */
   .cr{display:grid;grid-template-columns:minmax(0,1fr) 296px;margin:-30px -40px 0;min-height:calc(100vh - var(--barra-h, 0px))}
@@ -1877,6 +1890,7 @@
   .cal-d:hover{background:var(--hover)}
   .cal-d.finde{color:var(--muted)}
   .cal-d.pasado{color:var(--muted);opacity:.55}
+  .cal-d.otro{opacity:.4}
   .cal-d.marca{background:var(--F);color:var(--T);font-weight:650;box-shadow:inset 0 -2.5px 0 var(--C);opacity:1}
   /* Dos cosas el mismo día: partido en diagonal (de abajo a la izquierda hasta arriba a la derecha); tres: en franjas.
      Cada ícono va en la parte de su color */
@@ -1970,10 +1984,22 @@
     .cr-ver .cr-grilla{display:none}
     .cr-ver .cr-dialista{display:block}
     .in{margin-top:10px}
+    .in-viene{grid-template-columns:minmax(0,1fr);gap:22px}
+    .in-lista{order:-1}
+    .ic{padding:12px 8px 10px;border-radius:14px}
+    .ic-cab h3{font-size:1.3rem}
+    .ic-sem span{padding:0 0 6px;text-align:center}
+    .ic-d{min-height:62px;padding:4px 2px 6px;gap:2px}
+    .ic-n{text-align:center;padding:1px 0}
+    .ic-n small{display:none}
+    .ic-d.hoy .ic-n{align-self:center}
+    .ic-e{align-items:center;padding:2px 1px;font-size:.62rem}
+    .ic-e .ti,.ic-en{display:none}
+    .ic-mas{font-size:.6rem;text-align:center;padding:0}
+    .ic-ayuda{display:none}
     .in-saludo{font-size:1.9rem}
     .in-saludo .l-logo{width:24px;height:28px}
     .in-bajada{margin-left:0}
-    .in-av{display:none}
     .in-btn{margin-left:8px}
   }
 
@@ -2036,11 +2062,9 @@
   .abr.mc.vacio{background:none}
   .cr-chip.sug:hover{border-color:var(--line2);color:var(--text)}
   .in-btn:hover{border-color:var(--line2);color:var(--text);background:var(--hover)}
-  .in-h2 a:hover,.fe-btn:hover .fe-q b,.in-seguir:hover b,.in-clase[data-go]:hover b{color:var(--text)}
-  .in-seguir:hover,.in-clase[data-go]:hover{background:var(--hover);border-radius:10px}
-  .in-ic.ar{background:var(--hover);color:var(--text2)}
+  .in-h2 a:hover,.fe-btn:hover .fe-q b{color:var(--text)}
   .card.compacta .links .pill:hover,.hx-btn:hover,.qz-btn:hover:not(:disabled),.qz-op:hover:not(:disabled),.vb-arch:hover:not(:disabled),
-  .pfila[data-go]:hover,.nivel-nav a:hover,.res-anio:hover,.pr-ej:hover,.herr-ir .pill:hover,.pr-donde-btn:hover,.sim-b:hover,.in-vacio:hover{border-color:var(--line2)}
+  .pfila[data-go]:hover,.nivel-nav a:hover,.res-anio:hover,.pr-ej:hover,.herr-ir .pill:hover,.pr-donde-btn:hover,.sim-b:hover{border-color:var(--line2)}
   .vb:hover:not(:disabled),.cine-btn:hover,.pl-flechas button:hover:not(:disabled),.pr-chico:hover{border-color:var(--line2);color:var(--text)}
   .card.compacta .links .pill:hover{color:var(--text)}
 </style>
@@ -9240,65 +9264,57 @@ const ICON_PULGAR_NO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
 const ICON_LUNA_CHICA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>';
 
 /* ---------- Inicio ----------
-   Sin buscador: las clases de hoy (del cronograma), lo que viene (las fechas del calendario) y dónde quedaste. */
-const CLAVE_VISTAS = "isi-vistas";   // las últimas páginas de estudio que abriste: [{ r, t, s, k, ej, ts }]
-let vistas = [];
-try { vistas = JSON.parse(leerLocal(CLAVE_VISTAS)) || []; } catch(e){}
-function anotarVista(v){
-  if(!v) return;
-  vistas = [{ ...v, ts: Date.now() }, ...vistas.filter(x => x.r !== v.r)].slice(0, 8);
-  guardarLocal(CLAVE_VISTAS, JSON.stringify(vistas));
-}
+   Solo lo que viene: las próximas fechas del calendario y el mes en grande. */
 function clasesDelDia(fecha){
   const cr = cronoGuardado(cuatriActual()), d = (fecha.getDay() + 6) % 7;
   if(!cr) return [];
   return Object.entries(cr.materias).flatMap(([k, x]) => x.b.filter(b => b[0] === d).map(([, a, z]) => ({ k, c: x.c, a, z })))
     .sort((x, y) => aMin(x.a) - aMin(y.a));
 }
+/* El mes del calendario de Inicio: el de hoy o, si esta semana ya entra en el mes que viene, ese (así se ve lo que viene).
+   mesIni corre el mes con las flechas */
+let mesIni = 0;
+const mesInicio = () => { const v = mesQueViene(); return new Date(v.getFullYear(), v.getMonth() + mesIni, 1); };
+/* El calendario grande: las semanas enteras de lunes a domingo, con los días del mes de al lado (y lo que tienen anotado)
+   y en cada día lo que hay: el ícono, la sigla y el nombre, con el color de la materia */
+function calendarioInicio(){
+  const m = mesInicio(), a = m.getFullYear(), mes = m.getMonth(), hoy = hoyClave();
+  const d = new Date(a, mes, 1 - (m.getDay() + 6) % 7), fin = new Date(a, mes + 1, 0);
+  fin.setDate(fin.getDate() + 6 - (fin.getDay() + 6) % 7);
+  let dias = "";
+  for(; d <= fin; d.setDate(d.getDate() + 1)){
+    const k = claveDia(d), otro = d.getMonth() !== mes, finde = d.getDay() === 0 || d.getDay() === 6, ev = fechasDelDia(k);
+    const num = `${d.getDate()}${otro && (d.getDate() === 1 || k === claveDia(new Date(a, mes, 1 - (m.getDay() + 6) % 7))) ? ` <small>${MESES[d.getMonth()].slice(0, 3)}</small>` : ""}`;
+    const chips = ev.slice(0, 2).map(({ x, tent }) => { const i = x.k && infoMat(x.k); return `<span class="ic-e mc ${tent ? "tent" : ""}" style="${colorMat(x.k || "").css}" title="${esc(x.nombre)}${i ? ` · ${esc(i.nombre)}` : ""}${tent ? " (tentativa)" : ""}"><span class="ic-et">${iconoTipo(tipoFecha(x))}<b>${esc(i ? i.abr || i.nombre : x.nombre)}</b></span><span class="ic-en">${esc(x.nombre)}</span></span>`; }).join("");
+    dias += `<button class="ic-d ${otro ? "otro" : ""} ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""}" data-in-dia="${k}" title="${ev.length ? "Ver o anotar en el cronograma" : "Anotar algo este día"}"><span class="ic-n">${num}</span>${chips}${ev.length > 2 ? `<span class="ic-mas">+${ev.length - 2} más</span>` : ""}</button>`;
+  }
+  return `<section class="ic">
+    <div class="ic-cab"><h3>${MESES[mes][0].toUpperCase() + MESES[mes].slice(1)} <span>${a}</span></h3>
+      <span class="ic-nav">${mesIni ? `<button class="ic-hoy" data-in-mes="0">Volver a hoy</button>` : ""}<button data-in-mes="-1" aria-label="Mes anterior">‹</button><button data-in-mes="1" aria-label="Mes siguiente">›</button></span></div>
+    <div class="ic-sem">${["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map(x => `<span>${x}</span>`).join("")}</div>
+    <div class="ic-dias">${dias}</div>
+    <div class="ic-ley">${TIPOS_FECHA.map(t => `<span>${iconoTipo(t)}${t}</span>`).join("")}<span><i class="ic-tent"></i>Tentativa</span><span class="ic-ayuda">Tocá un día para anotar algo</span></div>
+  </section>`;
+}
+/* Inicio: solo lo que viene, las próximas fechas y el calendario del mes en grande */
 function viewInicio(){
-  const ahora = new Date(), h = ahora.getHours(), min = h * 60 + ahora.getMinutes();
+  const ahora = new Date(), h = ahora.getHours();
   const saludo = h < 6 ? "Buenas noches" : h < 13 ? "Buen día" : h < 20 ? "Buenas tardes" : "Buenas noches";
   const cr = cronoGuardado(cuatriActual()), hoy = clasesDelDia(ahora);
-  const nombre = k => { const i = infoMat(k); return i ? i.nombre : k; };
   const fechaTxt = `${DIAS_CR[(ahora.getDay() + 6) % 7] || "Domingo"} ${ahora.getDate()} de ${MESES[ahora.getMonth()]}`;
   const bajada = !cr ? fechaTxt : hoy.length ? `${fechaTxt} · hoy tenés ${hoy.length === 1 ? "una clase" : `${hoy.length} clases`}, desde las ${hoy[0].a}` : `${fechaTxt} · hoy no cursás`;
-  // Hoy
-  let secHoy;
-  if(!cr) secHoy = `<a class="in-vacio" data-go="cronograma" href="#/cronograma">${ICON_CALEN}<span><b>Armá tu cronograma</b><small>Elegí tus materias y comisiones con los horarios de cursado; tus clases aparecen acá.</small></span></a>`;
-  else if(hoy.length) secHoy = hoy.map(x => {
-    const ya = min >= aMin(x.z), dentro = min >= aMin(x.a) && !ya, falta = aMin(x.a) - min;
-    const est = ya ? "terminó" : dentro ? "ahora" : falta <= 90 ? `en ${falta >= 60 ? `${Math.floor(falta / 60)} h ${falta % 60} min` : `${falta} min`}` : "";
-    const i = infoMat(x.k);
-    return `<a class="in-clase mc ${ya ? "ya" : ""}" ${i && i.n ? `data-go="m${i.n}" href="#/m${i.n}"` : ""} style="${colorMat(x.k).css}"><span class="in-h">${x.a}<small>${x.z}</small></span><span class="in-barra"></span><span class="in-t"><b>${esc(nombre(x.k))}</b><small>Comisión ${esc(x.c)}</small></span>${est ? `<span class="in-est ${dentro || (!ya && falta <= 90) ? "pronto" : ""}">${est}</span>` : ""}</a>`;
-  }).join("");
-  else {
-    let prox = null;
-    for(let i = 1; i <= 7 && !prox; i++){ const f = new Date(ahora); f.setDate(f.getDate() + i); const c = clasesDelDia(f); if(c.length) prox = { f, c: c[0] }; }
-    secHoy = `<p class="in-nada">Hoy no tenés clases.${prox ? ` La próxima: <b>${DIAS_CR[(prox.f.getDay() + 6) % 7].toLowerCase()} a las ${prox.c.a}</b>, ${esc(nombre(prox.c.k))}.` : ""}</p>`;
-  }
-  // Lo que viene
-  const prox = proximasFechas(4);
-  const secViene = prox.length ? prox.map(x => { const i = x.k && infoMat(x.k); return filaFecha(x, i && i.n && MATERIAS[i.n] && /parcial|recuperatorio/i.test(x.tipo) ? `<a class="in-btn" data-go="m${i.n}" href="#/m${i.n}">Repasar</a>` : ""); }).join("")
-    : `<p class="in-nada">Anotá parciales, TP y entregas en el <a class="in-link" data-go="cronograma" href="#/cronograma">calendario del cronograma</a> y aparecen acá.</p>`;
-  // Seguí donde dejaste
-  // Una por parcial (o sección): la más reciente, o el ejercicio de práctica si abriste uno ahí
-  const grupos = new Map();
-  vistas.forEach(v => { const g = v.r.split("/").slice(0, 2).join("/"); (grupos.get(g) || grupos.set(g, []).get(g)).push(v); });
-  const ult = [...grupos.values()].map(l => l.find(v => v.ej) || l[0]).slice(0, 3);
-  const secSeguir = ult.map(v => {
-    let av = "";
-    if(v.ej){ const est = leerPr(v.ej.id); const hechos = est ? est.hechos.length : 0; av = `<span class="in-av"><i style="width:${Math.round(hechos / v.ej.pasos * 100)}%"></i></span>`; v = { ...v, s: `${v.s} · ${hechos >= v.ej.pasos ? "terminado" : `paso ${hechos + 1} de ${v.ej.pasos}`}` }; }
-    return `<a class="in-seguir" data-go="${esc(v.r)}" href="#/${esc(v.r)}"><span class="in-ic ${v.ej ? "ar" : ""}">${v.ej ? ICON_CODIGO : v.quiz ? ICON_QUIZ : ICON_DOC}</span><span class="in-t"><b>${esc(v.t)}</b><small>${esc(v.s)}</small></span>${av}<span class="in-btn ${v.ej ? "pri" : ""}">${v.ej ? "Seguir" : "Abrir"}</span></a>`;
-  }).join("");
+  const prox = proximasFechas(6);
+  const lista = prox.length ? prox.map(x => { const i = x.k && infoMat(x.k); return filaFecha(x, i && i.n && MATERIAS[i.n] && /parcial|recuperatorio/i.test(x.tipo) ? `<a class="in-btn" data-go="m${i.n}" href="#/m${i.n}">Repasar</a>` : "", true); }).join("")
+    : `<p class="in-nada">No tenés nada anotado. Tocá un día del calendario para anotar un parcial, un recuperatorio o un TP.</p>`;
   return `
-    <div class="in">
+    <div class="in in-cal">
       <h1 class="in-saludo"><span class="l-logo">${LOGO}</span>${saludo}</h1>
       <p class="in-bajada">${esc(bajada)}</p>
-      <h2 class="in-h2">Hoy</h2>
-      ${secHoy}
-      <h2 class="in-h2">Lo que viene${prox.length ? `<a data-go="cronograma" href="#/cronograma">Ver calendario</a>` : ""}</h2>
-      ${secViene}
-      ${secSeguir ? `<h2 class="in-h2">Seguí donde dejaste</h2>${secSeguir}` : ""}
+      <h2 class="in-h2">Lo que viene<a data-go="cronograma" href="#/cronograma">Ver cronograma</a></h2>
+      <div class="in-viene">
+        ${calendarioInicio()}
+        <aside class="in-lista"><h3>Lo próximo que rendís</h3>${lista}</aside>
+      </div>
     </div>`;
 }
 /* ---------- Plan de la carrera: el avance y cada año, en pestañas ---------- */
@@ -9459,6 +9475,8 @@ function viewCronograma(){
     </div>`;
 }
 function montarCronograma(){
+  // Si se llegó tocando un día en Inicio, el globo para anotar ya está abierto
+  if(CR.sel) requestAnimationFrame(() => { ubicarPop(); const n = $("#calNombre"); if(n) n.focus(); });
   cargarHorarios().then(() => { if(ruta === "cronograma") pintarCuerpoCr(); })
     .catch(() => { const el = $("#crCuerpo"); if(el) el.innerHTML = `<div class="empty">No se pudieron cargar los horarios. Revisá la conexión y recargá la página.</div>`; });
 }
@@ -9592,6 +9610,12 @@ function diaListaCr(bs, dias){
     ${h || `<p class="cr-ayuda">Este día no cursás.</p>`}</div>`;
 }
 /* ---------- Calendario de la cursada ---------- */
+/* El mes para mirar lo que viene: el de hoy o, si esta semana ya entra en el mes que viene, ese */
+function mesQueViene(){
+  const hoy = new Date(), dom = new Date(hoy);
+  dom.setDate(hoy.getDate() + 6 - (hoy.getDay() + 6) % 7);   // el domingo de esta semana
+  return new Date(dom.getFullYear(), dom.getMonth(), 1);
+}
 const mesesCuatri = q => { const [a, c] = q.split("-").map(Number); return (c === 1 ? [2, 3, 4, 5, 6] : [7, 8, 9, 10, 11]).map(m => [a, m]); };
 /* Lo que hay un día: lo anotado ese día y las fechas tentativas que lo cubren (se guardan en su primer día, con "hasta";
    los sábados y domingos del medio no se pintan). Primero lo fijo; tent marca lo tentativo */
@@ -9607,18 +9631,18 @@ function rangoTxt(x, dia){
   return a.getMonth() === b.getMonth() ? `${a.getDate()}–${b.getDate()} ${m(a)}` : `${a.getDate()} ${m(a)}–${b.getDate()} ${m(b)}`;
 }
 function mesCr(a, m){
-  const ini = (new Date(a, m, 1).getDay() + 6) % 7, dias = new Date(a, m + 1, 0).getDate(), hoy = hoyClave();
+  const hoy = hoyClave(), f = new Date(a, m, 1 - (new Date(a, m, 1).getDay() + 6) % 7), fin = new Date(a, m + 1, 0);
+  fin.setDate(fin.getDate() + 6 - (fin.getDay() + 6) % 7);
   let h = `<div class="cal-mes"><div class="cal-cab"><b>${MESES[m][0].toUpperCase() + MESES[m].slice(1)}</b><span>${a}</span></div>
     <div class="cal-sem">${"LMMJVSD".split("").map(x => `<span>${x}</span>`).join("")}</div><div class="cal-dias">`;
-  for(let i = 0; i < ini; i++) h += "<span></span>";
-  for(let d = 1; d <= dias; d++){
-    const k = claveDia(new Date(a, m, d)), mk = fechasDelDia(k).slice(0, 3), finde = (ini + d - 1) % 7 >= 5;
+  for(; f <= fin; f.setDate(f.getDate() + 1)){
+    const d = f.getDate(), k = claveDia(f), mk = fechasDelDia(k).slice(0, 3), finde = f.getDay() === 0 || f.getDay() === 6, otro = f.getMonth() !== m;
     // Un color por cosa anotada: con dos el día se parte en diagonal, con tres en franjas. Lo tentativo, más suave
     const col = mk.length === 1 ? colorMat(mk[0].x.k || "").css
       : mk.map(({ x }, i) => { const c = colorMat(x.k || ""); return `--c${i + 1}:${c.c};--f${i + 1}:${c.f};--t${i + 1}:${c.t};--cd${i + 1}:${c.cd};--fd${i + 1}:${c.fd};--td${i + 1}:${c.td}`; }).join(";");
     const iconos = mk.map(({ x, tent }, i) => iconoTipo(tipoFecha(x), "ti" + (i + 1) + (tent ? " tn" : ""))).join("");
     const tents = mk.length === 1 ? (mk[0].tent ? "tent" : "") : mk.map((y, i) => y.tent ? "t" + (i + 1) : "").join(" ");
-    h += `<button class="cal-d mc ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""} ${mk.length ? "marca" : ""} ${["", "", "dos", "tres"][mk.length]} ${tents} ${k === CR.sel ? "sel" : ""}" data-cr="dia" data-dia="${k}" ${col ? `style="${col}"` : ""} title="${mk.map(({ x, tent, dia }) => x.nombre + (tent ? ` (tentativa, ${rangoTxt(x, dia)})` : "")).join(" · ") || "Anotar algo este día"}">${d}${iconos}</button>`;
+    h += `<button class="cal-d mc ${otro ? "otro" : ""} ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""} ${mk.length ? "marca" : ""} ${["", "", "dos", "tres"][mk.length]} ${tents} ${k === CR.sel ? "sel" : ""}" data-cr="dia" data-dia="${k}" ${col ? `style="${col}"` : ""} title="${mk.map(({ x, tent, dia }) => x.nombre + (tent ? ` (tentativa, ${rangoTxt(x, dia)})` : "")).join(" · ") || "Anotar algo este día"}">${d}${iconos}</button>`;
   }
   return h + "</div></div>";
 }
@@ -9641,7 +9665,7 @@ function filaFecha(x, boton = "", corto = false){
 const tabMes = ([a, m], i) => `<button class="${i === CR.mes || i === CR.mes + 1 ? "on" : ""}" data-cr="mes-ir" data-i="${i}">${i >= 4 ? MESES[m] : MESES[m].slice(0, 3)}</button>`;
 function calendarioCr(){
   const meses = mesesCuatri(CR.q);
-  const hoy = new Date(), iHoy = meses.findIndex(([a, m]) => a === hoy.getFullYear() && m === hoy.getMonth());
+  const v = mesQueViene(), iHoy = meses.findIndex(([a, m]) => a === v.getFullYear() && m === v.getMonth());
   if(CR.mes == null) CR.mes = Math.max(0, Math.min(meses.length - 2, iHoy < 0 ? 0 : iHoy));
   const prox = proximasFechas();
   return `
@@ -9800,27 +9824,24 @@ function render(arriba = true){
     const t = pestanasDe(p || sec)[0];
     if(t){ ruta = `${a}/${b}${t.go}`; history.replaceState(history.state, "", "#/" + ruta); [, , c, d] = ruta.split("/"); }
   }
-  let titulo = CARRERA.titulo, vista = null;
+  let titulo = CARRERA.titulo;
 
   if(p && c === "quiz" && p.quiz){
     ruta = `${a}/${b}/quiz`;
     app.innerHTML = viewQuiz(m, p);
     montarQuiz(m, p);
     titulo = `Quiz · ${p.titulo} · ${m.nombre}`;
-    vista = { t: `Quiz del ${p.titulo}`, s: m.nombre, quiz: true };
   } else if(p && c === "pp" && p.practicaParcial){
     ruta = `${a}/${b}/pp${d ? "/" + d : ""}`;
     app.innerHTML = viewEjp(m, p, "pp");
     montarEjp(m, p, d, "pp");
     titulo = `El parcial por partes · ${p.titulo} · ${m.nombre}`;
-    vista = { t: "El parcial por partes", s: `${m.nombre} · ${p.titulo}` };
   } else if(p && c === "practica" && p.practicaPartes && !(d && (p.practica || []).some(e => e.id === d))){
     // La Práctica por partes; los ejercicios de a pasos con Java (p.practica) siguen en su dirección de siempre
     ruta = `${a}/${b}/practica${d ? "/" + d : ""}`;
     app.innerHTML = viewEjp(m, p, "practica");
     montarEjp(m, p, d, "practica");
     titulo = `Práctica · ${p.titulo} · ${m.nombre}`;
-    vista = { t: "Práctica por partes", s: `${m.nombre} · ${p.titulo}` };
   } else if(p && c === "practica" && p.practica){
     const x = d && p.practica.find(e => e.id === d);
     if(x){
@@ -9828,43 +9849,36 @@ function render(arriba = true){
       app.innerHTML = viewPractica(m, p, x);
       montarPractica(m, p, x);
       titulo = `${x.titulo} · Práctica · ${m.nombre}`;
-      vista = { t: x.titulo, s: `${m.nombre} · ${p.titulo}`, ej: { id: x.id, pasos: x.pasos } };
     } else {
       ruta = `${a}/${b}/practica`;
       app.innerHTML = viewPracticas(m, p);
       titulo = `${nombrePractica(p)} · ${p.titulo} · ${m.nombre}`;
-      vista = { t: nombrePractica(p), s: `${m.nombre} · ${p.titulo}` };
     }
   } else if(p && c === "practica" && tieneHerramientas(p)){
     ruta = `${a}/${b}/practica`;
     app.innerHTML = viewPracticar(m, p);
     titulo = `Práctica · ${p.titulo} · ${m.nombre}`;
-    vista = { t: `Práctica · ${p.titulo}`, s: m.nombre };
   } else if(p && c === "h" && HERRAMIENTAS[d] && (p.herramientas || []).includes(d)){
     ruta = `${a}/${b}/h/${d}`;
     app.innerHTML = viewHerramienta(m, p, d);
     HERRAMIENTAS[d].montar($("#herr"));
     titulo = `${HERRAMIENTAS[d].titulo} · ${p.titulo} · ${m.nombre}`;
-    vista = { t: HERRAMIENTAS[d].titulo, s: `${m.nombre} · ${p.titulo}` };
   } else if(p && seccionesDe(p).includes(c)){
     d = d === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}/${d}`;
     app.innerHTML = viewSeccion(m, p, c, d);
     if(d === "videos") mountPlayer(seccion(p, c).videos, `${p.titulo} · ${nombreSec(p, c)}`);
     titulo = `${nombreSec(p, c)} · ${p.titulo} · ${m.nombre}`;
-    vista = { t: `${nombreSec(p, c)} · ${p.titulo}`, s: m.nombre };
   } else if(sec){
     c = c === "videos" || c === "temas" ? c : "material";
     ruta = `${a}/${b}/${c}`;
     app.innerHTML = viewSeccionMateria(m, sec, c);
     if(c === "videos") mountPlayer(sec.videos || [], `${sec.titulo} · ${m.nombre}`);
     titulo = `${sec.titulo} · ${m.nombre}`;
-    vista = { t: sec.titulo, s: m.nombre };
   } else if(p){
     ruta = `${a}/${b}/temas`;
     app.innerHTML = viewParcial(m, p);
     titulo = `Temas · ${p.titulo} · ${m.nombre}`;
-    vista = { t: p.titulo, s: m.nombre };
   } else if(cont && b === "actividades" && cont.actividades){
     app.innerHTML = `${crumbs(m, "Actividades")}
       <h1>Actividades</h1><p class="lead">Trabajos prácticos, entregas y consignas.</p>${filesList(cont.actividades)}`;
@@ -9894,7 +9908,6 @@ function render(arriba = true){
       app.innerHTML = viewInicio();
     }
   }
-  if(m && vista) anotarVista({ ...vista, r: ruta, k: String(m.n) });
   app.className = m ? "angosto" : ruta === "cronograma" ? "ancho" : "";
   // Al cambiar de página el contenido aparece con un fundido corto (al marcar materias no)
   if(arriba){ app.classList.remove("entra"); void app.offsetWidth; app.classList.add("entra"); }
@@ -9937,6 +9950,19 @@ document.addEventListener("click", e => {
   if(CR.sel && !e.target.closest("#calPop, .cal-d, .fe-btn")){ CR.sel = null; pintarCalendario(); }
   const cr = e.target.closest("[data-cr]");
   if(cr && !cr.disabled){ e.preventDefault(); clicCrono(cr, e); return; }
+  // Inicio: las flechas del calendario y un día (se abre en el cronograma, con el globo para anotar)
+  const im = e.target.closest("[data-in-mes]");
+  if(im){ mesIni = +im.dataset.inMes ? mesIni + +im.dataset.inMes : 0; const c = $(".ic"); if(c) c.outerHTML = calendarioInicio(); return; }
+  const idia = e.target.closest("[data-in-dia]");
+  if(idia){
+    const k = idia.dataset.inDia, [a, m] = k.split("-").map(Number);
+    CR.q = `${a}-${m - 1 < 7 ? 1 : 2}`; CR.edit = false; CR.eligiendo = null; CR.picker = false; CR.dia = null;
+    CR.sel = k; CR.form = { tipo: "Parcial", k: null, tent: false, hasta: null };
+    const i = mesesCuatri(CR.q).findIndex(([aa, mm]) => aa === a && mm === m - 1);
+    CR.mes = i < 0 ? null : Math.min(i, mesesCuatri(CR.q).length - 2);
+    location.hash = "#/cronograma";
+    return;
+  }
   const sa = e.target.closest("[data-sim-acc]");
   if(sa){ simAccion(sa.dataset.simId, sa.dataset.simAcc); return; }
   const k = e.target.closest("[data-est]");
