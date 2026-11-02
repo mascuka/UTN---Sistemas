@@ -1,6 +1,8 @@
 # Arma el Banco de preguntas de IoT (3º parcial de TPA) desde el quiz: quiz/tpa-3er-parcial.json.
 # Cada pregunta como en el campus (opciones con las correctas en verde, la respuesta como la muestra el campus y el porqué),
-# agrupadas por tema. Las reales llevan "fuente" (Parcial / Recuperatorio IoT 2025) y las de práctica, "practica".
+# agrupadas por tema. Las reales llevan "fuente" (Parcial / Recuperatorio / Simulacro IoT 2025 o 2026) y las de práctica,
+# "practica". Las de armar el programa ("armar": objetivo, huecos y fichas de más) van con las líneas para arrastrar
+# y el programa armado en verde.
 # Necesita Chromium (el de Playwright) y pymupdf. Desde la raíz:  python3 herramientas/tpa-practica/banco_iot.py
 import html, json, os, shutil, subprocess, tempfile
 import pymupdf
@@ -53,6 +55,14 @@ h2 { break-after: avoid; background: #1e3a5f; color: #fff; font-size: 11pt; font
 .rc { background: #fdf0dc; border-radius: 6pt; padding: 6pt 10pt; margin-top: 5pt; font-size: 8.6pt; color: #7c4a03; }
 .pq { background: #f0fdfa; border-left: 2.5pt solid #0f766e; border-radius: 0 6pt 6pt 0; padding: 6pt 10pt; margin-top: 5pt; font-size: 8.6pt; }
 .pq b.t { color: #115e59; }
+pre { font-family: 'DejaVu Sans Mono', monospace; font-size: 8.2pt; line-height: 1.4; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 5pt; padding: 5pt 8pt; margin: 3pt 0 5pt; white-space: pre-wrap; }
+.obj { margin: 0 0 5pt 14pt; padding: 0; font-size: 9pt; }
+.fichas { margin: 2pt 0 6pt; }
+.ficha { display: inline-block; font-family: 'DejaVu Sans Mono', monospace; font-size: 7.6pt; background: #fff; border: 1px solid #cbd5e1; border-radius: 4pt; padding: 1.5pt 5pt; margin: 0 3pt 3pt 0; }
+.huecos { margin: 0; padding: 0; list-style: none; counter-reset: h; }
+.huecos li { counter-increment: h; display: flex; gap: 6pt; align-items: center; margin-bottom: 2pt; }
+.huecos li::before { content: counter(h); width: 12pt; text-align: right; font-size: 7pt; color: #64748b; }
+.huecos span { flex: 1; font-family: 'DejaVu Sans Mono', monospace; font-size: 8pt; background: #d1fae5; border: 1px solid #86efac; border-radius: 4pt; padding: 1.5pt 6pt; }
 """
 
 def correctas(p):
@@ -61,12 +71,18 @@ def correctas(p):
 
 def pregunta(p, n):
     e = html.escape
-    if p['tipo'] == 'num': tipo = 'Respuesta numérica'
-    else: tipo = 'Varias respuestas' if p['tipo'] == 'varias' else 'Una respuesta'
+    tipo = {'num': 'Respuesta numérica', 'varias': 'Varias respuestas', 'armar': 'Armar el programa'}.get(p['tipo'], 'Una respuesta')
     fuente = f'<span class="real">{e(p["fuente"])}</span>' if p.get('fuente') else '<span class="prac">De práctica</span>'
     cuerpo = f'<div class="en">{e(p["en"])}</div>'
+    if p.get('code'): cuerpo += f'<pre>{e(p["code"])}</pre>'
     if p['tipo'] == 'num':
         rc = f'La respuesta correcta es: {e(str(p["num"]))}'
+    elif p['tipo'] == 'armar':
+        # Las líneas para arrastrar (en orden alfabético, como una bolsa) y el programa armado
+        cuerpo += '<ul class="obj">' + ''.join(f'<li>{e(o)}</li>' for o in p['objetivo']) + '</ul>'
+        cuerpo += '<div class="sel">Las líneas para arrastrar (sobran algunas):</div><div class="fichas">' + ''.join(f'<span class="ficha">{e(t)}</span>' for t in sorted(p['huecos'] + p['fichas'], key=str.lower)) + '</div>'
+        cuerpo += '<div class="sel">Armado:</div><ol class="huecos">' + ''.join(f'<li><span>{e(t)}</span></li>' for t in p['huecos']) + '</ol>'
+        rc = f'Cada uno de los {len(p["huecos"])} huecos vale lo mismo. Sobran: ' + ' · '.join(f'<code>{e(t)}</code>' for t in p['fichas'])
     else:
         varias = p['tipo'] == 'varias'
         cuerpo += f'<div class="sel">{"Seleccione una o más de una:" if varias else "Seleccione una:"}</div>'
@@ -86,12 +102,12 @@ def documento(q):
     escala2 = ''.join(f'<tr><td>{n}</td><td>{pc}</td><td class="si">{a}</td></tr>' for n, pc, a in ESCALA[5:])
     h = f"""<div class="cab"><small>Tecnologías para la Automatización · 3º parcial IoT</small><h1>Banco de preguntas · IoT</h1>
       <p>Las preguntas de los parciales anteriores con la respuesta y por qué, más preguntas de práctica</p>
-      <span class="chip">{reales} preguntas reales (2025)</span><span class="chip">{prac} de práctica del apunte 2026</span><span class="chip">Formato del campus</span></div>
+      <span class="chip">{reales} preguntas reales (2025 y 2026)</span><span class="chip">{prac} de práctica del apunte 2026</span><span class="chip">Formato del campus</span></div>
     <div class="intro"><b class="t">Cómo usar este banco</b>
-      <p>Están <b>todas las preguntas que salieron</b> en el parcial y el recuperatorio de IoT de 2025, sacadas de varios intentos reales del campus (marcadas con la fecha), y además preguntas <b>de práctica</b> armadas con el apunte 2026 y las clases, con el mismo formato. Las opciones correctas están en verde, abajo va la respuesta como la muestra el campus y una explicación corta. Están agrupadas por tema y sin repetir.</p>
+      <p>Están <b>todas las preguntas que salieron</b> en los parciales, recuperatorios y simulacros de IoT de 2025 y 2026, sacadas de intentos reales del campus (cada una dice de dónde salió), y además preguntas <b>de práctica</b> armadas con el apunte 2026 y las clases, con el mismo formato. Las opciones correctas están en verde, abajo va la respuesta como la muestra el campus y una explicación corta. Están agrupadas por tema y sin repetir.</p>
       <p class="tip">Tip: tapá las opciones en verde y respondé primero; en el parcial casi todas tienen <b>más de una</b> respuesta correcta.</p></div>
     <div class="escala"><b class="t">Cómo se califica</b>
-      <p>El parcial 2025 tuvo <b>10 preguntas de 10 puntos</b>, todas de casillas («una o más de una»), al azar de este banco. Cada correcta marcada suma una parte y <b>cada incorrecta marcada resta</b> (con una bien y una mal, por ejemplo, quedan 1,67 o 6,67 puntos según la pregunta): no marques de más. La nota sale de esta escala del campus:</p>
+      <p>El parcial 2025 tuvo <b>10 preguntas de 10 puntos</b>, todas de casillas («una o más de una»), al azar de este banco. En el recuperatorio 2026 valen <b>8, 12 o 16</b>: las de «¿qué está mal en este código?» 12 y la de <b>armar el programa</b> (arrastrar cada línea a su hueco) 16, con cada hueco valiendo lo mismo. Cada correcta marcada suma una parte y <b>cada incorrecta marcada resta</b> (con una bien y una mal, por ejemplo, quedan 1,67 o 6,67 puntos según la pregunta): no marques de más. La nota sale de esta escala del campus:</p>
       <div style="display:flex;gap:8pt"><table><tr><th>Nota</th><th>Porcentaje</th><th>Calificación</th></tr>{escala}</table><table><tr><th>Nota</th><th>Porcentaje</th><th>Calificación</th></tr>{escala2}</table></div></div>"""
     n = 0
     for i, s in enumerate(q['secciones'], 1):

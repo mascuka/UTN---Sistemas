@@ -1,6 +1,6 @@
 {
  "titulo": "TPA · 3º Parcial · IoT",
- "descripcion": "Las preguntas del parcial y el recuperatorio de IoT 2025 (de los intentos reales del campus), más preguntas de práctica del apunte 2026.",
+ "descripcion": "Las preguntas de los parciales, recuperatorios y simulacros de IoT 2025 y 2026 (de los intentos reales del campus), más preguntas de práctica del apunte 2026.",
  "secciones": [
   {
    "titulo": "La ESP32",
@@ -367,6 +367,82 @@
     },
     {
      "tipo": "varias",
+     "en": "¿Qué afirmaciones sobre la alimentación eléctrica de ESP32 son correctas?",
+     "ex": "Se alimenta por el <b>micro-USB</b> (5 V) o por <b>VIN y GND</b>, y el <b>regulador</b> de la placa baja a los 3,3 V del chip. Los GPIO trabajan a <b>3,3 V</b>: 5 V los daña.",
+     "fuente": "Recuperatorio IoT 2026",
+     "op": [
+      [
+       "Solo puede alimentarse con baterías",
+       false
+      ],
+      [
+       "Tiene un regulador de tensión interno",
+       true
+      ],
+      [
+       "Requiere exactamente 5V en GPIOs",
+       false
+      ],
+      [
+       "Soporta alimentación por pines VIN/GND",
+       true
+      ],
+      [
+       "Se puede alimentar por el puerto micro-USB",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Según el análisis comparativo de memoria en los sistemas embebidos de la ESP32, ¿qué tipo de elementos almacena típicamente la región de memoria denominada Stack (pila)?",
+     "ex": "La <b>pila</b> guarda lo de cada llamada: la dirección de retorno, las <b>variables locales</b> y el contexto de una interrupción. Lo de malloc/new va al <b>heap</b>, el firmware a la <b>flash</b> y las globales sin inicializar a la sección <b>.bss</b>.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "Datos asignados de forma dinámica mediante las funciones malloc o new.",
+       false
+      ],
+      [
+       "El firmware compilado de la aplicación de usuario.",
+       false
+      ],
+      [
+       "Las direcciones de retorno de funciones, variables locales y el contexto de interrupciones.",
+       true
+      ],
+      [
+       "Las variables globales y estáticas que no fueron inicializadas explícitamente.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Según la distribución de pines de la placa ESP32 descrita en el apunte, ¿qué pines se recomienda evitar para usos generales debido a que están conectados internamente a la memoria Flash del módulo?",
+     "ex": "<b>GPIO 6 a 11</b> van a la flash SPI del módulo: si se usan, la placa se cuelga. 32–35 son entradas analógicas, 25–26 el DAC y 21–22 el I2C.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "Los pines GPIO 32 a GPIO 35.",
+       false
+      ],
+      [
+       "Los pines GPIO 6 a GPIO 11.",
+       true
+      ],
+      [
+       "Los pines GPIO 25 y GPIO 26.",
+       false
+      ],
+      [
+       "Los pines GPIO 21 y GPIO 22.",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
      "en": "¿Qué es la ESP32?",
      "ex": "Integra en un solo chip CPU, memoria, WiFi, Bluetooth y periféricos. Es un sistema embebido (función dedicada), no una PC.",
      "op": [
@@ -554,7 +630,7 @@
      "tipo": "varias",
      "en": "¿Qué afirmaciones sobre sensores analógicos son correctas?",
      "ex": "Dan una tensión continua proporcional a lo que miden; la ESP32 la convierte con su ADC usando <code>analogRead()</code>.",
-     "fuente": "Parcial IoT 2025",
+     "fuente": "Parcial IoT 2025 · Simulacro 2026",
      "op": [
       [
        "No son compatibles con ESP32",
@@ -630,7 +706,7 @@
      "tipo": "varias",
      "en": "¿Qué afirmaciones sobre la señal digital “LOW” son correctas?",
      "ex": "LOW = 0 lógico ≈ 0 V. HIGH = 1 lógico ≈ 3,3 V.",
-     "fuente": "Recuperatorio IoT 2025",
+     "fuente": "Recuperatorio IoT 2025 y 2026",
      "op": [
       [
        "Enciende automáticamente el pin",
@@ -738,7 +814,7 @@
      "tipo": "varias",
      "en": "¿Qué afirmaciones son correctas sobre el canal PWM en ESP32?",
      "ex": "La ESP32 tiene <b>16 canales PWM</b> y cada uno tiene su propia frecuencia y resolución.",
-     "fuente": "Recuperatorio IoT 2025",
+     "fuente": "Recuperatorio IoT 2025 y 2026",
      "op": [
       [
        "Cada canal funciona solo en modo entrada",
@@ -958,7 +1034,7 @@
      "tipo": "varias",
      "en": "¿Qué dispositivos utilizan modulación por ancho de pulso (PWM)?",
      "ex": "Con PWM se regula el brillo de un <b>LED</b>, la velocidad de un <b>motor DC</b> (con su driver) y la posición de un <b>servo</b>. El relé solo prende o apaga.",
-     "fuente": "Parcial IoT 2025",
+     "fuente": "Parcial IoT 2025 · Simulacro 2026",
      "op": [
       [
        "Motores DC",
@@ -978,6 +1054,78 @@
       ],
       [
        "Relés",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Al utilizar el Conversor Analógico-Digital (ADC) de la ESP32 configurado con una resolución de 12 bits, ¿cuál es el valor entero máximo que puede retornar la lectura?",
+     "ex": "12 bits → 2<sup>12</sup> = 4096 valores, de <b>0 a 4095</b>. 255 es el máximo con 8 bits, 1023 con 10 (el Arduino UNO) y 65535 con 16.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "255",
+       false
+      ],
+      [
+       "65535",
+       false
+      ],
+      [
+       "4095",
+       true
+      ],
+      [
+       "1023",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Con respecto al manejo de entradas digitales, ¿qué sucede si un pin configurado como entrada no cuenta con una resistencia de pull-up o pull-down y no está conectado activamente?",
+     "ex": "Sin pull-up ni pull-down la entrada queda <b>flotante</b>: lee HIGH o LOW al azar (ruido). Se arregla con una resistencia o con <b>INPUT_PULLUP</b>.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "Se bloquea de forma irreversible el puerto serie.",
+       false
+      ],
+      [
+       "El pin toma un valor lógico permanente de 3.3V fijos.",
+       false
+      ],
+      [
+       "El microcontrolador activa automáticamente una interrupción de hardware por seguridad.",
+       false
+      ],
+      [
+       "Su estado se vuelve \"flotante\" e indeterminado, lo que puede provocar lecturas erróneas.",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Si se configura una señal PWM en la ESP32 con un ciclo de trabajo (duty cycle) del 25%, ¿cómo opera esta modulación según la teoría del apunte?",
+     "ex": "El duty cycle es la parte del período en <b>alto</b>: 25 % arriba y 75 % abajo. El promedio da un cuarto de la tensión (≈ 0,8 V con 3,3 V), pero la señal sigue siendo cuadrada: no es un DAC.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "La señal permanece en nivel alto el 25% del período y en nivel bajo el 75% restante.",
+       true
+      ],
+      [
+       "Se reduce la velocidad del reloj del microcontrolador al 25%.",
+       false
+      ],
+      [
+       "Se modifica el voltaje analógico puro de salida mediante un conversor DAC de 16 bits.",
+       false
+      ],
+      [
+       "La salida permanece siempre en nivel bajo (0V).",
        false
       ]
      ]
@@ -1194,7 +1342,7 @@
      "tipo": "varias",
      "en": "¿Qué afirmaciones son ciertas sobre delay() en código de ESP32?",
      "ex": "Mientras espera no lee sensores ni atiende el WiFi: por eso con WiFi se prefiere <code>millis()</code>.",
-     "fuente": "Recuperatorio IoT 2025",
+     "fuente": "Recuperatorio IoT 2025 y 2026",
      "op": [
       [
        "Es preferido en aplicaciones con Wi-Fi activo",
@@ -1222,7 +1370,7 @@
      "tipo": "una",
      "en": "¿Cuál es el propósito de la función map() en Arduino/ESP32?",
      "ex": "Ej.: <code>map(lectura, 0, 4095, 0, 255)</code> pasa la lectura del ADC (12 bits) al rango del PWM (8 bits).",
-     "fuente": "Recuperatorio IoT 2025",
+     "fuente": "Recuperatorio IoT 2025 y 2026",
      "op": [
       [
        "Convertir enteros en texto",
@@ -1302,7 +1450,7 @@
      "tipo": "varias",
      "en": "¿Qué se requiere para cargar un programa en la ESP32 DevKit V1?",
      "ex": "<b>Cable USB de datos</b>, un <b>IDE</b> como el Arduino IDE y el <b>driver</b> del conversor USB–serie (CP210x o CH340). Anda en cualquier sistema operativo y se alimenta por el USB.",
-     "fuente": "Parcial IoT 2025",
+     "fuente": "Parcial IoT 2025 · Simulacro 2026",
      "op": [
       [
        "Sistema operativo Linux",
@@ -1484,6 +1632,144 @@
     },
     {
      "tipo": "varias",
+     "en": "¿Qué está mal en este código?",
+     "code": "const int boton = 4;\nvoid setup() {\n    pinMode(boton, OUTPUT);\n}\nvoid loop() {\n    if (digitalRead(boton) == HIGH) {\n        Serial.println(\"Boton presionado\");\n    }\n}",
+     "ex": "Dos errores: el pulsador se <b>lee</b>, así que va como <b>INPUT</b> (o INPUT_PULLUP), no OUTPUT; y para usar Serial.println() hace falta <b>Serial.begin(115200)</b> en el setup(). Comparar con HIGH está bien si el pulsador va a 3,3 V.",
+     "fuente": "Recuperatorio IoT 2026",
+     "op": [
+      [
+       "digitalRead() solamente puede utilizarse con pines analógicos",
+       false
+      ],
+      [
+       "Serial.println() solamente puede utilizarse dentro de setup()",
+       false
+      ],
+      [
+       "El pin utilizado para leer el pulsador debería configurarse como INPUT",
+       true
+      ],
+      [
+       "La comparación con HIGH es incorrecta para un pulsador",
+       false
+      ],
+      [
+       "Falta iniciar la comunicación serie con Serial.begin()",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué está mal en este código?",
+     "code": "const int led = 2;\nvoid setup() {\n    pinMode(led, INPUT);\n    digitalWrite(led, HIGH);\n}\nvoid loop() {\n}",
+     "ex": "Para prender un LED el pin es una <b>salida</b>: pinMode(led, <b>OUTPUT</b>). Lo demás está bien: pinMode va en el setup() y el GPIO 2 (el LED integrado) sirve de salida.",
+     "fuente": "Recuperatorio IoT 2026",
+     "op": [
+      [
+       "El valor HIGH no puede utilizarse con digitalWrite()",
+       false
+      ],
+      [
+       "pinMode() debe colocarse dentro de loop()",
+       false
+      ],
+      [
+       "El led debería configurarse como OUTPUT",
+       true
+      ],
+      [
+       "El pin 2 solamente puede utilizarse como entrada digital",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "armar",
+     "en": "Construya correctamente el siguiente programa completo. Objetivo (respetar el orden dado):",
+     "objetivo": [
+      "configurar LED;",
+      "configurar pulsador;",
+      "leer pulsador;",
+      "encender LED cuando se presiona."
+     ],
+     "huecos": [
+      "const int LED=2;",
+      "const int BOTON=18;",
+      "void setup(){",
+      "pinMode(LED,OUTPUT);",
+      "pinMode(BOTON,INPUT_PULLUP);",
+      "}",
+      "void loop(){",
+      "if(!digitalRead(BOTON))",
+      "digitalWrite(LED,HIGH);",
+      "else",
+      "digitalWrite(LED,LOW);",
+      "}"
+     ],
+     "fichas": [
+      "pinMode(LED,INPUT_PULLUP);",
+      "pinMode(BOTON,INPUT);",
+      "pinMode(LED,INPUT);",
+      "digitalWrite(BOTON,HIGH);",
+      "analogRead(LED);",
+      "}"
+     ],
+     "ex": "El LED es una <b>salida</b> (OUTPUT) y el pulsador va con <b>INPUT_PULLUP</b>: suelto lee HIGH y apretado LOW (lo une a GND), por eso <b>if(!digitalRead(BOTON))</b> es «apretado». Entonces se escribe en el <b>LED</b> (no en el botón): HIGH si está apretado y LOW si no. Cada hueco vale lo mismo: con 8 de 12 bien, 10,67 de 16.",
+     "fuente": "Recuperatorio IoT 2026"
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es la consecuencia de declarar estadoPote como:",
+     "code": "volatile int estadoPote;",
+     "ex": "<b>volatile</b> le avisa al compilador que la variable puede cambiar «por afuera» (una interrupción, otra tarea): no la guarda en un registro y la <b>lee siempre de la memoria</b>. Se usa en las variables que toca una ISR.",
+     "fuente": "Recuperatorio IoT 2026",
+     "op": [
+      [
+       "El valor nunca cambia",
+       false
+      ],
+      [
+       "El valor se almacena en EEPROM",
+       false
+      ],
+      [
+       "La variable ocupa menos memoria",
+       false
+      ],
+      [
+       "El compilador siempre leerá el valor desde memoria y no desde un registro",
+       true
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué problema intenta resolver el bloque de instrucciones que comienza con la siguiente linea?",
+     "code": "if ((millis() - ultimoCambio) > debounceDelay)",
+     "ex": "Es un <b>antirrebote</b> (debounce): el contacto del pulsador rebota unos milisegundos y daría varias pulsaciones; solo se acepta un cambio si pasó <b>debounceDelay</b> desde el último.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "Reducir el consumo energético",
+       false
+      ],
+      [
+       "Sincronizar la comunicación Serial",
+       false
+      ],
+      [
+       "Evitar rebotes mecánicos del pulsador",
+       true
+      ],
+      [
+       "Controlar el tiempo de refresco del display",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "varias",
      "en": "¿Qué afirmaciones sobre setup() y loop() son correctas?",
      "ex": "Es la estructura de todo sketch.",
      "op": [
@@ -1588,6 +1874,103 @@
      "num": "2 (GPIO 2)",
      "ex": "En la mayoría de los Arduino es el 13; en la ESP32 el LED integrado está en el GPIO 2.",
      "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Construya correctamente el siguiente programa completo. Objetivo (respetar el orden dado):",
+     "objetivo": [
+      "leer el potenciómetro (GPIO 32);",
+      "pasar la lectura de 0–4095 a 0–255;",
+      "regular con eso el brillo del LED (GPIO 2)."
+     ],
+     "huecos": [
+      "const int POTE=32;",
+      "const int LED=2;",
+      "void setup(){",
+      "pinMode(LED,OUTPUT);",
+      "}",
+      "void loop(){",
+      "int valor=analogRead(POTE);",
+      "int brillo=map(valor,0,4095,0,255);",
+      "analogWrite(LED,brillo);",
+      "}"
+     ],
+     "fichas": [
+      "int valor=digitalRead(POTE);",
+      "int brillo=map(valor,0,255,0,4095);",
+      "analogWrite(POTE,brillo);",
+      "pinMode(LED,INPUT);",
+      "digitalWrite(LED,brillo);",
+      "delay(1000);"
+     ],
+     "ex": "El pote se lee con <b>analogRead</b> (0 a 4095, 12 bits), <b>map</b> lo pasa al rango del PWM (de 0–4095 a 0–255: el orden importa) y <b>analogWrite</b> escribe el brillo en el <b>LED</b>, que es la salida.",
+     "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Construya correctamente el siguiente programa completo. Objetivo (respetar el orden dado):",
+     "objetivo": [
+      "declarar el LED y lo que hace falta para medir el tiempo;",
+      "configurar el LED;",
+      "cada 500 ms, cambiar el estado del LED sin usar delay()."
+     ],
+     "huecos": [
+      "const int LED=2;",
+      "unsigned long anterior=0;",
+      "bool estado=false;",
+      "void setup(){",
+      "pinMode(LED,OUTPUT);",
+      "}",
+      "void loop(){",
+      "if(millis()-anterior>=500){",
+      "anterior=millis();",
+      "estado=!estado;",
+      "digitalWrite(LED,estado);",
+      "}",
+      "}"
+     ],
+     "fichas": [
+      "int anterior=0;",
+      "delay(500);",
+      "if(millis()>500){",
+      "anterior=0;",
+      "digitalWrite(LED,HIGH);"
+     ],
+     "ex": "Parpadeo sin delay: se guarda cuándo fue el último cambio (<b>unsigned long</b>, como lo que devuelve millis()) y en cada vuelta se pregunta si ya pasaron 500 ms con <b>millis() - anterior &gt;= 500</b>. Si pasaron, se anota el momento y se invierte el estado. Con delay() el loop queda frenado.",
+     "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Construya correctamente el siguiente programa completo. Objetivo (respetar el orden dado):",
+     "objetivo": [
+      "iniciar el monitor serie a 115200;",
+      "configurar el LED;",
+      "si llegó algo, leer un carácter;",
+      "con '1' prender el LED y con '0' apagarlo."
+     ],
+     "huecos": [
+      "const int LED=2;",
+      "void setup(){",
+      "Serial.begin(115200);",
+      "pinMode(LED,OUTPUT);",
+      "}",
+      "void loop(){",
+      "if(Serial.available()>0){",
+      "char c=Serial.read();",
+      "if(c=='1') digitalWrite(LED,HIGH);",
+      "if(c=='0') digitalWrite(LED,LOW);",
+      "}",
+      "}"
+     ],
+     "fichas": [
+      "Serial.println(115200);",
+      "char c=Serial.available();",
+      "if(Serial.read()>0){",
+      "if(c==1) digitalWrite(LED,HIGH);",
+      "pinMode(LED,INPUT);"
+     ],
+     "ex": "<b>Serial.available()</b> dice cuántos caracteres llegaron y <b>Serial.read()</b> lee uno. El carácter se compara con <b>'1'</b> (entre comillas simples: el carácter), no con el número 1.",
+     "practica": true
     }
    ]
   },
@@ -1654,7 +2037,7 @@
      "tipo": "varias",
      "en": "¿Qué características definen la comunicación I²C?",
      "ex": "Dos líneas, <b>SDA</b> (datos) y <b>SCL</b> (reloj), cada dispositivo con su <b>dirección</b> (el display, 0x3C) y <b>un maestro con varios esclavos</b>. Es síncrona porque comparte el reloj. <b>Ojo</b>: el estándar admite varios maestros, pero la clave no lo cuenta: no lo marques.",
-     "fuente": "Parcial IoT 2025",
+     "fuente": "Parcial IoT 2025 · Simulacro 2026",
      "op": [
       [
        "Cada dispositivo tiene una dirección única",
@@ -1730,6 +2113,75 @@
       ],
       [
        "Reloj compartido entre dispositivos",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "En un bus de comunicación de datos I2C cada dispositivo esclavo se identifica mediante su dirección, que debe ser única en el bus.",
+     "ex": "En I2C todos comparten SDA y SCL, así que el maestro elige con quién habla por la <b>dirección</b> (el display OLED, 0x3C): dos con la misma dirección chocan.",
+     "fuente": "Recuperatorio IoT 2026",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál de las siguientes características corresponde al protocolo de comunicación síncrona I2C?",
+     "ex": "I2C usa <b>dos hilos</b> (SDA datos y SCL reloj) y direcciones de <b>7 bits</b> (hasta 112 dispositivos útiles). TX/RX es la UART y MOSI/MISO/SCLK/CS es SPI.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "Se caracteriza por una arquitectura de solo dos hilos (SDA y SCL) con un sistema de direccionamiento de 7 bits.",
+       true
+      ],
+      [
+       "Requiere obligatoriamente un circuito maestro externo para operar sin esclavos.",
+       false
+      ],
+      [
+       "Es un protocolo estrictamente asíncrono punto a punto basado en líneas TX y RX.",
+       false
+      ],
+      [
+       "Utiliza cuatro líneas dedicadas de bus (MOSI, MISO, SCLK y CS).",
+       false
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Observe: ¿qué representa 0x3C?",
+     "code": "display.begin(0x3C,true);",
+     "ex": "0x3C es la <b>dirección I2C</b> del display OLED (SH1106 o SSD1306). El true del final indica que se resetea al iniciar. SPI no usa direcciones: usa un pin CS.",
+     "fuente": "Simulacro IoT 2026",
+     "op": [
+      [
+       "La dirección SPI de la pantalla OLED",
+       false
+      ],
+      [
+       "El tipo de pantalla OLED",
+       false
+      ],
+      [
+       "La resolución de la pantalla OLED",
+       false
+      ],
+      [
+       "La dirección I2C de la pantalla OLED",
+       true
+      ],
+      [
+       "El tamaño de la pantalla OLED",
        false
       ]
      ]
