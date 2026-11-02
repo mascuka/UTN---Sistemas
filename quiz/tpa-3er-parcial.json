@@ -2549,5 +2549,598 @@
     }
    ]
   }
+ ],
+ "glosario": [
+  {
+   "t": "SoC",
+   "sig": "System on Chip · sistema en un chip",
+   "que": "Procesador, memoria, WiFi, Bluetooth y periféricos, todo en un solo chip. La ESP32 es un SoC de Espressif.",
+   "re": "\\bSoC\\b"
+  },
+  {
+   "t": "Microcontrolador y microprocesador",
+   "que": "Un <b>microcontrolador</b> tiene CPU, memoria y entradas/salidas en un solo chip y está pensado para controlar cosas gastando poco. Un <b>microprocesador</b> es solo la CPU: necesita memoria y periféricos aparte, como en una PC.",
+   "re": "microcontrolador|microprocesador",
+   "i": true
+  },
+  {
+   "t": "FPGA",
+   "sig": "Field Programmable Gate Array · matriz de compuertas programable",
+   "que": "Un chip de lógica que se «cablea» por configuración. No ejecuta un programa como un microcontrolador.",
+   "re": "\\bFPGA\\b"
+  },
+  {
+   "t": "ARM",
+   "que": "Una arquitectura de procesadores (la de los celulares y muchos microcontroladores). La ESP32 clásica no es ARM: usa un Xtensa.",
+   "re": "\\bARM\\b"
+  },
+  {
+   "t": "Xtensa LX6",
+   "que": "El procesador de la ESP32 (diseño de Tensilica): 32 bits, dos núcleos y hasta 240 MHz.",
+   "re": "Xtensa|LX6"
+  },
+  {
+   "t": "Núcleo",
+   "sig": "core",
+   "que": "Cada núcleo es una CPU que ejecuta instrucciones. Con dos se pueden correr dos tareas al mismo tiempo (en paralelo).",
+   "re": "núcleo",
+   "i": true
+  },
+  {
+   "t": "MHz",
+   "sig": "megahercio",
+   "que": "Millones de ciclos por segundo: la velocidad del reloj del procesador. La ESP32 llega a 240 MHz y el Arduino UNO, a 16 MHz.",
+   "re": "\\bMHz\\b"
+  },
+  {
+   "t": "Coprocesador ULP",
+   "sig": "Ultra Low Power · ultra bajo consumo",
+   "que": "Un procesador chiquito que sigue andando mientras la CPU principal duerme (deep sleep), por ejemplo para leer un sensor y despertarla.",
+   "re": "\\bULP\\b|coprocesador",
+   "i": true
+  },
+  {
+   "t": "RTOS",
+   "sig": "Real-Time Operating System · sistema operativo de tiempo real",
+   "que": "Un sistema operativo mínimo que reparte el procesador entre varias tareas. La ESP32 trae FreeRTOS.",
+   "re": "RTOS"
+  },
+  {
+   "t": "ROM",
+   "sig": "Read-Only Memory · memoria de solo lectura",
+   "que": "Viene grabada de fábrica y no se cambia. En la ESP32 guarda el bootloader.",
+   "re": "\\bROM\\b"
+  },
+  {
+   "t": "SRAM",
+   "sig": "Static Random Access Memory · RAM estática",
+   "que": "Memoria rápida donde están las variables mientras el programa corre. Es volátil: se borra al apagar.",
+   "re": "\\bSRAM\\b"
+  },
+  {
+   "t": "Flash",
+   "que": "Memoria no volátil (no se borra al apagar) donde se guarda el programa. La ESP32 DevKit tiene 4 MB, conectados a los GPIO 6 a 11.",
+   "re": "\\bflash\\b",
+   "i": true
+  },
+  {
+   "t": "DRAM y SSD",
+   "sig": "Dynamic RAM · Solid State Drive",
+   "que": "Las de las computadoras: la DRAM es la RAM que hay que refrescar todo el tiempo y el SSD es el disco de estado sólido. La ESP32 no tiene ninguna.",
+   "re": "\\bDRAM\\b|\\bSSD\\b"
+  },
+  {
+   "t": "EEPROM",
+   "sig": "Electrically Erasable Programmable ROM · ROM programable y borrable eléctricamente",
+   "que": "Memoria que se puede escribir y que no se pierde al apagar, para guardar configuraciones. En la ESP32 se emula en un pedazo de la flash.",
+   "re": "EEPROM"
+  },
+  {
+   "t": "Memoria volátil",
+   "que": "La que se borra al cortar la alimentación, como la RAM.",
+   "re": "volátil",
+   "i": true
+  },
+  {
+   "t": "Stack y heap",
+   "sig": "pila y montículo",
+   "que": "El <b>stack</b> (pila) crece y se achica con cada llamada a función: guarda las variables locales y adónde volver. El <b>heap</b> es la memoria que se pide mientras el programa corre (malloc, new).",
+   "re": "\\bStack\\b|\\bpila\\b|malloc|heap",
+   "i": true
+  },
+  {
+   "t": "Bootloader",
+   "sig": "cargador de arranque",
+   "que": "Un programa chiquito que arranca primero y carga tu programa. También es el que recibe un programa nuevo por el USB.",
+   "re": "bootloader",
+   "i": true
+  },
+  {
+   "t": "Firmware",
+   "que": "El programa que corre en el microcontrolador: tu sketch ya compilado.",
+   "re": "firmware",
+   "i": true
+  },
+  {
+   "t": "Botón BOOT",
+   "que": "Si se aprieta mientras la placa arranca, la pone en <b>modo de carga</b> de programa.",
+   "re": "\\bBOOT\\b"
+  },
+  {
+   "t": "Botón EN",
+   "sig": "ENABLE · habilitar",
+   "que": "Habilita el chip: al apretarlo lo apaga y lo vuelve a prender, es decir, lo <b>reinicia</b> (reset).",
+   "re": "\\bEN\\b|ENABLE"
+  },
+  {
+   "t": "Regulador de tensión",
+   "que": "Circuito que baja una tensión mayor (los 5 V del USB o de VIN) a una fija y estable: los 3,3 V que usa el chip.",
+   "re": "regulador",
+   "i": true
+  },
+  {
+   "t": "3,3 V y 5 V",
+   "sig": "voltios",
+   "que": "La ESP32 trabaja a <b>3,3 V</b>: sus pines no toleran 5 V (el Arduino UNO sí trabaja a 5 V). Para conectarle algo de 5 V hace falta un divisor de tensión o un conversor de nivel.",
+   "re": "3[,.]3\\s?V|\\b5\\s?V\\b|tensión mayor|tensión de trabajo"
+  },
+  {
+   "t": "VIN y GND",
+   "que": "<b>VIN</b> es el pin para alimentar la placa (5 V, que pasan por el regulador). <b>GND</b> es la tierra, el 0 V de referencia.",
+   "re": "\\bVIN\\b|\\bGND\\b"
+  },
+  {
+   "t": "USB y el conversor USB–UART",
+   "sig": "Universal Serial Bus",
+   "que": "La ESP32 no tiene USB propio: la placa trae un chip (CP2102 o CH340) que convierte el USB de la PC a una UART. Por eso hay que instalar su <b>driver</b>.",
+   "re": "CP210|[Dd]river|USB"
+  },
+  {
+   "t": "DevKit V1",
+   "que": "La placa de desarrollo: el módulo ESP32 con el USB, el regulador, los botones BOOT y EN y los pines a mano.",
+   "re": "DevKit"
+  },
+  {
+   "t": "Protoboard",
+   "sig": "placa de pruebas",
+   "que": "Placa con agujeros conectados por filas: se arman circuitos sin soldar, para probar.",
+   "re": "protoboard",
+   "i": true
+  },
+  {
+   "t": "Arduino UNO",
+   "que": "La placa clásica: un ATmega328P de 8 bits a 16 MHz con 2 KB de RAM, a 5 V y sin WiFi.",
+   "re": "Arduino Uno",
+   "i": true
+  },
+  {
+   "t": "Sistema embebido",
+   "que": "Una computadora dedicada a una sola tarea, metida dentro de un aparato: un microcontrolador con su programa.",
+   "re": "embebid",
+   "i": true
+  },
+  {
+   "t": "IoT",
+   "sig": "Internet of Things · internet de las cosas",
+   "que": "Dispositivos con sensores y actuadores conectados a internet, que mandan datos y reciben órdenes.",
+   "re": "\\bIoT\\b"
+  },
+  {
+   "t": "Plataforma IoT",
+   "que": "Un servicio (en la nube o local) que recibe, guarda, analiza y muestra los datos de los dispositivos y les manda órdenes. Por ejemplo, ThingSpeak o Arduino Cloud.",
+   "re": "plataforma",
+   "i": true
+  },
+  {
+   "t": "GPIO",
+   "sig": "General Purpose Input/Output · entrada/salida de propósito general",
+   "que": "Un pin que se configura desde el código como entrada o como salida. Algunos además tienen ADC, DAC, touch o PWM.",
+   "re": "GPIO"
+  },
+  {
+   "t": "HIGH y LOW",
+   "que": "Los dos estados de una señal digital: <b>HIGH</b> (1 lógico, ≈ 3,3 V) y <b>LOW</b> (0 lógico, ≈ 0 V).",
+   "re": "\\bHIGH\\b|\\bLOW\\b|señal digital"
+  },
+  {
+   "t": "Analógico y digital",
+   "que": "Una señal <b>digital</b> tiene dos valores (HIGH o LOW). Una <b>analógica</b> puede tomar cualquier tensión entre 0 y 3,3 V y se mide con el ADC.",
+   "re": "analógic",
+   "i": true
+  },
+  {
+   "t": "ADC",
+   "sig": "Analog-to-Digital Converter · conversor analógico-digital",
+   "que": "Convierte una tensión en un número. En la ESP32 es de 12 bits: de 0 a 4095.",
+   "re": "\\bADC\\b|Analógico-Digital",
+   "i": true
+  },
+  {
+   "t": "ADC1 y ADC2",
+   "que": "La ESP32 tiene dos ADC. El <b>ADC2</b> lo usa el WiFi, así que con el WiFi prendido esos pines no leen bien: conviene usar los del ADC1 (GPIO 32 a 39).",
+   "re": "ADC[12]"
+  },
+  {
+   "t": "DAC",
+   "sig": "Digital-to-Analog Converter · conversor digital-analógico",
+   "que": "Hace lo contrario del ADC: genera una tensión de salida a partir de un número. En la ESP32 está en los GPIO 25 y 26, con 8 bits (0 a 255).",
+   "re": "\\bDAC\\b|digital a analógico",
+   "i": true
+  },
+  {
+   "t": "Bits y resolución",
+   "que": "Con N bits entran 2<sup>N</sup> valores: 8 bits → 256 (0 a 255), 10 → 1024, 12 → 4096 (0 a 4095), 16 → 65536. A más bits, más fino se mide.",
+   "re": "\\b\\d+ bits\\b|resolución",
+   "i": true
+  },
+  {
+   "t": "PWM",
+   "sig": "Pulse Width Modulation · modulación por ancho de pulso",
+   "que": "Una salida que se prende y se apaga muy rápido. Cambiando cuánto tiempo queda prendida se regula el brillo de un LED, la velocidad de un motor o la posición de un servo.",
+   "re": "PWM|ancho de pulso"
+  },
+  {
+   "t": "Duty cycle",
+   "sig": "ciclo de trabajo",
+   "que": "El porcentaje del período en que la señal PWM está en alto: 0 % siempre apagada, 50 % mitad y mitad, 100 % siempre prendida.",
+   "re": "duty|ciclo de trabajo",
+   "i": true
+  },
+  {
+   "t": "Canal PWM",
+   "que": "La ESP32 tiene 16 canales PWM (el periférico LEDC), cada uno con su frecuencia y su resolución, y se le asignan a los pines.",
+   "re": "canal(es)? PWM|el canal PWM",
+   "i": true
+  },
+  {
+   "t": "Frecuencia",
+   "que": "Cuántas veces por segundo se repite una señal, en hercios (Hz). Período = 1 / frecuencia.",
+   "re": "frecuencia",
+   "i": true
+  },
+  {
+   "t": "Sensores analógicos y digitales",
+   "que": "Un sensor <b>analógico</b> entrega una tensión que varía (un potenciómetro, un sensor de luz). Uno <b>digital</b> entrega 0 o 1, o manda los datos por un protocolo (un pulsador, el DHT22).",
+   "re": "sensor(es)? (analógico|digital)",
+   "i": true
+  },
+  {
+   "t": "Potenciómetro",
+   "que": "Una resistencia con perilla: entrega entre 0 y 3,3 V según cuánto se gire. En la placa de la cátedra está en el GPIO 32.",
+   "re": "potenci[oó]metro|\\bPOTE\\b|estadoPote",
+   "i": true
+  },
+  {
+   "t": "Pulsador y llave",
+   "que": "El <b>pulsador</b> cierra el contacto solo mientras se aprieta (en la placa de la cátedra, GPIO 19). La <b>llave</b> o interruptor queda donde se la deja. Los dos se leen con una entrada digital.",
+   "re": "pulsador|\\bBOTON\\b|\\bboton\\b|llaves",
+   "i": true
+  },
+  {
+   "t": "Pull-up, pull-down y flotante",
+   "que": "Una entrada sin nada conectado queda <b>flotante</b>: lee cualquier cosa. Una resistencia de <b>pull-up</b> la lleva a HIGH y una de <b>pull-down</b>, a LOW. <b>INPUT_PULLUP</b> prende la pull-up que el pin trae adentro.",
+   "re": "pull-?up|pull-?down|flotante|INPUT_PULLUP",
+   "i": true
+  },
+  {
+   "t": "Relé",
+   "que": "Un interruptor que se mueve con un electroimán: con una salida digital prende o apaga un circuito de más potencia, como una lámpara de 220 V. Es todo o nada.",
+   "re": "rel[eé]",
+   "i": true
+  },
+  {
+   "t": "Servo",
+   "que": "Un motor que va a un ángulo (de 0 a 180°) según el ancho del pulso PWM que recibe.",
+   "re": "servo",
+   "i": true
+  },
+  {
+   "t": "Motores",
+   "que": "El <b>motor DC</b> gira más rápido con más tensión y se maneja con un transistor o un driver (un GPIO no da tanta corriente). El <b>paso a paso</b> gira de a pasos controlados.",
+   "re": "motor",
+   "i": true
+  },
+  {
+   "t": "Transistor",
+   "que": "Una llave electrónica: con la poca corriente de un GPIO maneja una carga grande, como un motor.",
+   "re": "transistor",
+   "i": true
+  },
+  {
+   "t": "Buzzer",
+   "sig": "zumbador",
+   "que": "Un parlantito que suena con una señal PWM: cada frecuencia, una nota.",
+   "re": "buzzer",
+   "i": true
+  },
+  {
+   "t": "LED integrado",
+   "que": "El LED que trae la placa, en el GPIO 2 (LED_BUILTIN). Sirve para probar rápido sin conectar nada.",
+   "re": "LED integrado|LED_BUILTIN|El pin 2",
+   "i": true
+  },
+  {
+   "t": "Pantallas OLED y LCD",
+   "sig": "Organic LED · Liquid Crystal Display",
+   "que": "En la <b>OLED</b> cada punto da su propia luz (la de la cátedra es de 128 × 64, un SH1106, conectada por I2C). La <b>LCD</b> es de cristal líquido.",
+   "re": "OLED|LCD|display|pantalla",
+   "i": true
+  },
+  {
+   "t": "Hexadecimal (0x…)",
+   "que": "Un número escrito en base 16, con los dígitos 0 a 9 y A a F: 0x3C = 3 × 16 + 12 = 60.",
+   "re": "0x[0-9A-Fa-f]+"
+  },
+  {
+   "t": "Touch capacitivo",
+   "que": "Pines que detectan el toque del dedo por el cambio de capacitancia (T0 a T9). touchRead() da un número que baja al tocar.",
+   "re": "touch|capacit",
+   "i": true
+  },
+  {
+   "t": "setup() y loop()",
+   "que": "<b>setup()</b> corre una vez al prender la placa (ahí se configuran los pines y el Serial). <b>loop()</b> se repite sin parar mientras la placa esté prendida.",
+   "re": "setup|loop"
+  },
+  {
+   "t": "pinMode()",
+   "que": "Configura un pin: <b>OUTPUT</b> (salida), <b>INPUT</b> (entrada) o <b>INPUT_PULLUP</b> (entrada con la pull-up interna). Va en el setup().",
+   "re": "pinMode"
+  },
+  {
+   "t": "digitalRead() y digitalWrite()",
+   "que": "<b>digitalRead(pin)</b> lee si una entrada está en HIGH o LOW. <b>digitalWrite(pin, valor)</b> pone una salida en HIGH o LOW.",
+   "re": "digitalRead|digitalWrite"
+  },
+  {
+   "t": "analogRead()",
+   "que": "Lee la tensión de un pin con ADC y devuelve un número de 0 a 4095 (12 bits).",
+   "re": "analogRead"
+  },
+  {
+   "t": "analogWrite()",
+   "que": "Saca PWM por un pin (de 0 a 255 con 8 bits). No es una tensión analógica de verdad: es una onda cuadrada.",
+   "re": "analogWrite"
+  },
+  {
+   "t": "map()",
+   "que": "map(valor, desdeMín, desdeMáx, hastaMín, hastaMáx) pasa un valor de un rango a otro, como una regla de tres. Ejemplo: de 0–4095 a 0–255.",
+   "re": "\\bmap\\("
+  },
+  {
+   "t": "millis()",
+   "que": "Devuelve los milisegundos que pasaron desde que arrancó la placa (en un unsigned long). Sirve para medir tiempos sin frenar el programa.",
+   "re": "millis"
+  },
+  {
+   "t": "delay()",
+   "que": "Frena el programa los milisegundos que se le indiquen: mientras tanto no hace nada más.",
+   "re": "delay"
+  },
+  {
+   "t": "Rebote (debounce)",
+   "que": "Al apretar un pulsador, el contacto metálico rebota unos milisegundos y da varias lecturas. El antirrebote ignora los cambios muy seguidos.",
+   "re": "debounce|rebote",
+   "i": true
+  },
+  {
+   "t": "Serial y el monitor serie",
+   "que": "El puerto serie (una UART que va por el USB). <b>Serial.begin(115200)</b> lo abre, <b>Serial.println()</b> escribe en el monitor serie del IDE, <b>Serial.available()</b> dice cuántos bytes llegaron y <b>Serial.read()</b> lee uno.",
+   "re": "Serial|monitor seri|puerto serie",
+   "i": true
+  },
+  {
+   "t": "Baudios (baud rate)",
+   "que": "Bits por segundo de una comunicación serie (115200 en la ESP32). Emisor y receptor tienen que usar el mismo.",
+   "re": "baud",
+   "i": true
+  },
+  {
+   "t": "volatile",
+   "que": "Le avisa al compilador que la variable puede cambiar «por afuera» del flujo normal (por ejemplo, en una interrupción): entonces no la guarda en un registro y la lee siempre de la memoria.",
+   "re": "volatile"
+  },
+  {
+   "t": "Registro",
+   "que": "Una memoria mínima y rapidísima dentro de la CPU, donde el compilador guarda valores para no ir a buscarlos a la RAM cada vez.",
+   "re": "registro",
+   "i": true
+  },
+  {
+   "t": "Interrupción",
+   "que": "Un aviso del hardware que corta lo que está haciendo el programa para atender algo en una función corta (la ISR) y después sigue donde estaba.",
+   "re": "interrupci",
+   "i": true
+  },
+  {
+   "t": "Tipos de datos",
+   "que": "<b>int</b>: entero (32 bits en la ESP32). <b>unsigned long</b>: entero sin signo de 32 bits (lo que devuelve millis()). <b>bool</b>: verdadero o falso. <b>char</b>: un carácter. <b>byte</b>: de 0 a 255. <b>const</b>: una constante que no cambia.",
+   "re": "unsigned long|\\bbool\\b|\\bbyte\\b|\\bchar\\b|tipo de dato"
+  },
+  {
+   "t": "C++ compilado y tipado",
+   "que": "C++ es <b>compilado</b>: se traduce entero a código de máquina antes de correr (Python, en cambio, es interpretado). Es <b>fuertemente tipado</b>: cada variable tiene un tipo fijo.",
+   "re": "C\\+\\+|compilad|interpretad|tipad",
+   "i": true
+  },
+  {
+   "t": "IDE",
+   "sig": "Integrated Development Environment · entorno de desarrollo integrado",
+   "que": "El programa para escribir, compilar y subir el código. En la materia se usa el Arduino IDE; PlatformIO es una extensión de VS Code que hace lo mismo.",
+   "re": "\\bIDE\\b|PlatformIO"
+  },
+  {
+   "t": "Gestor de placas",
+   "que": "En el Arduino IDE se instala el paquete «esp32» de Espressif para que el IDE conozca la placa y sepa compilar para ella.",
+   "re": "gestor de placas",
+   "i": true
+  },
+  {
+   "t": "Depurar",
+   "sig": "debug",
+   "que": "Encontrar y corregir errores. En un microcontrolador, mirando lo que se imprime en el monitor serie o prendiendo un LED en cierto punto del programa.",
+   "re": "depur",
+   "i": true
+  },
+  {
+   "t": "Protocolo de comunicación",
+   "que": "Las reglas para que dos dispositivos se pasen datos: cuántos cables, a qué velocidad y con qué formato.",
+   "re": "protocolo",
+   "i": true
+  },
+  {
+   "t": "UART",
+   "sig": "Universal Asynchronous Receiver-Transmitter · receptor-transmisor asíncrono universal",
+   "que": "Comunicación serie <b>asíncrona</b> entre dos dispositivos con dos líneas cruzadas: <b>TX</b> (transmite) y <b>RX</b> (recibe). Es la del monitor serie (GPIO 1 y 3).",
+   "re": "UART|\\bTX\\b|\\bRX\\b"
+  },
+  {
+   "t": "I2C",
+   "sig": "Inter-Integrated Circuit · se lee «I cuadrado C»",
+   "que": "Bus <b>síncrono</b> de dos líneas: <b>SDA</b> (datos) y <b>SCL</b> (reloj). Un maestro habla con varios esclavos, cada uno con su dirección de 7 bits. En la ESP32, GPIO 21 y 22.",
+   "re": "I2C|I²C|SDA|SCL"
+  },
+  {
+   "t": "SPI",
+   "sig": "Serial Peripheral Interface · interfaz serie de periféricos",
+   "que": "Bus <b>síncrono</b> y rápido de cuatro líneas: <b>SCLK</b> (reloj), <b>MOSI</b> (del maestro al esclavo), <b>MISO</b> (del esclavo al maestro) y <b>CS/SS</b> (elige con qué esclavo habla).",
+   "re": "\\bSPI\\b|MOSI|MISO"
+  },
+  {
+   "t": "Síncrona y asíncrona",
+   "que": "En la comunicación <b>síncrona</b> emisor y receptor comparten una señal de reloj. En la <b>asíncrona</b> no hay reloj: se acuerda la velocidad de antes y cada dato lleva bits de inicio y de parada.",
+   "re": "síncron|Síncron",
+   "i": true
+  },
+  {
+   "t": "Maestro y esclavo",
+   "que": "El <b>maestro</b> maneja la comunicación (da el reloj y elige con quién habla). Los <b>esclavos</b> responden cuando los llama.",
+   "re": "maestro|esclavo",
+   "i": true
+  },
+  {
+   "t": "Serie y paralelo",
+   "que": "En <b>serie</b> los bits van de a uno por un cable. En <b>paralelo</b> van varios a la vez, por varios cables.",
+   "re": "(datos|transmisión|comunicación|bus) (de datos )?en paralelo|bus paralelo",
+   "i": true
+  },
+  {
+   "t": "PCIe y HDMI",
+   "que": "<b>PCIe</b> es el bus de las placas de video de una PC y <b>HDMI</b>, la conexión de video de un monitor. La ESP32 no tiene ninguno.",
+   "re": "PCIe|HDMI"
+  },
+  {
+   "t": "Tarjeta SD",
+   "que": "Una tarjeta de memoria para guardar archivos. Se conecta por SPI.",
+   "re": "tarjeta SD"
+  },
+  {
+   "t": "ZigBee",
+   "que": "Un protocolo inalámbrico de bajo consumo para domótica. La ESP32 clásica no lo trae.",
+   "re": "ZigBee"
+  },
+  {
+   "t": "WiFi",
+   "que": "Red inalámbrica local (en 2,4 GHz en la ESP32). Para conectarse hacen falta el nombre de la red (SSID) y la contraseña.",
+   "re": "Wi-?Fi",
+   "i": true
+  },
+  {
+   "t": "SSID",
+   "sig": "Service Set Identifier",
+   "que": "El nombre de una red WiFi.",
+   "re": "SSID"
+  },
+  {
+   "t": "Dirección MAC",
+   "sig": "Media Access Control",
+   "que": "La dirección física única de cada placa de red, de fábrica.",
+   "re": "\\bMAC\\b"
+  },
+  {
+   "t": "Modos STA y AP",
+   "sig": "Station · Access Point",
+   "que": "En modo <b>estación</b> (STA) la ESP32 se conecta a un router, como un celular. En modo <b>punto de acceso</b> (AP) crea su propia red.",
+   "re": "\\bSTA\\b|\\bAP\\b|punto de acceso",
+   "i": true
+  },
+  {
+   "t": "Bluetooth y BLE",
+   "sig": "Bluetooth Low Energy",
+   "que": "Radio de corto alcance. <b>BLE</b> es la versión de muy bajo consumo: organiza los datos en servicios y características (GATT), con un central y un periférico.",
+   "re": "Bluetooth|\\bBLE\\b|GATT"
+  },
+  {
+   "t": "TCP",
+   "sig": "Transmission Control Protocol · protocolo de control de transmisión",
+   "que": "Arma una <b>conexión</b> entre los dos lados y <b>garantiza</b> que los datos lleguen completos y en orden: si algo se pierde, lo reenvía. Lo usan la web (HTTP) y MQTT.",
+   "re": "\\bTCP\\b"
+  },
+  {
+   "t": "UDP",
+   "sig": "User Datagram Protocol · protocolo de datagramas de usuario",
+   "que": "Manda paquetes <b>sin conexión</b> y sin confirmar que llegaron: es más simple y rápido, pero alguno se puede perder. Sirve cuando perder un dato no importa tanto (audio, telemetría).",
+   "re": "\\bUDP\\b"
+  },
+  {
+   "t": "Dirección IP",
+   "sig": "Internet Protocol",
+   "que": "La dirección de cada dispositivo en una red, por ejemplo 192.168.1.125. Las 192.168.x.x son de una red local (la de tu casa).",
+   "re": "\\bIP\\b|192\\.168"
+  },
+  {
+   "t": "HTTP, URL y HTML",
+   "sig": "Hypertext Transfer Protocol · Uniform Resource Locator · Hypertext Markup Language",
+   "que": "<b>HTTP</b> es el protocolo de la web: el navegador pide (GET) una <b>URL</b> y el servidor le responde, por ejemplo con una página <b>HTML</b>. La ESP32 puede ser ese servidor web.",
+   "re": "HTTP|HTML|URL|servidor web|navegador",
+   "i": true
+  },
+  {
+   "t": "MQTT",
+   "sig": "Message Queuing Telemetry Transport",
+   "que": "Protocolo liviano de publicador/suscriptor sobre TCP: los dispositivos <b>publican</b> mensajes en un <b>topic</b> y un <b>broker</b> (como Mosquitto) se los reparte a los que están <b>suscriptos</b>. Puerto 1883.",
+   "re": "MQTT|broker|topic|Mosquitto",
+   "i": true
+  },
+  {
+   "t": "TLS",
+   "sig": "Transport Layer Security · seguridad de la capa de transporte",
+   "que": "Cifra la comunicación para que nadie la lea en el camino (es la «S» de HTTPS; MQTT con TLS usa el puerto 8883).",
+   "re": "\\bTLS\\b"
+  },
+  {
+   "t": "ThingSpeak",
+   "que": "Plataforma IoT de MathWorks (MATLAB): guarda datos en canales de hasta 8 campos y los grafica. La ESP32 le escribe por HTTP con la Write API Key.",
+   "re": "ThingSpeak|MATLAB"
+  },
+  {
+   "t": "API key",
+   "sig": "Application Programming Interface key · clave de API",
+   "que": "Una clave que identifica a quien usa un servicio, por ejemplo la Write API Key de un canal de ThingSpeak.",
+   "re": "API key"
+  },
+  {
+   "t": "Bot de Telegram",
+   "que": "Se crea con <b>@BotFather</b>, que da un <b>TOKEN</b>; la ESP32 lo usa (con la librería UniversalTelegramBot) para leer y mandar mensajes.",
+   "re": "Telegram|BotFather|TOKEN"
+  },
+  {
+   "t": "La nube y el edge",
+   "que": "La <b>nube</b> son servidores en internet que guardan y procesan los datos. <b>Edge</b> es procesarlos cerca del dispositivo, sin ir a la nube.",
+   "re": "\\bnube\\b|\\bedge\\b",
+   "i": true
+  },
+  {
+   "t": "Telemetría",
+   "que": "Mandar mediciones a distancia, por ejemplo la temperatura cada minuto.",
+   "re": "telemetr",
+   "i": true
+  },
+  {
+   "t": "Red celular",
+   "que": "La de los celulares (4G, LTE). La ESP32 no la trae: hace falta un módulo aparte con chip.",
+   "re": "red celular",
+   "i": true
+  }
  ]
 }

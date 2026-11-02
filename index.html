@@ -338,6 +338,17 @@
   .qz-score .si{color:var(--ok)} .qz-score .no{color:var(--rojo)}
   .qz-salir{font:inherit;font-size:.82rem;background:none;border:0;color:var(--muted);cursor:pointer;text-decoration:underline}
   .qz-meta{font-size:.78rem;color:var(--muted);margin-bottom:8px}
+  .qz-cab{display:flex;align-items:flex-start;gap:10px}
+  .qz-cab .qz-meta{flex:1;min-width:0}
+  .qz-lamp{flex:none;width:36px;height:36px;margin:-8px -10px 0 auto;display:grid;place-items:center;font-size:1.05rem;line-height:1;border:1px solid var(--line);border-radius:50%;background:var(--card);cursor:pointer;filter:grayscale(.35)}
+  .qz-lamp:hover{border-color:var(--mark-l);filter:none}
+  .qz-lamp[aria-expanded="true"]{background:var(--mark);border-color:var(--mark-l);filter:none}
+  .qz-glosa{margin:14px 0;background:var(--mark);border:1px solid var(--mark-l);border-radius:12px;padding:12px 16px;font-size:.88rem;line-height:1.5}
+  .qz-glosa-tit{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--mark-t);margin-bottom:8px}
+  .qz-glosa dl{margin:0;display:flex;flex-direction:column;gap:10px}
+  .qz-glosa dt{font-weight:700}
+  .qz-glosa dd{margin:2px 0 0;color:var(--text2)}
+  .qz-sig{font-weight:500;font-size:.82rem;color:var(--mark-t)}
   .qz-en{font-size:1.02rem;line-height:1.55}
   .quiz code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:var(--hover);padding:1px 5px;border-radius:4px}
   .quiz pre{background:#1f1e1d;color:#ece9e1;border-radius:10px;padding:12px 14px;font-size:.8rem;line-height:1.5;overflow-x:auto;margin:12px 0;white-space:pre}
@@ -8007,8 +8018,18 @@ function quizEmpezar(lista, cant = qz.cant){
   Object.assign(qz, { cola, i: 0, bien: 0, mal: 0, erradas: [], sel: new Set(), hecho: false });
   quizPregunta();
 }
+/* La lamparita: los términos del glosario del quiz (campo "glosario") que aparecen en la pregunta,
+   en el orden en que aparecen (primero el enunciado, después el código y las opciones) */
+const sinEtiquetas = h => String(h || "").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ");
+function quizGlosa(q){
+  const G = qz.d.glosario || [];
+  if(!qz.glosRx) qz.glosRx = G.map(g => { try { return new RegExp(g.re, g.i ? "i" : ""); } catch(e){ return null; } });
+  const txt = [q.en, q.code, ...(q.op || []).map(o => o[0]), ...(q.objetivo || []), ...(q.huecos || []), ...(q.fichas || [])].map(sinEtiquetas).join("\n");
+  return G.map((g, k) => ({ g, m: qz.glosRx[k] ? txt.search(qz.glosRx[k]) : -1 })).filter(x => x.m >= 0).sort((a, b) => a.m - b.m).map(x => x.g);
+}
 function quizPregunta(){
   const { q, s } = qz.cola[qz.i];
+  const glosa = quizGlosa(q);
   qz.sel = new Set(); qz.hecho = false;
   // Armar: los huecos (vacíos) y la bolsa con las líneas del programa y las de más, mezcladas
   if(q.tipo === "armar") qz.arm = { huecos: q.huecos.map(() => null), bolsa: mezclar([...q.huecos, ...q.fichas].map(t => ({ t }))), sel: 0 };
@@ -8022,10 +8043,17 @@ function quizPregunta(){
       <button class="qz-salir" data-qsalir>Salir</button>
     </div>
     <div class="qz-card">
-      <div class="qz-meta">${esc(s)}${q.fuente ? ` · ${esc(q.fuente)}` : ""}${q.practica ? ` <span class="tag nota">De práctica</span>` : ""}</div>
+      <div class="qz-cab">
+        <div class="qz-meta">${esc(s)}${q.fuente ? ` · ${esc(q.fuente)}` : ""}${q.practica ? ` <span class="tag nota">De práctica</span>` : ""}</div>
+        ${glosa.length ? `<button class="qz-lamp" data-qlamp aria-expanded="false" aria-controls="qzGlosa" title="Ayuda: qué es cada cosa" aria-label="Ayuda: qué es cada cosa">💡</button>` : ""}
+      </div>
       <div class="qz-en">${q.en}</div>
       ${q.img ? `<img class="qz-img" src="${esc(q.img)}" alt="">` : ""}
       ${q.code ? `<pre>${esc(q.code)}</pre>` : ""}
+      ${glosa.length ? `<div class="qz-glosa" id="qzGlosa" hidden>
+        <div class="qz-glosa-tit">Qué es cada cosa</div>
+        <dl>${glosa.map(g => `<div><dt>${esc(g.t)}${g.sig ? ` <span class="qz-sig">· ${esc(g.sig)}</span>` : ""}</dt><dd>${g.que}</dd></div>`).join("")}</dl>
+      </div>` : ""}
       ${q.tipo === "armar" ? armarHtml() : ""}
       ${q.op ? `
         <div class="qz-ayuda">${q.tipo === "varias" ? "Hay más de una correcta: marcalas y tocá Responder" : "Tocá la opción correcta"}</div>
@@ -8127,10 +8155,11 @@ function quizFin(){
 }
 function clicQuiz(e){
   const t = e.target;
-  const el = t.closest("[data-qcant],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra],[data-qh],[data-qf],[data-qvaciar]");
+  const el = t.closest("[data-qcant],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra],[data-qh],[data-qf],[data-qvaciar],[data-qlamp]");
   if(!el) return false;
   const ds = el.dataset;
-  if("qcant" in ds){ qz.cant = +ds.qcant; quizInicio(); }
+  if("qlamp" in ds){ const p = $("#qzGlosa"), abrir = p.hidden; p.hidden = !abrir; el.setAttribute("aria-expanded", abrir); }
+  else if("qcant" in ds){ qz.cant = +ds.qcant; quizInicio(); }
   else if("qempezar" in ds || "qmas" in ds) quizEmpezar(quizElegidas());
   else if("qop" in ds && !qz.hecho){
     const { q } = qz.cola[qz.i], k = +ds.qop;
@@ -8171,6 +8200,7 @@ document.addEventListener("keydown", e => {
   if(!$("#quiz .qz-card") || e.target.closest("input,textarea,select") || e.ctrlKey || e.metaKey || e.altKey) return;
   const n = parseInt(e.key, 10);
   if(n >= 1 && n <= 9){ const b = document.querySelectorAll("#quiz .qz-op")[n - 1]; if(b && !b.disabled){ b.click(); e.preventDefault(); } }
+  if(e.key === "Enter" && e.target.closest("[data-qlamp]")) return;
   if(e.key === "Enter"){ const b = $("#quiz [data-qsig]") || $("#quiz [data-qresp]:not(:disabled)") || $("#quiz [data-qver]"); if(b){ b.click(); e.preventDefault(); } }
 });
 
