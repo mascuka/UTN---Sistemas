@@ -1,7 +1,337 @@
 {
  "titulo": "TPA · 3º Parcial · IoT",
- "descripcion": "Las preguntas de los parciales, recuperatorios y simulacros de IoT 2025 y 2026 (de los intentos reales del campus), más preguntas de práctica del apunte 2026.",
+ "descripcion": "Las preguntas de los parciales, recuperatorios y simulacros de IoT 2025 y 2026 (de los intentos reales del campus), más preguntas de práctica: del apunte 2026 y de un cuestionario con opción múltiple, verdadero o falso, ordenar código y leer código.",
  "secciones": [
+  {
+   "titulo": "IoT y sistemas embebidos",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "¿Qué es el Internet de las Cosas (IoT)?",
+     "op": [
+      [
+       "Una red privada de computadoras de escritorio conectadas por cable.",
+       false
+      ],
+      [
+       "La interconexión de objetos cotidianos con Internet, que les permite recolectar, procesar y transmitir datos sin intervención de personas.",
+       true
+      ],
+      [
+       "Un protocolo de comunicación para enviar mensajes entre celulares.",
+       false
+      ],
+      [
+       "Un sistema operativo para microcontroladores.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. IoT no trata de PCs: trata de objetos cotidianos (electrodomésticos, autos, sensores) que se conectan a la red.<br><b>b)</b> Sí. Los objetos tienen circuitos y sensores que les permiten compartir datos con Internet de forma autónoma.<br><b>c)</b> No. IoT es un concepto o ecosistema, no un protocolo. Dentro de él se usan protocolos como HTTP, MQTT o Bluetooth.<br><b>d)</b> No. Un sistema operativo para microcontroladores sería, por ejemplo, FreeRTOS; IoT es otra cosa.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué necesita un objeto para considerarse un dispositivo IoT?",
+     "op": [
+      [
+       "Conexión a Internet o a una red.",
+       true
+      ],
+      [
+       "Cierta inteligencia de software, es decir, un microcontrolador que procese la información.",
+       true
+      ],
+      [
+       "Sensores para medir parámetros físicos y/o actuadores para actuar sobre el entorno.",
+       true
+      ],
+      [
+       "Una pantalla y un teclado para que un usuario lo opere.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Sin conectividad no puede compartir datos ni recibir órdenes a distancia.<br><b>b)</b> Sí. Es lo que le permite decidir qué medir, qué enviar y cómo actuar.<br><b>c)</b> Sí. Es la interfaz con el mundo físico. Alrededor del dispositivo se genera así un ecosistema de servicios.<br><b>d)</b> No. Muchos dispositivos IoT no tienen interfaz propia: funcionan solos o se controlan a distancia, desde el celular o la nube.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles de los siguientes son dispositivos IoT?",
+     "op": [
+      [
+       "Un termostato que regula la calefacción y se maneja desde el celular.",
+       true
+      ],
+      [
+       "Un altavoz inteligente que enciende las luces de la casa con comandos de voz.",
+       true
+      ],
+      [
+       "Una cámara de seguridad que sube el video a la nube.",
+       true
+      ],
+      [
+       "Una lámpara común con interruptor de pared.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Mide (temperatura), actúa (calefacción) y está conectado.<br><b>b)</b> Sí. Se conecta a la red e interactúa con otros dispositivos.<br><b>c)</b> Sí. Es un sensor conectado que transmite datos sin intervención humana.<br><b>d)</b> No. No tiene conectividad ni inteligencia de software.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué es la comunicación M2M?",
+     "op": [
+      [
+       "Una red celular exclusiva para conectar teléfonos móviles entre sí (Mobile to Mobile).",
+       false
+      ],
+      [
+       "Un proceso en el que dos dispositivos o máquinas se comunican entre sí, por cualquier tipo de conectividad, sin que intervenga un humano.",
+       true
+      ],
+      [
+       "Un protocolo de la capa de aplicación, equivalente a MQTT.",
+       false
+      ],
+      [
+       "La comunicación por voz entre una persona y un altavoz inteligente.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. M2M significa machine to machine y no se limita a la red celular: puede usar cualquier conectividad (cable, WiFi, Bluetooth, etc.).<br><b>b)</b> Sí. Es la forma en que se conectan los dispositivos IoT. Es un concepto parecido al Peer to Peer entre computadoras.<br><b>c)</b> No. M2M es un concepto o forma de trabajo, no un protocolo. MQTT es un protocolo concreto que se puede usar para implementar M2M.<br><b>d)</b> No. En M2M no interviene un humano; la comunicación es entre máquinas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La computadora de a bordo de un auto detecta una falla y envía sola un aviso para que lo lleven al taller. ¿Qué concepto ejemplifica mejor esta situación?",
+     "op": [
+      [
+       "Comunicación M2M dentro de un ecosistema IoT.",
+       true
+      ],
+      [
+       "Computación de propósito general.",
+       false
+      ],
+      [
+       "Control manual a lazo abierto.",
+       false
+      ],
+      [
+       "Comunicación asíncrona UART.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. El auto recolecta y analiza datos y los comunica a otro sistema sin que una persona intervenga.<br><b>b)</b> No. La computadora del auto es un sistema embebido con una función dedicada, no una PC.<br><b>c)</b> No. No hay operación manual: el aviso se genera solo.<br><b>d)</b> No. UART es un medio físico de comunicación serie; no describe la situación completa.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es el componente esencial que permite que los sensores y actuadores de un dispositivo IoT recolecten y envíen datos del mundo físico a Internet?",
+     "op": [
+      [
+       "El microcontrolador.",
+       true
+      ],
+      [
+       "La fuente de alimentación.",
+       false
+      ],
+      [
+       "El router de la casa.",
+       false
+      ],
+      [
+       "La pantalla.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Es el «cerebro» del dispositivo: lee los sensores, procesa, decide, maneja los actuadores y gestiona la comunicación.<br><b>b)</b> No. Es necesaria, pero no procesa ni comunica datos.<br><b>c)</b> No. El router da acceso a la red, pero no está dentro del dispositivo ni lee sensores.<br><b>d)</b> No. Muchos dispositivos IoT no tienen pantalla.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "En un sistema de riego automático conectado, ¿cuáles de estos elementos son actuadores?",
+     "op": [
+      [
+       "La electroválvula que abre el paso del agua.",
+       true
+      ],
+      [
+       "El sensor de humedad del suelo.",
+       false
+      ],
+      [
+       "La bomba de agua.",
+       true
+      ],
+      [
+       "La ESP32.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Convierte una señal del controlador en una acción física: abrir o cerrar.<br><b>b)</b> No. Es un sensor: convierte una magnitud física (humedad) en una señal eléctrica.<br><b>c)</b> Sí. Ejecuta una acción física (mover agua) a partir de una orden del controlador.<br><b>d)</b> No. Es el controlador: procesa la información y decide, pero no actúa físicamente.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es el recorrido típico de un dato en un sistema IoT?",
+     "op": [
+      [
+       "Sensor → microcontrolador → red (por ejemplo, WiFi) → plataforma en la nube → usuario (dashboard o app).",
+       true
+      ],
+      [
+       "Usuario → sensor → nube → microcontrolador.",
+       false
+      ],
+      [
+       "Nube → sensor → actuador → microcontrolador.",
+       false
+      ],
+      [
+       "Microcontrolador → sensor → usuario, sin red.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. El sensor capta la magnitud, el MCU la procesa y la envía por la red, la plataforma la guarda y analiza, y el usuario la visualiza o envía órdenes de vuelta.<br><b>b)</b> No. El sensor no recibe datos del usuario; mide el mundo físico.<br><b>c)</b> No. La nube no alimenta al sensor; el orden está invertido.<br><b>d)</b> No. Sin red no hay IoT: el dato no sale del dispositivo.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué ventajas aporta el IoT?",
+     "op": [
+      [
+       "Monitoreo y control remoto de procesos desde cualquier lugar.",
+       true
+      ],
+      [
+       "Toma de decisiones basada en los datos recopilados.",
+       true
+      ],
+      [
+       "Elimina la necesidad de preocuparse por la seguridad informática.",
+       false
+      ],
+      [
+       "Automatización y eficiencia: recopilar datos, analizarlos y tomar decisiones automáticas.",
+       true
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Permite supervisar y gestionar dispositivos y procesos sin estar en el lugar.<br><b>b)</b> Sí. Los datos dan información valiosa para decidir con más precisión.<br><b>c)</b> No. Es al revés: conectar dispositivos a la red aumenta la superficie de ataque.<br><b>d)</b> Sí. Otras ventajas: conectividad en tiempo real, mejor productividad y personalización.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué es un sistema embebido?",
+     "op": [
+      [
+       "Una computadora de propósito general que corre varias aplicaciones a la vez.",
+       false
+      ],
+      [
+       "Un sistema construido alrededor de un microcontrolador o microprocesador, diseñado para una función dedicada, normalmente en tiempo real.",
+       true
+      ],
+      [
+       "Un programa que se ejecuta dentro del navegador.",
+       false
+      ],
+      [
+       "Un servidor en la nube que almacena datos de sensores.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Eso es una PC.<br><b>b)</b> Sí. Forma parte de productos que necesitan cierta capacidad de procesamiento: electrodomésticos, vehículos, máquinas.<br><b>c)</b> No. Es un sistema de hardware más software, no una aplicación web.<br><b>d)</b> No. Eso es parte de una plataforma IoT, no un sistema embebido.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un dispositivo IoT solo puede medir; no puede actuar sobre el entorno.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Un dispositivo IoT puede medir con sensores y también actuar a distancia con actuadores (encender una luz, abrir una válvula).",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La comunicación M2M solo es posible por WiFi.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "M2M puede usar cualquier tipo de conectividad: cable, WiFi, Bluetooth, red celular, etc.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un dispositivo IoT puede recolectar información sobre hábitos y preferencias de los usuarios, por ejemplo de consumo o de salud.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Recolecta, procesa y analiza gran cantidad de datos; por eso la seguridad y la privacidad son críticas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Los sensores son los «sentidos» del sistema y los actuadores son sus «músculos».",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Los sensores convierten magnitudes físicas en señales eléctricas; los actuadores convierten señales del controlador en acciones físicas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Diseñar sistemas embebidos es una tarea exclusivamente de software.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Es multidisciplinaria: requiere electrónica (hardware, circuitos, alimentación) y sistemas (software, comunicaciones).",
+     "practica": true
+    }
+   ]
+  },
   {
    "titulo": "La ESP32",
    "preguntas": [
@@ -591,6 +921,447 @@
        false
       ]
      ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué significa que Arduino sea «hardware libre»?",
+     "op": [
+      [
+       "Que las placas se regalan.",
+       false
+      ],
+      [
+       "Que sus especificaciones y diagramas (esquemáticos) son públicos, así que cualquiera puede replicarlos o diseñar placas propias a partir de ellos.",
+       true
+      ],
+      [
+       "Que no necesita software para programarse.",
+       false
+      ],
+      [
+       "Que solo puede programarse en Arduino IDE.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Libre no significa gratis.<br><b>b)</b> Sí. Por eso existen tantas placas compatibles, distintas entre sí pero igualmente funcionales.<br><b>c)</b> No. Se programa con Arduino IDE o con VS Code y PlatformIO.<br><b>d)</b> No. No hay ninguna restricción de entorno.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Por qué plataformas como Arduino simplificaron el desarrollo de prototipos electrónicos?",
+     "op": [
+      [
+       "Porque ofrecen hardware ya probado que funciona, y construir hardware propio es caro y lleva tiempo.",
+       true
+      ],
+      [
+       "Porque traen librerías que abstraen el manejo de los periféricos (por ejemplo, Ethernet o un display) en pocas funciones.",
+       true
+      ],
+      [
+       "Porque, al tener esquemáticos públicos, se puede partir de un diseño existente y probarlo por software antes de fabricarlo.",
+       true
+      ],
+      [
+       "Porque obligan a programar en Assembler, lo que da más control.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Se evita diseñar y fabricar una placa desde cero para cada prototipo.<br><b>b)</b> Sí. Así no hace falta estudiar el datasheet de cada controlador ni programar a bajo nivel.<br><b>c)</b> Sí. Se ahorran etapas de diseño y se integran módulos (sensores, comunicación) con facilidad.<br><b>d)</b> No. Es al revés: se programan en C/C++ con librerías. Programar en Assembler era lo habitual antes de estas plataformas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué datos corresponden a una placa Arduino UNO clásica?",
+     "op": [
+      [
+       "Microcontrolador ATMega328P, reloj de 16 MHz, 5 V.",
+       true
+      ],
+      [
+       "Tensilica Xtensa LX6, hasta 240 MHz, 3,3 V.",
+       false
+      ],
+      [
+       "ATMega328P, 240 MHz, 3,3 V.",
+       false
+      ],
+      [
+       "Z80, 16 MHz, 5 V.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Es la referencia clásica de Arduino, basada en microcontroladores ATMEL.<br><b>b)</b> No. Esos son datos de la ESP32.<br><b>c)</b> No. Mezcla el procesador de Arduino con el reloj y la tensión de la ESP32.<br><b>d)</b> No. El Z80 es un microprocesador antiguo que se programaba en Assembler.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿De qué maneras pueden trabajar los dos núcleos de la ESP32?",
+     "op": [
+      [
+       "De forma simétrica (SMP), bajo un sistema operativo como FreeRTOS.",
+       true
+      ],
+      [
+       "De forma asimétrica: cada núcleo se dedica a una tarea, por ejemplo uno a las comunicaciones y otro a la aplicación.",
+       true
+      ],
+      [
+       "Solo puede estar activo uno a la vez.",
+       false
+      ],
+      [
+       "Necesitan un sistema operativo de escritorio (Linux) para coordinarse.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. El sistema operativo reparte las tareas entre los dos núcleos.<br><b>b)</b> Sí. Así se separan las tareas de tiempo real de los procesos con más carga.<br><b>c)</b> No. Pueden trabajar de forma independiente o en conjunto para aumentar el rendimiento.<br><b>d)</b> No. La ESP32 corre desde código bare-metal hasta un RTOS; no necesita Linux.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Por qué una placa basada en ESP32 dura más que un Arduino cuando funciona con batería?",
+     "op": [
+      [
+       "Porque siempre consume menos corriente, en cualquier situación.",
+       false
+      ],
+      [
+       "Porque trabaja a 3,3 V y sigue funcionando cuando la batería cae a unos 4 V, mientras que un Arduino (5 V) ya se apagó.",
+       true
+      ],
+      [
+       "Porque se alimenta por VIN a 12 V.",
+       false
+      ],
+      [
+       "Porque no tiene reloj.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Conectadas a la red eléctrica no hay diferencia de consumo: la corriente se ajusta para entregar la misma energía.<br><b>b)</b> Sí. Si la curva de descarga baja de la tensión de trabajo, el micro se apaga; con 3,3 V hay más margen.<br><b>c)</b> No. No tiene relación con la duración de la batería.<br><b>d)</b> No. Sí tiene reloj (hasta 240 MHz).",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre el reloj (clock) del sistema, seleccione las correctas.",
+     "op": [
+      [
+       "Sincroniza todas las operaciones de la CPU y de los periféricos, como un metrónomo.",
+       true
+      ],
+      [
+       "A mayor frecuencia, más instrucciones por segundo.",
+       true
+      ],
+      [
+       "A mayor frecuencia, menor consumo de energía.",
+       false
+      ],
+      [
+       "Su inicialización es uno de los primeros pasos del arranque.",
+       true
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Genera una señal periódica que marca el ritmo de ejecución.<br><b>b)</b> Sí. Más rendimiento.<br><b>c)</b> No. Es al revés: más frecuencia implica más consumo, algo crítico con batería.<br><b>d)</b> Sí. Ningún otro componente puede funcionar coordinado sin él.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué aceleradores criptográficos por hardware tiene la ESP32?",
+     "op": [
+      [
+       "AES (cifrado simétrico).",
+       true
+      ],
+      [
+       "SHA (hash criptográfico).",
+       true
+      ],
+      [
+       "RSA (criptografía asimétrica).",
+       true
+      ],
+      [
+       "RMT (transceptor de control remoto).",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Sirve para cifrar comunicaciones y almacenamiento.<br><b>b)</b> Sí. Sirve para verificar integridad, por ejemplo en el arranque seguro.<br><b>c)</b> Sí. Junto con el RNG (generador de números aleatorios) da soporte a TLS/SSL y secure boot.<br><b>d)</b> No. El RMT genera formas de onda precisas (por ejemplo, para LEDs WS2812); no es criptográfico.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En la ESP32 DevKit V1, ¿qué precaución hay que tener con el pin VIN?",
+     "op": [
+      [
+       "Solo admite 3,3 V.",
+       false
+      ],
+      [
+       "No alimentar la placa por VIN y por USB al mismo tiempo, porque por un defecto de diseño se puede quemar.",
+       true
+      ],
+      [
+       "No se puede usar porque es una entrada analógica.",
+       false
+      ],
+      [
+       "No se puede usar con WiFi porque es un pin ADC2.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Admite hasta unos 12 V para alimentar la placa sin USB.<br><b>b)</b> Sí. Por eso, si se trabaja siempre conectado al USB, conviene no usar VIN.<br><b>c)</b> No. VIN es un pin de alimentación.<br><b>d)</b> No. VIN no es un pin ADC.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un dispositivo debe recordar un umbral de temperatura configurado por el usuario, incluso después de un corte de luz. ¿Dónde conviene guardarlo?",
+     "op": [
+      [
+       "En la SRAM.",
+       false
+      ],
+      [
+       "En la EEPROM (memoria no volátil para datos).",
+       true
+      ],
+      [
+       "En el stack.",
+       false
+      ],
+      [
+       "En una variable local de <code>loop()</code>.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Es volátil: el valor se pierde al cortarse la energía.<br><b>b)</b> Sí. Está pensada justamente para datos y configuraciones que deben sobrevivir a reinicios. En la ESP32 se emula en una zona de la Flash, pero cumple la misma función.<br><b>c)</b> No. El stack es parte de la RAM y guarda variables locales temporales.<br><b>d)</b> No. Se pierde al terminar cada iteración y, por supuesto, al apagar.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Una variable global declarada como <code>int</code> total = 10; (con valor inicial explícito), ¿en qué segmento de memoria queda?",
+     "op": [
+      [
+       "text",
+       false
+      ],
+      [
+       "data",
+       true
+      ],
+      [
+       "BSS",
+       false
+      ],
+      [
+       "stack",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. El segmento text guarda las instrucciones del programa, no las variables.<br><b>b)</b> Sí. Guarda las globales y estáticas con valor inicial; al arrancar se copian de la memoria no volátil a la RAM.<br><b>c)</b> No. BSS es para globales y estáticas SIN inicializar, que se ponen en cero al arrancar.<br><b>d)</b> No. En el stack van las variables locales, no las globales.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre stack y heap, seleccione las correctas.",
+     "op": [
+      [
+       "El stack guarda direcciones de retorno, variables locales, registros salvados y el contexto de las interrupciones.",
+       true
+      ],
+      [
+       "El heap guarda datos asignados dinámicamente (malloc, new), cuyo tamaño o vida no se conoce al compilar.",
+       true
+      ],
+      [
+       "Un stack overflow puede sobrescribir direcciones de retorno y permitir ejecutar código arbitrario.",
+       true
+      ],
+      [
+       "Use-after-free y double free son riesgos típicos del stack.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Crece y decrece con las llamadas a funciones.<br><b>b)</b> Sí. Su tamaño y uso dependen de la aplicación.<br><b>c)</b> Sí. Por eso es una vulnerabilidad grave.<br><b>d)</b> No. Son riesgos del heap, junto con el heap overflow y la corrupción de metadatos del gestor de memoria.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Por qué los microcontroladores son especialmente vulnerables a los errores de memoria?",
+     "op": [
+      [
+       "Porque no tienen memoria RAM.",
+       false
+      ],
+      [
+       "Por la programación de bajo nivel en C/C++ y porque muchos no tienen protecciones como una MMU (Unidad de Gestión de Memoria).",
+       true
+      ],
+      [
+       "Porque usan WiFi.",
+       false
+      ],
+      [
+       "Porque la memoria Flash es volátil.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Sí tienen RAM (SRAM).<br><b>b)</b> Sí. Un error del programador puede corromper memoria sin que el hardware lo impida.<br><b>c)</b> No. El WiFi no causa errores de memoria.<br><b>d)</b> No. La Flash es no volátil.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La ESP32 puede ejecutar desde código bare-metal hasta un sistema operativo de tiempo real.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Por eso se la considera un puente entre los microcontroladores clásicos y los sistemas embebidos con Linux.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La ESP32 tiene una unidad DSP capaz de aplicar filtros digitales (pasa bajos, pasa altos, pasa banda) a las señales.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "El DSP (procesador digital de señales) permite procesar audio y señales de sensores de forma eficiente.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Los periféricos de comunicación de la ESP32 pueden asignarse a distintos pines gracias a la GPIO Matrix.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Es una de las características más flexibles del chip.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El pin 3V3 de la placa puede alimentar otros dispositivos con 3,3 V, con una corriente limitada.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "La corriente que puede dar es limitada (sale del mismo regulador que alimenta a la ESP32): hay que usarlo con precaución.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Arduino tiene una interfaz de entrada, para conectar periféricos que envían datos (cámaras, teclados, sensores), y una de salida, para llevar la información procesada a otros periféricos (pantallas, parlantes, otras placas).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "El microcontrolador procesa lo que recibe por la interfaz de entrada y entrega el resultado por la de salida.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El segmento BSS se inicializa en cero durante el arranque.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Contiene las variables globales y estáticas que no se inicializaron explícitamente, y reside en RAM.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El segmento de código (text) suele estar en Flash y ser de solo lectura durante la ejecución.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Por eso el programa se conserva aunque se corte la alimentación.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El stack y el heap residen en la memoria Flash.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Los dos residen en la RAM.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La fragmentación del heap puede generar inestabilidad y problemas de seguridad en un microcontrolador.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Con poca memoria, las asignaciones dinámicas descontroladas pueden agotar o corromper la RAM.",
      "practica": true
     }
    ]
@@ -1304,6 +2075,415 @@
       ]
      ],
      "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Un pulsador está conectado entre el pin y 3,3 V, con <code>pinMode(pin, INPUT_PULLDOWN)</code>. Seleccione las correctas.",
+     "op": [
+      [
+       "Sin presionar se lee LOW (0).",
+       true
+      ],
+      [
+       "Presionado se lee HIGH (1).",
+       true
+      ],
+      [
+       "Sin presionar, la lectura es flotante.",
+       false
+      ],
+      [
+       "Necesita obligatoriamente una resistencia externa.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. La resistencia pull-down mantiene el pin conectado a GND.<br><b>b)</b> Sí. Al cerrar el pulsador, el pin queda conectado a 3,3 V.<br><b>c)</b> No. Justamente el pull-down evita eso.<br><b>d)</b> No. La ESP32 tiene resistencias pull-up y pull-down internas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es la resolución en tensión (LSB) de un ADC de 12 bits con VREF = 3,3 V?",
+     "op": [
+      [
+       "≈ 3,2 mV",
+       false
+      ],
+      [
+       "≈ 0,8 mV",
+       true
+      ],
+      [
+       "≈ 12,9 mV",
+       false
+      ],
+      [
+       "≈ 3,3 mV",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Eso daría un ADC de 10 bits: 3,3 / 1024.<br><b>b)</b> Sí. 3,3 / 4096 ≈ 0,8 mV. Dos tensiones que difieren menos que eso son indistinguibles.<br><b>c)</b> No. Eso daría un ADC de 8 bits: 3,3 / 256.<br><b>d)</b> No. No corresponde a ninguna resolución estándar.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Con un ADC de 12 bits y 3,3 V, <code>analogRead()</code> devuelve 3000. ¿A qué tensión corresponde aproximadamente?",
+     "op": [
+      [
+       "1,65 V",
+       false
+      ],
+      [
+       "2,42 V",
+       true
+      ],
+      [
+       "2,80 V",
+       false
+      ],
+      [
+       "3,00 V",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. 1,65 V corresponde a una lectura de unos 2048 (mitad de escala).<br><b>b)</b> Sí. 3000 × 3,3 / 4095 ≈ 2,42 V.<br><b>c)</b> No. 2,8 V corresponde a una lectura de unos 3474.<br><b>d)</b> No. Confunde el valor de la lectura con volts.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre PWM, seleccione las correctas.",
+     "op": [
+      [
+       "Se varía el tiempo que la señal está en HIGH dentro de un período fijo.",
+       true
+      ],
+      [
+       "Es una onda cuadrada de frecuencia constante y ancho de pulso variable.",
+       true
+      ],
+      [
+       "Se varía el valor del voltaje de salida, como una señal analógica continua.",
+       false
+      ],
+      [
+       "En un motor, la inercia actúa como filtro pasa bajos y la velocidad resulta proporcional al duty cycle.",
+       true
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Ese porcentaje es el ciclo de trabajo (duty cycle).<br><b>b)</b> Sí. Lo único que cambia de un período a otro es el ancho del pulso en HIGH.<br><b>c)</b> No. El voltaje sigue siendo 0 o 3,3 V; lo que cambia es la energía promedio. PWM simula una salida analógica, pero no lo es.<br><b>d)</b> Sí. En un LED, en cambio, es el ojo humano el que promedia el brillo.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Con una alimentación de 5 V, se quiere una señal PWM equivalente a 1 V. ¿Qué duty cycle se necesita?",
+     "op": [
+      [
+       "20 %",
+       true
+      ],
+      [
+       "25 %",
+       false
+      ],
+      [
+       "50 %",
+       false
+      ],
+      [
+       "80 %",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. 1 / 5 = 0,2: la señal está en 5 V el 20 % del tiempo y en 0 V el 80 % restante.<br><b>b)</b> No. Con 25 % saldría 1,25 V.<br><b>c)</b> No. Con 50 % saldría 2,5 V.<br><b>d)</b> No. 80 % es el tiempo que la señal pasa en 0 V; como duty cycle daría 4 V.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En el acondicionamiento de señales, ¿qué técnica se usa para eliminar ruido?",
+     "op": [
+      [
+       "Filtro RC.",
+       true
+      ],
+      [
+       "Conversor de nivel lógico (level shifter).",
+       false
+      ],
+      [
+       "Amplificador operacional.",
+       false
+      ],
+      [
+       "Diodo de protección.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Atenúa las variaciones rápidas (ruido) de la señal.<br><b>b)</b> No. Sirve para conectar con seguridad lógicas de distinto voltaje.<br><b>c)</b> No. Sirve para amplificar señales débiles.<br><b>d)</b> No. Sirve para evitar sobretensiones.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué pares sensor → magnitud medida son correctos?",
+     "op": [
+      [
+       "BMP180 → presión barométrica.",
+       true
+      ],
+      [
+       "HC-SR04 → distancia, por el tiempo de retorno de un pulso ultrasónico.",
+       true
+      ],
+      [
+       "DS1307 → posición por GPS.",
+       false
+      ],
+      [
+       "MPU-6050 → aceleración y velocidad angular (acelerómetro y giroscopio).",
+       true
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Se usa para estimar altitud y en estaciones meteorológicas.<br><b>b)</b> Sí. Se usa en robótica para detectar obstáculos.<br><b>c)</b> No. El DS1307 es un RTC (reloj de tiempo real) que mantiene la fecha y la hora con el micro apagado.<br><b>d)</b> Sí. Sirve para estimar orientación, movimiento y vibraciones.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué necesita un sensor analógico para que el microcontrolador pueda leerlo?",
+     "op": [
+      [
+       "Un ADC (conversor analógico-digital).",
+       true
+      ],
+      [
+       "Un DAC.",
+       false
+      ],
+      [
+       "Una salida PWM.",
+       false
+      ],
+      [
+       "El periférico RMT.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Su salida es una tensión continua proporcional a la magnitud medida.<br><b>b)</b> No. El DAC hace la conversión inversa: de digital a analógico.<br><b>c)</b> No. PWM es una forma de salida, no de entrada.<br><b>d)</b> No. El RMT genera formas de onda precisas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Por qué los LEDs direccionables WS2812 (NeoPixel) se controlan con el periférico RMT de la ESP32?",
+     "op": [
+      [
+       "Porque necesitan WiFi.",
+       false
+      ],
+      [
+       "Porque requieren pulsos de unos 400 ns muy precisos; el RMT, con el reloj de 80 MHz (12,5 ns de resolución), puede generarlos y por software no sería confiable.",
+       true
+      ],
+      [
+       "Porque se leen con el ADC.",
+       false
+      ],
+      [
+       "Porque usan PWM de 8 bits.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. No usan WiFi.<br><b>b)</b> Sí. Cada LED recibe 24 bits: 8 de rojo, 8 de verde y 8 de azul, por una sola línea de datos.<br><b>c)</b> No. Son actuadores, no sensores.<br><b>d)</b> No. Se controlan con un flujo serie de datos, no con PWM.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En el ciclo Sensor – Controlador – Actuador, ¿cuál es el orden correcto?",
+     "op": [
+      [
+       "Acción → Percepción → Procesamiento.",
+       false
+      ],
+      [
+       "Percepción (sensor) → Procesamiento (controlador) → Acción (actuador), y el sensor vuelve a medir.",
+       true
+      ],
+      [
+       "Procesamiento → Acción → Percepción, sin retroalimentación.",
+       false
+      ],
+      [
+       "Percepción → Acción → Procesamiento.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. No se puede actuar antes de medir y decidir.<br><b>b)</b> Sí. Es un lazo cerrado: lo medido se retroalimenta al controlador para corregir el error respecto del valor deseado.<br><b>c)</b> No. Sin retroalimentación sería lazo abierto.<br><b>d)</b> No. Actúa antes de procesar: el controlador no tendría con qué decidir.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Con <code>INPUT_PULLUP</code> y un pulsador conectado a GND, el pin lee HIGH al presionar.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Con pull-up, el pin lee HIGH en reposo y LOW al presionar, porque el pulsador lo lleva a GND. Es una entrada «activa en bajo».",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un ADC de 10 bits puede representar 1024 valores, de 0 a 1023.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "2¹⁰ = 1024. Es el ADC del Arduino UNO; la ESP32 usa 12 bits (de 0 a 4095).",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Cuando se controla un LED con PWM, el brillo que se percibe es proporcional al duty cycle.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "El ojo humano promedia la energía luminosa de los pulsos.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Los sensores digitales entregan una salida ya procesada (por ejemplo, por I²C o SPI) y suelen ser más robustos frente al ruido que los analógicos.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Los analógicos entregan una tensión continua que necesita un ADC y es más sensible al ruido eléctrico.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un actuador convierte una magnitud física en una señal eléctrica.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Eso es un sensor. El actuador hace lo contrario: convierte una señal del controlador en una acción física (movimiento, luz, sonido o calor).",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El sensor DHT22 (temperatura y humedad) tiene salida analógica, por eso hay que conectarlo a un pin ADC.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "El DHT22 entrega una salida digital; no necesita una entrada analógica. Un potenciómetro, en cambio, sí va a un pin ADC.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un servomotor gira continuamente, como un motor común.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Gira hasta una posición angular específica (generalmente de 0 a 180°) y la mantiene. Por eso se usa en brazos robóticos y sistemas de dirección.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Un potenciómetro controla un relé. Con este código, ¿con qué lecturas del ADC se encienden el relé y el LED?",
+     "code": "analogReadResolution(12);\n...\nint lectura = analogRead(POT_PIN);\nfloat voltaje = (lectura * 3.3) / 4095;\nif (voltaje >= 2.8) {\n  digitalWrite(RELAY, HIGH);\n  digitalWrite(BLUE_LED, HIGH);\n  Serial.println(\"Circuito ENCENDIDO\");\n} else {\n  digitalWrite(RELAY, LOW);\n  digitalWrite(BLUE_LED, LOW);\n  Serial.println(\"Circuito APAGADO\");\n}",
+     "op": [
+      [
+       "lectura = 3400",
+       false
+      ],
+      [
+       "lectura = 3475",
+       true
+      ],
+      [
+       "lectura = 4095",
+       true
+      ],
+      [
+       "lectura = 2048",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. 3400 × 3,3 / 4095 ≈ 2,74 V, menos que 2,8: queda APAGADO.<br><b>b)</b> Sí. 3475 × 3,3 / 4095 ≈ 2,8004 V, apenas por encima de 2,8: se ENCIENDE. El umbral está en unas 3474 cuentas.<br><b>c)</b> Sí. Es el máximo del ADC: 3,3 V, así que se ENCIENDE.<br><b>d)</b> No. ≈ 1,65 V, mitad de escala: queda APAGADO.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El potenciómetro lee 2048 y ese valor se aplica al LED. ¿Con qué brillo aproximado queda?",
+     "code": "analogReadResolution(12);\nledcAttach(PIN_LED_INTERNO, 5000, 12);   // 5 kHz, 12 bits\n...\npwmInterno = analogRead(PIN_POT);\nledcWrite(PIN_LED_INTERNO, pwmInterno);",
+     "op": [
+      [
+       "Cerca del 50 % (duty cycle ≈ 2048 / 4095).",
+       true
+      ],
+      [
+       "Al 100 %, porque 2048 supera el máximo de 255.",
+       false
+      ],
+      [
+       "Al 12 %, porque son 12 bits.",
+       false
+      ],
+      [
+       "Apagado, porque ledcWrite solo acepta 0 o 1.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Con 12 bits, el duty va de 0 a 4095, así que 2048 es la mitad.<br><b>b)</b> No. Ese sería el máximo con 8 bits; acá el PWM está configurado en 12 bits.<br><b>c)</b> No. 12 es la resolución, no el porcentaje.<br><b>d)</b> No. Acepta cualquier valor dentro del rango de la resolución.",
+     "practica": true
     }
    ]
   },
@@ -1971,6 +3151,507 @@
      ],
      "ex": "<b>Serial.available()</b> dice cuántos caracteres llegaron y <b>Serial.read()</b> lee uno. El carácter se compara con <b>'1'</b> (entre comillas simples: el carácter), no con el número 1.",
      "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre las interrupciones por hardware, seleccione las correctas.",
+     "op": [
+      [
+       "Permiten responder de inmediato a un evento externo sin consultar constantemente el pin (polling).",
+       true
+      ],
+      [
+       "Cuando ocurre el evento, se suspende el programa y se ejecuta una ISR.",
+       true
+      ],
+      [
+       "La ISR debe ser breve y no bloqueante.",
+       true
+      ],
+      [
+       "Dentro de la ISR conviene usar <code>delay()</code> para filtrar el rebote del botón.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. El micro no gasta tiempo leyendo el pin una y otra vez.<br><b>b)</b> Sí. ISR = rutina de servicio de interrupción.<br><b>c)</b> Sí. Una ISR larga afecta la estabilidad de todo el sistema.<br><b>d)</b> No. <code>delay()</code> es bloqueante y no es seguro dentro de una interrupción.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué prototipos permiten que la función modifique el valor original de p1?",
+     "op": [
+      [
+       "<code>int myFunction(int &amp;p1, int p2)</code>",
+       true
+      ],
+      [
+       "<code>int myFunction(int *p1, int p2)</code>",
+       true
+      ],
+      [
+       "<code>int myFunction(int p1, int p2)</code>",
+       false
+      ],
+      [
+       "<code>int myFunction(const int p1, int p2)</code>",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Por referencia: con el operador &amp;, la modificación se mantiene al terminar la función.<br><b>b)</b> Sí. Con un puntero, que guarda la dirección de memoria de la variable.<br><b>c)</b> No. Por valor: se crea una copia local que se pierde al terminar la función.<br><b>d)</b> No. Es por valor y, además, constante.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En la ESP32, ¿cuál es la resolución por defecto de <code>analogRead()</code> y de <code>analogWrite()</code>?",
+     "op": [
+      [
+       "Lectura de 12 bits y escritura de 8 bits.",
+       true
+      ],
+      [
+       "Las dos de 12 bits.",
+       false
+      ],
+      [
+       "Las dos de 10 bits.",
+       false
+      ],
+      [
+       "Lectura de 8 bits y escritura de 12.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Por eso analogRead devuelve 0–4095 y analogWrite usa 0–255.<br><b>b)</b> No. La escritura es de 8 bits por defecto (se cambia con analogWriteResolution).<br><b>c)</b> No. 10 bits es el ADC de Arduino UNO.<br><b>d)</b> No. Están invertidas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En <code>char message[6] = \"hello\";</code>, ¿por qué el arreglo es de 6 si <code>\"hello\"</code> tiene 5 letras?",
+     "op": [
+      [
+       "Porque los arreglos en C empiezan en el índice 1.",
+       false
+      ],
+      [
+       "Porque las cadenas son arreglos de caracteres que terminan con el carácter nulo <code>'\\0'</code>, que ocupa una posición más.",
+       true
+      ],
+      [
+       "Porque siempre hay que dejar una posición libre por seguridad.",
+       false
+      ],
+      [
+       "Es un error: debería ser 5.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Empiezan en el índice 0.<br><b>b)</b> Sí. Así las funciones de cadena saben dónde termina el texto.<br><b>c)</b> No. La posición extra no es libre: la ocupa el terminador <code>'\\0'</code>.<br><b>d)</b> No. Con 5 no entraría el terminador.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Hay que guardar un valor entero sin signo entre 0 y 255. ¿Qué tipo de dato es el más adecuado?",
+     "op": [
+      [
+       "<code>byte</code>",
+       true
+      ],
+      [
+       "<code>char</code>",
+       false
+      ],
+      [
+       "<code>float</code>",
+       false
+      ],
+      [
+       "<code>long</code>",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Ocupa 8 bits y representa exactamente de 0 a 255.<br><b>b)</b> No. También es de 8 bits, pero está pensado para caracteres y en muchas placas tiene signo (−128 a 127).<br><b>c)</b> No. Es de 32 bits y de punto flotante: desperdicia memoria y es más lento.<br><b>d)</b> No. Es de 32 bits: alcanza, pero desperdicia memoria.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Para simular en Wokwi, desde VS Code, un proyecto de PlatformIO, ¿qué hace falta?",
+     "op": [
+      [
+       "Un archivo <code>diagram.json</code> con el circuito: componentes y conexiones.",
+       true
+      ],
+      [
+       "Un archivo <code>wokwi.toml</code> con las rutas al firmware compilado.",
+       true
+      ],
+      [
+       "Compilar el proyecto con PlatformIO antes de cada simulación.",
+       true
+      ],
+      [
+       "Conectar la placa física por USB.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Al abrirlo, VS Code muestra el editor gráfico del circuito.<br><b>b)</b> Sí. Indica dónde están <code>firmware.bin</code> y <code>firmware.elf</code>.<br><b>c)</b> Sí. Wokwi no compila: simula el binario que genera PlatformIO.<br><b>d)</b> No. El simulador permite probar código y circuito sin hardware.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En un proyecto de PlatformIO, ¿dónde se indican las librerías externas que usa el proyecto (por ejemplo, la del sensor DHT o la del display)?",
+     "op": [
+      [
+       "En <code>lib_deps</code>, dentro de <code>platformio.ini</code>.",
+       true
+      ],
+      [
+       "En <code>diagram.json</code>.",
+       false
+      ],
+      [
+       "En la carpeta <code>src/</code>.",
+       false
+      ],
+      [
+       "No se indican: se incluyen solas con el #include.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. PlatformIO las descarga e instala automáticamente al compilar.<br><b>b)</b> No. Ese archivo describe el circuito para Wokwi.<br><b>c)</b> No. Ahí va el código fuente (<code>main.cpp</code>); las librerías propias van en <code>lib/</code>.<br><b>d)</b> No. El #include no descarga nada; la librería tiene que estar instalada.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Las interrupciones por timer permiten ejecutar código periódico con más precisión que los retardos por software (delay).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Sirven para muestrear sensores, generar señales o hacer control en tiempo real.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Conviene declarar como <code>float</code> cualquier variable numérica, aunque solo vaya a guardar números enteros.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Las operaciones de punto flotante consumen más recursos que las enteras; en microcontroladores sin unidad de punto flotante, como el del Arduino UNO, se resuelven por software. Conviene usar float solo cuando hacen falta decimales.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En C/C++, el punto y coma separa instrucciones y las llaves { } agrupan instrucciones en un bloque.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Es la sintaxis básica del lenguaje.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "<code>Serial.println()</code> imprime el dato seguido de un retorno de carro (<code>'\\r'</code>) y un salto de línea (<code>'\\n'</code>).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "<code>Serial.print()</code> no agrega esos caracteres.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La configuración por defecto de <code>Serial.begin()</code> es 8 bits de datos, sin paridad y un bit de parada (8N1).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Se puede cambiar con un segundo argumento: <code>Serial.begin(velocidad, config)</code>.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Al usar librerías de terceros conviene entender qué hacen internamente y cómo manejan los errores.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Una dependencia que no se entiende puede introducir vulnerabilidades o comportamientos inesperados.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En C/C++, el primer elemento de un arreglo tiene el índice 1.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "El primer elemento tiene el índice 0. Un arreglo de 5 elementos va de nombre[0] a nombre[4].",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Arduino IDE 2.x incorpora autocompletado y depurador (debugger).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Son dos de las mejoras respecto de la versión 1.x. Otra alternativa es VS Code con PlatformIO.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En un proyecto de PlatformIO, las librerías propias (por ejemplo, una clase SensorDHT) se ubican en la carpeta <code>lib/</code>.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "El código principal va en <code>src/</code><code>main.cpp</code> y la configuración en <code>platformio.ini</code>.",
+     "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Ordene los fragmentos para obtener un sketch que haga parpadear un LED conectado al GPIO 26.",
+     "huecos": [
+      "#include <Arduino.h>",
+      "const short PIN_LED = 26;",
+      "void setup() {\n  Serial.begin(9600);",
+      "  pinMode(PIN_LED, OUTPUT);\n  Serial.println(\"Primer proyecto IoT iniciado\");\n}",
+      "void loop() {",
+      "  digitalWrite(PIN_LED, HIGH);\n  delay(500);",
+      "  digitalWrite(PIN_LED, LOW);\n  delay(500);\n}"
+     ],
+     "fichas": [],
+     "ex": "E va primero: los #include son lo primero del archivo.<br>C: las constantes globales van después de los includes y antes de las funciones que las usan.<br>F → D: <code>setup()</code> se ejecuta una sola vez. Primero <code>Serial.begin()</code> y después <code>pinMode()</code> y el println, porque no se puede imprimir antes de iniciar el puerto serie. D cierra el setup.<br>B → G → A: <code>loop()</code> se repite infinitamente. Primero se enciende (HIGH) y espera, después se apaga (LOW) y espera. A cierra el loop.",
+     "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Ordene el archivo de cabecera <code>SensorDHT.h</code> de una clase que encapsula un sensor DHT.",
+     "huecos": [
+      "#ifndef SENSOR_DHT_H",
+      "#define SENSOR_DHT_H",
+      "#include <Arduino.h>\n#include <DHT.h>",
+      "class SensorDHT {\n  public:\n    SensorDHT(short pin, float tMin);\n    float temperatura();\n    float humedad();\n    boolean validarTemperaturaMin();\n  private:\n    DHT sensor;\n    float tempMinima;\n};",
+      "#endif"
+     ],
+     "fichas": [],
+     "ex": "B, D y A forman la guarda de inclusión: si <code>SENSOR_DHT_H</code> no está definido, se define y se incluye el contenido; así el archivo no se procesa dos veces.<br>E: los includes que necesita la clase (DHT se usa como atributo privado).<br>C: en el .h solo va la declaración. La implementación (float SensorDHT::<code>temperatura()</code> {... }) va en <code>SensorDHT.cpp</code>, que hace #include <code>\"SensorDHT.h\"</code>. En <code>main.cpp</code> se incluye con comillas (#include <code>\"SensorDHT.h\"</code>) porque es una librería propia, ubicada en <code>lib/SensorDHT/</code>.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El monitor serie envía ON seguido de <code>\\r\\n</code>. Si se BORRA la línea <code>cmd.trim();</code>, ¿qué pasa?",
+     "code": "if (Serial.available() != 0) {\n  String cmd = Serial.readStringUntil('\\n');\n  cmd.trim();\n  if (cmd == \"ON\" || cmd == \"on\") {\n    digitalWrite(RELAY, HIGH);\n  } else if (cmd == \"OFF\" || cmd == \"off\") {\n    digitalWrite(RELAY, LOW);\n  }\n}",
+     "op": [
+      [
+       "Enciende igual, porque readStringUntil descarta el <code>\\r</code>.",
+       false
+      ],
+      [
+       "No enciende: cmd vale <code>\"ON\\r\"</code>, que no es igual a <code>\"ON\"</code>.",
+       true
+      ],
+      [
+       "Da error de compilación.",
+       false
+      ],
+      [
+       "Enciende y apaga alternadamente.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Solo descarta el carácter delimitador (<code>\\n</code>); el <code>\\r</code> queda dentro del String.<br><b>b)</b> Sí. Por eso se usa <code>trim()</code>, que quita espacios y caracteres ocultos como <code>\\r</code>. Lo mismo pasa en el callback MQTT.<br><b>c)</b> No. El código compila igual; es un error de lógica.<br><b>d)</b> No. No hay nada que alterne.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El usuario mantiene presionado el pulsador del encoder durante 3 segundos. ¿Qué hace el LED?",
+     "code": "pinMode(PIN_SW, INPUT_PULLUP);\n...\nvoid loop() {\n  ant = n;\n  n = enc.getCount() * (-1);\n  if (n > ant) sentido = true;\n  else if (n < ant) sentido = false;\n  if (digitalRead(PIN_SW) == LOW) {\n    led = !digitalRead(LED);\n    digitalWrite(LED, led);\n  }\n  updateOled(n, sentido, led);\n  delay(1000);\n}",
+     "op": [
+      [
+       "Cambia de estado una sola vez.",
+       false
+      ],
+      [
+       "Cambia de estado en cada vuelta del loop mientras el botón está apretado: unas 3 veces, una por segundo.",
+       true
+      ],
+      [
+       "No cambia, porque con <code>INPUT_PULLUP</code> el botón apretado se lee HIGH.",
+       false
+      ],
+      [
+       "Se enciende y queda encendido.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. El código no detecta el flanco (el momento en que se aprieta), solo el nivel LOW.<br><b>b)</b> Sí. Cada vuelta dura cerca de 1 s por el <code>delay(1000)</code>, y en cada una el pin está en LOW. Para cambiarlo una sola vez habría que comparar con el estado anterior (detección de flanco).<br><b>c)</b> No. Con pull-up, apretado se lee LOW.<br><b>d)</b> No. !<code>digitalRead(LED)</code> invierte el estado en cada vuelta.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre este código, seleccione las afirmaciones correctas.",
+     "code": "const int buttonPin = 15;\nvolatile int contador = 0; // volatile porque se modifica en una ISR\nvoid IRAM_ATTR onButtonPress() {\n  contador++;               // Rutina de interrupción (ISR)\n}\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(buttonPin, INPUT_PULLUP);\n  attachInterrupt(digitalPinToInterrupt(buttonPin), onButtonPress, FALLING);\n  Serial.println(\"Interrupción configurada\");\n}",
+     "op": [
+      [
+       "contador es <code>volatile</code> porque lo modifica la ISR fuera del flujo normal del programa.",
+       true
+      ],
+      [
+       "FALLING dispara la ISR cuando el pin pasa de HIGH a LOW, que con <code>INPUT_PULLUP</code> es el momento de apretar el botón.",
+       true
+      ],
+      [
+       "La ISR está bien diseñada: es corta y no bloqueante.",
+       true
+      ],
+      [
+       "<code>attachInterrupt()</code> tiene que llamarse en cada vuelta del loop.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Así el compilador lo vuelve a leer de memoria cada vez, en lugar de usar una copia guardada.<br><b>b)</b> Sí. FALLING es el flanco descendente. Con pull-up, el pin está en HIGH en reposo y baja a LOW al apretar.<br><b>c)</b> Sí. Solo incrementa una variable: no usa delay ni Serial.<br><b>d)</b> No. Se configura una vez, en el setup; a partir de ahí el hardware dispara la ISR solo.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué hace el LED con este código?",
+     "code": "hw_timer_t *timer = NULL;\n#define LED_BUILTIN 2\nvoid IRAM_ATTR onTimer() {\n  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));\n}\nvoid setup() {\n  pinMode(LED_BUILTIN, OUTPUT);\n  digitalWrite(LED_BUILTIN, HIGH);\n  timer = timerBegin(1000000);          // 1 MHz: 1 tick = 1 µs\n  timerAttachInterrupt(timer, &onTimer);\n  timerAlarm(timer, 500000, true, 0);   // cada 500000 µs\n}\nvoid loop() { }",
+     "op": [
+      [
+       "Cambia de estado cada 500 ms: 0,5 s encendido y 0,5 s apagado (período de 1 s).",
+       true
+      ],
+      [
+       "Cambia cada 5 segundos.",
+       false
+      ],
+      [
+       "Cambia cada 1 µs.",
+       false
+      ],
+      [
+       "Cambia una sola vez, porque el loop está vacío.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. 500 000 ticks × 1 µs = 0,5 s. El true hace que la alarma se repita, y la ISR invierte el LED cada vez.<br><b>b)</b> No. 500 000 µs son 0,5 s, no 5 s.<br><b>c)</b> No. 1 µs es lo que dura un tick, no el intervalo de la alarma.<br><b>d)</b> No. No depende del loop: lo dispara el timer por hardware, y el true indica recarga automática.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Con <code>analogReadResolution(8)</code>, el potenciómetro da pote = 128. ¿Qué porcentaje imprime?",
+     "code": "int pote = analogRead(PIN_POT);\nSerial.printf(\"Valor del pote: %d%%\\n\", map(pote, 0, 255, 0, 100));",
+     "op": [
+      [
+       "50 %",
+       true
+      ],
+      [
+       "128 %",
+       false
+      ],
+      [
+       "12 %",
+       false
+      ],
+      [
+       "3 %",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. <code>map(128, 0, 255, 0, 100)</code> = 128 × 100 / 255 ≈ 50,2; como map trabaja con enteros, devuelve 50.<br><b>b)</b> No. Ese es el valor sin mapear.<br><b>c)</b> No. No sale de ninguna cuenta del código.<br><b>d)</b> No. Sería tomar 128 sobre 4095, pero la resolución está en 8 bits (0–255).",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Por qué estadoPulsadorAnterior se declara static?",
+     "code": "void leerEstadoPulsador() {\n  static bool estadoPulsadorAnterior = true;\n  bool estadoPulsador = digitalRead(PIN_PULS);\n  if (estadoPulsador != estadoPulsadorAnterior) {\n    if (!estadoPulsador) Serial.println(\"Pulsador presionado\");\n    else                 Serial.println(\"Pulsador liberado\");\n    estadoPulsadorAnterior = estadoPulsador;\n  }\n}",
+     "op": [
+      [
+       "Para que sea constante y no se pueda modificar.",
+       false
+      ],
+      [
+       "Para que conserve su valor entre llamadas a la función: se inicializa una sola vez y se puede comparar con la lectura anterior.",
+       true
+      ],
+      [
+       "Para que la ISR pueda modificarla.",
+       false
+      ],
+      [
+       "Para guardarla en la EEPROM.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Eso sería <code>const</code>; esta variable se modifica.<br><b>b)</b> Sí. Sin <code>static</code>, valdría true en cada llamada y no se podrían detectar los cambios de estado.<br><b>c)</b> No. Para eso se usa <code>volatile</code>; acá no hay ISR.<br><b>d)</b> No. static no la guarda en EEPROM.",
+     "practica": true
     }
    ]
   },
@@ -2289,6 +3970,171 @@
       ]
      ],
      "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "En SPI, ¿cuántos pines se necesitan para conectar N esclavos?",
+     "op": [
+      [
+       "2",
+       false
+      ],
+      [
+       "Siempre 4, sin importar N.",
+       false
+      ],
+      [
+       "3 + N (MOSI, MISO, SCLK y una línea CS por esclavo).",
+       true
+      ],
+      [
+       "2 × N",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Eso es I²C.<br><b>b)</b> No. Cada esclavo necesita su propia línea CS.<br><b>c)</b> Sí. Es la principal limitación de SPI.<br><b>d)</b> No. No corresponde a la estructura del bus.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Hay que conectar varios sensores y un display usando la menor cantidad de pines posible. ¿Qué protocolo conviene?",
+     "op": [
+      [
+       "UART",
+       false
+      ],
+      [
+       "I²C",
+       true
+      ],
+      [
+       "SPI",
+       false
+      ],
+      [
+       "TCP/IP",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Es punto a punto, solo entre dos dispositivos.<br><b>b)</b> Sí. Usa 2 pines para todos los dispositivos, que se distinguen por dirección. Un display OLED típico usa la dirección 0x3C.<br><b>c)</b> No. Es más rápido, pero necesita 3 + N pines.<br><b>d)</b> No. Es comunicación en red, no un bus para periféricos.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Para qué se usa la interfaz I²S de la ESP32?",
+     "op": [
+      [
+       "Para transmitir audio digital entre dispositivos (micrófonos, DAC, ADC, parlantes).",
+       true
+      ],
+      [
+       "Para conectar sensores de temperatura.",
+       false
+      ],
+      [
+       "Para el WiFi.",
+       false
+      ],
+      [
+       "Para programar la placa por USB.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. I²S = Inter-IC Sound.<br><b>b)</b> No. Para eso se suele usar I²C, con la que es fácil confundirla.<br><b>c)</b> No. No tiene relación con el WiFi.<br><b>d)</b> No. Para eso está el conversor USB-UART.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Para comunicarse, dos dispositivos deben acordar la velocidad y los niveles de tensión que representan un 1 y un 0.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Es la base de cualquier protocolo de comunicación.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un RTC como el DS1307 se conecta por I²C y mantiene la hora aunque la ESP32 esté apagada.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Otros usos típicos de I²C: sensores y expansores de puertos (PCF8574 de 8 bits, PCF8575 de 16 bits).",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "SPI es full-duplex y más rápido que I²C, por eso se prefiere para pantallas gráficas y tarjetas de memoria.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Su desventaja es la cantidad de pines: 3 + N para N esclavos.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La ESP32 tiene hardware dedicado para la comunicación serie, SPI e I²C, que libera al procesador mientras se envían los datos.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "El procesador delega la transmisión al periférico y sigue con otras tareas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La OLED está bien conectada y <code>display.begin(0x3c, true)</code> funciona, pero la pantalla no muestra nada. ¿Por qué?",
+     "code": "void updateOLED(float t, float h) {\n  display.clearDisplay();\n  display.setCursor(0, 0);\n  display.printf(\"Temp: %.2f C\\n\", t);\n  display.printf(\"Hum: %.2f %%\\n\", h);\n}",
+     "op": [
+      [
+       "Falta <code>display.display()</code> al final.",
+       true
+      ],
+      [
+       "Falta <code>Wire.begin()</code> dentro de la función.",
+       false
+      ],
+      [
+       "No se puede usar printf en un display.",
+       false
+      ],
+      [
+       "<code>clearDisplay()</code> borra lo que se escribe después.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Las funciones de dibujo escriben en un búfer en memoria; <code>display()</code> es la que vuelca ese búfer a la pantalla. El orden correcto es clearDisplay → setCursor → print/printf → display.<br><b>b)</b> No. La inicialización del bus se hace una vez, al iniciar el display, no en cada actualización.<br><b>c)</b> No. La librería Adafruit GFX sí soporta printf.<br><b>d)</b> No. Borra el búfer antes de escribir, así el texto nuevo no se superpone con el viejo.",
+     "practica": true
     }
    ]
   },
@@ -2546,6 +4392,675 @@
       ]
      ],
      "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué caracteriza a WebSockets?",
+     "op": [
+      [
+       "Abre una conexión nueva por cada mensaje, como HTTP.",
+       false
+      ],
+      [
+       "Mantiene una única conexión TCP persistente, por la que cliente y servidor envían datos en cualquier momento.",
+       true
+      ],
+      [
+       "Funciona sobre UDP.",
+       false
+      ],
+      [
+       "Es un protocolo de Bluetooth.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Es justamente lo contrario.<br><b>b)</b> Sí. Es bidireccional y en tiempo real: sirve para paneles de control interactivos y notificaciones.<br><b>c)</b> No. Funciona sobre TCP.<br><b>d)</b> No. No tiene relación con Bluetooth.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué caracteriza a Bluetooth Clásico (BR/EDR)?",
+     "op": [
+      [
+       "Está pensado para un flujo de datos continuo y con más ancho de banda que BLE, como audio o transferencia de archivos.",
+       true
+      ],
+      [
+       "Su red básica se llama piconet: un dispositivo maestro conectado a uno o varios esclavos.",
+       true
+      ],
+      [
+       "Cada dispositivo tiene una dirección física única de 48 bits (<code>BD_ADDR</code>).",
+       true
+      ],
+      [
+       "Está diseñado para que un sensor funcione meses o años con una batería pequeña.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Por ejemplo, auriculares o parlantes inalámbricos.<br><b>b)</b> Sí. El maestro coordina la comunicación con los esclavos.<br><b>c)</b> Sí. Lo identifica de forma inequívoca dentro de la red.<br><b>d)</b> No. Eso es BLE. Bluetooth Clásico consume más energía.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un sensor de temperatura a batería tiene que durar varios meses y mandar una lectura cada tanto a un celular cercano. ¿Qué tecnología conviene?",
+     "op": [
+      [
+       "Bluetooth Clásico.",
+       false
+      ],
+      [
+       "Bluetooth Low Energy (BLE).",
+       true
+      ],
+      [
+       "WiFi con TCP manteniendo una conexión abierta todo el tiempo.",
+       false
+      ],
+      [
+       "SPI.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Consume más energía; está pensado para flujos continuos como el audio.<br><b>b)</b> Sí. Está diseñado para consumo ultra bajo: el sensor actúa como periférico y el celular como central.<br><b>c)</b> No. Mantener WiFi y TCP activos consume mucha energía y recursos.<br><b>d)</b> No. Es un bus cableado para periféricos cercanos, no una comunicación inalámbrica con un celular.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Para que la ESP32 levante un servidor web o se conecte a una API REST en la nube, se usa TCP/IP. ¿Cuál es su principal desventaja en un microcontrolador?",
+     "op": [
+      [
+       "No es confiable: puede perder datos sin avisar.",
+       false
+      ],
+      [
+       "La alta sobrecarga del protocolo y el consumo de memoria y CPU.",
+       true
+      ],
+      [
+       "Solo funciona por cable Ethernet.",
+       false
+      ],
+      [
+       "No permite comunicarse con Internet.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. TCP garantiza entrega ordenada y sin errores; perder datos es una característica de UDP.<br><b>b)</b> Sí. Mantener conexiones, búferes y retransmisiones es costoso para un dispositivo con pocos recursos. A cambio, es fiable, estándar y base de los protocolos de alto nivel.<br><b>c)</b> No. Funciona igual sobre WiFi.<br><b>d)</b> No. Es justamente la base de Internet.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "En una arquitectura REST, ¿qué roles puede cumplir la ESP32?",
+     "op": [
+      [
+       "Cliente: consulta una API externa, por ejemplo para obtener datos meteorológicos.",
+       true
+      ],
+      [
+       "Servidor: expone sus propias funciones, por ejemplo la lectura de un sensor o el encendido de un LED, a través de una API.",
+       true
+      ],
+      [
+       "Broker: recibe mensajes y los reenvía a los suscriptores.",
+       false
+      ],
+      [
+       "Ninguno: REST solo funciona en servidores de la nube.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Hace un pedido HTTP (por ejemplo, GET) a un servidor externo y procesa la respuesta.<br><b>b)</b> Sí. Es lo que hace un sketch con endpoints como /api/LedON.<br><b>c)</b> No. Ese rol es propio de MQTT, no de REST.<br><b>d)</b> No. La ESP32 puede ser cliente o servidor HTTP gracias a su pila TCP/IP.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre ThingSpeak, seleccione las correctas.",
+     "op": [
+      [
+       "Es una plataforma open source con una API para guardar y leer datos por HTTP, por Internet o en red local.",
+       true
+      ],
+      [
+       "Permite analizar los datos con MATLAB.",
+       true
+      ],
+      [
+       "Cada canal tiene 8 campos de datos, más 3 de ubicación y 1 de estado.",
+       true
+      ],
+      [
+       "Para escribir en un canal alcanza con la Read API Key.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Se escribe y se lee con pedidos HTTP a su API.<br><b>b)</b> Sí. También permite definir reglas que disparan acciones según los valores recibidos.<br><b>c)</b> Sí. Cada envío agrega una fila con fecha y hora en el canal.<br><b>d)</b> No. Para escribir se necesita la Write API Key (junto con el Channel ID del canal). La Read API Key solo sirve para leer canales privados.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre Arduino IoT Cloud, seleccione las correctas.",
+     "op": [
+      [
+       "«Dispositivo» es el microcontrolador; la ESP32 se agrega como dispositivo de terceros (compatible).",
+       true
+      ],
+      [
+       "Un Thing representa los sensores y actuadores, y se monitorea o controla mediante variables.",
+       true
+      ],
+      [
+       "La Secret Key se puede volver a consultar en cualquier momento desde la web.",
+       false
+      ],
+      [
+       "El dashboard se arma con widgets (gráficos, switches, medidores) vinculados a las variables del Thing.",
+       true
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Al crearlo se obtienen un Device ID y una Secret Key.<br><b>b)</b> Sí. Por ejemplo, una variable bool led vinculada a un switch del dashboard.<br><b>c)</b> No. No se puede recuperar: hay que guardarla (o descargar el PDF) cuando se genera.<br><b>d)</b> Sí. Desde el dashboard se visualizan datos y se envían órdenes al dispositivo.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre MQTT, seleccione las correctas.",
+     "op": [
+      [
+       "Usa el modelo publicador/suscriptor.",
+       true
+      ],
+      [
+       "El broker filtra los mensajes por tema (topic) y los reenvía solo a los suscriptores de ese tema.",
+       true
+      ],
+      [
+       "El publicador tiene que saber qué clientes recibirán el mensaje.",
+       false
+      ],
+      [
+       "Con <code>hogar/sala/+</code> un cliente se suscribe a todos los sensores de la sala.",
+       true
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. A diferencia del modelo solicitud-respuesta, desacopla a quien produce de quien consume.<br><b>b)</b> Sí. Así cada dispositivo recibe solo la información que le interesa.<br><b>c)</b> No. Publica sin saber quién (ni si alguien) lo recibirá.<br><b>d)</b> Sí. El comodín + reemplaza un nivel del topic; # reemplaza todos los niveles siguientes.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué es Mosquitto?",
+     "op": [
+      [
+       "Una aplicación de escritorio con interfaz gráfica para ver topics.",
+       false
+      ],
+      [
+       "Un broker MQTT de código abierto, sin interfaz gráfica, que corre como servicio en segundo plano.",
+       true
+      ],
+      [
+       "Una librería de Arduino para MQTT.",
+       false
+      ],
+      [
+       "Un tipo de topic especial.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Eso es MQTT Explorer, que es un cliente.<br><b>b)</b> Sí. Usa el puerto 1883 sin cifrado y el 8883 con TLS/SSL.<br><b>c)</b> No. Una librería cliente para Arduino es, por ejemplo, PubSubClient.<br><b>d)</b> No. El topic especial es <code>$SYS</code>, donde el broker publica su propio estado.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Por qué se usa JSON para estructurar los datos (payload) que envía un dispositivo IoT?",
+     "op": [
+      [
+       "Es un formato liviano, basado en texto.",
+       true
+      ],
+      [
+       "Es legible tanto para personas como para máquinas.",
+       true
+      ],
+      [
+       "Es el formato que esperan muchas plataformas y APIs, lo que facilita la integración.",
+       true
+      ],
+      [
+       "Es un formato binario cifrado que garantiza la seguridad.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Ocupa poco y es fácil de generar en un microcontrolador.<br><b>b)</b> Sí. Facilita depurar y procesar los datos.<br><b>c)</b> Sí. Por ejemplo: {<code>\"presion\"</code>: 1013.25, <code>\"temperatura\"</code>: 22.5}.<br><b>d)</b> No. JSON es texto plano; la seguridad la aporta, por ejemplo, TLS.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un BMP180 conectado por I²C mide presión y temperatura, y la ESP32 debe publicarlas en un broker. ¿Cuál es la secuencia correcta?",
+     "op": [
+      [
+       "Leer el sensor por I²C → armar un JSON con los valores → publicarlo por MQTT en un topic (por ejemplo, <code>sensores/BMP180/datos</code>) usando la conexión WiFi.",
+       true
+      ],
+      [
+       "Publicar en el broker → leer el sensor → armar el JSON.",
+       false
+      ],
+      [
+       "Leer el sensor por SPI → enviarlo por UART al broker.",
+       false
+      ],
+      [
+       "Armar el JSON → conectarse al broker por Bluetooth → leer el sensor.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. El I²C trae el dato del sensor, JSON le da formato y MQTT lo transporta hasta el broker.<br><b>b)</b> No. No se puede publicar un dato que todavía no se leyó.<br><b>c)</b> No. El BMP180 se conecta por I²C, y el broker se alcanza por red (TCP/IP), no por UART.<br><b>d)</b> No. El orden está invertido, y la conexión con el broker es por WiFi/TCP/IP.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "REST es un protocolo de transporte, como TCP.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "REST (Representational State Transfer) es un estilo de arquitectura de software construido sobre HTTP, en la capa de aplicación.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La ESP32 puede funcionar como nodo de una red IP gracias a la pila lwIP (Lightweight IP).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Esto le permite ser servidor web, cliente de APIs REST o usar WebSockets.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En BLE, el dispositivo central es el que emite los paquetes de anuncio (advertising).",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "El que anuncia es el periférico; el central escanea el entorno para descubrirlo.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En BLE, el periférico actúa como cliente GATT y el central como servidor.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Es al revés: el periférico (por ejemplo, un sensor) es el servidor GATT que aloja los datos, y el central (por ejemplo, un celular) es el cliente que los consume.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "HTTP/REST y WebSockets son protocolos de aplicación que funcionan sobre TCP/IP.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "TCP/IP aporta el transporte; HTTP define pedidos y respuestas, y WebSockets mantiene un canal bidireccional persistente.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Para usar WiFi en la ESP32 hay que instalar aparte la librería <code>WiFi.h</code>.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Viene incluida con el soporte de la placa; solo hay que agregar <code>#include &lt;WiFi.h&gt;</code>.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El WiFi de la ESP32 trabaja en la banda de 2,4 GHz (802.11 b/g/n).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Por eso no se conecta a redes de 5 GHz. También trae Bluetooth 4.2 y BLE.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Una plataforma IoT reduce el costo y el tiempo de desarrollo, porque ya resuelve la infraestructura (transporte, almacenamiento, visualización).",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "El equipo se puede concentrar en las funciones propias del producto.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Como el broker es un punto crítico, en producción conviene darle alta disponibilidad y tolerancia a fallos.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Si el broker cae, ningún cliente puede comunicarse.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Si en MQTT Explorer aparece el topic <code>$SYS</code>, el broker Mosquitto está funcionando.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "<code>$SYS</code> es el topic especial donde Mosquitto publica su propio estado.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Para que una ESP32 use un broker Mosquitto instalado en la PC, la ESP32 y la PC tienen que estar en la misma red.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Además, Mosquitto tiene que aceptar conexiones externas y el firewall tiene que permitir el puerto 1883.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Dos clientes pueden conectarse al mismo broker con el mismo Client ID sin problemas.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "El Client ID tiene que ser único; si se repite, el broker desconecta a uno de los clientes. Por eso la ESP32 suele armarlo con su dirección MAC.",
+     "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Ordene los fragmentos de un sketch que recibe comandos por MQTT. Las funciones <code>callback()</code> y <code>reconnect()</code> ya están definidas antes del <code>setup()</code>.",
+     "huecos": [
+      "#include <WiFi.h>\n#include <PubSubClient.h>",
+      "WiFiClient espClient;",
+      "PubSubClient client(espClient);",
+      "void setup() {\n  Serial.begin(115200);\n  pinMode(23, OUTPUT);\n  digitalWrite(23, LOW);",
+      "  WiFi.begin(ssid, password);",
+      "  while (WiFi.status() != WL_CONNECTED) {\n    delay(500); Serial.print(\".\");\n  }",
+      "  client.setServer(serverMQTT, 1883);\n  client.setCallback(callback);\n}",
+      "void loop() {\n  if (!client.connected()) reconnect();\n  client.loop();\n}"
+     ],
+     "fichas": [],
+     "ex": "E: primero las librerías (WiFi para la red y PubSubClient para MQTT). B antes que C: PubSubClient <code>client(espClient)</code> recibe como parámetro el cliente TCP, así que espClient tiene que existir antes.<br>H → G → F: en el setup, primero el puerto serie y los pines; después <code>WiFi.begin()</code>, y recién entonces el while que espera la conexión. El while no puede ir antes del begin porque esperaría para siempre.<br>A: setServer y setCallback configuran el broker y la función receptora, pero no conectan todavía; la conexión se hace en <code>reconnect()</code>.<br>D: en el loop, si se perdió la sesión se reconecta, y <code>client.loop()</code> procesa los mensajes entrantes y ejecuta el callback.",
+     "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Ordene el cuerpo de la función <code>reconnect()</code>, que reconecta la ESP32 al broker.",
+     "huecos": [
+      "  while (!client.connected()) {",
+      "    String clientId = \"ESP32Client-\" + WiFi.macAddress();",
+      "    if (client.connect(clientId.c_str())) {",
+      "    client.subscribe(\"test/command\");",
+      "    } else {\n      Serial.print(client.state());\n      delay(5000);\n    }\n  }"
+     ],
+     "fichas": [],
+     "ex": "C: se reintenta mientras no haya conexión con el broker.<br>B: antes de conectar hace falta un Client ID único, que se arma con la MAC de la placa.<br>D: <code>connect()</code> pide una cadena estilo C, por eso se usa <code>.c_str()</code>.<br>A: suscribirse solo tiene sentido después de conectar, y se repite en cada reconexión porque no se puede asumir que la suscripción se conserva.<br>E: si falla, muestra el código de estado (por ejemplo, rc=-2) y espera 5 segundos antes de reintentar.",
+     "practica": true
+    },
+    {
+     "tipo": "armar",
+     "en": "Un servidor web en la ESP32 responde a un navegador. Ordene las líneas que envía <code>sendResponse()</code>.",
+     "huecos": [
+      "client.println(\"HTTP/1.1 200 OK\");",
+      "client.println(\"Content-Type: application/json\");",
+      "client.println(\"Connection: close\");",
+      "client.println(\"\");",
+      "client.print(\"{\\\"status\\\": \\\"200 OK\\\", \\\"PIN\\\":\" + res + \"}\");"
+     ],
+     "fichas": [],
+     "ex": "C: una respuesta HTTP empieza siempre con la línea de estado (versión + código).<br>B y E: son cabeceras; entre ellas el orden no importa.<br>D: la línea vacía marca el fin de las cabeceras. Sin ella, el navegador no sabe dónde empieza el cuerpo.<br>A: el cuerpo, en este caso un JSON.",
+     "practica": true,
+     "libres": [
+      [
+       1,
+       2
+      ]
+     ]
+    },
+    {
+     "tipo": "una",
+     "en": "Dentro del while que lee el request, ¿qué detecta la condición marcada?",
+     "code": "char c = client.read();\nheader += c;\nif (c == '\\n') {\n  if (line.length() == 0) {        // <-- esta\n    if (header.indexOf(\"GET /api/LedON\") >= 0) { ... }\n    ...\n    break;\n  } else {\n    line = \"\";\n  }\n} else if (c != '\\r') {\n  line += c;\n}",
+     "op": [
+      [
+       "Que el cliente se desconectó.",
+       false
+      ],
+      [
+       "Una línea vacía, que marca el fin de las cabeceras del request HTTP; recién ahí se busca el endpoint y se responde.",
+       true
+      ],
+      [
+       "Que la URL pedida no existe.",
+       false
+      ],
+      [
+       "Que llegó un <code>\\r</code>.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. Eso lo indica <code>client.connected()</code>.<br><b>b)</b> Sí. Cuando llega <code>\\n</code> y la línea actual no tiene caracteres, la línea estaba en blanco. Después del break va <code>client.stop()</code>, que cierra la conexión TCP.<br><b>c)</b> No. Eso se resuelve en el else que responde con -1.<br><b>d)</b> No. Los <code>\\r</code> se ignoran en el else if.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre este servidor REST, seleccione las afirmaciones correctas.",
+     "code": "WebServer server(80);\n...\nvoid setup() {\n  ...  // conexión WiFi\n  server.on(\"/api/LedON\",  HTTP_GET, [](){ handleLed(true); });\n  server.on(\"/api/LedOFF\", HTTP_GET, [](){ handleLed(false); });\n  server.onNotFound(handleNotFound);\n  server.begin();\n}\nvoid loop() {\n  server.handleClient();\n}",
+     "op": [
+      [
+       "Si se borra <code>server.handleClient()</code>, el servidor nunca atiende las solicitudes.",
+       true
+      ],
+      [
+       "Un GET a /api/otra lo atiende handleNotFound.",
+       true
+      ],
+      [
+       "Los <code>server.on()</code> tienen que repetirse dentro del loop.",
+       false
+      ],
+      [
+       "Desde el navegador se prueba con http://&lt;IP de la placa&gt;/api/LedON.",
+       true
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Esa llamada es la que procesa las conexiones entrantes en cada vuelta del loop.<br><b>b)</b> Sí. Lo resuelve handleNotFound, registrado con onNotFound.<br><b>c)</b> No. Los endpoints se registran una vez, en el setup, como callbacks.<br><b>d)</b> Sí. La IP se ve en el monitor serie con <code>WiFi.localIP()</code>.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Un bot de Telegram controla un LED. Sobre su loop, seleccione las afirmaciones correctas.",
+     "code": "unsigned long ant = 0;\nconst short INTERVAL = 1000;\n...\nvoid loop() {\n  if (millis() - ant > INTERVAL) {\n    ant = millis();\n    int n = bot.getUpdates(bot.last_message_received + 1);\n    while (n) {\n      procesarMensajes(n);\n      n = bot.getUpdates(bot.last_message_received + 1);\n    }\n  }\n}",
+     "op": [
+      [
+       "Consulta a Telegram cada 1 s sin bloquear el loop, gracias a <code>millis()</code>.",
+       true
+      ],
+      [
+       "ant es <code>unsigned long</code> porque guarda el valor de <code>millis()</code>.",
+       true
+      ],
+      [
+       "El while (n) procesa todos los mensajes pendientes antes de esperar el próximo intervalo.",
+       true
+      ],
+      [
+       "Para conectarse con Telegram alcanza con un WiFiClient común.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Si en el loop hubiera otras tareas, seguirían corriendo entre consultas.<br><b>b)</b> Sí. Es el tipo recomendado: 32 bits sin signo.<br><b>c)</b> Sí. Vuelve a llamar a getUpdates hasta que no quedan mensajes nuevos.<br><b>d)</b> No. Telegram usa HTTPS, por eso se usa WiFiClientSecure con <code>client.setCACert(TELEGRAM_CERTIFICATE_ROOT)</code>.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Desde MQTT Explorer se publica on23 (en minúsculas) en <code>test/command</code>. ¿Qué pasa?",
+     "code": "void callback(char* topic, byte* message, unsigned int length) {\n  String cmd = \"\";\n  for (unsigned int i = 0; i < length; i++) cmd += (char)message[i];\n  cmd.trim();\n  if (cmd == \"ON23\")       digitalWrite(23, HIGH);\n  else if (cmd == \"OFF23\") digitalWrite(23, LOW);\n  else Serial.println(\"COMANDO NO RECONOCIDO\");\n}",
+     "op": [
+      [
+       "Se enciende el LED.",
+       false
+      ],
+      [
+       "Imprime «COMANDO NO RECONOCIDO» y el LED no cambia.",
+       true
+      ],
+      [
+       "No llega nada, porque el topic distingue mayúsculas.",
+       false
+      ],
+      [
+       "El programa se cuelga porque message no termina en <code>'\\0'</code>.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> No. La comparación de String distingue mayúsculas de minúsculas.<br><b>b)</b> Sí. <code>\"on23\"</code> no es igual a <code>\"ON23\"</code>.<br><b>c)</b> No. El topic está bien escrito; el problema es el contenido (payload).<br><b>d)</b> No. Justamente por eso se arma el String recorriendo exactamente length bytes, en lugar de tratar message como una cadena C.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre este sketch de Arduino IoT Cloud (con una variable led de tipo READWRITE), seleccione las correctas.",
+     "code": "#include \"thingProperties.h\"\nint pinLED = 23;\nvoid setup() {\n  Serial.begin(9600);\n  delay(1500);\n  initProperties();\n  ArduinoCloud.begin(ArduinoIoTPreferredConnection);\n}\nvoid loop() {\n  ArduinoCloud.update();\n}\nvoid onLedChange() {\n  if (led == true) digitalWrite(pinLED, HIGH);\n  else             digitalWrite(pinLED, LOW);\n}",
+     "op": [
+      [
+       "<code>ArduinoCloud.update()</code> tiene que llamarse en el loop para sincronizar con la nube.",
+       true
+      ],
+      [
+       "El nombre onLedChange tiene que coincidir exactamente con el de thingProperties.h.",
+       true
+      ],
+      [
+       "<code>DEVICE_LOGIN_NAME</code> y <code>DEVICE_KEY</code> tienen que coincidir con los generados en Arduino Cloud.",
+       true
+      ],
+      [
+       "Hay que declarar int led; en este sketch.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Es la única línea obligatoria del loop; después va el código del usuario.<br><b>b)</b> Sí. Ahí figura <code>ArduinoCloud.addProperty(led, READWRITE, ON_CHANGE, onLedChange);</code>.<br><b>c)</b> Sí. Son el Device ID y la Secret Key del dispositivo.<br><b>d)</b> No. La variable ya está declarada como bool led; en thingProperties.h.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "Sobre la programación OTA, seleccione las afirmaciones correctas.",
+     "code": "#include <ArduinoOTA.h>\nvoid setup() {\n  WiFi.begin(SSID, PASS);\n  while (WiFi.status() != WL_CONNECTED) delay(500);\n  ArduinoOTA.setHostname(\"ta-esp32-envio\");\n  ArduinoOTA.begin();\n}\nvoid loop() {\n  ArduinoOTA.handle();\n  // resto del programa\n}",
+     "op": [
+      [
+       "OTA (Over The Air) permite cargar un sketch nuevo por WiFi, en vez de por USB.",
+       true
+      ],
+      [
+       "<code>ArduinoOTA.handle()</code> tiene que ejecutarse seguido en el loop, sin <code>delay()</code> largos que lo frenen.",
+       true
+      ],
+      [
+       "Si el sketch nuevo no incluye OTA, la próxima carga va a tener que hacerse por USB.",
+       true
+      ],
+      [
+       "OTA funciona aunque la placa no esté conectada al WiFi.",
+       false
+      ]
+     ],
+     "ex": "<b>a)</b> Sí. Por ejemplo: un primer sketch se carga por USB y habilita OTA; los siguientes se pueden cargar por red.<br><b>b)</b> Sí. Es la que atiende un pedido de carga entrante.<br><b>c)</b> Sí. El programa nuevo reemplaza al anterior, y con él se va el soporte OTA.<br><b>d)</b> No. La placa necesita WiFi, y la PC tiene que estar en la misma red local.",
+     "practica": true
     }
    ]
   }
@@ -2710,7 +5225,7 @@
   {
    "t": "Arduino UNO",
    "que": "La placa clásica: un ATmega328P de 8 bits a 16 MHz con 2 KB de RAM, a 5 V y sin WiFi.",
-   "re": "Arduino Uno",
+   "re": "Arduino Uno|Arduino \\(5 V\\)|un Arduino\\b",
    "i": true
   },
   {
@@ -2954,8 +5469,8 @@
   },
   {
    "t": "Tipos de datos",
-   "que": "<b>int</b>: entero (32 bits en la ESP32). <b>unsigned long</b>: entero sin signo de 32 bits (lo que devuelve millis()). <b>bool</b>: verdadero o falso. <b>char</b>: un carácter. <b>byte</b>: de 0 a 255. <b>const</b>: una constante que no cambia.",
-   "re": "unsigned long|\\bbool\\b|\\bbyte\\b|\\bchar\\b|tipo de dato"
+   "que": "<b>int</b>: entero (32 bits en la ESP32). <b>float</b>: número con coma (más lento que un entero). <b>unsigned long</b>: entero sin signo de 32 bits (lo que devuelve millis()). <b>bool</b>: verdadero o falso. <b>char</b>: un carácter. <b>byte</b>: de 0 a 255. <b>const</b>: una constante que no cambia.",
+   "re": "unsigned long|\\bbool\\b|\\bbyte\\b|\\bchar\\b|\\bfloat\\b|tipo de dato|punto flotante"
   },
   {
    "t": "C++ compilado y tipado",
@@ -2967,7 +5482,7 @@
    "t": "IDE",
    "sig": "Integrated Development Environment · entorno de desarrollo integrado",
    "que": "El programa para escribir, compilar y subir el código. En la materia se usa el Arduino IDE; PlatformIO es una extensión de VS Code que hace lo mismo.",
-   "re": "\\bIDE\\b|PlatformIO"
+   "re": "\\bIDE\\b|PlatformIO|VS Code"
   },
   {
    "t": "Gestor de placas",
@@ -2985,7 +5500,7 @@
   {
    "t": "Protocolo de comunicación",
    "que": "Las reglas para que dos dispositivos se pasen datos: cuántos cables, a qué velocidad y con qué formato.",
-   "re": "protocolo",
+   "re": "protocolo|niveles de tensión",
    "i": true
   },
   {
@@ -3106,7 +5621,7 @@
    "t": "TLS",
    "sig": "Transport Layer Security · seguridad de la capa de transporte",
    "que": "Cifra la comunicación para que nadie la lea en el camino (es la «S» de HTTPS; MQTT con TLS usa el puerto 8883).",
-   "re": "\\bTLS\\b"
+   "re": "\\bTLS\\b|\\bSSL\\b"
   },
   {
    "t": "ThingSpeak",
@@ -3140,6 +5655,331 @@
    "t": "Red celular",
    "que": "La de los celulares (4G, LTE). La ESP32 no la trae: hace falta un módulo aparte con chip.",
    "re": "red celular",
+   "i": true
+  },
+  {
+   "t": "Sensor y actuador",
+   "que": "El <b>sensor</b> convierte una magnitud física (temperatura, luz, distancia) en una señal eléctrica: son los «sentidos». El <b>actuador</b> hace lo contrario: convierte una orden del controlador en una acción física (mover, abrir, prender): son los «músculos».",
+   "re": "sensor|actuador",
+   "i": true
+  },
+  {
+   "t": "M2M",
+   "sig": "Machine to Machine · de máquina a máquina",
+   "que": "Dos dispositivos que se comunican entre sí, por cualquier conectividad, sin que intervenga una persona.",
+   "re": "\\bM2M\\b"
+  },
+  {
+   "t": "Lazo abierto y lazo cerrado",
+   "que": "En <b>lazo cerrado</b> el sensor vuelve a medir y el controlador corrige según la diferencia con lo deseado (retroalimentación). En <b>lazo abierto</b> se actúa sin medir el resultado.",
+   "re": "lazo|retroaliment",
+   "i": true
+  },
+  {
+   "t": "Hardware libre",
+   "que": "Los esquemáticos y diseños son públicos: cualquiera puede copiarlos, modificarlos o fabricar placas compatibles. Libre no quiere decir gratis.",
+   "re": "hardware libre|esquemático",
+   "i": true
+  },
+  {
+   "t": "ATmega328P y ATMEL",
+   "que": "El microcontrolador de 8 bits del Arduino UNO (16 MHz, 5 V), de la empresa ATMEL (hoy Microchip).",
+   "re": "ATMega|ATMEL",
+   "i": true
+  },
+  {
+   "t": "Assembler",
+   "sig": "lenguaje ensamblador",
+   "que": "Programar con las instrucciones del procesador, una por una. Antes de Arduino era lo habitual; hoy se usa C/C++ con librerías.",
+   "re": "Assembler|ensamblador",
+   "i": true
+  },
+  {
+   "t": "Bare-metal",
+   "sig": "«metal desnudo»",
+   "que": "Un programa que corre directo sobre el hardware, sin sistema operativo (como un sketch de Arduino).",
+   "re": "bare-?metal",
+   "i": true
+  },
+  {
+   "t": "SMP",
+   "sig": "Symmetric Multiprocessing · multiprocesamiento simétrico",
+   "que": "Los dos núcleos trabajan a la par y el sistema operativo (FreeRTOS) les reparte las tareas. En el modo asimétrico, cada núcleo tiene su tarea fija.",
+   "re": "\\bSMP\\b|simétric",
+   "i": true
+  },
+  {
+   "t": "Reloj (clock)",
+   "que": "Una señal periódica que marca el ritmo de la CPU y los periféricos. Más frecuencia: más instrucciones por segundo, pero más consumo.",
+   "re": "\\breloj\\b|\\bclock\\b",
+   "i": true
+  },
+  {
+   "t": "AES, SHA y RSA",
+   "que": "Algoritmos de criptografía que la ESP32 hace por hardware: <b>AES</b> cifra (clave simétrica), <b>SHA</b> calcula un hash para verificar que nada cambió y <b>RSA</b> es de clave pública (asimétrica). Sirven para TLS y el arranque seguro.",
+   "re": "\\bAES\\b|\\bSHA\\b|\\bRSA\\b|criptogr",
+   "i": true
+  },
+  {
+   "t": "RMT",
+   "sig": "Remote Control Transceiver · transceptor de control remoto",
+   "que": "Un periférico de la ESP32 que genera (o lee) pulsos con tiempos muy precisos, por ejemplo para los LEDs WS2812.",
+   "re": "\\bRMT\\b"
+  },
+  {
+   "t": "PMU, RTC y watchdog",
+   "que": "<b>PMU</b>: maneja la energía y los modos de bajo consumo. <b>RTC</b> (Real-Time Clock): un reloj que mantiene la hora. <b>Watchdog</b>: un temporizador que reinicia el sistema si el programa se cuelga.",
+   "re": "\\bPMU\\b|\\bRTC\\b|watchdog|DS1307",
+   "i": true
+  },
+  {
+   "t": "DSP",
+   "sig": "Digital Signal Processor · procesador digital de señales",
+   "que": "Hardware para procesar señales rápido (por ejemplo, filtrar audio o las lecturas de un sensor).",
+   "re": "\\bDSP\\b"
+  },
+  {
+   "t": "GPIO Matrix",
+   "sig": "matriz de GPIO",
+   "que": "Permite asignar los periféricos de la ESP32 (UART, I2C, SPI…) a casi cualquier pin, por software.",
+   "re": "GPIO Matrix"
+  },
+  {
+   "t": "Segmentos de memoria",
+   "que": "Cómo se reparte la memoria de un programa: <b>text</b> (el código, en la Flash), <b>data</b> (globales con valor inicial), <b>BSS</b> (globales sin inicializar, que arrancan en cero), el <b>stack</b> y el <b>heap</b> (los dos en la RAM).",
+   "re": "\\bBSS\\b|segmento",
+   "i": true
+  },
+  {
+   "t": "MMU",
+   "sig": "Memory Management Unit · unidad de gestión de memoria",
+   "que": "Hardware que impide que un programa toque memoria que no le corresponde. Muchos microcontroladores no tienen, así que un error puede corromper la memoria sin que nada lo frene.",
+   "re": "\\bMMU\\b"
+  },
+  {
+   "t": "Desbordamiento (overflow) y fragmentación",
+   "que": "Un <b>overflow</b> es escribir más allá del espacio reservado (pisando otros datos). La <b>fragmentación</b> del heap pasa cuando quedan muchos huecos chicos libres y no entra un bloque grande.",
+   "re": "overflow|fragmentaci|desbord|use-after-free|double free",
+   "i": true
+  },
+  {
+   "t": "LSB y VREF",
+   "sig": "Least Significant Bit · tensión de referencia",
+   "que": "<b>VREF</b> es la tensión máxima que mide el ADC. El <b>LSB</b> es el escalón más chico que distingue: VREF / 2<sup>bits</sup>.",
+   "re": "\\bLSB\\b|VREF"
+  },
+  {
+   "t": "Filtro RC",
+   "que": "Una resistencia y un capacitor que suavizan la señal y le sacan el ruido (las variaciones rápidas). Es un filtro pasa bajos.",
+   "re": "filtro|ruido",
+   "i": true
+  },
+  {
+   "t": "Divisor de tensión y conversor de nivel",
+   "sig": "level shifter",
+   "que": "Para conectar algo de 5 V a la ESP32 (3,3 V): el <b>divisor</b> son dos resistencias que bajan la tensión; el <b>conversor de nivel</b> adapta señales digitales en los dos sentidos.",
+   "re": "divisor|level shifter|conversor de nivel",
+   "i": true
+  },
+  {
+   "t": "Interrupción por timer",
+   "que": "Un temporizador por hardware que llama a una función (ISR) cada cierto tiempo, con más precisión que delay(). En el código: timerBegin, timerAttachInterrupt y timerAlarm.",
+   "re": "timer",
+   "i": true
+  },
+  {
+   "t": "FALLING y RISING",
+   "sig": "flanco descendente y ascendente",
+   "que": "El momento en que una señal cambia: <b>FALLING</b> de HIGH a LOW y <b>RISING</b> de LOW a HIGH. attachInterrupt() dispara la ISR en ese cambio.",
+   "re": "FALLING|RISING|flanco"
+  },
+  {
+   "t": "IRAM_ATTR",
+   "que": "Pone la función de la interrupción en la RAM interna, para que se ejecute rápido aunque la Flash esté ocupada.",
+   "re": "IRAM_ATTR"
+  },
+  {
+   "t": "static",
+   "que": "Una variable local <b>static</b> se crea una sola vez y conserva su valor entre una llamada y otra de la función.",
+   "re": "\\bstatic\\b"
+  },
+  {
+   "t": "Puntero y referencia",
+   "que": "Un <b>puntero</b> (int *p) guarda la dirección de memoria de una variable. Una <b>referencia</b> (int &amp;p) es otro nombre para la misma variable. Con los dos, la función puede cambiar el valor original; pasando por valor, trabaja con una copia.",
+   "re": "puntero|referencia|myFunction",
+   "i": true
+  },
+  {
+   "t": "Arreglos y cadenas",
+   "que": "Un arreglo guarda varios valores del mismo tipo y se numera desde 0. Una cadena de C es un arreglo de char que termina con el carácter nulo '\\0'.",
+   "re": "arreglo|\\bhello\\b|índice",
+   "i": true
+  },
+  {
+   "t": "String y trim()",
+   "que": "<b>String</b> es el texto de Arduino. <b>trim()</b> le saca los espacios y los caracteres invisibles del principio y del final, como el \\r que manda el monitor serie.",
+   "re": "String|trim|readStringUntil"
+  },
+  {
+   "t": "\\r y \\n",
+   "sig": "retorno de carro y salto de línea",
+   "que": "Dos caracteres invisibles del final de una línea. Serial.println() los agrega; el monitor serie también los puede mandar al final de lo que escribís.",
+   "re": "\\\\r|\\\\n|retorno de carro|salto de línea"
+  },
+  {
+   "t": "8N1",
+   "que": "La configuración más común de una comunicación serie: 8 bits de datos, sin (N) paridad y 1 bit de parada.",
+   "re": "8N1|paridad",
+   "i": true
+  },
+  {
+   "t": "Librerías",
+   "que": "Código ya hecho para manejar algo (un sensor, el display, WiFi) con pocas funciones. Se incluyen con #include; en PlatformIO se declaran en lib_deps.",
+   "re": "librer[ií]a|lib_deps|#include",
+   "i": true
+  },
+  {
+   "t": "Archivo de cabecera (.h)",
+   "que": "Tiene las declaraciones (la clase y sus funciones); la implementación va en el .cpp. La guarda #ifndef / #define / #endif evita que se incluya dos veces.",
+   "re": "cabecera|#ifndef|#define|\\.h\\b"
+  },
+  {
+   "t": "Wokwi",
+   "que": "Un simulador de placas y circuitos: se prueba el código sin el hardware. En VS Code usa diagram.json (el circuito) y wokwi.toml (dónde está el firmware compilado).",
+   "re": "Wokwi",
+   "i": true
+  },
+  {
+   "t": "Encoder rotativo",
+   "que": "Una perilla que gira sin tope y avisa cuántos pasos giró y en qué sentido. Muchos traen además un pulsador.",
+   "re": "encoder",
+   "i": true
+  },
+  {
+   "t": "Sensores comunes",
+   "que": "<b>BMP180</b>: presión y temperatura (por I2C). <b>HC-SR04</b>: distancia por ultrasonido. <b>MPU-6050</b>: acelerómetro y giroscopio. <b>DHT22</b>: temperatura y humedad, con salida digital.",
+   "re": "BMP180|HC-SR04|MPU-6050|DHT22|DHT\\b"
+  },
+  {
+   "t": "WS2812 (NeoPixel)",
+   "que": "Tiras de LEDs RGB donde cada LED se maneja por separado, por un solo cable de datos (24 bits por LED: rojo, verde y azul).",
+   "re": "WS2812|NeoPixel",
+   "i": true
+  },
+  {
+   "t": "I2S",
+   "sig": "Inter-IC Sound",
+   "que": "Un bus para mandar audio digital entre chips (micrófonos, DAC, parlantes). No confundir con I2C.",
+   "re": "I2S|I²S"
+  },
+  {
+   "t": "Full-duplex",
+   "que": "Los dos lados pueden mandar datos al mismo tiempo (SPI, por sus líneas MOSI y MISO). En half-duplex se turnan.",
+   "re": "duplex",
+   "i": true
+  },
+  {
+   "t": "REST y API",
+   "sig": "Representational State Transfer · Application Programming Interface",
+   "que": "Una <b>API</b> es la forma de pedirle cosas a un programa. <b>REST</b> es un estilo de API sobre HTTP: cada recurso es una URL (como /api/LedON) y se usan los métodos GET, POST, etc.",
+   "re": "\\bREST\\b|\\bAPI\\b|endpoint"
+  },
+  {
+   "t": "WebSockets",
+   "que": "Una conexión TCP que queda abierta: cliente y servidor se mandan datos cuando quieren, en los dos sentidos. Sirve para paneles en tiempo real.",
+   "re": "WebSocket",
+   "i": true
+  },
+  {
+   "t": "lwIP",
+   "sig": "Lightweight IP",
+   "que": "La pila de red TCP/IP liviana que usa la ESP32 para conectarse a Internet.",
+   "re": "lwIP"
+  },
+  {
+   "t": "Cliente y servidor",
+   "que": "El <b>cliente</b> pide (el navegador, o la ESP32 consultando una API) y el <b>servidor</b> responde (la ESP32 con WebServer, o un servicio en la nube).",
+   "re": "cliente|servidor",
+   "i": true
+  },
+  {
+   "t": "Respuesta HTTP",
+   "que": "Empieza con la línea de estado (HTTP/1.1 200 OK), sigue con las cabeceras (Content-Type, Connection…), una línea vacía y el cuerpo. Un 404 quiere decir que la ruta no existe.",
+   "re": "HTTP/1\\.1|Content-Type|\\b404\\b|cabeceras|sendResponse|request"
+  },
+  {
+   "t": "JSON",
+   "sig": "JavaScript Object Notation",
+   "que": "Un formato de texto liviano para datos, con pares nombre: valor. Por ejemplo {\"temperatura\": 22.5}. Lo entienden las personas y las plataformas.",
+   "re": "JSON"
+  },
+  {
+   "t": "HTTPS",
+   "que": "HTTP cifrado con TLS. En la ESP32 se usa WiFiClientSecure con el certificado del servidor (por ejemplo, el de Telegram).",
+   "re": "HTTPS|WiFiClient"
+  },
+  {
+   "t": "Bluetooth Clásico (BR/EDR)",
+   "sig": "Basic Rate / Enhanced Data Rate",
+   "que": "El Bluetooth de siempre: más ancho de banda y más consumo que BLE (audio, archivos). Su red se llama piconet (un maestro y varios esclavos) y cada equipo tiene una dirección de 48 bits (BD_ADDR).",
+   "re": "BR/EDR|piconet|BD_ADDR|Bluetooth Clásico",
+   "i": true
+  },
+  {
+   "t": "Advertising y scanning",
+   "sig": "anunciar y escanear",
+   "que": "En BLE el periférico <b>anuncia</b> que existe y el central <b>escanea</b> para encontrarlo y conectarse.",
+   "re": "advertising|scanning|anuncio",
+   "i": true
+  },
+  {
+   "t": "Client ID",
+   "que": "El nombre único con el que un cliente se conecta al broker MQTT. Si dos usan el mismo, el broker desconecta a uno; por eso se arma con la MAC.",
+   "re": "Client ?ID|clientId",
+   "i": true
+  },
+  {
+   "t": "Comodines de MQTT",
+   "que": "En un topic, <b>+</b> reemplaza un nivel (hogar/sala/+) y <b>#</b> todos los niveles que siguen. <b>$SYS</b> es el topic donde el broker publica su estado.",
+   "re": "comod|\\$SYS|hogar/"
+  },
+  {
+   "t": "MQTT Explorer",
+   "que": "Un programa con ventanas para ver los topics de un broker y publicar mensajes a mano. Es un cliente MQTT.",
+   "re": "MQTT Explorer"
+  },
+  {
+   "t": "PubSubClient",
+   "que": "La librería de Arduino para ser cliente MQTT: setServer(), setCallback(), connect(), subscribe(), publish() y loop().",
+   "re": "PubSubClient|callback|setCallback|subscribe",
+   "i": true
+  },
+  {
+   "t": "Arduino IoT Cloud",
+   "que": "La plataforma IoT de Arduino: un <b>dispositivo</b> (con Device ID y Secret Key), un <b>Thing</b> con variables y un <b>dashboard</b> con widgets. En el loop va ArduinoCloud.update().",
+   "re": "Arduino (IoT )?Cloud|ArduinoCloud|thingProperties|\\bThing\\b"
+  },
+  {
+   "t": "OTA",
+   "sig": "Over The Air · por el aire",
+   "que": "Cargar un programa nuevo por WiFi, sin el cable USB. En el loop tiene que correr ArduinoOTA.handle().",
+   "re": "\\bOTA\\b|ArduinoOTA"
+  },
+  {
+   "t": "2,4 GHz y 802.11",
+   "que": "La banda de radio del WiFi de la ESP32 (normas 802.11 b/g/n). No se conecta a redes de 5 GHz.",
+   "re": "GHz|802\\.11"
+  },
+  {
+   "t": "Alta disponibilidad",
+   "que": "Que un servicio siga andando aunque falle una parte (por ejemplo, con varios brokers).",
+   "re": "disponibilidad|tolerancia a fallos",
+   "i": true
+  },
+  {
+   "t": "Privacidad y datos",
+   "que": "Los dispositivos IoT juntan datos de los hábitos de las personas (consumo, salud): por eso importan la seguridad y la privacidad.",
+   "re": "hábitos|privacidad",
    "i": true
   }
  ]
