@@ -2108,7 +2108,7 @@
   .card.compacta .links .pill:hover{color:var(--text)}
   /* Materias que se confunden con otra del mismo color: rayas o cuadriculado (--P) y el puntito hueco (--Pi, --Ps); ver desempatarColores */
   html[data-tema="oscuro"] .mc{--Pa:14%}
-  .cr-b:not(.opcion),.cr-dl-b,.ic-e:not(.tent),.cal-pop-ya div:not(.tent),.abr.mc,.cr-chip.activa,.cal-mats button.on,.cal-d.marca:not(.tent){background-image:var(--P,none)}
+  .cr-b:not(.opcion),.cr-dl-b,.ic-e:not(.tent),.cal-pop-ya div:not(.tent),.abr.mc,.cr-chip.activa,.cal-mats button.on,.cal-d.marca:not(.tent):not(.dos):not(.tres){background-image:var(--P,none)}
   .l-mat i,.cr-chip i,.cr-pk-f i,.cal-mats button i,.nt-tabla tbody th i{background:var(--Pi,var(--C,var(--muted)));box-shadow:var(--Ps,none)}
   /* Íconos de tipo: la pastillita del TP (más ancha que alta, con la sigla del color del fondo) y el gris de "Otros" en las leyendas */
   .ti.ti-tp{width:auto!important;aspect-ratio:19/12}
@@ -2116,6 +2116,25 @@
   .cal-d.sel .ti-tp text,.cal-tipos button.on .ti-tp text{fill:var(--text)}
   .ti-otros{display:inline-block;width:10px;height:10px;border-radius:3px;background:#e4e2dc;box-shadow:inset 0 0 0 1px #a8a397;flex:none}
   html[data-tema="oscuro"] .ti-otros{background:#3a3936;box-shadow:inset 0 0 0 1px #8a867d}
+  /* Calendario chico del cronograma: cada ícono va como una insignia en la esquina (sobre un circulito del color de la tarjeta),
+     más grande y con el trazo más grueso, para que se vea sin tapar el número */
+  .cal-d .ti{width:13px;height:13px;padding:1.5px;border-radius:50%;background:var(--card);box-shadow:0 0 0 1px color-mix(in srgb,var(--C,var(--line)) 45%,transparent),0 1px 2px rgba(40,30,10,.12);stroke-width:3.4}
+  .cal-d .ti.ti-tp{height:10px;padding:0;border-radius:3px;background:none;box-shadow:0 0 0 1.5px var(--card),0 1px 2px rgba(40,30,10,.15)}
+  .cal-d.marca .ti1{top:-4px;right:-4px}
+  .cal-d.dos .ti1{top:-4px;left:-4px;right:auto}
+  .cal-d.dos .ti2{bottom:-4px;right:-4px}
+  .cal-d.tres .ti{width:12px;height:12px}
+  .cal-d.tres .ti.ti-tp{height:9px}
+  .cal-d.tres .ti1{top:-4px;right:-4px}
+  .cal-d.tres .ti2{top:calc(50% - 6px);left:-7px;right:auto}
+  .cal-d.tres .ti2.ti-tp{top:calc(50% - 4.5px);left:-11px}
+  .cal-d.tres .ti3{top:auto;bottom:-4px;right:-4px}
+  .cal-d.dos .ti1,.cal-d.tres .ti1{--C:var(--C1)}
+  .cal-d.dos .ti2,.cal-d.tres .ti2{--C:var(--C2)}
+  .cal-d.tres .ti3{--C:var(--C3)}
+  .cal-d .ti.tn{opacity:.85}
+  .cal-d.sel .ti{background:var(--text);box-shadow:0 0 0 1px var(--bg)}
+  .cal-d.sel .ti.ti-tp{background:none}
 </style>
 <script>
 /* Modo claro u oscuro elegido a mano (si no se eligió, sigue al sistema): se prenden o apagan las reglas
@@ -9552,7 +9571,7 @@ const ICONO_TIPO = {
 };
 // Lo anotado con tipos que ya no están (TPI, Entrega, Otro) va como TP
 const tipoFecha = x => x.tipo in ICONO_TIPO ? x.tipo : "TP";
-const iconoTipo = (t, cls = "") => { const i = ICONO_TIPO[t]; return i ? `<svg class="ti ti-${t.toLowerCase()} ${cls}" viewBox="${i.vb}" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${i.d}</svg>` : ""; };
+const iconoTipo = (t, cls = "") => { const i = ICONO_TIPO[t]; return i ? `<svg class="ti ti-${t.toLowerCase()} ${cls}" viewBox="${i.vb}" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${i.d}</svg>` : ""; };
 // En las leyendas, "Otros" lleva un cuadradito gris en vez de ícono
 const iconoLeyenda = t => ICONO_TIPO[t] ? iconoTipo(t) : `<i class="ti-otros"></i>`;
 const aMin = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
