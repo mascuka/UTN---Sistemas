@@ -2099,6 +2099,10 @@
   .pfila[data-go]:hover,.nivel-nav a:hover,.res-anio:hover,.pr-ej:hover,.herr-ir .pill:hover,.pr-donde-btn:hover,.sim-b:hover{border-color:var(--line2)}
   .vb:hover:not(:disabled),.cine-btn:hover,.pl-flechas button:hover:not(:disabled),.pr-chico:hover{border-color:var(--line2);color:var(--text)}
   .card.compacta .links .pill:hover{color:var(--text)}
+  /* Materias que se confunden con otra del mismo color: rayas o cuadriculado (--P) y el puntito hueco (--Pi, --Ps); ver desempatarColores */
+  html[data-tema="oscuro"] .mc{--Pa:14%}
+  .cr-b:not(.opcion),.cr-dl-b,.ic-e:not(.tent),.cal-pop-ya div:not(.tent),.abr.mc,.cr-chip.activa,.cal-mats button.on,.cal-d.marca:not(.tent){background-image:var(--P,none)}
+  .l-mat i,.cr-chip i,.cr-pk-f i,.cal-mats button i,.nt-tabla tbody th i{background:var(--Pi,var(--C,var(--muted)));box-shadow:var(--Ps,none)}
 </style>
 <script>
 /* Modo claro u oscuro elegido a mano (si no se eligió, sigue al sistema): se prenden o apagan las reglas
@@ -4013,13 +4017,12 @@ function colorMat(k){
     else if(h >= 12 && h <= 32 && s > .6 && l < .72) col = { c: "#c96442", f: "#f6e3da", t: "#8a3b20", cd: "#d97757", fd: "#4a3028", td: "#f2c6b4" };
     else {
       if(h >= 48 && h <= 66) h = 46;                       // el amarillo puro, desaturado, se ve verdoso: pasa a mostaza
-      if(tonoExtra[k] != null) h = tonoExtra[k];          // desempate con otra materia que cursás (ver desempatarColores)
       const sc = saturacionDe(s, l);
       col = { c: hslHex(h, sc, .55), f: hslHex(h, Math.min(.6, sc + .12), .91), t: hslHex(h, .42, .27),
               cd: hslHex(h, sc + .08, .64), fd: hslHex(h, Math.min(.3, sc * .55), .23), td: hslHex(h, .5, .84) };
     }
   }
-  col.css = `--c:${col.c};--f:${col.f};--t:${col.t};--cd:${col.cd};--fd:${col.fd};--td:${col.td}`;
+  col.css = `--c:${col.c};--f:${col.f};--t:${col.t};--cd:${col.cd};--fd:${col.fd};--td:${col.td}` + (PATRONES[patron[k]] || "");
   return colorCache[k] = col;
 }
 
@@ -4041,13 +4044,18 @@ function oklab(hex){
   return [.2104542553 * l + .793617785 * m - .0040720468 * s, 1.9779984951 * l - 2.428592205 * m + .4505937099 * s, .0259040371 * l + .7827717662 * m - .808675766 * s];
 }
 const difColor = (a, b) => { const x = oklab(a), y = oklab(b); return Math.hypot(x[0] - y[0], x[1] - y[1], x[2] - y[2]); };
-/* Desempate de colores. En el PDF de horarios hay materias del mismo tono que se distinguen solo por lo claro (amarillo y amarillo
-   pálido, verde y verde claro); acá todas quedan con la misma luz y se confunden. Entre las materias que cursás este año (las de los
-   cronogramas de los dos cuatrimestres, el que estás armando y las marcadas "Cursando"), si dos quedan muy parecidas (a menos de
-   DIF_MIN en OKLab), la de número más alto se corre al tono más cercano que se distinga de todas. Se recalcula en cada render,
-   solo si cambió la lista. */
-const DIF_MIN = .12;
-let tonoExtra = {}, tonoFirma = null;
+/* Desempate de colores. En el PDF de horarios hay materias del mismo tono que se distinguen solo por lo claro (RED amarillo pálido y
+   ADSI amarillo; IOP verde y TPA verde claro); acá todas quedan con la misma luz y se confunden. Entre las materias que cursás este
+   año (los cronogramas de los dos cuatrimestres, el que estás armando y las marcadas "Cursando"), si dos colores quedan a menos de
+   DIF_MIN (en OKLab, la diferencia como la ve el ojo), la de número más alto conserva su color pero lleva un dibujo: rayas y, si hay
+   una tercera, cuadriculado (en los puntitos de color, un círculo hueco o a medias). Se recalcula en cada render, solo si cambió la lista. */
+const DIF_MIN = .07;
+const RAYA = "color-mix(in srgb,var(--C) var(--Pa,24%),transparent)";   // más suave en el modo oscuro (--Pa)
+const PATRONES = [ "",
+  `;--P:repeating-linear-gradient(135deg,transparent 0 6px,${RAYA} 6px 9px);--Pi:transparent;--Ps:inset 0 0 0 1.5px var(--C)`,
+  `;--P:repeating-linear-gradient(135deg,transparent 0 6px,${RAYA} 6px 8px),repeating-linear-gradient(45deg,transparent 0 6px,${RAYA} 6px 8px);--Pi:linear-gradient(90deg,var(--C) 50%,transparent 50%);--Ps:inset 0 0 0 1.5px var(--C)`,
+  `;--P:repeating-linear-gradient(0deg,transparent 0 6px,${RAYA} 6px 8px);--Pi:linear-gradient(0deg,var(--C) 50%,transparent 50%);--Ps:inset 0 0 0 1.5px var(--C)` ];
+let patron = {}, tonoFirma = null;
 function desempatarColores(){
   const ks = new Set(), anio = String(new Date().getFullYear());
   Object.entries(cronogramas).forEach(([q, c]) => { if(q.startsWith(anio) && c && c.materias) Object.keys(c.materias).forEach(k => ks.add(k)); });
@@ -4055,19 +4063,20 @@ function desempatarColores(){
   [...CARRERA.materias, ...CARRERA.electivas].forEach(x => { if(estadoDe(idDe(x)) === "cursando") ks.add(String(x.n)); });
   const lista = [...ks].sort((a, b) => (+a || 1e4) - (+b || 1e4) || a.localeCompare(b)), firma = lista.join(",");
   if(firma === tonoFirma) return;
-  tonoFirma = firma; tonoExtra = {};
+  tonoFirma = firma; patron = {};
   for(const k in colorCache) delete colorCache[k];
-  const usados = [], cerca = c => Math.min(1, ...usados.map(u => difColor(u, c)));
+  const usados = [];   // { color, nivel }
   for(const k of lista){
     const b = tonoBase(k);
     if(!b) continue;
-    if(b.fijo){ usados.push(b.fijo); continue; }
-    let t = b.h, mejor = cerca(b.color(t));
-    // El tono más cercano al original que se distinga de todas; si ninguno llega, el que más se distinga
-    for(let paso = 10; paso <= 180 && mejor < DIF_MIN; paso += 10)
-      for(const c of [(b.h + paso) % 360, (b.h - paso + 360) % 360]){ const d = cerca(b.color(c)); if(d > mejor){ mejor = d; t = c; } if(d >= DIF_MIN) break; }
-    usados.push(b.color(t));
-    if(t !== b.h) tonoExtra[k] = t;
+    const color = b.fijo || b.color(b.h);
+    // El primer dibujo que no tenga ninguna de las materias con las que se confunde
+    const ocupados = new Set(usados.filter(u => difColor(u.color, color) < DIF_MIN).map(u => u.nivel));
+    let nivel = 0;
+    while(ocupados.has(nivel)) nivel++;
+    nivel = Math.min(nivel, PATRONES.length - 1);
+    usados.push({ color, nivel });
+    if(nivel) patron[k] = nivel;
   }
 }
 
@@ -4249,6 +4258,9 @@ async function cargarAprobadas(){
   try {
     const r = await leerRemoto();
     shaRemoto = r.sha;
+    // Lo último que hiciste en este navegador no llegó a subirse (cerraste o recargaste antes, o falló la red):
+    // queda eso, que es lo más nuevo, y se sube ahora en vez de pisarlo con lo de GitHub
+    if(leerLocal(CLAVE_SIN_SUBIR) && leerLocal(CLAVE_TOKEN)){ estadoSync = "guardando"; refrescar(); subirAprobadas(); return; }
     aprobadas = new Set(r.lista);
     estados = r.estados;
     notas = r.notas;
@@ -4293,6 +4305,7 @@ async function subirAprobadas(reintento = true){
     }
     if(!r.ok) throw new Error("GitHub respondió " + r.status);
     shaRemoto = (await r.json()).content.sha;
+    guardarLocal(CLAVE_SIN_SUBIR, null);
     estadoSync = "ok";
   } catch(e){
     estadoSync = "error"; errorSync = e.message;
@@ -4307,7 +4320,9 @@ function guardarCopia(){
   guardarLocal(CLAVE_FECHAS, JSON.stringify(fechas));
   guardarLocal(CLAVE_NOTAS_C, JSON.stringify(notasCursada));
 }
+const CLAVE_SIN_SUBIR = "isi-sin-subir";   // hay cambios en este navegador que todavía no llegaron a GitHub
 function programarSubida(){
+  guardarLocal(CLAVE_SIN_SUBIR, "1");
   guardarCopia();
   estadoSync = "guardando";
   clearTimeout(timerGuardar);
@@ -9893,10 +9908,14 @@ function guardarCrono(){
   const antes = cronoGuardado(CR.q), q = CR.q;
   if(Object.keys(CR.borrador).length) cronogramas[q] = { materias: CR.borrador, guardado: hoyClave() };
   else delete cronogramas[q];
-  if(leerLocal(CLAVE_TOKEN) && q === cuatriActual()){
-    const id = k => { const i = infoMat(k); return i && i.m ? idDe(i.m) : null; };
-    Object.keys(antes ? antes.materias : {}).filter(k => !CR.borrador[k]).map(id).forEach(x => { if(x && estados[x] === "cursando") delete estados[x]; });
-    Object.keys(CR.borrador).map(id).forEach(x => { if(x && !estadoDe(x)) estados[x] = "cursando"; });
+  if(leerLocal(CLAVE_TOKEN)){
+    // Las materias pasan a "Cursando" (o dejan de estarlo) solo con el cronograma del cuatrimestre actual,
+    // pero el de cualquier cuatrimestre se guarda en GitHub
+    if(q === cuatriActual()){
+      const id = k => { const i = infoMat(k); return i && i.m ? idDe(i.m) : null; };
+      Object.keys(antes ? antes.materias : {}).filter(k => !CR.borrador[k]).map(id).forEach(x => { if(x && estados[x] === "cursando") delete estados[x]; });
+      Object.keys(CR.borrador).map(id).forEach(x => { if(x && !estadoDe(x)) estados[x] = "cursando"; });
+    }
     programarSubida();
   } else guardarCopia();
   CR.edit = false; CR.eligiendo = null; CR.picker = false; CR.dia = null;
