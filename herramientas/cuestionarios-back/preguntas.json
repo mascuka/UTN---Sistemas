@@ -6882,6 +6882,533 @@
      "ex": "Docker Engine = dockerd (el demonio) y containerd (maneja los contenedores), más la CLI. No usa hypervisor."
     }
    ]
+  },
+  {
+   "n": "12",
+   "archivo": "cuestionario-12-logging.pdf",
+   "titulo": "Logging",
+   "intento": {
+    "anio": 2026,
+    "nota": "15,00/15,00"
+   },
+   "otro": {
+    "nota": "14,00/15,00",
+    "preguntas": 15
+   },
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "¿Dónde almacena Docker los logs de cada contenedor en su configuración por defecto?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "/etc/docker/logs/id.log",
+      "/opt/docker/runtime/logs/id.json",
+      "/var/lib/docker/containers/id/id-json.log"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con el driver de fábrica (json-file), cada contenedor escribe sus logs en /var/lib/docker/containers/<id>/<id>-json.log, un archivo por contenedor. Es lo que lee docker logs."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione la opción correcta según la siguiente definición. \"Nivel de log usado para registrar fallas graves o excepciones no manejadas que afectan el flujo normal.\"",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Warn",
+      "Error",
+      "Trace"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "ERROR es para las fallas graves: una excepción no manejada o algo que corta el flujo. WARN avisa de algo raro que no frena la ejecución y TRACE es el nivel más detallado."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué característica distingue a Logback dentro del ecosistema de logging en Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Es un sistema de logs que solo permite salida en consola",
+      "Es la implementación por defecto de Spring Boot, compatible con SLF4J y altamente configurable",
+      "Es una herramienta de monitoreo externo para microservicios"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Spring Boot trae Logback de fábrica (con spring-boot-starter-logging) y se usa a través de SLF4J. Se configura en logback-spring.xml o en application.properties: niveles, formato, archivos y rotación."
+    },
+    {
+     "origen": "2026",
+     "en": "Seleccione la opción correcta según la siguiente definición. \"Nivel de log usado para registrar información de diagnóstico detallada durante el desarrollo o pruebas.\"",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Info",
+      "Debug",
+      "Warn"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "DEBUG es para diagnosticar mientras se desarrolla o se prueba (valores, pasos intermedios); en producción suele quedar apagado. INFO es para los eventos normales y WARN, para lo anómalo."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Por qué Logback se considera una mejora respecto a Log4j?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Porque no necesita configuración mediante archivos XML o YAML",
+      "Porque reemplaza completamente a SLF4J y elimina la necesidad de dependencias",
+      "Porque ofrece mejor rendimiento, configuración sencilla y soporte para rotación de archivos de log"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Logback lo hizo el mismo autor de Log4j como su sucesor: es más rápido, más simple de configurar y trae la rotación de archivos (RollingFileAppender). No reemplaza a SLF4J, lo implementa; y se configura con XML."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué función cumple Logstash dentro del ELK Stack?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Procesa, filtra y transforma logs antes de enviarlos a Elasticsearch",
+      "Muestra dashboards de visualización",
+      "Almacena logs en índices distribuidos"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En ELK, Logstash recibe los logs, los filtra y transforma (los separa en campos, les agrega datos) y los manda a Elasticsearch, que los guarda e indexa. Kibana es la que muestra los dashboards."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué problema ocurre cuando los microservicios no comparten un Correlation ID?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Los logs dejan de imprimirse en consola",
+      "Es difícil reconstruir el flujo completo de una solicitud distribuida",
+      "El sistema no puede generar logs de nivel INFO"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "El Correlation ID es un identificador que viaja con el pedido por todos los microservicios. Sin él, las líneas de log de cada servicio no se pueden unir para seguir una misma solicitud."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Por qué el enfoque local de logs no es adecuado en microservicios distribuidos?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Consume más CPU que el logging centralizado",
+      "Los logs quedan dispersos en múltiples instancias dificultando la búsqueda y diagnóstico",
+      "Impide usar herramientas como Docker Compose"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con logs locales, cada instancia guarda los suyos: para encontrar un error hay que entrar a cada contenedor. Por eso se centralizan en un solo lugar (ELK o Loki)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el propósito de usar MDC en el contexto del logging distribuido?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Incluir automáticamente información contextual como el Correlation ID en cada línea de log",
+      "Guardar logs en archivos externos",
+      "Formatear logs en estructura JSON"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "MDC (Mapped Diagnostic Context) guarda datos del hilo actual, como el Correlation ID, y el patrón del log los agrega solo en cada línea (%X{correlationId}), sin pasarlos a mano en cada mensaje."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de las siguientes NO forma parte de las etapas de un stack de observabilidad?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Recolección",
+      "Compilación de artefactos",
+      "Almacenamiento"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Un stack de observabilidad recolecta, almacena (e indexa) y muestra los logs y las métricas. Compilar artefactos es parte del build (Maven), no de la observabilidad."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué información proporciona el endpoint \"/actuator/health\"?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Las métricas del uso de CPU y memoria",
+      "El estado general de salud de la aplicación",
+      "El nivel actual de los loggers configurados"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "/actuator/health (Spring Boot Actuator) responde si la aplicación está bien: {\"status\":\"UP\"} o DOWN, con el detalle de la base o el disco si se habilita. Las métricas están en /actuator/metrics y los niveles de log, en /actuator/loggers."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuales son algunos de los problemas de centralizar los logs de forma local?",
+     "codigo": null,
+     "varias": true,
+     "vf": false,
+     "op": [
+      "Visibilidad total del sistema",
+      "Dificultad para buscar y correlacionar errores entre microservicios",
+      "Perdida de logs al eliminar contenedores o reiniciar servicios"
+     ],
+     "marcadas": [
+      1,
+      2
+     ],
+     "ok": [
+      1,
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con los logs guardados en cada contenedor es difícil buscar y relacionar un error entre servicios, y si el contenedor se borra o se reinicia, se pierden. La visibilidad total es justamente lo que da centralizarlos en otro lado."
+    },
+    {
+     "origen": "2026",
+     "en": "En la configuración de logging de Docker Compose, ¿qué opción establece el tamaño máximo de cada archivo de log antes de rotar?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "max-size",
+      "max-volume",
+      "rotate-size"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En logging: options: del docker-compose.yml, max-size fija el tamaño de cada archivo (por ejemplo, \"10m\") y max-file, cuántos archivos se guardan al rotar."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué comando muestra los logs de todos los servicios definidos en un archivo docker-compose?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "docker compose logs",
+      "docker logs compose-all",
+      "docker compose services logs"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "docker compose logs muestra los logs de todos los servicios del compose; con -f los sigue en vivo y con el nombre de un servicio (docker compose logs api) muestra solo los de ese."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el driver de logging predeterminado utilizado por Docker para almacenar registros?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "json-file",
+      "gelf",
+      "journald"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "json-file es el driver de fábrica: guarda cada línea como JSON en el disco del host. gelf (para Graylog) y journald (de systemd) existen, pero hay que elegirlos."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Seleccione la opcion correcta segun la siguiente definicion. \"Nivel de log mas detallado el cual captura detalles minuciosos como llamadas a metodos, valores de variables y el flujo de ejecucion\"",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Debug",
+      "Trace",
+      "Info"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "TRACE es el nivel más detallado: entrada y salida de métodos, valores de variables, el paso a paso. DEBUG es un escalón menos detallado e INFO, para los eventos normales."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Seleccione la opción correcta según la siguiente definición. \"Nivel de log utilizado para eventos importantes del flujo normal de la aplicación, como inicio o cierre de procesos.\"",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Debug",
+      "Info",
+      "Error"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "INFO registra los eventos normales que importan: arrancó la aplicación, se procesó un pedido, terminó un proceso. DEBUG es para diagnosticar y ERROR, para las fallas."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "Seleccione la opción correcta según la siguiente definición. \"Nivel de log destinado a capturar eventos anómalos que no interrumpen la ejecución, pero requieren atención.\"",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Debug",
+      "Warn",
+      "Error"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "WARN es para algo anómalo que no corta la ejecución pero hay que mirar (un reintento, un valor por defecto, algo deprecado). ERROR es para las fallas graves."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Para qué se utiliza Promtail en el stack Loki?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Para generar dashboards gráficos",
+      "Para recolectar logs de contenedores y enviarlos a Loki",
+      "Para almacenar logs en nodos distribuidos"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "En el stack de Grafana, Promtail es el agente que lee los logs de los contenedores y los manda a Loki, que los guarda; Grafana los muestra en dashboards."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Cuál es una ventaja principal de usar SLF4J en lugar de System.out.println en una aplicación Java?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Permite manejar diferentes niveles de log como INFO, DEBUG o ERROR",
+      "Solo sirve para imprimir mensajes en consola de forma más simple",
+      "Requiere menos configuración que System.out.println"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Con SLF4J cada mensaje lleva un nivel (TRACE, DEBUG, INFO, WARN, ERROR) y se configura cuáles se muestran y adónde van (consola, archivo) sin tocar el código. System.out.println imprime siempre todo, igual."
+    },
+    {
+     "origen": "2026",
+     "otro": true,
+     "en": "¿Qué rol cumple Kibana en el stack ELK?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Recolectar logs desde contenedores Docker",
+      "Ejecutar consultas SQL en logs",
+      "Visualizar y analizar logs mediante dashboards interactivos"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": [
+      1,
+      1
+     ],
+     "estado": "Correcta",
+     "ex": "Kibana es la parte visual de ELK: busca en Elasticsearch y arma dashboards y gráficos. Recolectar lo hacen Logstash o Beats."
+    }
+   ]
   }
  ]
 }
