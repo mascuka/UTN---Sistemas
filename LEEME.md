@@ -259,6 +259,8 @@ Los bloques de `parciales` son las evaluaciones de la materia, no las unidades d
 - "1º Parcial", con Teórico, Práctico y "Parcial y simulacros".
 - "TPI", con Teórico y Práctico.
 
+Diseño de Sistemas de Información (`23`) tiene cuatro: 1º, 2º y 3º Parcial y el TPI, cada uno en una sola página (`secciones: []`). El 3º Parcial es de patrones de diseño y su material va **un grupo por patrón** (por ahora "Iterator"); para sumar otro (Adapter…), se agrega otro grupo con el nombre del patrón y sus archivos en `material/diseno-de-sistemas-de-informacion/p3/`.
+
 Los temas de cada unidad van en el bloque de la evaluación donde se toman. Toda sección que se cargue lleva `material` y `videos`, aunque alguno quede vacío (`videos: []`).
 
 ## Secciones de un parcial a medida
