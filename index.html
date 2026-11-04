@@ -1766,13 +1766,18 @@
   .ic-d.pasado{opacity:.5}
   .ic-d.hoy .ic-n{align-self:flex-start;background:var(--accent);color:#fff;border-radius:7px;padding:1px 7px}
   .ic-d.hoy{box-shadow:inset 0 0 0 1.5px var(--accent);opacity:1}
-  .ic-e{display:flex;flex-direction:column;min-width:0;font-size:.74rem;line-height:1.25;padding:3px 6px 4px 7px;border-radius:6px;background:var(--F);color:var(--T);box-shadow:inset 2.5px 0 0 var(--C)}
+  .ic-e{flex:1 1 0;min-height:0;overflow:hidden;display:flex;flex-direction:column;min-width:0;font-size:.74rem;line-height:1.25;padding:3px 6px 4px 7px;border-radius:6px;background:var(--F);color:var(--T);box-shadow:inset 2.5px 0 0 var(--C)}
   .ic-et{display:flex;align-items:center;gap:5px}
   .ic-e .ti{width:8px;height:8px;flex:none;color:var(--C)}
   .ic-e b{font-weight:600}
   .ic-en{font-size:.7rem;opacity:.85;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
   .ic-e.tent{background:color-mix(in srgb,var(--F) 50%,var(--card));outline:1px dashed color-mix(in srgb,var(--C) 70%,transparent);outline-offset:-1px;box-shadow:none}
   .ic-mas{font-size:.72rem;color:var(--muted);padding-left:4px}
+  /* Con una sola cosa entra más texto; con tres, solo la materia (el nombre queda en el título al pasar el mouse) */
+  .ic-d.n1 .ic-en{-webkit-line-clamp:5}
+  .ic-d.n2 .ic-en{-webkit-line-clamp:1}
+  .ic-d.n3 .ic-en{display:none}
+  .ic-d.n3 .ic-e{justify-content:center;padding-top:2px;padding-bottom:2px}
   .ic-ley{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin-top:10px;font-size:.76rem;color:var(--muted)}
   .ic-ley span{display:inline-flex;align-items:center;gap:5px}
   .ic-ley .ti{width:9px;height:9px}
@@ -2025,7 +2030,7 @@
     .ic-n{text-align:center;padding:1px 0}
     .ic-n small{display:none}
     .ic-d.hoy .ic-n{align-self:center}
-    .ic-e{align-items:center;padding:2px 1px;font-size:.62rem}
+    .ic-e{align-items:center;justify-content:center;padding:2px 1px;font-size:.62rem;flex:1 0 auto}
     .ic-e .ti,.ic-en{display:none}
     .ic-mas{font-size:.6rem;text-align:center;padding:0}
     .ic-ayuda{display:none}
@@ -9469,8 +9474,9 @@ function calendarioInicio(){
   for(; d <= fin; d.setDate(d.getDate() + 1)){
     const k = claveDia(d), otro = d.getMonth() !== mes, finde = d.getDay() === 0 || d.getDay() === 6, ev = fechasDelDia(k);
     const num = `${d.getDate()}${otro && (d.getDate() === 1 || k === claveDia(new Date(a, mes, 1 - (m.getDay() + 6) % 7))) ? ` <small>${MESES[d.getMonth()].slice(0, 3)}</small>` : ""}`;
-    const chips = ev.slice(0, 2).map(({ x, tent }) => { const i = x.k && infoMat(x.k); return `<span class="ic-e mc ${tent ? "tent" : ""}" style="${colorMat(x.k || "").css}" title="${esc(x.nombre)}${i ? ` · ${esc(i.nombre)}` : ""}${tent ? " (tentativa)" : ""}"><span class="ic-et">${iconoTipo(tipoFecha(x))}<b>${esc(i ? i.abr || i.nombre : x.nombre)}</b></span><span class="ic-en">${esc(x.nombre)}</span></span>`; }).join("");
-    dias += `<button class="ic-d ${otro ? "otro" : ""} ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""}" data-in-dia="${k}" title="${ev.length ? "Ver o anotar en el cronograma" : "Anotar algo este día"}"><span class="ic-n">${num}</span>${chips}${ev.length > 2 ? `<span class="ic-mas">+${ev.length - 2} más</span>` : ""}</button>`;
+    // Hasta 3 cosas por día, que se reparten el cuadradito: una lo ocupa entero, dos mitad y mitad, tres en tercios
+    const chips = ev.slice(0, 3).map(({ x, tent }) => { const i = x.k && infoMat(x.k); return `<span class="ic-e mc ${tent ? "tent" : ""}" style="${colorMat(x.k || "").css}" title="${esc(x.nombre)}${i ? ` · ${esc(i.nombre)}` : ""}${tent ? " (tentativa)" : ""}"><span class="ic-et">${iconoTipo(tipoFecha(x))}<b>${esc(i ? i.abr || i.nombre : x.nombre)}</b></span><span class="ic-en">${esc(x.nombre)}</span></span>`; }).join("");
+    dias += `<button class="ic-d ${ev.length ? "n" + Math.min(ev.length, 3) : ""} ${otro ? "otro" : ""} ${finde ? "finde" : ""} ${k < hoy ? "pasado" : ""} ${k === hoy ? "hoy" : ""}" data-in-dia="${k}" title="${ev.length ? "Ver o anotar en el cronograma" : "Anotar algo este día"}"><span class="ic-n">${num}</span>${chips}${ev.length > 3 ? `<span class="ic-mas">+${ev.length - 3} más</span>` : ""}</button>`;
   }
   return `<section class="ic">
     <div class="ic-cab"><h3>${MESES[mes][0].toUpperCase() + MESES[mes].slice(1)} <span>${a}</span></h3>
