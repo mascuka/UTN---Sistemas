@@ -55,6 +55,7 @@ h2 { break-after: avoid; background: #1e3a5f; color: #fff; font-size: 11pt; font
 .rc { background: #fdf0dc; border-radius: 6pt; padding: 6pt 10pt; margin-top: 5pt; font-size: 8.6pt; color: #7c4a03; }
 .pq { background: #f0fdfa; border-left: 2.5pt solid #0f766e; border-radius: 0 6pt 6pt 0; padding: 6pt 10pt; margin-top: 5pt; font-size: 8.6pt; }
 .pq b.t { color: #115e59; }
+.ojo { background: #fef2f2; border-radius: 6pt; padding: 5pt 10pt; margin-top: 4pt; font-size: 8.4pt; }
 code { font-family: 'DejaVu Sans Mono', monospace; font-size: .9em; background: #f1f5f9; border-radius: 3pt; padding: 0 2.5pt; }
 pre code, .ficha code { background: none; padding: 0; }
 pre { font-family: 'DejaVu Sans Mono', monospace; font-size: 8.2pt; line-height: 1.4; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 5pt; padding: 5pt 8pt; margin: 3pt 0 5pt; white-space: pre-wrap; }
@@ -73,7 +74,7 @@ def correctas(p):
 
 def pregunta(p, n):
     e = html.escape
-    tipo = 'Verdadero o falso' if p.get('vf') else {'num': 'Respuesta numérica', 'varias': 'Varias respuestas', 'armar': 'Armar el programa' if p.get('objetivo') else 'Ordenar los fragmentos'}.get(p['tipo'], 'Una respuesta')
+    tipo = 'Verdadero o falso' if p.get('vf') else {'num': 'Respuesta numérica', 'varias': 'Varias respuestas', 'armar': 'Armar el programa' if p.get('objetivo') or p.get('fichas') else 'Ordenar los fragmentos'}.get(p['tipo'], 'Una respuesta')
     fuente = f'<span class="real">{e(p["fuente"])}</span>' if p.get('fuente') else '<span class="prac">De práctica</span>'
     # El enunciado y las opciones vienen en HTML (con <code>…), igual que en el quiz
     cuerpo = f'<div class="en">{p["en"]}</div>'
@@ -89,7 +90,9 @@ def pregunta(p, n):
         cuerpo += '<div class="sel">Armado:</div><ol class="huecos">' + ''.join(f'<li><span>{e(t)}</span></li>' for t in p['huecos']) + '</ol>'
         rc = f'Cada uno de los {len(p["huecos"])} huecos vale lo mismo.'
         if p['fichas']: rc += ' Sobran: ' + ' · '.join(f'<code>{e(t)}</code>' for t in p['fichas'])
-        for g in p.get('libres', []): rc += ' Los huecos ' + ' y '.join(str(i + 1) for i in g) + ' pueden ir en cualquier orden.'
+        for g in p.get('libres', []):
+            nums = [str(i + 1) for i in g]
+            rc += ' Los huecos ' + ', '.join(nums[:-1]) + ' y ' + nums[-1] + ' pueden ir en cualquier orden.'
     else:
         varias = p['tipo'] == 'varias'
         cuerpo += f'<div class="sel">{"Seleccione una o más de una:" if varias else "Seleccione una:"}</div>'
@@ -99,7 +102,8 @@ def pregunta(p, n):
         rc = e(correctas(p))
     # El porqué ya viene con su formato (<b>, <sup>…)
     return (f'<div class="q"><div class="lado"><b>Pregunta {n}</b><div class="tipo">{tipo}</div>{fuente}</div>'
-            f'<div><div class="form">{cuerpo}</div><div class="rc">{rc}</div><div class="pq"><b class="t">Por qué:</b> {p["ex"]}</div></div></div>')
+            f'<div><div class="form">{cuerpo}</div><div class="rc">{rc}</div><div class="pq"><b class="t">Por qué:</b> {p["ex"]}</div>'
+            + (f'<div class="ojo"><b>Ojo:</b> {p["mal"]}</div>' if p.get('mal') else '') + '</div></div>')
 
 def documento(q):
     todas = [p for s in q['secciones'] for p in s['preguntas']]
@@ -114,7 +118,7 @@ def documento(q):
       <p>Están <b>todas las preguntas que salieron</b> en los parciales, recuperatorios y simulacros de IoT de 2025 y 2026, sacadas de intentos reales del campus (cada una dice de dónde salió), y además preguntas <b>de práctica</b> armadas con el apunte 2026, las clases y un cuestionario de práctica (con verdadero o falso, ordenar fragmentos de código y leer código), con el mismo formato. Las opciones correctas están en verde, abajo va la respuesta como la muestra el campus y una explicación corta. Están agrupadas por tema y sin repetir.</p>
       <p class="tip">Tip: tapá las opciones en verde y respondé primero; en el parcial casi todas tienen <b>más de una</b> respuesta correcta.</p></div>
     <div class="escala"><b class="t">Cómo se califica</b>
-      <p>El parcial 2025 tuvo <b>10 preguntas de 10 puntos</b>, todas de casillas («una o más de una»), al azar de este banco. En el recuperatorio 2026 valen <b>8, 12 o 16</b>: las de «¿qué está mal en este código?» 12 y la de <b>armar el programa</b> (arrastrar cada línea a su hueco) 16, con cada hueco valiendo lo mismo. Cada correcta marcada suma una parte y <b>cada incorrecta marcada resta</b> (con una bien y una mal, por ejemplo, quedan 1,67 o 6,67 puntos según la pregunta): no marques de más. La nota sale de esta escala del campus:</p>
+      <p>El parcial 2025 tuvo <b>10 preguntas de 10 puntos</b>, todas de casillas («una o más de una»), al azar de este banco. El parcial 2026 (3 de noviembre) fue de <b>10 preguntas sobre 100 puntos</b>: casi todas de 10, la de armar el programa de 15 y una de verdadero o falso de 5. En el recuperatorio 2026 valen <b>8, 12 o 16</b>: las de «¿qué está mal en este código?» 12 y la de <b>armar el programa</b> (arrastrar cada línea a su hueco) 16, con cada hueco valiendo lo mismo. Cada correcta marcada suma una parte y <b>cada incorrecta marcada resta</b> (con una bien y una mal, por ejemplo, quedan 1,67 o 6,67 puntos según la pregunta): no marques de más. La nota sale de esta escala del campus:</p>
       <div style="display:flex;gap:8pt"><table><tr><th>Nota</th><th>Porcentaje</th><th>Calificación</th></tr>{escala}</table><table><tr><th>Nota</th><th>Porcentaje</th><th>Calificación</th></tr>{escala2}</table></div></div>"""
     n = 0
     for i, s in enumerate(q['secciones'], 1):

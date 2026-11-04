@@ -670,8 +670,8 @@
     {
      "tipo": "varias",
      "en": "¿Qué es una protoboard y cuál es su utilidad al usar ESP32?",
-     "ex": "Es la placa de pruebas con agujeros conectados por filas: permite <b>armar circuitos sin soldar</b> y probar prototipos rápido. No reemplaza nada de la ESP32 ni es memoria.",
-     "fuente": "Parcial IoT 2025",
+     "ex": "Es la placa de pruebas con agujeros conectados por filas: permite <b>armar circuitos sin soldar</b> y probar prototipos rápido. No reemplaza nada de la ESP32 ni es memoria. En el parcial 2026 la opción decía «Permite modelar circuitos fácilmente», y también era correcta.",
+     "fuente": "Parcial IoT 2025 y 2026",
      "op": [
       [
        "Permite prototipar circuitos fácilmente",
@@ -1401,7 +1401,7 @@
      "tipo": "varias",
      "en": "¿Qué afirmaciones sobre sensores analógicos son correctas?",
      "ex": "Dan una tensión continua proporcional a lo que miden; la ESP32 la convierte con su ADC usando <code>analogRead()</code>.",
-     "fuente": "Parcial IoT 2025 · Simulacro 2026",
+     "fuente": "Parcial IoT 2025 y 2026 · Simulacro 2026",
      "op": [
       [
        "No son compatibles con ESP32",
@@ -1777,7 +1777,7 @@
      "tipo": "varias",
      "en": "¿Cuál es la resolución típica del ADC en ESP32 al usar analogRead() sin modificarla?",
      "ex": "Por defecto el ADC es de <b>12 bits</b>: analogRead devuelve de <b>0 a 4095</b> (2<sup>12</sup> = 4096 valores). Se puede cambiar con analogReadResolution().",
-     "fuente": "Parcial IoT 2025",
+     "fuente": "Parcial IoT 2025 y 2026",
      "op": [
       [
        "Valores entre 0 y 4095",
@@ -1805,7 +1805,7 @@
      "tipo": "varias",
      "en": "¿Qué dispositivos utilizan modulación por ancho de pulso (PWM)?",
      "ex": "Con PWM se regula el brillo de un <b>LED</b>, la velocidad de un <b>motor DC</b> (con su driver) y la posición de un <b>servo</b>. El relé solo prende o apaga.",
-     "fuente": "Parcial IoT 2025 · Simulacro 2026",
+     "fuente": "Parcial IoT 2025 y 2026 · Simulacro 2026",
      "op": [
       [
        "Motores DC",
@@ -1900,6 +1900,31 @@
        false
       ]
      ]
+    },
+    {
+     "tipo": "una",
+     "en": "Analice la siguiente instrucción y seleccione qué resolución y rango de valores establece para una lectura analógica del ESP32:",
+     "code": "analogReadResolution(12);",
+     "op": [
+      [
+       "0 a 2047",
+       false
+      ],
+      [
+       "0 a 1023",
+       false
+      ],
+      [
+       "0 a 4095",
+       true
+      ],
+      [
+       "0 a 255",
+       false
+      ]
+     ],
+     "ex": "Con 12 bits entran 2<sup>12</sup> = 4096 valores: de <b>0 a 4095</b>. De 0 a 1023 son 10 bits (el ADC del Arduino UNO), de 0 a 255 son 8 y de 0 a 2047 serían 11.",
+     "fuente": "Parcial IoT 2026"
     },
     {
      "tipo": "num",
@@ -2949,6 +2974,90 @@
      ]
     },
     {
+     "tipo": "una",
+     "en": "¿Qué función cumple la instrucción?",
+     "code": "pinMode(5, OUTPUT);",
+     "op": [
+      [
+       "Activa una resistencia Pull-Up en el pin 5",
+       false
+      ],
+      [
+       "Configura el pin 5 para leer señales digitales",
+       false
+      ],
+      [
+       "Configura el pin 5 como salida digital",
+       true
+      ],
+      [
+       "Configura el pin 5 como salida de señal PWM",
+       false
+      ]
+     ],
+     "ex": "<b>OUTPUT</b> deja el pin como <b>salida digital</b>, para usarlo después con digitalWrite(). Para leer se usa INPUT, la pull-up se prende con INPUT_PULLUP y el PWM no se configura con pinMode() sino con analogWrite() o un canal PWM.",
+     "fuente": "Parcial IoT 2026"
+    },
+    {
+     "tipo": "una",
+     "en": "¿Por qué se utiliza millis() en lugar de delay() para detectar el debounce (rebote)?",
+     "op": [
+      [
+       "Porque millis() consume menos memoria",
+       false
+      ],
+      [
+       "Porque es más rápida su ejecución.",
+       false
+      ],
+      [
+       "Porque delay() evita utilizar interrupciones",
+       false
+      ],
+      [
+       "Porque incrementa la resolución del ADC",
+       false
+      ],
+      [
+       "Porque permite que el programa continúe ejecutando otras tareas mientras mide el tiempo",
+       true
+      ]
+     ],
+     "ex": "<b>delay()</b> frena todo el programa mientras espera. Con <b>millis()</b> se compara cuánto tiempo pasó desde el último cambio y el loop sigue andando (lee otros sensores, atiende el WiFi). No tiene que ver con la memoria, la velocidad ni el ADC.",
+     "fuente": "Parcial IoT 2026"
+    },
+    {
+     "tipo": "armar",
+     "en": "Construya el código correcto para configurar los pines touch, teniendo en cuenta que ya se definió:",
+     "code": "volatile bool touchDetectado1 = false;\nvolatile bool touchDetectado2 = false;",
+     "huecos": [
+      "void setup(){",
+      "pinMode(LED1, OUTPUT);",
+      "touchAttachInterrupt(touchMenos, handleTouch1, 850);",
+      "touchAttachInterrupt(touchMas, handleTouch2, 950);",
+      "}",
+      "void loop(){",
+      "if (touchDetectado1) {",
+      "estadoLed -= 50;"
+     ],
+     "fichas": [
+      "pinMode(LED1, INPUT);",
+      "touchAttachInterrupt(touchMenos, handleTouch2, 850);",
+      "touchAttachInterrupt(touchMas, handleTouch1, 950);",
+      "estadoLed += 50;"
+     ],
+     "libres": [
+      [
+       1,
+       2,
+       3
+      ]
+     ],
+     "ex": "En el <b>setup</b> va el LED como <b>salida</b> (OUTPUT) y un <b>touchAttachInterrupt()</b> por pin, cada uno con su función: <b>touchMenos → handleTouch1</b> (la que pone touchDetectado1 en true) y <b>touchMas → handleTouch2</b>; esas tres líneas pueden ir en cualquier orden. En el <b>loop</b>, si se tocó touchMenos (touchDetectado1), se baja el brillo: <b>estadoLed -= 50</b>. Sobran pinMode(LED1, INPUT), los dos touchAttachInterrupt con la función cruzada y estadoLed += 50 (eso va con touchDetectado2). Valía 15 puntos, cada hueco lo mismo.",
+     "mal": "El campus no mostró la clave de esta pregunta (el intento quedó 0 de 8): la armamos con las 12 fichas del parcial y lo que pide el enunciado.",
+     "fuente": "Parcial IoT 2026"
+    },
+    {
      "tipo": "varias",
      "en": "¿Qué afirmaciones sobre setup() y loop() son correctas?",
      "ex": "Es la estructura de todo sketch.",
@@ -3812,7 +3921,8 @@
        "Falso",
        false
       ]
-     ]
+     ],
+     "vf": true
     },
     {
      "tipo": "una",
@@ -3866,6 +3976,23 @@
        false
       ]
      ]
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En un bus de comunicación de datos I2C cada dispositivo esclavo se identifica mediante un pin dedicado, llamado normalmente SS o bien CS (chip select).",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "<b>Falso.</b> En I2C cada esclavo tiene una <b>dirección</b> (de 7 bits) y el maestro lo llama por esa dirección, por las mismas dos líneas (SDA y SCL). Una línea <b>SS/CS</b> por esclavo es de <b>SPI</b>. Valía 5 puntos.",
+     "fuente": "Parcial IoT 2026"
     },
     {
      "tipo": "varias",
