@@ -1667,5 +1667,313 @@
     }
    ]
   }
+ ],
+ "glosario": [
+  {
+   "t": "Java y la JVM",
+   "sig": "Java Virtual Machine · máquina virtual de Java",
+   "que": "Java se compila a <b>bytecode</b> (archivos .class) y lo ejecuta la <b>JVM</b>: por eso el mismo programa corre en cualquier sistema operativo que tenga la JVM.",
+   "re": "\\bJava\\b|JVM|bytecode"
+  },
+  {
+   "t": "Compilado e interpretado",
+   "que": "Un lenguaje <b>compilado</b> se traduce entero antes de correr; uno <b>interpretado</b> se va traduciendo mientras corre. Java hace las dos cosas: se compila a bytecode y la JVM lo ejecuta.",
+   "re": "compilad|interpretad|compilaci",
+   "i": true
+  },
+  {
+   "t": "Recolector de basura",
+   "sig": "garbage collector",
+   "que": "La parte de la JVM que libera sola la memoria de los objetos que ya nadie usa (sin referencias): en Java no se libera memoria a mano.",
+   "re": "recolector de basura|garbage",
+   "i": true
+  },
+  {
+   "t": "Clase y objeto",
+   "que": "La <b>clase</b> es el molde (atributos y métodos) y el <b>objeto</b>, una instancia creada con <b>new</b>.",
+   "re": "\\bclases?\\b|objeto|instancia",
+   "i": true
+  },
+  {
+   "t": "Constructor",
+   "que": "El método que se ejecuta al crear el objeto con new: tiene el nombre de la clase, no devuelve nada e inicializa los atributos.",
+   "re": "constructor",
+   "i": true
+  },
+  {
+   "t": "Sobrecarga",
+   "sig": "overloading",
+   "que": "Varios métodos o constructores con el <b>mismo nombre</b> y distinta lista de parámetros (cantidad o tipos). El tipo de retorno no sirve para distinguirlos.",
+   "re": "sobrecarg",
+   "i": true
+  },
+  {
+   "t": "Sobrescritura (redefinir)",
+   "sig": "overriding · @Override",
+   "que": "Una subclase vuelve a escribir un método heredado con la <b>misma firma</b>. Al llamarlo se ejecuta la versión de la clase real del objeto.",
+   "re": "sobrescri|sobreescri|redefin|override",
+   "i": true
+  },
+  {
+   "t": "Herencia",
+   "sig": "extends",
+   "que": "Una <b>subclase</b> toma los atributos y métodos de una <b>superclase</b> (extends) y puede agregar o redefinir. En Java cada clase hereda de una sola (herencia simple).",
+   "re": "hereda|herencia|extends|super ?clase|subclase|deriva",
+   "i": true
+  },
+  {
+   "t": "Polimorfismo",
+   "que": "Un mismo llamado hace cosas distintas según la clase real del objeto: en una List&lt;JuegoMesa&gt; con un JuegoCooperativo, getPuntuacionAjustada() corre la versión del cooperativo.",
+   "re": "polimorf|JuegoCooperativo extiende",
+   "i": true
+  },
+  {
+   "t": "final",
+   "que": "<b>Clase final</b>: no se puede heredar (por ejemplo, String). <b>Método final</b>: no se puede redefinir. <b>Variable final</b>: no se puede volver a asignar.",
+   "re": "\\bfinal\\b"
+  },
+  {
+   "t": "static",
+   "que": "Pertenece a la <b>clase</b> y no a cada objeto: se usa sin crear uno (Math.max, main). Un método static no puede usar directamente los métodos y atributos de instancia.",
+   "re": "\\bstatic\\b|estátic",
+   "i": true
+  },
+  {
+   "t": "main",
+   "que": "public static void main(String[] args): el método donde arranca el programa.",
+   "re": "\\bmain\\b"
+  },
+  {
+   "t": "Modificadores de acceso",
+   "que": "<b>public</b>: lo usa cualquiera. <b>private</b>: solo la propia clase. <b>protected</b>: la clase, sus subclases y el paquete. Sin modificador (<b>default</b>): solo el paquete.",
+   "re": "\\bpublic\\b|\\bprivate\\b|\\bprotected\\b|\\bdefault\\b|modificador"
+  },
+  {
+   "t": "Encapsulamiento e inmutabilidad",
+   "que": "<b>Encapsular</b> es esconder los atributos (private) y dar acceso controlado. Un objeto o una lista <b>inmutable</b> no cambia después de creado.",
+   "re": "inmutab|encapsul|copia defensiva|estado interno",
+   "i": true
+  },
+  {
+   "t": "List.copyOf y las copias",
+   "que": "List.copyOf(lista) hace una copia <b>superficial</b> (copia las referencias, no clona los objetos) e <b>inmodificable</b>: si después cambia la lista original, la copia no; y agregarle algo lanza UnsupportedOperationException.",
+   "re": "copyOf|copia profunda|deep copy|shallow|getServidores\\(\\)\\.add",
+   "i": true
+  },
+  {
+   "t": "Colecciones",
+   "que": "<b>List</b>: una lista ordenada (ArrayList, List.of). <b>Map</b>: pares clave → valor; HashMap no tiene orden y <b>TreeMap</b> queda ordenado por clave.",
+   "re": "ArrayList|\\bList\\b|\\bMap\\b|TreeMap|HashMap|colecci"
+  },
+  {
+   "t": "Interfaz",
+   "sig": "interface",
+   "que": "Un contrato: dice qué métodos tiene que tener una clase (implements) sin decir cómo. Una clase puede implementar varias.",
+   "re": "interfa[zc]",
+   "i": true
+  },
+  {
+   "t": "Stream",
+   "sig": "flujo",
+   "que": "Una secuencia de datos que pasa por operaciones encadenadas (filter, map, sorted…) sin guardarse aparte. Es perezoso: recién se ejecuta con la operación terminal.",
+   "re": "stream|flujo",
+   "i": true
+  },
+  {
+   "t": "Operaciones intermedias",
+   "que": "Devuelven <b>otro stream</b>: <b>filter</b> deja los que cumplen, <b>map</b> transforma cada uno, <b>sorted</b> ordena, <b>distinct</b> saca los repetidos y <b>limit</b> deja los primeros n.",
+   "re": "intermedi|\\bfilter\\b|\\bmap\\b|sorted|distinct|\\blimit\\b",
+   "i": true
+  },
+  {
+   "t": "Operaciones terminales",
+   "que": "Cierran el stream y dan un resultado: <b>forEach</b> hace algo con cada uno (no devuelve nada), <b>count</b> cuenta, <b>collect</b> o <b>toList</b> los juntan en una colección.",
+   "re": "terminal|forEach|\\bcount\\b|collect|toList",
+   "i": true
+  },
+  {
+   "t": "Collectors",
+   "que": "Las recetas para collect(): <b>toList</b>, <b>groupingBy</b> (agrupa por una clave, como un GROUP BY), <b>summingInt</b> (suma), <b>averagingInt</b> (promedio) y <b>summarizingInt</b> (cantidad, suma, mínimo, promedio y máximo juntos).",
+   "re": "Collectors|groupingBy|summingInt|averaging|summarizing|toMap"
+  },
+  {
+   "t": "Expresión lambda",
+   "que": "Una función corta y sin nombre: (parámetros) -&gt; expresión. Implementa una interfaz funcional sin escribir una clase: s -&gt; s.getIndiceCarga() &lt; 50.",
+   "re": "lambda|->",
+   "i": true
+  },
+  {
+   "t": "Interfaz funcional",
+   "sig": "@FunctionalInterface",
+   "que": "Una interfaz con un solo método abstracto. <b>Predicate</b> (test: devuelve boolean), <b>Function</b> (apply: transforma), <b>Consumer</b> (accept: no devuelve). @FunctionalInterface hace que el compilador lo controle.",
+   "re": "interfaz funcional|@FunctionalInterface|\\bPredicate\\b|\\bFunction\\b|\\bConsumer\\b|\\bSupplier\\b"
+  },
+  {
+   "t": "Funciones de orden superior",
+   "que": "Métodos que reciben o devuelven funciones (lambdas), como filter o map.",
+   "re": "orden superior",
+   "i": true
+  },
+  {
+   "t": "Referencia a método",
+   "sig": "::",
+   "que": "Servidor::getRegion es lo mismo que s -&gt; s.getRegion(): una forma corta de pasar un método existente como lambda.",
+   "re": "::"
+  },
+  {
+   "t": "var",
+   "que": "El compilador deduce el tipo de la variable local: var lista = new ArrayList&lt;Servidor&gt;(). El tipo sigue siendo fijo; solo no se escribe.",
+   "re": "\\bvar\\b"
+  },
+  {
+   "t": "Clases de envoltorio",
+   "sig": "wrapper classes",
+   "que": "Las clases que envuelven a los tipos primitivos para usarlos como objetos (por ejemplo, en una lista): int → <b>Integer</b>, double → <b>Double</b>, byte → <b>Byte</b>, char → <b>Character</b>. El pase automático se llama autoboxing.",
+   "re": "envoltorio|wrapper|Integer|\\bByte\\b"
+  },
+  {
+   "t": "int, double y la división entera",
+   "que": "<b>int</b> es entero y <b>double</b>, con coma. Entre enteros la división corta los decimales (7 / 2 = 3), y (int) 50.8 da 50: por eso conviene multiplicar antes de dividir.",
+   "re": "\\bint\\b|\\bdouble\\b|aritmética entera|\\(int\\)|averagingInt|summingInt"
+  },
+  {
+   "t": "Excepciones",
+   "sig": "Exception",
+   "que": "Un error que corta el flujo normal; se atrapa con try/catch. Las <b>chequeadas</b> (IOException) obligan a tratarlas o a declararlas con throws; las <b>no chequeadas</b> (RuntimeException y sus hijas) no.",
+   "re": "excepci|Exception|\\bthrows?\\b",
+   "i": true
+  },
+  {
+   "t": "try, catch y finally",
+   "que": "<b>try</b> envuelve lo que puede fallar, <b>catch</b> atrapa la excepción (primero la más específica) y <b>finally</b> corre siempre, salvo que se llame a System.exit().",
+   "re": "\\btry\\b|finally|\\bcatch\\b"
+  },
+  {
+   "t": "Excepciones comunes",
+   "que": "<b>NumberFormatException</b>: el texto no es un número. <b>IllegalArgumentException</b>: un argumento inválido. <b>UnsupportedOperationException</b>: modificar una lista inmodificable. <b>NullPointerException</b>: usar algo que es null. <b>ArrayIndexOutOfBoundsException</b>: índice fuera del arreglo.",
+   "re": "NumberFormatException|IllegalArgumentException|UnsupportedOperationException|NullPointerException|ArrayIndexOutOfBounds|ClassCastException|ConcurrentModification|IOException"
+  },
+  {
+   "t": "Arreglos",
+   "sig": "array",
+   "que": "Una cantidad fija de elementos del mismo tipo: int[] v = new int[6]. Los índices van de 0 a length − 1 y el tamaño se lee con <b>v.length</b> (sin paréntesis).",
+   "re": "arreglo|\\[\\]|\\.length",
+   "i": true
+  },
+  {
+   "t": "CSV",
+   "sig": "Comma-Separated Values · valores separados por comas",
+   "que": "Un archivo de texto con un registro por línea y los campos separados por comas (o punto y coma). La primera línea suele ser el <b>encabezado</b> con los nombres de las columnas.",
+   "re": "\\bCSV\\b|\\.csv|separador|encabezado",
+   "i": true
+  },
+  {
+   "t": "Scanner y BufferedReader",
+   "que": "Dos formas del JDK de leer texto línea por línea. <b>BufferedReader</b> (Files.newBufferedReader) es más rápido para archivos grandes; <b>Scanner</b> es más cómodo para leer de a datos.",
+   "re": "Scanner|BufferedReader|readLine|\\bJDK\\b"
+  },
+  {
+   "t": "split, strip y trim",
+   "que": "<b>split(\",\")</b> corta la línea en un arreglo de campos (con -1 conserva los vacíos del final). <b>strip()</b> y <b>trim()</b> sacan los espacios del principio y del final.",
+   "re": "split|strip|trim"
+  },
+  {
+   "t": "Parser y su resultado",
+   "que": "El parser lee el archivo y convierte cada fila en un objeto. Lleva la cuenta: <b>leídas</b> (todas las filas), <b>procesadas</b> (las que quedaron), <b>descartadas</b> (las que no interesan, sin error) e <b>inválidas</b> (las que tienen un dato mal).",
+   "re": "parser|leídas|procesadas|descartad|inválid|ResultadoParseo|leidas",
+   "i": true
+  },
+  {
+   "t": "OpenCSV y Jackson",
+   "que": "Librerías para leer CSV: manejan comillas y separadores, y pueden pasar cada fila a un objeto por el nombre de la columna (CsvToBean).",
+   "re": "OpenCSV|CsvToBean|CSVReader|Jackson"
+  },
+  {
+   "t": "Maven",
+   "que": "La herramienta que arma el proyecto Java: baja las dependencias, compila, corre los tests y empaqueta. Se configura en <b>pom.xml</b>.",
+   "re": "Maven|\\bmvn\\b|\\bpom\\b",
+   "i": true
+  },
+  {
+   "t": "pom.xml y las coordenadas",
+   "sig": "Project Object Model",
+   "que": "El archivo del proyecto Maven. Cada proyecto y cada dependencia se identifica con <b>groupId</b> (la organización), <b>artifactId</b> (el nombre) y <b>version</b>.",
+   "re": "pom\\.xml|groupId|artifactId|\\bversion\\b"
+  },
+  {
+   "t": "Archetype",
+   "que": "Una plantilla que genera la estructura inicial de un proyecto: mvn archetype:generate.",
+   "re": "archetype",
+   "i": true
+  },
+  {
+   "t": "Ciclo de vida de Maven",
+   "que": "Las fases en orden: validate → compile → test → package (arma el .jar) → install (lo deja en el repositorio local) → deploy. Pedir una corre todas las anteriores.",
+   "re": "ciclo de vida|validate|package|install|deploy",
+   "i": true
+  },
+  {
+   "t": "scope test y las carpetas",
+   "que": "Una dependencia con <b>scope test</b> (como JUnit) solo se usa para compilar y correr los tests: no va en el .jar. Los tests van en <b>src/test/java</b> y el código en <b>src/main/java</b>; <b>target</b> es donde Maven deja lo compilado.",
+   "re": "scope|src/(main|test)|target/"
+  },
+  {
+   "t": "JUnit",
+   "que": "El framework de tests: cada método con <b>@Test</b> es una prueba y se comprueba con <b>assertEquals</b>, <b>assertTrue</b>, <b>assertThrows</b> (que lance una excepción) o <b>assertAll</b> (varias juntas: informa todas las que fallan).",
+   "re": "JUnit|@Test|assert"
+  },
+  {
+   "t": "@BeforeEach y @BeforeAll",
+   "que": "<b>@BeforeEach</b> corre antes de cada test (por ejemplo, para armar los datos); <b>@BeforeAll</b>, una sola vez antes de todos (y tiene que ser static).",
+   "re": "@Before|@After"
+  },
+  {
+   "t": "Backend",
+   "que": "La parte del sistema que corre en el servidor: la lógica de negocio, los datos y los servicios que usan la web, la app u otros sistemas.",
+   "re": "backend",
+   "i": true
+  },
+  {
+   "t": "Lógica de negocio",
+   "que": "Las reglas propias del problema (cómo se calcula una comisión, qué fila es válida), separadas de la pantalla y de la base de datos.",
+   "re": "lógica de negocio|reglas|calcula el neto|comisión",
+   "i": true
+  },
+  {
+   "t": "Capas y servicio",
+   "que": "El backend se separa en capas: el <b>controlador</b> recibe los pedidos, el <b>servicio</b> tiene la lógica de negocio y el <b>repositorio</b>, los datos. Cada una usa solo la de abajo.",
+   "re": "\\bcapas?\\b|servicio|modular",
+   "i": true
+  },
+  {
+   "t": "Arquitectura hexagonal",
+   "sig": "puertos y adaptadores",
+   "que": "El <b>dominio</b> (la lógica) queda en el centro, sin depender de la base de datos ni del framework; lo de afuera se conecta por interfaces (puertos) con adaptadores que se pueden cambiar.",
+   "re": "hexagonal|puertos|adaptadores|dominio",
+   "i": true
+  },
+  {
+   "t": "Endpoint y API",
+   "sig": "Application Programming Interface",
+   "que": "Un <b>endpoint</b> es una URL del backend que responde un pedido HTTP: GET /juegos devuelve el catálogo. El conjunto de endpoints es la <b>API</b>.",
+   "re": "endpoint|\\bGET\\b|\\bREST\\b|API REST|\\bweb\\b"
+  },
+  {
+   "t": "Persistencia",
+   "que": "Guardar los datos en algo que dure (una base de datos) en vez de tenerlos solo en memoria, donde se pierden al reiniciar el servidor.",
+   "re": "persisten|base de datos",
+   "i": true
+  },
+  {
+   "t": "UML",
+   "sig": "Unified Modeling Language",
+   "que": "Un lenguaje de diagramas. En el de clases, la herencia es una flecha con punta de triángulo hacia la superclase.",
+   "re": "\\bUML\\b"
+  },
+  {
+   "t": "String",
+   "que": "El texto en Java. Es inmutable y se compara con equals(), no con ==.",
+   "re": "\\bString\\b"
+  }
  ]
 }

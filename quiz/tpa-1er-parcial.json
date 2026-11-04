@@ -547,5 +547,136 @@
     }
    ]
   }
+ ],
+ "glosario": [
+  {
+   "t": "Sistema fijo y sistema móvil",
+   "sig": "OXYZ y OUVW",
+   "que": "<b>OXYZ</b> es el sistema fijo (la base, la torre de control) y <b>OUVW</b>, el que se mueve con el objeto (el robot, el avión). Las coordenadas de un punto cambian según desde cuál se lo mire.",
+   "re": "OUVW|0XYZ|OXYZ|sistema fijo|considerado fijo|\\(u,v,w\\)|\\bu = "
+  },
+  {
+   "t": "Rotación",
+   "que": "Girar un sistema un ángulo alrededor de un eje (X, Y o Z). Se escribe con una matriz de rotación 3×3 (Rotx, Roty, Rotz); el signo del ángulo sigue la regla de la mano derecha.",
+   "re": "girado|rotaci|rotado",
+   "i": true
+  },
+  {
+   "t": "Traslación",
+   "que": "Mover el sistema sin girarlo, sumándole un vector p = (px, py, pz).",
+   "re": "traslad|traslaci",
+   "i": true
+  },
+  {
+   "t": "Matriz homogénea",
+   "que": "Una matriz 4×4 que junta la rotación (la parte 3×3) y la traslación (la cuarta columna). Así, varias transformaciones se encadenan multiplicando matrices.",
+   "re": "homogéne|matriz",
+   "i": true
+  },
+  {
+   "t": "Coordenadas homogéneas",
+   "que": "Un punto se escribe con un 1 como cuarta coordenada, (x, y, z, 1), para poder multiplicarlo por una matriz 4×4.",
+   "re": "\\d\\s*,\\s*1\\s*\\)"
+  },
+  {
+   "t": "El orden de las transformaciones",
+   "que": "Si cada giro o traslación es respecto del sistema <b>fijo</b>, se <b>premultiplica</b>: la última va a la izquierda. Si es respecto del sistema <b>móvil</b>, se <b>posmultiplica</b>: van de izquierda a derecha en el orden en que se hacen.",
+   "re": "posteriormente|luego|primero|finalmente",
+   "i": true
+  },
+  {
+   "t": "El vector r",
+   "que": "El mismo punto en los dos sistemas: <b>r uvw</b> en el móvil y <b>r xyz</b> (rx, ry, rz) en el fijo. Se pasa de uno al otro con la matriz: r xyz = T · r uvw.",
+   "re": "r uvw|ruvw|\\(rx, ?ry, ?rz\\)"
+  },
+  {
+   "t": "Versor",
+   "que": "Un vector de largo 1 que marca la dirección de un eje: i, j y k en la base; i′, j′ y k′ en el sistema que se movió. Sus componentes son las columnas de la matriz de rotación.",
+   "re": "versor",
+   "i": true
+  },
+  {
+   "t": "Denavit–Hartenberg",
+   "sig": "DH",
+   "que": "Un método para describir un robot con 4 parámetros por articulación y armar la matriz de cada eslabón; multiplicándolas sale la posición del efector final (cinemática directa).",
+   "re": "Denavit|Hartenberg|\\bDH\\b"
+  },
+  {
+   "t": "Parámetros θ, d, a y α",
+   "que": "<b>θ</b>: giro alrededor de z (es la variable si la articulación es rotativa). <b>d</b>: desplazamiento sobre z (la variable si es prismática). <b>a</b>: distancia entre los ejes z, medida sobre x. <b>α</b>: giro entre un eje z y el siguiente, alrededor de x.",
+   "re": "parámetros de Denavit|tabla D|θ|α"
+  },
+  {
+   "t": "Articulación rotativa y prismática",
+   "que": "La <b>rotativa</b> gira (su variable es un ángulo, q o θ); la <b>prismática</b> se desliza (su variable es una distancia, d).",
+   "re": "rotativ|prismátic|articulaci",
+   "i": true
+  },
+  {
+   "t": "Eslabón",
+   "sig": "enlace",
+   "que": "La pieza rígida que une dos articulaciones: los «brazos» del robot, de largo L1, L2…",
+   "re": "eslab|enlace|\\bL ?\\d|\\bl ?\\d",
+   "i": true
+  },
+  {
+   "t": "Grados de libertad",
+   "que": "Cuántos movimientos independientes tiene el robot: en general, uno por articulación.",
+   "re": "grados de libertad",
+   "i": true
+  },
+  {
+   "t": "Efector final",
+   "que": "La herramienta en la punta del robot (una pinza, una soldadora): la parte que actúa sobre el medio.",
+   "re": "efector",
+   "i": true
+  },
+  {
+   "t": "Cinemática directa",
+   "que": "Con los valores de las articulaciones (ángulos y distancias), calcular dónde queda el efector final: su posición y su orientación.",
+   "re": "cinemática directa|posición del efector",
+   "i": true
+  },
+  {
+   "t": "Cinemática inversa",
+   "que": "Al revés: con la posición que se quiere para el efector, calcular qué valores tienen que tomar las articulaciones. Puede haber varias soluciones (codo arriba y codo abajo) o ninguna.",
+   "re": "cinemática inversa|qué valores deben tener|desean saber los valores",
+   "i": true
+  },
+  {
+   "t": "Configuraciones de robots",
+   "que": "<b>Cartesiano</b>: tres prismáticas (X, Y, Z). <b>Cilíndrico</b>: una rotativa y dos prismáticas. <b>Esférico</b>: dos rotativas y una prismática. <b>Antropomorfo</b>: todas rotativas, como un brazo. <b>Delta</b>: tres brazos en paralelo.",
+   "re": "cartesiano|cilíndric|esféric|antropomorf|\\bdelta\\b|robot industrial",
+   "i": true
+  },
+  {
+   "t": "RPR, RRR y compañía",
+   "que": "Las letras dicen las articulaciones desde la base: <b>R</b> rotativa y <b>P</b> prismática. Un RPR es rotativa, prismática y rotativa.",
+   "re": "\\b[RP]{2,4}\\b"
+  },
+  {
+   "t": "Regla de la mano derecha",
+   "sig": "o del tirabuzón",
+   "que": "Con la mano derecha, el pulgar apunta según el eje y los dedos se cierran en el sentido del giro positivo. También sirve para ubicar Z a partir de X e Y.",
+   "re": "mano derecha|tirabuz",
+   "i": true
+  },
+  {
+   "t": "Reductor de velocidad",
+   "que": "Engranajes que bajan la velocidad del motor y aumentan el torque (la fuerza de giro): los motores giran muy rápido y con poca fuerza.",
+   "re": "reductor",
+   "i": true
+  },
+  {
+   "t": "Radianes",
+   "que": "π rad = 180°: π/2 = 90°, π/4 = 45°, π/6 = 30°, π/7 ≈ 25,7°.",
+   "re": "π|\\brad\\b"
+  },
+  {
+   "t": "Estado de reposo",
+   "que": "La posición inicial del robot, desde la que se miden los parámetros: la de la figura, con las variables en cero.",
+   "re": "reposo",
+   "i": true
+  }
  ]
 }

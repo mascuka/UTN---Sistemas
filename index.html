@@ -366,6 +366,9 @@
   .qz-op.ok .qz-l{color:var(--ok)} .qz-op.mal .qz-l{color:var(--rojo)}
   .qz-acc{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
   .qz-acc:empty{display:none}
+  .qz-pasar{margin-left:auto;font:inherit;font-size:.86rem;font-weight:500;background:none;border:0;border-radius:8px;padding:8px 10px;color:var(--muted);cursor:pointer}
+  .qz-pasar:hover{background:var(--hover);color:var(--text)}
+  .qz-score .pa{color:var(--muted)}
   .qz-tip{font-size:.84rem;color:var(--muted)}
   .qz-veredicto{font-weight:800;font-size:1.05rem;margin-top:18px}
   .qz-veredicto.bien{color:var(--ok)} .qz-veredicto.mal{color:var(--rojo)}
@@ -8116,7 +8119,7 @@ function quizEmpezar(lista, cant = qz.cant){
   mezclar(lista);
   const nuevas = lista.filter(x => !qz.vistas.has(x.q)), vistas = lista.filter(x => qz.vistas.has(x.q));
   const cola = [...nuevas, ...vistas].slice(0, cant || lista.length);
-  Object.assign(qz, { cola, i: 0, bien: 0, mal: 0, erradas: [], sel: new Set(), hecho: false });
+  Object.assign(qz, { cola, i: 0, bien: 0, mal: 0, erradas: [], pasadas: [], sel: new Set(), hecho: false });
   quizPregunta();
 }
 /* La lamparita: los términos del glosario del quiz (campo "glosario") que aparecen en la pregunta,
@@ -8141,7 +8144,7 @@ function quizPregunta(){
     <div class="qz-top">
       <div class="qz-barra"><i style="width:${qz.i / qz.cola.length * 100}%"></i></div>
       <span>${qz.i + 1} de ${qz.cola.length}</span>
-      <span class="qz-score"><b class="si">✓ ${qz.bien}</b> <b class="no">✗ ${qz.mal}</b></span>
+      <span class="qz-score"><b class="si">✓ ${qz.bien}</b> <b class="no">✗ ${qz.mal}</b>${qz.pasadas.length ? ` <b class="pa" title="Pasadas">↷ ${qz.pasadas.length}</b>` : ""}</span>
       <button class="qz-salir" data-qsalir>Salir</button>
     </div>
     <div class="qz-card">
@@ -8158,11 +8161,11 @@ function quizPregunta(){
       </div>` : ""}
       ${q.tipo === "armar" ? armarHtml() : ""}
       ${q.op ? `
-        <div class="qz-ayuda">${q.tipo === "varias" ? "Hay más de una correcta: marcalas y tocá Responder" : q.vf ? "¿Verdadero o falso?" : "Tocá la opción correcta"}</div>
+        <div class="qz-ayuda">${q.tipo === "varias" ? "Hay más de una correcta: marcalas y tocá Responder" : q.vf || q.tipo === "vf" ? "¿Verdadero o falso?" : "Tocá la opción correcta"}</div>
         <div class="qz-ops">${q.op.map((o, k) => `<button class="qz-op" data-qop="${k}"><span class="qz-l">${String.fromCharCode(97 + k)}</span><span>${o[0]}</span></button>`).join("")}</div>` : ""}
       <div class="qz-acc">${abierta
         ? `<button class="qz-btn primario" data-qver>Ver respuesta</button><span class="qz-tip">Resolvelo primero y después mirá</span>`
-        : q.tipo === "varias" || q.tipo === "armar" ? `<button class="qz-btn primario" data-qresp disabled>Responder</button>${q.tipo === "armar" ? `<button class="qz-btn" data-qvaciar>Vaciar</button>` : ""}` : ""}</div>
+        : q.tipo === "varias" || q.tipo === "armar" ? `<button class="qz-btn primario" data-qresp disabled>Responder</button>${q.tipo === "armar" ? `<button class="qz-btn" data-qvaciar>Vaciar</button>` : ""}` : ""}<button class="qz-pasar" data-qpasar title="Pasar a la siguiente sin responder; al final podés hacer las que pasaste">Pasar ↷</button></div>
       <div id="qzRes"></div>
     </div>`;
 }
@@ -8251,16 +8254,17 @@ function quizSiguiente(){
   else quizFin();
 }
 function quizFin(){
-  const n = qz.cola.length, b = qz.bien, pct = Math.round(b / n * 100);
-  const frase = pct >= 80 ? "¡Muy bien! Estás para el parcial." : pct >= 60 ? "Bien. Repasá las que erraste y volvé a intentar." : "Todavía falta: repasá el material y las que erraste.";
+  const pas = qz.pasadas.length, n = qz.cola.length - pas, b = qz.bien, pct = n ? Math.round(b / n * 100) : 0;
+  const frase = !n ? "Pasaste todas: cuando quieras, hacelas." : pct >= 80 ? "¡Muy bien! Estás para el parcial." : pct >= 60 ? "Bien. Repasá las que erraste y volvé a intentar." : "Todavía falta: repasá el material y las que erraste.";
   $("#quiz").innerHTML = `
     <div class="qz-card qz-fin">
       <div class="qz-nota">${b}<small> de ${n}</small></div>
       <div class="qz-barra grande"><i style="width:${pct}%"></i></div>
-      <p>${frase}</p>
+      <p>${frase}${pas && n ? ` <span class="qz-tip">Pasaste ${pas === 1 ? "una" : pas}: no cuenta${pas === 1 ? "" : "n"} en la nota.</span>` : ""}</p>
       <div class="qz-acc">
         ${qz.erradas.length ? `<button class="qz-btn primario" data-qrepasar>Repasar las que erré (${qz.erradas.length})</button>` : ""}
-        ${qz.cant && quizElegidas().length > qz.cant ? `<button class="qz-btn${qz.erradas.length ? "" : " primario"}" data-qmas>Otras ${qz.cant}</button>` : ""}
+        ${pas ? `<button class="qz-btn${qz.erradas.length ? "" : " primario"}" data-qpasadas>Hacer las que pasé (${pas})</button>` : ""}
+        ${qz.cant && quizElegidas().length > qz.cant ? `<button class="qz-btn${qz.erradas.length || pas ? "" : " primario"}" data-qmas>Otras ${qz.cant}</button>` : ""}
         <button class="qz-btn" data-qotra>Elegir otros temas</button>
         <button class="qz-btn" data-go="m${qz.m.n}/${qz.p.id}">Volver al parcial</button>
       </div>
@@ -8268,10 +8272,12 @@ function quizFin(){
 }
 function clicQuiz(e){
   const t = e.target;
-  const el = t.closest("[data-qcant],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra],[data-qh],[data-qf],[data-qvaciar],[data-qlamp]");
+  const el = t.closest("[data-qcant],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra],[data-qh],[data-qf],[data-qvaciar],[data-qlamp],[data-qpasar],[data-qpasadas]");
   if(!el) return false;
   const ds = el.dataset;
   if("qlamp" in ds){ const p = $("#qzGlosa"), abrir = p.hidden; p.hidden = !abrir; el.setAttribute("aria-expanded", abrir); }
+  else if("qpasar" in ds && !qz.hecho){ qz.pasadas.push(qz.cola[qz.i]); quizSiguiente(); }
+  else if("qpasadas" in ds) quizEmpezar([...qz.pasadas], 0);
   else if("qcant" in ds){ qz.cant = +ds.qcant; quizInicio(); }
   else if("qempezar" in ds || "qmas" in ds) quizEmpezar(quizElegidas());
   else if("qop" in ds && !qz.hecho){
