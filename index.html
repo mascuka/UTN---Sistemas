@@ -5449,10 +5449,12 @@ function cargarPdfJs(){
   });
 }
 
-/* En la compu (con mouse y sin pantalla táctil), si el navegador trae su visor de PDF (Chrome, Edge, Firefox), se usa ese:
+/* En la compu (con mouse o touchpad), si el navegador trae su visor de PDF (Chrome, Edge, Firefox), se usa ese:
    dibuja el texto con el suavizado del sistema y queda nítido, mientras que PDF.js lo dibuja como una imagen y se ve blando.
    En el celular y en los navegadores de WhatsApp o Instagram no hay visor propio (o descargan el PDF): ahí sigue PDF.js */
-const visorNativo = () => navigator.pdfViewerEnabled === true && matchMedia("(pointer: fine)").matches && !(navigator.maxTouchPoints > 1);
+// (iPhone e iPad muestran el PDF dentro de la página solo a medias: ahí también PDF.js. Una notebook con pantalla táctil sí usa el del navegador)
+const esIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+const visorNativo = () => navigator.pdfViewerEnabled === true && matchMedia("(any-pointer: fine)").matches && !esIOS();
 let visorLista = [], visorPos = 0;
 // Estado del PDF abierto: hojas, zoom (1 = ajustado al ancho), búsqueda y observadores
 const vz = { doc: null, tarea: 0, pags: [], zoom: 1, actual: 0, ancho: 0, textos: null, q: "", marcas: [], marcaPos: -1, obs: null, obsMini: null };
