@@ -1,0 +1,1509 @@
+{
+ "titulo": "Física · Ingreso",
+ "descripcion": "Las preguntas de los simulacros y del examen 2021 del campus (5 preguntas numéricas: conversión, vectores, cinemática, trabajo y tensiones) y las de los finales de 2011 y 2012, con la resolución paso a paso (g = 9,8 m/s²).",
+ "secciones": [
+  {
+   "titulo": "Conversión de unidades",
+   "preguntas": [
+    {
+     "tipo": "num",
+     "en": "El límite de velocidad de una carretera pasó de <b>43,3 [millas/h]</b> a <b>60,7 [millas/h]</b>. ¿Cuál es la diferencia de velocidad en <b>m/s</b>?<br><b>Datos:</b> 1 milla = 1,609 km.<br>Expresá el resultado en m/s con dos decimales.",
+     "num": "Δv = <span class=\"resp\">7,78</span> m/s",
+     "ex": "1) La diferencia en mi/h: 60,7 − 43,3 = 17,4 mi/h.<br>2) Pasás a m/s: 1 mi/h = 1609 m / 3600 s = 0,4469 m/s.<br>3) 17,4 × 0,4469 = <b>7,78 m/s</b>.<br>Ojo: primero restá y después convertí (da lo mismo, pero hacés una sola conversión).",
+     "fuente": "Simulacro 1 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "El límite de velocidad de una carretera pasó de <b>44,6 [millas/h]</b> a <b>59,3 [millas/h]</b>. ¿Cuál es la diferencia de velocidad en <b>m/s</b>?<br><b>Datos:</b> 1 milla = 1,609 km.<br>Expresá el resultado en m/s con dos decimales.",
+     "num": "Δv = <span class=\"resp\">6,57</span> m/s",
+     "ex": "1) La diferencia en mi/h: 59,3 − 44,6 = 14,7 mi/h.<br>2) Pasás a m/s: 1 mi/h = 1609 m / 3600 s = 0,4469 m/s.<br>3) 14,7 × 0,4469 = <b>6,57 m/s</b>.<br>Ojo: primero restá y después convertí (da lo mismo, pero hacés una sola conversión).",
+     "fuente": "Simulacro 2 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "El límite de velocidad de una carretera pasó de <b>46,6 [millas/h]</b> a <b>62,2 [millas/h]</b>. ¿Cuál es la diferencia de velocidad en <b>m/s</b>?<br><b>Datos:</b> 1 milla = 1,609 km.<br>Expresá el resultado en m/s con dos decimales.",
+     "num": "Δv = <span class=\"resp\">6,97</span> m/s",
+     "ex": "1) La diferencia en mi/h: 62,2 − 46,6 = 15,6 mi/h.<br>2) Pasás a m/s: 1 mi/h = 1609 m / 3600 s = 0,4469 m/s.<br>3) 15,6 × 0,4469 = <b>6,97 m/s</b>.<br>Ojo: primero restá y después convertí (da lo mismo, pero hacés una sola conversión).",
+     "fuente": "Simulacro 3 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Una habitación mide <b>5,5 [m]</b> de largo, <b>10 [m]</b> de ancho y <b>3,9 [m]</b> de alto. ¿Cuál es el <b>volumen</b> en <b>pies cúbicos (pie³)</b>?<br><b>Datos:</b> 1 pie = 0,305 m. Resultado con dos decimales.",
+     "num": "V = <span class=\"resp\">7560,10</span> pie³",
+     "ex": "1) Volumen en m³: 5,5 × 10 × 3,9 = 214,5 m³.<br>2) 1 pie³ = (0,305 m)³ = 0,028372625 m³ (¡se eleva al cubo el factor!).<br>3) 214,5 / 0,028372625 = <b>7560,10 pie³</b>.",
+     "fuente": "Examen de ingreso 2021"
+    },
+    {
+     "tipo": "una",
+     "en": "Sabiendo que en 1 pie³ hay 28,32 litros y en 1 galón 3,785 litros, ¿cuántos pie³ hay en 18 galones?",
+     "op": [
+      [
+       "5,96 pie³",
+       false
+      ],
+      [
+       "134,7 pie³",
+       false
+      ],
+      [
+       "1,57 pie³",
+       false
+      ],
+      [
+       "2,41 pie³",
+       true
+      ]
+     ],
+     "ex": "18 gal × 3,785 L/gal = 68,13 L → 68,13 L / 28,32 L/pie³ = <b>2,41 pie³</b>. Primero a litros (la unidad que comparten) y después a pie³.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Para pasar una velocidad de m/s a pie/min, ¿qué hay que hacer? (1 min = 60 s; 1 m = 3,28 pie)",
+     "op": [
+      [
+       "Multiplicar por 196,8",
+       true
+      ],
+      [
+       "Dividir por 196,8",
+       false
+      ],
+      [
+       "Multiplicar por 0,055",
+       false
+      ],
+      [
+       "Dividir por 0,055",
+       false
+      ]
+     ],
+     "ex": "1 m/s = 3,28 pie / (1/60 min) = 3,28 × 60 pie/min = <b>196,8 pie/min</b>. Se multiplica: el pie es más chico que el metro y el minuto más largo que el segundo, así que el número crece.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "Comparada con una botella de gaseosa de 2 litros, una de tres cuartos de galón (1 galón = 3,785 litros) contiene:",
+     "op": [
+      [
+       "Mayor cantidad",
+       true
+      ],
+      [
+       "La misma cantidad",
+       false
+      ],
+      [
+       "Menos cantidad",
+       false
+      ],
+      [
+       "Depende de la forma del envase",
+       false
+      ]
+     ],
+     "ex": "¾ galón = 0,75 × 3,785 L = <b>2,84 L</b> &gt; 2 L.",
+     "fuente": "Final mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál de estas es una unidad fundamental del Sistema Internacional de Unidades (SI)?",
+     "op": [
+      [
+       "El minuto",
+       false
+      ],
+      [
+       "El newton",
+       false
+      ],
+      [
+       "La yarda",
+       false
+      ],
+      [
+       "Ninguna de las anteriores",
+       true
+      ]
+     ],
+     "ex": "Las fundamentales del SI son 7: metro, kilogramo, <b>segundo</b>, ampere, kelvin, mol y candela. El minuto no es del SI, el newton es <b>derivada</b> (kg·m/s²) y la yarda es inglesa.",
+     "fuente": "Final mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Una lata de cerveza tiene una pinta. ¿Cuánto es en galones? (1 galón = 3,785 L; 1 pinta = 0,47325 L)",
+     "op": [
+      [
+       "1,79 galones",
+       false
+      ],
+      [
+       "8,00 galones",
+       false
+      ],
+      [
+       "4,00 galones",
+       false
+      ],
+      [
+       "0,125 galones",
+       true
+      ]
+     ],
+     "ex": "0,47325 L / 3,785 L/gal = <b>0,125 gal</b> (un galón son 8 pintas). (En la clave el resaltado tapa esta opción.)",
+     "fuente": "Recuperatorio mar. 2012 · Tema 4"
+    },
+    {
+     "tipo": "una",
+     "en": "En un pie hay 12 pulgadas y en una yarda 3 pies. ¿Cuántas pulgadas hay en 5 yardas?",
+     "op": [
+      [
+       "20 pulgadas",
+       false
+      ],
+      [
+       "7,2 pulgadas",
+       false
+      ],
+      [
+       "180 pulgadas",
+       true
+      ],
+      [
+       "80 pulgadas",
+       false
+      ]
+     ],
+     "ex": "5 yd × 3 pie/yd × 12 pulg/pie = <b>180 pulgadas</b>.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál es la unidad de fuerza en el Sistema Internacional de Unidades?",
+     "op": [
+      [
+       "El kilogramo",
+       false
+      ],
+      [
+       "La dina",
+       false
+      ],
+      [
+       "La onza",
+       false
+      ],
+      [
+       "El newton",
+       true
+      ]
+     ],
+     "ex": "El <b>newton</b>: 1 N = 1 kg·m/s². El kilogramo es de masa y la dina es del sistema cgs.",
+     "fuente": "Final mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "Comparando 7 barriles de petróleo con un metro cúbico, ¿cuál tiene mayor volumen? (1 barril = 42,0 galones; 1 galón = 3,785 litros; 1 m³ = 1000 litros)",
+     "op": [
+      [
+       "El metro cúbico tiene mayor volumen que los siete barriles",
+       false
+      ],
+      [
+       "Los siete barriles tienen mayor volumen que el metro cúbico",
+       true
+      ],
+      [
+       "Tienen el mismo volumen",
+       false
+      ],
+      [
+       "No se puede determinar con estos datos",
+       false
+      ]
+     ],
+     "ex": "7 × 42,0 × 3,785 = <b>1113 L</b> &gt; 1000 L. (En la clave el resaltado tapa esta opción.)",
+     "fuente": "Final mar. 2012 · Tema 4"
+    },
+    {
+     "tipo": "una",
+     "en": "Hacé la operación π / (4,56 × 10⁻³), redondeando al número correcto de cifras significativas. El resultado es:",
+     "op": [
+      [
+       "688,945757…",
+       false
+      ],
+      [
+       "688,95",
+       false
+      ],
+      [
+       "688",
+       false
+      ],
+      [
+       "689",
+       true
+      ]
+     ],
+     "ex": "Al dividir, el resultado lleva tantas cifras significativas como el dato que tiene menos: 4,56 tiene <b>3</b>. π/0,00456 = 688,95… → <b>689</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "En la ecuación x = C₁·cos(C₂·t), x está en metros y t en segundos. ¿Cuáles son las unidades en el SI de C₁ y C₂?",
+     "op": [
+      [
+       "C₁ en m/s y C₂ adimensional",
+       false
+      ],
+      [
+       "C₁ en m y C₂ en s⁻¹",
+       true
+      ],
+      [
+       "No puede estar el tiempo dentro del coseno: la fórmula está mal",
+       false
+      ],
+      [
+       "Para saberlo hay que conocer los valores de C₁ y C₂",
+       false
+      ]
+     ],
+     "ex": "Lo que va dentro del coseno es un ángulo: no tiene unidades → C₂·t adimensional → <b>C₂ en 1/s</b>. El coseno tampoco tiene unidades → C₁ lleva las de x: <b>metros</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Un taller necesita 5,00 kgf de una grasa especial que se vende en envases de 2,15 libras. ¿Cuántos envases tiene que comprar? (1 libra = 0,454 kgf)",
+     "num": "<span class=\"resp\">6 envases</span>",
+     "ex": "5,00 kgf / 0,454 kgf/lb = 11,0 lb → 11,0 / 2,15 = 5,12 envases. Con 5 no alcanza: hay que comprar <b>6</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "Hacé la operación (0,000000513) × (62,30 × 10⁷), redondeando al número correcto de cifras significativas. El resultado es:",
+     "op": [
+      [
+       "319,599",
+       false
+      ],
+      [
+       "320",
+       true
+      ],
+      [
+       "319,6",
+       false
+      ],
+      [
+       "320,0",
+       false
+      ]
+     ],
+     "ex": "En una multiplicación manda el dato con menos cifras significativas: 0,000000513 tiene <b>3</b> (los ceros de adelante no cuentan). 319,599 → <b>320</b>.",
+     "fuente": "Final mar. 2011 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "En la ecuación v² = C₁·x·e^(−C₂·t), x está en metros, t en segundos y v en m/s. ¿Cuáles son las unidades en el SI de C₁ y C₂?",
+     "op": [
+      [
+       "C₁ en m/s² y C₂ adimensional",
+       false
+      ],
+      [
+       "C₁ en m/s y C₂ adimensional",
+       false
+      ],
+      [
+       "C₁ en m/s² y C₂ en s⁻¹",
+       true
+      ],
+      [
+       "La fórmula está mal: no puede haber tiempo en el exponente",
+       false
+      ]
+     ],
+     "ex": "El exponente no tiene unidades → C₂·t adimensional → <b>C₂ en 1/s</b>.<br>Del resto: m²/s² = C₁·m → <b>C₁ en m/s²</b>.",
+     "fuente": "Final mar. 2011 · Tema 1"
+    },
+    {
+     "tipo": "num",
+     "en": "Un aceite se vende en latas de 1,75 pintas a $95,75 la lata. ¿Cuánto cuesta un galón? (1 pinta = 475,25 cm³; 1 galón = 3,785 litros)",
+     "num": "$ <span class=\"resp\">435,76</span>",
+     "ex": "1 galón = 3785 cm³ → 3785 / 475,25 = 7,964 pintas.<br>Precio por pinta: 95,75 / 1,75 = $ 54,71.<br>Galón: 54,7143 × 7,9642 = <b>$ 435,76</b>.",
+     "fuente": "Final mar. 2011 · Tema 1",
+     "mal": "La clave da $435,71 porque redondea antes de multiplicar; con todos los decimales da $435,76."
+    },
+    {
+     "tipo": "una",
+     "en": "El número 0,00570 cm corresponde a una cantidad medida. ¿Cuántas cifras significativas tiene?",
+     "op": [
+      [
+       "Tres",
+       true
+      ],
+      [
+       "Cuatro",
+       false
+      ],
+      [
+       "Cinco",
+       false
+      ],
+      [
+       "Seis",
+       false
+      ]
+     ],
+     "ex": "Los ceros de adelante no cuentan (solo ubican la coma); el cero del final sí: <b>5, 7 y 0 → tres</b>.",
+     "fuente": "Recuperatorio especial mar. 2011"
+    },
+    {
+     "tipo": "una",
+     "en": "En la expresión F = k·x, con F una fuerza y x un desplazamiento, la unidad de la constante k es:",
+     "op": [
+      [
+       "k es adimensional",
+       false
+      ],
+      [
+       "k se mide en metros",
+       false
+      ],
+      [
+       "k se mide en newton",
+       false
+      ],
+      [
+       "k se mide en newton/metro",
+       true
+      ]
+     ],
+     "ex": "k = F/x → <b>N/m</b>. (Es la constante del resorte, ley de Hooke.)",
+     "fuente": "Recuperatorio especial mar. 2011"
+    },
+    {
+     "tipo": "num",
+     "en": "El marco de una puerta mide 6 pies y 8 pulgadas. Expresá esa altura en metros. (1 pie = 12 pulgadas; 1 pulgada = 2,54 cm)",
+     "num": "h = <span class=\"resp\">2,03</span> m",
+     "ex": "6 pies × 12 = 72 pulg; + 8 = 80 pulgadas.<br>80 × 0,0254 m = <b>2,03 m</b>.",
+     "fuente": "Recuperatorio especial mar. 2011"
+    }
+   ]
+  },
+  {
+   "titulo": "Vectores",
+   "preguntas": [
+    {
+     "tipo": "num",
+     "en": "Un barco de turismo zarpa desde una isla y navega <b>133 [km]</b> con rumbo noroeste (<b>129°</b> medidos respecto del este) hacia otra isla. Después sigue navegando <b>256 [km]</b> hacia el este. Encontrá el vector posición final: ¿en qué dirección (ángulo respecto del este) está? Usá el método de las componentes.",
+     "num": "ángulo = <span class=\"resp\">30,96</span>°",
+     "ex": "1) Primer tramo en componentes: x₁ = 133·cos 129° = -83,70 km; y₁ = 133·sen 129° = 103,36 km.<br>2) Segundo tramo, todo en x: x₂ = 256 km; y₂ = 0.<br>3) Sumás: x = 172,30 km; y = 103,36 km.<br>4) Dirección: α = arctg(y/x) = arctg(103,36/172,30) = <b>30,96°</b> (primer cuadrante: x e y positivas).",
+     "fuente": "Simulacro 1 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Un barco de turismo zarpa desde una isla y navega <b>130 [km]</b> con rumbo noroeste (<b>124°</b> medidos respecto del este) hacia otra isla. Después sigue navegando <b>204 [km]</b> hacia el este. Encontrá el vector posición final: ¿en qué dirección (ángulo respecto del este) está? Usá el método de las componentes.",
+     "num": "ángulo = <span class=\"resp\">39,38</span>°",
+     "ex": "1) Primer tramo en componentes: x₁ = 130·cos 124° = -72,70 km; y₁ = 130·sen 124° = 107,77 km.<br>2) Segundo tramo, todo en x: x₂ = 204 km; y₂ = 0.<br>3) Sumás: x = 131,30 km; y = 107,77 km.<br>4) Dirección: α = arctg(y/x) = arctg(107,77/131,30) = <b>39,38°</b> (primer cuadrante: x e y positivas).",
+     "fuente": "Simulacro 2 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Un barco de turismo zarpa desde una isla y navega <b>136 [km]</b> con rumbo noroeste (<b>140°</b> medidos respecto del este) hacia otra isla. Después sigue navegando <b>273 [km]</b> hacia el este. Encontrá el vector posición final: ¿en qué dirección (ángulo respecto del este) está? Usá el método de las componentes.",
+     "num": "ángulo = <span class=\"resp\">27,38</span>°",
+     "ex": "1) Primer tramo en componentes: x₁ = 136·cos 140° = -104,18 km; y₁ = 136·sen 140° = 87,42 km.<br>2) Segundo tramo, todo en x: x₂ = 273 km; y₂ = 0.<br>3) Sumás: x = 168,82 km; y = 87,42 km.<br>4) Dirección: α = arctg(y/x) = arctg(87,42/168,82) = <b>27,38°</b> (primer cuadrante: x e y positivas).",
+     "fuente": "Simulacro 3 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Un ciclista viaja una distancia <b>D1</b> hacia el norte y después el triple hacia el oeste (<b>D2</b>). Al final, la distancia en línea recta desde el punto de partida es de <b>476 m</b>. ¿Cuál es la longitud de la segunda etapa, <b>D2</b>?",
+     "num": "D2 = <span class=\"resp\">451,57</span> m",
+     "ex": "Los dos tramos son perpendiculares → Pitágoras: 476² = D1² + (3·D1)² = 10·D1².<br>D1 = 476 / √10 = 150,52 m → D2 = 3·D1 = <b>451,57 m</b>.",
+     "fuente": "Examen de ingreso 2021",
+     "mal": "El campus da 451,56 porque redondea D1 a 150,52 antes de multiplicar por 3. Acepta las dos."
+    },
+    {
+     "tipo": "num",
+     "en": "Un helicóptero vuela 120 km desde su base hacia el norte y, desde ahí, 75,0 km hacia el este. Determiná la magnitud y la dirección del desplazamiento (ejes x hacia el este, y hacia el norte).",
+     "num": "D = <span class=\"resp\">141,5</span> km &nbsp; α = <span class=\"resp\">58</span>° respecto del este",
+     "ex": "Los dos tramos son perpendiculares → Pitágoras: D = √(120² + 75²) = <b>141,5 km</b>.<br>Dirección: α = arctg(120/75) = <b>58°</b> sobre el eje +x (el este), hacia el norte.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "El vector de una fuerza tiene módulo 10 N y su componente x vale 6 N. ¿Cuánto vale la componente y?",
+     "op": [
+      [
+       "Es igual a 8 N",
+       true
+      ],
+      [
+       "Es igual a 4 N",
+       false
+      ],
+      [
+       "Está entre 4 N y 6 N",
+       false
+      ],
+      [
+       "Es mayor que 8 N",
+       false
+      ]
+     ],
+     "ex": "Pitágoras: Fy = √(10² − 6²) = √64 = <b>8 N</b>. No se restan los módulos (10 − 6 = 4 está mal).",
+     "fuente": "Recuperatorio mar. 2012 · Tema 4"
+    },
+    {
+     "tipo": "num",
+     "en": "Una fuerza F1 de 14,0 N actúa a 30,0° del eje +x y otra, F2 de 7,00 N, a lo largo del eje +y. Encontrá la magnitud y la dirección de la resultante.",
+     "num": "R = <span class=\"resp\">18,5</span> N &nbsp; α = <span class=\"resp\">49,1</span>°",
+     "ex": "F1x = 14·cos 30° = 12,12 N; F1y = 14·sen 30° = 7,00 N; F2x = 0; F2y = 7,00 N.<br>Rx = 12,12 N; Ry = 14,0 N → R = √(Rx² + Ry²) = <b>18,5 N</b>.<br>α = arctg(Ry/Rx) = <b>49,1°</b>, en el primer cuadrante.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 4",
+     "mal": "La clave da 49,2° porque redondea Rx a 12,1 antes de dividir; con todos los decimales da 49,1°."
+    },
+    {
+     "tipo": "num",
+     "en": "Dos fuerzas F1 y F2, de 5,0 N y 7,0 N, forman ángulos de 150° y 240° con el eje +x. ¿Cuál es la magnitud y la dirección de la resultante?",
+     "num": "R = <span class=\"resp\">8,6</span> N &nbsp; α ≈ <span class=\"resp\">204</span>°",
+     "ex": "F1x = 5·cos 150° = -4,33; F1y = 5·sen 150° = 2,50.<br>F2x = 7·cos 240° = -3,50; F2y = 7·sen 240° = -6,06.<br>Rx = -7,83 N; Ry = -3,56 N → R = <b>8,6 N</b>.<br>Las dos componentes son negativas → <b>tercer cuadrante</b>: α = arctg(Ry/Rx) + 180° = <b>204°</b>. La calculadora da 24°: hay que sumarle 180°.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "una",
+     "en": "Un ciclista da 10 vueltas completas en un velódromo, una pista circular de radio R = 25 m. ¿Cuál es su desplazamiento?",
+     "op": [
+      [
+       "1571 m",
+       false
+      ],
+      [
+       "785 m",
+       false
+      ],
+      [
+       "250 m",
+       false
+      ],
+      [
+       "Cero",
+       true
+      ]
+     ],
+     "ex": "El desplazamiento va del punto de partida al de llegada: termina donde empezó → <b>cero</b>. 1571 m (10 × 2π × 25) es la <b>distancia recorrida</b>.",
+     "fuente": "Final mar. 2012 · Tema 4"
+    },
+    {
+     "tipo": "num",
+     "en": "Una lancha navega hacia el norte una distancia d y después gira al este y recorre la cuarta parte de esa distancia. En línea recta queda a 3,7 km del punto de partida. Calculá cada tramo y el ángulo del desplazamiento total respecto del norte.",
+     "num": "norte: <span class=\"resp\">3,6</span> km &nbsp; este: <span class=\"resp\">0,90</span> km &nbsp; ángulo: <span class=\"resp\">14</span>°",
+     "ex": "Pitágoras: 3,7 = √(d² + (d/4)²) = d·√(1 + 1/16) = d × 1,031 → d = <b>3,59 km ≈ 3,6 km</b> (norte).<br>Este: d/4 = <b>0,90 km</b>.<br>Respecto del norte: α = arctg((d/4)/d) = arctg 0,25 = <b>14°</b>.",
+     "fuente": "Final mar. 2011 · Tema 1"
+    }
+   ]
+  },
+  {
+   "titulo": "Estática",
+   "preguntas": [
+    {
+     "tipo": "num",
+     "en": "Para el sistema de la figura, determiná el módulo de la tensión en la <b>cuerda A</b>.<br><b>Datos:</b> α = 37°; θ = 40°; P = 1089 [N].<br>Usá un sistema de coordenadas con el origen en el punto donde se unen las cuerdas. Resultado en [N].",
+     "num": "T<sub>A</sub> = <span class=\"resp\">856</span> N &nbsp; (T<sub>B</sub> = 893 N)",
+     "ex": "Equilibrio en el nudo: ΣFx = 0 y ΣFy = 0. A tira hacia la izquierda y arriba (α con el techo); B, hacia la derecha y arriba (θ con el techo); P, hacia abajo.<br>ΣFx: T<sub>B</sub>·cos θ − T<sub>A</sub>·cos α = 0 → T<sub>B</sub> = T<sub>A</sub>·cos α / cos θ.<br>ΣFy: T<sub>A</sub>·sen α + T<sub>B</sub>·sen θ − P = 0.<br>Reemplazando: T<sub>A</sub>·(sen α + cos α·tg θ) = P → T<sub>A</sub> = 1089 / (0,6018 + 0,7986·0,8391) = <b>856 N</b>.",
+     "fuente": "Simulacro 1 · campus",
+     "practica": true,
+     "img": "quiz/img/fisica-cuerdas-techo.svg"
+    },
+    {
+     "tipo": "num",
+     "en": "Para el sistema de la figura, determiná el módulo de la tensión en la <b>cuerda A</b>.<br><b>Datos:</b> α = 37°; θ = 49°; P = 1104 [N].<br>Usá un sistema de coordenadas con el origen en el punto donde se unen las cuerdas. Resultado en [N].",
+     "num": "T<sub>A</sub> = <span class=\"resp\">726</span> N &nbsp; (T<sub>B</sub> = 884 N)",
+     "ex": "Equilibrio en el nudo: ΣFx = 0 y ΣFy = 0. A tira hacia la izquierda y arriba (α con el techo); B, hacia la derecha y arriba (θ con el techo); P, hacia abajo.<br>ΣFx: T<sub>B</sub>·cos θ − T<sub>A</sub>·cos α = 0 → T<sub>B</sub> = T<sub>A</sub>·cos α / cos θ.<br>ΣFy: T<sub>A</sub>·sen α + T<sub>B</sub>·sen θ − P = 0.<br>Reemplazando: T<sub>A</sub>·(sen α + cos α·tg θ) = P → T<sub>A</sub> = 1104 / (0,6018 + 0,7986·1,1504) = <b>726 N</b>.",
+     "fuente": "Simulacro 2 · campus",
+     "practica": true,
+     "img": "quiz/img/fisica-cuerdas-techo.svg"
+    },
+    {
+     "tipo": "num",
+     "en": "Para el sistema de la figura, determiná el módulo de la tensión en la <b>cuerda A</b>.<br><b>Datos:</b> α = 31°; θ = 54°; P = 1145 [N].<br>Usá un sistema de coordenadas con el origen en el punto donde se unen las cuerdas. Resultado en [N].",
+     "num": "T<sub>A</sub> = <span class=\"resp\">676</span> N &nbsp; (T<sub>B</sub> = 985 N)",
+     "ex": "Equilibrio en el nudo: ΣFx = 0 y ΣFy = 0. A tira hacia la izquierda y arriba (α con el techo); B, hacia la derecha y arriba (θ con el techo); P, hacia abajo.<br>ΣFx: T<sub>B</sub>·cos θ − T<sub>A</sub>·cos α = 0 → T<sub>B</sub> = T<sub>A</sub>·cos α / cos θ.<br>ΣFy: T<sub>A</sub>·sen α + T<sub>B</sub>·sen θ − P = 0.<br>Reemplazando: T<sub>A</sub>·(sen α + cos α·tg θ) = P → T<sub>A</sub> = 1145 / (0,5150 + 0,8572·1,3764) = <b>676 N</b>.",
+     "fuente": "Simulacro 3 · campus",
+     "practica": true,
+     "img": "quiz/img/fisica-cuerdas-techo.svg"
+    },
+    {
+     "tipo": "num",
+     "en": "Para el sistema de la figura (la cuerda A va a la pared y la B al techo), determiná el módulo de la tensión en la <b>cuerda B</b>.<br><b>Datos:</b> α = 56° (entre la cuerda A y la pared); θ = 70° (entre la cuerda B y el techo); P = 1055 [N].<br>Usá un sistema de coordenadas con el origen en el punto donde se unen las cuerdas.",
+     "num": "T<sub>B</sub> = <span class=\"resp\">1488</span> N &nbsp; (T<sub>A</sub> = 614 N)",
+     "ex": "Ojo con los ángulos: α se mide desde la pared (vertical) y θ desde el techo (horizontal).<br>A tira hacia la pared y hacia abajo: (−T<sub>A</sub>·sen α ; −T<sub>A</sub>·cos α). B tira hacia el techo: (T<sub>B</sub>·cos θ ; T<sub>B</sub>·sen θ).<br>ΣFx: T<sub>B</sub>·cos θ = T<sub>A</sub>·sen α → T<sub>A</sub> = T<sub>B</sub>·cos θ / sen α.<br>ΣFy: T<sub>B</sub>·sen θ − T<sub>A</sub>·cos α = P → T<sub>B</sub>·(sen θ − cos θ / tg α) = P.<br>T<sub>B</sub> = 1055 / (0,9397 − 0,3420/1,4826) = <b>1488 N</b>.",
+     "fuente": "Examen de ingreso 2021",
+     "img": "quiz/img/fisica-pared-techo.svg"
+    },
+    {
+     "tipo": "una",
+     "en": "Un cuerpo se desliza con velocidad constante sobre una superficie horizontal sin rozamiento. Esto significa que:",
+     "op": [
+      [
+       "Ninguna fuerza actúa sobre el cuerpo",
+       false
+      ],
+      [
+       "Actúa una sola fuerza sobre el cuerpo",
+       false
+      ],
+      [
+       "Tres fuerzas actúan sobre el cuerpo",
+       false
+      ],
+      [
+       "La fuerza neta (resultante) sobre el cuerpo es cero",
+       true
+      ]
+     ],
+     "ex": "Velocidad constante → aceleración cero → <b>fuerza neta cero</b> (primera ley). Sí actúan fuerzas: el peso y la normal, que se anulan.",
+     "fuente": "Final mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "una",
+     "en": "Sobre un cuerpo apoyado en un piso liso se aplica una fuerza horizontal F. ¿Cuántas fuerzas actúan sobre el cuerpo?",
+     "op": [
+      [
+       "Una",
+       false
+      ],
+      [
+       "Dos",
+       false
+      ],
+      [
+       "Tres",
+       true
+      ],
+      [
+       "Cuatro",
+       false
+      ]
+     ],
+     "ex": "Diagrama de cuerpo libre: el <b>peso</b> (Tierra), la <b>normal</b> (el piso) y <b>F</b>. Son tres; sin rozamiento no hay una cuarta.",
+     "fuente": "Final mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "El bloque m2 está apoyado en el piso, contra una pared. Una fuerza horizontal F empuja al bloque m1 contra m2. ¿Cuántas fuerzas actúan sobre m2?",
+     "op": [
+      [
+       "Una",
+       false
+      ],
+      [
+       "Dos",
+       false
+      ],
+      [
+       "Tres",
+       false
+      ],
+      [
+       "Cuatro",
+       true
+      ]
+     ],
+     "ex": "Sobre m2: el <b>peso</b>, la <b>normal del piso</b>, el <b>empuje de m1</b> y la <b>reacción de la pared</b>. Cuatro. F no actúa sobre m2: actúa sobre m1.",
+     "fuente": "Final mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "Sobre un bloque de peso W apoyado en el piso se aplica una fuerza F que empuja hacia abajo y forma un ángulo θ con la vertical. ¿Cuánto vale la normal N?",
+     "op": [
+      [
+       "N = W",
+       false
+      ],
+      [
+       "N = W + F",
+       false
+      ],
+      [
+       "N = W + F·cos θ",
+       true
+      ],
+      [
+       "N = W + F·sen θ",
+       false
+      ]
+     ],
+     "ex": "En vertical hay equilibrio: N = W + (componente vertical de F). Como θ se mide desde la <b>vertical</b>, esa componente es <b>F·cos θ</b>. Si el ángulo fuera con la horizontal, sería F·sen θ.",
+     "fuente": "Final mar. 2012 · Tema 4"
+    },
+    {
+     "tipo": "una",
+     "en": "Un bloque de 8 N cuelga del techo con una cuerda (T₁) y de él cuelga, con otra cuerda (T₂), un bloque de 2 N. ¿Cuánto valen T₁ y T₂?",
+     "op": [
+      [
+       "8 N y 2 N",
+       false
+      ],
+      [
+       "8 N y 8 N",
+       false
+      ],
+      [
+       "10 N y 2 N",
+       true
+      ],
+      [
+       "10 N y 10 N",
+       false
+      ]
+     ],
+     "ex": "T₂ sostiene solo el bloque de abajo: <b>2 N</b>. T₁ sostiene los dos: 8 + 2 = <b>10 N</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Un peso de 12,0 N cuelga de dos dinamómetros. Uno marca 10,0 N y está inclinado 35,0° respecto de la vertical. ¿Cuánto marca el otro y qué ángulo α forma con la vertical?",
+     "num": "F₂ = <span class=\"resp\">6,89</span> N &nbsp; α = <span class=\"resp\">56,4</span>°",
+     "ex": "Equilibrio. Ojo: los ángulos se miden desde la <b>vertical</b> (eje y), así que la x lleva seno y la y, coseno.<br>F1x = 10·sen 35° = 5,74 N; F1y = 10·cos 35° = 8,19 N.<br>ΣFx = 0 → F2x = 5,74 N. ΣFy = 0 → F2y = 12,0 − 8,19 = 3,81 N.<br>F₂ = √(F2x² + F2y²) = <b>6,89 N</b>; α = arctg(F2x/F2y) = <b>56,4°</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "Un bloque se desliza sobre una superficie horizontal rugosa con velocidad constante. La fuerza neta que actúa sobre él es:",
+     "op": [
+      [
+       "Nula",
+       true
+      ],
+      [
+       "Constante",
+       false
+      ],
+      [
+       "Igual a la de rozamiento",
+       false
+      ],
+      [
+       "Variable",
+       false
+      ]
+     ],
+     "ex": "Velocidad constante → aceleración cero → <b>fuerza neta nula</b>: lo que lo empuja compensa exactamente al rozamiento.",
+     "fuente": "Final mar. 2011 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Un peso de 25 N cuelga de una polea móvil, sostenida por dos tramos verticales de la misma cuerda (los dos con tensión T). ¿Cuánto vale T?",
+     "op": [
+      [
+       "25 N",
+       false
+      ],
+      [
+       "12,5 N",
+       true
+      ],
+      [
+       "50 N",
+       false
+      ],
+      [
+       "0",
+       false
+      ]
+     ],
+     "ex": "Equilibrio: los dos tramos sostienen el peso entre los dos: 2T = 25 N → <b>T = 12,5 N</b>.",
+     "fuente": "Final mar. 2011 · Tema 1"
+    }
+   ]
+  },
+  {
+   "titulo": "Cinemática",
+   "preguntas": [
+    {
+     "tipo": "num",
+     "en": "Un vehículo va por una carretera recta, sin detenerse, a velocidad constante de <b>72 [km/h]</b> durante <b>124 [km]</b> de recorrido. ¿A qué velocidad constante tendría que ir para tardar <b>38 minutos</b> menos en ese recorrido? Expresá el resultado en [km/h].",
+     "num": "v = <span class=\"resp\">113,88</span> km/h",
+     "ex": "Es MRU: t = d / v.<br>1) Tiempo que tarda: t = 124 km / 72 km/h = 1,7222 h.<br>2) 38 min = 38/60 h = 0,6333 h → el tiempo nuevo es 1,7222 − 0,6333 = 1,0889 h.<br>3) v = 124 km / 1,0889 h = <b>113,88 km/h</b>.<br>Ojo: no restes los minutos a la velocidad; lo que cambia es el tiempo.",
+     "fuente": "Simulacro 1 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Un vehículo va por una carretera recta, sin detenerse, a velocidad constante de <b>70 [km/h]</b> durante <b>129 [km]</b> de recorrido. ¿A qué velocidad constante tendría que ir para tardar <b>39 minutos</b> menos en ese recorrido? Expresá el resultado en [km/h].",
+     "num": "v = <span class=\"resp\">108,14</span> km/h",
+     "ex": "Es MRU: t = d / v.<br>1) Tiempo que tarda: t = 129 km / 70 km/h = 1,8429 h.<br>2) 39 min = 39/60 h = 0,6500 h → el tiempo nuevo es 1,8429 − 0,6500 = 1,1929 h.<br>3) v = 129 km / 1,1929 h = <b>108,14 km/h</b>.<br>Ojo: no restes los minutos a la velocidad; lo que cambia es el tiempo.",
+     "fuente": "Simulacro 2 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Un vehículo va por una carretera recta, sin detenerse, a velocidad constante de <b>62 [km/h]</b> durante <b>124 [km]</b> de recorrido. ¿A qué velocidad constante tendría que ir para tardar <b>24 minutos</b> menos en ese recorrido? Expresá el resultado en [km/h].",
+     "num": "v = <span class=\"resp\">77,50</span> km/h",
+     "ex": "Es MRU: t = d / v.<br>1) Tiempo que tarda: t = 124 km / 62 km/h = 2,0000 h.<br>2) 24 min = 24/60 h = 0,4000 h → el tiempo nuevo es 2,0000 − 0,4000 = 1,6000 h.<br>3) v = 124 km / 1,6000 h = <b>77,50 km/h</b>.<br>Ojo: no restes los minutos a la velocidad; lo que cambia es el tiempo.",
+     "fuente": "Simulacro 3 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Al frenar de manera uniforme, un auto de competición que iba a <b>84 [km/h]</b> se detiene en <b>5 [s]</b>. Si la aceleración de frenado es constante, ¿cuál fue la distancia de frenado? Resultado en metros, con dos decimales.",
+     "num": "d = <span class=\"resp\">58,33</span> m",
+     "ex": "MRUV hasta detenerse.<br>1) 84 km/h / 3,6 = 23,3333 m/s.<br>2) Con aceleración constante, la velocidad media es (v₀ + 0)/2, así que d = (v₀/2)·t = 11,6667 × 5 = <b>58,33 m</b>.<br>(También: a = v₀/t = 4,667 m/s² y d = v₀·t − ½·a·t².)",
+     "fuente": "Examen de ingreso 2021"
+    },
+    {
+     "tipo": "una",
+     "en": "Un objeto es arrojado hacia arriba con cierta velocidad (sin resistencia del aire). Una vez que fue soltado, su aceleración:",
+     "op": [
+      [
+       "Permanece constante",
+       true
+      ],
+      [
+       "Disminuye",
+       false
+      ],
+      [
+       "Aumenta",
+       false
+      ],
+      [
+       "Es cero",
+       false
+      ]
+     ],
+     "ex": "Una vez soltado, la única fuerza es el peso: la aceleración es <b>g, constante</b> (9,8 m/s² hacia abajo) al subir, arriba y al bajar. Lo que cambia es la velocidad.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Un objeto se arroja verticalmente hacia arriba desde el suelo (sin resistencia del aire). ¿Cuál de estas afirmaciones es válida?",
+     "op": [
+      [
+       "La altura máxima es independiente de la velocidad inicial",
+       false
+      ],
+      [
+       "El tiempo de ascenso es un poco mayor que el tiempo de descenso",
+       false
+      ],
+      [
+       "El tiempo de ascenso es igual al tiempo de descenso",
+       true
+      ],
+      [
+       "La aceleración cuando sube es opuesta a la aceleración cuando baja",
+       false
+      ]
+     ],
+     "ex": "Sin aire el movimiento es simétrico: tarda lo mismo en subir que en bajar. La altura máxima sí depende de v₀ (h = v₀²/2g) y la aceleración es siempre g hacia abajo. (En la clave el resaltado tapa el texto de esta opción.)",
+     "fuente": "Recuperatorio mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Desde la azotea de un edificio de 50 m se deja caer un objeto. ¿Cuánto tarda en llegar al suelo?",
+     "num": "t = <span class=\"resp\">3,2</span> s",
+     "ex": "Caída libre desde el reposo: h = ½·g·t² → t = √(2h/g) = √(50 / 4,9) = <b>3,2 s</b>.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué aceleración tiene un cuerpo lanzado verticalmente hacia arriba, cuando sube, cuando baja y en el punto más alto?",
+     "op": [
+      [
+       "Es g: cuando sube apunta hacia arriba, cuando cae apunta hacia abajo y en el punto más alto es cero",
+       false
+      ],
+      [
+       "Es g: cuando sube apunta hacia abajo, cuando cae apunta hacia arriba y en el punto más alto es cero",
+       false
+      ],
+      [
+       "Es g y apunta siempre hacia abajo: cuando sube, cuando baja y en el punto más alto",
+       true
+      ],
+      [
+       "Es g: cuando sube y cuando baja apunta hacia abajo, pero en el punto más alto es cero",
+       false
+      ]
+     ],
+     "ex": "La única fuerza es el peso, siempre hacia abajo → la aceleración es <b>g hacia abajo en todo momento</b>, también arriba de todo. Lo que vale cero en el punto más alto es la velocidad, no la aceleración. (En la clave el resaltado tapa esta opción.)",
+     "fuente": "Final mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "num",
+     "en": "Un camionero maneja a 80 km/h sin parar y tiene que completar un viaje de 200 km en 3,5 h. ¿De cuánto tiempo dispone para almorzar?",
+     "num": "<span class=\"resp\">1 h</span>",
+     "ex": "MRU: t = d/v = 200 km / 80 km/h = 2,5 h de manejo. Le sobran 3,5 h − 2,5 h = <b>1 h</b>.",
+     "fuente": "Final mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "una",
+     "en": "Que un cuerpo se mueva con aceleración constante de 2 m/s² significa que:",
+     "op": [
+      [
+       "En cada segundo el móvil se desplaza 2 m",
+       false
+      ],
+      [
+       "En cada segundo la velocidad cambia 2 m/s",
+       true
+      ],
+      [
+       "En cada segundo la aceleración cambia 2 m/s²",
+       false
+      ],
+      [
+       "Cada 2 s la velocidad cambia 1 m/s",
+       false
+      ]
+     ],
+     "ex": "La aceleración es cuánto cambia la velocidad por unidad de tiempo: 2 m/s² = <b>2 (m/s) por cada segundo</b>.",
+     "fuente": "Final mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "num",
+     "en": "Un atleta corre 1000 m en línea recta: los primeros 700 m a 7 m/s y los últimos 300 m a 32 km/h. ¿Cuál es la velocidad promedio del recorrido?",
+     "num": "v = <span class=\"resp\">7,48</span> m/s",
+     "ex": "1) 32 km/h = 8,89 m/s.<br>2) Tiempos: 700/7 = 100 s; 300/8,89 = 33,75 s → total 133,75 s.<br>3) v = desplazamiento / tiempo total = 1000 / 133,75 = <b>7,48 m/s</b>.<br>Ojo: no es el promedio de las dos velocidades.",
+     "fuente": "Final mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Dos objetos de distinto tamaño se dejan caer al mismo tiempo desde un edificio. ¿Cuál llega primero al suelo?",
+     "op": [
+      [
+       "Llega primero el más pesado",
+       false
+      ],
+      [
+       "Llega primero el más liviano",
+       false
+      ],
+      [
+       "Llegan los dos al mismo tiempo",
+       true
+      ],
+      [
+       "Depende de la altura del edificio",
+       false
+      ]
+     ],
+     "ex": "En caída libre (sin aire) todos caen con la misma aceleración g, sin importar la masa: <b>llegan juntos</b>.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 4"
+    },
+    {
+     "tipo": "una",
+     "en": "La aceleración de un vehículo es nula cuando:",
+     "op": [
+      [
+       "Gira hacia la derecha con rapidez constante",
+       false
+      ],
+      [
+       "Sube por una carretera recta con pendiente, con rapidez constante",
+       true
+      ],
+      [
+       "Baja por una carretera recta con pendiente, aumentando su rapidez",
+       false
+      ],
+      [
+       "Arranca desde el reposo",
+       false
+      ]
+     ],
+     "ex": "Aceleración nula = la velocidad (vector) no cambia: <b>línea recta y rapidez constante</b>. Al girar cambia la dirección, así que hay aceleración aunque la rapidez sea constante. (En la clave el resaltado tapa esta opción.)",
+     "fuente": "Recuperatorio mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "una",
+     "en": "Un objeto se arroja verticalmente hacia arriba desde el suelo, llega a una altura máxima y vuelve al punto de partida. ¿Cuál es la correcta?",
+     "op": [
+      [
+       "Cuando sube, g tiene un sentido y cuando cae cambia de sentido",
+       false
+      ],
+      [
+       "Al llegar al punto más alto, la aceleración se anula un instante",
+       false
+      ],
+      [
+       "Al llegar al punto más alto, la velocidad se anula un instante",
+       true
+      ],
+      [
+       "Justo antes de tocar el suelo tiene la misma velocidad con que fue arrojado",
+       false
+      ]
+     ],
+     "ex": "Arriba de todo la <b>velocidad</b> es cero un instante; la aceleración sigue siendo g. La d) es trampa: tiene la misma rapidez, pero la <b>velocidad</b> (vector) apunta al revés.",
+     "fuente": "Final mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Un vehículo va en línea recta a 55 millas/h durante 1,5 h y después a 40 millas/h durante 30 minutos, en el mismo sentido. ¿Cuál es la velocidad promedio del recorrido total? (En millas/h.)",
+     "num": "v = <span class=\"resp\">51,25</span> millas/h",
+     "ex": "Desplazamientos: 55 × 1,5 = 82,5 mi; 40 × 0,5 = 20 mi → total 102,5 mi.<br>Tiempo total: 1,5 h + 0,5 h = 2 h. v = 102,5 / 2 = <b>51,25 mi/h</b>.",
+     "fuente": "Final mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Desde la boca de un pozo se arroja una piedra verticalmente hacia abajo a 12 m/s. Llega al agua 2 s después. ¿Cuál es la profundidad del pozo hasta el agua?",
+     "num": "h = <span class=\"resp\">43,6</span> m",
+     "ex": "Eje hacia abajo, origen en la boca: y = v₀·t + ½·g·t² = 12 × 2 + 4,9 × 2² = 24 + 19,6 = <b>43,6 m</b>.",
+     "fuente": "Final mar. 2012 · Tema 4"
+    },
+    {
+     "tipo": "una",
+     "en": "Del techo de un edificio se suelta una esfera A; 2 s después se suelta otra esfera B. Mientras caen, la distancia que las separa:",
+     "op": [
+      [
+       "Permanece constante",
+       false
+      ],
+      [
+       "Disminuye",
+       false
+      ],
+      [
+       "Va en aumento",
+       true
+      ],
+      [
+       "Faltan datos",
+       false
+      ]
+     ],
+     "ex": "Las dos aceleran igual, pero A ya tiene 2 s de ventaja y va siempre <b>más rápido</b> (19,6 m/s más). Por eso la distancia entre las dos <b>crece</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Un auto arranca con aceleración constante y a los 10,0 s va a 108 km/h. Desde ahí frena, con una desaceleración de 10,0 m/s², hasta detenerse. Calculá el tiempo total y la distancia recorrida desde que arranca hasta que se detiene.",
+     "num": "t = <span class=\"resp\">13,0</span> s &nbsp; Δx = <span class=\"resp\">195</span> m",
+     "ex": "108 km/h = 30,0 m/s.<br>Etapa 1: a = 30/10 = 3,00 m/s²; Δx₁ = ½ × 3 × 10² = 150 m.<br>Etapa 2: t₂ = 30/10 = 3,00 s; Δx₂ = 30²/(2 × 10) = 45,0 m.<br>Total: t = 10 + 3 = <b>13,0 s</b>; Δx = 150 + 45 = <b>195 m</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Dos proyectiles se lanzan verticalmente hacia arriba, el primero a 50 m/s y el segundo a 30 m/s. ¿Cuánto tiempo después del primero hay que lanzar el segundo para que lleguen juntos al suelo?",
+     "num": "Δt = <span class=\"resp\">4,1</span> s",
+     "ex": "Tiempo de vuelo = 2 × tiempo de subida = 2·v₀/g.<br>Primero: 2 × 50/9,8 = 10,20 s. Segundo: 2 × 30/9,8 = 6,12 s.<br>Δt = 10,20 − 6,12 = 4,08 s ≈ <b>4,1 s</b>.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "una",
+     "en": "Desde lo alto de un edificio se arroja un cuerpo A hacia arriba con rapidez v₀ y otro B hacia abajo con la misma rapidez. A tiene el doble de masa que B. Justo antes de tocar el suelo:",
+     "op": [
+      [
+       "A y B llegan con la misma rapidez",
+       true
+      ],
+      [
+       "A llega con mayor rapidez que B",
+       false
+      ],
+      [
+       "B llega con mayor rapidez que A",
+       false
+      ],
+      [
+       "Para compararlas hay que conocer la altura",
+       false
+      ]
+     ],
+     "ex": "A sube y vuelve a pasar por la altura de partida con rapidez v₀ hacia abajo: desde ahí hace lo mismo que B. La masa no influye en la caída. Llegan con la <b>misma rapidez</b> (A, más tarde).",
+     "fuente": "Final mar. 2011 · Tema 1"
+    },
+    {
+     "tipo": "num",
+     "en": "Un tren acelera de manera constante. En un momento va a 33,0 m/s y 160 m más adelante va a 54,0 m/s. Calculá a) la aceleración; b) el tiempo que tarda en recorrer esos 160 m.",
+     "num": "a) a = <span class=\"resp\">5,71</span> m/s² &nbsp; b) t = <span class=\"resp\">3,68</span> s",
+     "ex": "a) v² − v₀² = 2·a·Δx → a = (54² − 33²)/(2 × 160) = <b>5,71 m/s²</b>.<br>b) t = (v − v₀)/a = 21 / 5,709 = <b>3,68 s</b> (la clave llega al mismo número con la cuadrática de Δx = v₀·t + ½·a·t²).",
+     "fuente": "Final mar. 2011 · Tema 1"
+    },
+    {
+     "tipo": "num",
+     "en": "Una flecha disparada hacia arriba vuelve y golpea el suelo a 80,0 m/s, y se entierra 225 mm hasta frenarse. Calculá a) la aceleración (constante) que la frena; b) el tiempo que tarda en detenerse.",
+     "num": "a) a = <span class=\"resp\">1,42 × 10⁴</span> m/s² &nbsp; b) t = <span class=\"resp\">5,62 × 10⁻³</span> s",
+     "ex": "a) Pasá 225 mm a 0,225 m. a = v₀²/(2·Δx) = 80² / 0,45 = <b>14222 m/s²</b>, hacia arriba (contraria a la velocidad).<br>b) t = v₀/a = 80 / 14222 = <b>5,62 ms</b>.",
+     "fuente": "Final mar. 2011 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Una pelota se arroja verticalmente hacia arriba con velocidad v₀. Cuando llega al punto más alto:",
+     "op": [
+      [
+       "La velocidad es nula",
+       true
+      ],
+      [
+       "La aceleración de la gravedad es nula",
+       false
+      ],
+      [
+       "La fuerza neta sobre la pelota es nula",
+       false
+      ],
+      [
+       "Son correctas b) y c)",
+       false
+      ]
+     ],
+     "ex": "Arriba de todo la <b>velocidad es cero</b>; g y el peso siguen ahí (si no, no volvería a bajar).",
+     "fuente": "Recuperatorio especial mar. 2011"
+    },
+    {
+     "tipo": "una",
+     "en": "Dos vehículos van a la misma velocidad y frenan con aceleración constante. La distancia de frenado de A es el doble que la de B. Sus aceleraciones de frenado son:",
+     "op": [
+      [
+       "Iguales",
+       false
+      ],
+      [
+       "La de A es la mitad de la de B",
+       true
+      ],
+      [
+       "La de A es el doble de la de B",
+       false
+      ],
+      [
+       "La de A es un cuarto de la de B",
+       false
+      ]
+     ],
+     "ex": "Hasta detenerse: d = v₀²/(2a) → con el mismo v₀, d y a son inversamente proporcionales. Doble distancia → <b>la mitad de aceleración</b>.",
+     "fuente": "Recuperatorio especial mar. 2011"
+    },
+    {
+     "tipo": "num",
+     "en": "Un vehículo va a v₀ = 5,0 m/s y acelera de manera uniforme con a = 2,0 m/s². ¿Qué distancia recorre hasta llegar a 15 m/s?",
+     "num": "x = <span class=\"resp\">50</span> m",
+     "ex": "Sin tiempo como dato, usás v² − v₀² = 2·a·x → x = (15² − 5²)/(2 × 2) = (225 − 25)/4 = <b>50 m</b>.",
+     "fuente": "Recuperatorio especial mar. 2011"
+    },
+    {
+     "tipo": "num",
+     "en": "Un rifle dispara una bala verticalmente hacia arriba a 250,0 m/s. ¿Qué altura máxima alcanza la bala?",
+     "num": "h = <span class=\"resp\">3188,8</span> m ≈ 3,19 × 10³ m",
+     "ex": "Arriba de todo v = 0: h = v₀²/(2g) = 250² / 19,6 = <b>3188,8 m</b> (con tres cifras significativas, 3,19 × 10³ m).",
+     "fuente": "Recuperatorio especial mar. 2011"
+    }
+   ]
+  },
+  {
+   "titulo": "Dinámica (leyes de Newton)",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "Un camión cargado choca contra un auto, y los daños del auto son mayores que los del camión. Podemos afirmar que:",
+     "op": [
+      [
+       "La fuerza que el camión ejerce sobre el auto es mayor que la que el auto ejerce sobre el camión",
+       false
+      ],
+      [
+       "La fuerza que el camión ejerce sobre el auto es menor que la que el auto ejerce sobre el camión",
+       false
+      ],
+      [
+       "La fuerza que el camión ejerce sobre el auto es igual a la que el auto ejerce sobre el camión",
+       true
+      ],
+      [
+       "No se pueden comparar las fuerzas si no se conocen las masas de los vehículos",
+       false
+      ]
+     ],
+     "ex": "<b>Tercera ley de Newton</b> (acción y reacción): las dos fuerzas son <b>iguales</b> y opuestas, siempre. El auto se rompe más porque tiene menos masa (más aceleración, a = F/m) y es más frágil, no porque reciba más fuerza.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "num",
+     "en": "Un bloque de 4,0 kg apoya sobre una superficie lisa. Se le aplica una fuerza de 25 N a 37° por encima de la horizontal. a) ¿Qué aceleración adquiere? b) ¿Se levanta del suelo?",
+     "num": "a) a = <span class=\"resp\">5,0</span> m/s² &nbsp; b) <span class=\"resp\">no se levanta</span>",
+     "ex": "Componentes: Fx = 25·cos 37° = 20,0 N; Fy = 25·sen 37° = 15,0 N.<br>Peso: w = 4,0 × 9,8 = 39,2 N. Como Fy &lt; w, <b>no se levanta</b> (la normal compensa el resto).<br>Sin rozamiento, solo acelera Fx: a = Fx/m = 20,0 / 4,0 = <b>5,0 m/s²</b> (la clave usa cos 37° ≈ 0,80 y da 5,0).",
+     "fuente": "Recuperatorio mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Un cuerpo está apoyado sobre una mesa. ¿Cuál es la reacción a la fuerza que la mesa ejerce sobre el cuerpo?",
+     "op": [
+      [
+       "El peso del cuerpo",
+       false
+      ],
+      [
+       "La fuerza que el cuerpo ejerce sobre la mesa",
+       true
+      ],
+      [
+       "La fuerza que el cuerpo ejerce sobre la Tierra",
+       false
+      ],
+      [
+       "La fuerza que la Tierra ejerce sobre la mesa",
+       false
+      ]
+     ],
+     "ex": "Acción y reacción actúan entre <b>los mismos dos cuerpos</b>, con los papeles invertidos: mesa→cuerpo y <b>cuerpo→mesa</b>. El peso no es la reacción de la normal: el peso es Tierra→cuerpo (su reacción es cuerpo→Tierra).",
+     "fuente": "Recuperatorio mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Calculá la aceleración de un bloque de 3,0 kg apoyado en una superficie horizontal lisa, al que se le aplica una fuerza de 30 N a 45° por encima de la horizontal.",
+     "num": "a = <span class=\"resp\">7,1</span> m/s², horizontal",
+     "ex": "Fx = Fy = 30·cos 45° = 21,2 N. Peso: 3,0 × 9,8 = 29,4 N &gt; Fy → no se levanta.<br>a = Fx/m = 21,2 / 3,0 = <b>7,1 m/s²</b>, en la dirección de x.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Una bolsa de 4,5 kg cuelga de una cuerda que tira hacia arriba con 45 N. ¿Hacia dónde se mueve y con qué aceleración?",
+     "num": "a = <span class=\"resp\">0,2</span> m/s² hacia arriba",
+     "ex": "Peso: w = 4,5 × 9,8 = 44,1 N. Segunda ley: a = (T − w)/m = (45 − 44,1)/4,5 = <b>0,2 m/s²</b>. Como T &gt; w, la aceleración es <b>hacia arriba</b>.",
+     "fuente": "Final mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "num",
+     "en": "Una partícula de masa m va a 20 m/s. Una fuerza neta constante de frenado de 20 N la detiene en 50 m. ¿Cuál es la masa?",
+     "num": "m = <span class=\"resp\">5 kg</span>",
+     "ex": "MRUV hasta detenerse: 0 − v₀² = −2·a·Δx → a = 20² / (2 × 50) = 4 m/s².<br>Segunda ley: m = F/a = 20 N / 4 m/s² = <b>5 kg</b>.",
+     "fuente": "Final mar. 2012 · Tema 1"
+    },
+    {
+     "tipo": "num",
+     "en": "¿Qué fuerza de frenado hace falta para detener de manera uniforme un auto de 1050 kg que va a 80 km/h, en 75 m de camino recto y horizontal?",
+     "num": "F = <span class=\"resp\">3457</span> N",
+     "ex": "80 km/h = 22,22 m/s. a = v₀²/(2·Δx) = 22,22² / 150 = 3,29 m/s².<br>F = m·a = 1050 × 3,29 = <b>3457 N</b>, opuesta al movimiento.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 4",
+     "mal": "La clave da 3381 N porque redondea la velocidad a 22 m/s; con 22,22 m/s da 3457 N."
+    },
+    {
+     "tipo": "una",
+     "en": "Una fuerza F empuja al bloque de masa m2, que a su vez empuja al bloque de masa m1 (m2 &gt; m1), y los dos aceleran juntos sobre un piso liso. ¿Cuánto vale la fuerza que acelera al bloque m1?",
+     "op": [
+      [
+       "Es la fuerza F",
+       false
+      ],
+      [
+       "Es mayor que F",
+       false
+      ],
+      [
+       "Es menor que F",
+       true
+      ],
+      [
+       "Es imposible de determinar",
+       false
+      ]
+     ],
+     "ex": "Los dos aceleran juntos con a = F/(m1 + m2). Sobre m1 actúa solo el empuje de m2: m1·a = F·m1/(m1 + m2), que es <b>menor que F</b>.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "num",
+     "en": "Una fuerza neta de 15 N actúa de forma constante sobre un objeto que parte del reposo y recorre 25 m en línea recta en 7,5 s. ¿Cuál es la masa?",
+     "num": "m = <span class=\"resp\">17</span> kg",
+     "ex": "Desde el reposo: x = ½·a·t² → a = 2x/t² = 50/7,5² = 0,89 m/s².<br>m = F/a = 15 / 0,889 = <b>16,9 kg ≈ 17 kg</b>.",
+     "fuente": "Recuperatorio mar. 2012 · Tema 3"
+    },
+    {
+     "tipo": "num",
+     "en": "El cañón de un fusil mide 0,85 m y dispara un proyectil de 22,0 g que sale a 350 m/s, con aceleración uniforme dentro del cañón. ¿Qué fuerza actúa sobre el proyectil?",
+     "num": "F = <span class=\"resp\">1585</span> N",
+     "ex": "Parte del reposo: v² = 2·a·Δx → a = 350² / (2 × 0,85) = 72059 m/s².<br>F = m·a = 0,022 kg × 72059 = <b>1585 N</b> (pasá los gramos a kg).",
+     "fuente": "Final mar. 2012 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Un auto de 1000 kg va a 90 km/h por una carretera recta y horizontal. ¿Qué fuerza de frenado hace falta para que se detenga uniformemente en 75,0 m?",
+     "num": "F = <span class=\"resp\">4167</span> N",
+     "ex": "90 km/h = 25 m/s. a = 25² / (2 × 75) = 4,17 m/s².<br>F = 1000 × 4,167 = <b>4167 N</b>, contraria al movimiento.",
+     "fuente": "Final mar. 2012 · Tema 4",
+     "mal": "La clave da 4200 N porque redondea la aceleración a 4,2 m/s²; con 4,167 da 4167 N."
+    },
+    {
+     "tipo": "una",
+     "en": "El peso de un cuerpo en la Luna es:",
+     "op": [
+      [
+       "Cero, porque en la Luna no hay gravedad",
+       false
+      ],
+      [
+       "Igual que en la Tierra",
+       false
+      ],
+      [
+       "Mayor que en la Tierra",
+       false
+      ],
+      [
+       "Menor que en la Tierra",
+       true
+      ]
+     ],
+     "ex": "P = m·g y la gravedad de la Luna es ~1/6 de la terrestre: el peso es <b>menor</b>. La masa sí es la misma.",
+     "fuente": "Final mar. 2011 · Tema 2"
+    },
+    {
+     "tipo": "num",
+     "en": "Un auto de 1200 kg va a 80 km/h por una carretera horizontal y frena uniformemente hasta detenerse. ¿Cuánto vale la fuerza de frenado si se detiene a) en 5,0 s; b) en 50 m?",
+     "num": "a) F = <span class=\"resp\">5333</span> N &nbsp; b) F = <span class=\"resp\">5926</span> N",
+     "ex": "80 km/h = 22,22 m/s.<br>a) a = v₀/t = 22,22/5 = 4,44 m/s² → F = 1200 × 4,444 = <b>5333 N</b>.<br>b) a = v₀²/(2·Δx) = 4,94 m/s² → F = <b>5926 N</b>.<br>La fuerza va contraria al movimiento.",
+     "fuente": "Final mar. 2011 · Tema 2",
+     "mal": "La clave redondea las aceleraciones a 4,4 y 4,9 m/s² y da 5280 N y 5880 N (≈ 5,3 × 10³ y 5,9 × 10³ N)."
+    },
+    {
+     "tipo": "num",
+     "en": "Sobre un cuerpo de 10,0 N de peso, que no está apoyado en ninguna superficie, actúa una fuerza de 25,0 N a 30,0° sobre la horizontal. Determiná la magnitud y la dirección de la aceleración.",
+     "num": "a = <span class=\"resp\">21,4</span> m/s² &nbsp; a <span class=\"resp\">6,59</span>° sobre la horizontal",
+     "ex": "Fx = 25·cos 30° = 21,7 N; Fy = 25·sen 30° − 10 (el peso) = 2,5 N.<br>Resultante: R = √(Fx² + Fy²) = 21,8 N, a arctg(2,5/21,65) = 6,59°.<br>Masa: m = P/g = 10/9,8 = 1,02 kg → a = R/m = <b>21,4 m/s²</b>, en la dirección de la resultante.",
+     "fuente": "Final mar. 2011 · Tema 1"
+    },
+    {
+     "tipo": "una",
+     "en": "Un cuerpo de masa m cae en caída libre. ¿Qué fuerza actúa sobre él mientras cae?",
+     "op": [
+      [
+       "Ninguna",
+       false
+      ],
+      [
+       "El peso del cuerpo",
+       true
+      ],
+      [
+       "El peso del cuerpo y su reacción",
+       false
+      ],
+      [
+       "El peso del cuerpo y la normal",
+       false
+      ]
+     ],
+     "ex": "En caída libre solo actúa el <b>peso</b>. Su reacción existe, pero actúa sobre la Tierra, no sobre el cuerpo; y no hay normal porque no está apoyado.",
+     "fuente": "Recuperatorio especial mar. 2011"
+    },
+    {
+     "tipo": "num",
+     "en": "Un remolcador arrastra un buque con una fuerza constante de 2500,0 N. La velocidad del buque aumenta 1,00 m/s en 10,0 s. ¿Cuál es la masa del buque?",
+     "num": "m = <span class=\"resp\">2,50 × 10⁴</span> kg",
+     "ex": "a = Δv/Δt = 1,00/10,0 = 0,100 m/s². m = F/a = 2500 / 0,100 = <b>25 000 kg</b> = 2,50 × 10⁴ kg.",
+     "fuente": "Recuperatorio especial mar. 2011"
+    }
+   ]
+  },
+  {
+   "titulo": "Trabajo mecánico",
+   "preguntas": [
+    {
+     "tipo": "num",
+     "en": "Un mecánico empuja una caja de herramientas por la entrada de una cochera, con una fuerza de <b>39,49 N</b> dirigida hacia abajo con un ángulo de <b>32,11°</b> respecto de la horizontal. ¿Cuánto trabajo hace si la caja se mueve <b>2,81 m</b> horizontalmente? Respondé en joules [J].",
+     "num": "W = <span class=\"resp\">93,99</span> J",
+     "ex": "W = F · d · cos θ, con θ el ángulo entre la fuerza y el desplazamiento (horizontal).<br>W = 39,49 N × 2,81 m × cos 32,11° = 39,49 × 2,81 × 0,8470 = <b>93,99 J</b>.<br>Que la fuerza vaya hacia abajo no cambia la cuenta: solo trabaja su componente horizontal.",
+     "fuente": "Simulacro 1 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Un mecánico empuja una caja de herramientas por la entrada de una cochera, con una fuerza de <b>42,35 N</b> dirigida hacia abajo con un ángulo de <b>39,88°</b> respecto de la horizontal. ¿Cuánto trabajo hace si la caja se mueve <b>2,68 m</b> horizontalmente? Respondé en joules [J].",
+     "num": "W = <span class=\"resp\">87,10</span> J",
+     "ex": "W = F · d · cos θ, con θ el ángulo entre la fuerza y el desplazamiento (horizontal).<br>W = 42,35 N × 2,68 m × cos 39,88° = 42,35 × 2,68 × 0,7674 = <b>87,10 J</b>.<br>Que la fuerza vaya hacia abajo no cambia la cuenta: solo trabaja su componente horizontal.",
+     "fuente": "Simulacro 2 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Un mecánico empuja una caja de herramientas por la entrada de una cochera, con una fuerza de <b>48,26 N</b> dirigida hacia abajo con un ángulo de <b>46,69°</b> respecto de la horizontal. ¿Cuánto trabajo hace si la caja se mueve <b>1,76 m</b> horizontalmente? Respondé en joules [J].",
+     "num": "W = <span class=\"resp\">58,26</span> J",
+     "ex": "W = F · d · cos θ, con θ el ángulo entre la fuerza y el desplazamiento (horizontal).<br>W = 48,26 N × 1,76 m × cos 46,69° = 48,26 × 1,76 × 0,6859 = <b>58,26 J</b>.<br>Que la fuerza vaya hacia abajo no cambia la cuenta: solo trabaja su componente horizontal.",
+     "fuente": "Simulacro 3 · campus",
+     "practica": true
+    },
+    {
+     "tipo": "num",
+     "en": "Unos perros arrastran un trineo de <b>150 kg</b> un tramo de <b>50,8 m</b> sobre nieve horizontal a velocidad constante. Tiran con una fuerza de <b>79,10 N</b>, a <b>5,4°</b> por encima de la horizontal; la nieve ejerce una fuerza de fricción que la equilibra. ¿Qué trabajo hacen los perros?",
+     "num": "W = <span class=\"resp\">4000,45</span> J",
+     "ex": "W = F · d · cos θ = 79,10 N × 50,8 m × cos 5,4° = <b>4000,45 J</b>.<br>La masa (150 kg) y la fricción no hacen falta: te piden solo el trabajo de la fuerza de los perros.",
+     "fuente": "Examen de ingreso 2021"
+    }
+   ]
+  }
+ ],
+ "glosario": [
+  {
+   "t": "Factor de conversión",
+   "que": "Una fracción que vale 1, con la misma cantidad en dos unidades (ej.: 1609 m / 1 milla). Se multiplica las veces que haga falta, cancelando unidades hasta llegar a la que piden. Si la unidad está al cuadrado o al cubo, el factor también.",
+   "re": "pasó de|Expres|expres|¿Cuánto es en|¿cuántos|¿Cuántas|equivalen|1 milla|1 pie|1 galón|1 pinta|1 libra|1 barril|Pasar|pasar una"
+  },
+  {
+   "t": "Unidades inglesas de longitud",
+   "que": "1 pulgada = 2,54 cm; 1 pie = 12 pulgadas = 0,305 m; 1 yarda = 3 pies; 1 milla = 1,609 km.",
+   "re": "milla|pie|pulgada|yarda",
+   "i": true
+  },
+  {
+   "t": "Unidades de volumen",
+   "que": "1 m³ = 1000 litros; 1 galón = 3,785 litros; 1 pinta = 0,473 litros (1 galón = 8 pintas); 1 barril de petróleo = 42 galones.",
+   "re": "gal[oó]n|pinta|barril|litro|cúbic",
+   "i": true
+  },
+  {
+   "t": "Kilogramo fuerza (kgf) y libra",
+   "sig": "kgf",
+   "que": "El kgf es el peso de 1 kg en la Tierra: 1 kgf = 9,8 N. La libra (lb) inglesa equivale a 0,454 kgf.",
+   "re": "kgf|libra",
+   "i": true
+  },
+  {
+   "t": "Pasar km/h a m/s",
+   "que": "Se divide por 3,6 (1 km/h = 1000 m / 3600 s). Al revés, de m/s a km/h, se multiplica por 3,6.",
+   "re": "km/h"
+  },
+  {
+   "t": "Cifras significativas",
+   "que": "Las cifras que se midieron de verdad. Los ceros de adelante no cuentan (0,00570 tiene 3); los de atrás, después de la coma, sí. Al multiplicar o dividir, el resultado lleva tantas como el dato que tiene menos.",
+   "re": "cifras significativas",
+   "i": true
+  },
+  {
+   "t": "Sistema Internacional",
+   "sig": "SI",
+   "que": "El sistema de unidades que se usa en física. Fundamentales: metro (m), kilogramo (kg), segundo (s), ampere, kelvin, mol y candela. Las demás son derivadas: el newton (N = kg·m/s²), el joule (J = N·m)…",
+   "re": "Sistema Internacional|\\bSI\\b"
+  },
+  {
+   "t": "Análisis dimensional",
+   "que": "Los dos lados de una ecuación tienen que tener las mismas unidades. Lo que va dentro de un coseno, un seno o un exponente no tiene unidades (es un número puro).",
+   "re": "unidades en el SI|la unidad de la constante|cos\\(C|e\\^"
+  },
+  {
+   "t": "Vector y sus componentes",
+   "que": "Una magnitud con módulo, dirección y sentido. Con el ángulo θ medido desde el eje +x: componente x = módulo·cos θ; componente y = módulo·sen θ. Si el ángulo se mide desde el eje y, se invierten: x con seno, y con coseno.",
+   "re": "vector|componente|rumbo|respecto del este|del eje \\+x|eje \\+y",
+   "i": true
+  },
+  {
+   "t": "Módulo (Pitágoras)",
+   "que": "El largo del vector: √(x² + y²). Sirve para sumar dos tramos perpendiculares (norte y este, por ejemplo).",
+   "re": "magnitud|módulo|línea recta|Pitágoras|distancia en línea",
+   "i": true
+  },
+  {
+   "t": "Dirección (ángulo)",
+   "que": "α = arctg(y/x). La calculadora devuelve un ángulo entre −90° y 90°: si x es negativa, hay que sumarle 180° (segundo o tercer cuadrante).",
+   "re": "dirección|ángulo",
+   "i": true
+  },
+  {
+   "t": "Desplazamiento y distancia recorrida",
+   "que": "El desplazamiento es el vector que va del punto de partida al de llegada (si volvés al mismo lugar, es cero). La distancia recorrida es todo el camino hecho.",
+   "re": "desplazamiento|vueltas",
+   "i": true
+  },
+  {
+   "t": "Movimiento rectilíneo uniforme",
+   "sig": "MRU",
+   "que": "En línea recta a velocidad constante: d = v·t. No hay aceleración.",
+   "re": "velocidad constante|sin detenerse|sin parar|a 7 m/s|millas/h durante",
+   "i": true
+  },
+  {
+   "t": "Velocidad promedio (media)",
+   "que": "Desplazamiento total dividido el tiempo total. No es el promedio de las velocidades: el tramo en el que estás más tiempo pesa más.",
+   "re": "promedio",
+   "i": true
+  },
+  {
+   "t": "Movimiento uniformemente variado",
+   "sig": "MRUV",
+   "que": "Aceleración constante. v = v₀ + a·t; x = v₀·t + ½·a·t²; v² − v₀² = 2·a·x. Para frenar hasta detenerse, v = 0.",
+   "re": "aceleraci|frena|acelera|arranca|desacelera|detenerse|se detiene|se entierra",
+   "i": true
+  },
+  {
+   "t": "Caída libre y tiro vertical",
+   "que": "Solo actúa el peso: la aceleración es g = 9,8 m/s² hacia abajo todo el tiempo (también en el punto más alto, donde la velocidad es cero). Subida y bajada son simétricas.",
+   "re": "caída libre|caer|cae |caen|arroja|lanza|verticalmente|altura máxima|se suelta|se dej[ae]",
+   "i": true
+  },
+  {
+   "t": "Peso",
+   "que": "La fuerza con que la Tierra atrae a un cuerpo: P = m·g (g = 9,8 m/s²). Se mide en newton; la masa, en kg. En la Luna, g es ~1/6.",
+   "re": "peso|pesado",
+   "i": true
+  },
+  {
+   "t": "Normal",
+   "sig": "N",
+   "que": "La fuerza que hace una superficie sobre lo que está apoyado, perpendicular a ella. No siempre es igual al peso: si empujás hacia abajo o tirás hacia arriba, cambia.",
+   "re": "normal|apoya|piso|mesa|superficie",
+   "i": true
+  },
+  {
+   "t": "Tensión",
+   "sig": "T",
+   "que": "La fuerza que hace una cuerda, siempre tirando, a lo largo de la cuerda. En una cuerda ideal es la misma en toda su longitud.",
+   "re": "tensi[oó]n|cuerda|dinamómetro|polea",
+   "i": true
+  },
+  {
+   "t": "Diagrama de cuerpo libre",
+   "sig": "DCL",
+   "que": "El dibujo de un solo cuerpo con todas las fuerzas que actúan sobre él (peso, normal, tensiones, rozamiento, empujes). Las que el cuerpo hace sobre otros no van.",
+   "re": "fuerzas actúan|fuerza actúa|Cuántas fuerzas",
+   "i": true
+  },
+  {
+   "t": "Equilibrio",
+   "que": "Fuerza neta cero: ΣFx = 0 y ΣFy = 0. Pasa en reposo y también a velocidad constante.",
+   "re": "equilibr|figura|cuelga|sostenid",
+   "i": true
+  },
+  {
+   "t": "Segunda ley de Newton",
+   "que": "F neta = m·a. La aceleración tiene la dirección de la fuerza neta.",
+   "re": "masa|aceleración|fuerza de frenado|fuerza neta",
+   "i": true
+  },
+  {
+   "t": "Acción y reacción (tercera ley)",
+   "que": "Si A empuja a B, B empuja a A con una fuerza igual y opuesta. Actúan sobre cuerpos distintos, por eso no se anulan entre sí.",
+   "re": "reacción|ejerce sobre|choca",
+   "i": true
+  },
+  {
+   "t": "Fuerza neta (resultante)",
+   "que": "La suma vectorial de todas las fuerzas sobre el cuerpo. Si es cero, el cuerpo está en reposo o a velocidad constante.",
+   "re": "neta|resultante",
+   "i": true
+  },
+  {
+   "t": "Rozamiento",
+   "que": "La fuerza del piso que se opone al deslizamiento. \"Liso\" o \"sin rozamiento\" quiere decir que no hay; \"rugoso\", que sí.",
+   "re": "rozamiento|fricción|lis[oa]|rugosa",
+   "i": true
+  },
+  {
+   "t": "Trabajo mecánico",
+   "sig": "W",
+   "que": "W = F·d·cos θ, con θ el ángulo entre la fuerza y el desplazamiento. Se mide en joules (J = N·m). Una fuerza perpendicular al movimiento no hace trabajo.",
+   "re": "trabajo|joule",
+   "i": true
+  }
+ ]
+}

@@ -242,6 +242,8 @@ Con `quiz: "quiz/archivo.json"` en el parcial aparece el Quiz en "Herramientas p
 - **Pasar ↷**: cada pregunta, antes de responderla, se puede pasar (sirve para las largas, como armar un programa). Arriba se cuenta (↷ N); al final la nota es sobre las respondidas, se avisa cuántas se pasaron y «Hacer las que pasé» arma una tanda con esas.
 - Elegir cuántas (5, 10, 15, 20, 25 o todas), «Solo las que salieron en parciales» si hay de práctica, «Repasar las que erré» y «Otras N».
 
+**Física del ingreso** (`quiz/fisica-ingreso.json`, en `#/m102/examen`): se arma con `python3 herramientas/quiz/fisica_ingreso.py` (y `--pdf --fuente CARPETA_OPEN_SANS` para la guía `material/cursillo/fisica/01-examen-de-ingreso-resuelto.pdf`). El script calcula cada respuesta (g = 9,8 m/s²) y la compara con la del campus; también dibuja las figuras de las cuerdas (`quiz/img/fisica-*.svg`). Tiene las 5 preguntas de los simulacros 1–3 y del examen 2021 (del campus se pasan solo los enunciados y las respuestas, no las capturas) y las de los finales de marzo 2011 y 2012. Donde la clave de la cátedra redondea de más, la pregunta lo avisa con `mal`.
+
 ## Herramientas y explicaciones
 Con `herramientas: ["csv", "streams"]` en el parcial cada una es una pestaña (ruta `#/m201/p1/h/csv`), o va adentro de su tema en la Práctica si el parcial tiene `practicaTemas`. Hay:
 - `csv`: cómo se lee un CSV en Java. Las formas del apunte 11 (Scanner, BufferedReader, Files.lines, CSVReader, CSVReaderHeaderAware y CsvToBean) con un cuadro de qué hace cada una y, para cada forma, un paso a paso con dibujo y el código resaltado.

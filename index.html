@@ -3706,6 +3706,55 @@ const MATERIAS = {
       { url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
     ]
   },
+  // Cursillo de ingreso · Física: una sola parte (el examen) con el quiz, la guía resuelta, los exámenes viejos y los videos.
+  // El quiz y la guía se arman con herramientas/quiz/fisica_ingreso.py (calcula cada respuesta).
+  102: {
+    parciales: [
+      {
+        id: "examen",
+        titulo: "Examen de ingreso",
+        descripcion: "Es un cuestionario en el campus con 5 preguntas numéricas: conversión de unidades, vectores, cinemática, trabajo y tensiones. En cada intento cambian los números; el procedimiento es siempre el mismo.",
+        secciones: [],
+        quiz: "quiz/fisica-ingreso.json",
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Conversión de unidades", contenidos: ["Sistema Internacional y unidades inglesas (millas, pies, pulgadas, galones, libras)", "Factores de conversión, también al cuadrado y al cubo", "Cifras significativas y análisis dimensional"] },
+            { titulo: "Vectores", contenidos: ["Forma polar y cartesiana", "Componentes: x = módulo·cos θ; y = módulo·sen θ", "Suma por componentes, módulo (Pitágoras) y dirección (arctg)"] },
+            { titulo: "Estática", contenidos: ["Equilibrio: ΣFx = 0 y ΣFy = 0", "Diagrama de cuerpo libre", "Tensiones en cuerdas"] },
+            { titulo: "Cinemática", contenidos: ["MRU: d = v·t", "MRUV: v = v₀ + a·t; x = v₀·t + ½·a·t²; v² − v₀² = 2·a·x", "Caída libre y tiro vertical (g = 9,8 m/s²)"] },
+            { titulo: "Trabajo mecánico", contenidos: ["W = F·d·cos θ", "Solo trabaja la componente de la fuerza en la dirección del movimiento"] },
+            { titulo: "Repaso", contenidos: ["Repaso general y repasos para el examen"] }
+          ]
+        },
+        material: [
+          { nivel: "esencial", grupo: "Para el examen", descripcion: "Las 5 preguntas del campus, resueltas paso a paso.", archivos: [
+            { nombre: "Examen de ingreso · las 5 preguntas resueltas", nota: "Empezá por acá", detalle: "Cómo se piensa cada pregunta (conversión, vectores, MRU, trabajo y tensiones), los tres simulacros del campus y el examen 2021 resueltos (6 págs.)", tipo: "PDF", url: "material/cursillo/fisica/01-examen-de-ingreso-resuelto.pdf" }
+          ] },
+          { nivel: "profundizar", grupo: "Exámenes de años anteriores", descripcion: "Con otro formato (opción múltiple y ejercicios), pero los mismos temas y algunos más (leyes de Newton).", archivos: [
+            { nombre: "Exámenes finales 2011 y 2012 · clave de corrección", detalle: "Finales y recuperatorios de marzo 2011 y marzo 2012, con la respuesta marcada y los ejercicios resueltos. Están todos en el quiz, con la resolución corregida donde la clave redondea de más (16 págs.)", tipo: "PDF", url: "material/cursillo/fisica/02-examenes-finales-2011-2012.pdf" }
+          ] }
+        ],
+        // Playlist oculta del cursillo (https://www.youtube.com/playlist?list=PLLHvzIXVE9q0): en la playlist el 13 está antes que el 12; acá van en orden
+        videos: [
+          { bloque: "Conversión de unidades · Videos 01 y 02", titulo: "01 · Conversión de unidades (1/2): teoría y ejemplos", url: "https://www.youtube.com/watch?v=5RcdBSgU6lo" },
+          { bloque: "Conversión de unidades · Videos 01 y 02", titulo: "02 · Conversión de unidades (2/2): ejercicios resueltos", url: "https://www.youtube.com/watch?v=aGFWOT4DeMc" },
+          { bloque: "Vectores · Videos 03 y 04", titulo: "03 · Vectores (1/2): definición, forma polar y cartesiana", url: "https://www.youtube.com/watch?v=9x2R68NCF7g" },
+          { bloque: "Vectores · Videos 03 y 04", titulo: "04 · Vectores (2/2): suma por componentes y problemas", url: "https://www.youtube.com/watch?v=A7xXI_lckWk" },
+          { bloque: "Estática · Videos 05 y 06", titulo: "05 · Estática (1/2): equilibrio, DCL y tensiones", url: "https://www.youtube.com/watch?v=EtKeCWs4hN8" },
+          { bloque: "Estática · Videos 05 y 06", titulo: "06 · Estática (2/2): ejercicios de tensiones", url: "https://www.youtube.com/watch?v=fc_bmAm-H70" },
+          { bloque: "Cinemática · Videos 07 a 09", titulo: "07 · Cinemática (1/3): MRU", url: "https://www.youtube.com/watch?v=QC7FW-CfLCU" },
+          { bloque: "Cinemática · Videos 07 a 09", titulo: "08 · Cinemática (2/3): MRUV", url: "https://www.youtube.com/watch?v=ixjV6UBT7KA" },
+          { bloque: "Cinemática · Videos 07 a 09", titulo: "09 · Cinemática (3/3): caída libre y tiro vertical", url: "https://www.youtube.com/watch?v=RDuFIIDWCco" },
+          { bloque: "Trabajo mecánico · Video 10", titulo: "10 · Trabajo mecánico", url: "https://www.youtube.com/watch?v=QTbuTvYahm0" },
+          { bloque: "Repaso · Videos 11 a 14", titulo: "11 · Repaso general", url: "https://www.youtube.com/watch?v=vLGArPmu0YA" },
+          { bloque: "Repaso · Videos 11 a 14", titulo: "12 · Repaso para el examen (1/2)", url: "https://www.youtube.com/watch?v=me_YmnfDBZ4" },
+          { bloque: "Repaso · Videos 11 a 14", titulo: "13 · Repaso para el examen (2/2)", url: "https://www.youtube.com/watch?v=U6tkDaaD8Js" },
+          { bloque: "Repaso · Videos 11 a 14", titulo: "14 · Repaso final: el último antes del examen", url: "https://www.youtube.com/watch?v=lpo4pK7qX9k" }
+        ]
+      }
+    ]
+  },
   // Diseño de Sistemas de Información (3º nivel, integradora): 3 parciales y el TPI.
   // El 3º Parcial es de patrones de diseño: cada patrón es un grupo del material (por ahora, Iterator).
   // Archivos en material/diseno-de-sistemas-de-informacion/
