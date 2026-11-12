@@ -514,6 +514,10 @@
   .vmini.on .vm-hoja{border-color:#5fb8c3}
   .vmini.on{color:#fff;font-weight:700}
   .visor-doc{flex:1;min-width:0;overflow:auto;position:relative;padding:18px 0;outline:none;overscroll-behavior:contain}
+  /* Con el visor del navegador: su propia barra trae el zoom y la búsqueda */
+  .visor.nativo .vb-zoom,.visor.nativo #visorBuscarBtn,.visor.nativo #visorPag,.visor.nativo .visor-minis{display:none}
+  .visor.nativo .visor-doc{padding:0;overflow:hidden}
+  .visor-nativo{display:block;width:100%;height:100%;border:0;background:#525659}
   .vpag{position:relative;margin:0 auto 14px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.35)}
   /* Un poco más de contraste: el texto chico, achicado en el lienzo, queda gris y blando; así se ve negro y definido */
   .vpag canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:contrast(1.3)}
@@ -5445,6 +5449,10 @@ function cargarPdfJs(){
   });
 }
 
+/* En la compu (con mouse y sin pantalla táctil), si el navegador trae su visor de PDF (Chrome, Edge, Firefox), se usa ese:
+   dibuja el texto con el suavizado del sistema y queda nítido, mientras que PDF.js lo dibuja como una imagen y se ve blando.
+   En el celular y en los navegadores de WhatsApp o Instagram no hay visor propio (o descargan el PDF): ahí sigue PDF.js */
+const visorNativo = () => navigator.pdfViewerEnabled === true && matchMedia("(pointer: fine)").matches && !(navigator.maxTouchPoints > 1);
 let visorLista = [], visorPos = 0;
 // Estado del PDF abierto: hojas, zoom (1 = ajustado al ancho), búsqueda y observadores
 const vz = { doc: null, tarea: 0, pags: [], zoom: 1, actual: 0, ancho: 0, textos: null, q: "", marcas: [], marcaPos: -1, obs: null, obsMini: null };
@@ -5501,6 +5509,16 @@ async function mostrarVisor(){
   $("#visorSigT").textContent = sig ? sig.dataset.pdf : "";
   $("#visorNum").textContent = `${visorPos + 1} de ${visorLista.length}`;
   const doc = $("#visorDoc");
+  const nativo = visorNativo();
+  $("#visor").classList.toggle("nativo", nativo);
+  if(nativo){
+    // El visor de PDF del navegador, adentro del panel: sin la columna de miniaturas (navpanes=0, si no achica la hoja),
+    // ajustado al ancho y en la página pedida (data-pag)
+    $("#visorBuscar").hidden = true;
+    const pag = +a.dataset.pag > 1 ? `&page=${+a.dataset.pag}` : "";
+    doc.innerHTML = `<iframe class="visor-nativo" src="${esc(url)}#navpanes=0&view=FitH${pag}" title="${esc(a.dataset.pdf)}"></iframe>`;
+    return;
+  }
   doc.innerHTML = `<div class="visor-esq" role="status" aria-label="Cargando…"><i></i><i></i></div>`;
   doc.scrollTop = 0;
   try {
@@ -10504,11 +10522,12 @@ $("#visor").addEventListener("close", () => {
 // Esc con la búsqueda abierta cierra solo la búsqueda
 $("#visor").addEventListener("cancel", e => { if(!$("#visorBuscar").hidden){ e.preventDefault(); cerrarBusqueda(); } });
 $("#visor").addEventListener("keydown", e => {
-  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "f"){ e.preventDefault(); abrirBusqueda(); return; }
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "f"){ if($("#visor").classList.contains("nativo")) return; e.preventDefault(); abrirBusqueda(); return; }
   if(e.key === "Escape" && !$("#visorBuscar").hidden){ e.preventDefault(); cerrarBusqueda(); return; }
   if(e.target.matches("input") || e.ctrlKey || e.metaKey || e.altKey) return;
   if(e.key === "ArrowLeft"){ e.preventDefault(); moverVisor(-1); }
   else if(e.key === "ArrowRight"){ e.preventDefault(); moverVisor(1); }
+  else if($("#visor").classList.contains("nativo")) return;   // el zoom lo maneja el visor del navegador
   else if(e.key === "+" || e.key === "="){ e.preventDefault(); zoomVisor(1); }
   else if(e.key === "-"){ e.preventDefault(); zoomVisor(-1); }
   else if(e.key === "0"){ e.preventDefault(); zoomVisor(0); }
