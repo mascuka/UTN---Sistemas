@@ -515,7 +515,8 @@
   .vmini.on{color:#fff;font-weight:700}
   .visor-doc{flex:1;min-width:0;overflow:auto;position:relative;padding:18px 0;outline:none;overscroll-behavior:contain}
   .vpag{position:relative;margin:0 auto 14px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.35)}
-  .vpag canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  /* Un poco más de contraste: el texto chico, achicado en el lienzo, queda gris y blando; así se ve negro y definido */
+  .vpag canvas{position:absolute;inset:0;width:100%;height:100%;display:block;filter:contrast(1.3)}
   .vmarca{position:absolute;background:rgba(255,213,0,.4);border-radius:2px;mix-blend-mode:multiply;pointer-events:none}
   .vmarca.on{background:rgba(216,183,94,.5);outline:2px solid #c9a443}
   .visor-msg{color:#e6e8ea;text-align:center;padding:60px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;line-height:1.5}
@@ -536,12 +537,13 @@
   .visor-pie .vnum{margin:0 auto;font-size:.8rem;color:var(--muted);white-space:nowrap}
   @media (max-width:899px){ .visor-minis{display:none} }
   /* Al costado (compu ancha): panel fijo a la derecha; la página se corre y sigue andando */
-  :root{--visor-w:clamp(440px, 42vw, 760px)}
+  :root{--visor-w:clamp(440px, 46vw, 860px)}
   body.con-visor dialog.visor{position:fixed;inset:0;z-index:60;margin:0;width:100%;height:100%;border-radius:0}
   @media (min-width:1280px){
     body.con-visor{padding-right:var(--visor-w)}
     body.con-visor dialog.visor{left:auto;width:var(--visor-w);border-left:1px solid var(--line);background:var(--hover);box-shadow:-16px 0 32px -28px rgba(0,0,0,.4)}
     body.con-visor .vb-t{display:none}
+    body.con-visor .pv-l:not(.sin-abr){display:none}   /* con el visor abierto queda la sigla, así entran todas las pestañas */
     body.con-visor .comis-tabla{overflow-x:auto}
     body.con-visor .comis-grupo{min-width:820px}
   }
