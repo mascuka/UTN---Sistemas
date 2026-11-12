@@ -2142,6 +2142,58 @@
   .cal-d .ti.tn{opacity:.85}
   .cal-d.sel .ti{background:var(--text);box-shadow:0 0 0 1px var(--bg)}
   .cal-d.sel .ti.ti-tp{background:none}
+  /* Mi TPI: la entrega y la preparación de la defensa */
+  .mi-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:12px;box-shadow:0 1px 2px rgba(30,25,15,.04)}
+  .mi-campo{display:grid;grid-template-columns:150px minmax(0,1fr);gap:12px;align-items:start}
+  .mi-lbl{font-size:.84rem;font-weight:600;color:var(--text2);padding-top:8px}
+  .mi-in{width:100%;font:inherit;font-size:.9rem;color:var(--text);background:var(--bg);border:1px solid var(--line2);border-radius:9px;padding:7px 10px;transition:border-color .15s,background .15s}
+  .mi-in::placeholder{color:var(--muted);opacity:.8}
+  .mi-in:focus{outline:none;border-color:var(--accent);background:var(--card)}
+  textarea.mi-in{resize:vertical;min-height:4.4em;line-height:1.45;field-sizing:content}
+  .mi-url,.mi-link{display:flex;gap:8px;align-items:center}
+  .mi-link + .mi-link{margin-top:6px}
+  .mi-link .mi-in:first-child{flex:0 0 32%}
+  .mi-abrir{flex:none;font-size:.82rem;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:9px;padding:7px 11px;text-decoration:none;white-space:nowrap}
+  .mi-abrir.off{opacity:.35;pointer-events:none}
+  .mi-x{flex:none;font:inherit;font-size:.9rem;color:var(--muted);background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer}
+  .mi-x:hover{background:var(--hover);color:var(--error)}
+  .mi-mas{font:inherit;font-size:.82rem;font-weight:600;color:var(--accent);background:none;border:1px dashed var(--line2);border-radius:9px;padding:6px 12px;cursor:pointer;margin-top:8px}
+  .mi-mas:hover{border-color:var(--accent)}
+  .mi-vacio{font-size:.84rem;color:var(--muted);padding-top:8px}
+  .mi-estado{font-size:.8rem;color:var(--muted);padding-left:162px}
+  .mi-estado .dot{margin-right:6px;vertical-align:1px}
+  .mi-como{background:var(--mark);border:1px solid var(--mark-l);border-radius:14px;padding:14px 20px 14px 36px;display:grid;gap:6px;font-size:.92rem;line-height:1.5;color:var(--text)}
+  .mi-prog{font-size:.8rem;color:var(--muted);font-weight:500}
+  .mi-intro{color:var(--muted);font-size:.88rem;margin:-4px 0 12px;max-width:760px}
+  .mi-pts{display:grid;gap:10px}
+  .mi-pt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;transition:border-color .15s,background .15s}
+  .mi-pt.listo{border-color:var(--done-line);background:var(--done)}
+  .mi-pt-h{display:flex;gap:12px;align-items:flex-start}
+  .mi-n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--hover);color:var(--text2);display:grid;place-items:center;font-weight:700;font-size:.8rem;margin-top:1px}
+  .mi-pt.listo .mi-n{background:var(--ok);color:#fff}
+  .mi-pt-t{min-width:0}
+  .mi-pt-t b{display:block;font-size:.98rem;font-weight:600}
+  .mi-pt-t small{display:block;margin-top:2px;color:var(--text2);font-size:.87rem;line-height:1.45}
+  .mi-check{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;padding-top:3px}
+  .mi-check input{accent-color:var(--ok);width:15px;height:15px;margin:0}
+  .mi-pt.listo .mi-check{color:var(--ok)}
+  .mi-pista{margin:9px 0 8px 38px;font-size:.84rem;color:var(--muted);line-height:1.5}
+  .mi-pista b{color:var(--text2);font-weight:600}
+  .mi-resp{margin-left:38px;width:calc(100% - 38px)}
+  @media (max-width:640px){
+    .mi-card{padding:14px}
+    .mi-campo{grid-template-columns:1fr;gap:4px}
+    .mi-lbl{padding-top:0}
+    .mi-estado{padding-left:0}
+    .mi-link{flex-wrap:wrap}
+    .mi-link .mi-in:first-child{flex:1 1 100%}
+    .mi-link .mi-in[type=url]{flex:1;min-width:0}
+    .mi-pt{padding:12px 14px}
+    .mi-pt-h{flex-wrap:wrap}
+    .mi-check{margin-left:38px}
+    .mi-pista{margin-left:0}
+    .mi-resp{margin-left:0;width:100%}
+  }
 </style>
 <script>
 /* Modo claro u oscuro elegido a mano (si no se eligió, sigue al sistema): se prenden o apagan las reglas
@@ -2857,6 +2909,26 @@ const MATERIAS = {
         titulo: "TPI",
         descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway, seguridad y el despliegue con Docker, logs y monitoreo.",
         secciones: ["teorico", "tpi"],
+        // Pestaña "Mi TPI": nuestra entrega (repo, Postman, links, notas) y cómo prepararse para la defensa.
+        // Lo que se escribe ahí se guarda en aprobadas.json ("entregas") con la clave de GitHub
+        defensa: {
+          como: [
+            "Es oral. Contás <b>el problema</b> que hay, <b>la solución</b> y por eso el TPI.",
+            "Mientras mostrás <b>Postman</b> vas nombrando las <b>reglas de negocio</b>: cada request es una regla en acción.",
+            "Después van al código: te piden que muestres <b>dónde está</b> cada cosa (patrones, errores, persistencia, reglas de negocio, logs)."
+          ],
+          puntos: [
+            { id: "relato", titulo: "El relato: problema, solución y TPI", pregunta: "Arrancás vos: qué problema hay, cómo lo resuelve tu solución y por eso el TPI. Las reglas de negocio las vas nombrando mientras mostrás Postman.", pista: "Tres frases: el problema, la solución y las reglas de negocio, cada una con el request de Postman donde se ve.", ej: "El problema: …\nLa solución: …\nReglas de negocio: 1) … (se ve en POST /…)" },
+            { id: "postman", titulo: "Postman: cada dato que mandás y cada dato que vuelve", pregunta: "Es lo más importante: por qué ponés cada dato del request y por qué la respuesta devuelve cada dato.", pista: "Por cada request: el verbo y la URL (entra por el gateway), los headers (el token de Keycloak), el body y por qué lleva cada campo; y la respuesta: el código (200, 201, 400, 401, 404…) y para qué está cada campo. Apuntes 14 y 17.", ej: "1. POST /api/… → mando … porque … → vuelve 201 con … porque …" },
+            { id: "micro", titulo: "Los microservicios: qué hace cada uno y cómo se relacionan", pregunta: "Siempre lo piden: qué hace cada microservicio y cómo se relaciona con los demás.", pista: "Uno por línea: qué hace, su base de datos, a quién llama (RestClient) y por qué ruta del gateway entra. Los diagramas C1 y C2 te ordenan el relato. Apuntes 18 y 19.", ej: "ms-… → hace … · base … · llama a ms-… para … · entra por /api/…" },
+            { id: "api", titulo: "La API externa: para qué la usás y por qué no la hiciste vos", pregunta: "Siempre se pide una API externa: cómo se relaciona con lo tuyo, por qué la usás y por qué no la creaste vos.", pista: "Qué microservicio la llama y en qué clase (el cliente RestClient), qué le mandás, qué te devuelve y qué pasa si no responde. Por qué no hacerla vos: son datos o cálculos que no tenés (mapas, distancias, clima…), ya está probada y mantenerla te costaría mucho más. Apunte 18.", ej: "API: … · la llama ms-… en …Client.java · le mando … · me devuelve … · no la hice porque …" },
+            { id: "patrones", titulo: "Los patrones: cuáles usaste y dónde están", pregunta: "Saber qué patrones se usaron y en qué parte del código están.", pista: "Los de la materia: Repositorio (Spring Data), DTO, inyección de dependencias, API Gateway… Anotá el nombre y el archivo de cada uno para ir directo.", ej: "Repositorio → …Repository.java\nDTO → …\nAPI Gateway → …" },
+            { id: "errores", titulo: "Dónde están configurados los errores", pregunta: "Saber dónde está configurado el manejo de errores.", pista: "El manejo global con @ControllerAdvice y @ExceptionHandler, tus excepciones propias y qué código HTTP devuelve cada una. Apuntes 17 y 23.", ej: "…/GlobalExceptionHandler.java → 404 si …, 400 si …" },
+            { id: "persistencia", titulo: "Dónde está la persistencia", pregunta: "Saber dónde está la persistencia.", pista: "Las entidades (@Entity), los repositorios (JpaRepository), la configuración de la base (application.yml o .properties) y la base en el docker-compose. Apuntes 13, 16 y 22.", ej: "Entidades en … · repositorios en … · base … en docker-compose.yml" },
+            { id: "reglas", titulo: "Dónde están las reglas de negocio en el código", pregunta: "En el código: saber dónde está cada regla de negocio.", pista: "Van en la capa de servicio (@Service), no en el controlador. Anotá cada regla con su clase y su método.", ej: "Regla 1 → …Service.metodo()\nRegla 2 → …" },
+            { id: "logs", titulo: "Dónde está la trazabilidad: los logs", pregunta: "Saber dónde está la trazabilidad, los logs.", pista: "SLF4J y Logback, qué se loguea en cada capa, el Correlation ID (MDC) que sigue un pedido entre microservicios y dónde se ven (docker logs, Loki con Grafana o ELK). Apuntes 23 y 24.", ej: "Logs en … · Correlation ID en … · se ven en …" }
+          ]
+        },
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -4230,7 +4302,8 @@ function pestanasDe(p){
       ...temas,
       ...(arch || !vids ? [{ go: "/material", t: "Material", on: d => !d[0] || d[0] === "material" }] : []),
       ...(p.practicaPartes || tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
-      ...(vids ? [{ go: "/videos", t: "Videos", on: d => d[0] === "videos" }] : [])
+      ...(vids ? [{ go: "/videos", t: "Videos", on: d => d[0] === "videos" }] : []),
+      ...tabMiTpi(p)
     ];
   }
   const ks = seccionesDe(p);
@@ -4244,9 +4317,12 @@ function pestanasDe(p){
     ...(p.practica || p.practicaPartes ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h" && !deParcial(d)) }]
       : !kp && tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
     ...(conVideos ? [{ go: `/${conVideos}/videos`, t: "Videos", on: d => d[1] === "videos" }] : []),
-    ...ks.filter(k => esSeccionParcial(p, k) && (conArch(k) || (k === kp && (tieneHerramientas(p) || p.practicaParcial)))).map(tab)
+    ...ks.filter(k => esSeccionParcial(p, k) && (conArch(k) || (k === kp && (tieneHerramientas(p) || p.practicaParcial)))).map(tab),
+    ...tabMiTpi(p)
   ];
 }
+/* La pestaña "Mi TPI" (tu entrega y la defensa), al final, en las partes que tienen "defensa" */
+const tabMiTpi = p => p.defensa ? [{ go: "/mi", t: "Mi TPI", on: d => d[0] === "mi" }] : [];
 /* La parte que se está viendo (un parcial o una sección de la materia) */
 const parteDe = (c, b) => c && b ? c.parciales.find(x => x.id === b) || (c.secciones || []).find(x => x.id === b) : null;
 /* Arriba de cada pestaña: el nombre de la parte y su descripción corta */
@@ -4282,6 +4358,11 @@ const ok = id => aprobadas.has(id);
 const CLAVE_ESTADOS = "isi-estados";
 let estados = {}, notas = {};
 try { const g = JSON.parse(leerLocal(CLAVE_ESTADOS)) || {}; estados = g.estados || {}; notas = g.notas || {}; } catch(e){}
+/* Lo que cargás de tus entregas (pestaña "Mi TPI"): repo, Postman, links, notas y la preparación de la defensa.
+   Por parte: "201/tpi" → { proyecto, repo, postman, links: [{ nombre, url }], notas, resp: { punto: texto }, listo: { punto: true } } */
+const CLAVE_ENTREGAS = "isi-entregas";
+let entregas = {};
+try { entregas = JSON.parse(leerLocal(CLAVE_ENTREGAS)) || {}; } catch(e){}
 const estadoDe = id => ok(id) ? "aprobada" : (estados[id] || "");
 const notaDe = id => ok(id) && notas[id] != null ? notas[id] : null;
 const idDe = x => x.creditos ? idElec(x) : idMat(x);
@@ -4309,11 +4390,11 @@ function headers(){
 
 async function leerRemoto(){
   const r = await fetch(`${urlArchivo()}?ref=${GITHUB.rama}&t=${Date.now()}`, { headers: headers() });
-  if(r.status === 404) return { lista: [], estados: {}, notas: {}, cronogramas: null, fechas: null, notasCursada: null, sha: null };
+  if(r.status === 404) return { lista: [], estados: {}, notas: {}, cronogramas: null, fechas: null, notasCursada: null, entregas: null, sha: null };
   if(!r.ok) throw new Error("GitHub respondió " + r.status);
   const j = await r.json();
   const datos = JSON.parse(b64dec(j.content) || "{}");
-  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, cronogramas: datos.cronogramas || null, fechas: datos.fechas || null, notasCursada: datos.notasCursada || null, sha: j.sha };
+  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, cronogramas: datos.cronogramas || null, fechas: datos.fechas || null, notasCursada: datos.notasCursada || null, entregas: datos.entregas || null, sha: j.sha };
 }
 
 async function cargarAprobadas(){
@@ -4330,6 +4411,7 @@ async function cargarAprobadas(){
     if(r.cronogramas) cronogramas = r.cronogramas;
     if(r.fechas) fechas = r.fechas;
     if(r.notasCursada) notasCursada = r.notasCursada;
+    if(r.entregas) entregas = r.entregas;
     guardarCopia();
     estadoSync = leerLocal(CLAVE_TOKEN) ? "ok" : "sin-clave";
   } catch(e){
@@ -4347,7 +4429,7 @@ async function subirAprobadas(reintento = true){
   const nts = ordenar(Object.fromEntries(Object.entries(notas).filter(([id]) => aprobadas.has(id))));
   const cuerpo = {
     message: "Actualizar materias, cronograma y fechas",
-    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas, notasCursada }, null, 2) + "\n"),
+    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas, notasCursada, entregas: ordenar(entregas) }, null, 2) + "\n"),
     branch: GITHUB.rama
   };
   if(shaRemoto) cuerpo.sha = shaRemoto;
@@ -4381,6 +4463,7 @@ function guardarCopia(){
   guardarLocal(CLAVE_CRONO, JSON.stringify(cronogramas));
   guardarLocal(CLAVE_FECHAS, JSON.stringify(fechas));
   guardarLocal(CLAVE_NOTAS_C, JSON.stringify(notasCursada));
+  guardarLocal(CLAVE_ENTREGAS, JSON.stringify(entregas));
 }
 const CLAVE_SIN_SUBIR = "isi-sin-subir";   // hay cambios en este navegador que todavía no llegaron a GitHub
 function programarSubida(){
@@ -4424,6 +4507,7 @@ function textoSync(){
 function pintarSync(){
   const el = $("#sync");
   if(el) el.innerHTML = estadoSync === "error" ? `${textoSync()} <button class="linkbtn" data-config>Clave de GitHub</button>` : "";
+  if($("#miEstado")) pintarMiEstado();
 }
 
 /* ---------- Ventana para cargar / borrar la clave ---------- */
@@ -4712,6 +4796,8 @@ function viewNivel(n){
 
 /* Vuelve a dibujar sin mover la pantalla */
 function refrescar(){
+  // Si estás escribiendo en Mi TPI no se rearma la página (perderías el cursor)
+  if(document.activeElement && document.activeElement.closest && document.activeElement.closest(".mi")) return;
   const y = window.scrollY;
   render(false);
   window.scrollTo(0, y);
@@ -4847,6 +4933,115 @@ function crumbs(m, ...rest){
 
 /* Pestaña "Temas" de un parcial: los temas numerados; cada uno se despliega con lo que entra y su material
    (los archivos de las partes que se llaman como el tema y los videos de su bloque) */
+/* ---------- Mi TPI: tu entrega y la defensa ----------
+   Arriba, la entrega (proyecto, repositorio, Postman, otros links y notas). Abajo, cómo se toma la defensa y, por cada cosa
+   que preguntan, dónde mirar y un espacio para escribir dónde está en tu TPI; "Lo tengo claro" la marca.
+   Se guarda en este navegador y, con la clave de GitHub, en aprobadas.json ("entregas"), así está en la compu y en el celular */
+const claveEntrega = (m, p) => `${m.n}/${p.id}`;
+const entregaDe = (m, p) => entregas[claveEntrega(m, p)] || { links: [], resp: {}, listo: {} };
+const esLink = u => /^https?:\/\/\S+$/i.test(String(u || "").trim());
+const hrefLink = u => esLink(u) ? ` href="${esc(String(u).trim())}"` : "";
+function viewMiTpi(m, p){
+  const e = entregaDe(m, p), df = p.defensa, listo = e.listo || {}, resp = e.resp || {};
+  const campo = (k, t, ph, url) => `
+        <label class="mi-campo"><span class="mi-lbl">${t}</span>${url
+          ? `<span class="mi-url"><input class="mi-in" type="url" data-mi="${k}" value="${esc(e[k] || "")}" placeholder="${esc(ph)}" spellcheck="false"><a class="mi-abrir${esLink(e[k]) ? "" : " off"}" data-mi-abrir="${k}"${hrefLink(e[k])} target="_blank" rel="noopener">Abrir ↗</a></span>`
+          : `<input class="mi-in" data-mi="${k}" value="${esc(e[k] || "")}" placeholder="${esc(ph)}">`}</label>`;
+  return `
+    <div class="pt-cab"><h1>Mi TPI</h1><p>Tu entrega y la defensa. Lo que cargás acá queda guardado para tenerlo a mano el día del coloquio.</p></div>
+    <div class="mt-main mi">
+      <h2 class="mt-h2">Mi entrega</h2>
+      <div class="mi-card">
+        ${campo("proyecto", "Proyecto", "El dominio que eligieron. Ej.: refugio de animales")}
+        ${campo("repo", "Repositorio", "https://github.com/…", true)}
+        ${campo("postman", "Colección de Postman", "El link de la colección o del workspace", true)}
+        <div class="mi-campo"><span class="mi-lbl">Otros links</span><div><div id="miLinks">${linksMiTpi(e)}</div><button type="button" class="mi-mas" data-mi-agregar>+ Agregar link</button></div></div>
+        <label class="mi-campo"><span class="mi-lbl">Notas</span><textarea class="mi-in" data-mi="notas" rows="3" placeholder="Integrantes, fecha de la defensa, usuarios de prueba de Keycloak, cómo se levanta (docker compose up)…">${esc(e.notas || "")}</textarea></label>
+        <div class="mi-estado" id="miEstado"></div>
+      </div>
+      <h2 class="mt-h2">Cómo nos tomaron la defensa</h2>
+      <ul class="mi-como">${df.como.map(x => `<li>${x}</li>`).join("")}</ul>
+      <h2 class="mt-h2">Preparala con tu TPI <span class="mi-prog" id="miProg"></span></h2>
+      <p class="mi-intro">Lo que te preguntan y dónde mirar en tu proyecto. Escribí la respuesta de tu TPI (el archivo, la clase, el request) y marcala cuando la tengas clara.</p>
+      <div class="mi-pts">${df.puntos.map((x, i) => `
+        <div class="mi-pt${listo[x.id] ? " listo" : ""}">
+          <div class="mi-pt-h"><span class="mi-n">${i + 1}</span><span class="mi-pt-t"><b>${esc(x.titulo)}</b><small>${esc(x.pregunta)}</small></span>
+            <label class="mi-check"><input type="checkbox" data-mi-listo="${x.id}"${listo[x.id] ? " checked" : ""}>Lo tengo claro</label></div>
+          <p class="mi-pista"><b>Dónde mirar:</b> ${esc(x.pista)}</p>
+          <textarea class="mi-in mi-resp" data-mi-resp="${x.id}" rows="2" placeholder="${esc(x.ej || "En mi TPI: …")}">${esc(resp[x.id] || "")}</textarea>
+        </div>`).join("")}</div>
+    </div>`;
+}
+function linksMiTpi(e){
+  return (e.links || []).map((l, i) => `
+          <div class="mi-link"><input class="mi-in" data-mi-link="${i}" data-k="nombre" value="${esc(l.nombre || "")}" placeholder="Swagger, Docker Hub, informe…"><input class="mi-in" type="url" data-mi-link="${i}" data-k="url" value="${esc(l.url || "")}" placeholder="https://…" spellcheck="false"><a class="mi-abrir${esLink(l.url) ? "" : " off"}"${hrefLink(l.url)} target="_blank" rel="noopener" title="Abrir">↗</a><button type="button" class="mi-x" data-mi-quitar="${i}" title="Sacar" aria-label="Sacar este link">✕</button></div>`).join("")
+    || `<p class="mi-vacio">Swagger, Docker Hub, el informe, los diagramas C4, el video…</p>`;
+}
+function pintarMiEstado(){
+  const el = $("#miEstado");
+  if(!el) return;
+  el.innerHTML = !leerLocal(CLAVE_TOKEN)
+    ? `<span class="dot"></span>Se guarda en este navegador. <button type="button" class="linkbtn" data-config>Conectá tu clave de GitHub</button> para tenerlo en la compu y en el celular.`
+    : estadoSync === "guardando" ? `<span class="dot"></span>Guardando en GitHub…`
+    : estadoSync === "error" ? `<span class="dot err"></span>${esc(errorSync)}`
+    : `<span class="dot ok"></span>Guardado en GitHub`;
+}
+function montarMiTpi(m, p){
+  const k = claveEntrega(m, p), raiz = $(".mi");
+  const e = () => entregas[k] || (entregas[k] = { links: [], resp: {}, listo: {} });
+  const guardar = () => {
+    guardarLocal(CLAVE_ENTREGAS, JSON.stringify(entregas));
+    if(leerLocal(CLAVE_TOKEN)) programarSubida();
+    pintarMiEstado();
+  };
+  const abrir = (a, u) => {
+    if(!a) return;
+    a.classList.toggle("off", !esLink(u));
+    if(esLink(u)) a.href = u.trim(); else a.removeAttribute("href");
+  };
+  const progreso = () => {
+    const n = p.defensa.puntos.filter(x => (e().listo || {})[x.id]).length;
+    $("#miProg").textContent = `${n} de ${p.defensa.puntos.length} listos`;
+  };
+  const links = foco => {
+    $("#miLinks").innerHTML = linksMiTpi(e());
+    if(foco != null){ const x = $(`#miLinks [data-mi-link="${foco}"]`); if(x) x.focus(); }
+  };
+  raiz.addEventListener("input", ev => {
+    const t = ev.target, d = t.dataset;
+    if(d.mi){ e()[d.mi] = t.value; abrir(raiz.querySelector(`[data-mi-abrir="${d.mi}"]`), t.value); }
+    else if(d.miResp){ (e().resp ||= {})[d.miResp] = t.value; }
+    else if(d.miLink){
+      const l = (e().links || [])[+d.miLink];
+      if(!l) return;
+      l[d.k] = t.value;
+      if(d.k === "url") abrir(t.parentNode.querySelector(".mi-abrir"), t.value);
+    } else return;
+    guardar();
+  });
+  raiz.addEventListener("change", ev => {
+    const id = ev.target.dataset.miListo;
+    if(!id) return;
+    const l = e().listo ||= {};
+    if(ev.target.checked) l[id] = true; else delete l[id];
+    ev.target.closest(".mi-pt").classList.toggle("listo", ev.target.checked);
+    progreso();
+    guardar();
+  });
+  raiz.addEventListener("click", ev => {
+    if(ev.target.closest("[data-mi-agregar]")){
+      (e().links ||= []).push({ nombre: "", url: "" });
+      links(e().links.length - 1);
+      guardar();
+    } else if(ev.target.closest("[data-mi-quitar]")){
+      e().links.splice(+ev.target.closest("[data-mi-quitar]").dataset.miQuitar, 1);
+      links();
+      guardar();
+    }
+  });
+  progreso();
+  pintarMiEstado();
+}
 function viewParcial(m, p){
   return `${cabParte(p)}<div class="mt-main pc">${temasParcial(m, p) || `<div class="empty">Este parcial no tiene los temas cargados.</div>`}</div>`;
 }
@@ -10142,6 +10337,11 @@ function render(arriba = true){
     app.innerHTML = viewHerramienta(m, p, d);
     HERRAMIENTAS[d].montar($("#herr"));
     titulo = `${HERRAMIENTAS[d].titulo} · ${p.titulo} · ${m.nombre}`;
+  } else if(p && c === "mi" && p.defensa){
+    ruta = `${a}/${b}/mi`;
+    app.innerHTML = viewMiTpi(m, p);
+    montarMiTpi(m, p);
+    titulo = `Mi TPI · ${p.titulo} · ${m.nombre}`;
   } else if(p && seccionesDe(p).includes(c)){
     d = d === "videos" ? "videos" : "material";
     ruta = `${a}/${b}/${c}/${d}`;
