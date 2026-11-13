@@ -2661,7 +2661,10 @@ const MATERIAS = {
         id: "p1",
         titulo: "1º Parcial",
         descripcion: "Unidad 1: Teoría General de Sistemas. Teoría y un caso práctico: una organización vista como sistema (objetivo, ambiente, recursos, entradas, alcances y salidas).",
-        secciones: [],
+        // Pestañas: Temas · Material · Práctica · Parciales
+        secciones: ["teorico", "parciales"],
+        nombres: { teorico: "Material" },
+        practicaAparte: true,
         quiz: "quiz/spn-1er-parcial.json",
         quizSecciones: [
           { t: "Teoría General de Sistemas", nombre: "La TGS", d: "Bertalanffy, isomorfismo, aplicaciones, entropía, sistemas abiertos y cerrados" },
@@ -2683,22 +2686,22 @@ const MATERIAS = {
             ] }
           ]
         },
-        material: [
-            { grupo: "Material de estudio", descripcion: "Las presentaciones de la cátedra de la Unidad 1.", archivos: [
-              { n: 1, nombre: "Teoría General de Sistemas", detalle: "Bertalanffy, la ciencia moderna, qué es la TGS y sus aplicaciones, entropía, sistemas abiertos y cerrados, aportes, clasificación y propiedades (19 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/01-teoria-general-de-sistemas.pdf" },
-              { n: 2, nombre: "Aportes semánticos de la TGS", detalle: "Concepto de sistema y sus elementos: objetivo, E-P-S, caja negra, retroalimentación, ambiente, alcances, límite, recursos (14 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/02-aportes-semanticos-de-la-tgs.pdf" }
-            ] },
-            { grupo: "Parciales", descripcion: "El enunciado tal cual y a continuación resuelto.", archivos: [
-              { n: 3, nombre: "Recuperatorio 2023 · SEMYBAL", detalle: "El enunciado y a continuación resuelto: objetivo y ambiente, recursos, entradas, alcances y salidas (5 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/03-recuperatorio-1er-parcial-2023-semybal.pdf" }
-            ] }
-        ],
-        videos: []
+        teorico: { material: [
+            { n: 1, nombre: "Teoría General de Sistemas", detalle: "Bertalanffy, la ciencia moderna, qué es la TGS y sus aplicaciones, entropía, sistemas abiertos y cerrados, aportes, clasificación y propiedades (19 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/01-teoria-general-de-sistemas.pdf" },
+            { n: 2, nombre: "Aportes semánticos de la TGS", detalle: "Concepto de sistema y sus elementos: objetivo, E-P-S, caja negra, retroalimentación, ambiente, alcances, límite, recursos (14 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/02-aportes-semanticos-de-la-tgs.pdf" }
+        ], videos: [] },
+        parciales: { material: [
+            { n: 1, nombre: "Recuperatorio 2023 · SEMYBAL", detalle: "El enunciado y a continuación resuelto: objetivo y ambiente, recursos, entradas, alcances y salidas (5 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/03-recuperatorio-1er-parcial-2023-semybal.pdf" }
+        ], videos: [] }
       },
       {
         id: "p2",
         titulo: "2º Parcial",
         descripcion: "Unidades 2 y 3: la organización, los procesos y los sistemas de información. Teoría y un caso: mapa de procesos, diagrama de estructura básica, diagrama de secuencia de actividades y el sistema de información del proceso.",
-        secciones: [],
+        // Pestañas: Temas · Material · Práctica · Parciales
+        secciones: ["teorico", "parciales"],
+        nombres: { teorico: "Material" },
+        practicaAparte: true,
         quiz: "quiz/spn-2do-parcial.json",
         quizSecciones: [
           { t: "Organización y autoridad", d: "Administración, principios de la organización formal, autoridad de línea, staff y funcional, organigramas" },
@@ -2722,21 +2725,18 @@ const MATERIAS = {
             ] }
           ]
         },
-        material: [
-            { grupo: "Material de estudio", descripcion: "Las presentaciones de la cátedra de las Unidades 2 y 3 y el taller resuelto en clase.", archivos: [
-              { n: 1, nombre: "Administración, organización y organigramas", detalle: "Funciones de la administración, la organización y la empresa, organigramas, principios de la organización formal y tipos de autoridad (34 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/01-administracion-organizacion-y-organigramas.pdf" },
-              { n: 2, nombre: "Departamentalización", detalle: "Niveles organizacionales, criterios y tipos de departamentalización (26 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/02-departamentalizacion.pdf" },
-              { n: 3, nombre: "Los procesos en las organizaciones", detalle: "Proceso y procedimiento, elementos, estructura básica y modelado de actividades (10 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/03-los-procesos-en-las-organizaciones.pdf" },
-              { n: 4, nombre: "Toma de decisiones", detalle: "Desarrollo y evaluación de alternativas, decisiones programadas y no programadas (9 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/04-toma-de-decisiones.pdf" },
-              { n: 5, nombre: "Sistemas de información", detalle: "Dato e información, características y valor de la información, el SI y sus actividades, clasificación de la información y tipos de SI (39 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/05-sistemas-de-informacion.pdf" },
-              { n: 6, nombre: "Taller resuelto · Vivero Green", detalle: "La propuesta de solución de la cátedra: mapa de procesos y objetivos, estructura básica, diagrama de secuencia y el sistema de información (7 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/06-taller-resuelto-vivero-green.pdf" }
-            ] },
-            { grupo: "Parciales", descripcion: "El recuperatorio 2023 resuelto por nosotros y el simulacro resuelto por la cátedra.", archivos: [
-              { n: 7, nombre: "Recuperatorio 2023 · Todo Casa", detalle: "El enunciado y a continuación resuelto, con los tres diagramas y el sistema de información del proceso de venta (5 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/08-recuperatorio-2do-parcial-2023-todo-casa.pdf" },
-              { n: 8, nombre: "Simulacro tipo 2º parcial · La Esquina", nota: "Resuelto por la cátedra", detalle: "El simulacro de la cátedra: mapa de procesos, estructura básica, diagrama de actividades, objetivo del SI, usuarios y alcances (4 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/07-simulacro-tipo-2do-parcial-la-esquina-resuelto.pdf" }
-            ] }
-        ],
-        videos: []
+        teorico: { material: [
+            { n: 1, nombre: "Administración, organización y organigramas", detalle: "Funciones de la administración, la organización y la empresa, organigramas, principios de la organización formal y tipos de autoridad (34 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/01-administracion-organizacion-y-organigramas.pdf" },
+            { n: 2, nombre: "Departamentalización", detalle: "Niveles organizacionales, criterios y tipos de departamentalización (26 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/02-departamentalizacion.pdf" },
+            { n: 3, nombre: "Los procesos en las organizaciones", detalle: "Proceso y procedimiento, elementos, estructura básica y modelado de actividades (10 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/03-los-procesos-en-las-organizaciones.pdf" },
+            { n: 4, nombre: "Toma de decisiones", detalle: "Desarrollo y evaluación de alternativas, decisiones programadas y no programadas (9 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/04-toma-de-decisiones.pdf" },
+            { n: 5, nombre: "Sistemas de información", detalle: "Dato e información, características y valor de la información, el SI y sus actividades, clasificación de la información y tipos de SI (39 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/05-sistemas-de-informacion.pdf" },
+            { n: 6, nombre: "Taller resuelto · Vivero Green", detalle: "La propuesta de solución de la cátedra: mapa de procesos y objetivos, estructura básica, diagrama de secuencia y el sistema de información (7 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/06-taller-resuelto-vivero-green.pdf" }
+        ], videos: [] },
+        parciales: { material: [
+            { n: 1, nombre: "Recuperatorio 2023 · Todo Casa", detalle: "El enunciado y a continuación resuelto, con los tres diagramas y el sistema de información del proceso de venta (5 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/08-recuperatorio-2do-parcial-2023-todo-casa.pdf" },
+            { n: 2, nombre: "Simulacro tipo 2º parcial · La Esquina", nota: "Resuelto por la cátedra", detalle: "El simulacro de la cátedra: mapa de procesos, estructura básica, diagrama de actividades, objetivo del SI, usuarios y alcances (4 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/07-simulacro-tipo-2do-parcial-la-esquina-resuelto.pdf" }
+        ], videos: [] }
       }
     ]
   },
@@ -4645,13 +4645,13 @@ function pestanasDe(p){
   const ks = seccionesDe(p);
   const kp = ks.find(k => esSeccionParcial(p, k));
   const conArch = k => cantArchivos(seccion(p, k).material) > 0;
-  const tab = k => ({ go: `/${k}/material`, t: nombreSec(p, k), on: d => (d[0] === k && d[1] !== "videos") || (k === kp && enHerr(d)) });
+  const tab = k => ({ go: `/${k}/material`, t: nombreSec(p, k), on: d => (d[0] === k && d[1] !== "videos") || (k === kp && enHerr(d) && !p.practicaAparte) });
   const conVideos = ks.find(k => seccion(p, k).videos.length);
   return [
     ...temas,
     ...ks.filter(k => !esSeccionParcial(p, k) && conArch(k)).map(tab),
     ...(p.practica || p.practicaPartes ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || (!!p.practicaTemas && d[0] === "h" && !deParcial(d)) }]
-      : !kp && tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
+      : (!kp || p.practicaAparte) && tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
     ...(conVideos ? [{ go: `/${conVideos}/videos`, t: "Videos", on: d => d[1] === "videos" }] : []),
     ...ks.filter(k => esSeccionParcial(p, k) && (conArch(k) || (k === kp && (tieneHerramientas(p) || p.practicaParcial)))).map(tab),
     ...tabMiTpi(p)
@@ -6119,7 +6119,8 @@ function viewSeccion(m, p, k, tab){
       ${fuentes.length > 1 ? `<div class="pt-fuentes">${fuentes.map(x => `<a class="${x === k ? "on" : ""}" data-go="${base}/${x}/videos" href="#/${base}/${x}/videos">${esc(nombreSec(p, x))}<small>${seccion(p, x).videos.length}</small></a>`).join("")}</div>` : ""}
       <div id="tabBody"></div>`;
   }
-  const herr = k === seccionesDe(p).find(x => esSeccionParcial(p, x)) ? parcialBox(m, p) : "";
+  // Arriba de la sección de parciales, las herramientas para practicar (salvo que la Práctica tenga su pestaña: practicaAparte)
+  const herr = !p.practicaAparte && k === seccionesDe(p).find(x => esSeccionParcial(p, x)) ? parcialBox(m, p) : "";
   return `${cabParte(p)}
     ${herr}
     <div id="tabBody">${herr && !cantArchivos(s.material) ? "" : filesList(s.material)}</div>`;
@@ -6387,7 +6388,7 @@ const ICON_LAPIZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 /* El nombre de una sección del quiz en la dirección: #/m4/parcial/quiz/antonimos */
 const slugQz = t => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 /* Adónde se vuelve desde el quiz: la pestaña Práctica (o la sección del parcial que tiene las herramientas) */
-const quizVuelta = (m, p) => { const kp = seccionesDe(p).find(k => esSeccionParcial(p, k)); return `m${m.n}/${p.id}/${(p.secciones && !p.secciones.length) || !kp ? "practica" : kp + "/material"}`; };
+const quizVuelta = (m, p) => { const kp = seccionesDe(p).find(k => esSeccionParcial(p, k)); return `m${m.n}/${p.id}/${(p.secciones && !p.secciones.length) || !kp || p.practicaAparte ? "practica" : kp + "/material"}`; };
 const ICON_TOOL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>';
 
 /* Herramientas para practicar, arriba de Parciales (o en la pestaña Práctica de una parte de una sola página),
@@ -8707,7 +8708,7 @@ const mezclar = a => { for(let i = a.length - 1; i > 0; i--){ const j = Math.flo
 function viewQuiz(m, p){
   const kp = seccionesDe(p).find(k => esSeccionParcial(p, k));
   return `
-    ${kp ? `<div class="crumbs"><span data-go="m${m.n}/${p.id}/${kp}/material">‹ ${esc(nombreSec(p, kp))}</span></div>` : ""}
+    ${kp && !p.practicaAparte ? `<div class="crumbs"><span data-go="m${m.n}/${p.id}/${kp}/material">‹ ${esc(nombreSec(p, kp))}</span></div>` : ""}
     ${cabDe(m, p)}
     <div id="quiz" class="quiz"><div class="empty">Cargando preguntas…</div></div>`;
 }
