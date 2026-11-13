@@ -1,300 +1,406 @@
 #!/usr/bin/env python3
-"""Inglés 1: arma el quiz (quiz/ingles-1.json) y la guía con todo resuelto (material/ingles-1/01-guia-del-parcial-resuelta.pdf).
+"""Inglés 1: la práctica para escribir (quiz/ingles-1.json), el resumen y los parciales y prácticas con su resolución.
 
 El parcial es de lectocomprensión: un texto técnico en inglés y ejercicios que se responden en español
 (preguntas, traducción de frases, referencia contextual, antónimos, sinónimos y conectores).
-De dónde sale cada pregunta:
-- El parcial 2023 (texto sobre empresas que generan su propia energía renovable).
-- El modelo de parcial que dio la profe antes de empezar (texto sobre Internet de las cosas).
-- La práctica de clase del 7 de septiembre de 2023 (The anatomy of a virus).
-- La práctica del campus «Práctica primer parcial» (texto sobre la primera ley de Newton). Del campus solo se pasan
-  las consignas; la impresión no se publica.
-Las respuestas son nuestras: en el material no venía la corrección.
+
+- La práctica son frases y palabras cortas para escribir: traducir frases nominales, vocabulario, conectores
+  (traducción y relación), antónimos (también con prefijos), sinónimos y referentes. Cada una tiene las respuestas
+  que valen ("resp"); la página las corrige sola (tipo "escribir").
+- Cada parcial o práctica queda en un PDF: primero en blanco, tal cual, y a continuación el mismo resuelto.
+  Las respuestas son nuestras (el material no traía la corrección).
+- La práctica del campus («Práctica primer parcial», primera ley de Newton) se vuelve a escribir: la impresión del
+  campus no se publica.
 
 Uso, desde la raíz del repo:
-  python3 herramientas/quiz/ingles_1.py                                   (el quiz)
-  python3 herramientas/quiz/ingles_1.py --pdf --fuente CARPETA_OPEN_SANS  (además, la guía en PDF)
+  python3 herramientas/quiz/ingles_1.py                                   (la práctica)
+  python3 herramientas/quiz/ingles_1.py --pdf --fuente CARPETA_OPEN_SANS  (además, los PDF de material/ingles-1/)
 """
 import argparse, html, json, os, shutil, subprocess, tempfile
 
 RAIZ = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
+DESTINO = os.path.join(RAIZ, 'material', 'ingles-1')
 
-PARCIAL = 'Parcial 2023 · Energía renovable'
-MODELO = 'Modelo de parcial · Internet de las cosas'
-VIRUS = 'Práctica de clase · The anatomy of a virus'
-CAMPUS = 'Práctica del campus · Primera ley de Newton'
+# ───────────────────────── La práctica para escribir ─────────────────────────
+ADI, CTR, CAU, CSQ, CND, FIN, EJE, TIE = (
+    ['adición', 'suma', 'agregado'], ['contraste', 'oposición', 'contraposición', 'concesión'], ['causa', 'causalidad'],
+    ['consecuencia', 'resultado', 'efecto', 'causa-efecto'], ['condición'], ['finalidad', 'propósito', 'objetivo', 'fin'],
+    ['ejemplificación', 'ejemplo', 'ejemplificar'], ['tiempo', 'temporal', 'secuencia', 'simultaneidad'])
+RELACIONES = 'adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo'
+
+FRASES = [  # (inglés, respuestas, por qué)
+    ('energy resources', ['recursos energéticos', 'recursos de energía'], 'Núcleo al final: <i>resources</i> (recursos).'),
+    ('clean energy', ['energía limpia'], None),
+    ('renewable energy sources', ['fuentes de energía renovable', 'fuentes de energía renovables', 'fuentes renovables de energía'], 'Núcleo: <i>sources</i> (fuentes) → de energía → renovable.'),
+    ('solar panels', ['paneles solares', 'placas solares'], None),
+    ('carbon footprint', ['huella de carbono'], None),
+    ('long-term investment', ['inversión a largo plazo'], '<i>long-term</i> = a largo plazo.'),
+    ('energy supply', ['suministro de energía', 'suministro energético', 'abastecimiento de energía', 'abastecimiento energético'], None),
+    ('the energy grid', ['la red eléctrica', 'la red de energía', 'la red energética'], '<i>grid</i> = red (de distribución).'),
+    ('processing ability', ['capacidad de procesamiento', 'habilidad de procesamiento', 'capacidad de procesar'], None),
+    ('embedded systems', ['sistemas embebidos', 'sistemas integrados', 'sistemas incrustados'], None),
+    ('increasingly powerful systems', ['sistemas cada vez más potentes', 'sistemas cada vez más poderosos'], '<i>increasingly</i> + adjetivo = cada vez más + adjetivo.'),
+    ('more and more devices', ['cada vez más dispositivos'], '<i>more and more</i> = cada vez más.'),
+    ('operating system', ['sistema operativo'], None),
+    ('hard disk', ['disco rígido', 'disco duro'], None),
+    ('computer system', ['sistema informático', 'sistema de computación', 'sistema computacional', 'sistema de computadora'], None),
+    ('program files', ['archivos de programa', 'archivos de programas'], None),
+    ('smart home', ['casa inteligente', 'hogar inteligente'], None),
+    ('home appliances', ['electrodomésticos', 'aparatos del hogar', 'aparatos domésticos', 'artefactos del hogar'], None),
+    ('wireless networks', ['redes inalámbricas'], '<i>wireless</i> = sin cable, inalámbrico.'),
+    ('machine learning', ['aprendizaje automático', 'aprendizaje de máquina', 'aprendizaje de máquinas'], None),
+    ('data exchange', ['intercambio de datos'], None),
+    ('network security', ['seguridad de red', 'seguridad de redes', 'seguridad de la red'], None),
+    ('user interface', ['interfaz de usuario', 'interfaz del usuario'], None),
+    ('real-time monitoring', ['monitoreo en tiempo real', 'monitorización en tiempo real', 'control en tiempo real'], None),
+    ('short-range devices', ['dispositivos de corto alcance'], None),
+    ('software development', ['desarrollo de software'], None),
+    ('power plant', ['central eléctrica', 'planta de energía', 'planta eléctrica', 'central de energía'], None),
+    ('external force', ['fuerza externa'], None),
+    ('reference frame', ['marco de referencia', 'sistema de referencia'], None),
+    ('harmless joke', ['broma inofensiva'], None),
+]
+VOCABULARIO = [
+    ('scarcity', ['escasez']), ('issue', ['tema', 'problema', 'cuestión', 'asunto']), ('trend', ['tendencia']),
+    ('supply', ['suministro', 'abastecimiento', 'provisión']), ('growth', ['crecimiento']), ('device', ['dispositivo', 'aparato']),
+    ('network', ['red']), ('concern', ['preocupación', 'inquietud']), ('investment', ['inversión']), ('storage', ['almacenamiento']),
+    ('feature', ['característica', 'función', 'funcionalidad']), ('damage', ['daño']), ('host', ['huésped', 'anfitrión']),
+    ('payload', ['carga útil', 'carga']), ('requirement', ['requisito', 'requerimiento']), ('goal', ['objetivo', 'meta']),
+]
+CONECTORES = [  # (conector, traducciones, relación)
+    ('therefore', ['por lo tanto', 'por consiguiente', 'por ende', 'entonces', 'así que'], CSQ),
+    ('however', ['sin embargo', 'no obstante'], CTR),
+    ('although', ['aunque', 'si bien', 'a pesar de que'], CTR),
+    ('because', ['porque', 'ya que', 'debido a que'], CAU),
+    ('due to', ['debido a', 'a causa de'], CAU),
+    ('unless', ['a menos que', 'salvo que', 'a no ser que', 'excepto que'], CND),
+    ('if', ['si'], CND),
+    ('in order to', ['para', 'con el fin de', 'a fin de'], FIN),
+    ('such as', ['como', 'tales como', 'tal como', 'como por ejemplo'], EJE),
+    ('for example', ['por ejemplo'], EJE),
+    ('moreover', ['además', 'más aún', 'asimismo'], ADI),
+    ('also', ['también', 'además'], ADI),
+    ('whereas', ['mientras que', 'en tanto que'], CTR),
+    ('so', ['así que', 'entonces', 'por lo tanto', 'por eso'], CSQ),
+    ('this is why', ['es por esto que', 'por eso', 'por esto', 'es por eso que', 'por esta razón'], CSQ),
+    ('since', ['ya que', 'dado que', 'puesto que'], CAU),
+    ('meanwhile', ['mientras tanto', 'entretanto'], TIE),
+    ('as a result', ['como resultado', 'como consecuencia', 'por consiguiente'], CSQ),
+]
+ANTONIMOS = [  # (palabra, antónimos que valen, por qué)
+    ('strong', ['weak'], None), ('scarcity', ['abundance', 'plenty'], None), ('cheap', ['expensive', 'costly'], None),
+    ('begin', ['end', 'finish', 'stop'], None), ('increase', ['decrease', 'reduce', 'reduction'], None), ('internal', ['external'], None),
+    ('success', ['failure'], None), ('before', ['after'], None), ('input', ['output'], None), ('upload', ['download'], None),
+    ('always', ['never'], None), ('high', ['low'], None), ('large', ['small', 'little'], None), ('simple', ['complex', 'complicated'], None),
+    ('public', ['private'], None), ('straight', ['curved', 'crooked'], None), ('moving', ['resting', 'still', 'stationary', 'static'], None),
+    ('local', ['global'], None), ('dormant', ['active'], None), ('destructive', ['harmless', 'constructive'], None),
+]
+PREFIJOS = [
+    ('possible', ['impossible'], '<i>im-</i> delante de p, b y m.'), ('connected', ['disconnected'], None),
+    ('renewable', ['non-renewable', 'nonrenewable'], '<i>non-</i> se escribe con guion.'), ('secure', ['insecure', 'unsecure'], None),
+    ('able', ['unable'], None), ('legal', ['illegal'], '<i>il-</i> delante de l.'), ('regular', ['irregular'], '<i>ir-</i> delante de r.'),
+    ('advantage', ['disadvantage'], None), ('correct', ['incorrect'], None), ('visible', ['invisible'], None),
+    ('accessible', ['inaccessible'], None), ('necessary', ['unnecessary'], None), ('known', ['unknown'], None),
+    ('dependent', ['independent'], None), ('efficient', ['inefficient'], None), ('available', ['unavailable'], None),
+    ('appear', ['disappear'], None), ('responsible', ['irresponsible'], None),
+    ('harmful', ['harmless'], 'El sufijo <i>-ful</i> (con) se cambia por <i>-less</i> (sin).'), ('useful', ['useless'], 'De <i>-ful</i> a <i>-less</i>.'),
+    ('wired', ['wireless'], '<i>-less</i> = sin: sin cable.'),
+]
+SINONIMOS = [
+    ('guarantee', ['secure', 'ensure', 'assure', 'warrant']), ('announced', ['reported', 'declared', 'stated']),
+    ('state-of-the-art', ['ultra modern', 'ultramodern', 'cutting-edge', 'modern', 'advanced', 'latest']),
+    ('begin', ['start', 'commence']), ('finish', ['end', 'complete', 'conclude']), ('big', ['large', 'huge', 'great']),
+    ('buy', ['purchase', 'acquire']), ('need', ['require']), ('use', ['utilize', 'utilise', 'employ']),
+    ('get', ['obtain', 'receive', 'acquire', 'gain']), ('show', ['display', 'present', 'exhibit']), ('often', ['frequently', 'usually']),
+    ('fast', ['quick', 'rapid', 'speedy']), ('main', ['principal', 'primary', 'chief', 'major']), ('damage', ['harm', 'injury']),
+    ('enough', ['sufficient']), ('help', ['assist', 'aid', 'support']), ('whole', ['entire', 'complete', 'total']),
+]
+REFERENTES = [  # (oración, palabra, respuestas)
+    ('Companies want to secure THEIR own electricity supply.', 'THEIR', ['companies', 'empresas', 'compañías']),
+    ('IKEA placed solar panels on the roofs of ITS buildings.', 'ITS', ['IKEA']),
+    ('The virus copies ITSELF into other program files.', 'ITSELF', ['virus', 'the virus']),
+    ('Devices do not need the public internet: THEY only need a network.', 'THEY', ['devices', 'dispositivos']),
+    ('Kevin Ashton coined the term, though HE prefers another phrase.', 'HE', ['Kevin Ashton', 'Ashton']),
+    ('Apple opened a new campus WHICH has 75,000 square metres of solar arrays.', 'WHICH', ['campus', 'new campus', 'nuevo campus']),
+    ('Engineers test the sensors before installing THEM.', 'THEM', ['sensors', 'sensores']),
+    ('When the user runs an infected program, IT is loaded into memory.', 'IT', ['infected program', 'program', 'programa infectado', 'programa']),
+    ('IoT enables communication between people and things, and between things THEMSELVES.', 'THEMSELVES', ['things', 'cosas']),
+    ('Consumers prefer companies THAT take care of the environment.', 'THAT', ['companies', 'empresas']),
+    ('Solar panels are cheap, but THEY need sunlight.', 'THEY', ['solar panels', 'paneles solares', 'panels', 'paneles']),
+    ('Peter Lewis gave a speech in 1985. HIS definition of IoT was published that year.', 'HIS', ['Peter Lewis', 'Lewis']),
+]
 
 
-def frag(t):
-    return f'<i>«{t}»</i>'
-
-
-def abierta(sec, fuente, en, modelo, ex=None):
-    q = dict(sec=sec, tipo='modelo', en=en, modelo=modelo, fuente=fuente)
+def escribir(sec, en, resp, ph=None, ex=None):
+    q = dict(sec=sec, tipo='escribir', en=en, resp=resp)
+    if ph: q['ph'] = ph
     if ex: q['ex'] = ex
     return q
 
 
-def opcion(sec, fuente, en, ops, bien, ex, vf=False):
-    q = dict(sec=sec, tipo='una', en=en, op=[[o, i == bien] for i, o in enumerate(ops)], ex=ex, fuente=fuente)
-    if vf: q['vf'] = True
-    return q
+def practica():
+    qs = []
+    for ing, resp, ex in FRASES:
+        qs.append(escribir('frases', f'Traducí al español: <b>{ing}</b>', resp, 'En español…', ex))
+    for ing, resp in VOCABULARIO:
+        qs.append(escribir('vocab', f'¿Qué significa <b>{ing}</b>?', resp, 'En español…'))
+    for c, trad, rel in CONECTORES:
+        qs.append(escribir('con', f'Traducí el conector <b>{c.upper()}</b>', trad, 'En español…'))
+        qs.append(escribir('con', f'¿Qué relación establece el conector <b>{c.upper()}</b>?', rel, RELACIONES,
+                           f'<b>{c}</b> = {trad[0]}: {rel[0]}.'))
+    for w, resp, ex in ANTONIMOS:
+        qs.append(escribir('ant', f'Escribí en inglés un antónimo de <b>{w.upper()}</b>', resp, 'En inglés…', ex))
+    for w, resp, ex in PREFIJOS:
+        qs.append(escribir('pref', f'Formá el antónimo de <b>{w.upper()}</b> con un prefijo o un sufijo', resp, 'En inglés…', ex))
+    for w, resp in SINONIMOS:
+        qs.append(escribir('sin', f'Escribí en inglés un sinónimo de <b>{w.upper()}</b>', resp, 'En inglés…'))
+    for o, w, resp in REFERENTES:
+        qs.append(escribir('ref', f'Referencia contextual: ¿a qué o a quién se refiere <b>{w}</b>?<br><i>«{html.escape(o)}»</i>', resp,
+                           'La palabra del texto (en inglés o en español)…'))
+    return qs
 
-
-def conector(fuente, nombre, linea, cita, trad, rel, idea1, idea2):
-    en = f'Completá el cuadro de conectores para <b>{nombre}</b>{f" (línea {linea})" if linea else ""}: traducción, tipo de relación, idea uno e idea dos.<br>{frag(cita)}'
-    modelo = f'<b>Traducción:</b> {trad}<br><b>Relación:</b> {rel}<br><b>Idea uno:</b> {idea1}<br><b>Idea dos:</b> {idea2}'
-    return abierta('con', fuente, en, modelo)
-
-
-def referente(fuente, palabra, linea, cita, resp, ex=None):
-    en = f'Referencia contextual: ¿a qué o a quién se refiere <b>{palabra}</b>{f" (línea {linea})" if linea else ""}?<br>{frag(cita)}'
-    return abierta('ref', fuente, en, resp, ex)
-
-
-def traducir(fuente, ingles, resp, ex=None):
-    return abierta('trad', fuente, f'Traducí al español: <b>{ingles}</b>', resp, ex)
-
-
-PREGUNTAS = [
-    # ───────────── Parcial 2023 · Energía renovable ─────────────
-    abierta('comp', PARCIAL, '¿Qué puede llegar a pasar en la transición entre la energía tradicional y la energía sustentable? (Respondé en español.)<br>'
-            + frag('Meanwhile, as we switch from cheap, accessible, traditional energy to green energy, there’s a real possibility that clean electricity could become scarce.'),
-            'Que la <b>electricidad limpia se vuelva escasa</b>: al pasar de la energía tradicional (barata y accesible) a la energía verde puede faltar electricidad limpia. Por eso las empresas buscan asegurarse su propio suministro.',
-            'La respuesta está en las líneas 6 y 7. Se contesta con tus palabras y en español: no se copia la oración en inglés.'),
-    traducir(PARCIAL, 'Energy resources scarcity is a concerning issue.', 'La escasez de recursos energéticos es un tema preocupante.',
-             '<i>Energy resources scarcity</i> es una frase nominal: el núcleo (<i>scarcity</i>) va al final en inglés y primero en español.'),
-    traducir(PARCIAL, 'There is every reason to believe that society will continue to use more and more machines and devices.',
-             'Hay todas las razones para creer que la sociedad seguirá usando cada vez más máquinas y dispositivos.',
-             '<i>more and more</i> = cada vez más.'),
-    traducir(PARCIAL, 'The self-generated clean energy trend', 'La tendencia de la energía limpia autogenerada.',
-             'Frase nominal: se lee de derecha a izquierda. Núcleo <i>trend</i> (tendencia) → de la energía (<i>energy</i>) → limpia (<i>clean</i>) → autogenerada (<i>self-generated</i>).'),
-    traducir(PARCIAL, 'Installing your own energy production is a long-term investment', 'Instalar tu propia producción de energía es una inversión a largo plazo.'),
-    referente(PARCIAL, 'THEMSELVES', 3, '…companies are looking for opportunities to operate independently of the energy grid by generating renewable energy themselves…',
-              '<b>Companies</b> (las empresas).', 'Pronombre reflexivo plural: busca hacia atrás un sustantivo en plural.'),
-    referente(PARCIAL, 'THEIR', 9, '…companies are looking to secure their own electricity supply for the future.', '<b>Companies</b> (las empresas): su propio suministro.'),
-    referente(PARCIAL, 'WHICH', 13, 'One of the trailblazers was Swedish flat-pack furniture emporium IKEA, which started placing solar panels…', '<b>IKEA</b>.'),
-    referente(PARCIAL, 'ITS', 14, '…started placing solar panels on the roofs of its buildings in 2011 in order to help reduce its carbon footprint.', '<b>IKEA</b>: sus edificios, su huella de carbono.'),
-    referente(PARCIAL, 'WHICH', 20, '…around 75,000 square metres of solar arrays, which provide 75 percent of the building’s daytime electricity.', '<b>Solar arrays</b> (los paneles solares).'),
-    referente(PARCIAL, 'HE', 27, '“…to differentiate themselves from the competition,” he says.', '<b>Mats Alvem</b> (el gerente ambiental de Sandvik).'),
-    abierta('ant', PARCIAL, 'Antónimo en el texto de <b>ABUNDANCE</b> (línea 1).<br>' + frag('Energy resource scarcity is a concerning issue.'), '<b>Scarcity</b> (escasez).'),
-    abierta('ant', PARCIAL, 'Antónimo en el texto de <b>FINISHED</b> (línea 11).<br>' + frag('The self-generated clean energy trend began among B2C corporations about a decade ago.'), '<b>Began</b> (empezó).'),
-    abierta('ant', PARCIAL, 'Antónimo en el texto de <b>WEAK</b> (línea 28).<br>' + frag('…having a strong sustainability profile is good for your reputation…'), '<b>Strong</b> (fuerte).'),
-    abierta('ant', PARCIAL, 'Sinónimo en el texto de <b>GUARANTEE</b> (línea 9).<br>' + frag('…companies are looking to secure their own electricity supply for the future.'), '<b>Secure</b> (asegurar).'),
-    abierta('ant', PARCIAL, 'Sinónimo en el texto de <b>REPORTED</b> (línea 15).<br>' + frag('In 2019, the retail giant announced its investment in two large solar power plants…'), '<b>Announced</b> (anunció).'),
-    abierta('ant', PARCIAL, 'Sinónimo en el texto de <b>ULTRA MODERN</b> (línea 19).<br>' + frag('Apart from providing state-of-the-art facilities for as many as 13,000 employees…'), '<b>State-of-the-art</b> (de última generación).'),
-    conector(PARCIAL, 'THEREFORE', 5, 'There is every reason to believe that society will continue to use more and more machines and devices, therefore consuming more electricity.',
-             'por lo tanto', 'consecuencia', 'la sociedad va a seguir usando cada vez más máquinas y dispositivos', 'va a consumir más electricidad'),
-    conector(PARCIAL, 'THIS IS WHY', 7, '…there’s a real possibility that clean electricity could become scarce. This is why, apart from the obvious benefits […], companies are looking to secure their own electricity supply…',
-             'es por esto que / por eso', 'consecuencia (causa → efecto)', 'la electricidad limpia podría volverse escasa', 'las empresas buscan asegurar su propio suministro de electricidad'),
-    conector(PARCIAL, 'IN ORDER TO', 14, '…IKEA, which started placing solar panels on the roofs of its buildings in 2011 in order to help reduce its carbon footprint.',
-             'para / con el fin de', 'finalidad (propósito)', 'IKEA empezó a poner paneles solares en los techos de sus edificios', 'ayudar a reducir su huella de carbono'),
-    conector(PARCIAL, 'SUCH AS', 23, 'It is no coincidence that leading retailers such as Apple and IKEA were among the first to blaze the self-generated energy trail.',
-             'como / tales como', 'ejemplificación', 'los grandes minoristas fueron de los primeros en generar su propia energía', 'Apple e IKEA'),
-    # ───────────── Modelo de parcial · Internet de las cosas ─────────────
-    abierta('comp', MODELO, '¿Cuáles son las preocupaciones respecto al crecimiento de los productos y las tecnologías de IoT? (Respondé en español.)<br>'
-            + frag('There are a number of concerns about the risks in the growth of IoT technologies and products, especially in the areas of privacy and security…'),
-            'Los <b>riesgos en la privacidad y la seguridad</b>. Por eso la industria y los gobiernos empezaron a desarrollar normas internacionales y locales, guías y marcos regulatorios.'),
-    traducir(MODELO, 'Processing ability', 'Capacidad de procesamiento.'),
-    traducir(MODELO, 'Increasingly powerful embedded systems', 'Sistemas embebidos cada vez más potentes.',
-             '<i>increasingly</i> + adjetivo = cada vez más + adjetivo. El núcleo es <i>systems</i>.'),
-    traducir(MODELO, 'The concept of the “smart home”', 'El concepto de «casa inteligente».'),
-    traducir(MODELO, 'Short-range mobile transceivers', 'Transceptores móviles de corto alcance.',
-             'Un <i>transceiver</i> es un transmisor-receptor (transceptor). Núcleo al final: <i>transceivers</i>.'),
-    referente(MODELO, 'THAT', 2, '…physical objects (or groups of such objects) with sensors, processing ability, software and other technologies that connect and exchange data with other devices…',
-              'A los <b>objetos físicos</b> (con sus sensores, su software y sus otras tecnologías): son los que se conectan e intercambian datos.',
-              'Si la consigna pide la palabra más cercana, es <i>technologies</i>. Leé la oración completa: lo que se conecta son los objetos.'),
-    referente(MODELO, 'THEY', 4, '…devices do not need to be connected to the public internet, they only need to be connected to a network…', '<b>Devices</b> (los dispositivos).'),
-    referente(MODELO, 'ITSELF', 17, 'The concept of the “Internet of things” and the term itself, first appeared in a speech by Peter T. Lewis…', 'Al <b>término «Internet of things»</b>.'),
-    referente(MODELO, 'HIM', 19, 'According to him, “The Internet of Things, or IoT, is the integration of people, processes and technology…”', '<b>Peter T. Lewis</b>.'),
-    referente(MODELO, 'HE', 22, 'The term “Internet of things” was coined independently by Kevin Ashton, in 1999, though he prefers the phrase “Internet for things”.', '<b>Kevin Ashton</b>.'),
-    referente(MODELO, 'THEMSELVES', 26, '…new forms of communication between people and things, and between things themselves.', '<b>Things</b> (las cosas).'),
-    conector(MODELO, 'DUE TO', 6, 'The field has evolved due to the convergence of multiple technologies…',
-             'debido a', 'causa', 'el campo (de la IoT) evolucionó', 'la convergencia de múltiples tecnologías'),
-    conector(MODELO, 'SUCH AS', 12, '…can be controlled via devices associated with that ecosystem, such as smartphones and smart speakers.',
-             'como / tales como', 'ejemplificación', 'dispositivos asociados a ese ecosistema', 'teléfonos inteligentes y parlantes inteligentes'),
-    # ───────────── Práctica de clase · The anatomy of a virus ─────────────
-    abierta('comp', VIRUS, 'How are computer viruses like biological viruses? (Respondé en español.)',
-            'Los dos son muy pequeños, <b>infectan a un huésped</b> (una célula o un sistema informático), <b>usan sus recursos para reproducirse</b> y muchas veces le causan daño.'),
-    abierta('comp', VIRUS, 'What is the effect of a virus patching the operating system? (Respondé en español.)',
-            'Le permite <b>detectar los archivos de programa</b> (como los COM o EXE) para después copiarse dentro de ellos.'),
-    abierta('comp', VIRUS, 'Why are some viruses designed to be loaded into memory? (Respondé en español.)',
-            'Para <b>quedar residentes en memoria</b> y, desde ahí, infectar otros programas con su rutina de reproducción hasta que se apague la computadora.'),
-    abierta('comp', VIRUS, 'What examples of payload does the writer of the text provide? (Respondé en español.)',
-            'Uno <b>inofensivo</b>: mostrar un mensaje en el monitor. Uno <b>destructivo</b>: borrar archivos del disco rígido.'),
-    abierta('comp', VIRUS, 'How does a Trojan differ from a virus? (Respondé en español.)',
-            'El <b>troyano</b> tiene payload (la parte que hace algo) pero <b>no tiene rutina de reproducción</b>: no se copia a otros programas.'),
-    opcion('comp', VIRUS, 'Uní la rutina con su función. <b>MISDIRECTION</b>:', ['Does the damage', 'Attaches a copy of itself to another program', 'Hides the presence of the code', 'Decides when and how to activate the payload'], 2,
-           '<i>Misdirection</i> = despiste: la rutina que <b>esconde</b> al virus.'),
-    opcion('comp', VIRUS, 'Uní la rutina con su función. <b>REPRODUCTION</b>:', ['Does the damage', 'Attaches a copy of itself to another program', 'Hides the presence of the code', 'Decides when and how to activate the payload'], 1,
-           'La reproducción es la que <b>copia</b> al virus en otro programa. Es la única que necesita para ser virus.'),
-    opcion('comp', VIRUS, 'Uní la rutina con su función. <b>TRIGGER</b>:', ['Does the damage', 'Attaches a copy of itself to another program', 'Hides the presence of the code', 'Decides when and how to activate the payload'], 3,
-           '<i>Trigger</i> = disparador: <b>decide cuándo</b> se activa el payload (una fecha, una tecla…).'),
-    opcion('comp', VIRUS, 'Uní la rutina con su función. <b>PAYLOAD</b>:', ['Does the damage', 'Attaches a copy of itself to another program', 'Hides the presence of the code', 'Decides when and how to activate the payload'], 0,
-           'El payload es la carga: lo que <b>hace el daño</b> (o la broma).'),
-    conector(VIRUS, 'SUCH AS', None, 'It often does this by patching the operating system to enable it to detect program files, such as COM or EXE files.',
-             'como / tales como', 'ejemplificación', 'archivos de programa', 'archivos COM o EXE'),
-    conector(VIRUS, 'ALSO', None, 'This virus may also contain a payload that remains dormant until a trigger event activates it…',
-             'también', 'adición', 'el virus se queda en memoria e infecta otros programas', 'puede contener un payload'),
-    conector(VIRUS, 'TO', None, 'To be a virus, a program only needs to have a reproduction routine that enables it to infect other programs.',
-             'para', 'finalidad (propósito)', 'ser un virus', 'un programa solo necesita una rutina de reproducción'),
-    conector(VIRUS, 'BUT', None, 'A program that has a payload but does not have a reproduction routine is known as a Trojan.',
-             'pero', 'contraste', 'el programa tiene un payload', 'no tiene rutina de reproducción'),
-    referente(VIRUS, 'ITSELF', None, 'A biological virus is a very small, simple organism that infects living cells […] by attaching itself to them…', 'Al <b>virus biológico</b>.'),
-    referente(VIRUS, 'THEM', None, '…infects living cells, known as the host, by attaching itself to them and using them to reproduce itself.', 'A las <b>living cells</b> (las células vivas, el huésped).'),
-    referente(VIRUS, 'ITS', None, '…a computer virus is a very small program, routine that infects a computer system and uses its resources to reproduce itself.', 'Al <b>sistema informático</b> (usa los recursos del sistema).'),
-    referente(VIRUS, 'IT', None, 'When the user runs an infected program, it is loaded into memory carrying the virus.', 'Al <b>programa infectado</b>.'),
-    referente(VIRUS, 'WHICH', None, 'The virus then returns control to the host program which then continues with its normal sequence of instructions…', 'Al <b>host program</b> (el programa huésped).'),
-    traducir(VIRUS, 'host computer system', 'Sistema informático huésped (anfitrión).'),
-    traducir(VIRUS, 'common programming techniques', 'Técnicas de programación comunes.'),
-    traducir(VIRUS, 'normal sequence of instructions', 'Secuencia normal de instrucciones.'),
-    traducir(VIRUS, 'harmless joke', 'Broma inofensiva.'),
-    traducir(VIRUS, 'deleting files on the hard disk', 'Borrar archivos del disco rígido.'),
-    # ───────────── Práctica del campus · Primera ley de Newton ─────────────
-    abierta('con', CAMPUS, 'Identificá el nexo lógico y la relación lógica.<br>' + frag('Newton’s First Law states that an object will remain at rest or in uniform motion in a straight line unless acted upon by an external force.'),
-            '<b>UNLESS</b> («a menos que»): <b>condición</b>.', 'En el fragmento también aparece AND («y»), que suma una idea: adición.'),
-    abierta('con', CAMPUS, 'Identificá el nexo lógico y la relación lógica.<br>' + frag('…objects will remain in their state of motion unless a force acts to change the motion.'),
-            '<b>UNLESS</b> («a menos que»): <b>condición</b>.'),
-    abierta('con', CAMPUS, 'Identificá el nexo lógico y la relación lógica.<br>' + frag('The statement of these laws must be generalized if you are dealing with a rotating reference frame or any frame which is accelerating.'),
-            '<b>IF</b> («si»): <b>condición</b>.', 'También aparece OR («o»): alternativa.'),
-    abierta('con', CAMPUS, 'Identificá el nexo lógico y la relación lógica.<br>' + frag('If an object is at rest in one frame of reference, it will appear to be moving in a straight line to an observer in a reference frame which is moving by the object.'),
-            '<b>IF</b> («si»): <b>condición</b>.'),
-    abierta('con', CAMPUS, 'Identificá el nexo lógico y la relación lógica.<br>' + frag('There is no way to say which reference frame is “special”, so all constant velocity reference frames must be equivalent.'),
-            '<b>SO</b> («por lo tanto», «así que»): <b>consecuencia</b>.'),
-    opcion('comp', CAMPUS, 'Elegí el mejor título para el texto sobre la primera ley de Newton (inercia, marcos de referencia inerciales y simetría del universo).',
-           ['La primera ley de Newton', 'Las fuerzas que actúan sobre el movimiento', 'El movimiento uniforme de los objetos', 'Las leyes de Newton'], 0,
-           'Los tres párrafos hablan de la <b>primera ley</b>: la segunda aparece solo para compararla. «Las leyes de Newton» es demasiado amplio y los otros dos son temas puntuales.'),
-    abierta('ant', CAMPUS, 'Antónimo en el texto de <b>CURVED</b> (línea 2).<br>' + frag('…remain at rest or in uniform motion in a straight line unless acted upon by an external force.'), '<b>Straight</b> (recto).'),
-    abierta('ant', CAMPUS, 'Antónimo en el texto de <b>COMMONPLACE</b> (línea 5).<br>' + frag('The First Law could be viewed as just a special case of the Second Law…'), '<b>Special</b> (especial).'),
-    abierta('ant', CAMPUS, 'Antónimo en el texto de <b>RESTING</b> (línea 4).<br>' + frag('…to an observer in a reference frame which is moving by the object.'), '<b>Moving</b> (en movimiento).'),
-    abierta('ant', CAMPUS, 'Antónimo en el texto de <b>STILLNESS</b> (línea 5).<br>' + frag('…a state of motion in a straight line must be just as “natural” as being at rest. […] so all constant velocity reference frames must be equivalent.'),
-            '<b>Velocity</b> (velocidad), la palabra de la línea 5. También es antónimo <i>motion</i> (movimiento), de la línea 2.'),
-    referente(CAMPUS, 'THEIR', None, '…that objects will remain in their state of motion unless a force acts to change the motion.', '<b>Objects</b> (los objetos).'),
-    referente(CAMPUS, 'FOR WHICH', None, 'The First Law could be viewed as just a special case of the Second Law for which the net external force is zero…',
-              'Al <b>special case</b> (el caso especial de la segunda ley): el caso en el que la fuerza externa neta es cero.'),
-    referente(CAMPUS, 'IT', None, 'If an object is at rest in one frame of reference, it will appear to be moving in a straight line…', '<b>An object</b> (el objeto).'),
-    opcion('comp', CAMPUS, '¿Verdadero o falso? «A menos que una fuerza externa actúe sobre un objeto, el mismo permanecerá en reposo o en movimiento uniforme en línea recta.»<br>'
-           + frag('…an object will remain at rest or in uniform motion in a straight line unless acted upon by an external force.'), ['Verdadero', 'Falso'], 0,
-           'Es la traducción de la primera oración: <i>unless</i> = a menos que.', vf=True),
-    opcion('comp', CAMPUS, '¿Verdadero o falso? «Ningún cambio de movimiento involucra una aceleración, por eso aplica la segunda ley de Newton.»<br>'
-           + frag('Any change in motion involves an acceleration, and then Newton’s Second Law applies.'), ['Verdadero', 'Falso'], 1,
-           '<i>Any change</i> = <b>cualquier</b> cambio (no «ningún»): todo cambio de movimiento involucra una aceleración.', vf=True),
-    opcion('comp', CAMPUS, '¿Verdadero o falso? «El marco inercial es aquel marco de referencia que se asume no experimenta aceleración.»<br>'
-           + frag('…a reference frame which is not itself accelerating. Such a frame is often referred to as an “inertial frame”.'), ['Verdadero', 'Falso'], 0,
-           '<i>Such a frame</i> retoma «un marco de referencia que no está acelerando»: a eso se le llama marco inercial.', vf=True),
-]
 
 SECCIONES = [
-    ('comp', 'Comprensión del texto'),
-    ('trad', 'Traducción'),
-    ('ref', 'Referencia contextual'),
-    ('ant', 'Antónimos y sinónimos'),
-    ('con', 'Conectores (nexos lógicos)'),
+    ('frases', 'Traducir frases'), ('vocab', 'Vocabulario'), ('con', 'Conectores'), ('ant', 'Antónimos'),
+    ('pref', 'Antónimos con prefijos y sufijos'), ('sin', 'Sinónimos'), ('ref', 'Referencia contextual'),
 ]
-
 GLOSARIO = [
-    dict(t='Lectocomprensión', que='Leer un texto técnico en inglés y demostrar que lo entendiste respondiendo <b>en español</b>. No se pide hablar ni escribir en inglés.', re=r'Respondé en español|título|Verdadero o falso|Uní la rutina'),
-    dict(t='Frase nominal', que='Un grupo de palabras cuyo núcleo es un sustantivo. En inglés los modificadores van <b>antes</b> del núcleo; en español, después: se traduce de derecha a izquierda (<i>host computer system</i> → sistema informático huésped).', re=r'Traducí'),
-    dict(t='Referencia contextual', que='Encontrar a qué o a quién reemplaza un pronombre. Casi siempre está <b>antes</b>, en la misma oración o en la anterior. Fijate el número: si el pronombre es plural (<i>they, them, their, themselves</i>), el referente también.', re=r'Referencia contextual'),
-    dict(t='Pronombres', que='<i>it / its / itself</i>: eso, su, sí mismo (algo singular). <i>they / them / their / themselves</i>: ellos, sus, sí mismos (plural). <i>he / him</i>: él (una persona). <i>which / that</i>: que, el cual (retoman el sustantivo de antes).', re=r'se refiere\s+(FOR WHICH|ITSELF|ITS|IT|THEY|THEM|THEIR|THEMSELVES|HE|HIM|WHICH|THAT)\b'),
-    dict(t='Antónimo y sinónimo', que='El antónimo es la palabra de significado <b>opuesto</b> (<i>weak</i> ↔ <i>strong</i>); el sinónimo, la de significado <b>parecido</b> (<i>guarantee</i> ≈ <i>secure</i>). Hay que encontrarlo en el texto, en la línea que indican.', re=r'Antónimo|Sinónimo'),
-    dict(t='Conector (nexo lógico)', que='La palabra que une dos ideas y dice cómo se relacionan. En el cuadro se completa: traducción, tipo de relación, idea uno (la de antes) e idea dos (la de después).', re=r'conector|nexo lógico', i=True),
-    dict(t='Relaciones lógicas', que='<b>Adición</b>: and, also, moreover. <b>Contraste</b>: but, however, although. <b>Causa</b>: because, since, due to. <b>Consecuencia</b>: so, therefore, this is why. <b>Condición</b>: if, unless. <b>Finalidad</b>: to, in order to. <b>Ejemplificación</b>: such as, for example.', re=r'relación', i=True),
-    dict(t='Unless / If', que='Condición. <i>if</i> = si; <i>unless</i> = a menos que (si no).', re=r'UNLESS|IF\b|\bunless\b'),
-    dict(t='So / Therefore / This is why', que='Consecuencia: lo que viene después es el resultado de lo anterior. <i>so</i> = así que; <i>therefore</i> = por lo tanto; <i>this is why</i> = por eso.', re=r'\bSO\b|THEREFORE|THIS IS WHY'),
-    dict(t='In order to / To', que='Finalidad (propósito): para, con el fin de.', re=r'para\s+(IN ORDER TO|TO)\b'),
-    dict(t='Such as', que='Ejemplificación: como, tales como. La idea dos son los ejemplos.', re=r'SUCH AS'),
-    dict(t='Due to', que='Causa: debido a. La idea dos es la causa de la idea uno.', re=r'DUE TO'),
-    dict(t='But / Also', que='<i>but</i> = pero (contraste); <i>also</i> = también (adición).', re=r'para\s+(BUT|ALSO)\b'),
-    dict(t='Virus, payload y troyano', que='<b>Payload</b>: la carga, lo que hace el virus (una broma o un daño). <b>Trigger</b>: lo que dispara el payload. <b>Trojan</b> (troyano): programa con payload pero sin rutina para copiarse.', re=r'virus|payload|Trojan|MISDIRECTION|REPRODUCTION|TRIGGER|PAYLOAD|host|harmless|hard disk', i=True),
-    dict(t='Primera ley de Newton', que='Un objeto sigue en reposo o en movimiento rectilíneo uniforme a menos que una fuerza externa actúe sobre él (inercia). Un <b>marco inercial</b> es un sistema de referencia que no está acelerando.', re=r'Newton|inercial|frame|at rest|motion', i=True),
-    dict(t='Internet de las cosas', sig='IoT · Internet of things', que='Objetos físicos con sensores, software y conectividad que intercambian datos por una red. <i>Embedded system</i>: sistema embebido; <i>transceiver</i>: transceptor (transmisor-receptor).', re=r'IoT|Internet of things|devices|embedded|transceivers|smart home|Processing ability|Lewis|Ashton|things themselves', i=True),
-    dict(t='Energía renovable', que='<i>Scarcity</i>: escasez. <i>Renewable / clean / green energy</i>: energía renovable, limpia, verde. <i>Solar arrays</i>: paneles solares. <i>Carbon footprint</i>: huella de carbono.', re=r'energy|electricity|scarcity|solar|IKEA|Alvem|began|announced|state-of-the-art|ABUNDANCE|WEAK|GUARANTEE', i=True),
+    dict(t='Frase nominal', que='Un grupo de palabras cuyo núcleo es un sustantivo. En inglés los modificadores van <b>antes</b> del núcleo; en español, después: se traduce de derecha a izquierda (<i>renewable energy sources</i> → fuentes de energía renovable).', re=r'Traducí al español'),
+    dict(t='Vocabulario técnico', que='Las palabras que más se repiten en los textos: <i>issue</i> (tema), <i>trend</i> (tendencia), <i>supply</i> (suministro), <i>device</i> (dispositivo), <i>network</i> (red), <i>scarcity</i> (escasez).', re=r'¿Qué significa'),
+    dict(t='Conector (nexo lógico)', que='Une dos ideas y dice cómo se relacionan. En el cuadro del parcial: traducción, tipo de relación, idea uno (antes) e idea dos (después).', re=r'conector'),
+    dict(t='Relaciones lógicas', que='<b>Adición</b>: and, also, moreover. <b>Contraste</b>: but, however, although, whereas. <b>Causa</b>: because, since, due to. <b>Consecuencia</b>: so, therefore, this is why, as a result. <b>Condición</b>: if, unless. <b>Finalidad</b>: to, in order to. <b>Ejemplificación</b>: such as, for example. <b>Tiempo</b>: when, meanwhile.', re=r'relación'),
+    dict(t='Antónimo', que='La palabra de significado <b>opuesto</b>. En el parcial te dan una palabra que no está en el texto y tenés que encontrar su opuesta en la línea que indican.', re=r'antónimo de'),
+    dict(t='Prefijos y sufijos negativos', que='<b>un-</b> (unable), <b>in-</b> (incorrect), <b>im-</b> delante de p/b/m (impossible), <b>il-</b> delante de l (illegal), <b>ir-</b> delante de r (irregular), <b>dis-</b> (disconnected), <b>non-</b> (non-renewable). Sufijos: <b>-ful</b> (con) ↔ <b>-less</b> (sin): harmful ↔ harmless.', re=r'con un prefijo'),
+    dict(t='Sinónimo', que='La palabra de significado <b>parecido</b>: <i>guarantee</i> ≈ <i>secure</i>, <i>reported</i> ≈ <i>announced</i>.', re=r'sinónimo de'),
+    dict(t='Referencia contextual', que='A qué o a quién reemplaza un pronombre. Casi siempre está <b>antes</b>, en la misma oración o en la anterior, y coincide en número.', re=r'Referencia contextual'),
+    dict(t='Pronombres', que='<i>it / its / itself</i>: algo singular. <i>they / them / their / themselves</i>: plural. <i>he / him / his</i>: un hombre. <i>which / that</i>: que, el cual (retoman el sustantivo de antes).', re=r'se refiere\s+(ITSELF|ITS|IT|THEY|THEM|THEIR|THEMSELVES|HE|HIM|HIS|WHICH|THAT)\b'),
 ]
 
 
 def armar_quiz():
     porsec = {k: [] for k, _ in SECCIONES}
-    for q in PREGUNTAS:
+    for q in practica():
         porsec[q['sec']].append({k: v for k, v in q.items() if k != 'sec'})
     return dict(
-        titulo='Inglés 1 · Parcial',
-        descripcion='Los ejercicios del parcial 2023, del modelo de parcial, de la práctica de clase y de la práctica del campus, con la respuesta. Las preguntas abiertas: respondé primero y después mirá.',
+        titulo='Inglés 1 · Práctica para escribir',
+        descripcion='Frases y palabras cortas como las del parcial: escribís la respuesta y te dice si está bien. No importan las mayúsculas, las tildes ni el artículo del principio. Si tu traducción dice lo mismo con otras palabras, tocá «Mi respuesta también vale».',
         secciones=[dict(titulo=t, preguntas=porsec[k]) for k, t in SECCIONES if porsec[k]],
-        glosario=[{k: v for k, v in g.items()} for g in GLOSARIO],
+        glosario=GLOSARIO,
     )
 
 
-# ───────────────────────── La guía en PDF ─────────────────────────
+# ───────────────────────── Las resoluciones ─────────────────────────
+# Cada documento: título y sus ejercicios, con la misma numeración que el original.
+# Un ejercicio es (consigna, [(ítem, respuesta), …]) o (consigna, 'tabla', [(conector, traducción, relación, idea 1, idea 2), …])
+PARCIAL_2023 = ('Parcial 2023 · Energía renovable', [
+    ('1) Responder las siguientes preguntas en ESPAÑOL.', [
+        ('¿Qué puede llegar a pasar en la transición entre energía tradicional y energía sustentable?',
+         'Que la electricidad limpia se vuelva escasa: al pasar de la energía tradicional (barata y accesible) a la energía verde puede faltar electricidad limpia. Por eso las empresas buscan asegurarse su propio suministro (líneas 6 a 9).')]),
+    ('2) Traducir los siguientes fragmentos al ESPAÑOL.', [
+        ('Energy resources scarcity is a concerning issue.', 'La escasez de recursos energéticos es un tema preocupante.'),
+        ('There is every reason to believe that society will continue to use more and more machines and devices.', 'Hay todas las razones para creer que la sociedad seguirá usando cada vez más máquinas y dispositivos.'),
+        ('The self-generated clean energy trend', 'La tendencia de la energía limpia autogenerada.'),
+        ('Installing your own energy production is a long-term investment', 'Instalar tu propia producción de energía es una inversión a largo plazo.')]),
+    ('3) Referencia contextual. Indicar a qué o quién hacen referencia las siguientes palabras o frases.', [
+        ('Themselves (línea 3)', 'companies (las empresas)'), ('Their (línea 9)', 'companies (las empresas)'),
+        ('Which (línea 13)', 'IKEA'), ('Its (línea 14)', 'IKEA'), ('Which (línea 20)', 'solar arrays (los paneles solares)'),
+        ('He (línea 27)', 'Mats Alvem')]),
+    ('4) Indicar los antónimos de las siguientes palabras.', [
+        ('Abundance (línea 1)', 'scarcity'), ('Finished (línea 11)', 'began'), ('Weak (línea 28)', 'strong')]),
+    ('5) Indicar los sinónimos de las siguientes palabras.', [
+        ('Guarantee (línea 9)', 'secure'), ('Reported (línea 15)', 'announced'), ('Ultra modern (línea 19)', 'state-of-the-art')]),
+    ('6) Completar el siguiente cuadro de conectores en ESPAÑOL.', 'tabla', [
+        ('therefore (línea 5)', 'por lo tanto', 'consecuencia', 'La sociedad va a seguir usando cada vez más máquinas y dispositivos.', 'Va a consumir más electricidad.'),
+        ('This is why (línea 7)', 'es por esto que / por eso', 'consecuencia', 'La electricidad limpia podría volverse escasa.', 'Las empresas buscan asegurar su propio suministro de electricidad.'),
+        ('In order to (línea 14)', 'para / con el fin de', 'finalidad', 'IKEA empezó a poner paneles solares en los techos de sus edificios.', 'Ayudar a reducir su huella de carbono.'),
+        ('Such as (línea 23)', 'como / tales como', 'ejemplificación', 'Los grandes minoristas fueron de los primeros en generar su propia energía.', 'Apple e IKEA.')]),
+])
+MODELO_IOT = ('Modelo de parcial · Internet de las cosas', [
+    ('1) Responder las siguientes preguntas en ESPAÑOL.', [
+        ('¿Cuáles son las preocupaciones respecto al crecimiento de productos y tecnologías de IoT?',
+         'Los riesgos en la privacidad y en la seguridad. Por eso la industria y los gobiernos empezaron a desarrollar normas internacionales y locales, guías y marcos regulatorios.')]),
+    ('2) Traducir los siguientes fragmentos al ESPAÑOL.', [
+        ('Processing ability', 'Capacidad de procesamiento.'), ('Increasingly powerful embedded systems', 'Sistemas embebidos cada vez más potentes.'),
+        ('The concept of the “smart home”', 'El concepto de «casa inteligente».'), ('Short-range mobile transceivers', 'Transceptores móviles de corto alcance.')]),
+    ('3) Referencia contextual. Indicar a qué o quién hacen referencia las siguientes palabras o frases.', [
+        ('That (línea 2)', 'physical objects: los objetos físicos (con sus sensores, su software y otras tecnologías), que son los que se conectan e intercambian datos'),
+        ('They (línea 4)', 'devices (los dispositivos)'), ('Itself (línea 17)', 'the term «Internet of things» (el término)'),
+        ('Him (línea 19)', 'Peter T. Lewis'), ('He (línea 22)', 'Kevin Ashton'), ('Themselves (línea 26)', 'things (las cosas)')]),
+    ('4) Completar el siguiente cuadro de conectores en ESPAÑOL.', 'tabla', [
+        ('Due to (línea 6)', 'debido a', 'causa', 'El campo (de la IoT) evolucionó.', 'La convergencia de múltiples tecnologías.'),
+        ('Such as (línea 12)', 'como / tales como', 'ejemplificación', 'Dispositivos asociados a ese ecosistema.', 'Teléfonos inteligentes y parlantes inteligentes.')]),
+])
+PRACTICA_VIRUS = ('Práctica de clase · The anatomy of a virus', [
+    ('1. Leer el texto y encontrar las respuestas a las siguientes preguntas (en español).', [
+        ('How are computer viruses like biological viruses?', 'Los dos son muy pequeños, infectan a un huésped (una célula o un sistema informático), usan sus recursos para reproducirse y muchas veces le causan daño.'),
+        ('What is the effect of a virus patching the operating system?', 'Le permite detectar los archivos de programa (como los COM o EXE) para copiarse dentro de ellos.'),
+        ('Why are some viruses designed to be loaded into memory?', 'Para quedar residentes en memoria y, desde ahí, infectar otros programas hasta que se apague la computadora.'),
+        ('What examples of payload does the writer of the text provide?', 'Uno inofensivo: mostrar un mensaje en el monitor. Uno destructivo: borrar archivos del disco rígido.'),
+        ('How does a Trojan differ from a virus?', 'El troyano tiene payload, pero no tiene rutina de reproducción: no se copia a otros programas.')]),
+    ('2. Unir cada rutina de virus con su función.', [
+        ('I. Misdirection', 'c) Hides the presence of the code'), ('II. Reproduction', 'b) Attaches a copy of itself to another program'),
+        ('III. Trigger', 'd) Decides when and how to activate the payload'), ('IV. Payload', 'a) Does the damage')]),
+    ('3. Conectores. Completar el siguiente cuadro en español.', 'tabla', [
+        ('Such as', 'como / tales como', 'ejemplificación', 'Archivos de programa.', 'Archivos COM o EXE.'),
+        ('Also', 'también', 'adición', 'El virus se queda en memoria e infecta otros programas.', 'Puede contener un payload.'),
+        ('To', 'para', 'finalidad', 'Ser un virus.', 'Un programa solo necesita una rutina de reproducción.'),
+        ('But', 'pero', 'contraste', 'El programa tiene un payload.', 'No tiene rutina de reproducción.')]),
+    ('4. Referencia contextual. Encontrar los referentes a las siguientes palabras.', [
+        ('Itself', 'a biological virus (el virus biológico)'), ('Them', 'living cells (las células vivas, el huésped)'),
+        ('Its', 'a computer system (el sistema informático)'), ('It', 'an infected program (el programa infectado)'),
+        ('Which', 'the host program (el programa huésped)')]),
+    ('5. Traducir las siguientes frases.', [
+        ('host computer system', 'sistema informático huésped (anfitrión)'), ('common programming techniques', 'técnicas de programación comunes'),
+        ('normal sequence of instructions', 'secuencia normal de instrucciones'), ('harmless joke', 'broma inofensiva'),
+        ('deleting files on the hard disk', 'borrar archivos del disco rígido')]),
+])
+NEWTON_TEXTO = [
+    'Newton’s First Law states that an object will remain at rest or in uniform motion in a straight line unless acted upon by an external force. It may be seen as a statement about inertia, that objects will remain in their state of motion unless a force acts to change the motion. Any change in motion involves an acceleration, and then Newton’s Second Law applies. The First Law could be viewed as just a special case of the Second Law for which the net external force is zero, but that carries some presumptions about the frame of reference in which the motion is being viewed.',
+    'The statements of both the Second Law and the First Law here are presuming that the measurements are being made in a reference frame which is not itself accelerating. Such a frame is often referred to as an “inertial frame”. The statement of these laws must be generalized if you are dealing with a rotating reference frame or any frame which is accelerating.',
+    'Newton’s First Law contains implications about the fundamental symmetry of the universe in that a state of motion in a straight line must be just as “natural” as being at rest. If an object is at rest in one frame of reference, it will appear to be moving in a straight line to an observer in a reference frame which is moving by the object. There is no way to say which reference frame is “special”, so all constant velocity reference frames must be equivalent.',
+]
+PRACTICA_NEWTON = ('Práctica del campus · Primera ley de Newton', [
+    ('1. Identificar y transcribir el nexo lógico de cada fragmento e indicar la relación lógica.', [
+        ('«…an object will remain at rest or in uniform motion in a straight line unless acted upon by an external force.»', 'UNLESS (a menos que): condición'),
+        ('«…objects will remain in their state of motion unless a force acts to change the motion.»', 'UNLESS (a menos que): condición'),
+        ('«The statement of these laws must be generalized if you are dealing with a rotating reference frame…»', 'IF (si): condición'),
+        ('«If an object is at rest in one frame of reference, it will appear to be moving in a straight line…»', 'IF (si): condición'),
+        ('«There is no way to say which reference frame is “special”, so all constant velocity reference frames must be equivalent.»', 'SO (por lo tanto, así que): consecuencia')]),
+    ('2. Título. Seleccionar el mejor título para el texto: a) La primera ley de Newton · b) Las fuerzas que actúan sobre el movimiento · c) El movimiento uniforme de los objetos · d) Las leyes de Newton.', [
+        ('Título', 'a) La primera ley de Newton: los tres párrafos hablan de ella; «Las leyes de Newton» es demasiado amplio.')]),
+    ('3. Señalar el antónimo de la palabra dada, en el párrafo indicado.', [
+        ('CURVED (párrafo 1)', 'straight'), ('COMMONPLACE (párrafo 1)', 'special'), ('RESTING (párrafo 3)', 'moving'),
+        ('STILLNESS (párrafo 3)', 'motion (también velocity)')]),
+    ('4. Señalar el referente de la palabra dada.', [
+        ('THEIR (párrafo 1: «…objects will remain in their state of motion…»)', 'objects (los objetos)'),
+        ('FOR WHICH (párrafo 1: «…a special case of the Second Law for which the net external force is zero…»)', 'a special case (el caso especial de la segunda ley)'),
+        ('IT (párrafo 3: «If an object is at rest […], it will appear to be moving…»)', 'an object (el objeto)')]),
+    ('5. Leer el texto e indicar si la oración es verdadera o falsa.', [
+        ('A menos que una fuerza externa actúe sobre un objeto, el mismo permanecerá en reposo o en movimiento uniforme en línea recta.', 'Verdadero.'),
+        ('Ningún cambio de movimiento involucra una aceleración, por eso aplica la segunda ley de Newton.', 'Falso: any change = cualquier cambio (todo cambio de movimiento involucra una aceleración).'),
+        ('El marco inercial es aquel marco de referencia que se asume no experimenta aceleración.', 'Verdadero.')]),
+])
+
 CSS = '''
-@page { size: A4; margin: 15mm 15mm 15mm; }
+@page { size: A4; margin: 16mm 16mm 16mm; }
 * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
-body { font-family: 'Open Sans', 'DejaVu Sans', sans-serif; font-size: 9.6pt; line-height: 1.45; color: #1f1e1c; margin: 0; }
-h1 { font-family: Georgia, 'DejaVu Serif', serif; font-weight: 400; font-size: 22pt; margin: 0 0 2pt; }
-.bajada { color: #5b5a54; margin: 0 0 10pt; font-size: 10pt; }
-h2 { font-family: Georgia, 'DejaVu Serif', serif; font-weight: 400; font-size: 14.5pt; margin: 16pt 0 5pt; padding-top: 6pt; border-top: 1px solid #e3e1da; break-after: avoid; }
-h3 { font-size: 10.5pt; margin: 10pt 0 3pt; break-after: avoid; }
-table { width: 100%; border-collapse: collapse; margin: 3pt 0 8pt; font-size: 9pt; break-inside: avoid; }
-th, td { text-align: left; padding: 3.5pt 6pt; border-bottom: 1px solid #e3e1da; vertical-align: top; }
+body { font-family: 'Open Sans', 'DejaVu Sans', sans-serif; font-size: 10pt; line-height: 1.45; color: #1f1e1c; margin: 0; }
+h1 { font-family: Georgia, 'DejaVu Serif', serif; font-weight: 400; font-size: 20pt; margin: 0 0 4pt; }
+.bajada { color: #5b5a54; margin: 0 0 10pt; }
+h2 { font-family: Georgia, 'DejaVu Serif', serif; font-weight: 400; font-size: 14pt; margin: 14pt 0 5pt; padding-top: 6pt; border-top: 1px solid #e3e1da; break-after: avoid; }
+.resuelto { display: inline-block; background: #e8f0fb; color: #1f5fbf; font-weight: 700; font-size: 8pt; letter-spacing: .1em; padding: 2pt 8pt; border-radius: 99pt; margin-bottom: 6pt; }
+.ej { margin: 10pt 0 4pt; font-weight: 700; break-after: avoid; }
+.it { margin: 3pt 0 6pt 14pt; break-inside: avoid; }
+.it .r { color: #1f5fbf; margin-top: 1pt; }
+table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 9pt; }
+th, td { border: 1px solid #b9b6ad; padding: 4pt 5pt; vertical-align: top; text-align: left; }
 th { background: #f3f2ee; }
-.paso { display: grid; grid-template-columns: 22pt 1fr; gap: 6pt; margin: 5pt 0; break-inside: avoid; }
-.paso .n { width: 18pt; height: 18pt; border-radius: 50%; background: #2d8992; color: #fff; font-weight: 700; text-align: center; line-height: 18pt; font-size: 9pt; }
+td.a { color: #1f5fbf; }
+.texto p { margin: 0 0 6pt; text-align: justify; }
+.paso { display: grid; grid-template-columns: 20pt 1fr; gap: 6pt; margin: 5pt 0; break-inside: avoid; }
+.paso .n { width: 17pt; height: 17pt; border-radius: 50%; background: #2d8992; color: #fff; font-weight: 700; text-align: center; line-height: 17pt; font-size: 9pt; }
 .paso b.t { display: block; }
-.caso { border-bottom: 1px dashed #e3e1da; padding: 4pt 0 5pt; break-inside: avoid; }
-.caso .r { margin-top: 2pt; }
-.caso .ex { color: #5b5a54; font-size: 8.8pt; margin-top: 1pt; }
-.f { font-size: 8pt; text-transform: uppercase; letter-spacing: .06em; color: #7c7b75; font-weight: 700; }
-.tip { background: #e4f3f5; border-left: 3pt solid #2d8992; border-radius: 4pt; padding: 5pt 9pt; margin: 4pt 0 8pt; break-inside: avoid; }
-i { color: #46453f; }
+.tip { background: #e4f3f5; border-left: 3pt solid #2d8992; border-radius: 4pt; padding: 5pt 9pt; margin: 6pt 0; break-inside: avoid; }
+.salto { break-before: page; }
 '''
 
-PASOS = [
-    ('Preguntas de comprensión', 'Buscá en el texto el párrafo que habla de lo que preguntan y respondé <b>en español y con tus palabras</b>. No copies la oración en inglés.'),
-    ('Traducción de frases', 'Casi siempre son frases nominales: encontrá el <b>núcleo</b> (el último sustantivo) y traducí de derecha a izquierda. <i>Increasingly powerful embedded systems</i> → sistemas embebidos cada vez más potentes.'),
-    ('Referencia contextual', 'Buscá <b>hacia atrás</b> el sustantivo que el pronombre reemplaza, respetando el número: <i>it/its</i> singular, <i>they/them/their</i> plural, <i>he/him</i> una persona. Probá reemplazarlo en la oración: si se entiende, está bien.'),
-    ('Antónimos y sinónimos', 'Te dan una palabra que <b>no</b> está en el texto y una línea: buscá en esa línea la palabra opuesta (antónimo) o equivalente (sinónimo). Es la que tiene la misma clase (sustantivo, verbo, adjetivo).'),
-    ('Cuadro de conectores', 'Por cada conector: su traducción, el <b>tipo de relación</b> y las dos ideas que une (la de antes y la de después), resumidas en español.'),
-    ('Título y verdadero o falso', 'En la práctica del campus también hay que elegir el título (el que cubre <b>todo</b> el texto, ni más amplio ni más chico) y decir si una oración en español dice lo mismo que el texto: mirá los detalles (<i>any</i> = cualquier, no «ningún»).'),
-]
 
-CONECTORES = [
+def ejercicios_html(doc, resuelto):
+    e = html.escape
+    titulo, ejs = doc
+    c = ''
+    for ej in ejs:
+        c += f'<div class="ej">{e(ej[0])}</div>'
+        if ej[1] == 'tabla':
+            filas = ''.join(f'<tr><td><b>{e(f[0])}</b></td>' + ''.join(f'<td class="a">{e(x) if resuelto else "&nbsp;"}</td>' for x in f[1:]) + '</tr>' for f in ej[2])
+            c += f'<table><tr><th style="width:16%">Conector</th><th style="width:16%">Traducción</th><th style="width:14%">Tipo de relación</th><th>Idea uno</th><th>Idea dos</th></tr>{filas}</table>'
+        else:
+            for it, r in ej[1]:
+                c += f'<div class="it">• {e(it)}' + (f'<div class="r">→ {e(r)}</div>' if resuelto else '<div style="height:16pt"></div>') + '</div>'
+    return c
+
+
+def doc_resuelto(doc, css_fuentes):
+    cuerpo = f'<span class="resuelto">RESUELTO</span><h1>{html.escape(doc[0])}</h1><p class="bajada">Las respuestas van en azul. Las consignas son las mismas de las hojas anteriores.</p>{ejercicios_html(doc, True)}'
+    return f'<!doctype html><html lang="es"><head><meta charset="utf-8"><style>{css_fuentes}{CSS}</style></head><body>{cuerpo}</body></html>'
+
+
+def doc_newton(css_fuentes):
+    e = html.escape
+    texto = '<div class="texto">' + ''.join(f'<p>{e(p)}</p>' for p in NEWTON_TEXTO) + '</div>'
+    cuerpo = (f'<h1>{e(PRACTICA_NEWTON[0])}</h1><p class="bajada">La práctica del campus «Práctica primer parcial», escrita de nuevo. Primero en blanco y después resuelta.</p>'
+              f'{texto}{ejercicios_html(PRACTICA_NEWTON, False)}'
+              f'<div class="salto"></div><span class="resuelto">RESUELTO</span><h1>{e(PRACTICA_NEWTON[0])}</h1>{ejercicios_html(PRACTICA_NEWTON, True)}')
+    return f'<!doctype html><html lang="es"><head><meta charset="utf-8"><title>{e(PRACTICA_NEWTON[0])}</title><style>{css_fuentes}{CSS}</style></head><body>{cuerpo}</body></html>'
+
+
+PASOS = [
+    ('Preguntas de comprensión', 'Buscá el párrafo que habla de lo que preguntan y respondé <b>en español y con tus palabras</b>. No copies la oración en inglés.'),
+    ('Traducción de frases', 'Casi siempre son frases nominales: encontrá el <b>núcleo</b> (el último sustantivo) y traducí de derecha a izquierda. <i>Increasingly powerful embedded systems</i> → sistemas embebidos cada vez más potentes.'),
+    ('Referencia contextual', 'Buscá <b>hacia atrás</b> el sustantivo que el pronombre reemplaza y que coincide en número: <i>it/its</i> singular, <i>they/them/their</i> plural, <i>he/him/his</i> una persona. Probá reemplazarlo en la oración: si se entiende, está bien.'),
+    ('Antónimos y sinónimos', 'Te dan una palabra que <b>no</b> está en el texto y una línea: buscá en esa línea la palabra opuesta (antónimo) o equivalente (sinónimo), de la misma clase (sustantivo, verbo, adjetivo).'),
+    ('Cuadro de conectores', 'Por cada conector: su traducción, el <b>tipo de relación</b> y las dos ideas que une (la de antes y la de después), resumidas en español.'),
+    ('Título y verdadero o falso', 'El título es el que cubre <b>todo</b> el texto, ni más amplio ni más chico. En el verdadero o falso mirá los detalles: <i>any</i> = cualquier, no «ningún».'),
+]
+CONECTORES_TABLA = [
     ('Adición', 'and, also, moreover, in addition, as well as', 'y, también, además'),
     ('Contraste', 'but, however, although, while, whereas, yet', 'pero, sin embargo, aunque, mientras que'),
     ('Causa', 'because, since, as, due to, because of', 'porque, ya que, debido a'),
-    ('Consecuencia', 'so, therefore, thus, consequently, this is why', 'así que, por lo tanto, por eso'),
+    ('Consecuencia', 'so, therefore, thus, consequently, this is why, as a result', 'así que, por lo tanto, por eso, como resultado'),
     ('Condición', 'if, unless, provided that', 'si, a menos que, siempre que'),
     ('Finalidad', 'to, in order to, so that', 'para, con el fin de, para que'),
     ('Ejemplificación', 'such as, for example, for instance, like', 'como, tales como, por ejemplo'),
-    ('Tiempo / secuencia', 'when, then, after, before, until, meanwhile', 'cuando, luego, después, antes, hasta, mientras tanto'),
+    ('Tiempo', 'when, then, after, before, until, meanwhile', 'cuando, luego, después, antes, hasta, mientras tanto'),
+]
+PRONOMBRES = [
+    ('it · its · itself', 'eso · su · sí mismo', 'algo singular'), ('they · them · their · themselves', 'ellos · los · sus · sí mismos', 'algo plural'),
+    ('he · him · his', 'él · lo · su', 'un hombre'), ('she · her', 'ella · la, su', 'una mujer'),
+    ('which · that', 'que · el cual', 'retoman el sustantivo de antes'), ('this · these', 'esto · estos', 'retoman una idea o algo cercano'),
+]
+PREFIJOS_TABLA = [
+    ('un-', 'unable, unknown, unnecessary, unavailable'), ('in-', 'incorrect, invisible, inefficient, inaccessible'),
+    ('im- (antes de p, b, m)', 'impossible, immobile'), ('il- (antes de l)', 'illegal'), ('ir- (antes de r)', 'irregular, irresponsible'),
+    ('dis-', 'disconnected, disadvantage, disappear'), ('non-', 'non-renewable'), ('-ful ↔ -less', 'harmful ↔ harmless, useful ↔ useless, wired → wireless'),
 ]
 
 
-def guia_html(css_fuentes):
-    e = html.escape
-    c = '<h1>Inglés 1 · El parcial</h1><p class="bajada">Es de lectocomprensión: un texto técnico en inglés y ejercicios que se responden en español. Con 7 o más, la materia queda aprobada. Acá está cómo se encara cada ejercicio, los conectores que más salen y todo el material resuelto.</p>'
-    c += '<h2>Cómo se encara cada ejercicio</h2>' + ''.join(f'<div class="paso"><span class="n">{i}</span><div><b class="t">{t}</b>{x}</div></div>' for i, (t, x) in enumerate(PASOS, 1))
-    c += '<h2>Los conectores y su relación</h2><table><tr><th>Relación</th><th>En inglés</th><th>En español</th></tr>' + ''.join(f'<tr><td><b>{a}</b></td><td><i>{b}</i></td><td>{x}</td></tr>' for a, b, x in CONECTORES) + '</table>'
+def resumen_html(css_fuentes):
+    tabla = lambda cab, filas: '<table><tr>' + ''.join(f'<th>{x}</th>' for x in cab) + '</tr>' + ''.join('<tr>' + ''.join(f'<td>{x}</td>' for x in f) + '</tr>' for f in filas) + '</table>'
+    c = ('<h1>Inglés 1 · Cómo se encara el parcial</h1><p class="bajada">Es de lectocomprensión: un texto técnico en inglés y ejercicios que se responden en español. '
+         'Con 7 o más, la materia queda aprobada. Los parciales y las prácticas resueltos están en los otros archivos.</p>')
+    c += '<h2>Cada ejercicio</h2>' + ''.join(f'<div class="paso"><span class="n">{i}</span><div><b class="t">{t}</b>{x}</div></div>' for i, (t, x) in enumerate(PASOS, 1))
+    c += '<h2>Conectores y su relación</h2>' + tabla(['Relación', 'En inglés', 'En español'], [(f'<b>{a}</b>', f'<i>{b}</i>', x) for a, b, x in CONECTORES_TABLA])
     c += '<div class="tip"><b>Idea uno e idea dos:</b> la idea uno es lo que está antes del conector y la idea dos, lo que viene después. Se escriben resumidas y en español.</div>'
-    for fuente, titulo in ((PARCIAL, 'El parcial 2023 resuelto'), (MODELO, 'El modelo de parcial resuelto'), (VIRUS, 'La práctica de clase resuelta'), (CAMPUS, 'La práctica del campus resuelta')):
-        c += f'<h2>{titulo}</h2><p class="f">{e(fuente)}</p>'
-        for k, sec in SECCIONES:
-            qs = [q for q in PREGUNTAS if q['fuente'] == fuente and q['sec'] == k]
-            if not qs: continue
-            c += f'<h3>{sec}</h3>'
-            for q in qs:
-                if q['tipo'] == 'modelo':
-                    r = q['modelo']
-                else:
-                    r = next(o for o, b in q['op'] if b)
-                c += f'<div class="caso"><div>{q["en"]}</div><div class="r"><b>→</b> {r}</div>' + (f'<div class="ex">{q["ex"]}</div>' if q.get('ex') else '') + '</div>'
-    return (f'<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Inglés 1 · El parcial, resuelto</title>'
-            f'<style>{css_fuentes}{CSS}</style></head><body>{c}</body></html>')
+    c += '<h2>Pronombres (referencia contextual)</h2>' + tabla(['En inglés', 'En español', 'Reemplaza a…'], [(f'<i>{a}</i>', b, x) for a, b, x in PRONOMBRES])
+    c += '<h2>Antónimos con prefijos y sufijos</h2>' + tabla(['Prefijo o sufijo', 'Ejemplos'], [(f'<b>{a}</b>', f'<i>{b}</i>') for a, b in PREFIJOS_TABLA])
+    c += ('<h2>Frases nominales</h2><p>En inglés lo que describe va <b>antes</b> del sustantivo; en español, después. Encontrá el núcleo (el último sustantivo) y traducí de derecha a izquierda:</p>'
+          + tabla(['En inglés', 'En español'], [(f'<i>{a}</i>', b) for a, b in (
+              ('renewable energy sources', 'fuentes de energía renovable'), ('the self-generated clean energy trend', 'la tendencia de la energía limpia autogenerada'),
+              ('short-range mobile transceivers', 'transceptores móviles de corto alcance'), ('host computer system', 'sistema informático huésped'),
+              ('long-term investment', 'inversión a largo plazo'))]))
+    return f'<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Inglés 1 · Cómo se encara el parcial</title><style>{css_fuentes}{CSS}</style></head><body>{c}</body></html>'
+
+
+# Los originales (en blanco) y cuántas hojas tienen: el PDF final es esas hojas + las resueltas
+ORIGINALES = [
+    ('02-parcial-2023-energia-renovable.pdf', 3, PARCIAL_2023),
+    ('03-modelo-de-parcial-internet-de-las-cosas.pdf', 3, MODELO_IOT),
+    ('04-practica-the-anatomy-of-a-virus.pdf', 3, PRACTICA_VIRUS),
+]
 
 
 def fuentes_css(carpeta):
     if not carpeta: return ''
     return ''.join(f"@font-face{{font-family:'Open Sans';font-weight:{p};src:url('file://{os.path.join(carpeta, f'open-sans-latin-{p}-normal.woff2')}') format('woff2')}}"
                    for p in (400, 600, 700) if os.path.exists(os.path.join(carpeta, f'open-sans-latin-{p}-normal.woff2')))
+
+
+def imprimir(chromium, html_txt, pdf):
+    with tempfile.TemporaryDirectory() as tmp:
+        h = os.path.join(tmp, 'doc.html')
+        open(h, 'w', encoding='utf-8').write(html_txt)
+        subprocess.run([chromium, '--headless', '--no-sandbox', '--disable-gpu', '--no-pdf-header-footer', '--disable-background-networking',
+                        '--no-first-run', f'--print-to-pdf={pdf}', 'file://' + h], check=True, capture_output=True)
 
 
 def main():
@@ -306,19 +412,41 @@ def main():
     with open(os.path.join(RAIZ, 'quiz', 'ingles-1.json'), 'w', encoding='utf-8') as fh:
         json.dump(q, fh, ensure_ascii=False, indent=1)
         fh.write('\n')
-    print('quiz:', sum(len(s['preguntas']) for s in q['secciones']), 'preguntas ·', ', '.join(f"{s['titulo']} {len(s['preguntas'])}" for s in q['secciones']))
-    if a.pdf:
-        chromium = next((c for c in (os.environ.get('CHROMIUM'), '/opt/pw-browsers/chromium', shutil.which('chromium')) if c and os.path.exists(c)), None)
-        if not chromium: raise SystemExit('No encuentro Chromium (poné su ruta en la variable CHROMIUM).')
-        destino = os.path.join(RAIZ, 'material', 'ingles-1')
-        os.makedirs(destino, exist_ok=True)
-        with tempfile.TemporaryDirectory() as tmp:
-            h = os.path.join(tmp, 'guia.html')
-            open(h, 'w', encoding='utf-8').write(guia_html(fuentes_css(a.fuente)))
-            pdf = os.path.join(destino, '01-guia-del-parcial-resuelta.pdf')
-            subprocess.run([chromium, '--headless', '--no-sandbox', '--disable-gpu', '--no-pdf-header-footer', '--disable-background-networking',
-                            '--no-first-run', f'--print-to-pdf={pdf}', 'file://' + h], check=True, capture_output=True)
-        print('guía:', pdf)
+    print('práctica:', sum(len(s['preguntas']) for s in q['secciones']), 'ejercicios ·', ', '.join(f"{s['titulo']} {len(s['preguntas'])}" for s in q['secciones']))
+    if not a.pdf:
+        return
+    import pymupdf
+    chromium = next((c for c in (os.environ.get('CHROMIUM'), '/opt/pw-browsers/chromium', shutil.which('chromium')) if c and os.path.exists(c)), None)
+    if not chromium: raise SystemExit('No encuentro Chromium (poné su ruta en la variable CHROMIUM).')
+    css = fuentes_css(a.fuente)
+    os.makedirs(DESTINO, exist_ok=True)
+    meta = lambda t: {'title': t, 'author': '', 'subject': '', 'keywords': '', 'creator': '', 'producer': '', 'creationDate': '', 'modDate': ''}
+
+    def guardar(doc, ruta, titulo):
+        doc.set_metadata(meta(titulo))
+        doc.save(ruta + '.tmp', garbage=3, deflate=True)
+        doc.close()
+        os.replace(ruta + '.tmp', ruta)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        for nombre, html_txt, titulo in (('01-resumen-como-se-encara-el-parcial.pdf', resumen_html(css), 'Inglés 1 · Cómo se encara el parcial'),
+                                         ('05-practica-del-campus-primera-ley-de-newton.pdf', doc_newton(css), f'Inglés 1 · {PRACTICA_NEWTON[0]}')):
+            ruta = os.path.join(tmp, nombre)
+            imprimir(chromium, html_txt, ruta)
+            d = pymupdf.open(ruta)
+            print(nombre, d.page_count, 'hojas')
+            guardar(d, os.path.join(DESTINO, nombre), titulo)
+        for nombre, hojas, doc in ORIGINALES:
+            ruta = os.path.join(DESTINO, nombre)
+            res = os.path.join(tmp, 'res.pdf')
+            imprimir(chromium, doc_resuelto(doc, css), res)
+            orig = pymupdf.open(ruta)
+            final = pymupdf.open()
+            final.insert_pdf(orig, to_page=hojas - 1)          # las hojas en blanco, tal cual
+            final.insert_pdf(pymupdf.open(res))                # y a continuación, resuelto
+            orig.close()
+            print(nombre, final.page_count, 'hojas')
+            guardar(final, ruta, f'Inglés 1 · {doc[0]}')
 
 
 if __name__ == '__main__':

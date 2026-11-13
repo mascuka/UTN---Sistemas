@@ -1,311 +1,1362 @@
 {
- "titulo": "Inglés 1 · Parcial",
- "descripcion": "Los ejercicios del parcial 2023, del modelo de parcial, de la práctica de clase y de la práctica del campus, con la respuesta. Las preguntas abiertas: respondé primero y después mirá.",
+ "titulo": "Inglés 1 · Práctica para escribir",
+ "descripcion": "Frases y palabras cortas como las del parcial: escribís la respuesta y te dice si está bien. No importan las mayúsculas, las tildes ni el artículo del principio. Si tu traducción dice lo mismo con otras palabras, tocá «Mi respuesta también vale».",
  "secciones": [
   {
-   "titulo": "Comprensión del texto",
+   "titulo": "Traducir frases",
    "preguntas": [
     {
-     "tipo": "modelo",
-     "en": "¿Qué puede llegar a pasar en la transición entre la energía tradicional y la energía sustentable? (Respondé en español.)<br><i>«Meanwhile, as we switch from cheap, accessible, traditional energy to green energy, there’s a real possibility that clean electricity could become scarce.»</i>",
-     "modelo": "Que la <b>electricidad limpia se vuelva escasa</b>: al pasar de la energía tradicional (barata y accesible) a la energía verde puede faltar electricidad limpia. Por eso las empresas buscan asegurarse su propio suministro.",
-     "fuente": "Parcial 2023 · Energía renovable",
-     "ex": "La respuesta está en las líneas 6 y 7. Se contesta con tus palabras y en español: no se copia la oración en inglés."
-    },
-    {
-     "tipo": "modelo",
-     "en": "¿Cuáles son las preocupaciones respecto al crecimiento de los productos y las tecnologías de IoT? (Respondé en español.)<br><i>«There are a number of concerns about the risks in the growth of IoT technologies and products, especially in the areas of privacy and security…»</i>",
-     "modelo": "Los <b>riesgos en la privacidad y la seguridad</b>. Por eso la industria y los gobiernos empezaron a desarrollar normas internacionales y locales, guías y marcos regulatorios.",
-     "fuente": "Modelo de parcial · Internet de las cosas"
-    },
-    {
-     "tipo": "modelo",
-     "en": "How are computer viruses like biological viruses? (Respondé en español.)",
-     "modelo": "Los dos son muy pequeños, <b>infectan a un huésped</b> (una célula o un sistema informático), <b>usan sus recursos para reproducirse</b> y muchas veces le causan daño.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "What is the effect of a virus patching the operating system? (Respondé en español.)",
-     "modelo": "Le permite <b>detectar los archivos de programa</b> (como los COM o EXE) para después copiarse dentro de ellos.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Why are some viruses designed to be loaded into memory? (Respondé en español.)",
-     "modelo": "Para <b>quedar residentes en memoria</b> y, desde ahí, infectar otros programas con su rutina de reproducción hasta que se apague la computadora.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "What examples of payload does the writer of the text provide? (Respondé en español.)",
-     "modelo": "Uno <b>inofensivo</b>: mostrar un mensaje en el monitor. Uno <b>destructivo</b>: borrar archivos del disco rígido.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "How does a Trojan differ from a virus? (Respondé en español.)",
-     "modelo": "El <b>troyano</b> tiene payload (la parte que hace algo) pero <b>no tiene rutina de reproducción</b>: no se copia a otros programas.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "una",
-     "en": "Uní la rutina con su función. <b>MISDIRECTION</b>:",
-     "op": [
-      [
-       "Does the damage",
-       false
-      ],
-      [
-       "Attaches a copy of itself to another program",
-       false
-      ],
-      [
-       "Hides the presence of the code",
-       true
-      ],
-      [
-       "Decides when and how to activate the payload",
-       false
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>energy resources</b>",
+     "resp": [
+      "recursos energéticos",
+      "recursos de energía"
      ],
-     "ex": "<i>Misdirection</i> = despiste: la rutina que <b>esconde</b> al virus.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "ph": "En español…",
+     "ex": "Núcleo al final: <i>resources</i> (recursos)."
     },
     {
-     "tipo": "una",
-     "en": "Uní la rutina con su función. <b>REPRODUCTION</b>:",
-     "op": [
-      [
-       "Does the damage",
-       false
-      ],
-      [
-       "Attaches a copy of itself to another program",
-       true
-      ],
-      [
-       "Hides the presence of the code",
-       false
-      ],
-      [
-       "Decides when and how to activate the payload",
-       false
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>clean energy</b>",
+     "resp": [
+      "energía limpia"
      ],
-     "ex": "La reproducción es la que <b>copia</b> al virus en otro programa. Es la única que necesita para ser virus.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "ph": "En español…"
     },
     {
-     "tipo": "una",
-     "en": "Uní la rutina con su función. <b>TRIGGER</b>:",
-     "op": [
-      [
-       "Does the damage",
-       false
-      ],
-      [
-       "Attaches a copy of itself to another program",
-       false
-      ],
-      [
-       "Hides the presence of the code",
-       false
-      ],
-      [
-       "Decides when and how to activate the payload",
-       true
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>renewable energy sources</b>",
+     "resp": [
+      "fuentes de energía renovable",
+      "fuentes de energía renovables",
+      "fuentes renovables de energía"
      ],
-     "ex": "<i>Trigger</i> = disparador: <b>decide cuándo</b> se activa el payload (una fecha, una tecla…).",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "ph": "En español…",
+     "ex": "Núcleo: <i>sources</i> (fuentes) → de energía → renovable."
     },
     {
-     "tipo": "una",
-     "en": "Uní la rutina con su función. <b>PAYLOAD</b>:",
-     "op": [
-      [
-       "Does the damage",
-       true
-      ],
-      [
-       "Attaches a copy of itself to another program",
-       false
-      ],
-      [
-       "Hides the presence of the code",
-       false
-      ],
-      [
-       "Decides when and how to activate the payload",
-       false
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>solar panels</b>",
+     "resp": [
+      "paneles solares",
+      "placas solares"
      ],
-     "ex": "El payload es la carga: lo que <b>hace el daño</b> (o la broma).",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "ph": "En español…"
     },
     {
-     "tipo": "una",
-     "en": "Elegí el mejor título para el texto sobre la primera ley de Newton (inercia, marcos de referencia inerciales y simetría del universo).",
-     "op": [
-      [
-       "La primera ley de Newton",
-       true
-      ],
-      [
-       "Las fuerzas que actúan sobre el movimiento",
-       false
-      ],
-      [
-       "El movimiento uniforme de los objetos",
-       false
-      ],
-      [
-       "Las leyes de Newton",
-       false
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>carbon footprint</b>",
+     "resp": [
+      "huella de carbono"
      ],
-     "ex": "Los tres párrafos hablan de la <b>primera ley</b>: la segunda aparece solo para compararla. «Las leyes de Newton» es demasiado amplio y los otros dos son temas puntuales.",
-     "fuente": "Práctica del campus · Primera ley de Newton"
+     "ph": "En español…"
     },
     {
-     "tipo": "una",
-     "en": "¿Verdadero o falso? «A menos que una fuerza externa actúe sobre un objeto, el mismo permanecerá en reposo o en movimiento uniforme en línea recta.»<br><i>«…an object will remain at rest or in uniform motion in a straight line unless acted upon by an external force.»</i>",
-     "op": [
-      [
-       "Verdadero",
-       true
-      ],
-      [
-       "Falso",
-       false
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>long-term investment</b>",
+     "resp": [
+      "inversión a largo plazo"
      ],
-     "ex": "Es la traducción de la primera oración: <i>unless</i> = a menos que.",
-     "fuente": "Práctica del campus · Primera ley de Newton",
-     "vf": true
+     "ph": "En español…",
+     "ex": "<i>long-term</i> = a largo plazo."
     },
     {
-     "tipo": "una",
-     "en": "¿Verdadero o falso? «Ningún cambio de movimiento involucra una aceleración, por eso aplica la segunda ley de Newton.»<br><i>«Any change in motion involves an acceleration, and then Newton’s Second Law applies.»</i>",
-     "op": [
-      [
-       "Verdadero",
-       false
-      ],
-      [
-       "Falso",
-       true
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>energy supply</b>",
+     "resp": [
+      "suministro de energía",
+      "suministro energético",
+      "abastecimiento de energía",
+      "abastecimiento energético"
      ],
-     "ex": "<i>Any change</i> = <b>cualquier</b> cambio (no «ningún»): todo cambio de movimiento involucra una aceleración.",
-     "fuente": "Práctica del campus · Primera ley de Newton",
-     "vf": true
+     "ph": "En español…"
     },
     {
-     "tipo": "una",
-     "en": "¿Verdadero o falso? «El marco inercial es aquel marco de referencia que se asume no experimenta aceleración.»<br><i>«…a reference frame which is not itself accelerating. Such a frame is often referred to as an “inertial frame”.»</i>",
-     "op": [
-      [
-       "Verdadero",
-       true
-      ],
-      [
-       "Falso",
-       false
-      ]
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>the energy grid</b>",
+     "resp": [
+      "la red eléctrica",
+      "la red de energía",
+      "la red energética"
      ],
-     "ex": "<i>Such a frame</i> retoma «un marco de referencia que no está acelerando»: a eso se le llama marco inercial.",
-     "fuente": "Práctica del campus · Primera ley de Newton",
-     "vf": true
+     "ph": "En español…",
+     "ex": "<i>grid</i> = red (de distribución)."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>processing ability</b>",
+     "resp": [
+      "capacidad de procesamiento",
+      "habilidad de procesamiento",
+      "capacidad de procesar"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>embedded systems</b>",
+     "resp": [
+      "sistemas embebidos",
+      "sistemas integrados",
+      "sistemas incrustados"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>increasingly powerful systems</b>",
+     "resp": [
+      "sistemas cada vez más potentes",
+      "sistemas cada vez más poderosos"
+     ],
+     "ph": "En español…",
+     "ex": "<i>increasingly</i> + adjetivo = cada vez más + adjetivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>more and more devices</b>",
+     "resp": [
+      "cada vez más dispositivos"
+     ],
+     "ph": "En español…",
+     "ex": "<i>more and more</i> = cada vez más."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>operating system</b>",
+     "resp": [
+      "sistema operativo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>hard disk</b>",
+     "resp": [
+      "disco rígido",
+      "disco duro"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>computer system</b>",
+     "resp": [
+      "sistema informático",
+      "sistema de computación",
+      "sistema computacional",
+      "sistema de computadora"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>program files</b>",
+     "resp": [
+      "archivos de programa",
+      "archivos de programas"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>smart home</b>",
+     "resp": [
+      "casa inteligente",
+      "hogar inteligente"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>home appliances</b>",
+     "resp": [
+      "electrodomésticos",
+      "aparatos del hogar",
+      "aparatos domésticos",
+      "artefactos del hogar"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>wireless networks</b>",
+     "resp": [
+      "redes inalámbricas"
+     ],
+     "ph": "En español…",
+     "ex": "<i>wireless</i> = sin cable, inalámbrico."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>machine learning</b>",
+     "resp": [
+      "aprendizaje automático",
+      "aprendizaje de máquina",
+      "aprendizaje de máquinas"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>data exchange</b>",
+     "resp": [
+      "intercambio de datos"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>network security</b>",
+     "resp": [
+      "seguridad de red",
+      "seguridad de redes",
+      "seguridad de la red"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>user interface</b>",
+     "resp": [
+      "interfaz de usuario",
+      "interfaz del usuario"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>real-time monitoring</b>",
+     "resp": [
+      "monitoreo en tiempo real",
+      "monitorización en tiempo real",
+      "control en tiempo real"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>short-range devices</b>",
+     "resp": [
+      "dispositivos de corto alcance"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>software development</b>",
+     "resp": [
+      "desarrollo de software"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>power plant</b>",
+     "resp": [
+      "central eléctrica",
+      "planta de energía",
+      "planta eléctrica",
+      "central de energía"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>external force</b>",
+     "resp": [
+      "fuerza externa"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>reference frame</b>",
+     "resp": [
+      "marco de referencia",
+      "sistema de referencia"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí al español: <b>harmless joke</b>",
+     "resp": [
+      "broma inofensiva"
+     ],
+     "ph": "En español…"
     }
    ]
   },
   {
-   "titulo": "Traducción",
+   "titulo": "Vocabulario",
    "preguntas": [
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>Energy resources scarcity is a concerning issue.</b>",
-     "modelo": "La escasez de recursos energéticos es un tema preocupante.",
-     "fuente": "Parcial 2023 · Energía renovable",
-     "ex": "<i>Energy resources scarcity</i> es una frase nominal: el núcleo (<i>scarcity</i>) va al final en inglés y primero en español."
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>scarcity</b>?",
+     "resp": [
+      "escasez"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>There is every reason to believe that society will continue to use more and more machines and devices.</b>",
-     "modelo": "Hay todas las razones para creer que la sociedad seguirá usando cada vez más máquinas y dispositivos.",
-     "fuente": "Parcial 2023 · Energía renovable",
-     "ex": "<i>more and more</i> = cada vez más."
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>issue</b>?",
+     "resp": [
+      "tema",
+      "problema",
+      "cuestión",
+      "asunto"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>The self-generated clean energy trend</b>",
-     "modelo": "La tendencia de la energía limpia autogenerada.",
-     "fuente": "Parcial 2023 · Energía renovable",
-     "ex": "Frase nominal: se lee de derecha a izquierda. Núcleo <i>trend</i> (tendencia) → de la energía (<i>energy</i>) → limpia (<i>clean</i>) → autogenerada (<i>self-generated</i>)."
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>trend</b>?",
+     "resp": [
+      "tendencia"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>Installing your own energy production is a long-term investment</b>",
-     "modelo": "Instalar tu propia producción de energía es una inversión a largo plazo.",
-     "fuente": "Parcial 2023 · Energía renovable"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>supply</b>?",
+     "resp": [
+      "suministro",
+      "abastecimiento",
+      "provisión"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>Processing ability</b>",
-     "modelo": "Capacidad de procesamiento.",
-     "fuente": "Modelo de parcial · Internet de las cosas"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>growth</b>?",
+     "resp": [
+      "crecimiento"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>Increasingly powerful embedded systems</b>",
-     "modelo": "Sistemas embebidos cada vez más potentes.",
-     "fuente": "Modelo de parcial · Internet de las cosas",
-     "ex": "<i>increasingly</i> + adjetivo = cada vez más + adjetivo. El núcleo es <i>systems</i>."
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>device</b>?",
+     "resp": [
+      "dispositivo",
+      "aparato"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>The concept of the “smart home”</b>",
-     "modelo": "El concepto de «casa inteligente».",
-     "fuente": "Modelo de parcial · Internet de las cosas"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>network</b>?",
+     "resp": [
+      "red"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>Short-range mobile transceivers</b>",
-     "modelo": "Transceptores móviles de corto alcance.",
-     "fuente": "Modelo de parcial · Internet de las cosas",
-     "ex": "Un <i>transceiver</i> es un transmisor-receptor (transceptor). Núcleo al final: <i>transceivers</i>."
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>concern</b>?",
+     "resp": [
+      "preocupación",
+      "inquietud"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>host computer system</b>",
-     "modelo": "Sistema informático huésped (anfitrión).",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>investment</b>?",
+     "resp": [
+      "inversión"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>common programming techniques</b>",
-     "modelo": "Técnicas de programación comunes.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>storage</b>?",
+     "resp": [
+      "almacenamiento"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>normal sequence of instructions</b>",
-     "modelo": "Secuencia normal de instrucciones.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>feature</b>?",
+     "resp": [
+      "característica",
+      "función",
+      "funcionalidad"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>harmless joke</b>",
-     "modelo": "Broma inofensiva.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>damage</b>?",
+     "resp": [
+      "daño"
+     ],
+     "ph": "En español…"
     },
     {
-     "tipo": "modelo",
-     "en": "Traducí al español: <b>deleting files on the hard disk</b>",
-     "modelo": "Borrar archivos del disco rígido.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>host</b>?",
+     "resp": [
+      "huésped",
+      "anfitrión"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>payload</b>?",
+     "resp": [
+      "carga útil",
+      "carga"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>requirement</b>?",
+     "resp": [
+      "requisito",
+      "requerimiento"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>goal</b>?",
+     "resp": [
+      "objetivo",
+      "meta"
+     ],
+     "ph": "En español…"
+    }
+   ]
+  },
+  {
+   "titulo": "Conectores",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>THEREFORE</b>",
+     "resp": [
+      "por lo tanto",
+      "por consiguiente",
+      "por ende",
+      "entonces",
+      "así que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>THEREFORE</b>?",
+     "resp": [
+      "consecuencia",
+      "resultado",
+      "efecto",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>therefore</b> = por lo tanto: consecuencia."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>HOWEVER</b>",
+     "resp": [
+      "sin embargo",
+      "no obstante"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>HOWEVER</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "contraposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>however</b> = sin embargo: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>ALTHOUGH</b>",
+     "resp": [
+      "aunque",
+      "si bien",
+      "a pesar de que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>ALTHOUGH</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "contraposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>although</b> = aunque: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>BECAUSE</b>",
+     "resp": [
+      "porque",
+      "ya que",
+      "debido a que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>BECAUSE</b>?",
+     "resp": [
+      "causa",
+      "causalidad"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>because</b> = porque: causa."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>DUE TO</b>",
+     "resp": [
+      "debido a",
+      "a causa de"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>DUE TO</b>?",
+     "resp": [
+      "causa",
+      "causalidad"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>due to</b> = debido a: causa."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>UNLESS</b>",
+     "resp": [
+      "a menos que",
+      "salvo que",
+      "a no ser que",
+      "excepto que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>UNLESS</b>?",
+     "resp": [
+      "condición"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>unless</b> = a menos que: condición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>IF</b>",
+     "resp": [
+      "si"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>IF</b>?",
+     "resp": [
+      "condición"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>if</b> = si: condición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>IN ORDER TO</b>",
+     "resp": [
+      "para",
+      "con el fin de",
+      "a fin de"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>IN ORDER TO</b>?",
+     "resp": [
+      "finalidad",
+      "propósito",
+      "objetivo",
+      "fin"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>in order to</b> = para: finalidad."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>SUCH AS</b>",
+     "resp": [
+      "como",
+      "tales como",
+      "tal como",
+      "como por ejemplo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>SUCH AS</b>?",
+     "resp": [
+      "ejemplificación",
+      "ejemplo",
+      "ejemplificar"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>such as</b> = como: ejemplificación."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>FOR EXAMPLE</b>",
+     "resp": [
+      "por ejemplo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>FOR EXAMPLE</b>?",
+     "resp": [
+      "ejemplificación",
+      "ejemplo",
+      "ejemplificar"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>for example</b> = por ejemplo: ejemplificación."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>MOREOVER</b>",
+     "resp": [
+      "además",
+      "más aún",
+      "asimismo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>MOREOVER</b>?",
+     "resp": [
+      "adición",
+      "suma",
+      "agregado"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>moreover</b> = además: adición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>ALSO</b>",
+     "resp": [
+      "también",
+      "además"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>ALSO</b>?",
+     "resp": [
+      "adición",
+      "suma",
+      "agregado"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>also</b> = también: adición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>WHEREAS</b>",
+     "resp": [
+      "mientras que",
+      "en tanto que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>WHEREAS</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "contraposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>whereas</b> = mientras que: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>SO</b>",
+     "resp": [
+      "así que",
+      "entonces",
+      "por lo tanto",
+      "por eso"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>SO</b>?",
+     "resp": [
+      "consecuencia",
+      "resultado",
+      "efecto",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>so</b> = así que: consecuencia."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>THIS IS WHY</b>",
+     "resp": [
+      "es por esto que",
+      "por eso",
+      "por esto",
+      "es por eso que",
+      "por esta razón"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>THIS IS WHY</b>?",
+     "resp": [
+      "consecuencia",
+      "resultado",
+      "efecto",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>this is why</b> = es por esto que: consecuencia."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>SINCE</b>",
+     "resp": [
+      "ya que",
+      "dado que",
+      "puesto que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>SINCE</b>?",
+     "resp": [
+      "causa",
+      "causalidad"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>since</b> = ya que: causa."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>MEANWHILE</b>",
+     "resp": [
+      "mientras tanto",
+      "entretanto"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>MEANWHILE</b>?",
+     "resp": [
+      "tiempo",
+      "temporal",
+      "secuencia",
+      "simultaneidad"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>meanwhile</b> = mientras tanto: tiempo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>AS A RESULT</b>",
+     "resp": [
+      "como resultado",
+      "como consecuencia",
+      "por consiguiente"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>AS A RESULT</b>?",
+     "resp": [
+      "consecuencia",
+      "resultado",
+      "efecto",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación o tiempo",
+     "ex": "<b>as a result</b> = como resultado: consecuencia."
+    }
+   ]
+  },
+  {
+   "titulo": "Antónimos",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>STRONG</b>",
+     "resp": [
+      "weak"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>SCARCITY</b>",
+     "resp": [
+      "abundance",
+      "plenty"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>CHEAP</b>",
+     "resp": [
+      "expensive",
+      "costly"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>BEGIN</b>",
+     "resp": [
+      "end",
+      "finish",
+      "stop"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>INCREASE</b>",
+     "resp": [
+      "decrease",
+      "reduce",
+      "reduction"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>INTERNAL</b>",
+     "resp": [
+      "external"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>SUCCESS</b>",
+     "resp": [
+      "failure"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>BEFORE</b>",
+     "resp": [
+      "after"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>INPUT</b>",
+     "resp": [
+      "output"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>UPLOAD</b>",
+     "resp": [
+      "download"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>ALWAYS</b>",
+     "resp": [
+      "never"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>HIGH</b>",
+     "resp": [
+      "low"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>LARGE</b>",
+     "resp": [
+      "small",
+      "little"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>SIMPLE</b>",
+     "resp": [
+      "complex",
+      "complicated"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>PUBLIC</b>",
+     "resp": [
+      "private"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>STRAIGHT</b>",
+     "resp": [
+      "curved",
+      "crooked"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>MOVING</b>",
+     "resp": [
+      "resting",
+      "still",
+      "stationary",
+      "static"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>LOCAL</b>",
+     "resp": [
+      "global"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>DORMANT</b>",
+     "resp": [
+      "active"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>DESTRUCTIVE</b>",
+     "resp": [
+      "harmless",
+      "constructive"
+     ],
+     "ph": "En inglés…"
+    }
+   ]
+  },
+  {
+   "titulo": "Antónimos con prefijos y sufijos",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>POSSIBLE</b> con un prefijo o un sufijo",
+     "resp": [
+      "impossible"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>im-</i> delante de p, b y m."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>CONNECTED</b> con un prefijo o un sufijo",
+     "resp": [
+      "disconnected"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>RENEWABLE</b> con un prefijo o un sufijo",
+     "resp": [
+      "non-renewable",
+      "nonrenewable"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>non-</i> se escribe con guion."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>SECURE</b> con un prefijo o un sufijo",
+     "resp": [
+      "insecure",
+      "unsecure"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>ABLE</b> con un prefijo o un sufijo",
+     "resp": [
+      "unable"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>LEGAL</b> con un prefijo o un sufijo",
+     "resp": [
+      "illegal"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>il-</i> delante de l."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>REGULAR</b> con un prefijo o un sufijo",
+     "resp": [
+      "irregular"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>ir-</i> delante de r."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>ADVANTAGE</b> con un prefijo o un sufijo",
+     "resp": [
+      "disadvantage"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>CORRECT</b> con un prefijo o un sufijo",
+     "resp": [
+      "incorrect"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>VISIBLE</b> con un prefijo o un sufijo",
+     "resp": [
+      "invisible"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>ACCESSIBLE</b> con un prefijo o un sufijo",
+     "resp": [
+      "inaccessible"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>NECESSARY</b> con un prefijo o un sufijo",
+     "resp": [
+      "unnecessary"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>KNOWN</b> con un prefijo o un sufijo",
+     "resp": [
+      "unknown"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>DEPENDENT</b> con un prefijo o un sufijo",
+     "resp": [
+      "independent"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>EFFICIENT</b> con un prefijo o un sufijo",
+     "resp": [
+      "inefficient"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>AVAILABLE</b> con un prefijo o un sufijo",
+     "resp": [
+      "unavailable"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>APPEAR</b> con un prefijo o un sufijo",
+     "resp": [
+      "disappear"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>RESPONSIBLE</b> con un prefijo o un sufijo",
+     "resp": [
+      "irresponsible"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>HARMFUL</b> con un prefijo o un sufijo",
+     "resp": [
+      "harmless"
+     ],
+     "ph": "En inglés…",
+     "ex": "El sufijo <i>-ful</i> (con) se cambia por <i>-less</i> (sin)."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>USEFUL</b> con un prefijo o un sufijo",
+     "resp": [
+      "useless"
+     ],
+     "ph": "En inglés…",
+     "ex": "De <i>-ful</i> a <i>-less</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>WIRED</b> con un prefijo o un sufijo",
+     "resp": [
+      "wireless"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>-less</i> = sin: sin cable."
+    }
+   ]
+  },
+  {
+   "titulo": "Sinónimos",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>GUARANTEE</b>",
+     "resp": [
+      "secure",
+      "ensure",
+      "assure",
+      "warrant"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>ANNOUNCED</b>",
+     "resp": [
+      "reported",
+      "declared",
+      "stated"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>STATE-OF-THE-ART</b>",
+     "resp": [
+      "ultra modern",
+      "ultramodern",
+      "cutting-edge",
+      "modern",
+      "advanced",
+      "latest"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>BEGIN</b>",
+     "resp": [
+      "start",
+      "commence"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>FINISH</b>",
+     "resp": [
+      "end",
+      "complete",
+      "conclude"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>BIG</b>",
+     "resp": [
+      "large",
+      "huge",
+      "great"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>BUY</b>",
+     "resp": [
+      "purchase",
+      "acquire"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>NEED</b>",
+     "resp": [
+      "require"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>USE</b>",
+     "resp": [
+      "utilize",
+      "utilise",
+      "employ"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>GET</b>",
+     "resp": [
+      "obtain",
+      "receive",
+      "acquire",
+      "gain"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>SHOW</b>",
+     "resp": [
+      "display",
+      "present",
+      "exhibit"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>OFTEN</b>",
+     "resp": [
+      "frequently",
+      "usually"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>FAST</b>",
+     "resp": [
+      "quick",
+      "rapid",
+      "speedy"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>MAIN</b>",
+     "resp": [
+      "principal",
+      "primary",
+      "chief",
+      "major"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>DAMAGE</b>",
+     "resp": [
+      "harm",
+      "injury"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>ENOUGH</b>",
+     "resp": [
+      "sufficient"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>HELP</b>",
+     "resp": [
+      "assist",
+      "aid",
+      "support"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>WHOLE</b>",
+     "resp": [
+      "entire",
+      "complete",
+      "total"
+     ],
+     "ph": "En inglés…"
     }
    ]
   },
@@ -313,384 +1364,166 @@
    "titulo": "Referencia contextual",
    "preguntas": [
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEMSELVES</b> (línea 3)?<br><i>«…companies are looking for opportunities to operate independently of the energy grid by generating renewable energy themselves…»</i>",
-     "modelo": "<b>Companies</b> (las empresas).",
-     "fuente": "Parcial 2023 · Energía renovable",
-     "ex": "Pronombre reflexivo plural: busca hacia atrás un sustantivo en plural."
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEIR</b>?<br><i>«Companies want to secure THEIR own electricity supply.»</i>",
+     "resp": [
+      "companies",
+      "empresas",
+      "compañías"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEIR</b> (línea 9)?<br><i>«…companies are looking to secure their own electricity supply for the future.»</i>",
-     "modelo": "<b>Companies</b> (las empresas): su propio suministro.",
-     "fuente": "Parcial 2023 · Energía renovable"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ITS</b>?<br><i>«IKEA placed solar panels on the roofs of ITS buildings.»</i>",
+     "resp": [
+      "IKEA"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>WHICH</b> (línea 13)?<br><i>«One of the trailblazers was Swedish flat-pack furniture emporium IKEA, which started placing solar panels…»</i>",
-     "modelo": "<b>IKEA</b>.",
-     "fuente": "Parcial 2023 · Energía renovable"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ITSELF</b>?<br><i>«The virus copies ITSELF into other program files.»</i>",
+     "resp": [
+      "virus",
+      "the virus"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ITS</b> (línea 14)?<br><i>«…started placing solar panels on the roofs of its buildings in 2011 in order to help reduce its carbon footprint.»</i>",
-     "modelo": "<b>IKEA</b>: sus edificios, su huella de carbono.",
-     "fuente": "Parcial 2023 · Energía renovable"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEY</b>?<br><i>«Devices do not need the public internet: THEY only need a network.»</i>",
+     "resp": [
+      "devices",
+      "dispositivos"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>WHICH</b> (línea 20)?<br><i>«…around 75,000 square metres of solar arrays, which provide 75 percent of the building’s daytime electricity.»</i>",
-     "modelo": "<b>Solar arrays</b> (los paneles solares).",
-     "fuente": "Parcial 2023 · Energía renovable"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>HE</b>?<br><i>«Kevin Ashton coined the term, though HE prefers another phrase.»</i>",
+     "resp": [
+      "Kevin Ashton",
+      "Ashton"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>HE</b> (línea 27)?<br><i>«“…to differentiate themselves from the competition,” he says.»</i>",
-     "modelo": "<b>Mats Alvem</b> (el gerente ambiental de Sandvik).",
-     "fuente": "Parcial 2023 · Energía renovable"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>WHICH</b>?<br><i>«Apple opened a new campus WHICH has 75,000 square metres of solar arrays.»</i>",
+     "resp": [
+      "campus",
+      "new campus",
+      "nuevo campus"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THAT</b> (línea 2)?<br><i>«…physical objects (or groups of such objects) with sensors, processing ability, software and other technologies that connect and exchange data with other devices…»</i>",
-     "modelo": "A los <b>objetos físicos</b> (con sus sensores, su software y sus otras tecnologías): son los que se conectan e intercambian datos.",
-     "fuente": "Modelo de parcial · Internet de las cosas",
-     "ex": "Si la consigna pide la palabra más cercana, es <i>technologies</i>. Leé la oración completa: lo que se conecta son los objetos."
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEM</b>?<br><i>«Engineers test the sensors before installing THEM.»</i>",
+     "resp": [
+      "sensors",
+      "sensores"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEY</b> (línea 4)?<br><i>«…devices do not need to be connected to the public internet, they only need to be connected to a network…»</i>",
-     "modelo": "<b>Devices</b> (los dispositivos).",
-     "fuente": "Modelo de parcial · Internet de las cosas"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>IT</b>?<br><i>«When the user runs an infected program, IT is loaded into memory.»</i>",
+     "resp": [
+      "infected program",
+      "program",
+      "programa infectado",
+      "programa"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ITSELF</b> (línea 17)?<br><i>«The concept of the “Internet of things” and the term itself, first appeared in a speech by Peter T. Lewis…»</i>",
-     "modelo": "Al <b>término «Internet of things»</b>.",
-     "fuente": "Modelo de parcial · Internet de las cosas"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEMSELVES</b>?<br><i>«IoT enables communication between people and things, and between things THEMSELVES.»</i>",
+     "resp": [
+      "things",
+      "cosas"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>HIM</b> (línea 19)?<br><i>«According to him, “The Internet of Things, or IoT, is the integration of people, processes and technology…”»</i>",
-     "modelo": "<b>Peter T. Lewis</b>.",
-     "fuente": "Modelo de parcial · Internet de las cosas"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THAT</b>?<br><i>«Consumers prefer companies THAT take care of the environment.»</i>",
+     "resp": [
+      "companies",
+      "empresas"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>HE</b> (línea 22)?<br><i>«The term “Internet of things” was coined independently by Kevin Ashton, in 1999, though he prefers the phrase “Internet for things”.»</i>",
-     "modelo": "<b>Kevin Ashton</b>.",
-     "fuente": "Modelo de parcial · Internet de las cosas"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEY</b>?<br><i>«Solar panels are cheap, but THEY need sunlight.»</i>",
+     "resp": [
+      "solar panels",
+      "paneles solares",
+      "panels",
+      "paneles"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     },
     {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEMSELVES</b> (línea 26)?<br><i>«…new forms of communication between people and things, and between things themselves.»</i>",
-     "modelo": "<b>Things</b> (las cosas).",
-     "fuente": "Modelo de parcial · Internet de las cosas"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ITSELF</b>?<br><i>«A biological virus is a very small, simple organism that infects living cells […] by attaching itself to them…»</i>",
-     "modelo": "Al <b>virus biológico</b>.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEM</b>?<br><i>«…infects living cells, known as the host, by attaching itself to them and using them to reproduce itself.»</i>",
-     "modelo": "A las <b>living cells</b> (las células vivas, el huésped).",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ITS</b>?<br><i>«…a computer virus is a very small program, routine that infects a computer system and uses its resources to reproduce itself.»</i>",
-     "modelo": "Al <b>sistema informático</b> (usa los recursos del sistema).",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>IT</b>?<br><i>«When the user runs an infected program, it is loaded into memory carrying the virus.»</i>",
-     "modelo": "Al <b>programa infectado</b>.",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>WHICH</b>?<br><i>«The virus then returns control to the host program which then continues with its normal sequence of instructions…»</i>",
-     "modelo": "Al <b>host program</b> (el programa huésped).",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEIR</b>?<br><i>«…that objects will remain in their state of motion unless a force acts to change the motion.»</i>",
-     "modelo": "<b>Objects</b> (los objetos).",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>FOR WHICH</b>?<br><i>«The First Law could be viewed as just a special case of the Second Law for which the net external force is zero…»</i>",
-     "modelo": "Al <b>special case</b> (el caso especial de la segunda ley): el caso en el que la fuerza externa neta es cero.",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>IT</b>?<br><i>«If an object is at rest in one frame of reference, it will appear to be moving in a straight line…»</i>",
-     "modelo": "<b>An object</b> (el objeto).",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    }
-   ]
-  },
-  {
-   "titulo": "Antónimos y sinónimos",
-   "preguntas": [
-    {
-     "tipo": "modelo",
-     "en": "Antónimo en el texto de <b>ABUNDANCE</b> (línea 1).<br><i>«Energy resource scarcity is a concerning issue.»</i>",
-     "modelo": "<b>Scarcity</b> (escasez).",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Antónimo en el texto de <b>FINISHED</b> (línea 11).<br><i>«The self-generated clean energy trend began among B2C corporations about a decade ago.»</i>",
-     "modelo": "<b>Began</b> (empezó).",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Antónimo en el texto de <b>WEAK</b> (línea 28).<br><i>«…having a strong sustainability profile is good for your reputation…»</i>",
-     "modelo": "<b>Strong</b> (fuerte).",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Sinónimo en el texto de <b>GUARANTEE</b> (línea 9).<br><i>«…companies are looking to secure their own electricity supply for the future.»</i>",
-     "modelo": "<b>Secure</b> (asegurar).",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Sinónimo en el texto de <b>REPORTED</b> (línea 15).<br><i>«In 2019, the retail giant announced its investment in two large solar power plants…»</i>",
-     "modelo": "<b>Announced</b> (anunció).",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Sinónimo en el texto de <b>ULTRA MODERN</b> (línea 19).<br><i>«Apart from providing state-of-the-art facilities for as many as 13,000 employees…»</i>",
-     "modelo": "<b>State-of-the-art</b> (de última generación).",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Antónimo en el texto de <b>CURVED</b> (línea 2).<br><i>«…remain at rest or in uniform motion in a straight line unless acted upon by an external force.»</i>",
-     "modelo": "<b>Straight</b> (recto).",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Antónimo en el texto de <b>COMMONPLACE</b> (línea 5).<br><i>«The First Law could be viewed as just a special case of the Second Law…»</i>",
-     "modelo": "<b>Special</b> (especial).",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Antónimo en el texto de <b>RESTING</b> (línea 4).<br><i>«…to an observer in a reference frame which is moving by the object.»</i>",
-     "modelo": "<b>Moving</b> (en movimiento).",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Antónimo en el texto de <b>STILLNESS</b> (línea 5).<br><i>«…a state of motion in a straight line must be just as “natural” as being at rest. […] so all constant velocity reference frames must be equivalent.»</i>",
-     "modelo": "<b>Velocity</b> (velocidad), la palabra de la línea 5. También es antónimo <i>motion</i> (movimiento), de la línea 2.",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    }
-   ]
-  },
-  {
-   "titulo": "Conectores (nexos lógicos)",
-   "preguntas": [
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>THEREFORE</b> (línea 5): traducción, tipo de relación, idea uno e idea dos.<br><i>«There is every reason to believe that society will continue to use more and more machines and devices, therefore consuming more electricity.»</i>",
-     "modelo": "<b>Traducción:</b> por lo tanto<br><b>Relación:</b> consecuencia<br><b>Idea uno:</b> la sociedad va a seguir usando cada vez más máquinas y dispositivos<br><b>Idea dos:</b> va a consumir más electricidad",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>THIS IS WHY</b> (línea 7): traducción, tipo de relación, idea uno e idea dos.<br><i>«…there’s a real possibility that clean electricity could become scarce. This is why, apart from the obvious benefits […], companies are looking to secure their own electricity supply…»</i>",
-     "modelo": "<b>Traducción:</b> es por esto que / por eso<br><b>Relación:</b> consecuencia (causa → efecto)<br><b>Idea uno:</b> la electricidad limpia podría volverse escasa<br><b>Idea dos:</b> las empresas buscan asegurar su propio suministro de electricidad",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>IN ORDER TO</b> (línea 14): traducción, tipo de relación, idea uno e idea dos.<br><i>«…IKEA, which started placing solar panels on the roofs of its buildings in 2011 in order to help reduce its carbon footprint.»</i>",
-     "modelo": "<b>Traducción:</b> para / con el fin de<br><b>Relación:</b> finalidad (propósito)<br><b>Idea uno:</b> IKEA empezó a poner paneles solares en los techos de sus edificios<br><b>Idea dos:</b> ayudar a reducir su huella de carbono",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>SUCH AS</b> (línea 23): traducción, tipo de relación, idea uno e idea dos.<br><i>«It is no coincidence that leading retailers such as Apple and IKEA were among the first to blaze the self-generated energy trail.»</i>",
-     "modelo": "<b>Traducción:</b> como / tales como<br><b>Relación:</b> ejemplificación<br><b>Idea uno:</b> los grandes minoristas fueron de los primeros en generar su propia energía<br><b>Idea dos:</b> Apple e IKEA",
-     "fuente": "Parcial 2023 · Energía renovable"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>DUE TO</b> (línea 6): traducción, tipo de relación, idea uno e idea dos.<br><i>«The field has evolved due to the convergence of multiple technologies…»</i>",
-     "modelo": "<b>Traducción:</b> debido a<br><b>Relación:</b> causa<br><b>Idea uno:</b> el campo (de la IoT) evolucionó<br><b>Idea dos:</b> la convergencia de múltiples tecnologías",
-     "fuente": "Modelo de parcial · Internet de las cosas"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>SUCH AS</b> (línea 12): traducción, tipo de relación, idea uno e idea dos.<br><i>«…can be controlled via devices associated with that ecosystem, such as smartphones and smart speakers.»</i>",
-     "modelo": "<b>Traducción:</b> como / tales como<br><b>Relación:</b> ejemplificación<br><b>Idea uno:</b> dispositivos asociados a ese ecosistema<br><b>Idea dos:</b> teléfonos inteligentes y parlantes inteligentes",
-     "fuente": "Modelo de parcial · Internet de las cosas"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>SUCH AS</b>: traducción, tipo de relación, idea uno e idea dos.<br><i>«It often does this by patching the operating system to enable it to detect program files, such as COM or EXE files.»</i>",
-     "modelo": "<b>Traducción:</b> como / tales como<br><b>Relación:</b> ejemplificación<br><b>Idea uno:</b> archivos de programa<br><b>Idea dos:</b> archivos COM o EXE",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>ALSO</b>: traducción, tipo de relación, idea uno e idea dos.<br><i>«This virus may also contain a payload that remains dormant until a trigger event activates it…»</i>",
-     "modelo": "<b>Traducción:</b> también<br><b>Relación:</b> adición<br><b>Idea uno:</b> el virus se queda en memoria e infecta otros programas<br><b>Idea dos:</b> puede contener un payload",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>TO</b>: traducción, tipo de relación, idea uno e idea dos.<br><i>«To be a virus, a program only needs to have a reproduction routine that enables it to infect other programs.»</i>",
-     "modelo": "<b>Traducción:</b> para<br><b>Relación:</b> finalidad (propósito)<br><b>Idea uno:</b> ser un virus<br><b>Idea dos:</b> un programa solo necesita una rutina de reproducción",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Completá el cuadro de conectores para <b>BUT</b>: traducción, tipo de relación, idea uno e idea dos.<br><i>«A program that has a payload but does not have a reproduction routine is known as a Trojan.»</i>",
-     "modelo": "<b>Traducción:</b> pero<br><b>Relación:</b> contraste<br><b>Idea uno:</b> el programa tiene un payload<br><b>Idea dos:</b> no tiene rutina de reproducción",
-     "fuente": "Práctica de clase · The anatomy of a virus"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Identificá el nexo lógico y la relación lógica.<br><i>«Newton’s First Law states that an object will remain at rest or in uniform motion in a straight line unless acted upon by an external force.»</i>",
-     "modelo": "<b>UNLESS</b> («a menos que»): <b>condición</b>.",
-     "fuente": "Práctica del campus · Primera ley de Newton",
-     "ex": "En el fragmento también aparece AND («y»), que suma una idea: adición."
-    },
-    {
-     "tipo": "modelo",
-     "en": "Identificá el nexo lógico y la relación lógica.<br><i>«…objects will remain in their state of motion unless a force acts to change the motion.»</i>",
-     "modelo": "<b>UNLESS</b> («a menos que»): <b>condición</b>.",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Identificá el nexo lógico y la relación lógica.<br><i>«The statement of these laws must be generalized if you are dealing with a rotating reference frame or any frame which is accelerating.»</i>",
-     "modelo": "<b>IF</b> («si»): <b>condición</b>.",
-     "fuente": "Práctica del campus · Primera ley de Newton",
-     "ex": "También aparece OR («o»): alternativa."
-    },
-    {
-     "tipo": "modelo",
-     "en": "Identificá el nexo lógico y la relación lógica.<br><i>«If an object is at rest in one frame of reference, it will appear to be moving in a straight line to an observer in a reference frame which is moving by the object.»</i>",
-     "modelo": "<b>IF</b> («si»): <b>condición</b>.",
-     "fuente": "Práctica del campus · Primera ley de Newton"
-    },
-    {
-     "tipo": "modelo",
-     "en": "Identificá el nexo lógico y la relación lógica.<br><i>«There is no way to say which reference frame is “special”, so all constant velocity reference frames must be equivalent.»</i>",
-     "modelo": "<b>SO</b> («por lo tanto», «así que»): <b>consecuencia</b>.",
-     "fuente": "Práctica del campus · Primera ley de Newton"
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>HIS</b>?<br><i>«Peter Lewis gave a speech in 1985. HIS definition of IoT was published that year.»</i>",
+     "resp": [
+      "Peter Lewis",
+      "Lewis"
+     ],
+     "ph": "La palabra del texto (en inglés o en español)…"
     }
    ]
   }
  ],
  "glosario": [
   {
-   "t": "Lectocomprensión",
-   "que": "Leer un texto técnico en inglés y demostrar que lo entendiste respondiendo <b>en español</b>. No se pide hablar ni escribir en inglés.",
-   "re": "Respondé en español|título|Verdadero o falso|Uní la rutina"
+   "t": "Frase nominal",
+   "que": "Un grupo de palabras cuyo núcleo es un sustantivo. En inglés los modificadores van <b>antes</b> del núcleo; en español, después: se traduce de derecha a izquierda (<i>renewable energy sources</i> → fuentes de energía renovable).",
+   "re": "Traducí al español"
   },
   {
-   "t": "Frase nominal",
-   "que": "Un grupo de palabras cuyo núcleo es un sustantivo. En inglés los modificadores van <b>antes</b> del núcleo; en español, después: se traduce de derecha a izquierda (<i>host computer system</i> → sistema informático huésped).",
-   "re": "Traducí"
+   "t": "Vocabulario técnico",
+   "que": "Las palabras que más se repiten en los textos: <i>issue</i> (tema), <i>trend</i> (tendencia), <i>supply</i> (suministro), <i>device</i> (dispositivo), <i>network</i> (red), <i>scarcity</i> (escasez).",
+   "re": "¿Qué significa"
+  },
+  {
+   "t": "Conector (nexo lógico)",
+   "que": "Une dos ideas y dice cómo se relacionan. En el cuadro del parcial: traducción, tipo de relación, idea uno (antes) e idea dos (después).",
+   "re": "conector"
+  },
+  {
+   "t": "Relaciones lógicas",
+   "que": "<b>Adición</b>: and, also, moreover. <b>Contraste</b>: but, however, although, whereas. <b>Causa</b>: because, since, due to. <b>Consecuencia</b>: so, therefore, this is why, as a result. <b>Condición</b>: if, unless. <b>Finalidad</b>: to, in order to. <b>Ejemplificación</b>: such as, for example. <b>Tiempo</b>: when, meanwhile.",
+   "re": "relación"
+  },
+  {
+   "t": "Antónimo",
+   "que": "La palabra de significado <b>opuesto</b>. En el parcial te dan una palabra que no está en el texto y tenés que encontrar su opuesta en la línea que indican.",
+   "re": "antónimo de"
+  },
+  {
+   "t": "Prefijos y sufijos negativos",
+   "que": "<b>un-</b> (unable), <b>in-</b> (incorrect), <b>im-</b> delante de p/b/m (impossible), <b>il-</b> delante de l (illegal), <b>ir-</b> delante de r (irregular), <b>dis-</b> (disconnected), <b>non-</b> (non-renewable). Sufijos: <b>-ful</b> (con) ↔ <b>-less</b> (sin): harmful ↔ harmless.",
+   "re": "con un prefijo"
+  },
+  {
+   "t": "Sinónimo",
+   "que": "La palabra de significado <b>parecido</b>: <i>guarantee</i> ≈ <i>secure</i>, <i>reported</i> ≈ <i>announced</i>.",
+   "re": "sinónimo de"
   },
   {
    "t": "Referencia contextual",
-   "que": "Encontrar a qué o a quién reemplaza un pronombre. Casi siempre está <b>antes</b>, en la misma oración o en la anterior. Fijate el número: si el pronombre es plural (<i>they, them, their, themselves</i>), el referente también.",
+   "que": "A qué o a quién reemplaza un pronombre. Casi siempre está <b>antes</b>, en la misma oración o en la anterior, y coincide en número.",
    "re": "Referencia contextual"
   },
   {
    "t": "Pronombres",
-   "que": "<i>it / its / itself</i>: eso, su, sí mismo (algo singular). <i>they / them / their / themselves</i>: ellos, sus, sí mismos (plural). <i>he / him</i>: él (una persona). <i>which / that</i>: que, el cual (retoman el sustantivo de antes).",
-   "re": "se refiere\\s+(FOR WHICH|ITSELF|ITS|IT|THEY|THEM|THEIR|THEMSELVES|HE|HIM|WHICH|THAT)\\b"
-  },
-  {
-   "t": "Antónimo y sinónimo",
-   "que": "El antónimo es la palabra de significado <b>opuesto</b> (<i>weak</i> ↔ <i>strong</i>); el sinónimo, la de significado <b>parecido</b> (<i>guarantee</i> ≈ <i>secure</i>). Hay que encontrarlo en el texto, en la línea que indican.",
-   "re": "Antónimo|Sinónimo"
-  },
-  {
-   "t": "Conector (nexo lógico)",
-   "que": "La palabra que une dos ideas y dice cómo se relacionan. En el cuadro se completa: traducción, tipo de relación, idea uno (la de antes) e idea dos (la de después).",
-   "re": "conector|nexo lógico",
-   "i": true
-  },
-  {
-   "t": "Relaciones lógicas",
-   "que": "<b>Adición</b>: and, also, moreover. <b>Contraste</b>: but, however, although. <b>Causa</b>: because, since, due to. <b>Consecuencia</b>: so, therefore, this is why. <b>Condición</b>: if, unless. <b>Finalidad</b>: to, in order to. <b>Ejemplificación</b>: such as, for example.",
-   "re": "relación",
-   "i": true
-  },
-  {
-   "t": "Unless / If",
-   "que": "Condición. <i>if</i> = si; <i>unless</i> = a menos que (si no).",
-   "re": "UNLESS|IF\\b|\\bunless\\b"
-  },
-  {
-   "t": "So / Therefore / This is why",
-   "que": "Consecuencia: lo que viene después es el resultado de lo anterior. <i>so</i> = así que; <i>therefore</i> = por lo tanto; <i>this is why</i> = por eso.",
-   "re": "\\bSO\\b|THEREFORE|THIS IS WHY"
-  },
-  {
-   "t": "In order to / To",
-   "que": "Finalidad (propósito): para, con el fin de.",
-   "re": "para\\s+(IN ORDER TO|TO)\\b"
-  },
-  {
-   "t": "Such as",
-   "que": "Ejemplificación: como, tales como. La idea dos son los ejemplos.",
-   "re": "SUCH AS"
-  },
-  {
-   "t": "Due to",
-   "que": "Causa: debido a. La idea dos es la causa de la idea uno.",
-   "re": "DUE TO"
-  },
-  {
-   "t": "But / Also",
-   "que": "<i>but</i> = pero (contraste); <i>also</i> = también (adición).",
-   "re": "para\\s+(BUT|ALSO)\\b"
-  },
-  {
-   "t": "Virus, payload y troyano",
-   "que": "<b>Payload</b>: la carga, lo que hace el virus (una broma o un daño). <b>Trigger</b>: lo que dispara el payload. <b>Trojan</b> (troyano): programa con payload pero sin rutina para copiarse.",
-   "re": "virus|payload|Trojan|MISDIRECTION|REPRODUCTION|TRIGGER|PAYLOAD|host|harmless|hard disk",
-   "i": true
-  },
-  {
-   "t": "Primera ley de Newton",
-   "que": "Un objeto sigue en reposo o en movimiento rectilíneo uniforme a menos que una fuerza externa actúe sobre él (inercia). Un <b>marco inercial</b> es un sistema de referencia que no está acelerando.",
-   "re": "Newton|inercial|frame|at rest|motion",
-   "i": true
-  },
-  {
-   "t": "Internet de las cosas",
-   "sig": "IoT · Internet of things",
-   "que": "Objetos físicos con sensores, software y conectividad que intercambian datos por una red. <i>Embedded system</i>: sistema embebido; <i>transceiver</i>: transceptor (transmisor-receptor).",
-   "re": "IoT|Internet of things|devices|embedded|transceivers|smart home|Processing ability|Lewis|Ashton|things themselves",
-   "i": true
-  },
-  {
-   "t": "Energía renovable",
-   "que": "<i>Scarcity</i>: escasez. <i>Renewable / clean / green energy</i>: energía renovable, limpia, verde. <i>Solar arrays</i>: paneles solares. <i>Carbon footprint</i>: huella de carbono.",
-   "re": "energy|electricity|scarcity|solar|IKEA|Alvem|began|announced|state-of-the-art|ABUNDANCE|WEAK|GUARANTEE",
-   "i": true
+   "que": "<i>it / its / itself</i>: algo singular. <i>they / them / their / themselves</i>: plural. <i>he / him / his</i>: un hombre. <i>which / that</i>: que, el cual (retoman el sustantivo de antes).",
+   "re": "se refiere\\s+(ITSELF|ITS|IT|THEY|THEM|THEIR|THEMSELVES|HE|HIM|HIS|WHICH|THAT)\\b"
   }
  ]
 }

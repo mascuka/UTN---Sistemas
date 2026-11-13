@@ -371,6 +371,13 @@
   .qz-score .pa{color:var(--muted)}
   .qz-tip{font-size:.84rem;color:var(--muted)}
   .qz-veredicto{font-weight:800;font-size:1.05rem;margin-top:18px}
+  .qz-esc{margin:16px 0 2px}
+  .qz-in{width:100%;font:inherit;font-size:1.05rem;color:var(--text);background:var(--card);border:1.5px solid var(--line2);border-radius:10px;padding:10px 13px;transition:border-color .15s,background .15s}
+  .qz-in:focus{outline:none;border-color:var(--accent)}
+  .qz-in.ok{border-color:var(--ok);background:var(--ok-soft);color:var(--text)}
+  .qz-in.mal{border-color:var(--error);background:var(--rojo-f);color:var(--text)}
+  .qz-in::placeholder{color:var(--muted);opacity:.8;font-size:.95rem}
+  .qz-otras{display:block;font-size:.84rem;color:var(--muted);margin-top:2px}
   .qz-veredicto.bien{color:var(--ok)} .qz-veredicto.mal{color:var(--rojo)}
   .qz-resp{margin-top:12px;background:var(--ok-soft);border-radius:10px;padding:10px 14px;font-size:.93rem;line-height:1.6;overflow-x:auto}
   .qz-resp .resp{display:inline-block;border:1.5px solid var(--ok);border-radius:5px;padding:0 7px;font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--ok)}
@@ -3725,7 +3732,7 @@ const MATERIAS = {
     ]
   },
   // Inglés 1: el parcial se toma apenas arranca la cursada y con 7 o más la materia queda aprobada, así que es una sola parte
-  // (al entrar se abre directo). El quiz y la guía se arman con herramientas/quiz/ingles_1.py. Archivos en material/ingles-1/
+  // (al entrar se abre directo). El quiz y la guía se arman con herramientas/quiz/ingles_1.py. Archivos en material/ingles-1/ (cada parcial, en blanco y después resuelto)
   4: {
     comisiones: [
       { comision: "1K13", profesor: "Verónica de Loredo", rol: "Teórico y práctico", examen: "Escrito", recomendada: true, comentario: "Excelente profe: explica bien y da buenas oportunidades." }
@@ -3744,6 +3751,8 @@ const MATERIAS = {
         descripcion: "Se toma apenas arranca la cursada: con 7 o más la materia queda aprobada. Es lectocomprensión: un texto técnico en inglés y ejercicios que se responden en español.",
         secciones: [],
         quiz: "quiz/ingles-1.json",
+        quizNombre: "Para escribir",
+        quizDetalle: "Frases cortas para traducir, conectores, antónimos, sinónimos y referentes: escribís y te dice si está bien",
         temas: {
           titulo: "Temas que entran",
           unidades: [
@@ -3758,10 +3767,11 @@ const MATERIAS = {
           ]
         },
         material: [
-          { n: 1, nombre: "Guía · el parcial resuelto", nota: "Empezá por acá", detalle: "Cómo se encara cada ejercicio, el cuadro de conectores con su relación y todo resuelto: el parcial 2023, el modelo de parcial, la práctica de clase y la práctica del campus (9 págs.)", tipo: "PDF", url: "material/ingles-1/01-guia-del-parcial-resuelta.pdf" },
-          { n: 2, nombre: "Parcial 2023 · Energía renovable", detalle: "El parcial que se tomó: un texto sobre empresas que generan su propia energía (IKEA, Apple) con preguntas, traducción, referencia contextual, antónimos, sinónimos y conectores (3 págs.)", tipo: "PDF", url: "material/ingles-1/02-parcial-2023-energia-renovable.pdf" },
-          { n: 3, nombre: "Modelo de parcial · Internet de las cosas", detalle: "El modelo que dio la profe antes del parcial: un texto sobre IoT con los mismos ejercicios (3 págs.)", tipo: "PDF", url: "material/ingles-1/03-modelo-de-parcial-internet-de-las-cosas.pdf" },
-          { n: 4, nombre: "Práctica de clase · The anatomy of a virus", detalle: "Texto sobre los virus informáticos: preguntas, unir rutinas con su función, conectores, referentes y traducción (3 págs.)", tipo: "PDF", url: "material/ingles-1/04-practica-the-anatomy-of-a-virus.pdf" }
+          { n: 1, nombre: "Resumen · cómo se encara el parcial", nota: "Empezá por acá", detalle: "Cada ejercicio paso a paso, los conectores con su relación, los pronombres, los antónimos con prefijos y sufijos y cómo se traducen las frases nominales (2 págs.)", tipo: "PDF", url: "material/ingles-1/01-resumen-como-se-encara-el-parcial.pdf" },
+          { n: 2, nombre: "Parcial 2023 · Energía renovable", detalle: "El parcial que se tomó, primero en blanco y a continuación resuelto: empresas que generan su propia energía (IKEA, Apple) (5 págs.)", tipo: "PDF", url: "material/ingles-1/02-parcial-2023-energia-renovable.pdf" },
+          { n: 3, nombre: "Modelo de parcial · Internet de las cosas", detalle: "El modelo que dio la profe antes del parcial, en blanco y resuelto (4 págs.)", tipo: "PDF", url: "material/ingles-1/03-modelo-de-parcial-internet-de-las-cosas.pdf" },
+          { n: 4, nombre: "Práctica de clase · The anatomy of a virus", detalle: "Los virus informáticos: preguntas, unir rutinas con su función, conectores, referentes y traducción, en blanco y resuelta (5 págs.)", tipo: "PDF", url: "material/ingles-1/04-practica-the-anatomy-of-a-virus.pdf" },
+          { n: 5, nombre: "Práctica del campus · Primera ley de Newton", detalle: "Nexos lógicos, título, antónimos, referentes y verdadero o falso, en blanco y resuelta (4 págs.)", tipo: "PDF", url: "material/ingles-1/05-practica-del-campus-primera-ley-de-newton.pdf" }
         ],
         videos: []
       }
@@ -6280,7 +6290,7 @@ function parcialBox(m, p){
       <span class="pr-t">Herramientas para practicar</span>
       ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
       ${p.practicaParcial ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pp">${ICON_CODIGO}<span><b>${esc((p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</b><small>${esc((p.practicaParcialTarjeta || {}).detalle || "Cada parte del parcial con ejemplos de todos los parciales y simulacros")}</small></span></span>` : ""}
-      ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>Quiz</b><small>Preguntas de parciales, con la corrección al instante</small></span></span>` : ""}
+      ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${ICON_QUIZ}<span><b>${esc(p.quizNombre || "Quiz")}</b><small>${esc(p.quizDetalle || "Preguntas de parciales, con la corrección al instante")}</small></span></span>` : ""}
     </div>`;
 }
 /* Pestaña Práctica de una parte sin práctica propia: las herramientas para practicar */
@@ -8627,6 +8637,48 @@ function quizEmpezar(lista, cant = qz.cant){
   Object.assign(qz, { cola, i: 0, bien: 0, mal: 0, erradas: [], pasadas: [], sel: new Set(), hecho: false });
   quizPregunta();
 }
+/* Escribir (tipo "escribir"): se escribe la respuesta y se corrige sola. "resp" son las que valen; se comparan sin
+   mayúsculas, tildes, signos ni el artículo del principio (el, la, the, a…) y se perdona un error de tipeo (dos en las largas) */
+const normEsc = s => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[«»"“”'‘’.,;:!?¿¡()\[\]\-–—\/]/g, " ").replace(/\s+/g, " ").trim()
+  .replace(/^(el|la|los|las|un|una|unos|unas|the|a|an) /, "");
+function distEsc(a, b){
+  const f = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for(let i = 1; i <= a.length; i++){
+    let ant = f[0]; f[0] = i;
+    for(let j = 1; j <= b.length; j++){ const t = f[j]; f[j] = Math.min(f[j] + 1, f[j - 1] + 1, ant + (a[i - 1] === b[j - 1] ? 0 : 1)); ant = t; }
+  }
+  return f[b.length];
+}
+function notaEsc(txt, resp){
+  const v = normEsc(txt);
+  if(!v) return null;
+  if(resp.some(r => normEsc(r) === v)) return { ok: true };
+  for(const r of resp){
+    const n = normEsc(r), tol = n.length >= 12 ? 2 : n.length >= 5 ? 1 : 0;
+    if(tol && distEsc(v, n) <= tol) return { ok: true, casi: r };
+  }
+  return { ok: false };
+}
+function quizCorregir(){
+  const { q } = qz.cola[qz.i], inp = $("#qzIn"), r = notaEsc(inp.value, q.resp);
+  if(!r){ inp.focus(); return; }
+  qz.hecho = true; qz.esc = r;
+  inp.disabled = true;
+  inp.classList.add(r.ok ? "ok" : "mal");
+  if(r.ok) qz.bien++; else { qz.mal++; qz.erradas.push(qz.cola[qz.i]); }
+  quizDevolucion(r.ok ? "bien" : "mal");
+}
+/* Si la traducción dice lo mismo con otras palabras: cuenta como bien */
+function quizVale(){
+  if(!qz.esc || qz.esc.ok) return;
+  qz.mal--; qz.bien++;
+  const k = qz.erradas.lastIndexOf(qz.cola[qz.i]);
+  if(k >= 0) qz.erradas.splice(k, 1);
+  qz.esc = { ok: true, vale: true };
+  const inp = $("#qzIn"); if(inp){ inp.classList.remove("mal"); inp.classList.add("ok"); }
+  quizDevolucion("bien");
+}
 /* La lamparita: los términos del glosario del quiz (campo "glosario") que aparecen en la pregunta,
    en el orden en que aparecen (primero el enunciado, después el código y las opciones) */
 const sinEtiquetas = h => String(h || "").replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/g, " ");
@@ -8665,14 +8717,18 @@ function quizPregunta(){
         <dl>${glosa.map(g => `<div><dt>${esc(g.t)}${g.sig ? ` <span class="qz-sig">· ${esc(g.sig)}</span>` : ""}</dt><dd>${g.que}</dd></div>`).join("")}</dl>
       </div>` : ""}
       ${q.tipo === "armar" ? armarHtml() : ""}
+      ${q.tipo === "escribir" ? `<div class="qz-esc"><input class="qz-in" id="qzIn" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="${esc(q.ph || "Escribí tu respuesta")}" aria-label="Tu respuesta"></div>` : ""}
       ${q.op ? `
         <div class="qz-ayuda">${q.tipo === "varias" ? "Hay más de una correcta: marcalas y tocá Responder" : q.vf || q.tipo === "vf" ? "¿Verdadero o falso?" : "Tocá la opción correcta"}</div>
         <div class="qz-ops">${q.op.map((o, k) => `<button class="qz-op" data-qop="${k}"><span class="qz-l">${String.fromCharCode(97 + k)}</span><span>${o[0]}</span></button>`).join("")}</div>` : ""}
       <div class="qz-acc">${abierta
         ? `<button class="qz-btn primario" data-qver>Ver respuesta</button><span class="qz-tip">Resolvelo primero y después mirá</span>`
+        : q.tipo === "escribir" ? `<button class="qz-btn primario" data-qcorr>Corregir</button><span class="qz-tip">o Enter</span>`
         : q.tipo === "varias" || q.tipo === "armar" ? `<button class="qz-btn primario" data-qresp disabled>Responder</button>${q.tipo === "armar" ? `<button class="qz-btn" data-qvaciar>Vaciar</button>` : ""}` : ""}<button class="qz-pasar" data-qpasar title="Pasar a la siguiente sin responder; al final podés hacer las que pasaste">Pasar ↷</button></div>
       <div id="qzRes"></div>
     </div>`;
+  qz.esc = null;
+  if(q.tipo === "escribir") setTimeout(() => { const i = $("#qzIn"); if(i) i.focus({ preventScroll: true }); }, 30);
 }
 /* Armar el programa (como el «arrastrar y soltar» del campus): se toca una línea de la bolsa y va al hueco marcado
    (o se arrastra hasta un hueco); tocando un hueco lleno, la línea vuelve a la bolsa */
@@ -8743,14 +8799,15 @@ function quizDevolucion(estado){
   const ult = qz.i === qz.cola.length - 1;
   $("#quiz .qz-card > .qz-acc").innerHTML = "";
   $("#qzRes").innerHTML = `
-    ${estado ? `<div class="qz-veredicto ${estado}">${estado === "bien" ? "¡Bien!" : q.tipo === "armar" ? `${qz.arm.bien} de ${q.huecos.length} ${armarPieza(q)[1]} bien` : "No era esa"}</div>` : ""}
+    ${estado ? `<div class="qz-veredicto ${estado}">${estado === "bien" ? (qz.esc && qz.esc.casi ? "¡Bien! Fijate cómo se escribe" : "¡Bien!") : q.tipo === "escribir" ? "No es así" : q.tipo === "armar" ? `${qz.arm.bien} de ${q.huecos.length} ${armarPieza(q)[1]} bien` : "No era esa"}</div>` : ""}
     ${q.tipo === "armar" && estado === "mal" ? `<div class="qz-resp"><b>El programa correcto:</b><pre>${esc(q.huecos.join("\n"))}</pre></div>` : ""}
+    ${q.tipo === "escribir" ? `<div class="qz-resp"><b>${estado === "bien" && !(qz.esc && qz.esc.casi) ? "Respuesta" : "Se escribe"}:</b> ${esc(qz.esc && qz.esc.casi || q.resp[0])}${q.resp.length > 1 ? `<span class="qz-otras">También vale: ${q.resp.filter(r => r !== (qz.esc && qz.esc.casi || q.resp[0])).map(esc).join(" · ")}</span>` : ""}</div>` : ""}
     ${q.num ? `<div class="qz-resp"><b>Respuesta:</b> ${q.num}</div>` : ""}
     ${q.modelo ? `<div class="qz-resp"><b>Respuesta:</b> ${q.modelo}</div>` : ""}
     ${q.ex ? `<div class="qz-ex"><b>Por qué:</b> ${q.ex}</div>` : ""}
     ${q.mal ? `<div class="qz-ojo"><b>Ojo:</b> ${q.mal}</div>` : ""}
     <div class="qz-acc">${estado
-      ? `<button class="qz-btn primario" data-qsig>${ult ? "Ver el resultado" : "Siguiente →"}</button>`
+      ? `<button class="qz-btn primario" data-qsig>${ult ? "Ver el resultado" : "Siguiente →"}</button>${q.tipo === "escribir" && estado === "mal" ? `<button class="qz-btn" data-qvale title="Si tu respuesta dice lo mismo con otras palabras">Mi respuesta también vale</button>` : ""}`
       : `<span class="qz-tip">¿Te salió?</span><button class="qz-btn si" data-qauto="1">✓ Sí</button><button class="qz-btn no" data-qauto="0">✗ No</button>`}</div>`;
   $("#qzRes").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
@@ -8777,7 +8834,7 @@ function quizFin(){
 }
 function clicQuiz(e){
   const t = e.target;
-  const el = t.closest("[data-qcant],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra],[data-qh],[data-qf],[data-qvaciar],[data-qlamp],[data-qpasar],[data-qpasadas]");
+  const el = t.closest("[data-qcant],[data-qempezar],[data-qmas],[data-qop],[data-qresp],[data-qver],[data-qsig],[data-qauto],[data-qsalir],[data-qrepasar],[data-qotra],[data-qh],[data-qf],[data-qvaciar],[data-qlamp],[data-qpasar],[data-qpasadas],[data-qcorr],[data-qvale]");
   if(!el) return false;
   const ds = el.dataset;
   if("qlamp" in ds){ const p = $("#qzGlosa"), abrir = p.hidden; p.hidden = !abrir; el.setAttribute("aria-expanded", abrir); }
@@ -8794,6 +8851,8 @@ function clicQuiz(e){
     } else { qz.sel = new Set([k]); quizResponder(); }
   }
   else if("qresp" in ds && !qz.hecho) quizResponder();
+  else if("qcorr" in ds && !qz.hecho) quizCorregir();
+  else if("qvale" in ds) quizVale();
   else if("qf" in ds && !qz.hecho) armarPoner(+ds.qf);
   else if("qh" in ds && !qz.hecho){ const i = +ds.qh; qz.arm.huecos[i] = null; qz.arm.sel = i; armarPintar(); }
   else if("qvaciar" in ds && !qz.hecho){ qz.arm.huecos = qz.arm.huecos.map(() => null); qz.arm.sel = 0; armarPintar(); }
@@ -8818,6 +8877,12 @@ document.addEventListener("drop", e => {
   e.preventDefault();
   const j = e.dataTransfer.getData("text/plain");
   if(j !== "") armarPoner(+j, +h.dataset.qh);
+});
+/* Escribir: Enter en el campo corrige */
+document.addEventListener("keydown", e => {
+  if(e.key !== "Enter" || e.target.id !== "qzIn" || !qz || qz.hecho) return;
+  e.preventDefault();
+  quizCorregir();
 });
 /* Con el teclado: 1, 2, 3… eligen la opción y Enter responde o pasa a la siguiente */
 document.addEventListener("keydown", e => {
