@@ -923,6 +923,7 @@
   .mt-fila-t small{display:block;color:var(--muted);font-size:.84rem}
   .mt-fila > svg{width:15px;height:15px;color:var(--muted);flex:none}
   .mt-suelto{margin-top:28px}
+  .mt-general{margin-bottom:22px}
   .mt-lead{font:400 1.1rem/1.65 var(--serif);color:var(--text2);max-width:680px}
   .mt-main.pc{max-width:860px}
   /* Adentro de una parte: el nombre y una línea, y abajo lo de la pestaña */
@@ -936,6 +937,12 @@
   .pt-fuentes a small{font-size:.76rem;color:var(--muted)}
   .pt-fuentes a.on{background:var(--card);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
   .tm-lista{border-top:1px solid var(--line)}
+  .tm-plano{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+  .tm-bloque{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .tm-bloque h3{display:flex;align-items:baseline;gap:6px;font:600 .98rem var(--sans);margin:0 0 6px}
+  .tm-bloque h3 .tm-n{width:auto;font-size:1.05rem;color:var(--muted)}
+  .tm-bloque ul{margin:0;padding-left:18px;font-size:.88rem;line-height:1.55;color:var(--text2)}
+  .tm-bloque li + li{margin-top:3px}
   .tm-tema{border-bottom:1px solid var(--line)}
   .tm-tema summary{display:flex;align-items:center;gap:14px;padding:12px 4px;cursor:pointer;list-style:none}
   .tm-tema summary::-webkit-details-marker{display:none}
@@ -3723,6 +3730,10 @@ const MATERIAS = {
         { titulo: "Trabajo Final Integrador (TFI)", corto: "TFI aprobado", detalle: "Informe grupal sobre un caso real o una problemática actual, con su defensa oral. Integra los contenidos de toda la materia." }
       ]
     },
+    // Arriba de las partes, en la página de la materia
+    general: [
+      { nombre: "Programa y condiciones de aprobación", detalle: "El programa 2023 de la cátedra (numera las unidades distinto que ahora), los fundamentos, cómo se evalúa y las condiciones para regularizar y promocionar (4 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/01-programa-y-condiciones.pdf" }
+    ],
     parciales: [
       {
         id: "p1",
@@ -3738,20 +3749,9 @@ const MATERIAS = {
           ]
         },
         material: [
-          { nivel: "esencial", grupo: "Apunte de la cátedra", descripcion: "El apunte 2023, dividido por los temas del parcial.", partes: [
-              { titulo: "Universidad y UTN", archivos: [
-                { nombre: "Apunte · Universidad y UTN", detalle: "Secciones 1.1 a 1.3: la universidad argentina, la Reforma del 18, su rol en la ciencia y la tecnología, la UON, la UTN y la FRC, y el perfil del ingeniero tecnológico (17 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/02-universidad-y-utn.pdf" }
-              ] },
-              { titulo: "Ciencia y tecnología", archivos: [
-                { nombre: "Apunte · Ciencia y tecnología", detalle: "Secciones 1.4 a 1.7: la historia del pensamiento científico, qué es ciencia, tecnología e ingeniería, el método científico, la posverdad y la ciencia y la tecnología en Argentina, con el trabajo práctico de la unidad (18 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/03-ciencia-y-tecnologia.pdf" }
-              ] },
-              { titulo: "Ingeniería", archivos: [
-                { nombre: "Apunte · Ingeniería: rol y competencias del ingeniero", detalle: "Sección 2.4: la profesionalización de la ingeniería, el rol del ingeniero del siglo XXI, el nuevo perfil profesional y las competencias digitales, interpersonales y verdes (13 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/04-ingenieria-rol-y-competencias.pdf" }
-              ] }
-          ] },
-          { nivel: "profundizar", grupo: "La materia", archivos: [
-            { nombre: "Programa y condiciones de aprobación (2023)", detalle: "El programa 2023 (numera las unidades distinto que ahora), los fundamentos, cómo se evalúa y las condiciones para regularizar y promocionar (4 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/01-programa-y-condiciones.pdf" }
-          ] }
+          { n: 1, nombre: "Universidad y UTN", detalle: "Apunte, secciones 1.1 a 1.3: la universidad argentina y la Reforma del 18, su rol en la ciencia y la tecnología, la UON, la UTN y la FRC, y el perfil del ingeniero tecnológico (17 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/01-universidad-y-utn.pdf" },
+          { n: 2, nombre: "Ciencia y tecnología", detalle: "Apunte, secciones 1.4 a 1.7: la historia del pensamiento científico, qué es ciencia, tecnología e ingeniería, el método científico, la posverdad y la ciencia y la tecnología en Argentina, con el trabajo práctico de la unidad (18 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/02-ciencia-y-tecnologia.pdf" },
+          { n: 3, nombre: "Ingeniería: rol y competencias del ingeniero", detalle: "Apunte, sección 2.4: la profesionalización de la ingeniería, el rol del ingeniero del siglo XXI, el nuevo perfil profesional y las competencias digitales, interpersonales y verdes (13 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/03-ingenieria-rol-y-competencias.pdf" }
         ],
         videos: []
       },
@@ -3769,21 +3769,11 @@ const MATERIAS = {
           ]
         },
         material: [
-          { nivel: "esencial", grupo: "Apunte de la cátedra", descripcion: "El apunte 2023, dividido por los temas del parcial.", partes: [
-              { titulo: "Industria y economía", archivos: [
-                { nombre: "Apunte · Revoluciones industriales e Industria 4.0", detalle: "Secciones 2.1 a 2.3: las revoluciones industriales, la Industria 4.0 (beneficios, energía y desafíos para la ingeniería), la Industria 4.0 y la universidad, y cómo cambia el trabajo (15 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/01-revoluciones-industriales-e-industria-4-0.pdf" },
-                { nombre: "Apunte · La industria argentina y en Córdoba", detalle: "Secciones 3.1 y 3.2: los modelos económicos argentinos, la industria en Córdoba, la Industria 4.0 y 5.0 en el país, el desarrollo regional y los bloques económicos (9 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/02-industria-argentina-y-cordoba.pdf" }
-              ] },
-              { titulo: "Desarrollo sostenible", archivos: [
-                { nombre: "Apunte · Desarrollo sostenible, ODS y género", detalle: "Secciones 3.3 y 3.4: sustentabilidad y género, los ODS y la Agenda 2030, la UTN y los ODS y el rol de la ingeniería en una sociedad inclusiva, con el trabajo práctico de la unidad (15 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/03-desarrollo-sostenible-ods-y-genero.pdf" }
-              ] },
-              { titulo: "Ética y responsabilidad", archivos: [
-                { nombre: "Apunte · Ética y responsabilidad del ingeniero", detalle: "Sección 2.5: conceptos de ética, el ejercicio profesional de la ingeniería y la intimidad en la sociedad del siglo XXI, con el trabajo práctico de la unidad (9 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/04-etica-y-responsabilidad.pdf" }
-              ] }
-          ] },
-          { nivel: "esencial", grupo: "Trabajo práctico resuelto", descripcion: "Nuestro TP sobre las revoluciones industriales y el trabajo.", archivos: [
-            { nombre: "TP 2 · Revoluciones industriales y el futuro del trabajo (resuelto)", detalle: "Cuadro de las cuatro revoluciones industriales, mapa mental de la 4.0 y sus beneficios, el artículo de Anfibia «Después de la pandemia, el tsunami tecnológico», el trabajo hace 50 años y hoy, el círculo virtuoso, la IA y cómo imaginamos la ciudad del futuro (13 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/actividades/tp2-revoluciones-industriales-y-futuro-del-trabajo.pdf" }
-          ] }
+          { n: 1, nombre: "Revoluciones industriales e Industria 4.0", detalle: "Apunte, secciones 2.1 a 2.3: las revoluciones industriales, la Industria 4.0 (beneficios, energía y desafíos para la ingeniería), la Industria 4.0 y la universidad, y cómo cambia el trabajo (15 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/01-revoluciones-industriales-e-industria-4-0.pdf" },
+          { n: 2, nombre: "La industria argentina y en Córdoba", detalle: "Apunte, secciones 3.1 y 3.2: los modelos económicos argentinos, la industria en Córdoba, la Industria 4.0 y 5.0 en el país, el desarrollo regional y los bloques económicos (9 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/02-industria-argentina-y-cordoba.pdf" },
+          { n: 3, nombre: "Desarrollo sostenible, ODS y género", detalle: "Apunte, secciones 3.3 y 3.4: sustentabilidad y género, los ODS y la Agenda 2030, la UTN y los ODS y el rol de la ingeniería en una sociedad inclusiva, con el trabajo práctico de la unidad (15 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/03-desarrollo-sostenible-ods-y-genero.pdf" },
+          { n: 4, nombre: "Ética y responsabilidad del ingeniero", detalle: "Apunte, sección 2.5: conceptos de ética, el ejercicio profesional de la ingeniería y la intimidad en la sociedad del siglo XXI, con el trabajo práctico de la unidad (9 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/04-etica-y-responsabilidad.pdf" },
+          { n: 5, nombre: "TP 2 · Revoluciones industriales y el futuro del trabajo (resuelto)", detalle: "Nuestro TP: cuadro de las cuatro revoluciones industriales, mapa mental de la 4.0 y sus beneficios, el artículo de Anfibia «Después de la pandemia, el tsunami tecnológico», el trabajo hace 50 años y hoy, el círculo virtuoso, la IA y cómo imaginamos la ciudad del futuro (13 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/actividades/tp2-revoluciones-industriales-y-futuro-del-trabajo.pdf" }
         ],
         videos: []
       },
@@ -3802,9 +3792,7 @@ const MATERIAS = {
           ]
         },
         material: [
-          { nivel: "esencial", grupo: "La consigna", archivos: [
-            { nombre: "Consigna del Trabajo Final Integrador (2023)", nota: "Empezá por acá", detalle: "Un problema social de Córdoba: fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas, conclusiones y fuentes, el formato del informe y la presentación oral (2 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/tpi/01-consigna-del-tfi.pdf" }
-          ] }
+          { n: 1, nombre: "Consigna del Trabajo Final Integrador (2023)", nota: "Empezá por acá", detalle: "Un problema social de Córdoba: fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas, conclusiones y fuentes, el formato del informe y la presentación oral (2 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/tpi/01-consigna-del-tfi.pdf" }
         ],
         videos: []
       }
@@ -5027,6 +5015,8 @@ function viewMateria(m){
   ].map(x => `
     <a class="mt-fila" data-go="${x.go}" href="#/${x.go}"><span class="mt-ic">${x.ic}</span><span class="mt-fila-t"><b>${esc(x.t)}</b>${x.d ? `<small>${esc(x.d)}</small>` : ""}</span>${ICON_DER}</a>`).join("");
 
+  // Material general de la materia (ej.: el programa), arriba de las partes
+  const general = c.general && c.general.length ? `<div class="mt-general">${filesList(c.general)}</div>` : "";
   // Materias con el material o los videos sueltos (sin partes)
   let suelto = "";
   if(c.material && c.material.length) suelto = filesList(c.material);
@@ -5038,7 +5028,7 @@ function viewMateria(m){
   if(suelto && (partes || filas)) suelto = `<div class="mt-suelto">${suelto}</div>`;
   return `
     ${cab}
-    <div class="mt-main">${partes}${filas}${suelto}</div>
+    <div class="mt-main">${general}${partes}${filas}${suelto}</div>
     ${c.comisiones && c.comisiones.length ? comisiones(c.comisiones, c.comisionesNota) : ""}`;
 }
 
@@ -5225,6 +5215,13 @@ function temasParcial(m, p){
   const t = p.temas;
   if(!t || !t.unidades || !t.unidades.length) return "";
   const plural = (n, x) => `${n} ${x}${n === 1 ? "" : "s"}`;
+  // Sin material ni videos por tema no hay nada que desplegar: van todos a la vista
+  const conMaterial = t.unidades.some(u => { const x = materialDeTema(p, u.titulo); return x.archivos.length || x.videos.length; });
+  if(!conMaterial) return `
+    <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
+    <div class="tm-plano">${t.unidades.map((u, i) => `
+      <section class="tm-bloque"><h3><span class="tm-n">${i + 1}</span>${esc(u.titulo)}</h3>
+        <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul></section>`).join("")}</div>`;
   return `
     <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
     <div class="tm-lista">${t.unidades.map((u, i) => {
@@ -5283,6 +5280,7 @@ function arbolZip(c){
       });
     } else archivos(dest, lista);
   };
+  items(raiz, c.general);
   (c.parciales || []).forEach(p => {
     const np = nodo(p.titulo);
     if(p.secciones && !p.secciones.length) items(np, p.material);

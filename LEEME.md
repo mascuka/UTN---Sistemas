@@ -255,7 +255,7 @@ Están en `HERRAMIENTAS`, en el código de la página.
 ## Temas del parcial (introducción)
 Cada parcial puede tener un campo `temas` (ver el 2º Parcial de Redes de Datos):
 `temas: { titulo: "...", unidades: [ { titulo: "Unidad ...", contenidos: ["...", "..."] } ] }`
-Se muestra en la pestaña **Temas** (ruta `#/m201/p1/temas`) como una lista numerada: cada tema se despliega con lo que entra y su material, que sale solo: los archivos de las `partes` del material que se llaman igual que el tema (ej.: la parte "Streams" del Teórico) y los videos cuyo `bloque` empieza con el nombre del tema (ej.: "Streams · Apunte 10"). Tocando un video se abre la lista de videos arrancando por ese. Si el parcial no tiene `temas`, no aparece la pestaña.
+Se muestra en la pestaña **Temas** (ruta `#/m201/p1/temas`). Si ningún tema tiene material ni videos (ver abajo), van todos a la vista, en tarjetas una al lado de la otra, sin desplegar (ver Ingeniería y Sociedad, `11`). Si no, como una lista numerada: cada tema se despliega con lo que entra y su material, que sale solo: los archivos de las `partes` del material que se llaman igual que el tema (ej.: la parte "Streams" del Teórico) y los videos cuyo `bloque` empieza con el nombre del tema (ej.: "Streams · Apunte 10"). Tocando un video se abre la lista de videos arrancando por ese. Si el parcial no tiene `temas`, no aparece la pestaña.
 
 ## Bloques por evaluación
 Los bloques de `parciales` son las evaluaciones de la materia, no las unidades de la cátedra. Por ejemplo, Desarrollo de Aplicaciones con Objetos (`206`) tiene dos:
@@ -264,7 +264,7 @@ Los bloques de `parciales` son las evaluaciones de la materia, no las unidades d
 
 Diseño de Sistemas de Información (`23`) tiene cuatro: 1º, 2º y 3º Parcial y el TPI, cada uno en una sola página (`secciones: []`). El 3º Parcial es de patrones de diseño y su material va **un grupo por patrón** (por ahora "Iterator"); para sumar otro (Adapter…), se agrega otro grupo con el nombre del patrón y sus archivos en `material/diseno-de-sistemas-de-informacion/p3/`.
 
-Ingeniería y Sociedad (`11`) tiene tres: 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y TPI, cada uno en una sola página. El apunte de la cátedra es de 2023 y numera las unidades distinto que el programa actual, así que está dividido por los temas de cada parcial (cada archivo dice qué secciones del apunte tiene) y agrupado en `partes` con el mismo nombre que los temas, para que la pestaña Temas muestre su archivo.
+Ingeniería y Sociedad (`11`) tiene tres: 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y TPI, cada uno en una sola página. El apunte de la cátedra es de 2023 y numera las unidades distinto que el programa actual, así que está dividido por los temas de cada parcial (cada archivo dice qué secciones del apunte tiene), uno debajo del otro. El programa va arriba, en la página de la materia (`general`).
 
 Los temas de cada unidad van en el bloque de la evaluación donde se toman. Toda sección que se cargue lleva `material` y `videos`, aunque alguno quede vacío (`videos: []`).
 
@@ -292,6 +292,9 @@ Con `secciones: []` el parcial no tiene secciones de Teórico/Práctico: sus pes
 Cada materia puede tener `condiciones` (ver Backend de Aplicaciones, `201`). Se muestra arriba a la derecha en la página de la materia:
 `condiciones: { directa: 6, regular: 4, aclaracion: "...", requisitos: [ { titulo: "Parcial", corto: "Parcial ≥ 6", detalle: "6 o más" } ] }`
 Se ve "Directa con 6" y la regularidad; tocándolo se despliegan la aclaración y cada requisito con su `corto` y su `detalle`. Si `regular` es `null`, aparece "Sin regularidad" (electivas, que solo se aprueban de forma directa). La asistencia no va acá: se indica en la columna de cada profesor en las comisiones.
+
+## Material general de la materia
+Con `general: [ archivos ]` en la materia, esos archivos van arriba de las partes, en la página de la materia (ej.: el programa de Ingeniería y Sociedad), y también entran en el ZIP. Es distinto de `material` suelto, que va abajo de las partes (ver Sistemas y Procesos de Negocio, `8`).
 
 ## Descargar toda la materia (ZIP)
 En la página de cada materia aparece el botón "Descargar todo (ZIP)" si tiene archivos propios (`material/...`). El ZIP se arma en el navegador, sin copias en el repo: una carpeta por parcial y sección (Teórico, Práctico…), y adentro una por grupo y parte, numeradas en el orden de la página. Los archivos se llaman como en la página ("01 - Nombre.pdf"). Los videos no van, y los links externos (Drive, webs) quedan en un `Enlaces.txt` dentro de su carpeta.
