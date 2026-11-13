@@ -938,6 +938,8 @@
   /* Adentro de una parte: el nombre y una línea, y abajo lo de la pestaña */
   .pt-cab{margin:4px 0 22px}
   .pt-cab h1{margin-bottom:4px}
+  .pt-cab-f{display:flex;align-items:flex-start;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
+  .pt-cab-f .mt-acc{margin-top:6px}
   .pt-cab p{color:var(--muted);font-size:.92rem;line-height:1.5;max-width:760px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .pt-intro{color:var(--text2);font-size:.92rem;line-height:1.55;max-width:760px;margin:-8px 0 18px}
   .pt-h2{font:400 1.35rem var(--serif);margin:0 0 6px}
@@ -3722,6 +3724,49 @@ const MATERIAS = {
       { url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
     ]
   },
+  // Inglés 1: el parcial se toma apenas arranca la cursada y con 7 o más la materia queda aprobada, así que es una sola parte
+  // (al entrar se abre directo). El quiz y la guía se arman con herramientas/quiz/ingles_1.py. Archivos en material/ingles-1/
+  4: {
+    comisiones: [
+      { comision: "1K13", profesor: "Verónica de Loredo", rol: "Teórico y práctico", examen: "Escrito", recomendada: true, comentario: "Excelente profe: explica bien y da buenas oportunidades." }
+    ],
+    condiciones: {
+      directa: 7,
+      aclaracion: "Apenas arranca la cursada se toma un parcial: con 7 o más la materia queda aprobada y no hace falta seguir viniendo.",
+      requisitos: [
+        { titulo: "Parcial al empezar", corto: "Parcial ≥ 7", detalle: "Lectocomprensión de un texto técnico en inglés, respondiendo en español. Con 7 o más, aprobada." }
+      ]
+    },
+    parciales: [
+      {
+        id: "parcial",
+        titulo: "Parcial",
+        descripcion: "Se toma apenas arranca la cursada: con 7 o más la materia queda aprobada. Es lectocomprensión: un texto técnico en inglés y ejercicios que se responden en español.",
+        secciones: [],
+        quiz: "quiz/ingles-1.json",
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Temas del parcial", contenidos: [
+              "Comprensión del texto: un texto técnico en inglés (energía, Internet de las cosas, informática, física) y preguntas que se responden en español y con tus palabras.",
+              "Traducción de frases: frases nominales (el núcleo va al final en inglés y se traduce de derecha a izquierda).",
+              "Referencia contextual: a qué o a quién se refiere un pronombre (it, its, itself, they, them, their, themselves, he, him, which, that).",
+              "Antónimos y sinónimos: encontrar en la línea indicada la palabra opuesta o equivalente.",
+              "Conectores (nexos lógicos): traducción, tipo de relación (adición, contraste, causa, consecuencia, condición, finalidad, ejemplificación) y las dos ideas que unen.",
+              "En la práctica del campus, además: elegir el título del texto y decir si una oración es verdadera o falsa."
+            ] }
+          ]
+        },
+        material: [
+          { n: 1, nombre: "Guía · el parcial resuelto", nota: "Empezá por acá", detalle: "Cómo se encara cada ejercicio, el cuadro de conectores con su relación y todo resuelto: el parcial 2023, el modelo de parcial, la práctica de clase y la práctica del campus (9 págs.)", tipo: "PDF", url: "material/ingles-1/01-guia-del-parcial-resuelta.pdf" },
+          { n: 2, nombre: "Parcial 2023 · Energía renovable", detalle: "El parcial que se tomó: un texto sobre empresas que generan su propia energía (IKEA, Apple) con preguntas, traducción, referencia contextual, antónimos, sinónimos y conectores (3 págs.)", tipo: "PDF", url: "material/ingles-1/02-parcial-2023-energia-renovable.pdf" },
+          { n: 3, nombre: "Modelo de parcial · Internet de las cosas", detalle: "El modelo que dio la profe antes del parcial: un texto sobre IoT con los mismos ejercicios (3 págs.)", tipo: "PDF", url: "material/ingles-1/03-modelo-de-parcial-internet-de-las-cosas.pdf" },
+          { n: 4, nombre: "Práctica de clase · The anatomy of a virus", detalle: "Texto sobre los virus informáticos: preguntas, unir rutinas con su función, conectores, referentes y traducción (3 págs.)", tipo: "PDF", url: "material/ingles-1/04-practica-the-anatomy-of-a-virus.pdf" }
+        ],
+        videos: []
+      }
+    ]
+  },
   // Ingeniería y Sociedad (1º año, 2º cuatrimestre): 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y el TFI (Trabajo Final Integrador).
   // El apunte de la cátedra (2023) numera las unidades distinto, así que está dividido por los temas de cada parcial,
   // en material/ingenieria-y-sociedad/{p1,p2,tfi}/ (cada archivo dice qué secciones del apunte tiene). El TP 2 es nuestro (sin los nombres del grupo)
@@ -4392,7 +4437,7 @@ function cursandoLista(){
 /* Las partes de una materia (las de la barra lateral): parciales, secciones propias y actividades */
 /* Una materia que es una sola parte y nada más (ej.: Física del ingreso, que es solo el examen): al entrar se abre esa parte,
    sin la página de la materia con una única tarjeta */
-const parteUnica = c => c && c.parciales.length === 1 && !(c.secciones || []).length && !c.actividades && !c.comisiones && !c.condiciones
+const parteUnica = c => c && c.parciales.length === 1 && !(c.secciones || []).length && !c.actividades && !(c.general || []).length
   && !(c.material || []).length && !(c.videos || []).length ? c.parciales[0] : null;
 function partesMateria(m){
   const c = MATERIAS[m.n], [a, b] = ruta.split("/");
@@ -4502,6 +4547,21 @@ const tabMiTpi = p => p.defensa ? [{ go: "/mi", t: "Mi TPI", on: d => d[0] === "
 const parteDe = (c, b) => c && b ? c.parciales.find(x => x.id === b) || (c.secciones || []).find(x => x.id === b) : null;
 /* Arriba de cada pestaña: el nombre de la parte y su descripción corta */
 const cabParte = p => `<div class="pt-cab"><h1>${esc(p.titulo)}</h1>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}</div>`;
+/* La cabecera de una parte. Si la materia es esa sola parte (no tiene página propia), lleva a la derecha lo de la materia:
+   «Se puede rendir libre» y cómo se aprueba */
+function cabDe(m, p){
+  const c = MATERIAS[m.n];
+  if(parteUnica(c) !== p) return cabParte(p);
+  const acc = `${m.libre ? `<span class="mt-pill mt-libre" title="${esc(TXT_LIBRE)}">Se puede rendir libre</span>` : ""}${c.condiciones ? aprobacion(c.condiciones) : ""}`;
+  return `<div class="pt-cab"><div class="pt-cab-f"><h1>${esc(p.titulo)}</h1>${acc ? `<div class="mt-acc">${acc}</div>` : ""}</div>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}</div>`;
+}
+/* …y en su primera pestaña, abajo, las comisiones */
+function pieUnica(m, p, tab){
+  const c = MATERIAS[m.n];
+  if(parteUnica(c) !== p || !(c.comisiones || []).length) return "";
+  const primera = (pestanasDe(p)[0] || {}).go;
+  return primera === "/" + tab ? comisiones(c.comisiones, c.comisionesNota) : "";
+}
 /* Alto de la barra: los saltos (al quiz, al modo cine…) quedan justo debajo de ella */
 function medirBarra(){
   document.documentElement.style.setProperty("--barra-h", $("#barra").offsetHeight + "px");
@@ -5299,8 +5359,9 @@ function iconoSeccion(id){
 }
 /* Una parte de una sola página (secciones: []) o una sección de la materia: Material, Videos o Temas */
 function viewSeccionMateria(m, x, tab){
-  return `${cabParte(x)}
-    ${tab === "videos" ? `<div id="tabBody"></div>` : tab === "temas" ? `<div class="mt-main pc">${temasParcial(m, x)}</div>` : `<div id="tabBody">${filesList(x.material || [])}</div>`}`;
+  return `${cabDe(m, x)}
+    ${tab === "videos" ? `<div id="tabBody"></div>` : tab === "temas" ? `<div class="mt-main pc">${temasParcial(m, x)}</div>` : `<div id="tabBody">${filesList(x.material || [])}</div>`}
+    ${pieUnica(m, x, tab)}`;
 }
 
 
@@ -6224,7 +6285,7 @@ function parcialBox(m, p){
 }
 /* Pestaña Práctica de una parte sin práctica propia: las herramientas para practicar */
 function viewPracticar(m, p){
-  return `${cabParte(p)}${parcialBox(m, p) || `<div class="empty">Esta parte no tiene herramientas.</div>`}`;
+  return `${cabDe(m, p)}${parcialBox(m, p) || `<div class="empty">Esta parte no tiene herramientas.</div>`}`;
 }
 
 /* ---------- Práctica por partes: el parcial de a pasos, con Python o Java en el navegador ----------
@@ -8523,7 +8584,7 @@ function viewQuiz(m, p){
   const kp = seccionesDe(p).find(k => esSeccionParcial(p, k));
   return `
     ${kp ? `<div class="crumbs"><span data-go="m${m.n}/${p.id}/${kp}/material">‹ ${esc(nombreSec(p, kp))}</span></div>` : ""}
-    ${cabParte(p)}
+    ${cabDe(m, p)}
     <div id="quiz" class="quiz"><div class="empty">Cargando preguntas…</div></div>`;
 }
 async function montarQuiz(m, p){
