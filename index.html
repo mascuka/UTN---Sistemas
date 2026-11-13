@@ -883,6 +883,15 @@
   .mt-eti span[data-go]:hover{color:var(--text)}
   .mt-tit{font-weight:400;letter-spacing:-.015em;margin:8px 0 0;line-height:1.15}
   .mt-acc{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .p-anio{margin-left:6px;font-size:.8rem;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
+  .anio-in{width:4.4em;font:inherit;color:var(--muted);background:none;border:0;border-bottom:1px dashed transparent;border-radius:0;padding:0 1px;text-align:left;-moz-appearance:textfield;font-variant-numeric:tabular-nums}
+  .anio-in::-webkit-outer-spin-button,.anio-in::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .anio-in:placeholder-shown{border-bottom-color:var(--line2)}
+  .anio-in::placeholder{color:var(--muted);opacity:.65}
+  .anio-in:hover,.anio-in:focus{border-bottom-color:var(--muted);outline:none;color:var(--text)}
+  .anio-niv{font-size:.84rem;color:var(--muted);white-space:nowrap}
+  .mt-anio{display:inline-flex;align-items:baseline;gap:5px;text-transform:none;letter-spacing:0;font-size:.8rem}
+  .mt-anio .anio-in{width:4em}
   .tag.libre{background:var(--ok-soft);border-color:transparent;color:var(--ok);font-weight:600;cursor:help;margin-left:8px}
   .mt-pill.mt-libre{background:var(--ok-soft);border-color:transparent;color:var(--ok);font-weight:600;cursor:help}
   .mt-pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:400 .82rem var(--sans);color:var(--text2);white-space:nowrap}
@@ -4526,6 +4535,23 @@ let estados = {}, notas = {};
 try { const g = JSON.parse(leerLocal(CLAVE_ESTADOS)) || {}; estados = g.estados || {}; notas = g.notas || {}; } catch(e){}
 /* Lo que cargás de tus entregas (pestaña "Mi TPI"): repo, Postman, links, notas y la preparación de la defensa.
    Por parte: "201/tpi" → { proyecto, repo, postman, links: [{ nombre, url }], notas, resp: { punto: texto }, listo: { punto: true } } */
+/* El año en que cursaste: por año de la carrera (niveles: { "1": 2023 }) y, si alguna fue otro año, por materia
+   (materias: { "m11": 2024 }). Solo se muestra en las materias que tienen estado (cursando, regular o aprobada) */
+const CLAVE_ANIOS = "isi-anios";
+let anios = { niveles: {}, materias: {} };
+try { anios = Object.assign({ niveles: {}, materias: {} }, JSON.parse(leerLocal(CLAVE_ANIOS)) || {}); } catch(e){}
+const nivelDe = x => x.nivel;
+const anioPropio = x => anios.materias[idDe(x)] || null;
+const anioDe = x => estadoDe(idDe(x)) ? anioPropio(x) || anios.niveles[nivelDe(x)] || null : null;
+const anioValido = v => { const n = Math.round(+String(v).trim()); return n >= 2000 && n <= 2100 ? n : null; };
+/* Cambia el año de un año de la carrera ("n1") o de una materia (su id); vacío lo borra */
+function ponerAnio(clave, txt){
+  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  const v = anioValido(txt), [donde, k] = clave.startsWith("nivel:") ? ["niveles", clave.slice(6)] : ["materias", clave];
+  if(v) anios[donde][k] = v; else delete anios[donde][k];
+  programarSubida();
+  return true;
+}
 const CLAVE_ENTREGAS = "isi-entregas";
 let entregas = {};
 try { entregas = JSON.parse(leerLocal(CLAVE_ENTREGAS)) || {}; } catch(e){}
@@ -4556,11 +4582,11 @@ function headers(){
 
 async function leerRemoto(){
   const r = await fetch(`${urlArchivo()}?ref=${GITHUB.rama}&t=${Date.now()}`, { headers: headers() });
-  if(r.status === 404) return { lista: [], estados: {}, notas: {}, cronogramas: null, fechas: null, notasCursada: null, entregas: null, sha: null };
+  if(r.status === 404) return { lista: [], estados: {}, notas: {}, cronogramas: null, fechas: null, notasCursada: null, entregas: null, anios: null, sha: null };
   if(!r.ok) throw new Error("GitHub respondió " + r.status);
   const j = await r.json();
   const datos = JSON.parse(b64dec(j.content) || "{}");
-  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, cronogramas: datos.cronogramas || null, fechas: datos.fechas || null, notasCursada: datos.notasCursada || null, entregas: datos.entregas || null, sha: j.sha };
+  return { lista: datos.aprobadas || [], estados: datos.estados || {}, notas: datos.notas || {}, cronogramas: datos.cronogramas || null, fechas: datos.fechas || null, notasCursada: datos.notasCursada || null, entregas: datos.entregas || null, anios: datos.anios || null, sha: j.sha };
 }
 
 async function cargarAprobadas(){
@@ -4569,7 +4595,12 @@ async function cargarAprobadas(){
     shaRemoto = r.sha;
     // Lo último que hiciste en este navegador no llegó a subirse (cerraste o recargaste antes, o falló la red):
     // queda eso, que es lo más nuevo, y se sube ahora en vez de pisarlo con lo de GitHub
-    if(leerLocal(CLAVE_SIN_SUBIR) && leerLocal(CLAVE_TOKEN)){ estadoSync = "guardando"; refrescar(); subirAprobadas(); return; }
+    if(leerLocal(CLAVE_SIN_SUBIR) && leerLocal(CLAVE_TOKEN)){
+      // Lo que este navegador no tiene (porque se cargó desde otro), se toma de GitHub para no borrarlo al subir
+      if(r.entregas && !Object.keys(entregas).length) entregas = r.entregas;
+      if(r.anios && !Object.keys(anios.niveles).length && !Object.keys(anios.materias).length) anios = Object.assign({ niveles: {}, materias: {} }, r.anios);
+      estadoSync = "guardando"; refrescar(); subirAprobadas(); return;
+    }
     aprobadas = new Set(r.lista);
     estados = r.estados;
     notas = r.notas;
@@ -4578,6 +4609,7 @@ async function cargarAprobadas(){
     if(r.fechas) fechas = r.fechas;
     if(r.notasCursada) notasCursada = r.notasCursada;
     if(r.entregas) entregas = r.entregas;
+    if(r.anios) anios = Object.assign({ niveles: {}, materias: {} }, r.anios);
     guardarCopia();
     estadoSync = leerLocal(CLAVE_TOKEN) ? "ok" : "sin-clave";
   } catch(e){
@@ -4595,7 +4627,7 @@ async function subirAprobadas(reintento = true){
   const nts = ordenar(Object.fromEntries(Object.entries(notas).filter(([id]) => aprobadas.has(id))));
   const cuerpo = {
     message: "Actualizar materias, cronograma y fechas",
-    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas, notasCursada, entregas: ordenar(entregas) }, null, 2) + "\n"),
+    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas, notasCursada, entregas: ordenar(entregas), anios: { niveles: ordenar(anios.niveles), materias: ordenar(anios.materias) } }, null, 2) + "\n"),
     branch: GITHUB.rama
   };
   if(shaRemoto) cuerpo.sha = shaRemoto;
@@ -4630,6 +4662,7 @@ function guardarCopia(){
   guardarLocal(CLAVE_FECHAS, JSON.stringify(fechas));
   guardarLocal(CLAVE_NOTAS_C, JSON.stringify(notasCursada));
   guardarLocal(CLAVE_ENTREGAS, JSON.stringify(entregas));
+  guardarLocal(CLAVE_ANIOS, JSON.stringify(anios));
 }
 const CLAVE_SIN_SUBIR = "isi-sin-subir";   // hay cambios en este navegador que todavía no llegaron a GitHub
 function programarSubida(){
@@ -4789,7 +4822,7 @@ function filaPlan(x){
   const go = !el || MATERIAS[x.n] ? ` data-go="m${x.n}"` : "";
   return `
     <div class="pfila ${el ? "elec" : ""} ${estadoDe(id) ? "e-" + estadoDe(id) : ""}"${go}>
-      <span class="pnom">${abr(x)}<span>${esc(x.nombre)}${el ? ` <span class="tag elec-tag">Electiva</span>` : ""}${x.integradora ? ` <span class="tag">Integradora</span>` : ""}${x.libre ? ` <span class="tag libre" title="${esc(TXT_LIBRE)}">Se puede rendir libre</span>` : ""}</span></span>
+      <span class="pnom">${abr(x)}<span>${esc(x.nombre)}${anioDe(x) ? ` <span class="p-anio" title="El año en que la cursaste">${anioDe(x)}</span>` : ""}${el ? ` <span class="tag elec-tag">Electiva</span>` : ""}${x.integradora ? ` <span class="tag">Integradora</span>` : ""}${x.libre ? ` <span class="tag libre" title="${esc(TXT_LIBRE)}">Se puede rendir libre</span>` : ""}</span></span>
       <span class="c cur" data-l="Cursado">${MOD_CORTO[x.mod]}${x.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
       <span class="c hs" data-l="${el ? "Créditos" : "Horas"}">${el ? `${x.creditos} créd.` : x.horas ? `${x.horas} hs` : "—"}</span>
       <span class="c cor ${x.regular.length ? "" : "vacia"}" data-l="Regularizadas">${celdaCorr(x.regular)}</span>
@@ -4815,6 +4848,7 @@ function tablaNivel(n, solo = false){
       <div class="presumen">
         ${solo ? `<h1>${nombreNivel(n)}</h1>` : `<h2>${nombreNivel(n)}</h2>`}
         <span>${ms.length} materias${hs ? ` · ${hs} hs` : ""}${el.length ? ` · ${el.length} electivas` : ""}</span>
+        <label class="anio-niv" title="El año en que cursaste este año de la carrera (si alguna materia fue otro año, se cambia en su página)">${n === 0 ? "Para el año" : "Cursado en"} <input class="anio-in" type="number" inputmode="numeric" min="2000" max="2100" placeholder="año" data-anio="nivel:${n}" value="${anios.niveles[n] || ""}" aria-label="Año en que cursaste ${esc(nombreNivel(n))}"></label>
         <span class="pav">
           <span class="pley"><b class="l-ok">${hechas}/${ms.length} aprobadas</b>${reg ? `<b class="l-reg">${reg} regular${reg > 1 ? "es" : ""}</b>` : ""}${cur ? `<b class="l-cur">${cur} cursando</b>` : ""}${prom ? `<b class="l-prom">Promedio ${fmtNota(prom.valor)}</b>` : ""}</span>
           <span class="pstack"><i class="ok" style="width:${pc(hechas)}%"></i><i class="reg" style="width:${pc(reg)}%"></i><i class="cur" style="width:${pc(cur)}%"></i></span>
@@ -5008,7 +5042,7 @@ function viewMateria(m){
   const cab = `
     <div class="mt-cab">
       <div class="mt-cab-iz">
-        <div class="mt-eti">${m.abr ? abr(m) : ""}<span data-go="nivel/${m.nivel}">${esc(eti)}</span></div>
+        <div class="mt-eti">${m.abr ? abr(m) : ""}<span data-go="nivel/${m.nivel}">${esc(eti)}</span>${estadoDe(idMat(m)) ? `<label class="mt-anio" title="El año en que la cursaste. Vacío: el de su año de la carrera">Cursada en <input class="anio-in" type="number" inputmode="numeric" min="2000" max="2100" placeholder="${anios.niveles[m.nivel] || "año"}" data-anio="${esc(idMat(m))}" value="${anioPropio(m) || ""}" aria-label="Año en que cursaste ${esc(m.nombre)}"></label>` : ""}</div>
         <h1 class="mt-tit">${esc(m.nombre)}</h1>
       </div>
       <div class="mt-acc">
@@ -10646,7 +10680,7 @@ document.addEventListener("click", e => {
     if(ponerEstado(k.dataset.id, k.dataset.est)) refrescar();
     return;
   }
-  if(e.target.closest(".nota-in")) return;     // escribir la nota no entra a la materia
+  if(e.target.closest(".nota-in, .anio-in")) return;     // escribir la nota o el año no entra a la materia
   if(e.target.closest("#quiz") && clicQuiz(e)) return;
   if(e.target.closest(".ejp") && clicEjp(e)) return;
   if(e.target.closest(".pr-ws,.pr-cab,.pr-pasos,.pr-vista") && clicPractica(e)) return;
@@ -10667,7 +10701,14 @@ document.addEventListener("change", e => {
   if(!n) return;
   if(ponerNota(n.dataset.nota, n.value)) refrescar(); else n.value = notaDe(n.dataset.nota) ?? "";
 });
-document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches(".nota-in, .nt-in")) e.target.blur(); });
+document.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.matches && e.target.matches(".nota-in, .nt-in, .anio-in")) e.target.blur(); });
+document.addEventListener("change", e => {
+  const a = e.target.closest && e.target.closest(".anio-in");
+  if(!a) return;
+  const k = a.dataset.anio;
+  if(ponerAnio(k, a.value)) refrescar();
+  else a.value = (k.startsWith("nivel:") ? anios.niveles[k.slice(6)] : anios.materias[k]) || "";
+});
 document.addEventListener("change", e => { if(e.target.matches && e.target.matches(".nt-in")) ponerNotaCursada(e.target); });
 document.addEventListener("change", e => { if(e.target.id === "calHasta") CR.form.hasta = e.target.value; });
 
