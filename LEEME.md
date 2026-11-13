@@ -22,7 +22,9 @@ Cada página tiene su propio link, por ejemplo:
 - `#/m26/p2/teorico/videos` → videos del teórico
 
 ## Agregar una materia con contenido
-Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). En la lista de su año, su fila muestra la etiqueta "Material" (y si es electiva, pasa a tener link).
+Dentro de `MATERIAS`, copiá el bloque de la `26` y cambiale el número por el de la materia (el número está en `CARRERA.materias`). Si es electiva, en la lista de su año pasa a tener link. (No lleva etiqueta de "Material": todas van a tener.)
+
+**Se rinde libre**: con `libre: true` en `CARRERA.materias`, la materia lleva la etiqueta verde «Se rinde libre» en la lista de su año y «Se puede rendir libre» arriba en su página (al pasar el mouse explica que se puede rendir el final sin cursarla; las demás hay que cursarlas). Hoy: Inglés 1 y 2, Ingeniería y Sociedad, Economía y Legislación.
 
 ## Página de la materia
 `#/m201` (`viewMateria`). Solo el material y la info de la materia: nada de tu cursada (comisión, días, fechas, notas: eso va en el Cronograma) ni de tu avance (va en "Tu avance").
@@ -72,7 +74,7 @@ Reconoce las abreviaturas de los PDF con la tabla `NUM` (abreviatura → número
 En la tarjeta de horas se marca la meta de `CARRERA.metaHoras`: cuando faltan 32 hs para el total (160 − 32 = 128 hs) se puede pedir equivalencias. Se ve una rayita en la barra y un aviso con cuántas horas faltan para llegar, o en verde cuando ya se llegó. Para cambiar el número o el texto, se edita esa línea.
 
 ## Cada año
-`#/nivel/N` (`viewNivel`) muestra solo las materias de ese año: las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que tienen material cargado llevan la etiqueta "Material". Arriba están las mismas pestañas del plan y al final, botones para ir al año anterior o al siguiente. Al volver de una materia, la lista queda donde estaba.
+`#/nivel/N` (`viewNivel`) muestra solo las materias de ese año: las obligatorias y debajo las electivas, con los créditos mínimos que pide (`CREDITOS_NIVEL`). Cada materia es una fila redondeada, separada de las demás; las que se pueden rendir libres llevan la etiqueta «Se rinde libre». Arriba están las mismas pestañas del plan y al final, botones para ir al año anterior o al siguiente. Al volver de una materia, la lista queda donde estaba.
 Cada materia tiene su estado: **Cursando**, **Regular** o **Aprobada** (tocar el que ya está lo saca) y, si está aprobada, la **nota** con la que se aprobó (1 a 10). Con las notas se calcula el promedio del año (en su cabecera) y el de la carrera (en el plan). La cabecera del año muestra cuántas hay en cada estado con una barra de colores. Hasta 1180 px de ancho la fila se muestra como tarjeta para que entre el estado.
 Los estados y las notas se guardan junto con las aprobadas en `aprobadas.json` (`{ "aprobadas": [...], "estados": { "m29": "cursando" }, "notas": { "m1": 8 } }`), con la misma clave de GitHub, y en este navegador (`isi-estados`).
 Cada materia lleva su abreviatura en una pastilla con su color (el de los horarios bajado de tono, `colorMat`); las correlativas van en pastillas grises, en verde las ya aprobadas y en violeta las regulares. El gris es `--beige` y `--beige-t` (con su versión para el modo oscuro).
@@ -264,7 +266,7 @@ Los bloques de `parciales` son las evaluaciones de la materia, no las unidades d
 
 Diseño de Sistemas de Información (`23`) tiene cuatro: 1º, 2º y 3º Parcial y el TPI, cada uno en una sola página (`secciones: []`). El 3º Parcial es de patrones de diseño y su material va **un grupo por patrón** (por ahora "Iterator"); para sumar otro (Adapter…), se agrega otro grupo con el nombre del patrón y sus archivos en `material/diseno-de-sistemas-de-informacion/p3/`.
 
-Ingeniería y Sociedad (`11`) tiene tres: 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y TPI, cada uno en una sola página. El apunte de la cátedra es de 2023 y numera las unidades distinto que el programa actual, así que está dividido por los temas de cada parcial (cada archivo dice qué secciones del apunte tiene), uno debajo del otro. El programa va arriba, en la página de la materia (`general`).
+Ingeniería y Sociedad (`11`) tiene tres: 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y TFI (así le dice la cátedra al trabajo integrador), cada uno en una sola página. El apunte de la cátedra es de 2023 y numera las unidades distinto que el programa actual, así que está dividido por los temas de cada parcial (cada archivo dice qué secciones del apunte tiene), uno debajo del otro. El programa va arriba, en la página de la materia (`general`).
 
 Los temas de cada unidad van en el bloque de la evaluación donde se toman. Toda sección que se cargue lleva `material` y `videos`, aunque alguno quede vacío (`videos: []`).
 

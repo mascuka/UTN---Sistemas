@@ -678,7 +678,6 @@
   .pdiv + .pfila{margin-top:0}
   .pfila.elec{background:var(--elec-bg)}
   .pfila.elec .pnom{font-weight:500}
-  .tag.mat{display:inline-flex;align-items:center;gap:4px;background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
   /* Estado de cada materia: cursando (azul), regular (violeta), aprobada (verde) */
   .est{display:flex;align-items:center;gap:6px}
   .est-btns{display:inline-flex;gap:1px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px}
@@ -823,7 +822,6 @@
     .nivel-nav{margin-top:-8px}
     .nivel-nav a{padding:9px 14px;font-size:.86rem}
   }
-  .tag.mat svg{width:11px;height:11px}
   .elec-tag{color:var(--elec);background:var(--elec-soft);border-color:transparent;font-weight:700;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase}
   .tag{font-size:.7rem;padding:2px 7px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
   .tag.ok{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
@@ -885,6 +883,8 @@
   .mt-eti span[data-go]:hover{color:var(--text)}
   .mt-tit{font-weight:400;letter-spacing:-.015em;margin:8px 0 0;line-height:1.15}
   .mt-acc{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .tag.libre{background:var(--ok-soft);border-color:transparent;color:var(--ok);font-weight:600;cursor:help}
+  .mt-pill.mt-libre{background:var(--ok-soft);border-color:transparent;color:var(--ok);font-weight:600;cursor:help}
   .mt-pill{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font:400 .82rem var(--sans);color:var(--text2);white-space:nowrap}
   .zip-btn.mt-pill{margin:0;padding:0 12px;font-weight:400;color:var(--text2)}
   .zip-btn.mt-pill svg{width:14px;height:14px}
@@ -2063,7 +2063,7 @@
   .zip-btn:hover{border-color:var(--line2);background:var(--hover)}
   .zip-btn small,.zip-btn em{color:var(--muted)}
   .cc.fuerte{background:var(--sel);color:var(--text)}
-  .tag.mat,.tag.ok{background:var(--hover);color:var(--text2)}
+  .tag.ok{background:var(--hover);color:var(--text2)}
   .pgo{color:var(--muted)}
   .nivel-nav a{color:var(--text);font-weight:500}
   .badge{background:var(--hover);color:var(--text2)}
@@ -2359,23 +2359,23 @@ const CARRERA = {
     { n: 1,  nivel: 1, abr: "AMI", nombre: "Análisis Matemático 1",               mod: "A",  horas: 5, regular: [], aprobada: [] },
     { n: 2,  nivel: 1, abr: "AGA", nombre: "Álgebra y Geometría Analítica",       mod: "A",  horas: 5, regular: [], aprobada: [] },
     { n: 3,  nivel: 1, abr: "Fisica I", nombre: "Física 1",                            mod: "A",  horas: 5, regular: [], aprobada: [] },
-    { n: 4,  nivel: 1, abr: "Ingles", nombre: "Inglés 1",                            mod: "A",  horas: 2, regular: [], aprobada: [] },
+    { n: 4,  nivel: 1, abr: "Ingles", nombre: "Inglés 1",                            mod: "A",  horas: 2, libre: true, regular: [], aprobada: [] },
     { n: 5,  nivel: 1, abr: "LED", nombre: "Lógica y Estructuras Discretas",      mod: "1C", cc: true, horas: 3, regular: [], aprobada: [] },
     { n: 6,  nivel: 1, abr: "AED", nombre: "Algoritmos y Estructuras de Datos",   mod: "A",  horas: 5, regular: [], aprobada: [] },
     { n: 7,  nivel: 1, abr: "ACO", nombre: "Arquitectura de Computadoras",        mod: "2C", cc: true, horas: 4, regular: [], aprobada: [] },
     { n: 8,  nivel: 1, abr: "SPN", nombre: "Sistemas y Procesos de Negocio",      mod: "1C", cc: true, horas: 3, regular: [], aprobada: [] },
-    { n: 11, nivel: 1, abr: "I&S", nombre: "Ingeniería y Sociedad",               mod: "2C", cc: true, horas: 2, regular: [], aprobada: [] },
+    { n: 11, nivel: 1, abr: "I&S", nombre: "Ingeniería y Sociedad",               mod: "2C", cc: true, horas: 2, libre: true, regular: [], aprobada: [] },
 
     { n: 9,  nivel: 2, abr: "AM2", nombre: "Análisis Matemático 2",               mod: "A",  horas: 5, regular: [1, 2], aprobada: [] },
     { n: 10, nivel: 2, abr: "FISII", nombre: "Física 2",                            mod: "A",  horas: 5, regular: [1, 3], aprobada: [] },
-    { n: 12, nivel: 2, abr: "Ingles II", nombre: "Inglés 2",                            mod: "A",  horas: 2, regular: [4], aprobada: [] },
+    { n: 12, nivel: 2, abr: "Ingles II", nombre: "Inglés 2",                            mod: "A",  horas: 2, libre: true, regular: [4], aprobada: [] },
     { n: 13, nivel: 2, abr: "SSL", nombre: "Sintaxis y Semántica de los Lenguajes", mod: "1C", cc: true, horas: 4, regular: [5, 6], aprobada: [] },
     { n: 14, nivel: 2, abr: "PPR", nombre: "Paradigmas de Programación",          mod: "2C", cc: true, horas: 4, regular: [5, 6], aprobada: [] },
     { n: 15, nivel: 2, abr: "SOP", nombre: "Sistemas Operativos",                 mod: "A",  horas: 4, regular: [7], aprobada: [] },
     { n: 16, nivel: 2, abr: "ASI", nombre: "Análisis de Sistemas de Información", integradora: true, mod: "A", horas: 6, regular: [6, 8], aprobada: [] },
     { n: 17, nivel: 2, abr: "EST", nombre: "Probabilidad y Estadísticas",         mod: "1C", cc: true, horas: 3, regular: [1, 2], aprobada: [] },
 
-    { n: 18, nivel: 3, abr: "ECO", nombre: "Economía",                            mod: "2C", cc: true, horas: 3, regular: [], aprobada: [1, 2] },
+    { n: 18, nivel: 3, abr: "ECO", nombre: "Economía",                            mod: "2C", cc: true, horas: 3, libre: true, regular: [], aprobada: [1, 2] },
     { n: 19, nivel: 3, abr: "BDD", nombre: "Bases de Datos",                      mod: "1C", cc: true, horas: 4, regular: [13, 16], aprobada: [5, 6] },
     { n: 20, nivel: 3, abr: "DS", nombre: "Desarrollo de Software",              mod: "1C", cc: true, horas: 4, regular: [14, 16], aprobada: [5, 6] },
     { n: 21, nivel: 3, abr: "COM", nombre: "Comunicación de Datos",               mod: "A",  horas: 4, regular: [], aprobada: [3, 7] },
@@ -2385,7 +2385,7 @@ const CARRERA = {
     { n: 99, nivel: 3, nombre: "Seminario Integrador (Analista)",     intermedio: true, mod: "2C", horas: 4, regular: [16], aprobada: [6, 8, 13, 14],
       nota: "Título intermedio: da el título de Analista Desarrollador/a Universitario/a de Sistemas de Información. No es necesaria para Ingeniería y no suma horas. Para rendirla hay que tener aprobadas todas las asignaturas previas (1 a 23)." },
 
-    { n: 24, nivel: 4, abr: "LEG", nombre: "Legislación",                         mod: "2C", cc: true, horas: 2, regular: [11], aprobada: [] },
+    { n: 24, nivel: 4, abr: "LEG", nombre: "Legislación",                         mod: "2C", cc: true, horas: 2, libre: true, regular: [11], aprobada: [] },
     { n: 25, nivel: 4, abr: "ICS", nombre: "Ingeniería y Calidad de Software",    mod: "2C", cc: true, horas: 3, regular: [19, 20, 23], aprobada: [13, 14] },
     { n: 26, nivel: 4, abr: "RED", nombre: "Redes de Datos",                      mod: "A",  horas: 4, regular: [15, 21], aprobada: [] },
     { n: 27, nivel: 4, abr: "IOP", nombre: "Investigación Operativa",             mod: "A",  horas: 4, regular: [17, 22], aprobada: [] },
@@ -3713,9 +3713,9 @@ const MATERIAS = {
       { url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
     ]
   },
-  // Ingeniería y Sociedad (1º año, 2º cuatrimestre): 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y el TPI (el Trabajo Final Integrador).
+  // Ingeniería y Sociedad (1º año, 2º cuatrimestre): 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y el TFI (Trabajo Final Integrador).
   // El apunte de la cátedra (2023) numera las unidades distinto, así que está dividido por los temas de cada parcial,
-  // en material/ingenieria-y-sociedad/{p1,p2,tpi}/ (cada archivo dice qué secciones del apunte tiene). El TP 2 es nuestro (sin los nombres del grupo)
+  // en material/ingenieria-y-sociedad/{p1,p2,tfi}/ (cada archivo dice qué secciones del apunte tiene). El TP 2 es nuestro (sin los nombres del grupo)
   11: {
     comisiones: [
       { comision: "1K13", profesor: "Eugenia Maldonado", rol: "Teórico y práctico", examen: "Escrito y TP", recomendada: true, comentario: "Le pone onda, explica bien, da bastantes trabajos, te quiere aprobar. Es buena en general." }
@@ -3782,14 +3782,14 @@ const MATERIAS = {
         videos: []
       },
       {
-        id: "tpi",
-        titulo: "TPI",
-        descripcion: "Trabajo Final Integrador (TFI), en grupo: no se evalúan unidades sueltas de memoria, sino aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual. Informe escrito por avances y defensa oral.",
+        id: "tfi",
+        titulo: "TFI",
+        descripcion: "Trabajo Final Integrador, en grupo: no se evalúan unidades sueltas de memoria, sino aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual. Informe escrito por avances y defensa oral.",
         secciones: [],
         temas: {
-          titulo: "Cómo es el TPI",
+          titulo: "Cómo es el TFI",
           unidades: [
-            { titulo: "Qué tiene que tener el TPI", contenidos: [
+            { titulo: "Qué tiene que tener el TFI", contenidos: [
               "Qué se evalúa: aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual. No se evalúan las unidades por separado ni de memoria: hay que conectar el caso con la teoría.",
               "Eje · Entrevista a un ingeniero: un graduado (mejor de tu especialidad), su trayectoria, sus funciones, las competencias que pide el mercado y los dilemas éticos o sociales de su trabajo.",
               "Eje · Nuevas tecnologías: el impacto de la Industria 4.0 y 5.0 (automatización, inteligencia artificial, IoT y digitalización) en el trabajo, la producción y el rol del ingeniero en Argentina.",
@@ -3803,7 +3803,7 @@ const MATERIAS = {
           ]
         },
         material: [
-          { n: 1, nombre: "Consigna del Trabajo Final Integrador (2023)", nota: "Empezá por acá", detalle: "Un problema social de Córdoba: fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas, conclusiones y fuentes, el formato del informe y la presentación oral (2 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/tpi/01-consigna-del-tfi.pdf" }
+          { n: 1, nombre: "Consigna del Trabajo Final Integrador (2023)", nota: "Empezá por acá", detalle: "Un problema social de Córdoba: fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas, conclusiones y fuentes, el formato del informe y la presentación oral (2 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/tfi/01-consigna-del-tfi.pdf" }
         ],
         videos: []
       }
@@ -4222,6 +4222,8 @@ const descSec = k => DESC_SECCION[k] || "";
 const iconoSec = k => ({ teorico: ICON_BOOK, practico: ICON_PEN, tpi: ICON_LAYER })[k] || ICON_CHECK;
 /* Si una sección no está cargada en los datos, se muestra vacía */
 const seccion = (p, k) => ({ material: [], videos: [], ...(p[k] || {}) });   // una sección puede tener solo material o solo videos
+/* Para rendir el final casi todas hay que cursarlas; estas (libre: true en CARRERA) se pueden rendir libres */
+const TXT_LIBRE = "Se puede rendir el final libre, sin cursarla. Las demás materias hay que cursarlas para poder rendir el final.";
 const MOD = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatrimestre", "2C": "2º cuatrimestre", "1C-2C": "1º o 2º cuatrimestre" };
 const MOD_CORTO = { "ING": "Ingreso", "A": "Anual", "1C": "1º cuatr.", "2C": "2º cuatr.", "1C-2C": "1º o 2º cuatr." };
 const materia = n => CARRERA.materias.find(m => m.n === n) || CARRERA.electivas.find(e => e.n === n);
@@ -4787,7 +4789,7 @@ function filaPlan(x){
   const go = !el || MATERIAS[x.n] ? ` data-go="m${x.n}"` : "";
   return `
     <div class="pfila ${el ? "elec" : ""} ${estadoDe(id) ? "e-" + estadoDe(id) : ""}"${go}>
-      <span class="pnom">${abr(x)}<span>${esc(x.nombre)}${el ? ` <span class="tag elec-tag">Electiva</span>` : ""}${x.integradora ? ` <span class="tag">Integradora</span>` : ""}${MATERIAS[x.n] ? ` <span class="tag mat" title="Tiene apuntes, parciales o videos cargados">${ICON_BOOK}Material</span>` : ""}</span></span>
+      <span class="pnom">${abr(x)}<span>${esc(x.nombre)}${el ? ` <span class="tag elec-tag">Electiva</span>` : ""}${x.integradora ? ` <span class="tag">Integradora</span>` : ""}${x.libre ? ` <span class="tag libre" title="${esc(TXT_LIBRE)}">Se rinde libre</span>` : ""}</span></span>
       <span class="c cur" data-l="Cursado">${MOD_CORTO[x.mod]}${x.cc ? ` <span class="tag" title="Se puede cursar contra cuatrimestre">CC</span>` : ""}</span>
       <span class="c hs" data-l="${el ? "Créditos" : "Horas"}">${el ? `${x.creditos} créd.` : x.horas ? `${x.horas} hs` : "—"}</span>
       <span class="c cor ${x.regular.length ? "" : "vacia"}" data-l="Regularizadas">${celdaCorr(x.regular)}</span>
@@ -5010,6 +5012,7 @@ function viewMateria(m){
         <h1 class="mt-tit">${esc(m.nombre)}</h1>
       </div>
       <div class="mt-acc">
+        ${m.libre ? `<span class="mt-pill mt-libre" title="${esc(TXT_LIBRE)}">Se puede rendir libre</span>` : ""}
         ${c && c.condiciones ? aprobacion(c.condiciones) : ""}
         ${nZip ? `<button class="zip-btn mt-pill" data-zip="${m.n}" title="Todos los PDF y archivos de la materia, en carpetas con el mismo orden que la página (sin videos)">${ICON_DL}<span>ZIP completo</span><small>${nZip}</small></button>` : ""}
       </div>
