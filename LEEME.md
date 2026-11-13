@@ -264,6 +264,8 @@ Los bloques de `parciales` son las evaluaciones de la materia, no las unidades d
 
 Diseño de Sistemas de Información (`23`) tiene cuatro: 1º, 2º y 3º Parcial y el TPI, cada uno en una sola página (`secciones: []`). El 3º Parcial es de patrones de diseño y su material va **un grupo por patrón** (por ahora "Iterator"); para sumar otro (Adapter…), se agrega otro grupo con el nombre del patrón y sus archivos en `material/diseno-de-sistemas-de-informacion/p3/`.
 
+Ingeniería y Sociedad (`11`) tiene tres: 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y TPI, cada uno en una sola página. El apunte de la cátedra es de 2023 y numera las unidades distinto que el programa actual, así que está dividido por los temas de cada parcial (cada archivo dice qué secciones del apunte tiene) y agrupado en `partes` con el mismo nombre que los temas, para que la pestaña Temas muestre su archivo.
+
 Los temas de cada unidad van en el bloque de la evaluación donde se toman. Toda sección que se cargue lleva `material` y `videos`, aunque alguno quede vacío (`videos: []`).
 
 ## Secciones de un parcial a medida

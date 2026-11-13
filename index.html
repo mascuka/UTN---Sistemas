@@ -3706,14 +3706,108 @@ const MATERIAS = {
       { url: "https://www.youtube.com/watch?v=I1j7aGRj9gI" }
     ]
   },
-  // Ingeniería y Sociedad (1º año, 2º cuatrimestre): la comisión que cursamos y el TP 2 resuelto (sin los nombres del grupo)
+  // Ingeniería y Sociedad (1º año, 2º cuatrimestre): 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y el TPI (el Trabajo Final Integrador).
+  // El apunte de la cátedra (2023) numera las unidades distinto, así que está dividido por los temas de cada parcial,
+  // en material/ingenieria-y-sociedad/{p1,p2,tpi}/ (cada archivo dice qué secciones del apunte tiene). El TP 2 es nuestro (sin los nombres del grupo)
   11: {
     comisiones: [
       { comision: "1K13", profesor: "Eugenia Maldonado", rol: "Teórico y práctico", examen: "Escrito y TP", recomendada: true, comentario: "Le pone onda, explica bien, da bastantes trabajos, te quiere aprobar. Es buena en general." }
     ],
-    parciales: [],
-    actividades: [
-      { nombre: "TP 2 · Revoluciones industriales y el futuro del trabajo (resuelto)", detalle: "Cuadro de las cuatro revoluciones industriales, mapa mental de la 4.0 y sus beneficios, el artículo de Anfibia «Después de la pandemia, el tsunami tecnológico», el trabajo hace 50 años y hoy, el círculo virtuoso, la IA y cómo imaginamos la ciudad del futuro (13 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/actividades/tp2-revoluciones-industriales-y-futuro-del-trabajo.pdf" }
+    condiciones: {
+      directa: 8,
+      regular: 6,
+      aclaracion: "Para las dos hace falta el 75 % de asistencia. Regular: después se rinde un final oral (coloquio). Directa: promedio de 8 o más entre los parciales, los trabajos prácticos y el TFI.",
+      requisitos: [
+        { titulo: "Parciales", corto: "2 parciales ≥ 6", detalle: "El 1º por las Unidades 1 y 2 y el 2º por las Unidades 3 y 4, con nota mínima 6. Suelen ser de a 2. Se puede recuperar uno (por nota o por ausencia)." },
+        { titulo: "Trabajos prácticos", corto: "TP aprobados", detalle: "Se califican aprobado / no aprobado. Para la regular, la mitad aprobados; para la directa, el 75 %. Cuentan la fecha de entrega, la presentación y la participación de cada uno en el grupo." },
+        { titulo: "Trabajo Final Integrador (TFI)", corto: "TFI aprobado", detalle: "Informe grupal sobre un caso real o una problemática actual, con su defensa oral. Integra los contenidos de toda la materia." }
+      ]
+    },
+    parciales: [
+      {
+        id: "p1",
+        titulo: "1º Parcial",
+        descripcion: "Unidades 1 y 2: la universidad y la UTN, la ciencia y la tecnología, y la ingeniería como profesión. Suele ser de a 2.",
+        secciones: [],
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Universidad y UTN", contenidos: ["Historia de la universidad argentina", "La Reforma Universitaria de 1918", "Pilares y misión de la universidad", "Origen de la Universidad Obrera Nacional (UON), la Ley 14.855 y la creación de la FRC"] },
+            { titulo: "Ciencia y tecnología", contenidos: ["Conocimiento científico y método científico", "Evolución histórica del pensamiento científico", "Enfoque CTS (Ciencia, Tecnología y Sociedad)", "La ciencia en tiempos de la posverdad y la ciencia en Argentina"] },
+            { titulo: "Ingeniería", contenidos: ["Historia de la profesión", "Especialidades", "Rol social y funciones del ingeniero", "Competencias que pide hoy el mercado"] }
+          ]
+        },
+        material: [
+          { nivel: "esencial", grupo: "Apunte de la cátedra", descripcion: "El apunte 2023, dividido por los temas del parcial.", partes: [
+              { titulo: "Universidad y UTN", archivos: [
+                { nombre: "Apunte · Universidad y UTN", detalle: "Secciones 1.1 a 1.3: la universidad argentina, la Reforma del 18, su rol en la ciencia y la tecnología, la UON, la UTN y la FRC, y el perfil del ingeniero tecnológico (17 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/02-universidad-y-utn.pdf" }
+              ] },
+              { titulo: "Ciencia y tecnología", archivos: [
+                { nombre: "Apunte · Ciencia y tecnología", detalle: "Secciones 1.4 a 1.7: la historia del pensamiento científico, qué es ciencia, tecnología e ingeniería, el método científico, la posverdad y la ciencia y la tecnología en Argentina, con el trabajo práctico de la unidad (18 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/03-ciencia-y-tecnologia.pdf" }
+              ] },
+              { titulo: "Ingeniería", archivos: [
+                { nombre: "Apunte · Ingeniería: rol y competencias del ingeniero", detalle: "Sección 2.4: la profesionalización de la ingeniería, el rol del ingeniero del siglo XXI, el nuevo perfil profesional y las competencias digitales, interpersonales y verdes (13 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/04-ingenieria-rol-y-competencias.pdf" }
+              ] }
+          ] },
+          { nivel: "profundizar", grupo: "La materia", archivos: [
+            { nombre: "Programa y condiciones de aprobación (2023)", detalle: "El programa 2023 (numera las unidades distinto que ahora), los fundamentos, cómo se evalúa y las condiciones para regularizar y promocionar (4 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p1/01-programa-y-condiciones.pdf" }
+          ] }
+        ],
+        videos: []
+      },
+      {
+        id: "p2",
+        titulo: "2º Parcial",
+        descripcion: "Unidades 3 y 4: la industria y la economía argentina, el desarrollo sostenible y la ética profesional. Suele ser de a 2.",
+        secciones: [],
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Industria y economía", contenidos: ["Modelos económicos argentinos", "Historia de la industria en Córdoba", "Las revoluciones industriales", "Impacto de la Industria 4.0 y 5.0", "Desarrollo regional y bloques económicos"] },
+            { titulo: "Desarrollo sostenible", contenidos: ["Sostenibilidad", "Objetivos de Desarrollo Sostenible (ODS, Agenda 2030)", "Vinculación universidad-industria", "Género e inclusión en la ingeniería"] },
+            { titulo: "Ética y responsabilidad", contenidos: ["Ética profesional", "Responsabilidad social del ingeniero", "Impacto ambiental", "La ingeniería, la intimidad y la sociedad del siglo XXI"] }
+          ]
+        },
+        material: [
+          { nivel: "esencial", grupo: "Apunte de la cátedra", descripcion: "El apunte 2023, dividido por los temas del parcial.", partes: [
+              { titulo: "Industria y economía", archivos: [
+                { nombre: "Apunte · Revoluciones industriales e Industria 4.0", detalle: "Secciones 2.1 a 2.3: las revoluciones industriales, la Industria 4.0 (beneficios, energía y desafíos para la ingeniería), la Industria 4.0 y la universidad, y cómo cambia el trabajo (15 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/01-revoluciones-industriales-e-industria-4-0.pdf" },
+                { nombre: "Apunte · La industria argentina y en Córdoba", detalle: "Secciones 3.1 y 3.2: los modelos económicos argentinos, la industria en Córdoba, la Industria 4.0 y 5.0 en el país, el desarrollo regional y los bloques económicos (9 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/02-industria-argentina-y-cordoba.pdf" }
+              ] },
+              { titulo: "Desarrollo sostenible", archivos: [
+                { nombre: "Apunte · Desarrollo sostenible, ODS y género", detalle: "Secciones 3.3 y 3.4: sustentabilidad y género, los ODS y la Agenda 2030, la UTN y los ODS y el rol de la ingeniería en una sociedad inclusiva, con el trabajo práctico de la unidad (15 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/03-desarrollo-sostenible-ods-y-genero.pdf" }
+              ] },
+              { titulo: "Ética y responsabilidad", archivos: [
+                { nombre: "Apunte · Ética y responsabilidad del ingeniero", detalle: "Sección 2.5: conceptos de ética, el ejercicio profesional de la ingeniería y la intimidad en la sociedad del siglo XXI, con el trabajo práctico de la unidad (9 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/p2/04-etica-y-responsabilidad.pdf" }
+              ] }
+          ] },
+          { nivel: "esencial", grupo: "Trabajo práctico resuelto", descripcion: "Nuestro TP sobre las revoluciones industriales y el trabajo.", archivos: [
+            { nombre: "TP 2 · Revoluciones industriales y el futuro del trabajo (resuelto)", detalle: "Cuadro de las cuatro revoluciones industriales, mapa mental de la 4.0 y sus beneficios, el artículo de Anfibia «Después de la pandemia, el tsunami tecnológico», el trabajo hace 50 años y hoy, el círculo virtuoso, la IA y cómo imaginamos la ciudad del futuro (13 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/actividades/tp2-revoluciones-industriales-y-futuro-del-trabajo.pdf" }
+          ] }
+        ],
+        videos: []
+      },
+      {
+        id: "tpi",
+        titulo: "TPI",
+        descripcion: "Trabajo Final Integrador (TFI), en grupo: no se evalúan unidades sueltas de memoria, sino aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual. Informe escrito por avances y defensa oral.",
+        secciones: [],
+        temas: {
+          titulo: "Qué tiene que tener",
+          unidades: [
+            { titulo: "Qué se evalúa", contenidos: ["Aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual", "No se evalúan las unidades por separado ni de memoria: hay que conectar el caso con la teoría"] },
+            { titulo: "Ejes habituales", contenidos: ["Entrevista a un ingeniero graduado (mejor de tu especialidad): su trayectoria, sus funciones, las competencias que pide el mercado y los dilemas éticos o sociales de su trabajo", "Impacto de las nuevas tecnologías (Industria 4.0 y 5.0): automatización, inteligencia artificial, IoT y digitalización en el trabajo, la producción y el rol del ingeniero en Argentina", "Desarrollo sostenible y ODS: una empresa, un proyecto o una problemática local vista desde la sostenibilidad ambiental, el impacto en la comunidad y la Agenda 2030", "Ética y responsabilidad social: cómo las decisiones técnicas afectan a la sociedad y al ambiente", "Perspectiva de género e inclusión: el rol de la mujer y la diversidad en las carreras tecnológicas y en la industria"] },
+            { titulo: "El informe", contenidos: ["Escrito y en grupo, entregado por avances en el Aula Virtual", "Carátula institucional, introducción, desarrollo teórico-práctico, análisis de la entrevista o del caso, conclusiones y bibliografía", "En la consigna 2023 (un problema social de Córdoba): fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas desde la ingeniería, conclusiones de 30 líneas o más y fuentes en un anexo; hasta 10 páginas, Tahoma 12, interlineado 1,5"] },
+            { titulo: "La defensa oral (coloquio)", contenidos: ["Al final de la cursada, cada grupo expone frente al curso y los docentes, en general con diapositivas", "Preguntan a todos los integrantes: que cada uno domine el tema y sepa conectarlo con la teoría vista en clase"] }
+          ]
+        },
+        material: [
+          { nivel: "esencial", grupo: "La consigna", archivos: [
+            { nombre: "Consigna del Trabajo Final Integrador (2023)", nota: "Empezá por acá", detalle: "Un problema social de Córdoba: fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas, conclusiones y fuentes, el formato del informe y la presentación oral (2 págs.)", tipo: "PDF", url: "material/ingenieria-y-sociedad/tpi/01-consigna-del-tfi.pdf" }
+          ] }
+        ],
+        videos: []
+      }
     ]
   },
   // Cursillo de ingreso · Física: una sola parte (el examen) con el quiz, la guía resuelta, los exámenes viejos y los videos.
