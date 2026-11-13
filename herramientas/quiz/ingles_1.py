@@ -183,7 +183,7 @@ def armar_quiz():
         porsec[q['sec']].append({k: v for k, v in q.items() if k != 'sec'})
     return dict(
         titulo='Inglés 1 · Práctica para escribir',
-        descripcion='Frases y palabras cortas como las del parcial: escribís la respuesta y te dice si está bien. No importan las mayúsculas, las tildes ni el artículo del principio. Si tu traducción dice lo mismo con otras palabras, tocá «Mi respuesta también vale».',
+        descripcion='Frases y palabras cortas como las del parcial: escribís la respuesta y te dice si está bien. No importan las mayúsculas, las tildes ni el artículo del principio. Si no la sabés, «Ver respuesta»; si tu traducción dice lo mismo con otras palabras, «Mi respuesta también vale».',
         secciones=[dict(titulo=t, preguntas=porsec[k]) for k, t in SECCIONES if porsec[k]],
         glosario=GLOSARIO,
     )
