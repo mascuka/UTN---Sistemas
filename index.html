@@ -937,7 +937,7 @@
   .pt-fuentes a small{font-size:.76rem;color:var(--muted)}
   .pt-fuentes a.on{background:var(--card);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
   .tm-lista{border-top:1px solid var(--line)}
-  .tm-plano{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+  .tm-plano{display:grid;gap:12px}
   .tm-bloque{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
   .tm-bloque h3{display:flex;align-items:baseline;gap:6px;font:600 .98rem var(--sans);margin:0 0 6px}
   .tm-bloque h3 .tm-n{width:auto;font-size:1.05rem;color:var(--muted)}
@@ -3743,9 +3743,11 @@ const MATERIAS = {
         temas: {
           titulo: "Temas que entran",
           unidades: [
-            { titulo: "Universidad y UTN", contenidos: ["Historia de la universidad argentina", "La Reforma Universitaria de 1918", "Pilares y misión de la universidad", "Origen de la Universidad Obrera Nacional (UON), la Ley 14.855 y la creación de la FRC"] },
-            { titulo: "Ciencia y tecnología", contenidos: ["Conocimiento científico y método científico", "Evolución histórica del pensamiento científico", "Enfoque CTS (Ciencia, Tecnología y Sociedad)", "La ciencia en tiempos de la posverdad y la ciencia en Argentina"] },
-            { titulo: "Ingeniería", contenidos: ["Historia de la profesión", "Especialidades", "Rol social y funciones del ingeniero", "Competencias que pide hoy el mercado"] }
+            { titulo: "Temas del 1º Parcial", contenidos: [
+              "Universidad y UTN: historia de la universidad argentina, la Reforma Universitaria de 1918, pilares y misión de la universidad. Origen de la Universidad Obrera Nacional (UON), la Ley 14.855 y la creación de la FRC.",
+              "Ciencia y tecnología: conocimiento científico, método científico, evolución histórica del pensamiento científico y enfoque CTS (Ciencia, Tecnología y Sociedad). La ciencia en tiempos de la posverdad y la ciencia en Argentina.",
+              "Ingeniería: historia de la profesión, especialidades, rol social y funciones del ingeniero. Las competencias que pide hoy el mercado."
+            ] }
           ]
         },
         material: [
@@ -3763,9 +3765,11 @@ const MATERIAS = {
         temas: {
           titulo: "Temas que entran",
           unidades: [
-            { titulo: "Industria y economía", contenidos: ["Modelos económicos argentinos", "Historia de la industria en Córdoba", "Las revoluciones industriales", "Impacto de la Industria 4.0 y 5.0", "Desarrollo regional y bloques económicos"] },
-            { titulo: "Desarrollo sostenible", contenidos: ["Sostenibilidad", "Objetivos de Desarrollo Sostenible (ODS, Agenda 2030)", "Vinculación universidad-industria", "Género e inclusión en la ingeniería"] },
-            { titulo: "Ética y responsabilidad", contenidos: ["Ética profesional", "Responsabilidad social del ingeniero", "Impacto ambiental", "La ingeniería, la intimidad y la sociedad del siglo XXI"] }
+            { titulo: "Temas del 2º Parcial", contenidos: [
+              "Industria y economía: modelos económicos argentinos, historia de la industria en Córdoba, revoluciones industriales e impacto de la Industria 4.0 y 5.0. Desarrollo regional y bloques económicos.",
+              "Desarrollo sostenible: sostenibilidad, Objetivos de Desarrollo Sostenible (ODS, Agenda 2030) y vinculación universidad-industria. Género e inclusión en la ingeniería.",
+              "Ética y responsabilidad: ética profesional, responsabilidad social del ingeniero e impacto ambiental. La ingeniería, la intimidad y la sociedad del siglo XXI."
+            ] }
           ]
         },
         material: [
@@ -3783,12 +3787,19 @@ const MATERIAS = {
         descripcion: "Trabajo Final Integrador (TFI), en grupo: no se evalúan unidades sueltas de memoria, sino aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual. Informe escrito por avances y defensa oral.",
         secciones: [],
         temas: {
-          titulo: "Qué tiene que tener",
+          titulo: "Cómo es el TPI",
           unidades: [
-            { titulo: "Qué se evalúa", contenidos: ["Aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual", "No se evalúan las unidades por separado ni de memoria: hay que conectar el caso con la teoría"] },
-            { titulo: "Ejes habituales", contenidos: ["Entrevista a un ingeniero graduado (mejor de tu especialidad): su trayectoria, sus funciones, las competencias que pide el mercado y los dilemas éticos o sociales de su trabajo", "Impacto de las nuevas tecnologías (Industria 4.0 y 5.0): automatización, inteligencia artificial, IoT y digitalización en el trabajo, la producción y el rol del ingeniero en Argentina", "Desarrollo sostenible y ODS: una empresa, un proyecto o una problemática local vista desde la sostenibilidad ambiental, el impacto en la comunidad y la Agenda 2030", "Ética y responsabilidad social: cómo las decisiones técnicas afectan a la sociedad y al ambiente", "Perspectiva de género e inclusión: el rol de la mujer y la diversidad en las carreras tecnológicas y en la industria"] },
-            { titulo: "El informe", contenidos: ["Escrito y en grupo, entregado por avances en el Aula Virtual", "Carátula institucional, introducción, desarrollo teórico-práctico, análisis de la entrevista o del caso, conclusiones y bibliografía", "En la consigna 2023 (un problema social de Córdoba): fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas desde la ingeniería, conclusiones de 30 líneas o más y fuentes en un anexo; hasta 10 páginas, Tahoma 12, interlineado 1,5"] },
-            { titulo: "La defensa oral (coloquio)", contenidos: ["Al final de la cursada, cada grupo expone frente al curso y los docentes, en general con diapositivas", "Preguntan a todos los integrantes: que cada uno domine el tema y sepa conectarlo con la teoría vista en clase"] }
+            { titulo: "Qué tiene que tener el TPI", contenidos: [
+              "Qué se evalúa: aplicar de forma crítica los conceptos de toda la materia a un caso real o una problemática actual. No se evalúan las unidades por separado ni de memoria: hay que conectar el caso con la teoría.",
+              "Eje · Entrevista a un ingeniero: un graduado (mejor de tu especialidad), su trayectoria, sus funciones, las competencias que pide el mercado y los dilemas éticos o sociales de su trabajo.",
+              "Eje · Nuevas tecnologías: el impacto de la Industria 4.0 y 5.0 (automatización, inteligencia artificial, IoT y digitalización) en el trabajo, la producción y el rol del ingeniero en Argentina.",
+              "Eje · Desarrollo sostenible y ODS: una empresa, un proyecto o una problemática local vista desde la sostenibilidad ambiental, el impacto en la comunidad y la Agenda 2030.",
+              "Eje · Ética y responsabilidad social: cómo las decisiones técnicas afectan a la sociedad y al ambiente.",
+              "Eje · Género e inclusión: el rol de la mujer y la diversidad en las carreras tecnológicas y en la industria.",
+              "El informe: escrito y en grupo, entregado por avances en el Aula Virtual. Carátula institucional, introducción, desarrollo teórico-práctico, análisis de la entrevista o del caso, conclusiones y bibliografía.",
+              "La consigna 2023 (un problema social de Córdoba): fundamentación, diagnóstico en Córdoba, en otra ciudad del país y en una del exterior, propuestas desde la ingeniería, conclusiones de 30 líneas o más y fuentes en un anexo. Hasta 10 páginas, Tahoma 12, interlineado 1,5.",
+              "La defensa oral (coloquio): al final de la cursada, cada grupo expone frente al curso y los docentes, en general con diapositivas. Preguntan a todos los integrantes, para ver que cada uno domine el tema y sepa conectarlo con la teoría."
+            ] }
           ]
         },
         material: [
