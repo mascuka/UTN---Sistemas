@@ -3790,6 +3790,65 @@ const MATERIAS = {
       }
     ]
   },
+  // Inglés 2 (2º año): como Inglés 1, la misma profe. Una sola parte, la prueba de suficiencia (al entrar se abre directo).
+  // El quiz, el resumen y los resueltos se arman con herramientas/quiz/ingles_2.py. Archivos en material/ingles-2/
+  12: {
+    comisiones: [
+      { comision: "3K1", profesor: "Verónica de Loredo", rol: "Teórico y práctico", examen: "Escrito", recomendada: true, comentario: "Excelente profe: explica bien y da buenas oportunidades." }
+    ],
+    condiciones: {
+      directa: 7,
+      aclaracion: "Como en Inglés 1: apenas arranca la cursada se toma la prueba de suficiencia y con 7 o más la materia queda aprobada.",
+      requisitos: [
+        { titulo: "Prueba de suficiencia", corto: "Prueba ≥ 7", detalle: "Lectocomprensión de un texto técnico en inglés, respondiendo en español. Con 7 o más, aprobada." }
+      ]
+    },
+    parciales: [
+      {
+        id: "parcial",
+        titulo: "Parcial",
+        descripcion: "Es la prueba de suficiencia (PdS): se toma apenas arranca la cursada y con 7 o más la materia queda aprobada. Es lectocomprensión: un texto técnico en inglés con los renglones numerados y ejercicios que se responden en español.",
+        secciones: [],
+        quiz: "quiz/ingles-2.json",
+        quizSecciones: [
+          { t: "Traducir frases", d: "Frases sustantivas: el núcleo al final y se traduce de derecha a izquierda" },
+          { t: "Voz pasiva, tiempos y modales", nombre: "Voz pasiva y tiempos", d: "is called, were found, has been chosen, must be updated…" },
+          { t: "Casos especiales de estructura", nombre: "Casos especiales", d: "It anticipatorio, comparación, la forma -ing, when it comes to…" },
+          { t: "Vocabulario y falsos amigos", nombre: "Vocabulario", d: "Palabras de los textos y falsos amigos: actual, eventually…" },
+          { t: "Conectores", d: "Qué significa cada uno y qué relación marca: efecto, contraste, disyunción…" },
+          { t: "Antónimos", d: "El contrario de cada palabra, en inglés" },
+          { t: "Prefijos y sufijos", d: "Antónimos con un-, in-, dis-… y palabras con over-, under-, -less, -fold" },
+          { t: "Sinónimos", d: "Otra palabra en inglés que diga lo mismo" },
+          { t: "Referencia contextual", nombre: "Referentes", d: "Anafórica, catafórica, el autor o el lector, the former / the latter" },
+          { t: "Funciones comunicativas", d: "¿Definición, descripción o clasificación?" },
+          { t: "Completar (cloze)", nombre: "Cloze", d: "Completar con la palabra que falta, como en la prueba" }
+        ],
+        quizNombre: "Todo mezclado",
+        quizDetalle: "Un poco de cada cosa, como viene en la prueba",
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Temas de la prueba", contenidos: [
+              "Comprensión del texto: preguntas en español, verdadero o falso con el renglón que lo justifica, el título de cada parte y la idea principal.",
+              "Referencia contextual: anafórica y catafórica, exofórica (el autor, el lector), «it» anticipatorio, sustitución (one, some, do, so) y the former / the latter.",
+              "Léxico: sinónimos y antónimos en el renglón indicado, prefijos y sufijos, y falsos amigos.",
+              "Funciones del lenguaje (conectores): transcribir el nexo, su relación lógica (adición, causa, efecto, condición, tiempo, contraste, ejemplificación, propósito, resumen, disyunción, énfasis, aclaración) y traducirlo en su contexto.",
+              "Aspectos de estructura: frase sustantiva (pre y posmodificadores, caso posesivo), voz pasiva, tiempos verbales y modales, comparación y la forma -ing.",
+              "Funciones comunicativas (definición, descripción, clasificación) y cloze: completar un texto con palabras dadas."
+            ] }
+          ]
+        },
+        material: [
+          { n: 1, nombre: "Resumen · cómo se encara la prueba", nota: "Empezá por acá", detalle: "Cada ejercicio paso a paso, la referencia contextual, los conectores por relación, los casos especiales de estructura, la forma -ing y los prefijos y sufijos (3 págs.)", tipo: "PDF", url: "material/ingles-2/01-resumen-como-se-encara-la-prueba.pdf" },
+          { n: 2, nombre: "Simulacro de la prueba 2024 · Inteligencia artificial", detalle: "Referencia, léxico, nexos, estructura, verdadero o falso, título, idea principal, función comunicativa y cloze: primero en blanco y a continuación resuelto (6 págs.)", tipo: "PDF", url: "material/ingles-2/02-simulacro-de-la-prueba-2024-inteligencia-artificial.pdf" },
+          { n: 3, nombre: "Ejemplo de parcial · Ecological engineering", detalle: "Preguntas, traducción, referencia, antónimos, sinónimos y el cuadro de conectores, en blanco y resuelto (5 págs.)", tipo: "PDF", url: "material/ingles-2/03-ejemplo-de-parcial-ecological-engineering.pdf" },
+          { n: 4, nombre: "A tener en cuenta para la prueba · Referencia y conectores", detalle: "El apunte de la profe: tipos de referencia, pronombres y los conectores agrupados por relación (6 págs.)", tipo: "PDF", url: "material/ingles-2/04-a-tener-en-cuenta-referencia-y-conectores.pdf" },
+          { n: 5, nombre: "Manual de la cátedra 2023", detalle: "Todo el material de la materia: estrategias de lectura, formación de palabras, frase sustantiva, referencia, tiempos verbales, voz pasiva, comparación, conectores, la forma -ing y los verbos irregulares (58 págs.)", tipo: "PDF", url: "material/ingles-2/05-manual-de-la-catedra-2023.pdf" }
+        ],
+        videos: []
+      }
+    ]
+  },
   // Ingeniería y Sociedad (1º año, 2º cuatrimestre): 1º Parcial (Unidades 1 y 2), 2º Parcial (Unidades 3 y 4) y el TFI (Trabajo Final Integrador).
   // El apunte de la cátedra (2023) numera las unidades distinto, así que está dividido por los temas de cada parcial,
   // en material/ingenieria-y-sociedad/{p1,p2,tfi}/ (cada archivo dice qué secciones del apunte tiene). El TP 2 es nuestro (sin los nombres del grupo)
@@ -8693,6 +8752,12 @@ function quizCorregir(){
   if(r.ok) qz.bien++; else { qz.mal++; qz.erradas.push(qz.cola[qz.i]); }
   quizDevolucion(r.ok ? "bien" : "mal");
 }
+/* Lo que valía: la respuesta y las otras (sin repetir las que solo cambian en el artículo o una tilde) */
+function escRespHtml(q, estado){
+  const vis = qz.esc && qz.esc.casi || q.resp[0], n = normEsc(vis);
+  const otras = q.resp.filter((r, i, xs) => normEsc(r) !== n && xs.findIndex(x => normEsc(x) === normEsc(r)) === i);
+  return `<div class="qz-resp"><b>${estado === "mal" || (qz.esc && qz.esc.casi) ? "Se escribe" : "Respuesta"}:</b> ${esc(vis)}${otras.length ? `<span class="qz-otras">También vale: ${otras.map(esc).join(" · ")}</span>` : ""}</div>`;
+}
 /* Ver la respuesta sin escribir: cuenta como errada, así vuelve en «Repasar las que erré» */
 function quizVerEsc(){
   const inp = $("#qzIn");
@@ -8833,7 +8898,7 @@ function quizDevolucion(estado){
   $("#qzRes").innerHTML = `
     ${estado && estado !== "visto" ? `<div class="qz-veredicto ${estado}">${estado === "bien" ? (qz.esc && qz.esc.casi ? "¡Bien! Fijate cómo se escribe" : "¡Bien!") : q.tipo === "escribir" ? "No es así" : q.tipo === "armar" ? `${qz.arm.bien} de ${q.huecos.length} ${armarPieza(q)[1]} bien` : "No era esa"}</div>` : ""}
     ${q.tipo === "armar" && estado === "mal" ? `<div class="qz-resp"><b>El programa correcto:</b><pre>${esc(q.huecos.join("\n"))}</pre></div>` : ""}
-    ${q.tipo === "escribir" ? `<div class="qz-resp"><b>${estado === "mal" || (qz.esc && qz.esc.casi) ? "Se escribe" : "Respuesta"}:</b> ${esc(qz.esc && qz.esc.casi || q.resp[0])}${q.resp.length > 1 ? `<span class="qz-otras">También vale: ${q.resp.filter(r => r !== (qz.esc && qz.esc.casi || q.resp[0])).map(esc).join(" · ")}</span>` : ""}</div>` : ""}
+    ${q.tipo === "escribir" ? escRespHtml(q, estado) : ""}
     ${q.num ? `<div class="qz-resp"><b>Respuesta:</b> ${q.num}</div>` : ""}
     ${q.modelo ? `<div class="qz-resp"><b>Respuesta:</b> ${q.modelo}</div>` : ""}
     ${q.ex ? `<div class="qz-ex"><b>Por qué:</b> ${q.ex}</div>` : ""}

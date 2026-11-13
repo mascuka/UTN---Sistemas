@@ -1,0 +1,2986 @@
+{
+ "titulo": "Inglés 2 · Práctica para escribir",
+ "descripcion": "Frases y palabras cortas como las de la prueba: escribís la respuesta y te dice si está bien. No importan las mayúsculas, las tildes ni el artículo del principio. Si no la sabés, «Ver respuesta»; si tu traducción dice lo mismo con otras palabras, «Mi respuesta también vale».",
+ "secciones": [
+  {
+   "titulo": "Traducir frases",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>computer systems engineering</b>",
+     "resp": [
+      "ingeniería de sistemas informáticos",
+      "ingeniería en sistemas informáticos",
+      "ingeniería de sistemas de computación",
+      "ingeniería en sistemas de computación"
+     ],
+     "ph": "En español…",
+     "ex": "Núcleo al final: <i>engineering</i> → de sistemas → informáticos."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>computer-aided design</b>",
+     "resp": [
+      "diseño asistido por computadora",
+      "diseño asistido por ordenador",
+      "diseño asistido por computador"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>real-time processing</b>",
+     "resp": [
+      "procesamiento en tiempo real"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>signal processing</b>",
+     "resp": [
+      "procesamiento de señales",
+      "procesamiento de la señal"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>random access memory</b>",
+     "resp": [
+      "memoria de acceso aleatorio"
+     ],
+     "ph": "En español…",
+     "ex": "Núcleo: <i>memory</i> → de acceso → aleatorio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>graphics processing unit</b>",
+     "resp": [
+      "unidad de procesamiento gráfico",
+      "unidad de procesamiento de gráficos"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>digital integrated circuits</b>",
+     "resp": [
+      "circuitos integrados digitales"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>control unit</b>",
+     "resp": [
+      "unidad de control"
+     ],
+     "ph": "En español…",
+     "ex": "No es lo mismo que <i>unit control</i> (control de la unidad): el núcleo siempre es el último."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>unwanted disturbances</b>",
+     "resp": [
+      "perturbaciones no deseadas",
+      "interferencias no deseadas",
+      "alteraciones no deseadas"
+     ],
+     "ph": "En español…",
+     "ex": "<i>un-</i> + wanted = no deseado."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>emerging technologies</b>",
+     "resp": [
+      "tecnologías emergentes"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>our increasing energy demands</b>",
+     "resp": [
+      "nuestras crecientes demandas de energía",
+      "nuestras crecientes demandas energéticas",
+      "nuestras demandas de energía crecientes",
+      "nuestra creciente demanda de energía"
+     ],
+     "ph": "En español…",
+     "ex": "La forma <i>-ing</i> antes del sustantivo se traduce como adjetivo: <i>increasing</i> = creciente."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>the biggest market share</b>",
+     "resp": [
+      "la mayor participación de mercado",
+      "la mayor cuota de mercado",
+      "la mayor participación en el mercado",
+      "la mayor porción del mercado"
+     ],
+     "ph": "En español…",
+     "ex": "<i>the biggest</i> = el/la mayor (superlativo)."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>greenhouse gas emissions</b>",
+     "resp": [
+      "emisiones de gases de efecto invernadero",
+      "emisiones de gases invernadero"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>the circular economy action plan</b>",
+     "resp": [
+      "el plan de acción de economía circular",
+      "el plan de acción para la economía circular",
+      "el plan de acción de la economía circular"
+     ],
+     "ph": "En español…",
+     "ex": "Núcleo: <i>plan</i> → de acción → de economía circular."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>labeled training data</b>",
+     "resp": [
+      "datos de entrenamiento etiquetados"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>natural language processing</b>",
+     "resp": [
+      "procesamiento del lenguaje natural",
+      "procesamiento de lenguaje natural"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>speech recognition</b>",
+     "resp": [
+      "reconocimiento de voz",
+      "reconocimiento del habla"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>machine vision</b>",
+     "resp": [
+      "visión artificial",
+      "visión por computadora",
+      "visión de máquina"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>expert systems</b>",
+     "resp": [
+      "sistemas expertos"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>image recognition tool</b>",
+     "resp": [
+      "herramienta de reconocimiento de imágenes"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>treatment wetlands</b>",
+     "resp": [
+      "humedales de tratamiento"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>wastewater treatment</b>",
+     "resp": [
+      "tratamiento de aguas residuales",
+      "tratamiento de efluentes"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>air pollution control systems</b>",
+     "resp": [
+      "sistemas de control de la contaminación del aire",
+      "sistemas de control de contaminación del aire",
+      "sistemas de control de la contaminación atmosférica"
+     ],
+     "ph": "En español…",
+     "ex": "Núcleo: <i>systems</i> → de control → de la contaminación → del aire."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>Ohm's law</b>",
+     "resp": [
+      "la ley de Ohm",
+      "ley de Ohm"
+     ],
+     "ph": "En español…",
+     "ex": "Caso posesivo: <i>poseedor + 's + lo poseído</i> → lo poseído de el poseedor."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>the engineers' association</b>",
+     "resp": [
+      "la asociación de ingenieros",
+      "la asociación de los ingenieros"
+     ],
+     "ph": "En español…",
+     "ex": "Plural terminado en <i>s</i>: el posesivo es solo el apóstrofo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>children's computer class</b>",
+     "resp": [
+      "la clase de computación de los niños",
+      "clase de computación para niños",
+      "clase de informática de los niños",
+      "clase de informática para niños"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>today's largest enterprises</b>",
+     "resp": [
+      "las empresas más grandes de hoy",
+      "las empresas más grandes de la actualidad",
+      "las mayores empresas de hoy",
+      "las empresas más grandes actuales"
+     ],
+     "ph": "En español…",
+     "ex": "Caso posesivo (<i>today's</i> = de hoy) + superlativo (<i>largest</i> = las más grandes)."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>general purpose high performance computer</b>",
+     "resp": [
+      "computadora de alto rendimiento de propósito general",
+      "computadora de propósito general de alto rendimiento",
+      "computadora de uso general de alto rendimiento",
+      "computadora de alto rendimiento de uso general"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>courses containing a lot of units</b>",
+     "resp": [
+      "cursos que contienen muchas unidades",
+      "los cursos que contienen muchas unidades"
+     ],
+     "ph": "En español…",
+     "ex": "La forma <i>-ing</i> después del sustantivo se traduce «que + verbo»."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la frase sustantiva: <b>students admitted to an international course</b>",
+     "resp": [
+      "estudiantes admitidos en un curso internacional",
+      "alumnos admitidos en un curso internacional",
+      "los estudiantes admitidos en un curso internacional"
+     ],
+     "ph": "En español…",
+     "ex": "Participio pasado después del sustantivo: «admitidos»."
+    }
+   ]
+  },
+  {
+   "titulo": "Voz pasiva, tiempos y modales",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>These rules are called algorithms.</b>",
+     "resp": [
+      "estas reglas se llaman algoritmos",
+      "estas reglas son llamadas algoritmos",
+      "estas reglas se denominan algoritmos",
+      "a estas reglas se las llama algoritmos"
+     ],
+     "ph": "En español…",
+     "ex": "Voz pasiva en presente: <i>are called</i> = son llamadas, o mejor con «se»: se llaman."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>Many cars are built by computers.</b>",
+     "resp": [
+      "muchos autos son construidos por computadoras",
+      "muchos autos son fabricados por computadoras",
+      "las computadoras construyen muchos autos",
+      "muchos autos son construidos por las computadoras"
+     ],
+     "ph": "En español…",
+     "ex": "Pasiva: <i>are built</i> (to be + participio). La activa sería <i>computers build many cars</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>Programming languages are used by engineers.</b>",
+     "resp": [
+      "los lenguajes de programación son usados por los ingenieros",
+      "los lenguajes de programación son utilizados por los ingenieros",
+      "los ingenieros usan los lenguajes de programación"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>The paper was presented in Copenhagen.</b>",
+     "resp": [
+      "el trabajo fue presentado en Copenhague",
+      "el artículo fue presentado en Copenhague",
+      "el trabajo se presentó en Copenhague",
+      "la ponencia fue presentada en Copenhague"
+     ],
+     "ph": "En español…",
+     "ex": "Pasiva en pasado simple: <i>was</i> + participio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>The concept was introduced by Faraday.</b>",
+     "resp": [
+      "el concepto fue introducido por Faraday",
+      "el concepto fue presentado por Faraday"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>were found</b>",
+     "resp": [
+      "fueron encontrados",
+      "fueron encontradas",
+      "se encontraron",
+      "fueron hallados",
+      "se hallaron"
+     ],
+     "ph": "En español…",
+     "ex": "<i>find – found – found</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>was written</b>",
+     "resp": [
+      "fue escrito",
+      "fue escrita",
+      "se escribió"
+     ],
+     "ph": "En español…",
+     "ex": "<i>write – wrote – written</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>is being tested</b>",
+     "resp": [
+      "está siendo probado",
+      "está siendo probada",
+      "se está probando",
+      "está siendo testeado"
+     ],
+     "ph": "En español…",
+     "ex": "Pasiva en presente continuo: <i>is being</i> + participio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>have been published</b>",
+     "resp": [
+      "han sido publicados",
+      "han sido publicadas",
+      "se han publicado",
+      "fueron publicados",
+      "se publicaron"
+     ],
+     "ph": "En español…",
+     "ex": "Pasiva en presente perfecto: <i>have been</i> + participio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>will be built</b>",
+     "resp": [
+      "será construido",
+      "será construida",
+      "se construirá",
+      "va a ser construido",
+      "se va a construir"
+     ],
+     "ph": "En español…",
+     "ex": "Pasiva en futuro: <i>will be</i> + participio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>has been chosen</b>",
+     "resp": [
+      "ha sido elegido",
+      "ha sido elegida",
+      "fue elegido",
+      "fue elegida",
+      "se eligió",
+      "se ha elegido"
+     ],
+     "ph": "En español…",
+     "ex": "<i>choose – chose – chosen</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (voz pasiva): <b>it is estimated that</b>",
+     "resp": [
+      "se estima que",
+      "se calcula que"
+     ],
+     "ph": "En español…",
+     "ex": "<i>It</i> anticipatorio + pasiva → «se» impersonal."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (tiempo verbal): <b>has developed</b>",
+     "resp": [
+      "se ha desarrollado",
+      "ha desarrollado",
+      "se desarrolló",
+      "desarrolló"
+     ],
+     "ph": "En español…",
+     "ex": "Presente perfecto: <i>has</i> + participio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (tiempo verbal): <b>had already finished</b>",
+     "resp": [
+      "ya habían terminado",
+      "ya había terminado",
+      "ya habían finalizado",
+      "ya había finalizado"
+     ],
+     "ph": "En español…",
+     "ex": "Pasado perfecto: <i>had</i> + participio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (tiempo verbal): <b>He is working for a small company.</b>",
+     "resp": [
+      "está trabajando para una pequeña empresa",
+      "él está trabajando para una pequeña empresa",
+      "trabaja para una pequeña empresa",
+      "está trabajando para una empresa pequeña"
+     ],
+     "ph": "En español…",
+     "ex": "Presente continuo: <i>is</i> + forma <i>-ing</i> → -ando / -endo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (modal y voz pasiva): <b>must be updated</b>",
+     "resp": [
+      "debe ser actualizado",
+      "debe actualizarse",
+      "se debe actualizar",
+      "tiene que ser actualizado",
+      "debe ser actualizada"
+     ],
+     "ph": "En español…",
+     "ex": "Modal + <i>be</i> + participio."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (modal y voz pasiva): <b>can be reused</b>",
+     "resp": [
+      "puede ser reutilizado",
+      "puede reutilizarse",
+      "se puede reutilizar",
+      "pueden ser reutilizados",
+      "se pueden reutilizar",
+      "puede ser reusado"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (modal y voz pasiva): <b>should be avoided</b>",
+     "resp": [
+      "debería evitarse",
+      "debería ser evitado",
+      "se debería evitar",
+      "debe evitarse",
+      "deberían evitarse"
+     ],
+     "ph": "En español…",
+     "ex": "<i>should</i> = debería (consejo)."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (modal): <b>may</b>",
+     "resp": [
+      "puede",
+      "podría",
+      "quizás",
+      "tal vez",
+      "puede que"
+     ],
+     "ph": "En español…",
+     "ex": "Posibilidad."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (modal): <b>must</b>",
+     "resp": [
+      "debe",
+      "tiene que",
+      "deber",
+      "tener que"
+     ],
+     "ph": "En español…",
+     "ex": "Obligación."
+    }
+   ]
+  },
+  {
+   "titulo": "Casos especiales de estructura",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Traducí (it anticipatorio): <b>It is important to study English grammar.</b>",
+     "resp": [
+      "es importante estudiar gramática inglesa",
+      "es importante estudiar la gramática inglesa",
+      "es importante estudiar gramática en inglés",
+      "es importante estudiar la gramática del inglés"
+     ],
+     "ph": "En español…",
+     "ex": "<i>It</i> no se traduce: anticipa el sujeto real (<i>to study English grammar</i>)."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (it anticipatorio): <b>It is nice to see you again.</b>",
+     "resp": [
+      "es lindo verte de nuevo",
+      "es lindo verte otra vez",
+      "es bueno verte de nuevo",
+      "es bueno verte otra vez",
+      "qué lindo verte de nuevo",
+      "es lindo volver a verte"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (it anticipatorio): <b>it is expected that</b>",
+     "resp": [
+      "se espera que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (caso especial): <b>when it comes to</b>",
+     "resp": [
+      "cuando se trata de",
+      "en lo que respecta a",
+      "en cuanto a"
+     ],
+     "ph": "En español…",
+     "ex": "Expresión fija: no se traduce palabra por palabra."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (caso especial): <b>AI allows enterprises to improve their operations.</b>",
+     "resp": [
+      "la IA les permite a las empresas mejorar sus operaciones",
+      "la IA permite a las empresas mejorar sus operaciones",
+      "la IA permite que las empresas mejoren sus operaciones"
+     ],
+     "ph": "En español…",
+     "ex": "<i>allow</i> + persona + <i>to</i> + verbo = permitir a alguien + infinitivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (comparación): <b>as fast as</b>",
+     "resp": [
+      "tan rápido como",
+      "tan rápida como"
+     ],
+     "ph": "En español…",
+     "ex": "Igualdad: <i>as … as</i> = tan … como."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (comparación): <b>not as expensive as</b>",
+     "resp": [
+      "no tan caro como",
+      "no tan costoso como",
+      "no tan cara como"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (comparación): <b>faster than</b>",
+     "resp": [
+      "más rápido que",
+      "más rápida que"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-er than</i> = más … que."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (comparación): <b>the most accurate results</b>",
+     "resp": [
+      "los resultados más precisos",
+      "los resultados más exactos"
+     ],
+     "ph": "En español…",
+     "ex": "<i>the most</i> + adjetivo = el más…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (comparación): <b>the more, the better</b>",
+     "resp": [
+      "cuanto más, mejor",
+      "mientras más, mejor"
+     ],
+     "ph": "En español…",
+     "ex": "Doble comparación: cuanto más…, más…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (comparación): <b>the least expensive</b>",
+     "resp": [
+      "el menos caro",
+      "la menos cara",
+      "el menos costoso",
+      "lo menos caro"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí el comparativo de <b>GOOD</b>",
+     "resp": [
+      "better"
+     ],
+     "ph": "En inglés…",
+     "ex": "Irregular: <i>good – better – best</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí el superlativo de <b>BAD</b>",
+     "resp": [
+      "worst",
+      "the worst"
+     ],
+     "ph": "En inglés…",
+     "ex": "Irregular: <i>bad – worse – worst</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (forma -ing): <b>Swimming is a healthy activity.</b>",
+     "resp": [
+      "nadar es una actividad saludable",
+      "la natación es una actividad saludable"
+     ],
+     "ph": "En español…",
+     "ex": "Como sujeto: sustantivo o infinitivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (forma -ing): <b>tips for improving</b>",
+     "resp": [
+      "consejos para mejorar",
+      "recomendaciones para mejorar",
+      "sugerencias para mejorar"
+     ],
+     "ph": "En español…",
+     "ex": "Después de preposición: infinitivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (forma -ing): <b>the living cell</b>",
+     "resp": [
+      "la célula viva"
+     ],
+     "ph": "En español…",
+     "ex": "Antes del sustantivo: adjetivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (forma -ing): <b>He broke his leg skiing.</b>",
+     "resp": [
+      "se quebró la pierna esquiando",
+      "se rompió la pierna esquiando"
+     ],
+     "ph": "En español…",
+     "ex": "Función adverbial: -ando / -endo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (forma -ing): <b>The film was boring.</b>",
+     "resp": [
+      "la película fue aburrida",
+      "la película era aburrida"
+     ],
+     "ph": "En español…",
+     "ex": "Después de <i>to be</i> (verbo copulativo): adjetivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (forma -ing): <b>competing activities</b>",
+     "resp": [
+      "actividades que compiten",
+      "actividades en competencia",
+      "actividades competidoras"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (cuantificador): <b>Any evidence will be enough.</b>",
+     "resp": [
+      "cualquier prueba será suficiente",
+      "cualquier evidencia será suficiente",
+      "cualquier prueba va a ser suficiente"
+     ],
+     "ph": "En español…",
+     "ex": "En oraciones afirmativas <i>any</i> = cualquier."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (cuantificador): <b>Is there any evidence?</b>",
+     "resp": [
+      "hay pruebas",
+      "hay alguna prueba",
+      "hay evidencia",
+      "hay alguna evidencia"
+     ],
+     "ph": "En español…",
+     "ex": "En preguntas <i>any</i> casi no se traduce."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí (cuantificador): <b>I'm busy every day.</b>",
+     "resp": [
+      "estoy ocupado todos los días",
+      "estoy ocupada todos los días",
+      "estoy ocupado cada día"
+     ],
+     "ph": "En español…",
+     "ex": "<i>every</i> = cada / todos; <i>all day</i> = todo el día."
+    }
+   ]
+  },
+  {
+   "titulo": "Vocabulario y falsos amigos",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>actual</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "real",
+      "verdadero",
+      "efectivo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>actually</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "en realidad",
+      "realmente",
+      "de hecho"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>sensible</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "sensato",
+      "razonable"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>sensitive</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "sensible"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>attend</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "asistir",
+      "concurrir"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>assist</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "ayudar",
+      "atender",
+      "asistir",
+      "brindar asistencia"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>large</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "grande",
+      "amplio"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>embarrassed</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "avergonzado",
+      "avergonzada",
+      "apenado"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>injuries</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "lesiones",
+      "heridas"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>eventually</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "finalmente",
+      "con el tiempo",
+      "al final",
+      "a la larga"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>lately</b>? <i>(ojo: falso amigo)</i>",
+     "resp": [
+      "últimamente",
+      "recientemente"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>vendors</b>?",
+     "resp": [
+      "proveedores",
+      "vendedores"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>hype</b>?",
+     "resp": [
+      "expectativa",
+      "entusiasmo",
+      "furor",
+      "exageración",
+      "bombo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>insights</b>?",
+     "resp": [
+      "conocimientos",
+      "perspectivas",
+      "ideas",
+      "información valiosa",
+      "comprensión"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>enterprises</b>?",
+     "resp": [
+      "empresas",
+      "compañías"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>outcome</b>?",
+     "resp": [
+      "resultado"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>skills</b>?",
+     "resp": [
+      "habilidades",
+      "destrezas",
+      "competencias"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>wetlands</b>?",
+     "resp": [
+      "humedales"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>waste</b>?",
+     "resp": [
+      "residuos",
+      "desechos",
+      "desperdicio",
+      "basura"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>lifespan</b>?",
+     "resp": [
+      "vida útil",
+      "duración",
+      "vida"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>feedback</b>?",
+     "resp": [
+      "retroalimentación",
+      "devolución",
+      "respuesta"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>fine-tune</b>?",
+     "resp": [
+      "ajustar",
+      "afinar",
+      "perfeccionar",
+      "ajustar con precisión"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué significa <b>actionable</b>?",
+     "resp": [
+      "útil",
+      "aplicable",
+      "procesable",
+      "práctico",
+      "accionable"
+     ],
+     "ph": "En español…"
+    }
+   ]
+  },
+  {
+   "titulo": "Conectores",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>FURTHERMORE</b>",
+     "resp": [
+      "además",
+      "asimismo",
+      "más aún",
+      "por otra parte"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>FURTHERMORE</b>?",
+     "resp": [
+      "adición",
+      "agregado",
+      "adición-agregado",
+      "suma"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>furthermore</b> = además: adición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>AS WELL AS</b>",
+     "resp": [
+      "así como",
+      "así como también",
+      "además de",
+      "como también"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>AS WELL AS</b>?",
+     "resp": [
+      "adición",
+      "agregado",
+      "adición-agregado",
+      "suma"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>as well as</b> = así como: adición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>BOTH … AND</b>",
+     "resp": [
+      "tanto... como",
+      "tanto como"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>BOTH … AND</b>?",
+     "resp": [
+      "adición",
+      "agregado",
+      "adición-agregado",
+      "suma"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>both … and</b> = tanto... como: adición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>BESIDES</b>",
+     "resp": [
+      "además",
+      "además de",
+      "aparte de"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>BESIDES</b>?",
+     "resp": [
+      "adición",
+      "agregado",
+      "adición-agregado",
+      "suma"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>besides</b> = además: adición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>THEREFORE</b>",
+     "resp": [
+      "por lo tanto",
+      "por consiguiente",
+      "por ende",
+      "por eso"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>THEREFORE</b>?",
+     "resp": [
+      "efecto",
+      "consecuencia",
+      "resultado",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>therefore</b> = por lo tanto: efecto."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>THUS</b>",
+     "resp": [
+      "así",
+      "por lo tanto",
+      "de este modo",
+      "de esta manera",
+      "por consiguiente"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>THUS</b>?",
+     "resp": [
+      "efecto",
+      "consecuencia",
+      "resultado",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>thus</b> = así: efecto."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>HENCE</b>",
+     "resp": [
+      "por lo tanto",
+      "de ahí que",
+      "por ende",
+      "por eso",
+      "por consiguiente"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>HENCE</b>?",
+     "resp": [
+      "efecto",
+      "consecuencia",
+      "resultado",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>hence</b> = por lo tanto: efecto."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>CONSEQUENTLY</b>",
+     "resp": [
+      "en consecuencia",
+      "por consiguiente",
+      "consecuentemente",
+      "por lo tanto"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>CONSEQUENTLY</b>?",
+     "resp": [
+      "efecto",
+      "consecuencia",
+      "resultado",
+      "causa-efecto"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>consequently</b> = en consecuencia: efecto."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>OWING TO</b>",
+     "resp": [
+      "debido a",
+      "a causa de",
+      "gracias a"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>OWING TO</b>?",
+     "resp": [
+      "causa",
+      "causa-efecto",
+      "causalidad"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>owing to</b> = debido a: causa."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>DUE TO</b>",
+     "resp": [
+      "debido a",
+      "a causa de"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>DUE TO</b>?",
+     "resp": [
+      "causa",
+      "causa-efecto",
+      "causalidad"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>due to</b> = debido a: causa."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>BECAUSE OF</b>",
+     "resp": [
+      "debido a",
+      "a causa de",
+      "por"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>BECAUSE OF</b>?",
+     "resp": [
+      "causa",
+      "causa-efecto",
+      "causalidad"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>because of</b> = debido a: causa."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>UNLESS</b>",
+     "resp": [
+      "a menos que",
+      "a no ser que",
+      "salvo que",
+      "excepto que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>UNLESS</b>?",
+     "resp": [
+      "condición",
+      "condición-predicción",
+      "predicción"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>unless</b> = a menos que: condición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>PROVIDED THAT</b>",
+     "resp": [
+      "siempre que",
+      "siempre y cuando",
+      "con tal de que"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>PROVIDED THAT</b>?",
+     "resp": [
+      "condición",
+      "condición-predicción",
+      "predicción"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>provided that</b> = siempre que: condición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>AS LONG AS</b>",
+     "resp": [
+      "siempre que",
+      "siempre y cuando",
+      "mientras",
+      "en tanto"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>AS LONG AS</b>?",
+     "resp": [
+      "condición",
+      "condición-predicción",
+      "predicción"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>as long as</b> = siempre que: condición."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>MEANWHILE</b>",
+     "resp": [
+      "mientras tanto",
+      "entretanto"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>MEANWHILE</b>?",
+     "resp": [
+      "secuencia en el tiempo",
+      "tiempo",
+      "secuencia",
+      "temporal",
+      "secuencia temporal"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>meanwhile</b> = mientras tanto: secuencia en el tiempo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>EVENTUALLY</b>",
+     "resp": [
+      "finalmente",
+      "con el tiempo",
+      "al final",
+      "a la larga"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>EVENTUALLY</b>?",
+     "resp": [
+      "secuencia en el tiempo",
+      "tiempo",
+      "secuencia",
+      "temporal",
+      "secuencia temporal"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>eventually</b> = finalmente: secuencia en el tiempo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>NEVERTHELESS</b>",
+     "resp": [
+      "sin embargo",
+      "no obstante",
+      "aun así"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>NEVERTHELESS</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>nevertheless</b> = sin embargo: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>WHEREAS</b>",
+     "resp": [
+      "mientras que",
+      "en tanto que",
+      "en cambio"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>WHEREAS</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>whereas</b> = mientras que: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>DESPITE</b>",
+     "resp": [
+      "a pesar de",
+      "pese a"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>DESPITE</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>despite</b> = a pesar de: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>EVEN THOUGH</b>",
+     "resp": [
+      "aunque",
+      "si bien",
+      "a pesar de que",
+      "aun cuando"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>EVEN THOUGH</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>even though</b> = aunque: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>ON THE OTHER HAND</b>",
+     "resp": [
+      "por otro lado",
+      "por otra parte",
+      "en cambio"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>ON THE OTHER HAND</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>on the other hand</b> = por otro lado: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>YET</b>",
+     "resp": [
+      "sin embargo",
+      "no obstante",
+      "pero",
+      "aun así"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>YET</b>?",
+     "resp": [
+      "contraste",
+      "oposición",
+      "concesión"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>yet</b> = sin embargo: contraste."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>FOR INSTANCE</b>",
+     "resp": [
+      "por ejemplo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>FOR INSTANCE</b>?",
+     "resp": [
+      "ejemplificación",
+      "ejemplo",
+      "enumeración"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>for instance</b> = por ejemplo: ejemplificación."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>NAMELY</b>",
+     "resp": [
+      "a saber",
+      "es decir",
+      "concretamente",
+      "específicamente"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>NAMELY</b>?",
+     "resp": [
+      "ejemplificación",
+      "ejemplo",
+      "enumeración"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>namely</b> = a saber: ejemplificación."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>IN ORDER TO</b>",
+     "resp": [
+      "para",
+      "con el fin de",
+      "a fin de"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>IN ORDER TO</b>?",
+     "resp": [
+      "propósito",
+      "finalidad",
+      "intención",
+      "propósito, intención, finalidad"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>in order to</b> = para: propósito."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>SO THAT</b>",
+     "resp": [
+      "para que",
+      "de modo que",
+      "de manera que",
+      "así"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>SO THAT</b>?",
+     "resp": [
+      "propósito",
+      "finalidad",
+      "intención",
+      "propósito, intención, finalidad"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>so that</b> = para que: propósito."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>SO AS TO</b>",
+     "resp": [
+      "para",
+      "con el fin de",
+      "a fin de",
+      "de modo de"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>SO AS TO</b>?",
+     "resp": [
+      "propósito",
+      "finalidad",
+      "intención",
+      "propósito, intención, finalidad"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>so as to</b> = para: propósito."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>IN SUMMARY</b>",
+     "resp": [
+      "en resumen",
+      "en síntesis",
+      "resumiendo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>IN SUMMARY</b>?",
+     "resp": [
+      "resumen",
+      "conclusión",
+      "recapitulación"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>in summary</b> = en resumen: resumen."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>IN CONCLUSION</b>",
+     "resp": [
+      "en conclusión",
+      "para concluir",
+      "para terminar"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>IN CONCLUSION</b>?",
+     "resp": [
+      "resumen",
+      "conclusión",
+      "recapitulación"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>in conclusion</b> = en conclusión: resumen."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>EITHER … OR</b>",
+     "resp": [
+      "o... o",
+      "ya sea... o",
+      "o bien... o"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>EITHER … OR</b>?",
+     "resp": [
+      "disyunción",
+      "alternancia",
+      "disyunción o alternancia",
+      "alternativa"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>either … or</b> = o... o: disyunción."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>NEITHER … NOR</b>",
+     "resp": [
+      "ni... ni"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>NEITHER … NOR</b>?",
+     "resp": [
+      "disyunción",
+      "alternancia",
+      "disyunción o alternancia",
+      "alternativa"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>neither … nor</b> = ni... ni: disyunción."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>WHETHER … OR</b>",
+     "resp": [
+      "si... o",
+      "ya sea... o"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>WHETHER … OR</b>?",
+     "resp": [
+      "disyunción",
+      "alternancia",
+      "disyunción o alternancia",
+      "alternativa"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>whether … or</b> = si... o: disyunción."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>ABOVE ALL</b>",
+     "resp": [
+      "sobre todo",
+      "por sobre todo",
+      "ante todo",
+      "más que nada"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>ABOVE ALL</b>?",
+     "resp": [
+      "énfasis",
+      "repetición",
+      "repetición o énfasis"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>above all</b> = sobre todo: énfasis."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>INDEED</b>",
+     "resp": [
+      "de hecho",
+      "en efecto",
+      "efectivamente",
+      "realmente"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>INDEED</b>?",
+     "resp": [
+      "énfasis",
+      "repetición",
+      "repetición o énfasis"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>indeed</b> = de hecho: énfasis."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>THAT IS TO SAY</b>",
+     "resp": [
+      "es decir",
+      "o sea",
+      "esto es"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>THAT IS TO SAY</b>?",
+     "resp": [
+      "aclaración",
+      "explicación",
+      "reformulación"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>that is to say</b> = es decir: aclaración."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí el conector <b>I.E.</b>",
+     "resp": [
+      "es decir",
+      "o sea",
+      "esto es"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué relación establece el conector <b>I.E.</b>?",
+     "resp": [
+      "aclaración",
+      "explicación",
+      "reformulación"
+     ],
+     "ph": "adición, contraste, causa, efecto, condición, tiempo, propósito…",
+     "ex": "<b>i.e.</b> = es decir: aclaración."
+    }
+   ]
+  },
+  {
+   "titulo": "Antónimos",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>ARTIFICIAL</b>",
+     "resp": [
+      "natural"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>APART</b>",
+     "resp": [
+      "together"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>LARGEST</b>",
+     "resp": [
+      "smallest"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>INCREASE</b>",
+     "resp": [
+      "decrease",
+      "reduce",
+      "diminish",
+      "decline"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>DIMINISH</b>",
+     "resp": [
+      "increase",
+      "grow",
+      "rise",
+      "amplify"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>PRESENCE</b>",
+     "resp": [
+      "absence"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>SLOWLY</b>",
+     "resp": [
+      "quickly",
+      "rapidly",
+      "fast"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>UPPER</b>",
+     "resp": [
+      "lower"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>INNER</b>",
+     "resp": [
+      "outer"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>FRONT</b>",
+     "resp": [
+      "back",
+      "rear"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>CHEAP</b>",
+     "resp": [
+      "expensive",
+      "costly"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>INPUT</b>",
+     "resp": [
+      "output"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>ATTRACTION</b>",
+     "resp": [
+      "repulsion"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>BUY</b>",
+     "resp": [
+      "sell"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>MAXIMUM</b>",
+     "resp": [
+      "minimum"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>SUCCESS</b>",
+     "resp": [
+      "failure"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>PRIVATE</b>",
+     "resp": [
+      "public"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>FIRST</b>",
+     "resp": [
+      "last"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>MANY</b>",
+     "resp": [
+      "few"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un antónimo de <b>FORWARD</b>",
+     "resp": [
+      "backward",
+      "backwards"
+     ],
+     "ph": "En inglés…"
+    }
+   ]
+  },
+  {
+   "titulo": "Prefijos y sufijos",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>APPLICABLE</b> con un prefijo",
+     "resp": [
+      "inapplicable"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>ACCURATE</b> con un prefijo",
+     "resp": [
+      "inaccurate"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>MATURE</b> con un prefijo",
+     "resp": [
+      "immature"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>im-</i> delante de m, p y b."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>LEGIBLE</b> con un prefijo",
+     "resp": [
+      "illegible"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>il-</i> delante de l."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>RESPONSIBLE</b> con un prefijo",
+     "resp": [
+      "irresponsible"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>ir-</i> delante de r."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>FAIR</b> con un prefijo",
+     "resp": [
+      "unfair"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>AGREE</b> con un prefijo",
+     "resp": [
+      "disagree"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>EMPLOYED</b> con un prefijo",
+     "resp": [
+      "unemployed"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>PATIENT</b> con un prefijo",
+     "resp": [
+      "impatient"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>POLITE</b> con un prefijo",
+     "resp": [
+      "impolite"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>PREDICTABLE</b> con un prefijo",
+     "resp": [
+      "unpredictable"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Formá el antónimo de <b>CLOCKWISE</b> con un prefijo",
+     "resp": [
+      "counterclockwise",
+      "anticlockwise"
+     ],
+     "ph": "En inglés…",
+     "ex": "<i>counter-</i>: lo contrario."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con prefijo: <b>underestimate</b>",
+     "resp": [
+      "subestimar",
+      "subvalorar"
+     ],
+     "ph": "En español…",
+     "ex": "<i>under-</i>: por debajo, insuficiente."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con prefijo: <b>overestimate</b>",
+     "resp": [
+      "sobreestimar",
+      "sobrestimar",
+      "sobrevalorar"
+     ],
+     "ph": "En español…",
+     "ex": "<i>over-</i>: por encima, excesivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con prefijo: <b>misunderstanding</b>",
+     "resp": [
+      "malentendido"
+     ],
+     "ph": "En español…",
+     "ex": "<i>mis-</i>: mal."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con prefijo: <b>rewrite</b>",
+     "resp": [
+      "reescribir",
+      "volver a escribir"
+     ],
+     "ph": "En español…",
+     "ex": "<i>re-</i>: de nuevo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con prefijo: <b>self-service</b>",
+     "resp": [
+      "autoservicio"
+     ],
+     "ph": "En español…",
+     "ex": "<i>self-</i>: auto-."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con prefijo: <b>postwar</b>",
+     "resp": [
+      "posguerra",
+      "de posguerra"
+     ],
+     "ph": "En español…",
+     "ex": "<i>post-</i>: después."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>shorten</b>",
+     "resp": [
+      "acortar"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-en</i>: adjetivo → verbo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>widen</b>",
+     "resp": [
+      "ensanchar",
+      "ampliar"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>twofold</b>",
+     "resp": [
+      "doble",
+      "el doble",
+      "duplicado"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-fold</i>: multiplicado por."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>jobless</b>",
+     "resp": [
+      "desempleado",
+      "sin trabajo",
+      "desocupado"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-less</i>: sin."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>driverless</b>",
+     "resp": [
+      "sin conductor",
+      "autónomo"
+     ],
+     "ph": "En español…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>reliable</b>",
+     "resp": [
+      "confiable",
+      "fiable"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-able</i>: verbo → adjetivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>employee</b>",
+     "resp": [
+      "empleado",
+      "empleada"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-ee</i>: la persona que recibe la acción."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>employer</b>",
+     "resp": [
+      "empleador",
+      "empleadora"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-er</i>: la persona que la hace."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>usefulness</b>",
+     "resp": [
+      "utilidad"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-ness</i>: adjetivo → sustantivo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Traducí la palabra con sufijo: <b>northward</b>",
+     "resp": [
+      "hacia el norte",
+      "rumbo al norte"
+     ],
+     "ph": "En español…",
+     "ex": "<i>-ward</i>: en dirección a."
+    }
+   ]
+  },
+  {
+   "titulo": "Sinónimos",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>PARTICULARLY</b>",
+     "resp": [
+      "especially",
+      "specially"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>SUGGESTIONS</b>",
+     "resp": [
+      "recommendations",
+      "proposals",
+      "advice"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>TRADITIONAL</b>",
+     "resp": [
+      "conventional"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>RESTRICTIONS</b>",
+     "resp": [
+      "limitations",
+      "limits",
+      "constraints"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>GOALS</b>",
+     "resp": [
+      "objectives",
+      "aims",
+      "targets"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>QUICKLY</b>",
+     "resp": [
+      "rapidly",
+      "fast",
+      "swiftly"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>HUGE</b>",
+     "resp": [
+      "enormous",
+      "vast",
+      "massive",
+      "immense"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>OUTCOME</b>",
+     "resp": [
+      "result"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>ENTERPRISES</b>",
+     "resp": [
+      "companies",
+      "firms",
+      "businesses",
+      "corporations"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>IMPROVE</b>",
+     "resp": [
+      "enhance",
+      "upgrade",
+      "better"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>ENSURE</b>",
+     "resp": [
+      "guarantee",
+      "assure",
+      "secure"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>OBTAIN</b>",
+     "resp": [
+      "get",
+      "acquire",
+      "gain"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>REDUCE</b>",
+     "resp": [
+      "decrease",
+      "diminish",
+      "lower",
+      "cut"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>PURPOSE</b>",
+     "resp": [
+      "aim",
+      "goal",
+      "objective",
+      "intention"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>PRECISE</b>",
+     "resp": [
+      "accurate",
+      "exact"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>CHOOSE</b>",
+     "resp": [
+      "select",
+      "pick",
+      "elect"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>BEGIN</b>",
+     "resp": [
+      "start",
+      "commence"
+     ],
+     "ph": "En inglés…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Escribí en inglés un sinónimo de <b>IMPORTANT</b>",
+     "resp": [
+      "significant",
+      "relevant",
+      "crucial",
+      "essential"
+     ],
+     "ph": "En inglés…"
+    }
+   ]
+  },
+  {
+   "titulo": "Referencia contextual",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEY</b>?<br><i>«Russell and Norvig published a book on AI. In it, THEY delve into four definitions of AI.»</i>",
+     "resp": [
+      "Russell and Norvig",
+      "Russell y Norvig"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Anafórica: retoma algo que apareció antes."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>IT</b>?<br><i>«Russell and Norvig published a book on AI. In IT, they delve into four definitions of AI.»</i>",
+     "resp": [
+      "the book",
+      "book",
+      "el libro",
+      "a book on AI"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THEIR</b>?<br><i>«Many mobile devices incorporate speech recognition into THEIR systems.»</i>",
+     "resp": [
+      "mobile devices",
+      "devices",
+      "dispositivos móviles",
+      "los dispositivos móviles"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>HE</b>?<br><i>«After HE received her questions by email, the engineer sent back the results to Alice.»</i>",
+     "resp": [
+      "the engineer",
+      "engineer",
+      "el ingeniero"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Catafórica: el referente aparece después."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>HER</b>?<br><i>«After he received HER questions by email, the engineer sent back the results to Alice.»</i>",
+     "resp": [
+      "Alice"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Catafórica."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>IT</b>?<br><i>«IT is important to study English grammar.»</i>",
+     "resp": [
+      "to study English grammar",
+      "estudiar gramática inglesa",
+      "it anticipatorio",
+      "anticipatory it"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "«It» anticipatorio: anticipa el sujeto real, que está más adelante."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ME</b>?<br><i>«Let ME explain the concept to you.»</i>",
+     "resp": [
+      "el autor",
+      "autor",
+      "the author"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Exofórica: la primera persona es EL AUTOR."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>YOU</b>?<br><i>«Let me explain the concept to YOU.»</i>",
+     "resp": [
+      "el lector",
+      "lector",
+      "the reader",
+      "los lectores"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Exofórica: la segunda persona es EL LECTOR."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>WE</b>?<br><i>«As conversations emerge around the ethics of AI, WE can begin to see the first problems.»</i>",
+     "resp": [
+      "el autor",
+      "autor",
+      "the author",
+      "el autor y los lectores"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Exofórica, primera persona: EL AUTOR."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THE FORMER</b>?<br><i>«Both hardware and software need to be considered. THE FORMER refers to the actual machinery.»</i>",
+     "resp": [
+      "hardware",
+      "el hardware"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "<i>the former</i> = el primero de los dos."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THE LATTER</b>?<br><i>«Both hardware and software need to be considered. THE LATTER refers to the programs.»</i>",
+     "resp": [
+      "software",
+      "el software"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "<i>the latter</i> = el segundo (el último) de los dos."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>SOME</b>?<br><i>«Most programs are user-friendly but SOME are very complicated.»</i>",
+     "resp": [
+      "programs",
+      "some programs",
+      "programas",
+      "algunos programas"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Sustitución: <i>some</i> reemplaza al sustantivo para no repetirlo."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>OTHERS</b>?<br><i>«Price is important to some people, while quality is important to OTHERS.»</i>",
+     "resp": [
+      "other people",
+      "people",
+      "otras personas",
+      "otros"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ONE</b>?<br><i>«This is the old edition; I think I will buy the new ONE.»</i>",
+     "resp": [
+      "edition",
+      "the new edition",
+      "edición",
+      "la edición",
+      "la nueva edición"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Sustitución nominal: <i>one</i> = el núcleo que no se repite."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>DO</b>?<br><i>«I don't know the meaning of those words and I don't believe you DO either.»</i>",
+     "resp": [
+      "know the meaning of those words",
+      "saber el significado de esas palabras",
+      "saber el significado",
+      "know the meaning"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Sustitución verbal: <i>do</i> reemplaza al verbo y su complemento."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>SO</b>?<br><i>«I am sure I will pass the exam and SO will you.»</i>",
+     "resp": [
+      "pass the exam",
+      "aprobar el examen"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "Sustitución verbal con <i>so</i>."
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>THESE SMART MACHINES</b>?<br><i>«Everyone uses computers. THESE SMART MACHINES make their lives easier.»</i>",
+     "resp": [
+      "computers",
+      "las computadoras",
+      "computadoras"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>ITS</b>?<br><i>«Physics is one of the most fundamental sciences, and ITS main goal is to understand the universe.»</i>",
+     "resp": [
+      "physics",
+      "la física",
+      "física"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>WHICH</b>?<br><i>«An operating system is a master control program WHICH controls the functions of the computer.»</i>",
+     "resp": [
+      "a master control program",
+      "master control program",
+      "an operating system",
+      "operating system",
+      "el sistema operativo",
+      "el programa de control maestro"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Referencia contextual: ¿a qué o a quién se refiere <b>WHOSE</b>?<br><i>«Al Schoenbrunn was an engineer WHOSE career involved the construction of nuclear reactors.»</i>",
+     "resp": [
+      "Al Schoenbrunn",
+      "an engineer",
+      "engineer",
+      "el ingeniero"
+     ],
+     "ph": "La palabra del texto, o «el autor» / «el lector»…",
+     "ex": "<i>whose</i> = cuyo/a: de quién es lo que sigue."
+    }
+   ]
+  },
+  {
+   "titulo": "Funciones comunicativas",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«Artificial intelligence is the simulation of human intelligence processes by machines.»</i>",
+     "resp": [
+      "definición",
+      "definir"
+     ],
+     "ph": "Definición, descripción o clasificación",
+     "ex": "Dice <b>qué es</b>: «X is …»."
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«Loop: A loop is any closed path in a circuit.»</i>",
+     "resp": [
+      "definición",
+      "definir"
+     ],
+     "ph": "Definición, descripción o clasificación"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«Ampere: standard unit for measuring an electric current.»</i>",
+     "resp": [
+      "definición",
+      "definir"
+     ],
+     "ph": "Definición, descripción o clasificación"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«Telecommunications is the transmission of signals over a distance for the purpose of communication.»</i>",
+     "resp": [
+      "definición",
+      "definir"
+     ],
+     "ph": "Definición, descripción o clasificación"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«Engineering is broken down into several sub-disciplines: civil, mechanical, electrical and chemical engineering.»</i>",
+     "resp": [
+      "clasificación",
+      "clasificar"
+     ],
+     "ph": "Definición, descripción o clasificación",
+     "ex": "Divide algo en <b>tipos</b> o grupos."
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«AI programming focuses on three cognitive skills: learning, reasoning and self-correction.»</i>",
+     "resp": [
+      "clasificación",
+      "clasificar"
+     ],
+     "ph": "Definición, descripción o clasificación"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«Computers can be divided into supercomputers, mainframes, minicomputers and microcomputers.»</i>",
+     "resp": [
+      "clasificación",
+      "clasificar"
+     ],
+     "ph": "Definición, descripción o clasificación"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«The device is small, light and made of aluminium. It has a touch screen and two USB ports.»</i>",
+     "resp": [
+      "descripción",
+      "describir"
+     ],
+     "ph": "Definición, descripción o clasificación",
+     "ex": "Dice <b>cómo es</b>: forma, partes, características."
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«The new campus has 75,000 square metres of solar panels on its roof.»</i>",
+     "resp": [
+      "descripción",
+      "describir"
+     ],
+     "ph": "Definición, descripción o clasificación"
+    },
+    {
+     "tipo": "escribir",
+     "en": "¿Qué función comunicativa tiene este fragmento?<br><i>«The circuit board is green and rectangular, with dozens of small components soldered to it.»</i>",
+     "resp": [
+      "descripción",
+      "describir"
+     ],
+     "ph": "Definición, descripción o clasificación"
+    }
+   ]
+  },
+  {
+   "titulo": "Completar (cloze)",
+   "preguntas": [
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«What are the ___ and disadvantages of artificial intelligence?»</i><br><small>Elegí entre: advantages · are · because · more · while</small>",
+     "resp": [
+      "advantages"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«Deep learning technologies ___ quickly evolving.»</i><br><small>Elegí entre: advantages · are · because · more · while</small>",
+     "resp": [
+      "are"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«They are evolving primarily ___ AI processes large amounts of data much faster.»</i><br><small>Elegí entre: advantages · are · because · more · while</small>",
+     "resp": [
+      "because"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«AI makes predictions ___ accurately than humanly possible.»</i><br><small>Elegí entre: advantages · are · because · more · while</small>",
+     "resp": [
+      "more"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«___ the huge volume of data would bury a human researcher, AI can turn it into actionable information.»</i><br><small>Elegí entre: advantages · are · because · more · while</small>",
+     "resp": [
+      "while"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«It is expensive to ___ the large amounts of data that AI programming requires.»</i><br><small>Elegí entre: process · requires · disadvantage</small>",
+     "resp": [
+      "process"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«It is expensive to process the large amounts of data that AI programming ___.»</i><br><small>Elegí entre: process · requires · disadvantage</small>",
+     "resp": [
+      "requires"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«This system is as fast ___ that one.»</i><br><small>Elegí entre: as · than · the · most</small>",
+     "resp": [
+      "as"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«The new processor is faster ___ the old one.»</i><br><small>Elegí entre: as · than · the · most</small>",
+     "resp": [
+      "than"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«The more RAM your computer can hold, ___ better.»</i><br><small>Elegí entre: as · than · the · most</small>",
+     "resp": [
+      "the"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«Python is one of the ___ popular programming languages.»</i><br><small>Elegí entre: as · than · the · most</small>",
+     "resp": [
+      "most"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«Programming languages are ___ by engineers.»</i><br><small>Elegí entre: use · uses · used · using</small>",
+     "resp": [
+      "used"
+     ],
+     "ph": "Una palabra…"
+    },
+    {
+     "tipo": "escribir",
+     "en": "Completá con una palabra: <i>«Courses ___ a lot of units are hard to study.»</i><br><small>Elegí entre: contain · containing · contained</small>",
+     "resp": [
+      "containing"
+     ],
+     "ph": "Una palabra…"
+    }
+   ]
+  }
+ ],
+ "glosario": [
+  {
+   "t": "Frase sustantiva",
+   "que": "Un grupo de palabras sin verbo conjugado cuyo núcleo es un sustantivo. En inglés los modificadores van <b>antes</b> del núcleo (el último); en español, después: se traduce de derecha a izquierda.",
+   "re": "frase sustantiva"
+  },
+  {
+   "t": "Caso posesivo",
+   "que": "<i>poseedor + 's + lo poseído</i> → «lo poseído de el poseedor». Si el poseedor es un plural terminado en s, va solo el apóstrofo (<i>boys' games</i> = los juegos de los chicos).",
+   "re": "\\w'(s\\b|\\s)"
+  },
+  {
+   "t": "Voz pasiva",
+   "que": "<i>to be</i> (en el tiempo que sea) + participio pasado. Se traduce con «ser + participio» o, más natural, con «se»: <i>is made</i> = se hace.",
+   "re": "voz pasiva|\\(voz pasiva"
+  },
+  {
+   "t": "Tiempos verbales",
+   "que": "<i>has/have</i> + participio: presente perfecto (ha hecho). <i>had</i> + participio: pasado perfecto (había hecho). <i>is/are</i> + -ing: presente continuo (está haciendo). <i>will</i>: futuro.",
+   "re": "tiempo verbal"
+  },
+  {
+   "t": "Verbos modales",
+   "que": "<i>can</i> (poder), <i>may / might</i> (puede que, posibilidad), <i>must</i> (deber, obligación), <i>should</i> (debería, consejo). Van seguidos del verbo sin <i>to</i>.",
+   "re": "modal"
+  },
+  {
+   "t": "«It» anticipatorio",
+   "que": "Un <i>it</i> que no se refiere a nada anterior: anticipa el sujeto real, que viene más adelante (con <i>to</i> + verbo o <i>that</i>). No se traduce.",
+   "re": "it anticipatorio"
+  },
+  {
+   "t": "Casos especiales",
+   "que": "Expresiones que no se traducen palabra por palabra: <i>when it comes to</i>, <i>allow somebody to</i>…: se busca el sentido.",
+   "re": "caso especial"
+  },
+  {
+   "t": "Comparación",
+   "que": "<i>-er than / more … than</i>: más … que. <i>the -est / the most</i>: el más. <i>as … as</i>: tan … como. <i>the more…, the more…</i>: cuanto más…, más…. Irregulares: good, bad, far, little, much.",
+   "re": "comparaci[oó]n|comparativo|superlativo"
+  },
+  {
+   "t": "La forma -ing",
+   "que": "Según dónde está: antes de un sustantivo, adjetivo; después de un sustantivo, «que + verbo»; con <i>to be</i>, -ando/-endo; como sujeto o después de una preposición, infinitivo o sustantivo.",
+   "re": "forma -ing"
+  },
+  {
+   "t": "Cuantificadores",
+   "que": "<i>any</i>: en negativas «ningún», en preguntas casi no se traduce, en afirmativas «cualquier». <i>all</i> = todo, entero; <i>every</i> = cada, todos.",
+   "re": "cuantificador"
+  },
+  {
+   "t": "Vocabulario técnico",
+   "que": "Las palabras que se repiten en los textos de la materia: empresas, datos, procesos, energía, medio ambiente.",
+   "re": "¿Qué significa"
+  },
+  {
+   "t": "Falsos amigos",
+   "que": "Palabras que se parecen a una del español pero significan otra cosa (<i>library</i> = biblioteca, no librería). Si la traducción «parecida» no tiene sentido en la oración, sospechá.",
+   "re": "falso amigo"
+  },
+  {
+   "t": "Conector (nexo)",
+   "que": "Explicita la relación entre dos ideas. En la prueba: transcribirlo, decir la relación lógica y traducirlo en su contexto; en el cuadro, las dos ideas que une.",
+   "re": "conector"
+  },
+  {
+   "t": "Relaciones lógicas",
+   "que": "<b>Adición</b>, <b>causa</b>, <b>efecto</b>, <b>condición</b>, <b>secuencia en el tiempo</b>, <b>contraste</b>, <b>ejemplificación</b>, <b>propósito</b>, <b>resumen</b>, <b>disyunción</b>, <b>énfasis</b> y <b>aclaración</b> (como en el apunte «A tener en cuenta»).",
+   "re": "relación"
+  },
+  {
+   "t": "Antónimo",
+   "que": "La palabra de significado <b>opuesto</b>. En la prueba te dan una palabra que no está en el texto y el renglón donde está su opuesta.",
+   "re": "antónimo de"
+  },
+  {
+   "t": "Prefijos",
+   "que": "<b>un-, in-, im-, il-, ir-, dis-</b>: lo contrario. <b>counter-</b>: en contra. <b>mis-</b>: mal. <b>over-</b>: de más. <b>under-</b>: de menos. <b>re-</b>: de nuevo. <b>self-</b>: auto. <b>pre- / post-</b>: antes / después.",
+   "re": "prefijo"
+  },
+  {
+   "t": "Sufijos",
+   "que": "<b>-able</b>: que se puede. <b>-ee</b>: quien recibe la acción; <b>-er</b>: quien la hace. <b>-en</b>: hace verbo. <b>-ful / -less</b>: con / sin. <b>-ness, -ment</b>: hacen sustantivo. <b>-ly</b>: -mente. <b>-ward</b>: hacia. <b>-fold</b>: veces.",
+   "re": "sufijo"
+  },
+  {
+   "t": "Sinónimo",
+   "que": "La palabra de significado <b>parecido</b>, de la misma clase (sustantivo, verbo, adjetivo).",
+   "re": "sinónimo de"
+  },
+  {
+   "t": "Referencia contextual",
+   "que": "<b>Anafórica</b>: el referente está antes. <b>Catafórica</b>: está después. Probá reemplazar la palabra por su referente: si se entiende, está bien.",
+   "re": "Referencia contextual"
+  },
+  {
+   "t": "Pronombres",
+   "que": "<i>it / its</i>: algo singular. <i>they / them / their</i>: plural. <i>he / him / his</i>, <i>she / her</i>: personas. <i>which / that</i>: que, el cual. <i>whose</i>: cuyo. <i>these</i>: estos.",
+   "re": "se refiere\\s+(IT|ITS|THEY|THEIR|THEM|HE|HER|HIS|WHICH|THAT|WHOSE|THESE)\\b"
+  },
+  {
+   "t": "Referencia exofórica",
+   "que": "El referente está <b>fuera del texto</b>. Primera persona (I, me, we, our): <b>el autor</b>. Segunda persona (you, your): <b>el lector</b>.",
+   "re": "se refiere\\s+(I|ME|MY|WE|US|OUR|YOU|YOUR)\\b"
+  },
+  {
+   "t": "Sustitución",
+   "que": "Una palabra reemplaza a otra para no repetirla: <i>one, ones, some, others</i> reemplazan un sustantivo; <i>do</i> y <i>so</i>, un verbo con su complemento.",
+   "re": "se refiere\\s+(ONE|ONES|SOME|OTHERS|DO|SO)\\b"
+  },
+  {
+   "t": "The former / the latter",
+   "que": "Cuando se nombraron dos cosas: <i>the former</i> = la primera; <i>the latter</i> = la segunda (la última).",
+   "re": "THE (FORMER|LATTER)"
+  },
+  {
+   "t": "Funciones comunicativas",
+   "que": "<b>Definición</b>: qué es algo (X is…). <b>Descripción</b>: cómo es (partes, forma, características). <b>Clasificación</b>: en qué tipos se divide (there are three types…, can be divided into…).",
+   "re": "función comunicativa"
+  },
+  {
+   "t": "Cloze",
+   "que": "Completar un texto con palabras dadas. Mirá qué <b>clase</b> de palabra falta (verbo, sustantivo, conector, comparativo) y que concuerde con lo que está antes y después.",
+   "re": "Completá con una palabra"
+  }
+ ]
+}
