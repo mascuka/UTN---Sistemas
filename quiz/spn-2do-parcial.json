@@ -1,0 +1,1533 @@
+{
+ "titulo": "SPN · 2º Parcial",
+ "descripcion": "Organización, procesos y sistemas de información. Las preguntas del recuperatorio 2023 son las del campus, con su clave; las del caso Todo Casa necesitan el enunciado (está en Material).",
+ "secciones": [
+  {
+   "titulo": "Organización y autoridad",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Una organización es más eficiente mientras más niveles jerárquicos tenga.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Al contrario: hoy se tiende a reducir los niveles para que la organización sea más simple, ágil y competitiva.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La autoridad y la responsabilidad se pueden delegar.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "La autoridad se delega; la responsabilidad no: quien delega sigue siendo responsable.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un staff puede dar órdenes.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "El staff asesora (autoridad de asesoría, línea punteada en el organigrama). Solo con autoridad funcional manda, sobre un tema y por un tiempo.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Los siguientes son principios de la organización formal:",
+     "op": [
+      [
+       "Jerarquización",
+       false
+      ],
+      [
+       "Cadena de mando",
+       true
+      ],
+      [
+       "Tramo de control",
+       true
+      ],
+      [
+       "Coordinación",
+       false
+      ],
+      [
+       "Unidad de mando",
+       true
+      ]
+     ],
+     "ex": "También: autoridad, delegación, responsabilidad, división del trabajo, unidad de objetivos, eficiencia y definición funcional.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Un organigrama es la representación gráfica de la estructura de una organización formal.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La planificación es el proceso por el cual se enuncia anticipadamente lo que se ha de hacer, cómo hacerlo, cuándo hacerlo y quién ha de hacerlo.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son las funciones de la administración?",
+     "op": [
+      [
+       "Departamentalizar",
+       false
+      ],
+      [
+       "Dirigir",
+       true
+      ],
+      [
+       "Controlar",
+       true
+      ],
+      [
+       "Planear",
+       true
+      ],
+      [
+       "Organizar",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La unidad de mando dice que…",
+     "op": [
+      [
+       "Todos los subsistemas contribuyen al mismo objetivo",
+       false
+      ],
+      [
+       "Para cada tarea, una persona recibe órdenes de un solo jefe",
+       true
+      ],
+      [
+       "Los objetivos se logran con el mínimo costo",
+       false
+      ],
+      [
+       "Un jefe puede controlar a cualquier cantidad de personas",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El tramo de control es…",
+     "op": [
+      [
+       "La cantidad de niveles jerárquicos",
+       false
+      ],
+      [
+       "La cadena de relaciones desde el nivel más bajo al más alto",
+       false
+      ],
+      [
+       "El derecho de un jefe a dar órdenes",
+       false
+      ],
+      [
+       "La cantidad de subordinados que un jefe puede manejar en forma eficiente",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La autoridad que va de arriba hacia abajo, con líneas directas y únicas entre el jefe y sus subordinados, es la autoridad…",
+     "op": [
+      [
+       "De línea",
+       true
+      ],
+      [
+       "Funcional",
+       false
+      ],
+      [
+       "Informal",
+       false
+      ],
+      [
+       "Staff",
+       false
+      ]
+     ],
+     "ex": "En el organigrama: línea continua. Staff: punteada. Funcional: raya y punto.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La organización que surge en forma espontánea de las relaciones entre las personas es…",
+     "op": [
+      [
+       "La departamentalización",
+       false
+      ],
+      [
+       "La organización informal",
+       true
+      ],
+      [
+       "El organigrama ideal",
+       false
+      ],
+      [
+       "La organización formal",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El organigrama que muestra la organización tal como funciona hoy, con sus errores, es el…",
+     "op": [
+      [
+       "Racional",
+       false
+      ],
+      [
+       "Ideal",
+       false
+      ],
+      [
+       "Nominal",
+       false
+      ],
+      [
+       "Real",
+       true
+      ]
+     ],
+     "ex": "Ideal: hacia el que debería tender. Racional: con las unidades agrupadas en forma homogénea.",
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Departamentalización",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son los criterios para la departamentalización en una organización?",
+     "op": [
+      [
+       "Asignar actividades a cada una de las áreas agrupadas",
+       true
+      ],
+      [
+       "Clasificar según su función",
+       true
+      ],
+      [
+       "Agruparlas según orden jerárquico",
+       true
+      ],
+      [
+       "Establecer líneas de comunicación e interrelación entre los departamentos",
+       true
+      ],
+      [
+       "Listar todas las funciones de la empresa",
+       true
+      ]
+     ],
+     "ex": "Son todos: listar, clasificar, agrupar, asignar, especificar las relaciones y establecer la comunicación.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Una empresa con un departamento de finanzas, uno de producción, uno de comercialización y uno de recursos humanos está departamentalizada…",
+     "op": [
+      [
+       "Por territorio",
+       false
+      ],
+      [
+       "Por funciones",
+       true
+      ],
+      [
+       "Por clientes",
+       false
+      ],
+      [
+       "Por producto",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Una láctea con un departamento de leche, uno de crema y uno de yogur está departamentalizada…",
+     "op": [
+      [
+       "Por producto",
+       true
+      ],
+      [
+       "Por tiempo",
+       false
+      ],
+      [
+       "Por proceso",
+       false
+      ],
+      [
+       "Por funciones",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Departamento zona norte, zona sur y zona centro es una departamentalización…",
+     "op": [
+      [
+       "Por clientes",
+       false
+      ],
+      [
+       "Por territorio (geográfica)",
+       true
+      ],
+      [
+       "Matricial",
+       false
+      ],
+      [
+       "Por producto",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Departamento de damas, de niños y de caballeros es una departamentalización…",
+     "op": [
+      [
+       "Por territorio",
+       false
+      ],
+      [
+       "Por clientes",
+       true
+      ],
+      [
+       "Por producto",
+       false
+      ],
+      [
+       "Por funciones",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Una empresa que trabaja las 24 horas y se organiza en turno mañana, tarde y noche está departamentalizada…",
+     "op": [
+      [
+       "Matricial",
+       false
+      ],
+      [
+       "Por proceso",
+       false
+      ],
+      [
+       "Por tiempo",
+       true
+      ],
+      [
+       "Por funciones",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La estructura en la que los empleados participan en proyectos puntuales sin dejar sus funciones, con doble línea de mando, es…",
+     "op": [
+      [
+       "Por proyecto",
+       false
+      ],
+      [
+       "Por funciones",
+       false
+      ],
+      [
+       "Matricial",
+       true
+      ],
+      [
+       "Por clientes",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Procesos y toma de decisiones",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "¿Cuál es la diferencia entre proceso y procedimiento?",
+     "op": [
+      [
+       "El proceso es solo de las áreas de producción",
+       false
+      ],
+      [
+       "Son lo mismo",
+       false
+      ],
+      [
+       "El procedimiento es más general que el proceso",
+       false
+      ],
+      [
+       "El proceso es una sucesión de acciones hacia una finalidad; el procedimiento es el documento escrito que describe paso a paso cómo hacer una actividad",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "En un mapa de procesos, los procesos se agrupan en…",
+     "op": [
+      [
+       "Contables",
+       false
+      ],
+      [
+       "De soporte (apoyo)",
+       true
+      ],
+      [
+       "Informáticos",
+       false
+      ],
+      [
+       "Esenciales (operativos)",
+       true
+      ],
+      [
+       "Estratégicos",
+       true
+      ]
+     ],
+     "ex": "Estratégicos arriba (definir políticas), esenciales en el medio (los que generan el producto o servicio) y de soporte abajo (comprar, liquidar sueldos…).",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué muestra el diagrama de estructura básica de un proceso?",
+     "op": [
+      [
+       "La secuencia de actividades",
+       false
+      ],
+      [
+       "Los recursos (las personas que intervienen)",
+       true
+      ],
+      [
+       "La salida (el resultado)",
+       true
+      ],
+      [
+       "El objetivo del proceso",
+       true
+      ],
+      [
+       "La entrada (el evento que lo dispara)",
+       true
+      ]
+     ],
+     "ex": "La secuencia va en el diagrama de secuencia de actividades.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Qué símbolos se usan en el diagrama de secuencia de actividades?",
+     "op": [
+      [
+       "Organigrama",
+       false
+      ],
+      [
+       "Inicio y fin",
+       true
+      ],
+      [
+       "Actividad",
+       true
+      ],
+      [
+       "Decisión (rombo)",
+       true
+      ],
+      [
+       "Documento",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La actividad que implica una decisión (bifurcación) en el proceso de compra es:",
+     "op": [
+      [
+       "Verificar si llegó el pedido del proveedor",
+       false
+      ],
+      [
+       "Verificar si el proveedor recibió la orden de compra",
+       false
+      ],
+      [
+       "Controlar si lo que se recibió es lo que se solicitó",
+       true
+      ],
+      [
+       "Verificar si hay stock",
+       false
+      ],
+      [
+       "Controlar si la factura está correcta",
+       false
+      ]
+     ],
+     "ex": "Según lo que se controla, el camino se abre: si coincide, se ingresa; si no, se reclama al proveedor.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "La toma de decisiones es…",
+     "op": [
+      [
+       "El control de los resultados",
+       false
+      ],
+      [
+       "La delegación de autoridad",
+       false
+      ],
+      [
+       "La elección de un curso de acción entre varias alternativas: el núcleo de la planeación",
+       true
+      ],
+      [
+       "La ejecución de un procedimiento escrito",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Las decisiones que se toman ante problemas repetitivos y rutinarios, con un procedimiento ya establecido, son…",
+     "op": [
+      [
+       "Informales",
+       false
+      ],
+      [
+       "Programadas",
+       true
+      ],
+      [
+       "Estratégicas",
+       false
+      ],
+      [
+       "No programadas",
+       false
+      ]
+     ],
+     "ex": "Las no programadas son para problemas nuevos o poco estructurados.",
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Sistemas de información",
+   "preguntas": [
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles de estas son características de la información?",
+     "op": [
+      [
+       "Oportuna",
+       true
+      ],
+      [
+       "Estándar",
+       false
+      ],
+      [
+       "Relevante",
+       true
+      ],
+      [
+       "Completa",
+       true
+      ],
+      [
+       "Eficiente",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Son características de la información:",
+     "op": [
+      [
+       "Verificable",
+       true
+      ],
+      [
+       "Rápida",
+       false
+      ],
+      [
+       "Aislada",
+       false
+      ],
+      [
+       "Económica",
+       true
+      ],
+      [
+       "Simple",
+       true
+      ]
+     ],
+     "ex": "También: precisa, completa, confiable, flexible, relevante, oportuna, segura y accesible.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Las necesidades de procesamiento de datos están determinadas por algunas de las siguientes consideraciones:",
+     "op": [
+      [
+       "Volumen de datos involucrados",
+       true
+      ],
+      [
+       "Necesidad de tomar decisiones no programadas",
+       false
+      ],
+      [
+       "Exigencia en cuanto a tiempo de procesamiento",
+       true
+      ],
+      [
+       "Complejidad de las operaciones de procesamiento",
+       true
+      ],
+      [
+       "Tipos de requerimientos de información por parte de los niveles más altos de la organización",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Los siguientes sistemas se reconocen como tipos de sistemas de información:",
+     "op": [
+      [
+       "Sistema de procesamiento de transacciones",
+       true
+      ],
+      [
+       "Sistema de apoyo a las decisiones",
+       true
+      ],
+      [
+       "Sistema de facturación",
+       false
+      ],
+      [
+       "Sistema contable",
+       false
+      ],
+      [
+       "Sistemas expertos de inteligencia artificial",
+       true
+      ]
+     ],
+     "ex": "Facturación y contabilidad son aplicaciones, no tipos. Los tipos: TPS, gerencial (MIS), apoyo a las decisiones (DSS), expertos e IA, de grupo (GDSS) y para ejecutivos.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Considerando SOLO la entrada de un sistema de información, ¿qué actividades se realizan sobre los datos?",
+     "op": [
+      [
+       "Distribuir",
+       false
+      ],
+      [
+       "Ordenar",
+       false
+      ],
+      [
+       "Almacenar",
+       false
+      ],
+      [
+       "Verificar",
+       true
+      ],
+      [
+       "Capturar",
+       true
+      ]
+     ],
+     "ex": "La entrada recopila y captura los datos (y los verifica). Ordenar y almacenar son del procesamiento; distribuir, de la salida.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El costo de la información son los recursos que se requieren para obtenerla.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "El valor, en cambio, es el beneficio que se obtiene a partir de ella.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Podemos definir a los alcances del sistema de información como…",
+     "op": [
+      [
+       "Los usuarios del sistema de información",
+       false
+      ],
+      [
+       "El conjunto de elementos utilizados en el procesamiento de información",
+       false
+      ],
+      [
+       "El conjunto de entradas que debe procesar el sistema de información",
+       false
+      ],
+      [
+       "Las tareas del sistema de información que transforman las entradas en salidas",
+       true
+      ],
+      [
+       "Las actividades que realiza la organización para obtener salidas de valor para sus clientes",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué diferencia hay entre dato e información?",
+     "op": [
+      [
+       "Un dato es un hecho aislado; la información son datos organizados que tienen un valor adicional",
+       true
+      ],
+      [
+       "Son lo mismo",
+       false
+      ],
+      [
+       "La información es un dato sin procesar",
+       false
+      ],
+      [
+       "Un dato siempre es un número",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El tipo de sistema de información que se implanta primero, en el nivel operativo, y procesa gran cantidad de transacciones rutinarias es…",
+     "op": [
+      [
+       "El de apoyo a las decisiones (DSS)",
+       false
+      ],
+      [
+       "El de procesamiento de transacciones (TPS)",
+       true
+      ],
+      [
+       "El de información gerencial (MIS)",
+       false
+      ],
+      [
+       "El sistema experto",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El sistema que captura el conocimiento de un experto y propone la mejor solución a un problema es…",
+     "op": [
+      [
+       "El sistema experto",
+       true
+      ],
+      [
+       "El TPS",
+       false
+      ],
+      [
+       "El de apoyo a las decisiones (DSS)",
+       false
+      ],
+      [
+       "El MIS",
+       false
+      ]
+     ],
+     "ex": "El DSS, en cambio, deja la decisión en manos de quien decide.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un informe comparativo de ventas de distintos períodos, para tomar decisiones importantes, es información…",
+     "op": [
+      [
+       "Operativa",
+       false
+      ],
+      [
+       "De control",
+       false
+      ],
+      [
+       "Directiva",
+       true
+      ],
+      [
+       "Aislada",
+       false
+      ]
+     ],
+     "ex": "Operativa: para hacer cada tarea (el pedido del cliente). De control: para detectar desvíos (el informe de inventario).",
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Caso Todo Casa",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "Para la organización de Todo Casa, ¿cuál de las siguientes opciones representa mejor la lista de procesos?",
+     "op": [
+      [
+       "Realizar análisis de mercado / Comercializar / Fabricar / Vender",
+       false
+      ],
+      [
+       "Comprar materia prima / Fabricar muebles / Vender amoblamientos / Liquidar sueldos",
+       true
+      ],
+      [
+       "Comercialización / Producción / Mantenimiento",
+       false
+      ],
+      [
+       "Comprar / Fabricar / Vender / Liquidar sueldos / Realizar contabilidad",
+       false
+      ],
+      [
+       "Comercialización / Fabricación / Control de calidad",
+       false
+      ]
+     ],
+     "ex": "Procesos con verbo y objeto. La contabilidad la hace un estudio externo: no es un proceso de la organización.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Para la organización de Todo Casa, ¿cuáles de las siguientes opciones son procesos de la organización?",
+     "op": [
+      [
+       "Generar orden de compra",
+       false
+      ],
+      [
+       "Vender muebles de cocina",
+       true
+      ],
+      [
+       "Atender al cliente",
+       false
+      ],
+      [
+       "Contactar proveedor",
+       false
+      ],
+      [
+       "Liquidar sueldos",
+       true
+      ]
+     ],
+     "ex": "Las otras son actividades dentro de un proceso.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Para la organización de Todo Casa, ¿cuáles de las siguientes opciones NO son procesos de la organización?",
+     "op": [
+      [
+       "Comprar materia prima",
+       false
+      ],
+      [
+       "Generar informe de pagos a proveedores",
+       true
+      ],
+      [
+       "Registrar libros contables",
+       true
+      ],
+      [
+       "Fabricar muebles de cocina",
+       false
+      ],
+      [
+       "Vender muebles de cocina",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Para el proceso Vender amoblamientos de Todo Casa, ¿cuál se ajusta más al objetivo?",
+     "op": [
+      [
+       "Realizar la venta y entrega domiciliaria de muebles de cocina",
+       false
+      ],
+      [
+       "Comercializar y distribuir amoblamientos",
+       false
+      ],
+      [
+       "Diseñar muebles estándares y a medida",
+       false
+      ],
+      [
+       "Fabricar y vender amoblamiento para cocina, de diseño y producción propia",
+       false
+      ],
+      [
+       "Realizar la venta de amoblamientos para cocina al contado y con tarjeta, en forma minorista",
+       true
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Para el proceso Vender amoblamientos de Todo Casa, «Realizar la venta de amoblamientos en forma minorista, al contado y con tarjeta» es…",
+     "op": [
+      [
+       "Un recurso",
+       false
+      ],
+      [
+       "Un alcance",
+       false
+      ],
+      [
+       "Una salida",
+       false
+      ],
+      [
+       "Una entrada",
+       false
+      ],
+      [
+       "El objetivo",
+       true
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "¿A continuación de qué actividad se debe confeccionar el remito en el proceso Vender amoblamientos de Todo Casa?",
+     "op": [
+      [
+       "Generar orden de compra",
+       false
+      ],
+      [
+       "Recibir mercadería",
+       false
+      ],
+      [
+       "Controlar factura",
+       false
+      ],
+      [
+       "Buscar el producto",
+       true
+      ],
+      [
+       "Almacenar producto",
+       false
+      ]
+     ],
+     "ex": "El responsable de despacho controla que la factura esté pagada, busca el producto y recién ahí genera el remito.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "¿Cuál representa mejor la finalización del diagrama de secuencia de actividades del proceso Vender amoblamientos de Todo Casa?",
+     "op": [
+      [
+       "Generar remito de entrega / Solicitar firma del cliente / Sellar copia del remito / Entregar copia del remito, factura y producto al cliente",
+       true
+      ],
+      [
+       "Generar remito / Solicitar firma al cliente / Entregar producto y factura al cliente",
+       false
+      ],
+      [
+       "Generar remito / Cobrar producto / Entregar producto, remito y factura al cliente",
+       false
+      ],
+      [
+       "Generar factura / Generar remito / Entregar producto, remito y factura al cliente",
+       false
+      ],
+      [
+       "Generar remito de entrega / Entregar copia de remito, factura y producto al cliente",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Para el proceso Vender amoblamientos de Todo Casa, ¿qué actividades NO pertenecen al diagrama de secuencia?",
+     "op": [
+      [
+       "Buscar producto",
+       false
+      ],
+      [
+       "Controlar factura cobrada",
+       false
+      ],
+      [
+       "Pagar factura",
+       true
+      ],
+      [
+       "Solicitar autorización de tarjeta",
+       false
+      ],
+      [
+       "Generar orden de compra",
+       true
+      ]
+     ],
+     "ex": "Generar la orden de compra es del proceso de compras; el cliente es quien paga.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En el proceso Vender amoblamientos de Todo Casa, el cliente debe firmar la factura como constancia de que retira el producto.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Firma el remito.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Indique cuál se ajusta más al objetivo del sistema de información que da soporte al proceso Vender amoblamientos de Todo Casa.",
+     "op": [
+      [
+       "Informar al gerente sobre los muebles más vendidos, discriminados por modelo",
+       false
+      ],
+      [
+       "Brindar información para gestionar la producción de amoblamientos de cocina",
+       false
+      ],
+      [
+       "Realizar la comercialización de muebles de cocina con producción y diseños propios",
+       false
+      ],
+      [
+       "Brindar información para gestionar las ventas de amoblamientos de cocina",
+       true
+      ],
+      [
+       "Vender muebles de cocina al contado y con tarjeta",
+       false
+      ]
+     ],
+     "ex": "El objetivo de un SI siempre es brindar información para el proceso; vender es el objetivo del proceso, y el informe es una salida.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "El objetivo del sistema de información que dará soporte al proceso Vender amoblamientos de Todo Casa es «Generar informe sobre muebles más vendidos, discriminados por modelo».",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Eso es una salida (el informe) o un alcance (generarlo).",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Son alcances de un sistema de información de ventas…",
+     "op": [
+      [
+       "Registrar datos del pedido",
+       true
+      ],
+      [
+       "Generar y emitir factura",
+       true
+      ],
+      [
+       "Cobrar pedido",
+       false
+      ],
+      [
+       "Registrar datos de los proveedores",
+       false
+      ],
+      [
+       "Registrar datos del cliente",
+       true
+      ]
+     ],
+     "ex": "Cobrar lo hace una persona; el SI registra el cobro.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles se corresponden con alcances del sistema de información que da soporte al proceso Vender productos de Todo Casa?",
+     "op": [
+      [
+       "Registrar datos de cliente",
+       true
+      ],
+      [
+       "Registrar forma de pago",
+       true
+      ],
+      [
+       "Cobrar productos",
+       false
+      ],
+      [
+       "Consultar disponibilidad y precios",
+       true
+      ],
+      [
+       "Generar orden de compra",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "Para el sistema de información que da soporte al proceso de ventas de Todo Casa, ¿cuáles se corresponden con alcances?",
+     "op": [
+      [
+       "Registrar pago a proveedor",
+       false
+      ],
+      [
+       "Controlar factura",
+       false
+      ],
+      [
+       "Atender al cliente",
+       false
+      ],
+      [
+       "Generar factura",
+       true
+      ],
+      [
+       "Consultar disponibilidad y precio",
+       true
+      ]
+     ],
+     "ex": "Controlar la factura y atender al cliente los hacen personas.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Para el sistema de información que da soporte al proceso Vender amoblamientos de Todo Casa, «Generar orden de compra» NO es un alcance.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Es del proceso de compras.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Para el sistema de información que da soporte al proceso Vender amoblamientos de Todo Casa, «Registrar cobro del pedido» es…",
+     "op": [
+      [
+       "Un alcance",
+       true
+      ],
+      [
+       "Una salida",
+       false
+      ],
+      [
+       "Un dato",
+       false
+      ],
+      [
+       "Una entrada",
+       false
+      ],
+      [
+       "El objetivo",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Para el sistema de información que da soporte al proceso Vender amoblamientos de Todo Casa, «Factura de venta» es…",
+     "op": [
+      [
+       "Una salida",
+       true
+      ],
+      [
+       "Un proceso",
+       false
+      ],
+      [
+       "Un alcance",
+       false
+      ],
+      [
+       "El objetivo",
+       false
+      ],
+      [
+       "Una entrada",
+       false
+      ]
+     ],
+     "ex": "«Generar factura» sería el alcance; la factura es lo que sale.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "en": "Para el sistema de información asociado al proceso Vender, «Encargado de compras» es…",
+     "op": [
+      [
+       "Un usuario",
+       true
+      ],
+      [
+       "Una salida",
+       false
+      ],
+      [
+       "Una entrada",
+       false
+      ],
+      [
+       "Un alcance",
+       false
+      ]
+     ],
+     "ex": "En la misma pregunta del campus: «Registrar pedido del cliente», «Generar factura» y «Consultar stock» son alcances, y «Factura», una salida.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son entradas del sistema de información que da soporte al proceso Vender amoblamientos de Todo Casa?",
+     "op": [
+      [
+       "Datos del cliente",
+       true
+      ],
+      [
+       "Datos de la orden de compra",
+       false
+      ],
+      [
+       "Datos del proveedor",
+       false
+      ],
+      [
+       "Datos de la forma de pago",
+       true
+      ],
+      [
+       "Factura",
+       false
+      ]
+     ],
+     "ex": "Entradas al SI: datos. La factura es una salida.",
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Los datos del cliente y los datos de los productos pedidos son entradas al SI.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023"
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles NO son salidas del sistema de información que da soporte al proceso Vender amoblamientos de Todo Casa?",
+     "op": [
+      [
+       "Emitir factura",
+       true
+      ],
+      [
+       "Generar remito",
+       true
+      ],
+      [
+       "Informe de productos más vendidos, discriminados por modelo",
+       false
+      ],
+      [
+       "Cupón de tarjeta",
+       false
+      ],
+      [
+       "Remito",
+       false
+      ]
+     ],
+     "ex": "Con verbo en infinitivo son alcances; las salidas son los documentos e informes.",
+     "fuente": "Recuperatorio 2023"
+    }
+   ]
+  }
+ ],
+ "glosario": [
+  {
+   "t": "Administración",
+   "que": "Diseñar y mantener un ambiente en el que personas que trabajan en grupo cumplen metas. Funciones: <b>planear</b> (decidir de antemano qué, cómo, cuándo y quién), organizar, dirigir y controlar.",
+   "re": "planificaci[oó]n|administraci[oó]n|planear",
+   "i": true
+  },
+  {
+   "t": "Autoridad y delegación",
+   "que": "<b>Autoridad</b>: el derecho del puesto a dar órdenes; fluye hacia abajo. <b>Delegar</b>: pasar autoridad a un puesto inferior; la responsabilidad no se delega. Tipos: de línea, staff (asesora) y funcional.",
+   "re": "autoridad|staff|delega",
+   "i": true
+  },
+  {
+   "t": "Principios de la organización formal",
+   "que": "Autoridad, delegación, responsabilidad, división del trabajo, unidad de mando, tramo de control, unidad de objetivos, eficiencia, cadena de mando y definición funcional.",
+   "re": "unidad de mando|tramo de control|cadena de mando|principios",
+   "i": true
+  },
+  {
+   "t": "Organigrama",
+   "que": "La representación gráfica de la estructura formal: cuadros (puestos) y líneas (autoridad y comunicación). Puede ser vertical, horizontal, mixto o circular; real, racional o ideal.",
+   "re": "organigrama|niveles jer[aá]rquicos",
+   "i": true
+  },
+  {
+   "t": "Organización formal e informal",
+   "que": "<b>Formal</b>: la planeada por la dirección (la del organigrama). <b>Informal</b>: la red de relaciones que surge sola entre las personas.",
+   "re": "informal",
+   "i": true
+  },
+  {
+   "t": "Departamentalización",
+   "que": "Agrupar actividades y personas en departamentos para que la organización pueda crecer. Por funciones, producto, territorio, clientes, proceso, proyecto, tiempo o matricial.",
+   "re": "departamentaliz|matricial",
+   "i": true
+  },
+  {
+   "t": "Proceso y procedimiento",
+   "que": "<b>Proceso</b>: sucesión de acciones ordenadas hacia una finalidad. <b>Procedimiento</b>: documento escrito que describe paso a paso cómo se hace una actividad.",
+   "re": "procedimiento",
+   "i": true
+  },
+  {
+   "t": "Mapa de procesos",
+   "que": "Los procesos de la organización en tres grupos: estratégicos (arriba), esenciales u operativos (en el medio, los que generan el producto o servicio) y de soporte (abajo). Cada proceso se nombra con un verbo y su objeto.",
+   "re": "mapa de procesos|lista de procesos|son procesos|NO son procesos",
+   "i": true
+  },
+  {
+   "t": "Diagrama de estructura básica",
+   "que": "El proceso en el centro, la entrada (el evento que lo dispara) a la izquierda, la salida (el resultado) a la derecha, el objetivo arriba y los recursos (las personas) abajo.",
+   "re": "estructura b[aá]sica",
+   "i": true
+  },
+  {
+   "t": "Diagrama de secuencia de actividades",
+   "que": "Las actividades del proceso en orden, en carriles (uno por responsable): inicio y fin, actividades, rombos de decisión y documentos.",
+   "re": "diagrama de secuencia|s[ií]mbolos|bifurcaci[oó]n|remito",
+   "i": true
+  },
+  {
+   "t": "Toma de decisiones",
+   "que": "Elegir un curso de acción entre alternativas. <b>Programadas</b>: problemas rutinarios con un procedimiento. <b>No programadas</b>: problemas nuevos o poco estructurados.",
+   "re": "decisi[oó]n|decisiones",
+   "i": true
+  },
+  {
+   "t": "Dato e información",
+   "que": "<b>Dato</b>: un hecho aislado. <b>Información</b>: datos organizados con un valor adicional. Su <b>valor</b> es el beneficio que da; su <b>costo</b>, los recursos para obtenerla.",
+   "re": "dato|informaci[oó]n",
+   "i": true
+  },
+  {
+   "t": "Sistema de información (SI)",
+   "que": "Componentes que recolectan, procesan, almacenan y distribuyen información para la toma de decisiones y el control. Su objetivo es <b>brindar información</b> para un proceso; sus alcances son lo que hace con los datos (registrar, consultar, generar, emitir).",
+   "re": "sistema de informaci[oó]n|\\bSI\\b",
+   "i": true
+  },
+  {
+   "t": "Tipos de sistemas de información",
+   "que": "De procesamiento de transacciones (TPS), de información gerencial (MIS), de apoyo a las decisiones (DSS), expertos e inteligencia artificial, de apoyo a decisiones en grupo y para ejecutivos.",
+   "re": "TPS|MIS|DSS|transacciones|experto",
+   "i": true
+  },
+  {
+   "t": "Caso Todo Casa",
+   "que": "Fabrica y vende muebles de cocina. El vendedor atiende al cliente, consulta stock y forma de pago y hace la factura; el cajero cobra (si es con tarjeta pide autorización y emite el cupón) y sella la factura; el responsable de despacho controla la factura, busca el producto, genera el remito, pide la firma, sella la copia y entrega todo.",
+   "re": "Todo Casa"
+  }
+ ]
+}

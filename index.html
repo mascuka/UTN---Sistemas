@@ -2646,63 +2646,89 @@ const MATERIAS = {
       }
     ]
   },
-  // Sistemas y Procesos de Negocio: material teórico por unidad y parciales anteriores
+  // Sistemas y Procesos de Negocio (1º año, 1º cuatrimestre): 1º Parcial (Unidad 1, Teoría General de Sistemas) y 2º Parcial
+  // (Unidades 2 y 3: organización, procesos y sistemas de información). Archivos en material/sistemas-y-procesos-de-negocio/{p1,p2}/,
+  // sin metadatos. La práctica y los recuperatorios 2023 resueltos se arman con herramientas/quiz/spn.py. La revisión del intento
+  // del campus no se publica: sus preguntas y la clave están en la práctica del 2º Parcial
   8: {
+    comisiones: [
+      { comision: "1K13", profesor: "Mariel Edith Ferrando", examen: "Teórico-práctico en el campus, sobre un caso" },
+      { comision: "1K13", profesor: "Hilda Lucía del Rosario Ontivero" },
+      { comision: "1K13", profesor: "Fernanda Cristina Rodriguez Aleua" }
+    ],
     parciales: [
       {
         id: "p1",
         titulo: "1º Parcial",
-        descripcion: "Parciales de años anteriores del primer parcial.",
-        parciales: {
-          material: [
-            { nombre: "Recuperatorio 1º parcial 2023 · Enunciado práctico", detalle: "Caso SEMYBAL SA (27/06/2023)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/parciales/2023-recuperatorio-1-parcial-enunciado.pdf" }
-          ],
-          videos: []
-        }
+        descripcion: "Unidad 1: Teoría General de Sistemas. Teoría y un caso práctico: una organización vista como sistema (objetivo, ambiente, recursos, entradas, alcances y salidas).",
+        secciones: [],
+        quiz: "quiz/spn-1er-parcial.json",
+        quizSecciones: [
+          { t: "Teoría General de Sistemas", nombre: "La TGS", d: "Bertalanffy, isomorfismo, aplicaciones, entropía, sistemas abiertos y cerrados" },
+          { t: "Elementos de un sistema", d: "Objetivo, entradas, proceso, salidas, alcances, recursos, ambiente, límite, retroalimentación" },
+          { t: "Clasificación y propiedades", d: "Abiertos o cerrados, concretos o abstractos… Sinergia, eficiencia, adaptabilidad" },
+          { t: "Caso SEMYBAL", nombre: "El caso del parcial", d: "El caso SEMYBAL del recuperatorio 2023: ¿ambiente, recurso, entrada, alcance o salida?" }
+        ],
+        quizNombre: "Todo mezclado",
+        quizDetalle: "Teoría y caso, como viene en el parcial",
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Temas del 1º Parcial", contenidos: [
+              "Teoría General de Sistemas: Bertalanffy, la ciencia clásica (mecanicista) y la moderna, el isomorfismo, «el todo es más que la suma de las partes» y las aplicaciones (cibernética, teoría de la información, de los juegos y de la decisión).",
+              "Entropía y neguentropía. Sistemas abiertos y cerrados. Aportes metodológicos (isomorfismo, modelo de rango de Boulding, modelo procesal) y semánticos.",
+              "Elementos de un sistema: objetivo, entradas, proceso (caja negra y caja blanca), salidas, alcances, retroalimentación y feed-forward, ambiente, límite, estructura, subsistema, metasistema y recursos.",
+              "Clasificación de los sistemas (naturaleza, relación con el entorno, complejidad, comportamiento) y sus propiedades: sinergia, estabilidad, adaptabilidad, eficiencia, tensión y armonía.",
+              "Práctico: en un caso de una organización, identificar y definir el objetivo, el ambiente, los recursos, las entradas, los alcances y las salidas."
+            ] }
+          ]
+        },
+        material: [
+          { n: 1, nombre: "Teoría General de Sistemas", detalle: "Bertalanffy, la ciencia moderna, qué es la TGS y sus aplicaciones, entropía, sistemas abiertos y cerrados, aportes, clasificación y propiedades (19 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/01-teoria-general-de-sistemas.pdf" },
+          { n: 2, nombre: "Aportes semánticos de la TGS", detalle: "Concepto de sistema y sus elementos: objetivo, E-P-S, caja negra, retroalimentación, ambiente, alcances, límite, recursos (14 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/02-aportes-semanticos-de-la-tgs.pdf" },
+          { n: 3, nombre: "Recuperatorio 2023 · SEMYBAL", detalle: "El enunciado y a continuación resuelto: objetivo y ambiente, recursos, entradas, alcances y salidas (5 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p1/03-recuperatorio-1er-parcial-2023-semybal.pdf" }
+        ],
+        videos: []
       },
       {
         id: "p2",
         titulo: "2º Parcial",
-        descripcion: "Parciales de años anteriores y un simulacro resuelto del segundo parcial.",
-        parciales: {
-          material: [
-            { nombre: "Simulacro tipo 2º parcial · Cómo resolverlo", detalle: "Caso La Esquina, con la resolución explicada", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/parciales/simulacro-2-parcial-como-resolverlo.pdf" },
-            { nombre: "Recuperatorio 2º parcial 2023 · Enunciado práctico", detalle: "Caso Todo Casa (27/06/2023)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/parciales/2023-recuperatorio-2-parcial-enunciado.pdf" },
-            { nombre: "2º parcial 2023 · Teórico-práctico del campus", detalle: "Preguntas del cuestionario con las respuestas correctas", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/parciales/2023-2-parcial-teorico-practico-resuelto.pdf" }
-          ],
-          videos: []
-        }
-      }
-    ],
-    material: [
-      {
-        grupo: "Material teórico",
-        descripcion: "Presentaciones de las clases teóricas, por unidad.",
-        partes: [
-          {
-            titulo: "Unidad 1 · Teoría general de los sistemas",
-            archivos: [
-          { n: 1, nombre: "Teoría general de sistemas", detalle: "Bertalanffy, concepto de sistema y sus propiedades", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/teorico/01-u1-teoria-general-de-sistemas.pdf" },
-          { n: 2, nombre: "Teoría general de sistemas · Aportes semánticos", detalle: "Conceptos y definiciones de la teoría de sistemas", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/teorico/02-u1-aportes-semanticos.pdf" }
-            ]
-          },
-          {
-            titulo: "Unidad 2 · Procesos y modelos de negocio",
-            archivos: [
-          { n: 3, nombre: "Administración, organización y organigrama", detalle: "Organizaciones, organización formal e informal, organigramas", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/teorico/03-u2-administracion-organizacion-organigrama.pdf" },
-          { n: 4, nombre: "Departamentalización", detalle: "División organizacional, niveles y estructura", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/teorico/04-u2-departamentalizacion.pdf" },
-          { n: 5, nombre: "Los procesos en las organizaciones", detalle: "Procesos, procedimientos y su representación", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/teorico/05-u2-procesos-en-las-organizaciones.pdf" },
-          { n: 6, nombre: "Toma de decisiones", detalle: "Alternativas, técnicas y tipos de decisiones", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/teorico/06-u2-toma-de-decisiones.pdf" }
-            ]
-          },
-          {
-            titulo: "Unidad 3 · Sistemas de información",
-            archivos: [
-          { n: 7, nombre: "Sistemas de información", detalle: "Dato e información, valor de la información, tipos de sistemas", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/teorico/07-u3-sistemas-de-informacion.pdf" },
-          { n: 8, nombre: "Taller: resolución de problemas", detalle: "Ejercicio resuelto: caso Vivero Green", tipo: "DOC", url: "material/sistemas-y-procesos-de-negocio/teorico/08-u3-taller-resolucion-de-problemas.docx" }
-            ]
-          }
-        ]
+        descripcion: "Unidades 2 y 3: la organización, los procesos y los sistemas de información. Teoría y un caso: mapa de procesos, diagrama de estructura básica, diagrama de secuencia de actividades y el sistema de información del proceso.",
+        secciones: [],
+        quiz: "quiz/spn-2do-parcial.json",
+        quizSecciones: [
+          { t: "Organización y autoridad", d: "Administración, principios de la organización formal, autoridad de línea, staff y funcional, organigramas" },
+          { t: "Departamentalización", d: "Criterios y tipos: por funciones, producto, territorio, clientes, tiempo, matricial" },
+          { t: "Procesos y toma de decisiones", nombre: "Procesos y decisiones", d: "Proceso y procedimiento, mapa de procesos, los diagramas y las decisiones programadas" },
+          { t: "Sistemas de información", d: "Dato e información, características, alcances, tipos de SI (TPS, MIS, DSS, expertos)" },
+          { t: "Caso Todo Casa", nombre: "El caso del parcial", d: "Las preguntas del campus sobre el caso del recuperatorio 2023, con su clave" }
+        ],
+        quizNombre: "Todo mezclado",
+        quizDetalle: "Teoría y caso, como viene en el parcial",
+        temas: {
+          titulo: "Temas que entran",
+          unidades: [
+            { titulo: "Temas del 2º Parcial", contenidos: [
+              "Administración y organización: funciones de la administración (planear, organizar, dirigir, controlar), la organización y sus recursos, la empresa y su clasificación.",
+              "Organigramas (tipos y funciones), principios de la organización formal (unidad de mando, tramo de control, cadena de mando…), tipos de autoridad (de línea, staff y funcional) y organización formal e informal.",
+              "Departamentalización: criterios y tipos (por funciones, producto, territorio, clientes, proceso, proyecto, tiempo y matricial).",
+              "Procesos: proceso y procedimiento, mapa de procesos (estratégicos, esenciales y de soporte), diagrama de estructura básica y diagrama de secuencia de actividades (con carriles, decisiones y documentos).",
+              "Toma de decisiones: alternativas, decisiones programadas y no programadas.",
+              "Sistemas de información: dato e información, características, valor y costo de la información, objetivo, usuarios, entradas, alcances y salidas de un SI, clasificación de la información y tipos de SI (TPS, MIS, DSS, sistemas expertos)."
+            ] }
+          ]
+        },
+        material: [
+          { n: 1, nombre: "Simulacro tipo 2º parcial · La Esquina", nota: "Empezá por acá", detalle: "El simulacro de la cátedra resuelto: mapa de procesos, estructura básica, diagrama de actividades, objetivo del SI, usuarios y alcances (4 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/07-simulacro-tipo-2do-parcial-la-esquina-resuelto.pdf" },
+          { n: 2, nombre: "Recuperatorio 2023 · Todo Casa", detalle: "El enunciado y a continuación resuelto, con los tres diagramas y el sistema de información del proceso de venta (5 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/08-recuperatorio-2do-parcial-2023-todo-casa.pdf" },
+          { n: 3, nombre: "Taller resuelto · Vivero Green", detalle: "La propuesta de solución de la cátedra: mapa de procesos y objetivos, estructura básica, diagrama de secuencia y el sistema de información (7 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/06-taller-resuelto-vivero-green.pdf" },
+          { n: 4, nombre: "Administración, organización y organigramas", detalle: "Funciones de la administración, la organización y la empresa, organigramas, principios de la organización formal y tipos de autoridad (34 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/01-administracion-organizacion-y-organigramas.pdf" },
+          { n: 5, nombre: "Departamentalización", detalle: "Niveles organizacionales, criterios y tipos de departamentalización (26 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/02-departamentalizacion.pdf" },
+          { n: 6, nombre: "Los procesos en las organizaciones", detalle: "Proceso y procedimiento, elementos, estructura básica y modelado de actividades (10 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/03-los-procesos-en-las-organizaciones.pdf" },
+          { n: 7, nombre: "Toma de decisiones", detalle: "Desarrollo y evaluación de alternativas, decisiones programadas y no programadas (9 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/04-toma-de-decisiones.pdf" },
+          { n: 8, nombre: "Sistemas de información", detalle: "Dato e información, características y valor de la información, el SI y sus actividades, clasificación de la información y tipos de SI (39 págs.)", tipo: "PDF", url: "material/sistemas-y-procesos-de-negocio/p2/05-sistemas-de-informacion.pdf" }
+        ],
+        videos: []
       }
     ]
   },

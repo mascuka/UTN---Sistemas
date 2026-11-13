@@ -1,0 +1,1141 @@
+{
+ "titulo": "SPN · 1º Parcial",
+ "descripcion": "Teoría General de Sistemas y el caso SEMYBAL del recuperatorio 2023: objetivo, ambiente, recursos, entradas, alcances y salidas.",
+ "secciones": [
+  {
+   "titulo": "Teoría General de Sistemas",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "¿Quién propuso la Teoría General de Sistemas (TGS)?",
+     "op": [
+      [
+       "Ludwig von Bertalanffy",
+       true
+      ],
+      [
+       "Harold Koontz",
+       false
+      ],
+      [
+       "John Van Gigch",
+       false
+      ],
+      [
+       "Kenneth Boulding",
+       false
+      ]
+     ],
+     "ex": "Biólogo austríaco: veía al organismo como un sistema abierto y publicó «Teoría General de Sistemas» en 1969. Boulding propuso los 9 niveles.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La idea central de la TGS parte de una frase de Aristóteles. ¿Cuál?",
+     "op": [
+      [
+       "Todo sistema tiende al orden",
+       false
+      ],
+      [
+       "Las partes explican el todo",
+       false
+      ],
+      [
+       "El todo es más que la suma de las partes",
+       true
+      ],
+      [
+       "Divide y vencerás",
+       false
+      ]
+     ],
+     "ex": "Es la base de la sinergia: las partes relacionadas producen algo que no tienen por separado.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué busca la TGS?",
+     "op": [
+      [
+       "Estudiar solo los sistemas físicos y mecánicos",
+       false
+      ],
+      [
+       "Principios y leyes aplicables a los sistemas en general, sin importar la naturaleza de sus elementos",
+       true
+      ],
+      [
+       "Dividir cada fenómeno en sus partes más pequeñas",
+       false
+      ],
+      [
+       "Reemplazar a las ciencias particulares",
+       false
+      ]
+     ],
+     "ex": "Es una metateoría: busca reglas de valor general, para cualquier sistema y nivel de la realidad.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La correspondencia entre sistemas de disciplinas distintas que tienen las mismas características se llama…",
+     "op": [
+      [
+       "Homeostasis",
+       false
+      ],
+      [
+       "Sinergia",
+       false
+      ],
+      [
+       "Entropía",
+       false
+      ],
+      [
+       "Isomorfismo",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "La concepción clásica de la ciencia era mecanicista: descomponía los fenómenos en unidades elementales y procesos aislados.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "La moderna, en cambio, estudia totalidades, la organización y las interacciones.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Qué aplicación de la TGS explica los mecanismos de comunicación y control en las máquinas y los seres vivos?",
+     "op": [
+      [
+       "La teoría de la decisión",
+       false
+      ],
+      [
+       "La teoría de los juegos",
+       false
+      ],
+      [
+       "El análisis factorial",
+       false
+      ],
+      [
+       "La cibernética",
+       true
+      ]
+     ],
+     "ex": "Por eso se la asocia con la informática.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La teoría de los juegos…",
+     "op": [
+      [
+       "Mide la información con fórmulas matemáticas (entropía)",
+       false
+      ],
+      [
+       "Analiza la competencia racional entre dos o más antagonistas que buscan la máxima ganancia y la mínima pérdida",
+       true
+      ],
+      [
+       "Aísla factores en fenómenos de muchas variables",
+       false
+      ],
+      [
+       "Estudia la conducta del sistema social al tomar decisiones",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La entropía es…",
+     "op": [
+      [
+       "El intercambio de energía con el ambiente",
+       false
+      ],
+      [
+       "La tendencia de un sistema a avanzar hacia el desorden máximo",
+       true
+      ],
+      [
+       "La integración de partes que forman algo nuevo",
+       false
+      ],
+      [
+       "La fuerza que produce mayores niveles de orden",
+       false
+      ]
+     ],
+     "ex": "Pasa cuando el sistema deja de recibir suficiente energía o información.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La neguentropía es…",
+     "op": [
+      [
+       "La compatibilidad del sistema con su contexto",
+       false
+      ],
+      [
+       "La medida del desorden de un sistema",
+       false
+      ],
+      [
+       "La pérdida de energía de un sistema cerrado",
+       false
+      ],
+      [
+       "La fuerza opuesta a la entropía: se le inyecta energía e información al sistema para mantener o aumentar el orden",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un sistema abierto…",
+     "op": [
+      [
+       "Intercambia energía, materia e información con el ambiente, a través de entradas y salidas",
+       true
+      ],
+      [
+       "No tiene objetivo propio",
+       false
+      ],
+      [
+       "Es hermético a cualquier influencia del ambiente",
+       false
+      ],
+      [
+       "Tiene un comportamiento determinista y programado",
+       false
+      ]
+     ],
+     "ex": "Los organismos vivos y las organizaciones son sistemas abiertos: se adaptan para sobrevivir.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En rigor, no existen sistemas totalmente cerrados.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "ex": "Se llama cerrado al que tiene un comportamiento determinista y muy poco intercambio con el ambiente (una máquina, un reloj).",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "¿Quién propuso jerarquizar los sistemas en 9 niveles según su complejidad?",
+     "op": [
+      [
+       "Ludwig von Bertalanffy",
+       false
+      ],
+      [
+       "Kenneth Boulding",
+       true
+      ],
+      [
+       "Norbert Wiener",
+       false
+      ],
+      [
+       "Aristóteles",
+       false
+      ]
+     ],
+     "ex": "Niveles 1 a 3: no vivientes; 4 a 7: vivientes; 8 y 9: metavivientes.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son aportes metodológicos de la TGS?",
+     "op": [
+      [
+       "El modelo de departamentalización",
+       false
+      ],
+      [
+       "El modelo de rango (de las estructuras de los sistemas)",
+       true
+      ],
+      [
+       "El modelo del isomorfismo sistémico",
+       true
+      ],
+      [
+       "El organigrama",
+       false
+      ],
+      [
+       "El modelo procesal o del sistema adaptativo",
+       true
+      ]
+     ],
+     "ex": "Los aportes semánticos, en cambio, son el vocabulario común: sistema, ambiente, límite, alcances, recursos, E-P-S, retroalimentación…",
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Elementos de un sistema",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "Un sistema es…",
+     "op": [
+      [
+       "Un programa de computadora",
+       false
+      ],
+      [
+       "Un conjunto de elementos interrelacionados que tienen un objetivo en común",
+       true
+      ],
+      [
+       "Cualquier grupo de objetos, aunque no se relacionen",
+       false
+      ],
+      [
+       "Un conjunto de personas que trabajan en un mismo lugar",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El objetivo de un sistema es…",
+     "op": [
+      [
+       "La lista de actividades que realiza",
+       false
+      ],
+      [
+       "La meta o fin que debe alcanzar: su razón de ser",
+       true
+      ],
+      [
+       "Lo que ingresa al sistema",
+       false
+      ],
+      [
+       "El conjunto de elementos que lo forman",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Las funciones o actividades que el sistema debe hacer dentro de su límite para alcanzar el objetivo, enunciadas en infinitivo, son…",
+     "op": [
+      [
+       "Las salidas",
+       false
+      ],
+      [
+       "Las entradas",
+       false
+      ],
+      [
+       "Los recursos",
+       false
+      ],
+      [
+       "Los alcances",
+       true
+      ]
+     ],
+     "ex": "Por ejemplo: registrar el pedido, controlar la mercadería, emitir la factura.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Lo que transforma las entradas en salidas es…",
+     "op": [
+      [
+       "El proceso",
+       true
+      ],
+      [
+       "El ambiente",
+       false
+      ],
+      [
+       "El límite",
+       false
+      ],
+      [
+       "La retroalimentación",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Cuando se conocen las entradas y las salidas pero no cómo se transforman, el proceso se representa como…",
+     "op": [
+      [
+       "Un metasistema",
+       false
+      ],
+      [
+       "Una caja blanca",
+       false
+      ],
+      [
+       "Una caja negra",
+       true
+      ],
+      [
+       "Un subsistema",
+       false
+      ]
+     ],
+     "ex": "Si se conoce (o se puede «ver») cómo se transforman, es una caja blanca.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La retroalimentación se produce cuando…",
+     "op": [
+      [
+       "El sistema pierde energía y tiende al desorden",
+       false
+      ],
+      [
+       "El sistema se divide en subsistemas",
+       false
+      ],
+      [
+       "Las salidas (o su efecto en el contexto) vuelven a entrar al sistema como información, para controlarlo y corregirlo",
+       true
+      ],
+      [
+       "El control se hace a la entrada, para que no ingresen entradas malas",
+       false
+      ]
+     ],
+     "ex": "Lo de controlar a la entrada es el feed-forward (alimentación delantera).",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La retroalimentación que obliga a analizar y cambiar las entradas o el proceso porque hubo errores es…",
+     "op": [
+      [
+       "De cambio",
+       true
+      ],
+      [
+       "Feed-forward",
+       false
+      ],
+      [
+       "Neguentropía",
+       false
+      ],
+      [
+       "De circuito",
+       false
+      ]
+     ],
+     "ex": "La de circuito indica que todo funciona bien y el proceso sigue igual.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El ambiente (contexto) de un sistema es…",
+     "op": [
+      [
+       "Lo que el sistema produce",
+       false
+      ],
+      [
+       "La línea que separa el sistema del contexto",
+       false
+      ],
+      [
+       "El conjunto de objetos exteriores al sistema que influyen en él (y en menor medida, el sistema influye en ellos)",
+       true
+      ],
+      [
+       "Las personas que trabajan dentro del sistema",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La línea que divide al sistema de su contexto («desde–hasta») es…",
+     "op": [
+      [
+       "El metasistema",
+       false
+      ],
+      [
+       "El alcance",
+       false
+      ],
+      [
+       "La estructura",
+       false
+      ],
+      [
+       "El límite",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "El sistema mayor que incluye al sistema bajo estudio es…",
+     "op": [
+      [
+       "La estructura",
+       false
+      ],
+      [
+       "El ambiente",
+       false
+      ],
+      [
+       "El metasistema (suprasistema)",
+       true
+      ],
+      [
+       "El subsistema",
+       false
+      ]
+     ],
+     "ex": "Los subsistemas son las partes del sistema, de rango inferior.",
+     "practica": true
+    },
+    {
+     "tipo": "varias",
+     "en": "¿Cuáles son tipos de recursos de un sistema?",
+     "op": [
+      [
+       "Materiales",
+       true
+      ],
+      [
+       "Financieros",
+       true
+      ],
+      [
+       "Salidas",
+       false
+      ],
+      [
+       "Objetivos",
+       false
+      ],
+      [
+       "Humanos",
+       true
+      ]
+     ],
+     "ex": "Recursos: los elementos humanos, materiales, tecnológicos y financieros que intervienen en la transformación de las entradas en salidas.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "Las salidas de un sistema pueden convertirse en las entradas de otro.",
+     "op": [
+      [
+       "Verdadero",
+       true
+      ],
+      [
+       "Falso",
+       false
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Clasificación y propiedades",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "Según su relación con el entorno, los sistemas son…",
+     "op": [
+      [
+       "Determinísticos o probabilísticos",
+       false
+      ],
+      [
+       "Concretos o abstractos",
+       false
+      ],
+      [
+       "Simples o complejos",
+       false
+      ],
+      [
+       "Abiertos o cerrados",
+       true
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Según su comportamiento, los sistemas son…",
+     "op": [
+      [
+       "Simples o complejos",
+       false
+      ],
+      [
+       "Determinísticos o probabilísticos",
+       true
+      ],
+      [
+       "Concretos o abstractos",
+       false
+      ],
+      [
+       "Abiertos o cerrados",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Según su naturaleza, los sistemas son…",
+     "op": [
+      [
+       "Abiertos o cerrados",
+       false
+      ],
+      [
+       "Simples o complejos",
+       false
+      ],
+      [
+       "Concretos o abstractos",
+       true
+      ],
+      [
+       "Determinísticos o probabilísticos",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La sinergia es…",
+     "op": [
+      [
+       "La tendencia al desorden",
+       false
+      ],
+      [
+       "Cuando el efecto conjunto de las partes es mayor que la suma de sus efectos individuales",
+       true
+      ],
+      [
+       "Cuando el sistema cumple sus objetivos con los mínimos recursos",
+       false
+      ],
+      [
+       "La compatibilidad del sistema con su contexto",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La propiedad de aprender y modificarse según los cambios del contexto es…",
+     "op": [
+      [
+       "La estabilidad",
+       false
+      ],
+      [
+       "La armonía",
+       false
+      ],
+      [
+       "La adaptabilidad",
+       true
+      ],
+      [
+       "La tensión",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un sistema es eficiente cuando…",
+     "op": [
+      [
+       "Cumple sus objetivos con los mínimos recursos",
+       true
+      ],
+      [
+       "Se mantiene en operación",
+       false
+      ],
+      [
+       "Su salida está acotada",
+       false
+      ],
+      [
+       "Es compatible con su contexto",
+       false
+      ]
+     ],
+     "ex": "O al revés: logra más objetivos con los mismos o menos recursos.",
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "Un sistema es estable cuando…",
+     "op": [
+      [
+       "Intercambia energía con el ambiente",
+       false
+      ],
+      [
+       "Se adapta a cada cambio del contexto",
+       false
+      ],
+      [
+       "Se mantiene cumpliendo su objetivo en el tiempo (su salida está acotada)",
+       true
+      ],
+      [
+       "Usa los mínimos recursos",
+       false
+      ]
+     ],
+     "practica": true
+    },
+    {
+     "tipo": "una",
+     "en": "La armonía de un sistema mide…",
+     "op": [
+      [
+       "Cuántos subsistemas tiene",
+       false
+      ],
+      [
+       "Su tendencia al desorden",
+       false
+      ],
+      [
+       "Cuántos recursos usa",
+       false
+      ],
+      [
+       "Su nivel de compatibilidad con el contexto",
+       true
+      ]
+     ],
+     "practica": true
+    }
+   ]
+  },
+  {
+   "titulo": "Caso SEMYBAL",
+   "preguntas": [
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, ¿cuál es el mejor objetivo de la organización como sistema?",
+     "op": [
+      [
+       "Controlar la entrada y salida de mercadería del depósito",
+       false
+      ],
+      [
+       "Vender productos en sus tres locales de la ciudad de Córdoba",
+       false
+      ],
+      [
+       "Ganarles a NutriVet y a Balanceados SA",
+       false
+      ],
+      [
+       "Fabricar alimentos balanceados y comercializar alimentos balanceados, semillas y granos para sembrado, en forma minorista y mayorista",
+       true
+      ]
+     ],
+     "ex": "El objetivo abarca todo lo que hace la organización (fabricar y comercializar), en infinitivo. Lo del depósito es un alcance; los locales, solo una parte de las ventas.",
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "varias",
+     "en": "En el caso SEMYBAL, ¿cuáles forman parte del ambiente (contexto)?",
+     "op": [
+      [
+       "Los proveedores Agro Industrial SA y la Cooperativa de Acopiadores",
+       true
+      ],
+      [
+       "Los competidores NutriVet y Balanceados SA",
+       true
+      ],
+      [
+       "El software de facturación",
+       false
+      ],
+      [
+       "El estudio contable Martínez y Asociados",
+       true
+      ],
+      [
+       "El encargado del depósito",
+       false
+      ]
+     ],
+     "ex": "El ambiente es lo de afuera que influye en la organización. El encargado y el software son recursos.",
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "varias",
+     "en": "En el caso SEMYBAL, ¿cuáles son recursos?",
+     "op": [
+      [
+       "El depósito central",
+       true
+      ],
+      [
+       "El sistema de producción",
+       true
+      ],
+      [
+       "El viajante que recorre la provincia",
+       true
+      ],
+      [
+       "La agencia de publicidad Total Medios",
+       false
+      ],
+      [
+       "La Cámara de Comercio de Córdoba",
+       false
+      ]
+     ],
+     "ex": "Recursos humanos (viajante), materiales (depósito) y tecnológicos (sistema de producción). Las cámaras y las empresas contratadas son ambiente.",
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, «Registrar el ingreso de materia prima al depósito» es…",
+     "op": [
+      [
+       "Una entrada",
+       false
+      ],
+      [
+       "Un alcance",
+       true
+      ],
+      [
+       "Una salida",
+       false
+      ],
+      [
+       "Un recurso",
+       false
+      ]
+     ],
+     "ex": "Es una actividad, en infinitivo.",
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, «las materias primas e insumos que entregan los proveedores» son…",
+     "op": [
+      [
+       "Entradas",
+       true
+      ],
+      [
+       "Salidas",
+       false
+      ],
+      [
+       "Alcances",
+       false
+      ],
+      [
+       "Ambiente",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, «los alimentos balanceados vendidos y entregados a los clientes» son…",
+     "op": [
+      [
+       "Entradas",
+       false
+      ],
+      [
+       "Alcances",
+       false
+      ],
+      [
+       "Salidas",
+       true
+      ],
+      [
+       "Recursos",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, «las notas de pedido que se envían a los proveedores» son…",
+     "op": [
+      [
+       "Recursos",
+       false
+      ],
+      [
+       "Ambiente",
+       false
+      ],
+      [
+       "Salidas",
+       true
+      ],
+      [
+       "Entradas",
+       false
+      ]
+     ],
+     "ex": "Salen de la organización hacia el ambiente (los proveedores). Emitirlas es un alcance.",
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, «la Asociación Gremial de Empleados de Comercio de Córdoba» es…",
+     "op": [
+      [
+       "Una entrada",
+       false
+      ],
+      [
+       "Parte del ambiente",
+       true
+      ],
+      [
+       "Un recurso",
+       false
+      ],
+      [
+       "Un alcance",
+       false
+      ]
+     ],
+     "ex": "Es el sindicato: está afuera e influye en la organización.",
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, «el encargado de compras» es…",
+     "op": [
+      [
+       "Parte del ambiente",
+       false
+      ],
+      [
+       "Una salida",
+       false
+      ],
+      [
+       "Un alcance",
+       false
+      ],
+      [
+       "Un recurso humano",
+       true
+      ]
+     ],
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "vf": true,
+     "en": "En el caso SEMYBAL, INSOMIX (la empresa que desarrolla el software) es un recurso humano de la organización.",
+     "op": [
+      [
+       "Verdadero",
+       false
+      ],
+      [
+       "Falso",
+       true
+      ]
+     ],
+     "ex": "Es una empresa contratada: forma parte del ambiente. El software que usan sí es un recurso tecnológico.",
+     "fuente": "Recuperatorio 2023 (el caso)"
+    },
+    {
+     "tipo": "una",
+     "en": "En el caso SEMYBAL, «Seleccionar los presupuestos según precio y plazo de entrega» es…",
+     "op": [
+      [
+       "Un recurso",
+       false
+      ],
+      [
+       "Un alcance",
+       true
+      ],
+      [
+       "Un objetivo",
+       false
+      ],
+      [
+       "Una entrada",
+       false
+      ]
+     ],
+     "fuente": "Recuperatorio 2023 (el caso)"
+    }
+   ]
+  }
+ ],
+ "glosario": [
+  {
+   "t": "Teoría General de Sistemas (TGS)",
+   "que": "Propuesta por Ludwig von Bertalanffy (biólogo): busca principios válidos para cualquier sistema. Parte de «el todo es más que la suma de las partes». Aplicaciones: cibernética, teoría de la información, de los juegos, de la decisión.",
+   "re": "TGS|Teor[ií]a General|Bertalanffy|Arist[oó]teles|isomorf|Boulding|cibern[eé]tica|juegos|mecanicista",
+   "i": true
+  },
+  {
+   "t": "Entropía y neguentropía",
+   "que": "<b>Entropía</b>: la tendencia de un sistema al desorden cuando deja de recibir energía o información. <b>Neguentropía</b>: la fuerza contraria, que mantiene o aumenta el orden.",
+   "re": "entrop",
+   "i": true
+  },
+  {
+   "t": "Sistemas abiertos y cerrados",
+   "que": "<b>Abiertos</b>: intercambian energía, materia e información con el ambiente (organismos, organizaciones). <b>Cerrados</b>: casi no intercambian; en rigor no existen.",
+   "re": "abierto|cerrado",
+   "i": true
+  },
+  {
+   "t": "Sistema",
+   "que": "Conjunto de elementos interrelacionados que tienen un objetivo en común. Se representa como Entrada → Proceso → Salida (E-P-S).",
+   "re": "Un sistema es|E-P-S",
+   "i": true
+  },
+  {
+   "t": "Objetivo",
+   "que": "La razón de ser del sistema: la meta que debe alcanzar. Se escribe en infinitivo y abarca todo lo que hace.",
+   "re": "objetivo",
+   "i": true
+  },
+  {
+   "t": "Entradas y salidas",
+   "que": "<b>Entradas</b>: lo que ingresa al sistema (materiales, datos, pedidos, dinero). <b>Salidas</b>: los resultados que produce (productos, servicios, información). Las salidas de uno pueden ser entradas de otro.",
+   "re": "entrada|salida",
+   "i": true
+  },
+  {
+   "t": "Alcances",
+   "que": "Las funciones o actividades que el sistema hace dentro de su límite para cumplir el objetivo. Se enuncian como lista de verbos en infinitivo.",
+   "re": "alcance|en infinitivo",
+   "i": true
+  },
+  {
+   "t": "Proceso, caja negra y caja blanca",
+   "que": "El <b>proceso</b> transforma las entradas en salidas. Si no se sabe cómo, es una <b>caja negra</b>; si se lo puede ver, una <b>caja blanca</b>.",
+   "re": "proceso|caja negra|transforma",
+   "i": true
+  },
+  {
+   "t": "Retroalimentación",
+   "que": "Las salidas vuelven como información para controlar y corregir. <b>De circuito</b>: sigue igual. <b>De cambio</b>: hay que cambiar. <b>Feed-forward</b>: el control se hace a la entrada.",
+   "re": "retroalimentaci[oó]n|feed-forward",
+   "i": true
+  },
+  {
+   "t": "Ambiente (contexto)",
+   "que": "Lo que está fuera del sistema e influye en él: clientes, proveedores, competidores, el Estado, cámaras, sindicatos, empresas contratadas.",
+   "re": "ambiente|contexto|entorno",
+   "i": true
+  },
+  {
+   "t": "Límite, subsistema y metasistema",
+   "que": "<b>Límite</b>: separa el sistema del contexto. <b>Subsistema</b>: una parte del sistema. <b>Metasistema</b>: el sistema mayor que lo contiene.",
+   "re": "l[ií]mite|metasistema|subsistema|suprasistema",
+   "i": true
+  },
+  {
+   "t": "Recursos",
+   "que": "Los elementos que intervienen en la transformación: <b>humanos</b> (personas), <b>materiales</b> (edificios, máquinas, mercadería), <b>tecnológicos</b> (software, equipos) y <b>financieros</b> (dinero).",
+   "re": "recurso",
+   "i": true
+  },
+  {
+   "t": "Clasificación de sistemas",
+   "que": "Según su naturaleza: concretos o abstractos. Según su relación con el entorno: abiertos o cerrados. Según su complejidad: simples o complejos. Según su comportamiento: determinísticos o probabilísticos.",
+   "re": "seg[uú]n su",
+   "i": true
+  },
+  {
+   "t": "Propiedades de los sistemas",
+   "que": "Sinergia, estabilidad, adaptabilidad, eficiencia, tensión y armonía.",
+   "re": "sinergia|adaptabilidad|eficien|estab|armon[ií]a",
+   "i": true
+  },
+  {
+   "t": "Caso SEMYBAL",
+   "que": "Fabrica alimentos balanceados y vende semillas y granos: tres locales en Córdoba y venta mayorista con un viajante. Tiene depósito central, encargados de ventas, compras, depósito, producción y RR. HH.; contrata un estudio contable, una agencia de publicidad y una empresa de software.",
+   "re": "SEMYBAL"
+  }
+ ]
+}
