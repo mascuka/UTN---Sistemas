@@ -280,6 +280,9 @@ Lo que se escribe se guarda en el navegador (`isi-entregas`) y, con la clave de 
 ## Comisiones
 Cada profesor es una fila con `comision`, `profesor`, `rol` y `asistencia` (se ve como "Toma" o "No toma", centrado). El comentario (`comentario`), el examen (`examen`) y la recomendación (`recomendada: true/false` y `motivo`) son de la comisión: se ponen una sola vez, en el primer profesor de esa comisión. `horario` también va en el primero. La recomendación es una pastilla centrada (Sí / No) y el `motivo` va debajo del comentario. La recomendación también se ve en el Cronograma, al elegir comisión.
 
+## Materia de una sola parte
+Si una materia tiene una sola parte y nada más (sin secciones, actividades, comisiones, condiciones ni material o videos sueltos), no tiene página propia: al entrar se abre directo esa parte (`parteUnica`). Así está Física del ingreso (`102`), que es solo el examen: `#/m102` abre `#/m102/examen/temas`. La barra lateral no muestra la parte abajo de la materia, y «‹ Física» vuelve al año (el Cursillo de ingreso). Si después se le suma otra parte, vuelve a tener su página sola.
+
 ## Parcial o TPI en una sola página
 Con `secciones: []` el parcial no tiene secciones de Teórico/Práctico: sus pestañas son Material y Videos, con su propio `material` y `videos` (ver los TPI de Green Software, `202`), más Quiz, herramientas y Temas si los tiene (ver Tecnologías para la Automatización, `29`).
 

@@ -4276,9 +4276,13 @@ function cursandoLista(){
   return [...CARRERA.materias, ...CARRERA.electivas].filter(x => estadoDe(idDe(x)) === "cursando").map(x => infoMat(x.n)).sort((x, y) => x.nombre.localeCompare(y.nombre));
 }
 /* Las partes de una materia (las de la barra lateral): parciales, secciones propias y actividades */
+/* Una materia que es una sola parte y nada más (ej.: Física del ingreso, que es solo el examen): al entrar se abre esa parte,
+   sin la página de la materia con una única tarjeta */
+const parteUnica = c => c && c.parciales.length === 1 && !(c.secciones || []).length && !c.actividades && !c.comisiones && !c.condiciones
+  && !(c.material || []).length && !(c.videos || []).length ? c.parciales[0] : null;
 function partesMateria(m){
   const c = MATERIAS[m.n], [a, b] = ruta.split("/");
-  if(!c) return [];
+  if(!c || parteUnica(c)) return [];
   return [
     ...c.parciales.map(p => ({ go: `m${m.n}/${p.id}`, t: p.titulo, on: b === p.id })),
     ...(c.secciones || []).map(x => ({ go: `m${m.n}/${x.id}`, t: x.titulo, on: b === x.id })),
@@ -4295,7 +4299,7 @@ function renderLado(m){
   const fila = x => {
     const abierta = m && x.n === m.n, partes = abierta ? partesMateria(m) : [];
     const link = x.n && (MATERIAS[x.n] || !x.creditos) ? ` data-go="m${x.n}" href="#/m${x.n}"` : "";
-    return `<a class="l-mat mc ${abierta ? "abierta" : ""} ${abierta && !b ? "on" : ""}"${link} style="${colorMat(x.k).css}" title="${esc(x.nombre)}"><i></i><span>${esc(x.nombre)}</span>${partes.length ? ICON_CHEV : ""}</a>
+    return `<a class="l-mat mc ${abierta ? "abierta" : ""} ${abierta && (!b || parteUnica(MATERIAS[m.n])) ? "on" : ""}"${link} style="${colorMat(x.k).css}" title="${esc(x.nombre)}"><i></i><span>${esc(x.nombre)}</span>${partes.length ? ICON_CHEV : ""}</a>
       ${partes.length ? `<div class="l-hijos">${partes.map(h => `<a class="l-hijo ${h.on ? "on" : ""}" data-go="${h.go}" href="#/${h.go}" title="${esc(h.t)}">${esc(h.t)}</a>`).join("")}</div>` : ""}`;
   };
   const curs = cursandoLista();
@@ -4327,7 +4331,9 @@ function renderBarra(m){
   const enTab = t => t.on([d3, d4]);
   // Adentro de la materia (un parcial, una sección…): a la izquierda, siempre a mano, la vuelta a la materia
   const dentro = !!(m && b);
-  const volver = dentro ? `<a class="pvolver" data-go="${a}" href="#/${a}" title="Volver a ${esc(m.nombre)}">${ICON_BACK}${m.abr ? abr(m, "pv-abr") : ""}<span class="pv-l ${m.abr ? "" : "sin-abr"}">${esc(m.nombre)}</span></a>` : "";
+  // Si la materia es una sola parte, no hay página de la materia: la vuelta va a su año (ej.: el Cursillo de ingreso)
+  const ir = parteUnica(c) ? `nivel/${m.nivel}` : a;
+  const volver = dentro ? `<a class="pvolver" data-go="${ir}" href="#/${ir}" title="Volver a ${esc(parteUnica(c) ? nombreNivel(m.nivel) : m.nombre)}">${ICON_BACK}${m.abr ? abr(m, "pv-abr") : ""}<span class="pv-l ${m.abr ? "" : "sin-abr"}">${esc(m.nombre)}</span></a>` : "";
   $("#parnavIn").innerHTML = volver + (tabs.length > 1 ? tabs.map(t => `<a class="ptab ${enTab(t) ? "on" : ""}" data-go="${a}/${b}${t.go}" href="#/${a}/${b}${t.go}"${enTab(t) ? ' aria-current="page"' : ""}>${esc(t.t)}</a>`).join("") : "");
   $("#parnav").hidden = !dentro;
   $("#barra").classList.toggle("vacia", !dentro);
@@ -10361,6 +10367,8 @@ function render(arriba = true){
   const app = $("#app");
   const m = a && a[0] === "m" ? materia(+a.slice(1)) : null;
   const cont = m && MATERIAS[m.n];
+  const unica = !b && parteUnica(cont);
+  if(unica){ b = unica.id; ruta = `${a}/${b}`; history.replaceState(history.state, "", "#/" + ruta); }
   const p = cont && cont.parciales.find(x => x.id === b);
   // Un parcial con secciones: [] (ej.: los TPI de Green Software) se muestra como una sección: Material y Videos
   const sec = (cont && cont.secciones && cont.secciones.find(x => x.id === b)) || (p && p.secciones && !p.secciones.length ? p : null);
