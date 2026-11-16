@@ -878,6 +878,21 @@
      "proyecto": "flo",
      "donde": "`VehiculoRuta`: atributo, constructores, `desdeCampos` y el costo",
      "consigna": "Agregá el dato `kilometros` a `VehiculoRuta`: atributo `final`, getter y validación (entero de **0 a 5000**, inclusive). El constructor de siempre tiene que seguir andando (lo usan los tests): que **delegue** con `this(..., 0)` en uno nuevo que recibe los kilómetros. `desdeCampos` acepta 5 o 6 campos: con 6 lee `campos[5]`; con 5, 0 km. El costo suma **1 USD cada 10 km** (división entera): `2000 × índice / 100 + km / 10`.",
+     "csv": {
+      "cabecera": "patente;zona;velocidadPromedio;cargaToneladas;estado;kilometros",
+      "filas": [
+       "trk-1;NORTE;60;10;EN_RUTA;300",
+       "trk-2;NORTE;60;10;EN_RUTA;99",
+       "trk-3;SUR;60;10;EN_RUTA;5000",
+       "trk-4;SUR;60;10;EN_RUTA;5001",
+       "trk-5;SUR;60;10;EN_RUTA;mil"
+      ],
+      "separador": ";",
+      "columnasNuevas": [
+       "kilometros"
+      ]
+     },
+     "csvNota": "trk-1 → **830** · trk-2 → **809** (99 / 10 = 9) · trk-3 → **1300** (el tope es inclusive) · trk-4 (5001) y trk-5 (`mil`) → **excepción**. Una fila de 5 campos, con la cabecera vieja → 0 km, **800**.",
      "datos": "60 km/h, 10 t (índice 40) y 300 km → 800 + 30 = **830** · con 99 km → **809** (99 / 10 = 9) · 5000 km → **1300** · 5001, -1, `mil` o vacío → excepción · formato viejo → 0 km, **800**.",
      "pasos": [
       "`private final int kilometros;` y `getKilometros()`.",
@@ -1598,6 +1613,17 @@
      "proyecto": "flo",
      "donde": "`Flota` (la operación nueva)",
      "consigna": "Agregá a `Flota` el vehículo con el **mayor costo** por desgaste operativo: `getMayorCosto()`, que devuelve un `Optional<VehiculoRuta>` (vacío si la flota está vacía).",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA",
+       "b,SUR,60,10,DEMORADO",
+       "c,SUR,70,10,DEMORADO",
+       "a,CENTRO,101,11,EN_RUTA"
+      ],
+      "separador": ","
+     },
+     "csvNota": "Costos: a (NORTE) **800** · b **800** · c **920** (índice 46) · a (CENTRO) **1300** (índice 65). La patente a aparece dos veces: son dos viajes.",
      "datos": "a (800), b (800), c (920), a (1300) → el de **1300** (patente a, CENTRO) · vacía → `Optional.empty()`. Con el CSV del preenunciado: **trk-0038** (1300).",
      "pasos": [
       "`vehiculos.stream().max(Comparator.comparingInt(VehiculoRuta::getCostoDesgasteOperativo))`.",
@@ -1648,6 +1674,17 @@
      "proyecto": "flo",
      "donde": "`Flota` (la operación nueva)",
      "consigna": "No se exige unicidad de patentes: cada fila es un viaje. Agregá a `Flota` cuántos viajes hizo cada patente (`getViajesPorPatente()`, ordenado) y la lista de patentes con **más de un viaje** (`getPatentesConMasDeUnViaje()`).",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA",
+       "b,SUR,60,10,DEMORADO",
+       "c,SUR,70,10,DEMORADO",
+       "a,CENTRO,101,11,EN_RUTA"
+      ],
+      "separador": ","
+     },
+     "csvNota": "Costos: a (NORTE) **800** · b **800** · c **920** (índice 46) · a (CENTRO) **1300** (índice 65). La patente a aparece dos veces: son dos viajes.",
      "datos": "a (2 viajes), b, c → `{a=2, b=1, c=1}` y `[a]`. Con el CSV del preenunciado no hay repetidas: `[]`.",
      "pasos": [
       "`groupingBy(VehiculoRuta::getPatente, TreeMap::new, Collectors.counting())`.",
@@ -1704,6 +1741,17 @@
      "proyecto": "flo",
      "donde": "`Flota` (la operación nueva)",
      "consigna": "Agregá a `Flota` la **velocidad promedio** de cada zona (`getVelocidadPromedioPorZona()`), ordenada por zona. Con la flota vacía, un mapa vacío.",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA",
+       "b,SUR,60,10,DEMORADO",
+       "c,SUR,70,10,DEMORADO",
+       "a,CENTRO,101,11,EN_RUTA"
+      ],
+      "separador": ","
+     },
+     "csvNota": "Costos: a (NORTE) **800** · b **800** · c **920** (índice 46) · a (CENTRO) **1300** (índice 65). La patente a aparece dos veces: son dos viajes.",
      "datos": "NORTE (60) · SUR (60 y 70) · CENTRO (101) → `{CENTRO=101.0, NORTE=60.0, SUR=65.0}`. Con el CSV del preenunciado: CENTRO 78,83 · NORTE 77,09 · SUR 68,44.",
      "pasos": [
       "`groupingBy(VehiculoRuta::getZona, TreeMap::new, Collectors.averagingInt(VehiculoRuta::getVelocidadPromedio))`."
@@ -1752,6 +1800,17 @@
      "proyecto": "flo",
      "donde": "`Flota` (la operación nueva)",
      "consigna": "Agregá a `Flota` el **costo total de los DEMORADO** (`getCostoDemorados()`), **reutilizando** `sumarCostoDesgasteOperativo` con un `Predicate`, y cuántos vehículos tienen el índice **entre dos valores, inclusive** (`contarConIndiceEntre(int minimo, int maximo)`).",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA",
+       "b,SUR,60,10,DEMORADO",
+       "c,SUR,70,10,DEMORADO",
+       "a,CENTRO,101,11,EN_RUTA"
+      ],
+      "separador": ","
+     },
+     "csvNota": "Costos: a (NORTE) **800** · b **800** · c **920** (índice 46) · a (CENTRO) **1300** (índice 65). La patente a aparece dos veces: son dos viajes.",
      "datos": "b (800) y c (920) son DEMORADO → **1720** · índices 40, 40, 46 y 65 → entre 40 y 46: **3** · entre 47 y 64: **0**. Con el CSV del preenunciado, los DEMORADO suman **13880**.",
      "pasos": [
       "`return sumarCostoDesgasteOperativo(vehiculo -> \"DEMORADO\".equals(vehiculo.getEstado()));`",
@@ -1816,6 +1875,19 @@
      "proyecto": "flo",
      "donde": "`getTipoCarga()` en `VehiculoRuta` y `VehiculoRefrigerado`, y `Flota` (la operación nueva)",
      "consigna": "Agregá a `Flota` un conteo por tipo de carga: cuántos GENERAL y cuántos REFRIGERADA (`contarPorTipoCarga()`); con la flota vacía, un mapa vacío. Para saber el tipo, agregá `getTipoCarga()` en `VehiculoRuta` (devuelve `\"GENERAL\"`) y redefinilo en `VehiculoRefrigerado` (devuelve `\"REFRIGERADA\"`). **Sin `instanceof`.**",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado,tipoCarga",
+      "filas": [
+       "a,N,60,10,EN_RUTA,GENERAL",
+       "b,N,60,10,EN_RUTA,REFRIGERADA",
+       "c,S,60,10,DEMORADO,REFRIGERADA"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "tipoCarga"
+      ]
+     },
+     "csvNota": "a es **GENERAL** (800) · b y c son **REFRIGERADA** (1100 cada una).",
      "datos": "GENERAL, REFRIGERADA, REFRIGERADA → `{GENERAL=1, REFRIGERADA=2}` · vacía → `{}`.",
      "pasos": [
       "`public String getTipoCarga() { return \"GENERAL\"; }` en `VehiculoRuta`.",
@@ -1903,6 +1975,19 @@
      "proyecto": "flo",
      "donde": "`Flota` (la operación nueva)",
      "consigna": "Con el caso B (`kilometros` ya está en `VehiculoRuta`), agregá a `Flota` los **kilómetros totales por zona** (`getKilometrosPorZona()`, ordenado) y el vehículo con **más kilómetros** (`getConMasKilometros()`, un `Optional`).",
+     "csv": {
+      "cabecera": "patente;zona;velocidadPromedio;cargaToneladas;estado;kilometros",
+      "filas": [
+       "a;NORTE;60;10;EN_RUTA;300",
+       "b;SUR;60;10;EN_RUTA;100",
+       "c;SUR;60;10;DEMORADO;1200"
+      ],
+      "separador": ";",
+      "columnasNuevas": [
+       "kilometros"
+      ]
+     },
+     "csvNota": "Kilómetros: a **300** (NORTE) · b **100** y c **1200** (SUR). Costos: a 830 · b 810 · c 920.",
      "datos": "a (NORTE, 300 km) · b (SUR, 100) · c (SUR, 1200) → `{NORTE=300, SUR=1300}` y el de más km es **c**.",
      "pasos": [
       "`groupingBy(VehiculoRuta::getZona, TreeMap::new, Collectors.summingInt(VehiculoRuta::getKilometros))`.",
@@ -1965,6 +2050,17 @@
      "proyecto": "flo",
      "donde": "`Flota` (la operación nueva)",
      "consigna": "Es el conteo que pidió el Parcial 3K1 (caso D): agregá a `Flota` cuántos vehículos hay EN_RUTA y cuántos DEMORADO, ordenado por estado. Con la flota vacía, un mapa vacío (el 3K1 decía «un resultado vacío o conteos cero»). Nombre: `contarPorEstado()`.",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA",
+       "b,SUR,60,10,DEMORADO",
+       "c,SUR,70,10,DEMORADO",
+       "a,CENTRO,101,11,EN_RUTA"
+      ],
+      "separador": ","
+     },
+     "csvNota": "Costos: a (NORTE) **800** · b **800** · c **920** (índice 46) · a (CENTRO) **1300** (índice 65). La patente a aparece dos veces: son dos viajes.",
      "datos": "a, a (EN_RUTA) · b, c (DEMORADO) → `{DEMORADO=2, EN_RUTA=2}` · vacía → `{}`. Con el CSV del preenunciado: `{DEMORADO=14, EN_RUTA=18}`.",
      "pasos": [
       "`vehiculos.stream().collect(...)`.",
@@ -2025,6 +2121,16 @@
      "proyecto": "flo",
      "donde": "`App` y `Flota`",
      "consigna": "Este main **calcula**: cuenta los DEMORADO y busca el de mayor costo con un `for`. Pasá esas cuentas a `Flota` (`contarPorEstado()` y `getMayorCosto()`, como en la parte 4) y que el main solo las llame e imprima lo mismo.",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA",
+       "b,SUR,60,10,DEMORADO",
+       "c,SUR,101,11,DEMORADO"
+      ],
+      "separador": ","
+     },
+     "csvNota": "Con estas filas: `DEMORADO: 2` y `Mayor costo: c` (1300). Total **2900**.",
      "datos": "Con el CSV del preenunciado: `DEMORADO: 14` y `Mayor costo: trk-0038`, más el resumen y el panorama de siempre.",
      "pasos": [
       "En `Flota`: `contarPorEstado()` (groupingBy + counting) y `getMayorCosto()` (max + comparingInt).",
@@ -2102,6 +2208,20 @@
      "proyecto": "flo",
      "donde": "`App` → `main` (mirá `Flota`, que ya tiene `contarPorTipoCarga()`)",
      "consigna": "El main del caso A: usar `datos/datos-parcial.csv` por defecto (y seguir aceptando un argumento) y mostrar el resumen de errores, la **cantidad de objetos**, las cantidades **GENERAL y REFRIGERADA** (en cero si no hay) y el panorama. El conteo ya está en `Flota.contarPorTipoCarga()` (parte 4). El main no calcula.",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado,tipoCarga",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA,GENERAL",
+       "b,NORTE,60,10,EN_RUTA,REFRIGERADA",
+       "c,SUR,60,30,DEMORADO,REFRIGERADA",
+       "d,SUR,60,10,PERDIDO,GENERAL"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "tipoCarga"
+      ]
+     },
+     "csvNota": "a **800** · b **1100** · c **1260** · d es **inválida** (PERDIDO). Total **3160**.",
      "datos": "Con 3 filas (GENERAL, REFRIGERADA, REFRIGERADA): `Objetos: 3` y `GENERAL: 1 | REFRIGERADA: 2`, y después el panorama con el total (con los recargos) y los totales por zona.",
      "pasos": [
       "Cambiá la ruta por defecto: `Path.of(\"datos\", \"datos-parcial.csv\")`.",
@@ -2188,6 +2308,20 @@
      "proyecto": "flo",
      "donde": "`App` → `main` (mirá `Flota`, que ya tiene `contarPorEstado()`)",
      "consigna": "El main del caso D, igual al que pidió el Parcial 3K1: usar `datos/datos-parcial.csv` por defecto (y seguir aceptando un argumento) y mostrar el resumen, la **cantidad de objetos**, las cantidades **EN_RUTA y DEMORADO** (en cero si no hay) y el panorama (el total y los totales por zona). El conteo ya está en `Flota.contarPorEstado()` (parte 4). El main no calcula.",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado,facturacion",
+      "filas": [
+       "a,NORTE,60,10,EN_RUTA,3000",
+       "b,CENTRO,101,11,DEMORADO,2600",
+       "c,SUR,60,10,EN_RUTA,2000",
+       "d,SUR,60,10,EN_RUTA,3800"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "facturacion"
+      ]
+     },
+     "csvNota": "a **1200** · b **1690** · c **800** · d es **inválida** (3800). Total **3690**.",
      "datos": "Con 3 filas (2 EN_RUTA, 1 DEMORADO, facturación 3000, 2600 y 2000): `Objetos: 3` y `EN_RUTA: 2 | DEMORADO: 1`, y el panorama con el total 3690.",
      "pasos": [
       "Cambiá la ruta por defecto: `Path.of(\"datos\", \"datos-parcial.csv\")`.",

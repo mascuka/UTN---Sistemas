@@ -462,6 +462,8 @@ P2 = [
            ['`this(...)` tiene que ser la **primera** línea del constructor viejo.', 'Con `convertirEntero` reutilizás el `trim()` y el mensaje de siempre.',
             'Leer `campos[5]` en una fila de 5 tira `ArrayIndexOutOfBoundsException`, que el parser no atrapa: preguntá el largo antes.',
             'El cálculo cambia para **todos**: no hace falta una subclase, se cambia el método.'],
+           tabla(HB, ['trk-1;NORTE;60;10;EN_RUTA;300', 'trk-2;NORTE;60;10;EN_RUTA;99', 'trk-3;SUR;60;10;EN_RUTA;5000', 'trk-4;SUR;60;10;EN_RUTA;5001', 'trk-5;SUR;60;10;EN_RUTA;mil'], ['kilometros'], ';'),
+           'trk-1 → **830** · trk-2 → **809** (99 / 10 = 9) · trk-3 → **1300** (el tope es inclusive) · trk-4 (5001) y trk-5 (`mil`) → **excepción**. Una fila de 5 campos, con la cabecera vieja → 0 km, **800**.',
            datos='60 km/h, 10 t (índice 40) y 300 km → 800 + 30 = **830** · con 99 km → **809** (99 / 10 = 9) · 5000 km → **1300** · 5001, -1, `mil` o vacío → excepción · formato viejo → 0 km, **800**.',
            prueba='''        VehiculoRuta x = v("trk-1", "NORTE", "60", "10", "EN_RUTA", "300");
         igual(300, x.getKilometros(), "los kilómetros"); igual(830, x.getCostoDesgasteOperativo(), "800 + 30");
@@ -679,10 +681,15 @@ P3 = [
 ]
 
 
-def flota_ej(id, titulo, metodos, consigna, checks, pasos, pistas, datos, prueba, base_ruta=None, solo_ruta=None):
+# Las filas de ejemplo de los ejercicios del colector (las mismas que usa su prueba)
+CSV_LISTA = tabla(H5, ['a,NORTE,60,10,EN_RUTA', 'b,SUR,60,10,DEMORADO', 'c,SUR,70,10,DEMORADO', 'a,CENTRO,101,11,EN_RUTA'])
+NOTA_LISTA = 'Costos: a (NORTE) **800** · b **800** · c **920** (índice 46) · a (CENTRO) **1300** (índice 65). La patente a aparece dos veces: son dos viajes.'
+
+
+def flota_ej(id, titulo, metodos, consigna, checks, pasos, pistas, datos, prueba, base_ruta=None, solo_ruta=None, csv=CSV_LISTA, csvNota=NOTA_LISTA):
     archivos = [arch('Flota.java', ORIG['Flota.java'], flota_con(*metodos))]
     if solo_ruta: archivos.append(arch('VehiculoRuta.java', solo_ruta, solo=True))
-    return codigo(id, titulo, '`Flota` (la operación nueva)', consigna, archivos, checks, pasos, pistas, datos=datos, prueba=prueba, base=base_ruta)
+    return codigo(id, titulo, '`Flota` (la operación nueva)', consigna, archivos, checks, pasos, pistas, csv=csv, csvNota=csvNota, datos=datos, prueba=prueba, base=base_ruta)
 
 
 LISTA = '''        List<VehiculoRuta> l = List.of(v("a", "NORTE", "60", "10", "EN_RUTA"), v("b", "SUR", "60", "10", "DEMORADO"), v("c", "SUR", "70", "10", "DEMORADO"), v("a", "CENTRO", "101", "11", "EN_RUTA"));
@@ -713,6 +720,8 @@ P4 = [
            ['`public String getTipoCarga() { return "GENERAL"; }` en `VehiculoRuta`.', '`@Override public String getTipoCarga() { return "REFRIGERADA"; }` en `VehiculoRefrigerado`.',
             'En `Flota`: `groupingBy(VehiculoRuta::getTipoCarga, TreeMap::new, Collectors.counting())`.'],
            ['El tipo de vuelta es `Map<String, Long>`.', 'Por qué `getTipoCarga()` y no `instanceof`: si mañana aparece PELIGROSA, `Flota` no cambia.'],
+           csv=tabla(HA, ['a,N,60,10,EN_RUTA,GENERAL', 'b,N,60,10,EN_RUTA,REFRIGERADA', 'c,S,60,10,DEMORADO,REFRIGERADA'], ['tipoCarga']),
+           csvNota='a es **GENERAL** (800) · b y c son **REFRIGERADA** (1100 cada una).',
            datos='GENERAL, REFRIGERADA, REFRIGERADA → `{GENERAL=1, REFRIGERADA=2}` · vacía → `{}`.',
            prueba='''        Flota f = new Flota(List.of(v("a", "N", "60", "10", "EN_RUTA", "GENERAL"), v("b", "N", "60", "10", "EN_RUTA", "REFRIGERADA"), v("c", "S", "60", "10", "DEMORADO", "REFRIGERADA")));
         igual(Map.of("GENERAL", 1L, "REFRIGERADA", 2L), f.contarPorTipoCarga(), "por tipo"); igual(Map.of(), new Flota(List.of()).contarPorTipoCarga(), "vacía");
@@ -763,7 +772,8 @@ P4 = [
              '''        Flota f = new Flota(List.of(v("a", "NORTE", "60", "10", "EN_RUTA", "300"), v("b", "SUR", "60", "10", "EN_RUTA", "100"), v("c", "SUR", "60", "10", "DEMORADO", "1200")));
         igual(Map.of("NORTE", 300, "SUR", 1300), f.getKilometrosPorZona(), "km por zona"); igual("c", f.getConMasKilometros().get().getPatente(), "el de más km");
         igual(Optional.empty(), new Flota(List.of()).getConMasKilometros(), "vacía");
-''', solo_ruta=B_RUTA),
+''', solo_ruta=B_RUTA, csv=tabla(HB, ['a;NORTE;60;10;EN_RUTA;300', 'b;SUR;60;10;EN_RUTA;100', 'c;SUR;60;10;DEMORADO;1200'], ['kilometros'], ';'),
+             csvNota='Kilómetros: a **300** (NORTE) · b **100** y c **1200** (SUR). Costos: a 830 · b 810 · c 920.'),
     flota_ej('r4.7', 'reusar el filtro: costo de los DEMORADO y conteo entre dos índices', [M_FILTROS],
              'Agregá a `Flota` el **costo total de los DEMORADO** (`getCostoDemorados()`), **reutilizando** `sumarCostoDesgasteOperativo` con un `Predicate`, y cuántos vehículos tienen el índice **entre dos valores, inclusive** (`contarConIndiceEntre(int minimo, int maximo)`).',
              [ch(r'int\s+getCostoDemorados\s*\(\s*\)', 'El costo de los DEMORADO', 'Falta `public int getCostoDemorados()`', 'Flota.java'),
@@ -794,6 +804,8 @@ P5 = [
            ['Cambiá la ruta por defecto: `Path.of("datos", "datos-parcial.csv")`.', 'Guardá `flota.contarPorTipoCarga()` en un `Map<String, Long>`.',
             'Imprimí `"Objetos: " + resultado.getVehiculos().size()`.', 'Imprimí GENERAL y REFRIGERADA con `getOrDefault(..., 0L)`.', 'Dejá el resumen y el `panorama()`.'],
            ['`getOrDefault("REFRIGERADA", 0L)`: si en el archivo no hay ninguna, la clave no está y `get` daría `null`.', 'Importá `java.util.Map`.'],
+           csv=tabla(HA, ['a,NORTE,60,10,EN_RUTA,GENERAL', 'b,NORTE,60,10,EN_RUTA,REFRIGERADA', 'c,SUR,60,30,DEMORADO,REFRIGERADA', 'd,SUR,60,10,PERDIDO,GENERAL'], ['tipoCarga']),
+           csvNota='a **800** · b **1100** · c **1260** · d es **inválida** (PERDIDO). Total **3160**.',
            datos='Con 3 filas (GENERAL, REFRIGERADA, REFRIGERADA): `Objetos: 3` y `GENERAL: 1 | REFRIGERADA: 2`, y después el panorama con el total (con los recargos) y los totales por zona.',
            prueba='''        java.nio.file.Path p = csv("''' + HA + '''", "a,NORTE,60,10,EN_RUTA,GENERAL", "b,NORTE,60,10,EN_RUTA,REFRIGERADA", "c,SUR,60,30,DEMORADO,REFRIGERADA", "d,SUR,60,10,PERDIDO,GENERAL");
         String s = salida(p.toString());
@@ -811,6 +823,8 @@ P5 = [
            ['En `Flota`: `contarPorEstado()` (groupingBy + counting) y `getMayorCosto()` (max + comparingInt).',
             'En el main: `flota.contarPorEstado().getOrDefault("DEMORADO", 0L)`.', '`flota.getMayorCosto().map(VehiculoRuta::getPatente).orElse("-")`.', 'Borrá el `for` y las variables auxiliares.'],
            ['Regla del parcial: si en el main hay un `for`, un `stream` o una cuenta, va en otra clase.', 'La salida tiene que ser la misma de antes.'],
+           csv=tabla(H5, ['a,NORTE,60,10,EN_RUTA', 'b,SUR,60,10,DEMORADO', 'c,SUR,101,11,DEMORADO']),
+           csvNota='Con estas filas: `DEMORADO: 2` y `Mayor costo: c` (1300). Total **2900**.',
            datos='Con el CSV del preenunciado: `DEMORADO: 14` y `Mayor costo: trk-0038`, más el resumen y el panorama de siempre.',
            prueba='''        java.nio.file.Path p = csv("''' + H5 + '''", "a,NORTE,60,10,EN_RUTA", "b,SUR,60,10,DEMORADO", "c,SUR,101,11,DEMORADO");
         String s = salida(p.toString());
@@ -830,6 +844,8 @@ P5 = [
            ['Cambiá la ruta por defecto: `Path.of("datos", "datos-parcial.csv")`.', 'Guardá `flota.contarPorEstado()` en un `Map<String, Long>`.',
             'Imprimí `"Objetos: " + resultado.getVehiculos().size()`.', 'Imprimí EN_RUTA y DEMORADO con `getOrDefault(..., 0L)`.', 'Dejá el resumen y el `panorama()`.'],
            ['En el 3K1 eran ALERTA / CRITICO; acá, EN_RUTA / DEMORADO.', '`getOrDefault` evita el `null` si un estado no aparece.', 'Importá `java.util.Map`.'],
+           csv=tabla(HD, ['a,NORTE,60,10,EN_RUTA,3000', 'b,CENTRO,101,11,DEMORADO,2600', 'c,SUR,60,10,EN_RUTA,2000', 'd,SUR,60,10,EN_RUTA,3800'], ['facturacion']),
+           csvNota='a **1200** · b **1690** · c **800** · d es **inválida** (3800). Total **3690**.',
            datos='Con 3 filas (2 EN_RUTA, 1 DEMORADO, facturación 3000, 2600 y 2000): `Objetos: 3` y `EN_RUTA: 2 | DEMORADO: 1`, y el panorama con el total 3690.',
            prueba='''        java.nio.file.Path p = csv("''' + HD + '''", "a,NORTE,60,10,EN_RUTA,3000", "b,CENTRO,101,11,DEMORADO,2600", "c,SUR,60,10,EN_RUTA,2000", "d,SUR,60,10,EN_RUTA,3800");
         String s = salida(p.toString());
