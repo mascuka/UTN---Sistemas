@@ -6444,7 +6444,9 @@ const nombreArch = a => a.split("/").pop();   // en Java las rutas son largas (a
 const clavePr = id => "isi-practica:" + id;
 function leerPr(id){ try { return JSON.parse(leerLocal(clavePr(id))) || null; } catch(e){ return null; } }
 function guardarPr(){ if(pr) guardarLocal(clavePr(pr.ej.id), JSON.stringify(pr.est)); }
-const cargarEjercicio = url => practicaCache[url] || (practicaCache[url] = fetch(url).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }));
+/* Los JSON de práctica y de quiz se piden con cache "no-cache": el navegador pregunta si cambiaron (si no, 304 y usa su copia),
+   así cuando se suben ejercicios nuevos se ven con solo recargar la página */
+const cargarEjercicio = url => practicaCache[url] || (practicaCache[url] = fetch(url, { cache: "no-cache" }).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }));
 
 const nombrePractica = p => p.practicaTemas ? "Práctica" : "Práctica por partes";
 const hechosPr = x => { const est = leerPr(x.id); return est ? est.hechos.length : 0; };
@@ -7180,8 +7182,8 @@ const archivosEj = ej => {
 /* La carpeta del profe de un parcial (practica/octave/profe/pN/): archivos.json dice qué .m hay y cuáles se corren */
 const cacheProfe = {};
 function cargarProfe(carpeta){
-  return cacheProfe[carpeta] || (cacheProfe[carpeta] = fetch(carpeta + "archivos.json").then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
-    .then(xs => Promise.all(xs.map(a => fetch(carpeta + a.nombre).then(r => { if(!r.ok) throw new Error(r.status); return r.text(); }).then(texto => ({ ...a, texto })))))
+  return cacheProfe[carpeta] || (cacheProfe[carpeta] = fetch(carpeta + "archivos.json", { cache: "no-cache" }).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(xs => Promise.all(xs.map(a => fetch(carpeta + a.nombre, { cache: "no-cache" }).then(r => { if(!r.ok) throw new Error(r.status); return r.text(); }).then(texto => ({ ...a, texto })))))
     .catch(() => { delete cacheProfe[carpeta]; return []; }));
 }
 const editablesEj = ej => archivosEj(ej).filter(a => !a.soloLectura);
@@ -8730,7 +8732,7 @@ function viewQuiz(m, p){
 async function montarQuiz(m, p, sec){
   const caja = $("#quiz");
   try {
-    if(!quizCache[p.quiz]) quizCache[p.quiz] = fetch(p.quiz).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); });
+    if(!quizCache[p.quiz]) quizCache[p.quiz] = fetch(p.quiz, { cache: "no-cache" }).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); });
     const d = await quizCache[p.quiz];
     if(!caja.isConnected) return;
     const k = sec ? d.secciones.findIndex(s => slugQz(s.titulo) === sec) : -1;
@@ -10331,7 +10333,7 @@ function infoMat(k){
   return m ? { k, n: m.n, nombre: m.nombre, abr: m.abr || "", creditos: m.creditos, m } : null;
 }
 let HOR = null, horPromesa = null;
-const cargarHorarios = () => horPromesa || (horPromesa = fetch("horarios/2026.json").then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }).then(j => HOR = j).catch(e => { horPromesa = null; throw e; }));
+const cargarHorarios = () => horPromesa || (horPromesa = fetch("horarios/2026.json", { cache: "no-cache" }).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); }).then(j => HOR = j).catch(e => { horPromesa = null; throw e; }));
 
 /* Estado de la pantalla: cuatrimestre, si se está editando, el borrador, la materia que se está eligiendo… */
 const CR = { q: null, edit: false, auto: false, borrador: {}, eligiendo: null, picker: false, filtro: "", mes: null, sel: null, dia: null, form: { tipo: "Parcial", k: null } };
