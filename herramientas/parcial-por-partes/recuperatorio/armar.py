@@ -7,6 +7,8 @@ proyecto, con las mismas partes que El parcial por partes (0 Consigna, 1 CSV, 2 
   A · tipo de carga (5 → 6 columnas): GENERAL o REFRIGERADA; la refrigerada cuesta 300 USD más y lleva hasta 30 t.
   B · kilómetros, con el archivo nuevo separado por ';': el costo suma 1 USD cada 10 km (cambia para todos).
   C · estado MANTENIMIENTO (se descarta) y DEMORADO 15 % más caro (subclase según el estado).
+  D · el gemelo del Parcial 3K1 (Cloud Center, el mismo preenunciado con otro tema): la facturación del flete en una
+      6.ª columna reemplaza a los 2000 USD fijos, con un gancho que la subclase redefine.
   Más operaciones sueltas del colector (por estado, el de mayor costo, por patente, promedios, filtros) y el main.
 
 Las soluciones completas de cada caso están en codigo/A, codigo/B y codigo/C; lo demás sale del proyecto real
@@ -62,6 +64,9 @@ A_RUTA_ANCHO = cambiar(ORIG['VehiculoRuta.java'], ('if (campos == null || campos
                                                    'if (campos == null || (campos.length != 5 && campos.length != 6)) {\n            throw new IllegalArgumentException("La fila debe tener cinco o seis columnas");'))
 B_RUTA, B_PARSER, B_FLOTA = (cod('B', n) for n in ('VehiculoRuta.java', 'ParserVehiculos.java', 'Flota.java'))
 C_RUTA, C_DEM, C_PARSER = (cod('C', n) for n in ('VehiculoRuta.java', 'VehiculoDemorado.java', 'ParserVehiculos.java'))
+# D · el gemelo del Parcial 3K1 (Cloud Center): la facturación del flete viene en la 6.ª columna y reemplaza a los 2000 fijos
+D_RUTA, D_FAC, D_PARSER, D_APP = (cod('D', n) for n in ('VehiculoRuta.java', 'VehiculoConFacturacion.java', 'ParserVehiculos.java', 'App.java'))
+HD = H5 + ',facturacion'
 
 # ── Operaciones nuevas del colector, sobre la Flota del preenunciado
 IMPORTS = ['java.util.ArrayList', 'java.util.Collections', 'java.util.Comparator', 'java.util.LinkedHashMap', 'java.util.List',
@@ -288,6 +293,13 @@ ENUNCIADO_B = [
     'El costo suma 1 USD cada 10 km (división entera): `2000 × índice / 100 + km / 10`.',
     'Colector: los kilómetros totales por zona y el vehículo con más kilómetros. Main: mostrarlos.',
 ]
+ENUNCIADO_D = [
+    'Es el mismo cambio del **Parcial 3K1 (Cloud Center)**, que tiene el mismo preenunciado con otro tema: allá la 6.ª columna eran los ingresos y reemplazaban a los 1000 USD fijos.',
+    'Columna nueva: `facturacion` (5 → 6), lo que factura ese flete. En el formato viejo, los 2000 USD de siempre. Cada fila, con el ancho de su cabecera.',
+    'EN_RUTA y DEMORADO del formato nuevo: la facturación es un entero de 2000 (inclusive) a 3800 (exclusive), después de quitar espacios. Fuera de rango: la fila es inválida.',
+    'El costo usa la facturación de la fila: `facturacion × índice / 100`. El total, los filtros y los totales por zona, con la regla nueva.',
+    'Colector: un conteo por estado. Main: `datos-parcial.csv`, el resumen, los objetos, EN_RUTA / DEMORADO y el panorama.',
+]
 ENUNCIADO_C = [
     'Estado nuevo MANTENIMIENTO: se descarta igual que EN_DEPOSITO, sin validar el resto.',
     'Un DEMORADO cuesta 15 % más: `costo × 115 / 100` (enteros).',
@@ -331,6 +343,17 @@ P0 = [
         ('Las patentes con más de un viaje', 'Colector', 'Agrupar por patente y filtrar las de más de 1'),
         ('Mostrarlo todo sin `for` ni cuentas', 'Main', 'El main solo llama métodos'),
     ], ENUNCIADO_C),
+    ubic('r0.4', 'Caso D · Facturación por flete (como el 3K1)', 'El caso más parecido a lo que ya tomaron: la facturación del flete viene en una 6.ª columna y reemplaza a los 2000 USD fijos. Indicá en qué clase va cada cambio.', OPC, [
+        ('Aceptar la cabecera con `facturacion` (5 y 6 columnas)', 'Parser', 'Estructura del archivo'),
+        ('Una fila de 5 campos bajo la cabecera de 6 es inválida', 'Parser', 'El ancho lo decide la cabecera'),
+        ('Descartar EN_DEPOSITO sin mirar la facturación', 'Parser', 'Precedencia: ancho → descarte'),
+        ('La facturación va de 2000 (inclusive) a 3800 (exclusive)', 'Dominio', 'Validación, en el constructor de la subclase'),
+        ('En el formato viejo, 2000 USD por flete', 'Dominio', 'El gancho del padre devuelve 2000'),
+        ('El costo usa la facturación de la fila', 'Dominio', 'Subclase que redefine el gancho (`@Override`)'),
+        ('Que el total, los filtros y los totales por zona usen la facturación', 'Dominio', '**Trampa:** `Flota` no se toca; todo pasa por `getCostoDesgasteOperativo()`'),
+        ('Contar cuántos hay EN_RUTA y cuántos DEMORADO', 'Colector', '`groupingBy(VehiculoRuta::getEstado, counting())`'),
+        ('Usar `datos-parcial.csv` y mostrar EN_RUTA / DEMORADO', 'Main', 'Solo imprime, con `getOrDefault(..., 0L)`'),
+    ], ENUNCIADO_D),
 ]
 
 P1 = [
@@ -495,6 +518,21 @@ P2 = [
         ('trk-7,CENTRO,101,11,DEMORADO', 'Procesada', 'Índice 65: 1300 × 115 / 100 = 1495'),
         ('trk-8,NORTE,85,50,DEMORADO', 'Inválida', 'Carga de 50 t'),
     ], 'Resumen esperado: **leídas 8 · procesadas 3 · descartadas 2 · inválidas 3**.', base={'ParserVehiculos.java': C_PARSER, 'VehiculoRuta.java': C_RUTA, 'VehiculoDemorado.java': C_DEM}),
+    clasif('r2.6', 'clasificá las filas · caso D (facturación, como el 3K1)', 'Con las reglas del **caso D**, indicá qué pasa con cada fila. Cabecera de **6 columnas**. Facturación: entero de 2000 (inclusive) a 3800 (exclusive); '
+           'el costo es `facturación × índice / 100`. **Precedencia:** ancho → descarte EN_DEPOSITO → validaciones.', HD, [
+        ('trk-1,NORTE,60,10,EN_RUTA,2000', 'Procesada', 'El mínimo es inclusive: 2000 × 40 / 100 = 800'),
+        ('trk-2,NORTE,60,10,EN_RUTA,3000', 'Procesada', '3000 × 40 / 100 = 1200'),
+        ('trk-3,CENTRO,101,11,DEMORADO,2600', 'Procesada', 'Índice 65: 2600 × 65 / 100 = 1690'),
+        ('trk-4,NORTE,60,10,EN_RUTA,3799', 'Procesada', '3799 × 40 / 100 = 1519 (división entera)'),
+        ('trk-5,NORTE,60,10,EN_RUTA,3800', 'Inválida', 'El tope es **exclusive**: 3800 no entra'),
+        ('trk-6,NORTE,60,10,EN_RUTA,1999', 'Inválida', 'Menos de 2000'),
+        ('trk-7,NORTE,60,10,EN_RUTA, 2500 ', 'Procesada', 'Los espacios se van: 2500 × 40 / 100 = 1000'),
+        ('trk-8,NORTE,60,10,EN_RUTA,', 'Inválida', 'Facturación vacía: no es un entero'),
+        ('trk-9,SUR,999,-5,EN_DEPOSITO,abc', 'Descartada', '**Trampa:** EN_DEPOSITO se descarta sin validar nada más'),
+        ('trk-10,SUR,60,10,EN_RUTA', 'Inválida', '5 campos bajo una cabecera de 6'),
+        ('trk-11,SUR,128,43,DEMORADO,3000', 'Inválida', 'Índice 94: las validaciones de siempre siguen'),
+        ('trk-12,SUR,60,10,PERDIDO,3000', 'Inválida', 'Estado desconocido'),
+    ], 'Resumen esperado: **leídas 12 · procesadas 5 · descartadas 1 · inválidas 6**.', base={'ParserVehiculos.java': D_PARSER, 'VehiculoRuta.java': D_RUTA, 'VehiculoConFacturacion.java': D_FAC}),
 ]
 
 P3 = [
@@ -578,6 +616,43 @@ P3 = [
         ('Cuántos vehículos hay por estado', 'Colector', 'Un conteo sobre todos'),
         ('El costo promedio por zona', 'Colector', '`groupingBy(getZona, averagingInt(...))`'),
     ]),
+    codigo('r3.4', 'la facturación en el costo, con un gancho (caso D, como el 3K1)', '`VehiculoConFacturacion.java` (archivo nuevo) y `VehiculoRuta`',
+           'Es el cambio del Parcial 3K1 llevado a Flota. En el formato nuevo, la 6.ª columna trae la **facturación** de ese flete, que reemplaza a los 2000 USD fijos: costo = `facturación × índice / 100`. '
+           'La facturación es un entero de **2000 (inclusive) a 3800 (exclusive)**; fuera de rango, `IllegalArgumentException`. En el formato viejo, 2000 como siempre. '
+           'Hacelo con un **gancho**: un método `protected` en `VehiculoRuta` que devuelve 2000 y que usa el costo; la subclase lo redefine con la facturación de la fila. Ya está hecho que `desdeCampos` acepte 5 o 6 campos.',
+           [arch('VehiculoRuta.java', A_RUTA_ANCHO, D_RUTA), arch('VehiculoConFacturacion.java', STUB('VehiculoConFacturacion'), D_FAC)],
+           [ch(r'class\s+VehiculoConFacturacion\s+extends\s+VehiculoRuta\b', 'Subclase creada', 'Falta `class VehiculoConFacturacion extends VehiculoRuta`', 'VehiculoConFacturacion.java'),
+            ch(r'\bfinal\s+class\s+VehiculoRuta\b', '`VehiculoRuta` se puede heredar', 'Sacale el `final` a `VehiculoRuta`', 'VehiculoRuta.java', 'noContiene'),
+            ch(r'int\s+\w+\s*\(\s*\)\s*\{\s*return\s+2_?000\s*;', 'El gancho con los 2000 de siempre', 'Agregá en `VehiculoRuta` un método que devuelva 2000 (el gancho)', 'VehiculoRuta.java'),
+            ch(r'return\s+(this\.)?\w+\s*\(\s*\)\s*\*\s*(this\.)?indiceDesgaste\s*/\s*100', 'El costo usa el gancho', 'El costo tiene que ser `gancho() * indiceDesgaste / 100`, no `2000 * ...`', 'VehiculoRuta.java'),
+            ch(r'@Override\s*(protected|public)\s+int\s+\w+\s*\(\s*\)', 'La subclase redefine el gancho', 'Redefiní el gancho con `@Override` en la subclase', 'VehiculoConFacturacion.java'),
+            ch(r'\b3_?800\b', 'El tope de 3800', 'Falta el rango: menos de 3800', 'VehiculoConFacturacion.java'),
+            ch(r'>=\s*3_?800|<\s*2_?000', 'Valida el rango', 'Validá `facturacion < 2000 || facturacion >= 3800`', 'VehiculoConFacturacion.java'),
+            ch(r'new\s+VehiculoConFacturacion\s*\(', 'Crea la subclase', '`desdeCampos` tiene que crear un `VehiculoConFacturacion` cuando hay 6 campos', 'VehiculoRuta.java'),
+            ch(r'campos\.length\s*==\s*6', 'Lee la columna solo si existe', 'Leé `campos[5]` solo si hay 6 campos', 'VehiculoRuta.java'),
+            ch(r'instanceof', 'Sin `instanceof`', 'Usá polimorfismo en lugar de `instanceof`', tipo='noContiene')],
+           ['Sacale el `final` a `VehiculoRuta`.', 'En `VehiculoRuta`: `protected int getFacturacionPorFlete() { return 2000; }` y el costo `getFacturacionPorFlete() * indiceDesgaste / 100`.',
+            '`class VehiculoConFacturacion extends VehiculoRuta`, con un atributo `facturacion`; el constructor llama a `super(...)` y valida el rango.',
+            '`@Override protected int getFacturacionPorFlete() { return facturacion; }`.', 'En `desdeCampos`: si hay 6 campos, `convertirEntero(campos[5], "facturación")` y `new VehiculoConFacturacion(...)`.'],
+           ['Así resolvió la cátedra el 3K1 (`ingresoPorHora()` en `Servidor`, redefinido en `ServidorConIngresos`): la cuenta del costo queda en un solo lugar.',
+            'También vale redefinir directamente `getCostoDesgasteOperativo()` en la subclase, pero el gancho evita repetir la cuenta.',
+            'El rango: `facturacion < 2000 || facturacion >= 3800` → excepción (3800 queda **afuera**).', '`Flota` no cambia: suma `getCostoDesgasteOperativo()`.'],
+           tabla(HD, ['A,NORTE,60,10,EN_RUTA,3000', 'B,CENTRO,101,11,DEMORADO,2600', 'C,SUR,60,10,EN_RUTA,3800', 'D,SUR,60,10,EN_RUTA'], ['facturacion']),
+           'A → 3000 × 40 / 100 = **1200** · B → 2600 × 65 / 100 = **1690** · C (3800) es **inválida** · D (5 campos) es inválida bajo esta cabecera; en el formato viejo cuesta **800**.',
+           prueba='''        VehiculoRuta x = v("A", "NORTE", "60", "10", "EN_RUTA", "3000");
+        igual(1200, x.getCostoDesgasteOperativo(), "3000 × 40 / 100"); igual(true, x instanceof VehiculoConFacturacion, "6 campos crea la subclase");
+        igual(1690, v("B", "CENTRO", "101", "11", "DEMORADO", "2600").getCostoDesgasteOperativo(), "2600 × 65 / 100");
+        igual(800, v("C", "SUR", "60", "10", "EN_RUTA", "2000").getCostoDesgasteOperativo(), "el mínimo es inclusive");
+        igual(1519, v("C", "SUR", "60", "10", "EN_RUTA", "3799").getCostoDesgasteOperativo(), "división entera");
+        lanza(() -> v("C", "SUR", "60", "10", "EN_RUTA", "3800"), "el tope es exclusive");
+        lanza(() -> v("C", "SUR", "60", "10", "EN_RUTA", "1999"), "menos de 2000");
+        lanza(() -> v("C", "SUR", "60", "10", "EN_RUTA", ""), "vacía");
+        lanza(() -> v("C", "SUR", "0", "10", "EN_RUTA", "3000"), "las validaciones de siempre");
+        VehiculoRuta viejo = v("D", "SUR", "60", "10", "EN_RUTA");
+        igual(800, viejo.getCostoDesgasteOperativo(), "formato viejo: 2000"); igual(VehiculoRuta.class, viejo.getClass(), "5 campos crea un VehiculoRuta");
+        Flota f = new Flota(leer("''' + HD + '''", "A,NORTE,60,10,EN_RUTA,3000", "B,CENTRO,101,11,DEMORADO,2600", "C,SUR,60,10,EN_RUTA,3800").getVehiculos());
+        igual(2890, f.getCostoTotalDesgasteOperativo(), "el total, con la facturación"); igual(1690, f.getCostoPorZona().get("CENTRO"), "CENTRO");
+''', base={'ParserVehiculos.java': D_PARSER}),
 ]
 
 
@@ -719,6 +794,24 @@ P5 = [
         contiene(s, "DEMORADO: 2"); contiene(s, "Mayor costo: c"); contiene(s, "Costo total por desgaste operativo: 2900");
         igual(Optional.empty(), new Flota(List.of()).getMayorCosto(), "vacía");
 '''),
+    codigo('r5.3', 'el main del caso D (como el 3K1)', '`App` → `main` (mirá `Flota`, que ya tiene `contarPorEstado()`)',
+           'El main del caso D, igual al que pidió el Parcial 3K1: usar `datos/datos-parcial.csv` por defecto (y seguir aceptando un argumento) y mostrar el resumen, la **cantidad de objetos**, las cantidades **EN_RUTA y DEMORADO** (en cero si no hay) y el panorama (el total y los totales por zona). '
+           'El conteo ya está en `Flota.contarPorEstado()` (parte 4). El main no calcula.',
+           [arch('App.java', ORIG['App.java'], D_APP), arch('Flota.java', flota_con(M_ESTADO), solo=True)],
+           [ch(r'datos-parcial\.csv', 'El CSV del examen por defecto', 'La ruta por defecto tiene que ser `datos/datos-parcial.csv`', 'App.java'),
+            ch(r'contarPorEstado\s*\(', 'Usa el conteo del colector', 'Pedile el conteo a la flota: `flota.contarPorEstado()`', 'App.java'),
+            ch(r'getOrDefault\s*\(\s*"EN_RUTA"\s*,\s*0L?\s*\)', 'EN_RUTA, en cero si no hay', 'Mostrá EN_RUTA con `getOrDefault("EN_RUTA", 0L)`', 'App.java'),
+            ch(r'getOrDefault\s*\(\s*"DEMORADO"\s*,\s*0L?\s*\)', 'DEMORADO, en cero si no hay', 'Mostrá DEMORADO con `getOrDefault("DEMORADO", 0L)`', 'App.java'),
+            ch(r'getVehiculos\s*\(\s*\)\s*\.size\s*\(\s*\)', 'La cantidad de objetos', 'Mostrá cuántos objetos se crearon: `resultado.getVehiculos().size()`', 'App.java'),
+            ch(r'\bfor\s*\(|\.stream\s*\(', 'El main no calcula', 'Sacá el `for` o el `stream` del main: eso va en `Flota`', 'App.java', 'noContiene')],
+           ['Cambiá la ruta por defecto: `Path.of("datos", "datos-parcial.csv")`.', 'Guardá `flota.contarPorEstado()` en un `Map<String, Long>`.',
+            'Imprimí `"Objetos: " + resultado.getVehiculos().size()`.', 'Imprimí EN_RUTA y DEMORADO con `getOrDefault(..., 0L)`.', 'Dejá el resumen y el `panorama()`.'],
+           ['En el 3K1 eran ALERTA / CRITICO; acá, EN_RUTA / DEMORADO.', '`getOrDefault` evita el `null` si un estado no aparece.', 'Importá `java.util.Map`.'],
+           datos='Con 3 filas (2 EN_RUTA, 1 DEMORADO, facturación 3000, 2600 y 2000): `Objetos: 3` y `EN_RUTA: 2 | DEMORADO: 1`, y el panorama con el total 3690.',
+           prueba='''        java.nio.file.Path p = csv("''' + HD + '''", "a,NORTE,60,10,EN_RUTA,3000", "b,CENTRO,101,11,DEMORADO,2600", "c,SUR,60,10,EN_RUTA,2000", "d,SUR,60,10,EN_RUTA,3800");
+        String s = salida(p.toString());
+        contiene(s, "Objetos: 3"); contiene(s, "EN_RUTA: 2"); contiene(s, "DEMORADO: 1"); contiene(s, "Costo total por desgaste operativo: 3690"); contiene(s, "Inválidas: 1");
+''', base={'ParserVehiculos.java': D_PARSER, 'VehiculoRuta.java': D_RUTA, 'VehiculoConFacturacion.java': D_FAC}),
 ]
 
 PARTES = [

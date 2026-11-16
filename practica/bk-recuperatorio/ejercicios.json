@@ -238,6 +238,74 @@
        "motivo": "El main solo llama métodos"
       }
      ]
+    },
+    {
+     "id": "r0.4",
+     "parte": 0,
+     "tema": "",
+     "titulo": "Caso D · Facturación por flete (como el 3K1)",
+     "tipo": "ubicacion",
+     "consigna": "El caso más parecido a lo que ya tomaron: la facturación del flete viene en una 6.ª columna y reemplaza a los 2000 USD fijos. Indicá en qué clase va cada cambio.",
+     "enunciado": [
+      "Es el mismo cambio del **Parcial 3K1 (Cloud Center)**, que tiene el mismo preenunciado con otro tema: allá la 6.ª columna eran los ingresos y reemplazaban a los 1000 USD fijos.",
+      "Columna nueva: `facturacion` (5 → 6), lo que factura ese flete. En el formato viejo, los 2000 USD de siempre. Cada fila, con el ancho de su cabecera.",
+      "EN_RUTA y DEMORADO del formato nuevo: la facturación es un entero de 2000 (inclusive) a 3800 (exclusive), después de quitar espacios. Fuera de rango: la fila es inválida.",
+      "El costo usa la facturación de la fila: `facturacion × índice / 100`. El total, los filtros y los totales por zona, con la regla nueva.",
+      "Colector: un conteo por estado. Main: `datos-parcial.csv`, el resumen, los objetos, EN_RUTA / DEMORADO y el panorama."
+     ],
+     "opciones": [
+      "Parser",
+      "Dominio",
+      "Colector",
+      "Main"
+     ],
+     "items": [
+      {
+       "texto": "Aceptar la cabecera con `facturacion` (5 y 6 columnas)",
+       "respuesta": "Parser",
+       "motivo": "Estructura del archivo"
+      },
+      {
+       "texto": "Una fila de 5 campos bajo la cabecera de 6 es inválida",
+       "respuesta": "Parser",
+       "motivo": "El ancho lo decide la cabecera"
+      },
+      {
+       "texto": "Descartar EN_DEPOSITO sin mirar la facturación",
+       "respuesta": "Parser",
+       "motivo": "Precedencia: ancho → descarte"
+      },
+      {
+       "texto": "La facturación va de 2000 (inclusive) a 3800 (exclusive)",
+       "respuesta": "Dominio",
+       "motivo": "Validación, en el constructor de la subclase"
+      },
+      {
+       "texto": "En el formato viejo, 2000 USD por flete",
+       "respuesta": "Dominio",
+       "motivo": "El gancho del padre devuelve 2000"
+      },
+      {
+       "texto": "El costo usa la facturación de la fila",
+       "respuesta": "Dominio",
+       "motivo": "Subclase que redefine el gancho (`@Override`)"
+      },
+      {
+       "texto": "Que el total, los filtros y los totales por zona usen la facturación",
+       "respuesta": "Dominio",
+       "motivo": "**Trampa:** `Flota` no se toca; todo pasa por `getCostoDesgasteOperativo()`"
+      },
+      {
+       "texto": "Contar cuántos hay EN_RUTA y cuántos DEMORADO",
+       "respuesta": "Colector",
+       "motivo": "`groupingBy(VehiculoRuta::getEstado, counting())`"
+      },
+      {
+       "texto": "Usar `datos-parcial.csv` y mostrar EN_RUTA / DEMORADO",
+       "respuesta": "Main",
+       "motivo": "Solo imprime, con `getOrDefault(..., 0L)`"
+      }
+     ]
     }
    ]
   },
@@ -916,6 +984,84 @@
        "motivo": "Carga de 50 t"
       }
      ]
+    },
+    {
+     "id": "r2.6",
+     "parte": 2,
+     "tema": "Flota",
+     "titulo": "clasificá las filas · caso D (facturación, como el 3K1)",
+     "tipo": "clasificacion",
+     "proyecto": "flo",
+     "consigna": "Con las reglas del **caso D**, indicá qué pasa con cada fila. Cabecera de **6 columnas**. Facturación: entero de 2000 (inclusive) a 3800 (exclusive); el costo es `facturación × índice / 100`. **Precedencia:** ancho → descarte EN_DEPOSITO → validaciones.",
+     "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado,facturacion",
+     "opciones": [
+      "Procesada",
+      "Descartada",
+      "Inválida"
+     ],
+     "resumen": "Resumen esperado: **leídas 12 · procesadas 5 · descartadas 1 · inválidas 6**.",
+     "items": [
+      {
+       "texto": "trk-1,NORTE,60,10,EN_RUTA,2000",
+       "respuesta": "Procesada",
+       "motivo": "El mínimo es inclusive: 2000 × 40 / 100 = 800"
+      },
+      {
+       "texto": "trk-2,NORTE,60,10,EN_RUTA,3000",
+       "respuesta": "Procesada",
+       "motivo": "3000 × 40 / 100 = 1200"
+      },
+      {
+       "texto": "trk-3,CENTRO,101,11,DEMORADO,2600",
+       "respuesta": "Procesada",
+       "motivo": "Índice 65: 2600 × 65 / 100 = 1690"
+      },
+      {
+       "texto": "trk-4,NORTE,60,10,EN_RUTA,3799",
+       "respuesta": "Procesada",
+       "motivo": "3799 × 40 / 100 = 1519 (división entera)"
+      },
+      {
+       "texto": "trk-5,NORTE,60,10,EN_RUTA,3800",
+       "respuesta": "Inválida",
+       "motivo": "El tope es **exclusive**: 3800 no entra"
+      },
+      {
+       "texto": "trk-6,NORTE,60,10,EN_RUTA,1999",
+       "respuesta": "Inválida",
+       "motivo": "Menos de 2000"
+      },
+      {
+       "texto": "trk-7,NORTE,60,10,EN_RUTA, 2500 ",
+       "respuesta": "Procesada",
+       "motivo": "Los espacios se van: 2500 × 40 / 100 = 1000"
+      },
+      {
+       "texto": "trk-8,NORTE,60,10,EN_RUTA,",
+       "respuesta": "Inválida",
+       "motivo": "Facturación vacía: no es un entero"
+      },
+      {
+       "texto": "trk-9,SUR,999,-5,EN_DEPOSITO,abc",
+       "respuesta": "Descartada",
+       "motivo": "**Trampa:** EN_DEPOSITO se descarta sin validar nada más"
+      },
+      {
+       "texto": "trk-10,SUR,60,10,EN_RUTA",
+       "respuesta": "Inválida",
+       "motivo": "5 campos bajo una cabecera de 6"
+      },
+      {
+       "texto": "trk-11,SUR,128,43,DEMORADO,3000",
+       "respuesta": "Inválida",
+       "motivo": "Índice 94: las validaciones de siempre siguen"
+      },
+      {
+       "texto": "trk-12,SUR,60,10,PERDIDO,3000",
+       "respuesta": "Inválida",
+       "motivo": "Estado desconocido"
+      }
+     ]
     }
    ]
   },
@@ -1218,6 +1364,126 @@
        "texto": "El costo promedio por zona",
        "respuesta": "Colector",
        "motivo": "`groupingBy(getZona, averagingInt(...))`"
+      }
+     ]
+    },
+    {
+     "id": "r3.4",
+     "parte": 3,
+     "tema": "Flota",
+     "titulo": "la facturación en el costo, con un gancho (caso D, como el 3K1)",
+     "tipo": "codigo",
+     "proyecto": "flo",
+     "donde": "`VehiculoConFacturacion.java` (archivo nuevo) y `VehiculoRuta`",
+     "consigna": "Es el cambio del Parcial 3K1 llevado a Flota. En el formato nuevo, la 6.ª columna trae la **facturación** de ese flete, que reemplaza a los 2000 USD fijos: costo = `facturación × índice / 100`. La facturación es un entero de **2000 (inclusive) a 3800 (exclusive)**; fuera de rango, `IllegalArgumentException`. En el formato viejo, 2000 como siempre. Hacelo con un **gancho**: un método `protected` en `VehiculoRuta` que devuelve 2000 y que usa el costo; la subclase lo redefine con la facturación de la fila. Ya está hecho que `desdeCampos` acepte 5 o 6 campos.",
+     "csv": {
+      "cabecera": "patente,zona,velocidadPromedio,cargaToneladas,estado,facturacion",
+      "filas": [
+       "A,NORTE,60,10,EN_RUTA,3000",
+       "B,CENTRO,101,11,DEMORADO,2600",
+       "C,SUR,60,10,EN_RUTA,3800",
+       "D,SUR,60,10,EN_RUTA"
+      ],
+      "separador": ",",
+      "columnasNuevas": [
+       "facturacion"
+      ]
+     },
+     "csvNota": "A → 3000 × 40 / 100 = **1200** · B → 2600 × 65 / 100 = **1690** · C (3800) es **inválida** · D (5 campos) es inválida bajo esta cabecera; en el formato viejo cuesta **800**.",
+     "pasos": [
+      "Sacale el `final` a `VehiculoRuta`.",
+      "En `VehiculoRuta`: `protected int getFacturacionPorFlete() { return 2000; }` y el costo `getFacturacionPorFlete() * indiceDesgaste / 100`.",
+      "`class VehiculoConFacturacion extends VehiculoRuta`, con un atributo `facturacion`; el constructor llama a `super(...)` y valida el rango.",
+      "`@Override protected int getFacturacionPorFlete() { return facturacion; }`.",
+      "En `desdeCampos`: si hay 6 campos, `convertirEntero(campos[5], \"facturación\")` y `new VehiculoConFacturacion(...)`."
+     ],
+     "pistas": [
+      "Así resolvió la cátedra el 3K1 (`ingresoPorHora()` en `Servidor`, redefinido en `ServidorConIngresos`): la cuenta del costo queda en un solo lugar.",
+      "También vale redefinir directamente `getCostoDesgasteOperativo()` en la subclase, pero el gancho evita repetir la cuenta.",
+      "El rango: `facturacion < 2000 || facturacion >= 3800` → excepción (3800 queda **afuera**).",
+      "`Flota` no cambia: suma `getCostoDesgasteOperativo()`."
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "class\\s+VehiculoConFacturacion\\s+extends\\s+VehiculoRuta\\b",
+       "ok": "Subclase creada",
+       "error": "Falta `class VehiculoConFacturacion extends VehiculoRuta`",
+       "archivo": "VehiculoConFacturacion.java"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bfinal\\s+class\\s+VehiculoRuta\\b",
+       "ok": "`VehiculoRuta` se puede heredar",
+       "error": "Sacale el `final` a `VehiculoRuta`",
+       "archivo": "VehiculoRuta.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "int\\s+\\w+\\s*\\(\\s*\\)\\s*\\{\\s*return\\s+2_?000\\s*;",
+       "ok": "El gancho con los 2000 de siempre",
+       "error": "Agregá en `VehiculoRuta` un método que devuelva 2000 (el gancho)",
+       "archivo": "VehiculoRuta.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "return\\s+(this\\.)?\\w+\\s*\\(\\s*\\)\\s*\\*\\s*(this\\.)?indiceDesgaste\\s*/\\s*100",
+       "ok": "El costo usa el gancho",
+       "error": "El costo tiene que ser `gancho() * indiceDesgaste / 100`, no `2000 * ...`",
+       "archivo": "VehiculoRuta.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "@Override\\s*(protected|public)\\s+int\\s+\\w+\\s*\\(\\s*\\)",
+       "ok": "La subclase redefine el gancho",
+       "error": "Redefiní el gancho con `@Override` en la subclase",
+       "archivo": "VehiculoConFacturacion.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "\\b3_?800\\b",
+       "ok": "El tope de 3800",
+       "error": "Falta el rango: menos de 3800",
+       "archivo": "VehiculoConFacturacion.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": ">=\\s*3_?800|<\\s*2_?000",
+       "ok": "Valida el rango",
+       "error": "Validá `facturacion < 2000 || facturacion >= 3800`",
+       "archivo": "VehiculoConFacturacion.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "new\\s+VehiculoConFacturacion\\s*\\(",
+       "ok": "Crea la subclase",
+       "error": "`desdeCampos` tiene que crear un `VehiculoConFacturacion` cuando hay 6 campos",
+       "archivo": "VehiculoRuta.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "campos\\.length\\s*==\\s*6",
+       "ok": "Lee la columna solo si existe",
+       "error": "Leé `campos[5]` solo si hay 6 campos",
+       "archivo": "VehiculoRuta.java"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "instanceof",
+       "ok": "Sin `instanceof`",
+       "error": "Usá polimorfismo en lugar de `instanceof`"
+      }
+     ],
+     "archivos": [
+      {
+       "nombre": "VehiculoRuta.java",
+       "inicial": "package ar.edu.backend;\n\npublic final class VehiculoRuta {\n    private final String patente;\n    private final String zona;\n    private final int velocidadPromedio;\n    private final int cargaToneladas;\n    private final String estado;\n    private final int indiceDesgaste;\n\n    public VehiculoRuta(\n            String patente,\n            String zona,\n            int velocidadPromedio,\n            int cargaToneladas,\n            String estado,\n            int indiceDesgaste) {\n        this.patente = validarTexto(patente, \"La patente no puede estar vacía\");\n        this.zona = validarTexto(zona, \"La zona no puede estar vacía\");\n        if (velocidadPromedio <= 0 || velocidadPromedio >= 130) {\n            throw new IllegalArgumentException(\"La velocidad promedio debe ser mayor a 0 y menor a 130\");\n        }\n        if (cargaToneladas > 45) {\n            throw new IllegalArgumentException(\"La carga no puede superar las 45 toneladas\");\n        }\n        if (!\"EN_RUTA\".equals(estado) && !\"DEMORADO\".equals(estado)) {\n            throw new IllegalArgumentException(\"Estado de vehículo inválido: \" + estado);\n        }\n        int indiceCalculado = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n        if (indiceDesgaste < 1 || indiceDesgaste > 90 || indiceDesgaste != indiceCalculado) {\n            throw new IllegalArgumentException(\"El índice de desgaste debe coincidir con el cálculo y estar entre 1 y 90\");\n        }\n        this.velocidadPromedio = velocidadPromedio;\n        this.cargaToneladas = cargaToneladas;\n        this.estado = estado;\n        this.indiceDesgaste = indiceDesgaste;\n    }\n\n    public static VehiculoRuta desdeCampos(String[] campos) {\n        if (campos == null || (campos.length != 5 && campos.length != 6)) {\n            throw new IllegalArgumentException(\"La fila debe tener cinco o seis columnas\");\n        }\n\n        String patente = limpiar(campos[0]);\n        String zona = limpiar(campos[1]);\n        int velocidadPromedio = convertirEntero(campos[2], \"velocidad promedio\");\n        int cargaToneladas = convertirEntero(campos[3], \"carga en toneladas\");\n        String estado = limpiar(campos[4]);\n        int indiceDesgaste = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n\n        return new VehiculoRuta(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste);\n    }\n\n    private static int calcularIndiceDesgaste(int velocidadPromedio, int cargaToneladas) {\n        return (int) (velocidadPromedio * 0.6 + cargaToneladas * 0.4);\n    }\n\n    private static int convertirEntero(String valor, String nombreCampo) {\n        try {\n            return Integer.parseInt(limpiar(valor));\n        } catch (NumberFormatException exception) {\n            throw new IllegalArgumentException(\"El campo \" + nombreCampo + \" debe ser un entero\", exception);\n        }\n    }\n\n    private static String validarTexto(String valor, String mensaje) {\n        String texto = limpiar(valor);\n        if (texto.isEmpty()) {\n            throw new IllegalArgumentException(mensaje);\n        }\n        return texto;\n    }\n\n    private static String limpiar(String valor) {\n        if (valor == null) {\n            throw new IllegalArgumentException(\"Los campos no pueden ser nulos\");\n        }\n        return valor.trim();\n    }\n\n    public int getCostoDesgasteOperativo() {\n        return 2000 * indiceDesgaste / 100;\n    }\n\n    public String getPatente() {\n        return patente;\n    }\n\n    public String getZona() {\n        return zona;\n    }\n\n    public int getVelocidadPromedio() {\n        return velocidadPromedio;\n    }\n\n    public int getCargaToneladas() {\n        return cargaToneladas;\n    }\n\n    public String getEstado() {\n        return estado;\n    }\n\n    public int getIndiceDesgaste() {\n        return indiceDesgaste;\n    }\n}\n",
+       "solucion": "package ar.edu.backend;\n\npublic class VehiculoRuta {\n    private final String patente;\n    private final String zona;\n    private final int velocidadPromedio;\n    private final int cargaToneladas;\n    private final String estado;\n    private final int indiceDesgaste;\n\n    public VehiculoRuta(\n            String patente,\n            String zona,\n            int velocidadPromedio,\n            int cargaToneladas,\n            String estado,\n            int indiceDesgaste) {\n        this.patente = validarTexto(patente, \"La patente no puede estar vacía\");\n        this.zona = validarTexto(zona, \"La zona no puede estar vacía\");\n        if (velocidadPromedio <= 0 || velocidadPromedio >= 130) {\n            throw new IllegalArgumentException(\"La velocidad promedio debe ser mayor a 0 y menor a 130\");\n        }\n        if (cargaToneladas > 45) {\n            throw new IllegalArgumentException(\"La carga no puede superar las 45 toneladas\");\n        }\n        if (!\"EN_RUTA\".equals(estado) && !\"DEMORADO\".equals(estado)) {\n            throw new IllegalArgumentException(\"Estado de vehículo inválido: \" + estado);\n        }\n        int indiceCalculado = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n        if (indiceDesgaste < 1 || indiceDesgaste > 90 || indiceDesgaste != indiceCalculado) {\n            throw new IllegalArgumentException(\"El índice de desgaste debe coincidir con el cálculo y estar entre 1 y 90\");\n        }\n        this.velocidadPromedio = velocidadPromedio;\n        this.cargaToneladas = cargaToneladas;\n        this.estado = estado;\n        this.indiceDesgaste = indiceDesgaste;\n    }\n\n    public static VehiculoRuta desdeCampos(String[] campos) {\n        if (campos == null || (campos.length != 5 && campos.length != 6)) {\n            throw new IllegalArgumentException(\"La fila debe tener cinco o seis columnas\");\n        }\n\n        String patente = limpiar(campos[0]);\n        String zona = limpiar(campos[1]);\n        int velocidadPromedio = convertirEntero(campos[2], \"velocidad promedio\");\n        int cargaToneladas = convertirEntero(campos[3], \"carga en toneladas\");\n        String estado = limpiar(campos[4]);\n        int indiceDesgaste = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n        if (campos.length == 6) {\n            int facturacion = convertirEntero(campos[5], \"facturación\");\n            return new VehiculoConFacturacion(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste, facturacion);\n        }\n        return new VehiculoRuta(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste);\n    }\n\n    private static int calcularIndiceDesgaste(int velocidadPromedio, int cargaToneladas) {\n        return (int) (velocidadPromedio * 0.6 + cargaToneladas * 0.4);\n    }\n\n    private static int convertirEntero(String valor, String nombreCampo) {\n        try {\n            return Integer.parseInt(limpiar(valor));\n        } catch (NumberFormatException exception) {\n            throw new IllegalArgumentException(\"El campo \" + nombreCampo + \" debe ser un entero\", exception);\n        }\n    }\n\n    private static String validarTexto(String valor, String mensaje) {\n        String texto = limpiar(valor);\n        if (texto.isEmpty()) {\n            throw new IllegalArgumentException(mensaje);\n        }\n        return texto;\n    }\n\n    private static String limpiar(String valor) {\n        if (valor == null) {\n            throw new IllegalArgumentException(\"Los campos no pueden ser nulos\");\n        }\n        return valor.trim();\n    }\n\n    /** El gancho: la facturación por flete que usa el costo. La subclase lo redefine con la de la fila. */\n    protected int getFacturacionPorFlete() {\n        return 2000;\n    }\n\n    public int getCostoDesgasteOperativo() {\n        return getFacturacionPorFlete() * indiceDesgaste / 100;\n    }\n\n    public String getPatente() {\n        return patente;\n    }\n\n    public String getZona() {\n        return zona;\n    }\n\n    public int getVelocidadPromedio() {\n        return velocidadPromedio;\n    }\n\n    public int getCargaToneladas() {\n        return cargaToneladas;\n    }\n\n    public String getEstado() {\n        return estado;\n    }\n\n    public int getIndiceDesgaste() {\n        return indiceDesgaste;\n    }\n}\n"
+      },
+      {
+       "nombre": "VehiculoConFacturacion.java",
+       "inicial": "package ar.edu.backend;\n\n// Archivo nuevo: escribí acá la clase VehiculoConFacturacion.\n",
+       "solucion": "package ar.edu.backend;\n\n/** Fila del formato nuevo: la facturación del flete viene en la 6.ª columna (de 2000 inclusive a 3800 exclusive). */\npublic class VehiculoConFacturacion extends VehiculoRuta {\n    private final int facturacion;\n\n    public VehiculoConFacturacion(\n            String patente,\n            String zona,\n            int velocidadPromedio,\n            int cargaToneladas,\n            String estado,\n            int indiceDesgaste,\n            int facturacion) {\n        super(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste);\n        if (facturacion < 2000 || facturacion >= 3800) {\n            throw new IllegalArgumentException(\"La facturación debe ser de 2000 a menos de 3800 USD\");\n        }\n        this.facturacion = facturacion;\n    }\n\n    public int getFacturacion() {\n        return facturacion;\n    }\n\n    @Override\n    protected int getFacturacionPorFlete() {\n        return facturacion;\n    }\n}\n"
       }
      ]
     }
@@ -1818,6 +2084,86 @@
        "nombre": "Flota.java",
        "inicial": "package ar.edu.backend;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.LinkedHashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\n\npublic final class Flota {\n    private final List<VehiculoRuta> vehiculos;\n\n    public Flota(List<VehiculoRuta> vehiculos) {\n        if (vehiculos == null) {\n            throw new IllegalArgumentException(\"La lista de vehículos no puede ser nula\");\n        }\n        this.vehiculos = Collections.unmodifiableList(new ArrayList<>(vehiculos));\n    }\n\n    public int sumarCostoDesgasteOperativo(Predicate<VehiculoRuta> filtro) {\n        if (filtro == null) {\n            throw new IllegalArgumentException(\"El filtro no puede ser nulo\");\n        }\n        return vehiculos.stream()\n                .filter(filtro)\n                .mapToInt(VehiculoRuta::getCostoDesgasteOperativo)\n                .sum();\n    }\n\n    public int getCostoTotalDesgasteOperativo() {\n        return sumarCostoDesgasteOperativo(vehiculo -> true);\n    }\n\n    public Map<String, Integer> getCostoPorZona() {\n        Map<String, Integer> costos = new LinkedHashMap<>();\n        for (VehiculoRuta vehiculo : vehiculos) {\n            costos.merge(vehiculo.getZona(), vehiculo.getCostoDesgasteOperativo(), Integer::sum);\n        }\n        return Collections.unmodifiableMap(costos);\n    }\n\n    public long contarConIndiceDesgasteMenorA(int limite) {\n        return vehiculos.stream()\n                .filter(vehiculo -> vehiculo.getIndiceDesgaste() < limite)\n                .count();\n    }\n\n    public List<VehiculoRuta> getVehiculos() {\n        return vehiculos;\n    }\n\n    public String panorama() {\n        StringBuilder panorama = new StringBuilder()\n                .append(\"Costo total por desgaste operativo: \")\n                .append(getCostoTotalDesgasteOperativo());\n        for (Map.Entry<String, Integer> entrada : getCostoPorZona().entrySet()) {\n            panorama.append(System.lineSeparator())\n                    .append(entrada.getKey()).append(\": \").append(entrada.getValue());\n        }\n        return panorama.toString();\n    }\n}\n",
        "solucion": "package ar.edu.backend;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.Comparator;\nimport java.util.LinkedHashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.Optional;\nimport java.util.TreeMap;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic final class Flota {\n    private final List<VehiculoRuta> vehiculos;\n\n    public Flota(List<VehiculoRuta> vehiculos) {\n        if (vehiculos == null) {\n            throw new IllegalArgumentException(\"La lista de vehículos no puede ser nula\");\n        }\n        this.vehiculos = Collections.unmodifiableList(new ArrayList<>(vehiculos));\n    }\n\n    public int sumarCostoDesgasteOperativo(Predicate<VehiculoRuta> filtro) {\n        if (filtro == null) {\n            throw new IllegalArgumentException(\"El filtro no puede ser nulo\");\n        }\n        return vehiculos.stream()\n                .filter(filtro)\n                .mapToInt(VehiculoRuta::getCostoDesgasteOperativo)\n                .sum();\n    }\n\n    public int getCostoTotalDesgasteOperativo() {\n        return sumarCostoDesgasteOperativo(vehiculo -> true);\n    }\n\n    public Map<String, Integer> getCostoPorZona() {\n        Map<String, Integer> costos = new LinkedHashMap<>();\n        for (VehiculoRuta vehiculo : vehiculos) {\n            costos.merge(vehiculo.getZona(), vehiculo.getCostoDesgasteOperativo(), Integer::sum);\n        }\n        return Collections.unmodifiableMap(costos);\n    }\n\n    public long contarConIndiceDesgasteMenorA(int limite) {\n        return vehiculos.stream()\n                .filter(vehiculo -> vehiculo.getIndiceDesgaste() < limite)\n                .count();\n    }\n\n    public Map<String, Long> contarPorEstado() {\n        return vehiculos.stream()\n                .collect(Collectors.groupingBy(VehiculoRuta::getEstado, TreeMap::new, Collectors.counting()));\n    }\n\n    public Optional<VehiculoRuta> getMayorCosto() {\n        return vehiculos.stream()\n                .max(Comparator.comparingInt(VehiculoRuta::getCostoDesgasteOperativo));\n    }\n\n    public List<VehiculoRuta> getVehiculos() {\n        return vehiculos;\n    }\n\n    public String panorama() {\n        StringBuilder panorama = new StringBuilder()\n                .append(\"Costo total por desgaste operativo: \")\n                .append(getCostoTotalDesgasteOperativo());\n        for (Map.Entry<String, Integer> entrada : getCostoPorZona().entrySet()) {\n            panorama.append(System.lineSeparator())\n                    .append(entrada.getKey()).append(\": \").append(entrada.getValue());\n        }\n        return panorama.toString();\n    }\n}\n"
+      }
+     ]
+    },
+    {
+     "id": "r5.3",
+     "parte": 5,
+     "tema": "Flota",
+     "titulo": "el main del caso D (como el 3K1)",
+     "tipo": "codigo",
+     "proyecto": "flo",
+     "donde": "`App` → `main` (mirá `Flota`, que ya tiene `contarPorEstado()`)",
+     "consigna": "El main del caso D, igual al que pidió el Parcial 3K1: usar `datos/datos-parcial.csv` por defecto (y seguir aceptando un argumento) y mostrar el resumen, la **cantidad de objetos**, las cantidades **EN_RUTA y DEMORADO** (en cero si no hay) y el panorama (el total y los totales por zona). El conteo ya está en `Flota.contarPorEstado()` (parte 4). El main no calcula.",
+     "datos": "Con 3 filas (2 EN_RUTA, 1 DEMORADO, facturación 3000, 2600 y 2000): `Objetos: 3` y `EN_RUTA: 2 | DEMORADO: 1`, y el panorama con el total 3690.",
+     "pasos": [
+      "Cambiá la ruta por defecto: `Path.of(\"datos\", \"datos-parcial.csv\")`.",
+      "Guardá `flota.contarPorEstado()` en un `Map<String, Long>`.",
+      "Imprimí `\"Objetos: \" + resultado.getVehiculos().size()`.",
+      "Imprimí EN_RUTA y DEMORADO con `getOrDefault(..., 0L)`.",
+      "Dejá el resumen y el `panorama()`."
+     ],
+     "pistas": [
+      "En el 3K1 eran ALERTA / CRITICO; acá, EN_RUTA / DEMORADO.",
+      "`getOrDefault` evita el `null` si un estado no aparece.",
+      "Importá `java.util.Map`."
+     ],
+     "checks": [
+      {
+       "tipo": "contiene",
+       "regex": "datos-parcial\\.csv",
+       "ok": "El CSV del examen por defecto",
+       "error": "La ruta por defecto tiene que ser `datos/datos-parcial.csv`",
+       "archivo": "App.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "contarPorEstado\\s*\\(",
+       "ok": "Usa el conteo del colector",
+       "error": "Pedile el conteo a la flota: `flota.contarPorEstado()`",
+       "archivo": "App.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getOrDefault\\s*\\(\\s*\"EN_RUTA\"\\s*,\\s*0L?\\s*\\)",
+       "ok": "EN_RUTA, en cero si no hay",
+       "error": "Mostrá EN_RUTA con `getOrDefault(\"EN_RUTA\", 0L)`",
+       "archivo": "App.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getOrDefault\\s*\\(\\s*\"DEMORADO\"\\s*,\\s*0L?\\s*\\)",
+       "ok": "DEMORADO, en cero si no hay",
+       "error": "Mostrá DEMORADO con `getOrDefault(\"DEMORADO\", 0L)`",
+       "archivo": "App.java"
+      },
+      {
+       "tipo": "contiene",
+       "regex": "getVehiculos\\s*\\(\\s*\\)\\s*\\.size\\s*\\(\\s*\\)",
+       "ok": "La cantidad de objetos",
+       "error": "Mostrá cuántos objetos se crearon: `resultado.getVehiculos().size()`",
+       "archivo": "App.java"
+      },
+      {
+       "tipo": "noContiene",
+       "regex": "\\bfor\\s*\\(|\\.stream\\s*\\(",
+       "ok": "El main no calcula",
+       "error": "Sacá el `for` o el `stream` del main: eso va en `Flota`",
+       "archivo": "App.java"
+      }
+     ],
+     "archivos": [
+      {
+       "nombre": "App.java",
+       "inicial": "package ar.edu.backend;\n\nimport java.io.IOException;\nimport java.nio.file.Path;\n\npublic class App {\n    public static void main(String[] args) throws IOException {\n        Path archivo = args.length == 0 ? Path.of(\"datos\", \"datos.csv\") : Path.of(args[0]);\n        ResultadoParseo resultado = new ParserVehiculos().parsear(archivo);\n        Flota flota = new Flota(resultado.getVehiculos());\n\n        System.out.println(resultado.getResumenErrores());\n        System.out.println(flota.panorama());\n    }\n}\n",
+       "solucion": "package ar.edu.backend;\n\nimport java.io.IOException;\nimport java.nio.file.Path;\nimport java.util.Map;\n\npublic class App {\n    public static void main(String[] args) throws IOException {\n        Path archivo = args.length == 0 ? Path.of(\"datos\", \"datos-parcial.csv\") : Path.of(args[0]);\n        ResultadoParseo resultado = new ParserVehiculos().parsear(archivo);\n        Flota flota = new Flota(resultado.getVehiculos());\n        Map<String, Long> porEstado = flota.contarPorEstado();\n\n        System.out.println(resultado.getResumenErrores());\n        System.out.println(\"Objetos: \" + resultado.getVehiculos().size());\n        System.out.println(\"EN_RUTA: \" + porEstado.getOrDefault(\"EN_RUTA\", 0L)\n                + \" | DEMORADO: \" + porEstado.getOrDefault(\"DEMORADO\", 0L));\n        System.out.println(flota.panorama());\n    }\n}\n"
+      },
+      {
+       "nombre": "Flota.java",
+       "inicial": "package ar.edu.backend;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.LinkedHashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.TreeMap;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic final class Flota {\n    private final List<VehiculoRuta> vehiculos;\n\n    public Flota(List<VehiculoRuta> vehiculos) {\n        if (vehiculos == null) {\n            throw new IllegalArgumentException(\"La lista de vehículos no puede ser nula\");\n        }\n        this.vehiculos = Collections.unmodifiableList(new ArrayList<>(vehiculos));\n    }\n\n    public int sumarCostoDesgasteOperativo(Predicate<VehiculoRuta> filtro) {\n        if (filtro == null) {\n            throw new IllegalArgumentException(\"El filtro no puede ser nulo\");\n        }\n        return vehiculos.stream()\n                .filter(filtro)\n                .mapToInt(VehiculoRuta::getCostoDesgasteOperativo)\n                .sum();\n    }\n\n    public int getCostoTotalDesgasteOperativo() {\n        return sumarCostoDesgasteOperativo(vehiculo -> true);\n    }\n\n    public Map<String, Integer> getCostoPorZona() {\n        Map<String, Integer> costos = new LinkedHashMap<>();\n        for (VehiculoRuta vehiculo : vehiculos) {\n            costos.merge(vehiculo.getZona(), vehiculo.getCostoDesgasteOperativo(), Integer::sum);\n        }\n        return Collections.unmodifiableMap(costos);\n    }\n\n    public long contarConIndiceDesgasteMenorA(int limite) {\n        return vehiculos.stream()\n                .filter(vehiculo -> vehiculo.getIndiceDesgaste() < limite)\n                .count();\n    }\n\n    public Map<String, Long> contarPorEstado() {\n        return vehiculos.stream()\n                .collect(Collectors.groupingBy(VehiculoRuta::getEstado, TreeMap::new, Collectors.counting()));\n    }\n\n    public List<VehiculoRuta> getVehiculos() {\n        return vehiculos;\n    }\n\n    public String panorama() {\n        StringBuilder panorama = new StringBuilder()\n                .append(\"Costo total por desgaste operativo: \")\n                .append(getCostoTotalDesgasteOperativo());\n        for (Map.Entry<String, Integer> entrada : getCostoPorZona().entrySet()) {\n            panorama.append(System.lineSeparator())\n                    .append(entrada.getKey()).append(\": \").append(entrada.getValue());\n        }\n        return panorama.toString();\n    }\n}\n",
+       "solucion": "package ar.edu.backend;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.LinkedHashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.TreeMap;\nimport java.util.function.Predicate;\nimport java.util.stream.Collectors;\n\npublic final class Flota {\n    private final List<VehiculoRuta> vehiculos;\n\n    public Flota(List<VehiculoRuta> vehiculos) {\n        if (vehiculos == null) {\n            throw new IllegalArgumentException(\"La lista de vehículos no puede ser nula\");\n        }\n        this.vehiculos = Collections.unmodifiableList(new ArrayList<>(vehiculos));\n    }\n\n    public int sumarCostoDesgasteOperativo(Predicate<VehiculoRuta> filtro) {\n        if (filtro == null) {\n            throw new IllegalArgumentException(\"El filtro no puede ser nulo\");\n        }\n        return vehiculos.stream()\n                .filter(filtro)\n                .mapToInt(VehiculoRuta::getCostoDesgasteOperativo)\n                .sum();\n    }\n\n    public int getCostoTotalDesgasteOperativo() {\n        return sumarCostoDesgasteOperativo(vehiculo -> true);\n    }\n\n    public Map<String, Integer> getCostoPorZona() {\n        Map<String, Integer> costos = new LinkedHashMap<>();\n        for (VehiculoRuta vehiculo : vehiculos) {\n            costos.merge(vehiculo.getZona(), vehiculo.getCostoDesgasteOperativo(), Integer::sum);\n        }\n        return Collections.unmodifiableMap(costos);\n    }\n\n    public long contarConIndiceDesgasteMenorA(int limite) {\n        return vehiculos.stream()\n                .filter(vehiculo -> vehiculo.getIndiceDesgaste() < limite)\n                .count();\n    }\n\n    public Map<String, Long> contarPorEstado() {\n        return vehiculos.stream()\n                .collect(Collectors.groupingBy(VehiculoRuta::getEstado, TreeMap::new, Collectors.counting()));\n    }\n\n    public List<VehiculoRuta> getVehiculos() {\n        return vehiculos;\n    }\n\n    public String panorama() {\n        StringBuilder panorama = new StringBuilder()\n                .append(\"Costo total por desgaste operativo: \")\n                .append(getCostoTotalDesgasteOperativo());\n        for (Map.Entry<String, Integer> entrada : getCostoPorZona().entrySet()) {\n            panorama.append(System.lineSeparator())\n                    .append(entrada.getKey()).append(\": \").append(entrada.getValue());\n        }\n        return panorama.toString();\n    }\n}\n",
+       "soloLectura": true
       }
      ]
     }
