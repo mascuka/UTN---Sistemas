@@ -418,6 +418,29 @@ P1 = [
         igual(1, viejo.getFilasProcesadas(), "formato viejo, con comas"); igual(800, new Flota(viejo.getVehiculos()).getCostoTotalDesgasteOperativo(), "sin kilómetros");
         lanza(() -> leer("patente;zona"), "otra cabecera");
 '''),
+    codigo('r1.4', '5 → 6 columnas (`facturacion`, como el 3K1)', '`ParserVehiculos.parsear` (mirá `VehiculoRuta`, que ya acepta 5 o 6 campos)',
+           'El parser del caso D, igual al del Parcial 3K1: el archivo nuevo trae una 6.ª columna, `facturacion`. Aceptá **las dos cabeceras** (la vieja de 5 y la nueva de 6); cada fila tiene que tener el ancho de **su** cabecera, '
+           'ni filas de 5 bajo la de 6 ni al revés. Otra cabecera sigue tirando `IllegalArgumentException`. Un solo loop para los dos formatos.',
+           [arch('ParserVehiculos.java', ORIG['ParserVehiculos.java'], D_PARSER), arch('VehiculoRuta.java', D_RUTA, solo=True)],
+           [ch(r'facturacion', 'La cabecera nueva', 'Falta la cabecera nueva, con `facturacion`', 'ParserVehiculos.java'),
+            ch(r'campos\.length\s*!=\s*(?!5\b)\w+', 'El ancho lo decide la cabecera', 'Compará el largo con el ancho de la cabecera, no con 5 fijo', 'ParserVehiculos.java'),
+            ch(r'campos\.length\s*!=\s*5\b', 'Sin el 5 fijo', 'Queda un `campos.length != 5`: las filas de 6 serían inválidas', 'ParserVehiculos.java', 'noContiene'),
+            ch(r'=\s*6\s*;|\?\s*6\b|:\s*6\b', 'Ancho 6 para la cabecera nueva', 'Falta el ancho 6 para la cabecera nueva', 'ParserVehiculos.java'),
+            ch(r'\bwhile\s*\(', 'Un solo loop', 'Usá un solo `while` para los dos formatos', 'ParserVehiculos.java', 'cuenta', veces=1),
+            ch(r'throw\s+new\s+IllegalArgumentException', 'Otra cabecera sigue abortando', 'Con otra cabecera hay que tirar `IllegalArgumentException`', 'ParserVehiculos.java')],
+           ['Una constante para la cabecera nueva: `ENCABEZADO + ",facturacion"`.', 'Después de leer la primera línea, decidí `columnas`: 5, 6, o la excepción.',
+            'En el loop, `campos.length != columnas` en lugar de `!= 5`.'],
+           ['Es lo mismo que pidió el 3K1 con `ingresos`: «Integrar la lectura de ambas versiones del CSV sin duplicar el proceso de carga».', '`int columnas;` declarada antes del `if`.',
+            'EN_DEPOSITO se sigue descartando después de mirar el ancho.'],
+           tabla(HD, ['trk-1,NORTE,60,10,EN_RUTA,3000', 'trk-2,CENTRO,101,11,DEMORADO,2600', 'trk-3,SUR,60,10,EN_RUTA', 'trk-4,SUR,999,-5,EN_DEPOSITO,x'], ['facturacion']),
+           'trk-1 (**1200**) y trk-2 (**1690**) se procesan · trk-3 (5 campos) es **inválida** · trk-4 se **descarta**. Leídas 4 · procesadas 2 · descartadas 1 · inválidas 1.',
+           prueba=f'''        ResultadoParseo r = leer("{HD}", "trk-1,NORTE,60,10,EN_RUTA,3000", "trk-2,CENTRO,101,11,DEMORADO,2600", "trk-3,SUR,60,10,EN_RUTA", "trk-4,SUR,999,-5,EN_DEPOSITO,x");
+        igual(4, r.getFilasLeidas(), "leídas"); igual(2, r.getFilasProcesadas(), "procesadas"); igual(1, r.getFilasDescartadas(), "descartadas"); igual(1, r.getFilasInvalidas(), "inválidas");
+        igual(2890, new Flota(r.getVehiculos()).getCostoTotalDesgasteOperativo(), "1200 + 1690");
+        ResultadoParseo viejo = leer("{H5}", "trk-1,NORTE,60,10,EN_RUTA", "trk-2,NORTE,60,10,EN_RUTA,3000");
+        igual(1, viejo.getFilasProcesadas(), "formato viejo"); igual(1, viejo.getFilasInvalidas(), "6 campos bajo la cabecera de 5");
+        lanza(() -> leer("otra,cabecera"), "otra cabecera");
+''', base={'VehiculoConFacturacion.java': D_FAC}),
 ]
 
 P2 = [
@@ -455,7 +478,7 @@ P2 = [
         igual(812, new VehiculoRuta("trk-1", "NORTE", 60, 10, "EN_RUTA", 40, 120).getCostoDesgasteOperativo(), "el constructor nuevo");
         lanza(() -> new VehiculoRuta("trk-1", "NORTE", 60, 10, "EN_RUTA", 40, 6000), "el constructor valida");
 '''),
-    clasif('r2.2', 'clasificá las filas · las reglas del preenunciado', 'Con las reglas del preenunciado **tal como están**, indicá qué pasa con cada fila. Cabecera de **5 columnas**. '
+    clasif('r2.2', 'clasificá las filas · las reglas de hoy', 'Con las reglas del preenunciado **tal como están**, indicá qué pasa con cada fila. Cabecera de **5 columnas**. '
            'Velocidad mayor a 0 y menor a 130; carga hasta 45 t; estado EN_RUTA o DEMORADO (EN_DEPOSITO se descarta); índice = `(int) (velocidad × 0.6 + carga × 0.4)`, entre 1 y 90. **Precedencia:** ancho → descarte → validaciones.', H5, [
         ('trk-0012,NORTE,76,11,EN_RUTA', 'Procesada', 'Caso testigo: índice 50 → cuesta 1000'),
         ('trk-0038,CENTRO,101,11,DEMORADO', 'Procesada', 'Caso testigo: índice 65 → 1300'),
@@ -478,7 +501,7 @@ P2 = [
         ('trk-0088,NORTE,60.5,10,EN_RUTA', 'Inválida', '60.5 no es un entero'),
         ('trk-0012,NORTE,60,10,DEMORADO', 'Procesada', 'Patente repetida: no se exige unicidad, cada fila es un viaje'),
     ], 'Con estas filas: **leídas 20 · procesadas 7 · descartadas 2 · inválidas 11**. Con el CSV del preenunciado: 60 leídas, 32 procesadas, 20 descartadas y 8 inválidas.'),
-    clasif('r2.3', 'clasificá las filas · caso A (tipo de carga)', 'Con las reglas del **caso A**, indicá qué pasa con cada fila. Cabecera de **6 columnas**. Tipo: exactamente GENERAL o REFRIGERADA; REFRIGERADA: hasta 30 t y 300 USD más. '
+    clasif('r2.3', 'clasificá las filas · tipo de carga', 'Con las reglas del **caso A**, indicá qué pasa con cada fila. Cabecera de **6 columnas**. Tipo: exactamente GENERAL o REFRIGERADA; REFRIGERADA: hasta 30 t y 300 USD más. '
            '**Precedencia:** ancho → descarte EN_DEPOSITO → validaciones.', HA, [
         ('trk-1,NORTE,60,10,EN_RUTA,GENERAL', 'Procesada', 'General: índice 40 → 800'),
         ('trk-2,SUR,60,10,EN_RUTA,REFRIGERADA', 'Procesada', 'Refrigerada: 800 + 300 = 1100'),
@@ -494,7 +517,7 @@ P2 = [
         ('trk-12,NORTE,128,43,EN_RUTA,GENERAL', 'Inválida', 'Índice 94'),
         ('trk-13,SUR,60,10,PERDIDO,REFRIGERADA', 'Inválida', 'Estado desconocido'),
     ], 'Resumen esperado: **leídas 13 · procesadas 5 · descartadas 1 · inválidas 7**.', base={'ParserVehiculos.java': A_PARSER, 'VehiculoRuta.java': A_RUTA, 'VehiculoRefrigerado.java': A_REF}),
-    clasif('r2.4', 'clasificá las filas · caso B (kilómetros con `;`)', 'Con las reglas del **caso B**, indicá qué pasa con cada fila. Cabecera nueva, separada por **`;`** y de 6 columnas. '
+    clasif('r2.4', 'clasificá las filas · kilómetros con `;`', 'Con las reglas del **caso B**, indicá qué pasa con cada fila. Cabecera nueva, separada por **`;`** y de 6 columnas. '
            'Kilómetros: entero de 0 a 5000. **Precedencia:** ancho → descarte → validaciones.', HB, [
         ('trk-1;NORTE;60;10;EN_RUTA;300', 'Procesada', '800 + 30 = 830'),
         ('trk-2;SUR;60;10;EN_RUTA;0', 'Procesada', '0 km vale: 800'),
@@ -507,7 +530,7 @@ P2 = [
         ('trk-9;CENTRO;60;10;DEMORADO;99', 'Procesada', '99 / 10 = 9 (división entera): 809'),
         ('trk-10;CENTRO;60;10;DEMORADO', 'Inválida', '5 campos bajo una cabecera de 6'),
     ], 'Resumen esperado: **leídas 10 · procesadas 4 · descartadas 1 · inválidas 5**.', base={'ParserVehiculos.java': B_PARSER, 'VehiculoRuta.java': B_RUTA}),
-    clasif('r2.5', 'clasificá las filas · caso C (MANTENIMIENTO)', 'Con las reglas del **caso C**, indicá qué pasa con cada fila. Cabecera de 5 columnas. Se descartan EN_DEPOSITO y MANTENIMIENTO; un DEMORADO cuesta 15 % más. '
+    clasif('r2.5', 'clasificá las filas · MANTENIMIENTO', 'Con las reglas del **caso C**, indicá qué pasa con cada fila. Cabecera de 5 columnas. Se descartan EN_DEPOSITO y MANTENIMIENTO; un DEMORADO cuesta 15 % más. '
            '**Precedencia:** ancho → descarte → validaciones.', H5, [
         ('trk-1,NORTE,60,10,EN_RUTA', 'Procesada', 'Índice 40: 800'),
         ('trk-2,NORTE,60,10,DEMORADO', 'Procesada', '800 × 115 / 100 = 920'),
@@ -518,7 +541,7 @@ P2 = [
         ('trk-7,CENTRO,101,11,DEMORADO', 'Procesada', 'Índice 65: 1300 × 115 / 100 = 1495'),
         ('trk-8,NORTE,85,50,DEMORADO', 'Inválida', 'Carga de 50 t'),
     ], 'Resumen esperado: **leídas 8 · procesadas 3 · descartadas 2 · inválidas 3**.', base={'ParserVehiculos.java': C_PARSER, 'VehiculoRuta.java': C_RUTA, 'VehiculoDemorado.java': C_DEM}),
-    clasif('r2.6', 'clasificá las filas · caso D (facturación, como el 3K1)', 'Con las reglas del **caso D**, indicá qué pasa con cada fila. Cabecera de **6 columnas**. Facturación: entero de 2000 (inclusive) a 3800 (exclusive); '
+    clasif('r2.6', 'clasificá las filas · facturación (como el 3K1)', 'Con las reglas del **caso D**, indicá qué pasa con cada fila. Cabecera de **6 columnas**. Facturación: entero de 2000 (inclusive) a 3800 (exclusive); '
            'el costo es `facturación × índice / 100`. **Precedencia:** ancho → descarte EN_DEPOSITO → validaciones.', HD, [
         ('trk-1,NORTE,60,10,EN_RUTA,2000', 'Procesada', 'El mínimo es inclusive: 2000 × 40 / 100 = 800'),
         ('trk-2,NORTE,60,10,EN_RUTA,3000', 'Procesada', '3000 × 40 / 100 = 1200'),
@@ -616,7 +639,7 @@ P3 = [
         ('Cuántos vehículos hay por estado', 'Colector', 'Un conteo sobre todos'),
         ('El costo promedio por zona', 'Colector', '`groupingBy(getZona, averagingInt(...))`'),
     ]),
-    codigo('r3.4', 'la facturación en el costo, con un gancho (caso D, como el 3K1)', '`VehiculoConFacturacion.java` (archivo nuevo) y `VehiculoRuta`',
+    codigo('r3.4', 'la facturación en el costo, con un gancho (como el 3K1)', '`VehiculoConFacturacion.java` (archivo nuevo) y `VehiculoRuta`',
            'Es el cambio del Parcial 3K1 llevado a Flota. En el formato nuevo, la 6.ª columna trae la **facturación** de ese flete, que reemplaza a los 2000 USD fijos: costo = `facturación × índice / 100`. '
            'La facturación es un entero de **2000 (inclusive) a 3800 (exclusive)**; fuera de rango, `IllegalArgumentException`. En el formato viejo, 2000 como siempre. '
            'Hacelo con un **gancho**: un método `protected` en `VehiculoRuta` que devuelve 2000 y que usa el costo; la subclase lo redefine con la facturación de la fila. Ya está hecho que `desdeCampos` acepte 5 o 6 campos.',
@@ -667,7 +690,7 @@ LISTA = '''        List<VehiculoRuta> l = List.of(v("a", "NORTE", "60", "10", "E
 '''
 P4 = [
     flota_ej('r4.1', 'cantidad de vehículos por estado', [M_ESTADO],
-             'Agregá a `Flota` un conteo por estado: cuántos vehículos hay EN_RUTA y cuántos DEMORADO, ordenado por estado. Con la flota vacía, un mapa vacío. Nombre: `contarPorEstado()`.',
+             'Es el conteo que pidió el Parcial 3K1 (caso D): agregá a `Flota` cuántos vehículos hay EN_RUTA y cuántos DEMORADO, ordenado por estado. Con la flota vacía, un mapa vacío (el 3K1 decía «un resultado vacío o conteos cero»). Nombre: `contarPorEstado()`.',
              [ch(r'Map<String,\s*Long>\s+contarPorEstado\s*\(\s*\)', 'El método nuevo', 'Falta `public Map<String, Long> contarPorEstado()`', 'Flota.java'),
               ch(r'groupingBy\s*\(\s*(VehiculoRuta::getEstado|\w+\s*->\s*\w+\.getEstado\s*\(\s*\))', 'Agrupa por estado', 'Agrupá por `VehiculoRuta::getEstado`', 'Flota.java'),
               ch(r'counting\s*\(\s*\)', 'Cuenta', 'Contá cada grupo con `Collectors.counting()`', 'Flota.java')],
@@ -676,7 +699,7 @@ P4 = [
              'a, a (EN_RUTA) · b, c (DEMORADO) → `{DEMORADO=2, EN_RUTA=2}` · vacía → `{}`. Con el CSV del preenunciado: `{DEMORADO=14, EN_RUTA=18}`.',
              LISTA + '''        igual(Map.of("DEMORADO", 2L, "EN_RUTA", 2L), f.contarPorEstado(), "por estado"); igual(Map.of(), vacia.contarPorEstado(), "vacía");
 '''),
-    codigo('r4.2', 'conteo por tipo de carga, en tres archivos (caso A)', '`getTipoCarga()` en `VehiculoRuta` y `VehiculoRefrigerado`, y `Flota` (la operación nueva)',
+    codigo('r4.2', 'conteo por tipo de carga, en tres archivos', '`getTipoCarga()` en `VehiculoRuta` y `VehiculoRefrigerado`, y `Flota` (la operación nueva)',
            'Agregá a `Flota` un conteo por tipo de carga: cuántos GENERAL y cuántos REFRIGERADA (`contarPorTipoCarga()`); con la flota vacía, un mapa vacío. '
            'Para saber el tipo, agregá `getTipoCarga()` en `VehiculoRuta` (devuelve `"GENERAL"`) y redefinilo en `VehiculoRefrigerado` (devuelve `"REFRIGERADA"`). **Sin `instanceof`.**',
            [arch('VehiculoRuta.java', A_RUTA_SIN_TIPO, A_RUTA), arch('VehiculoRefrigerado.java', A_REF_SIN_TIPO, A_REF), arch('Flota.java', ORIG['Flota.java'], A_FLOTA)],
@@ -728,7 +751,7 @@ P4 = [
              'NORTE (60) · SUR (60 y 70) · CENTRO (101) → `{CENTRO=101.0, NORTE=60.0, SUR=65.0}`. Con el CSV del preenunciado: CENTRO 78,83 · NORTE 77,09 · SUR 68,44.',
              LISTA + '''        igual(Map.of("CENTRO", 101.0, "NORTE", 60.0, "SUR", 65.0), f.getVelocidadPromedioPorZona(), "promedios"); igual(Map.of(), vacia.getVelocidadPromedioPorZona(), "vacía");
 '''),
-    flota_ej('r4.6', 'kilómetros por zona y el de más kilómetros (caso B)', [M_KM],
+    flota_ej('r4.6', 'kilómetros por zona y el de más kilómetros', [M_KM],
              'Con el caso B (`kilometros` ya está en `VehiculoRuta`), agregá a `Flota` los **kilómetros totales por zona** (`getKilometrosPorZona()`, ordenado) y el vehículo con **más kilómetros** (`getConMasKilometros()`, un `Optional`).',
              [ch(r'Map<String,\s*Integer>\s+getKilometrosPorZona\s*\(\s*\)', 'Kilómetros por zona', 'Falta `public Map<String, Integer> getKilometrosPorZona()`', 'Flota.java'),
               ch(r'summingInt\s*\(\s*VehiculoRuta::getKilometros', 'Suma los kilómetros', 'Usá `Collectors.summingInt(VehiculoRuta::getKilometros)`', 'Flota.java'),
@@ -757,7 +780,7 @@ P4 = [
 ]
 
 P5 = [
-    codigo('r5.1', 'el main del recuperatorio (caso A)', '`App` → `main` (mirá `Flota`, que ya tiene `contarPorTipoCarga()`)',
+    codigo('r5.1', 'el main del recuperatorio', '`App` → `main` (mirá `Flota`, que ya tiene `contarPorTipoCarga()`)',
            'El main del caso A: usar `datos/datos-parcial.csv` por defecto (y seguir aceptando un argumento) y mostrar el resumen de errores, la **cantidad de objetos**, las cantidades **GENERAL y REFRIGERADA** (en cero si no hay) y el panorama. '
            'El conteo ya está en `Flota.contarPorTipoCarga()` (parte 4). El main no calcula.',
            [arch('App.java', ORIG['App.java'], A_APP), arch('Flota.java', A_FLOTA, solo=True)],
@@ -794,7 +817,7 @@ P5 = [
         contiene(s, "DEMORADO: 2"); contiene(s, "Mayor costo: c"); contiene(s, "Costo total por desgaste operativo: 2900");
         igual(Optional.empty(), new Flota(List.of()).getMayorCosto(), "vacía");
 '''),
-    codigo('r5.3', 'el main del caso D (como el 3K1)', '`App` → `main` (mirá `Flota`, que ya tiene `contarPorEstado()`)',
+    codigo('r5.3', 'el main (como el 3K1)', '`App` → `main` (mirá `Flota`, que ya tiene `contarPorEstado()`)',
            'El main del caso D, igual al que pidió el Parcial 3K1: usar `datos/datos-parcial.csv` por defecto (y seguir aceptando un argumento) y mostrar el resumen, la **cantidad de objetos**, las cantidades **EN_RUTA y DEMORADO** (en cero si no hay) y el panorama (el total y los totales por zona). '
            'El conteo ya está en `Flota.contarPorEstado()` (parte 4). El main no calcula.',
            [arch('App.java', ORIG['App.java'], D_APP), arch('Flota.java', flota_con(M_ESTADO), solo=True)],
@@ -834,7 +857,23 @@ PARTES = [
 ]
 
 
+CASOS = {
+    'Caso A': ['r0.1', 'r1.1', 'r2.3', 'r3.1', 'r4.2', 'r5.1'],
+    'Caso B': ['r0.2', 'r1.3', 'r2.1', 'r2.4', 'r4.6'],
+    'Caso C': ['r0.3', 'r1.2', 'r2.5', 'r3.2'],
+    'Caso D': ['r0.4', 'r1.4', 'r2.6', 'r3.4', 'r4.1', 'r5.3'],
+    'Repaso': ['r3.3'],
+}   # el resto trabaja sobre el preenunciado tal cual
+
+
 def main():
+    caso = {id: c for c, ids in CASOS.items() for id in ids}
+    orden = {c: i for i, c in enumerate(['Preenunciado', 'Caso A', 'Caso B', 'Caso C', 'Caso D', 'Repaso'])}
+    for p in PARTES:   # en cada parte, los casos en orden (A, B, C, D) y el repaso al final
+        p['ejercicios'].sort(key=lambda e: orden[caso.get(e['id'], 'Preenunciado')])
+    for p in PARTES:
+        for e in p['ejercicios']:
+            e['tema'] = caso.get(e['id'], 'Preenunciado')
     datos = dict(grupo='Recuperatorio · Flota Logística', partes=PARTES)
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
     with open(SALIDA, 'w', encoding='utf-8') as f:
