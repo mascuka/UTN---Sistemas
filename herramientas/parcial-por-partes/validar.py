@@ -1,5 +1,6 @@
-# Revisa los ejercicios de "El parcial por partes" (practica/bk-parcial/ejercicios.json) y de la Práctica por partes
-# (practica/bk-practica/ejercicios.json: lo que trae el preenunciado). Desde la raíz del repo:
+# Revisa los ejercicios de "El parcial por partes" (practica/bk-parcial/ejercicios.json), de la Práctica por partes
+# (practica/bk-practica/ejercicios.json: lo que trae el preenunciado) y de El recuperatorio por partes
+# (practica/bk-recuperatorio/ejercicios.json, que arma recuperatorio/armar.py). Desde la raíz del repo:
 #   python3 herramientas/parcial-por-partes/validar.py
 # 1) Código: la solución pasa todas sus verificaciones y el código inicial no (las mismas reglas que la página:
 #    sin comentarios, y un check sin "archivo" mira todos los archivos que se pueden editar).
@@ -24,6 +25,7 @@ PROYECTOS = {   # ZIP del preenunciado y la carpeta del proyecto adentro
     'jue': ('simulacros/simulacro-3.zip', '01-modelo-inicial'),
     'tar': ('simulacros/simulacro-4/01-preenunciado.zip', '01-preenunciado'),
     'env': ('parcial-3k2/01-preenunciado.zip', '01-modelo-inicial'),
+    'flo': ('recuperatorio-1/01-preenunciado.zip', '01-modelo-inicial'),   # Recuperatorio 1 · Flota Logística
 }
 IMPORTS = 'import java.util.*;\nimport java.util.function.*;\nimport java.util.stream.*;\n'
 
@@ -96,7 +98,7 @@ def correr(salida, paquete, *args):
     err = '\n'.join(l for l in r.stderr.splitlines() if not l.startswith('Picked up JAVA_TOOL_OPTIONS'))
     return (r.stdout + err).strip()
 
-ARCHIVOS = ['bk-practica', 'bk-parcial']
+ARCHIVOS = ['bk-practica', 'bk-parcial', 'bk-recuperatorio']
 
 def lecciones(datos):
     """Ids sin repetir y el código de cada explicación bien marcado"""

@@ -2973,6 +2973,20 @@ const MATERIAS = {
           videos: []
         }
       },
+      // Recuperatorio 1 · Flota Logística: solo práctica. El preenunciado no trae tareas: El recuperatorio por partes
+      // (practica/bk-recuperatorio, armado con herramientas/parcial-por-partes/recuperatorio/armar.py) son casos hipotéticos
+      // sobre ese proyecto, con las mismas partes que El parcial por partes, y el paso a paso del parcial
+      {
+        id: "rec",
+        titulo: "Recuperatorio",
+        descripcion: "Recuperatorio 1 · Flota Logística. El preenunciado no trae tareas: acá practicás los cambios que pueden pedir el día del examen, en casos hipotéticos sobre el mismo proyecto.",
+        secciones: [],
+        herramientas: ["pasos"],
+        practicaParcial: "practica/bk-recuperatorio/ejercicios.json",
+        practicaParcialTarjeta: { titulo: "El recuperatorio por partes", detalle: "23 ejercicios sobre Flota Logística: dónde va cada cambio, dos formatos, la columna nueva, la subclase, el colector y el main" },
+        material: [],
+        videos: []
+      },
       {
         id: "tpi",
         titulo: "TPI",
@@ -4636,7 +4650,8 @@ function pestanasDe(p){
     const vids = (p.videos || []).length, arch = cantArchivos(p.material || []);
     return [
       ...temas,
-      ...(arch || !vids ? [{ go: "/material", t: "Material", on: d => !d[0] || d[0] === "material" }] : []),
+      // Sin archivos ni videos, la pestaña Material aparece solo si no hay otra cosa (una parte de pura práctica no la muestra)
+      ...(arch || (!vids && !(p.practicaPartes || tieneHerramientas(p))) ? [{ go: "/material", t: "Material", on: d => !d[0] || d[0] === "material" }] : []),
       ...(p.practicaPartes || tieneHerramientas(p) ? [{ go: "/practica", t: "Práctica", on: d => d[0] === "practica" || enHerr(d) }] : []),
       ...(vids ? [{ go: "/videos", t: "Videos", on: d => d[0] === "videos" }] : []),
       ...tabMiTpi(p)
