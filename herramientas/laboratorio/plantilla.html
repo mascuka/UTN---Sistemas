@@ -271,7 +271,7 @@
   const DATOS = P['datos/datos.csv'];
   const CLAVE = 'lab-flota-v1', VERSION = '@@VERSION@@';
 
-  const S = { texto: '', origen: '', cfg: M.configBase(), evid: [], avisos: [], leido: false, csv: '', csvNombre: '', csvOrigen: '', tab: 'salida', filtro: 'Todas', verSol: false, archivo: 'ParserVehiculos.java', mia: '' };
+  const S = { texto: '', origen: '', cfg: M.configBase(), evid: [], avisos: [], leido: false, csv: '', csvNombre: '', csvOrigen: '', tab: 'salida', filtro: 'Todas', verSol: false, marcas: true, archivo: 'ParserVehiculos.java', mia: '' };
 
   // ───── Guardar en este navegador (solo comodidad) ─────
   function guardar() {
@@ -423,6 +423,7 @@
     if (c.conteo) res.push('Conteo por ' + esc(c.conteo === 'columna' && col ? col.nombre : c.conteo) + '.');
     for (const t of c.totales) res.push('Total de los ' + esc(t.valor) + '.');
     if (M.hayCambios(c)) res.push(`El main usa <code class="k">datos/${esc(c.archivo)}</code>.`);
+    if (c.panoramaMenor) res.push('<code class="k">Flota.panorama()</code> también muestra cuántos vehículos tienen índice de desgaste menor a 55.');
     $('#resumenReglas').innerHTML = res.length ? '<ul class="resumen-reglas">' + res.map(x => `<li>${x}</li>`).join('') + '</ul>' : '<p class="nota" style="margin-bottom:10px">Sin reglas nuevas: es el preenunciado tal cual.</p>';
     const av = S.leido ? S.avisos : [];
     const viejo = M.afectaFormatoViejo(lista_);
@@ -469,6 +470,7 @@
       <div class="campo"><span>Conteo por</span>${sel('conteo', [['', 'sin conteo'], ['estado', 'estado'], ['zona', 'zona']].concat(col && !c.columnaEnSubclase ? [['columna', col.nombre]] : []).concat(c.especiales.length ? [['tipo', 'tipo (común / subclase)']] : []), c.conteo || '', 'conteo')}</div>
       ${c.conteo === 'tipo' ? `<div class="campo"><span>Común se llama</span>${inp('etiquetaBase', c.etiquetaBase, 'txt', 'NORMAL')}</div>` : ''}
       <div class="campo"><span>CSV del main</span>${inp('archivo', c.archivo, 'txt', 'datos-parcial.csv')}</div>
+      <div class="campo"><span>Panorama</span><label class="ch"><input type="checkbox" data-p="panoramaMenor" data-t="check"${c.panoramaMenor ? ' checked' : ''}> Flota.panorama() también muestra cuántos tienen índice menor a 55</label></div>
       <h3 style="margin-top:12px">Totales aparte <button class="btn chico" data-add="totales" data-tpl="total">+ agregar</button></h3>
       ${c.totales.length ? c.totales.map((t, i) => `<div class="mini">Total de ${sel('totales.' + i + '.campo', [['estado', 'estado']].concat(col && !c.columnaEnSubclase ? [['columna', col.nombre]] : []), t.campo)} = ${inp('totales.' + i + '.valor', t.valor, 'txt', 'DEMORADO', '130px')}${quitar('totales.' + i)}</div>`).join('') : '<div class="vacio">Ninguno.</div>'}
     </div>`;
@@ -688,8 +690,9 @@
       if (archivos.some(a => a.nombre === f)) continue;
       const nuevo = gen[f], viejo = originales[f];
       if (nuevo == null && viejo == null) continue;
-      const texto = nuevo != null ? nuevo : viejo;
-      archivos.push({ nombre: f, texto, viejo, estado: viejo == null ? 'nuevo' : texto === viejo ? 'igual' : 'cambia' });
+      const igual = nuevo == null || (viejo != null && nuevo.replace(/\r/g, '') === viejo.replace(/\r/g, ''));
+      const texto = igual ? viejo : S.marcas ? M.marcarCambios(viejo, nuevo) : nuevo;
+      archivos.push({ nombre: f, texto, viejo, estado: viejo == null ? 'nuevo' : igual ? 'igual' : 'cambia' });
     }
     return archivos;
   }
@@ -705,24 +708,25 @@
     if (!arch.some(a => a.nombre === S.archivo)) S.archivo = arch[0].nombre;
     const a = arch.find(x => x.nombre === S.archivo);
     let agregadas = new Set();
-    if (a.estado === 'cambia') { const ops = lcs(a.viejo.split('\n'), a.texto.split('\n')); let j = 0; for (const [k] of ops) { if (k === '+') agregadas.add(j); if (k !== '-') j++; } }
+    if (a.estado === 'cambia') { const ops = lcs(a.viejo.replace(/\r/g, '').split('\n'), a.texto.split('\n')); let j = 0; for (const [k] of ops) { if (k === '+') agregadas.add(j); if (k !== '-') j++; } }
     else if (a.estado === 'nuevo') agregadas = new Set(a.texto.split('\n').map((_, i) => i));
     const lineas = a.texto.replace(/\n$/, '').split('\n');
     el.innerHTML = (av.length ? `<div class="aviso mal" style="margin:0 0 12px">Ojo: con estas reglas el Java puede no compilar o no tener sentido.<ul>${av.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : '')
       + (viejo ? `<div class="aviso" style="margin:0 0 12px">${esc(viejo)}</div>` : '')
-      + `<div class="fila" style="margin-bottom:12px"><button class="btn pri" id="bajarZip">Descargar el proyecto resuelto (.zip)</button><button class="btn" id="copiarArch">Copiar ${esc(a.nombre)}</button><button class="btn chico" id="taparSol">Tapar</button></div>
+      + `<div class="fila" style="margin-bottom:12px"><button class="btn pri" id="bajarZip">Descargar el proyecto resuelto (.zip)</button><button class="btn" id="copiarArch">Copiar ${esc(a.nombre)}</button><button class="btn chico" id="taparSol">Tapar</button><label class="ch"><input type="checkbox" id="marcas"${S.marcas ? ' checked' : ''}> marcar los cambios con comentarios (// NUEVO, // MOD, // ANTES)</label></div>
       <div class="cod-env"><div class="archivos">${arch.map(x => `<button data-arch="${esc(x.nombre)}" class="${x.nombre === a.nombre ? 'on' : ''}"><span class="nom">${esc(x.nombre)}</span><span class="et ${x.estado}">${x.estado === 'igual' ? 'igual' : x.estado}</span></button>`).join('')}</div>
       <div class="codigo">${lineas.map((l, i) => `<div class="ln${agregadas.has(i) ? ' add' : ''}"><i>${i + 1}</i><span>${resaltar(l) || ' '}</span></div>`).join('')}</div></div>
       <details class="mas"><summary>DECISIONES.md (para la entrega)</summary><pre class="consola" style="margin-top:8px;white-space:pre-wrap">${esc(decisiones())}</pre></details>`;
     el.querySelectorAll('[data-arch]').forEach(b => b.onclick = () => { S.archivo = b.dataset.arch; pintarSolucion(); });
     $('#copiarArch').onclick = ev => copiar(a.texto, ev.currentTarget);
     $('#taparSol').onclick = () => { S.verSol = false; pintarSolucion(); };
+    $('#marcas').onchange = ev => { S.marcas = ev.target.checked; pintarSolucion(); };
     $('#bajarZip').onclick = () => bajarZip(arch);
   }
   function decisiones() {
     const c = cfgLista, col = c.columna, L = ['# Decisiones', ''];
-    if (col && c.columnaEnSubclase) L.push(`- El parser elige separador y anchos según el encabezado (el original, solo cinco campos; el nuevo, ${c.anchoMixto ? 'cinco o seis, fila por fila' : 'seis'}) y conserva el orden del preparcial: ancho, descarte y recién después las validaciones.`);
-    else if (col) L.push(`- El parser elige separador y ancho según el encabezado (cinco columnas con coma, o seis con «${c.separador}»${c.anchoMixto ? ', y bajo el nuevo también cinco' : ''}) y conserva el orden del preparcial: ancho, descarte y recién después las validaciones. VehiculoRuta.desdeCampos arma el objeto de los dos formatos; en el de cinco columnas ${col.nombre} vale ${col.defecto}.`);
+    if (col && c.columnaEnSubclase) L.push(`- El parser guarda en «largo» las columnas de su encabezado (5 el original, 6 el nuevo)${c.anchoMixto ? ' y acepta filas de 5 o de largo, así bajo el nuevo valen las dos' : ''}; conserva el orden del preparcial: ancho, descarte y recién después las validaciones.`);
+    else if (col) L.push(`- El parser guarda en «largo» las columnas de su encabezado (cinco con coma, o seis${c.separador !== ',' ? ' con «' + c.separador + '»' : ''}${c.anchoMixto ? ', y bajo el nuevo también cinco' : ''}) y conserva el orden del preparcial: ancho, descarte y recién después las validaciones. VehiculoRuta.desdeCampos arma el objeto de los dos formatos; en el de cinco columnas ${col.nombre} vale ${col.defecto}.`);
     else L.push('- Se mantiene un solo formato de cinco columnas y el orden del preparcial: ancho, descarte y validaciones.');
     if (c.descartes.join() !== M.DESCARTES_BASE.join() || c.estados.join() !== M.ESTADOS_BASE.join()) L.push(`- Estados válidos: ${c.estados.join(', ')}; se descartan sin validar: ${c.descartes.join(', ')}.`);
     if (col && !c.columnaEnSubclase) L.push(`- La validación de ${col.nombre} queda en el dominio (VehiculoRuta)${col.valores.length ? ': admite ' + col.valores.join(', ') : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ' y debe ser ' + M.textoRango(col.rango) : ''}.${c.baseDesdeColumna ? ' El costo toma ese valor en lugar de los 2000 USD fijos.' : ''}`);
@@ -734,6 +738,7 @@
       if (e.ops.length || e.topes.length) L.push(`- ${e.clase}: ${M.describirEspecial(e, c)}${e.ops.length ? ' (redefine getCostoDesgasteOperativo() a partir de super)' : ''}.`);
     } else if (c.especiales.length) L.push(`- Herencia: ${c.especiales.map(e => e.clase + ' (' + M.describirEspecial(e, c) + ')').join('; ')}. Cada subclase redefine getCostoDesgasteOperativo() a partir del costo común y valida sus topes después de super(...).`);
     if (c.conteo || c.totales.length) L.push(`- Flota ${c.conteo ? 'agrega un conteo por ' + (c.conteo === 'columna' ? col.nombre : c.conteo) + ' (TreeMap, vacío si no hay vehículos)' : ''}${c.totales.length ? (c.conteo ? ' y ' : '') + 'el main usa sumarCostoDesgasteOperativo con un filtro para ' + c.totales.map(t => t.valor).join(', ') : ''}; el main usa datos/${c.archivo} por defecto y solo delega cálculos.`);
+    if (c.panoramaMenor) L.push('- Flota.panorama() agrega la cantidad de vehículos con índice de desgaste menor a 55.');
     L.push('- Pendiente: nada.');
     return L.join('\n') + '\n';
   }

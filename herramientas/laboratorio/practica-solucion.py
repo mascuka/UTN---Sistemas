@@ -1,4 +1,4 @@
-"""Arma la solución propuesta de un parcial de práctica (practica-xxx): el proyecto del preenunciado con el Java que
+"""Arma la solución propuesta de un parcial de práctica (practica-xxx): el proyecto del preenunciado con el Java (marcado) que
 genera el laboratorio (motor.js) a partir de su enunciado, los tests de practica-xxx/tests/, los dos CSV y su DECISIONES.md.
 Uso (desde la raíz del repo; necesita node):  python3 -I herramientas/laboratorio/practica-solucion.py practica-acoplado"""
 import json
@@ -17,7 +17,9 @@ GENERAR = """
 const fs = require('fs'), M = require(process.argv[1] + '/motor.js');
 const orig = JSON.parse(fs.readFileSync(0, 'utf8'));
 const cfg = M.normalizar(M.leerEnunciado(fs.readFileSync(process.argv[2], 'utf8')).cfg);
-process.stdout.write(JSON.stringify(M.generar(cfg, orig)));
+const gen = M.generar(cfg, orig);
+for (const f of Object.keys(gen)) gen[f] = M.marcarCambios(orig[f], gen[f]);   // con «// NUEVO», «// MOD», «// ANTES»
+process.stdout.write(JSON.stringify(gen));
 """
 
 

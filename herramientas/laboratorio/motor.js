@@ -38,6 +38,7 @@
       anchoMixto: false,      // bajo el encabezado nuevo también valen filas de cinco campos (el formato se ve fila por fila)
       columnaEnSubclase: false,// la columna vive en la subclase de las filas de seis campos (VehiculoRuta no la conoce)
       indiceNuevo: null,      // { v, c, x }: el índice de las filas de seis campos = (int)(velocidad × v + carga × c + columna × x)
+      panoramaMenor: false,   // Flota.panorama() también muestra cuántos tienen índice de desgaste menor a 55
     };
   }
 
@@ -62,7 +63,7 @@
   // ───────────────────────── Mensajes (los mismos en el Java) ─────────────────────────
   const NOMBRE_CAMPO = { carga: 'La carga', velocidad: 'La velocidad', indice: 'El índice de desgaste', columna: 'El valor de la columna nueva' };
   const MSG = {
-    ancho: (cfg, n, mixto) => mixto ? 'La fila debe tener cinco o seis columnas' : cfg.columna ? `La fila debe tener exactamente ${n} columnas` : 'La fila debe tener exactamente cinco columnas',
+    ancho: (cfg, n) => cfg.columna && cfg.anchoMixto ? 'Cantidad de columnas incorrecta' : cfg.columna ? `La fila debe tener exactamente ${n} columnas` : 'La fila debe tener exactamente cinco columnas',
     entero: campo => `El campo ${campo} debe ser un entero`,
     patente: 'La patente no puede estar vacía',
     zona: 'La zona no puede estar vacía',
@@ -228,7 +229,7 @@
     for (let i = 1; i < ls.length; i++) {
       const f = { linea: i + 1, texto: ls[i] };
       const c = ls[i].split(sep);
-      if (mixto ? c.length !== 5 && c.length !== 6 : c.length !== ancho) { f.resultado = 'Inválida'; f.motivo = MSG.ancho(cfg, ancho, mixto); }
+      if (mixto ? c.length !== 5 && c.length !== 6 : c.length !== ancho) { f.resultado = 'Inválida'; f.motivo = MSG.ancho(cfg, ancho); }
       else if (cfg.descartes.includes(trim(c[4]))) { f.resultado = 'Descartada'; f.motivo = 'Estado ' + trim(c[4]) + ': se descarta sin validar'; }
       else {
         const r = desdeCampos(c, cfg);
@@ -278,6 +279,7 @@
     }
     L.push('Costo total por desgaste operativo: ' + r.total);
     for (const [z, t] of r.porZona) L.push(z + ': ' + t);
+    if (cfg.panoramaMenor) L.push('Vehículos con índice de desgaste menor a 55: ' + r.menor55);
     return L.join('\n');
   }
   function clavesConteo(cfg) {
@@ -295,7 +297,7 @@
   function hayCambios(cfg) {
     return !!(cfg.columna || cfg.especiales.length || cfg.extras.length || cfg.conteo || cfg.restricciones.length || cfg.totales.length
       || cfg.descartes.join() !== DESCARTES_BASE.join() || cfg.estados.join() !== ESTADOS_BASE.join() || cfg.archivo !== 'datos.csv'
-      || cfg.anchoMixto || cfg.columnaEnSubclase);
+      || cfg.anchoMixto || cfg.columnaEnSubclase || cfg.panoramaMenor);
   }
 
   // ───────────────────────── Revisar y acomodar una configuración ─────────────────────────
@@ -427,16 +429,15 @@
         try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {
             String encabezado = lector.readLine();
 `;
-    if (col) s += `            String separador;
-            int columnas;${cfg.anchoMixto ? `
-            boolean admiteCinco = false;` : ''}
+    const otroSep = col && cfg.separador !== ',';
+    if (col) s += `            int largo;${otroSep ? `
+            String separador;` : ''}
             if (ENCABEZADO.equals(encabezado)) {
-                separador = ",";
-                columnas = 5;
+                largo = 5;${otroSep ? `
+                separador = ",";` : ''}
             } else if (ENCABEZADO_NUEVO.equals(encabezado)) {
-                separador = ${j(cfg.separador === '|' ? '\\|' : cfg.separador)};
-                columnas = 6;${cfg.anchoMixto ? `
-                admiteCinco = true;` : ''}
+                largo = 6;${otroSep ? `
+                separador = ${j(cfg.separador === '|' ? '\\|' : cfg.separador)};` : ''}
             } else {
                 throw new IllegalArgumentException("Encabezado CSV incorrecto");
             }
@@ -452,16 +453,15 @@
                 numeroLinea++;
                 filasLeidas++;
 `;
-    s += col && cfg.anchoMixto ? `                String[] campos = linea.split(separador, -1);
-                if (campos.length != columnas && !(admiteCinco && campos.length == 5)) {
-                    errores.add(new ErrorParseo(numeroLinea, admiteCinco
-                            ? "La fila debe tener cinco o seis columnas"
-                            : "La fila debe tener exactamente " + columnas + " columnas"));
+    const partir = otroSep ? 'separador' : '","';
+    s += col && cfg.anchoMixto ? `                String[] campos = linea.split(${partir}, -1);
+                if (campos.length != 5 && campos.length != largo) {
+                    errores.add(new ErrorParseo(numeroLinea, "Cantidad de columnas incorrecta"));
                     continue;
                 }
-` : col ? `                String[] campos = linea.split(separador, -1);
-                if (campos.length != columnas) {
-                    errores.add(new ErrorParseo(numeroLinea, "La fila debe tener exactamente " + columnas + " columnas"));
+` : col ? `                String[] campos = linea.split(${partir}, -1);
+                if (campos.length != largo) {
+                    errores.add(new ErrorParseo(numeroLinea, "La fila debe tener exactamente " + largo + " columnas"));
                     continue;
                 }
 ` : `                String[] campos = linea.split(",", -1);
@@ -518,7 +518,7 @@ ${PARAMS}) {
                 calcularIndiceDesgaste(velocidadPromedio, cargaToneladas));
     }
 
-    /** Para las subclases que calculan el índice con otra fórmula: el índice recibido tiene que coincidir con el suyo. */
+    /** Lo usa la subclase, que calcula el índice con otra fórmula. El constructor público de arriba sigue controlando con la fórmula original (lo pide un test existente). */
     protected VehiculoRuta(
 ${PARAMS},
             int indiceCalculado) {
@@ -658,7 +658,7 @@ ${nuevo ? '' : `        int indiceCalculado = calcularIndiceDesgaste(velocidadPr
 public class ${e.clase} extends VehiculoRuta {
 `;
     if (col.valores.length) s += `    private static final Set<${col.tipo === 'entero' ? 'Integer' : 'String'}> VALORES_${K} = Set.of(${col.valores.map(v => literal(col, v)).join(', ')});\n\n`;
-    s += `    private final ${T} ${N};
+    s += `    private final ${T} ${N};   // la columna nueva vive acá; VehiculoRuta no la conoce
 
     public ${e.clase}(
             String patente,
@@ -1011,6 +1011,10 @@ ${opsJava(e.ops, col, '        ')}
   const claveJava = cfg => cfg.conteo === 'columna' && cfg.columna.tipo === 'entero' ? 'Integer' : 'String';
 
   function generarFlota(cfg, original) {
+    if (cfg.panoramaMenor) original = original.replace('        return panorama.toString();', `        panorama.append(System.lineSeparator())
+                .append("Vehículos con índice de desgaste menor a 55: ")
+                .append(contarConIndiceDesgasteMenorA(55));
+        return panorama.toString();`);
     if (!cfg.conteo) return original;
     const met = `    public Map<${claveJava(cfg)}, Long> contarPor${cap(nombreConteo(cfg))}() {
         return vehiculos.stream()
@@ -1065,7 +1069,7 @@ public class App {
     out['ParserVehiculos.java'] = generarParser(cfg);
     out['VehiculoRuta.java'] = generarVehiculo(cfg);
     for (const e of cfg.columnaEnSubclase ? cfg.especiales.slice(0, 1) : cfg.especiales) out[e.clase + '.java'] = generarSubclase(e, cfg);
-    if (cfg.conteo && originales && originales['Flota.java']) out['Flota.java'] = generarFlota(cfg, originales['Flota.java']);
+    if ((cfg.conteo || cfg.panoramaMenor) && originales && originales['Flota.java']) out['Flota.java'] = generarFlota(cfg, originales['Flota.java']);
     if (hayCambios(cfg)) out['App.java'] = generarApp(cfg);
     return out;
   }
@@ -1415,6 +1419,10 @@ public class App {
     const arch = (texto || '').match(/\b(datos[\w-]*\.csv)\b/g);
     if (arch) { const a = arch.find(x => x !== 'datos.csv'); if (a) cfg.archivo = a; }
 
+    // 6b) El panorama de Flota también muestra la cantidad con índice menor a 55
+    const pan = sinTildes(texto || '').replace(/\s+/g, ' ').match(/\bpanorama\b(?:\(\))?.{0,40}?\binclu\w*.{0,150}?(?:cantidad|indice|menor)/i);
+    if (pan) { cfg.panoramaMenor = true; nota('panoramaMenor', pan[0], 'Flota.panorama() también muestra cuántos vehículos tienen índice de desgaste menor a 55'); }
+
     normalizar(cfg);
     if (!col && !cfg.especiales.length && !cfg.extras.length && cfg.descartes.length === 1 && cfg.estados.length === 2) avisos.push('No encontré reglas nuevas. ¿Es un enunciado del parcial? Podés cargarlas a mano; si el enunciado tiene una forma nueva, fijate que tengas la última versión del laboratorio (la fecha está arriba de todo).');
     for (const a of revisar(cfg)) avisos.push(a);
@@ -1559,8 +1567,55 @@ public class App {
     return [col ? encabezadoNuevo(cfg) : ENCABEZADO].concat(todas).join('\n') + '\n';
   }
 
+  // ───────────────────────── Las marcas de los cambios, como se hacen a mano ─────────────────────────
+  /* Compara el archivo del preenunciado con el resuelto y deja comentarios: «// NUEVO» en las líneas agregadas, «// MOD»
+     en las que reemplazan a otras (con las originales arriba, «// ANTES: …», si son pocas) y «// SACADO: …» donde se borró
+     algo. Un archivo que no estaba lleva «// CLASE NUEVA» arriba. Son solo comentarios: el Java compila y corre igual. */
+  function diffLineas(a, b) {
+    const n = a.length, m = b.length, W = m + 1, T = new Uint16Array((n + 1) * W);
+    for (let i = n - 1; i >= 0; i--) for (let k = m - 1; k >= 0; k--) T[i * W + k] = a[i] === b[k] ? T[(i + 1) * W + k + 1] + 1 : Math.max(T[(i + 1) * W + k], T[i * W + k + 1]);
+    const ops = []; let i = 0, k = 0;
+    while (i < n && k < m) { if (a[i] === b[k]) { ops.push(['=', a[i]]); i++; k++; } else if (T[(i + 1) * W + k] >= T[i * W + k + 1]) { ops.push(['-', a[i]]); i++; } else { ops.push(['+', b[k]]); k++; } }
+    while (i < n) ops.push(['-', a[i++]]);
+    while (k < m) ops.push(['+', b[k++]]);
+    return ops;
+  }
+  const sinMarca = l => !l.trim() || /^\s*([{}();,]\s*)+$/.test(l) || /^\s*(\/\/|\/\*|\*)/.test(l);
+  function marcarCambios(viejo, nuevo) {
+    if (nuevo == null || viejo === nuevo) return nuevo;
+    nuevo = nuevo.replace(/\r/g, '');
+    if (viejo != null) viejo = viejo.replace(/\r/g, '');
+    if (viejo === nuevo) return nuevo;
+    if (viejo == null) return nuevo.replace(/^((?:package [^\n]*\n|import [^\n]*\n|\n)*)/, '$1// CLASE NUEVA: no está en el preenunciado\n');
+    const ops = diffLineas(viejo.split('\n'), nuevo.split('\n')), out = [];
+    const sangria = l => l.match(/^\s*/)[0];
+    for (let p = 0; p < ops.length;) {
+      if (ops[p][0] === '=') { out.push(ops[p][1]); p++; continue; }
+      const quitadas = [], puestas = [];
+      while (p < ops.length && ops[p][0] !== '=') { (ops[p][0] === '-' ? quitadas : puestas).push(ops[p][1]); p++; }
+      const viejas = quitadas.filter(l => !sinMarca(l)), marcables = puestas.filter(l => !sinMarca(l));
+      if (!marcables.length) {
+        if (viejas.length) {
+          const s = sangria(viejas[0]);
+          if (viejas.length <= 3) for (const l of viejas) out.push(s + '// SACADO: ' + l.trim());
+          else out.push(s + '// SACADO: ' + viejas.length + ' líneas del original');
+        }
+        out.push(...puestas);
+        continue;
+      }
+      const marca = viejas.length ? '// MOD' : '// NUEVO';
+      let antes = viejas.length > 0 && viejas.length <= 3;
+      for (const l of puestas) {
+        if (sinMarca(l)) { out.push(l); continue; }
+        if (antes) { for (const v of viejas) out.push(sangria(l) + '// ANTES: ' + v.trim()); antes = false; }
+        out.push(l + '   ' + marca);
+      }
+    }
+    return out.join('\n');
+  }
+
   return {
     CAMPOS, ENCABEZADO, ESTADOS_BASE, DESCARTES_BASE, FACTURACION, configBase, simular, generar, leerEnunciado, revisar, normalizar,
-    csvDePrueba, describirEspecial, describirOp, afectaFormatoViejo, referencias, pesoTxt, usaIndiceNuevo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
+    csvDePrueba, marcarCambios, describirEspecial, describirOp, afectaFormatoViejo, referencias, pesoTxt, usaIndiceNuevo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
   };
 }));

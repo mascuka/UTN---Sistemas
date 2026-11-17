@@ -34,6 +34,17 @@ for (const e of E) {
   fallas += errs.length ? 1 : 0;
 }
 
+// «Flota.panorama() debe incluir esa última cantidad»: el panorama muestra los de índice menor a 55 (y nada más lo activa)
+{
+  const errs = [];
+  for (const t of ['El conjunto debe dar 20 índices de desgaste menores a 55. Flota.panorama() debe incluir esa última cantidad en su salida.',
+    'Mostrar el resumen del parseo y el panorama, que incluye costos por zona y la cantidad de vehículos con índice de desgaste menor a 55.'])
+    if (!M.leerEnunciado(t).cfg.panoramaMenor) errs.push('no lo vio en: ' + t);
+  for (const e of E) if (M.leerEnunciado(e.texto).cfg.panoramaMenor) errs.push('lo vio de más en: ' + e.titulo);
+  console.log((errs.length ? '✗ ' : '✓ ') + 'El panorama con la cantidad menor a 55'); for (const x of errs) console.log('    ' + x);
+  fallas += errs.length ? 1 : 0;
+}
+
 const proyecto = process.argv[2];
 if (proyecto) {
   const SRC = path.join(proyecto, 'src/main/java/ar/edu/backend'), originales = {};
@@ -67,12 +78,14 @@ if (proyecto) {
     if (si(0.3)) c.extras.push({ op: 'suma', n: 50 });
     c.conteo = el([null, 'estado', 'zona', c.columna && !c.columnaEnSubclase ? 'columna' : null, c.especiales.length ? 'tipo' : null]);
     if (si(0.4)) c.totales.push({ campo: 'estado', valor: 'DEMORADO' });
+    if (si(0.3)) c.panoramaMenor = true;
     cfgs.push(M.normalizar(c));
   }
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'lab-'));
   cfgs.forEach((cfg, k) => {
     const dir = path.join(tmp, 'c' + k), cls = path.join(dir, 'cls'); fs.mkdirSync(cls, { recursive: true });
-    const todos = Object.assign({}, originales, M.generar(cfg, originales));
+    const todos = Object.assign({}, originales), gen = M.generar(cfg, originales);
+    for (const [f, t] of Object.entries(gen)) todos[f] = M.marcarCambios(originales[f], t);   // con las marcas: tienen que ser solo comentarios
     for (const [f, t] of Object.entries(todos)) fs.writeFileSync(path.join(dir, f), t);
     let mal = '';
     try { execFileSync('javac', ['-encoding', 'UTF-8', '-d', cls, ...Object.keys(todos).map(f => path.join(dir, f))], { stdio: 'pipe' }); }
