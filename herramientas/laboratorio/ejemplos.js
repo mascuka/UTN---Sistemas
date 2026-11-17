@@ -1,9 +1,9 @@
 /* Enunciados de práctica sobre Flota Logística, escritos como los de la cátedra (Parciales 3K1 y 3K2, Simulacros 1 a 4).
    Son hipotéticos: sirven para probar el lector y para practicar. Cada uno trae lo que el lector tiene que entender. */
 (function (raiz, fabrica) {
-  if (typeof module === 'object' && module.exports) module.exports = fabrica();
-  else raiz.Ejemplos = fabrica();
-}(typeof self !== 'undefined' ? self : this, function () {
+  if (typeof module === 'object' && module.exports) module.exports = fabrica(raiz, true);
+  else raiz.Ejemplos = fabrica(raiz, false);
+}(typeof self !== 'undefined' ? self : this, function (raiz, enNode) {
   'use strict';
   const PIE = `
 Resultado requerido
@@ -138,5 +138,9 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
       esperado: { columna: null, estados: ['EN_RUTA', 'DEMORADO', 'EN_TALLER'], especiales: [{ clase: 'VehiculoEnTaller', ops: [{ op: 'multiplica', n: 2 }], topes: [{ campo: 'carga', op: 'max', n: 20, incl: true }] }], conteo: 'estado' },
     },
   ];
-  return E;
+  // Los parciales de práctica con su propio CSV (practica-pendiente/ejemplo.json): en la página los mete armar.py
+  let extra = [];
+  if (enNode) { try { extra = [require('./practica-pendiente/ejemplo.json')]; } catch (e) { extra = []; } }
+  else extra = (raiz && raiz.EJEMPLOS_EXTRA) || [];
+  return E.concat(extra);
 }));

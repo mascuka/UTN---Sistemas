@@ -22,6 +22,14 @@ for (const e of E) {
   const base = JSON.stringify(r.cfg);
   for (const [nom, t] of [['renglones de 90', envolver(e.texto, 90)], ['renglones de 60', envolver(e.texto, 60)], ['viñetas de PDF', e.texto.replace(/^- /gm, ' ')], ['CRLF', e.texto.replace(/\n/g, '\r\n')]])
     if (JSON.stringify(M.leerEnunciado(t).cfg) !== base) errs.push('cambia con ' + nom);
+  if (e.csv) {   // con su propio CSV: los números que da el enunciado tienen que salir
+    const sim = M.simular(e.csv, M.normalizar(JSON.parse(JSON.stringify(r.cfg))));
+    for (const x of M.referencias(e.texto).filter(x => x.leidas === sim.leidas)) {
+      const vs = sim.filas.filter(f => f.vehiculo).map(f => f.vehiculo);
+      const da = { leidas: sim.leidas, procesadas: sim.procesadas, descartadas: sim.descartadas, invalidas: sim.invalidas, total: sim.total, menores: vs.filter(v => v.indice < x.limite).length };
+      for (const k of Object.keys(da)) if (x[k] != null && x[k] !== da[k]) errs.push(`el enunciado dice ${k} ${x[k]} y da ${da[k]}`);
+    }
+  }
   console.log((errs.length ? '✗ ' : '✓ ') + e.titulo); for (const x of errs) console.log('    ' + x);
   fallas += errs.length ? 1 : 0;
 }
@@ -49,8 +57,15 @@ if (proyecto) {
       const cuando = c.columna.tipo === 'texto' ? { campo: 'columna', op: 'igual', valor: el(['REFRIGERADA', 'PELIGROSA']) } : el([{ campo: 'columna', op: 'mayor', valor: 0 }, { campo: 'columna', op: 'presente', valor: '' }, { campo: 'estado', op: 'igual', valor: 'DEMORADO' }]);
       c.especiales.push({ cuando, ops: [el([{ op: 'suma', n: 300 }, { op: 'porcentaje', n: 25 }, { op: 'multiplica', n: 2 }, ...(c.columna.tipo === 'entero' ? [{ op: 'sumaPorCada', n: 200, cada: 30 }] : [])])], topes: si(0.6) ? [{ campo: el(['carga', 'velocidad', 'indice']), op: el(['max', 'min']), n: el([30, 60]), incl: si(0.5) }] : [], clase: '', etiqueta: '' });
     }
+    if (c.columna && si(0.4)) c.anchoMixto = true;
+    if (c.columna && si(0.4)) {   // la columna en la subclase de las filas de seis campos, a veces con otra fórmula del índice
+      c.columnaEnSubclase = true; c.baseDesdeColumna = false;
+      c.especiales = [{ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: si(0.5) ? [el([{ op: 'suma', n: 300 }, { op: 'porcentaje', n: 10 }])] : [], topes: si(0.4) ? [{ campo: 'carga', op: 'max', n: 30, incl: true }] : [], clase: '', etiqueta: '' }];
+      if (c.columna.tipo === 'entero') { c.columna.rango = { min: 0, minIncl: true, max: el([30, 60]), maxIncl: true }; c.columna.valores = []; if (si(0.7)) c.indiceNuevo = el([{ v: 0.5, c: 0.3, x: 0.2 }, { v: 0.55, c: 0.3, x: 0.15 }]); }
+      if (c.conteo === 'columna') c.conteo = 'tipo';
+    }
     if (si(0.3)) c.extras.push({ op: 'suma', n: 50 });
-    c.conteo = el([null, 'estado', 'zona', c.columna ? 'columna' : null, c.especiales.length ? 'tipo' : null]);
+    c.conteo = el([null, 'estado', 'zona', c.columna && !c.columnaEnSubclase ? 'columna' : null, c.especiales.length ? 'tipo' : null]);
     if (si(0.4)) c.totales.push({ campo: 'estado', valor: 'DEMORADO' });
     cfgs.push(M.normalizar(c));
   }

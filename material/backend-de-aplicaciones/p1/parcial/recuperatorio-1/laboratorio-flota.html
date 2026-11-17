@@ -153,6 +153,10 @@
   .codigo .kw{color:var(--kw)} .codigo .s{color:var(--str)} .codigo .c{color:var(--com);font-style:italic} .codigo .nm{color:var(--num)}
   .cerrado{position:relative;border:1px dashed var(--line2);border-radius:12px;padding:26px;text-align:center}
   .cerrado p{color:var(--text2);margin-bottom:12px}
+  .refs{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:-4px 0 14px;font-size:.88rem;background:var(--bg)}
+  .refs b{font-weight:600}
+  .refs .r{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin-top:5px}
+  .refs .ok{color:var(--ok)} .refs .mal{color:var(--bad);font-weight:600} .refs .otro{color:var(--muted)}
   .pie{color:var(--muted);font-size:.82rem;margin-top:26px;text-align:center}
   .oculto{display:none!important}
   kbd,code.k{font:.82rem var(--mono);background:var(--hover);border-radius:5px;padding:0 5px;overflow-wrap:anywhere}
@@ -329,6 +333,9 @@
       etiquetaBase: '',       // para el conteo por tipo: cómo se llama el vehículo común
       totales: [],            // [{ campo: 'estado'|'columna', valor }]: el main muestra el costo total de esos
       archivo: 'datos.csv',   // el CSV que usa el main por defecto
+      anchoMixto: false,      // bajo el encabezado nuevo también valen filas de cinco campos (el formato se ve fila por fila)
+      columnaEnSubclase: false,// la columna vive en la subclase de las filas de seis campos (VehiculoRuta no la conoce)
+      indiceNuevo: null,      // { v, c, x }: el índice de las filas de seis campos = (int)(velocidad × v + carga × c + columna × x)
     };
   }
 
@@ -353,7 +360,7 @@
   // ───────────────────────── Mensajes (los mismos en el Java) ─────────────────────────
   const NOMBRE_CAMPO = { carga: 'La carga', velocidad: 'La velocidad', indice: 'El índice de desgaste', columna: 'El valor de la columna nueva' };
   const MSG = {
-    ancho: (cfg, n) => cfg.columna ? `La fila debe tener exactamente ${n} columnas` : 'La fila debe tener exactamente cinco columnas',
+    ancho: (cfg, n, mixto) => mixto ? 'La fila debe tener cinco o seis columnas' : cfg.columna ? `La fila debe tener exactamente ${n} columnas` : 'La fila debe tener exactamente cinco columnas',
     entero: campo => `El campo ${campo} debe ser un entero`,
     patente: 'La patente no puede estar vacía',
     zona: 'La zona no puede estar vacía',
@@ -386,6 +393,7 @@
 
   function cumple(cuando, v) {
     if (cuando.op === 'presente') return v.presente;
+    if (cuando.op === 'ancho') return v.seis;
     const x = cuando.campo === 'estado' ? v.estado : v.columna;
     if (cuando.op === 'mayor') return typeof x === 'number' && x > Number(cuando.valor);
     return String(x) === String(cuando.valor);
@@ -405,7 +413,56 @@
   }
 
   /* Una fila ya partida y con el ancho correcto → el vehículo o el motivo por el que es inválida */
+  const pesoTxt = w => { const t = String(Number(w)); return /\.\d$/.test(t) ? t + '0' : /^\d+$/.test(t) ? t + '.0' : t; };
+  const indiceCon = (cfg, vel, carga, x) => { const w = cfg.indiceNuevo; return Math.trunc(vel * Number(w.v) + carga * Number(w.c) + x * Number(w.x)) | 0; };
+  const usaIndiceNuevo = cfg => !!(cfg.columnaEnSubclase && cfg.indiceNuevo && cfg.columna && cfg.columna.tipo === 'entero');
+  const subclaseAncho = cfg => cfg.especiales.find(e => e.cuando.op === 'ancho');
+
+  /* Herencia por ancho: una fila de cinco campos es un VehiculoRuta y una de seis, la subclase, que tiene la columna,
+     la valida en su constructor (después de super) y puede calcular el índice con otra fórmula */
+  function desdeCamposAncho(c, cfg) {
+    const col = cfg.columna, seis = c.length === 6, esp = subclaseAncho(cfg);
+    const patente = trim(c[0]), zona = trim(c[1]);
+    const vel = parseIntJava(trim(c[2]));
+    if (vel === null) return { error: MSG.entero('velocidad promedio') };
+    const carga = parseIntJava(trim(c[3]));
+    if (carga === null) return { error: MSG.entero('carga en toneladas') };
+    const estado = trim(c[4]);
+    let x = null, indice = Math.trunc(vel * 0.6 + carga * 0.4) | 0;
+    if (seis) {
+      if (col.tipo === 'entero') { x = parseIntJava(trim(c[5])); if (x === null) return { error: MSG.entero(col.nombre) }; }
+      if (usaIndiceNuevo(cfg)) indice = indiceCon(cfg, vel, carga, x);
+    }
+    const v = { patente, zona, velocidad: vel, carga, estado, indice, columna: x, presente: seis, seis };
+    if (patente === '') return { error: MSG.patente };
+    if (zona === '') return { error: MSG.zona };
+    if (vel <= 0 || vel >= 130) return { error: MSG.velocidad };
+    if (carga > 45) return { error: MSG.carga };
+    if (!cfg.estados.includes(estado)) return { error: MSG.estado(estado) };
+    if (indice < 1 || indice > 90) return { error: MSG.indice };
+    if (seis && esp) {
+      if (col.tipo === 'texto') {
+        const t = trim(c[5]);
+        if (t === '') return { error: MSG.vacio(col.nombre) };
+        if (col.valores.length && !col.valores.map(String).includes(t)) return { error: MSG.valor(col.nombre, t) };
+        v.columna = t;
+      } else {
+        if (col.valores.length && !col.valores.map(Number).includes(x)) return { error: MSG.valor(col.nombre, x) };
+        if (!enRango(x, col.rango)) return { error: MSG.rango(col.nombre, col.rango) };
+      }
+      for (const r of cfg.restricciones) if (r.estado === estado && !r.valores.map(String).includes(String(v.columna))) return { error: MSG.restriccion(estado, col.nombre) };
+      for (const t of esp.topes) if (!pasaTope(valorCampo(v, t.campo), t)) return { error: MSG.tope(esp.clase, t) };
+      v.clase = esp.clase; v.tipo = esp.etiqueta;
+    } else { v.clase = 'VehiculoRuta'; v.tipo = etiquetaBase(cfg); }
+    let costo = div(mul(FACTURACION, indice), 100);
+    costo = aplicar(costo, cfg.extras, v);
+    if (seis && esp) costo = aplicar(costo, esp.ops, v);
+    v.costo = costo;
+    return { vehiculo: v };
+  }
+
   function desdeCampos(c, cfg) {
+    if (cfg.columnaEnSubclase && cfg.columna) return desdeCamposAncho(c, cfg);
     const col = cfg.columna, n = c.length;
     const patente = trim(c[0]), zona = trim(c[1]);
     const vel = parseIntJava(trim(c[2]));
@@ -414,7 +471,7 @@
     if (carga === null) return { error: MSG.entero('carga en toneladas') };
     const estado = trim(c[4]);
     const indice = Math.trunc(vel * 0.6 + carga * 0.4) | 0;
-    const v = { patente, zona, velocidad: vel, carga, estado, indice, columna: null, presente: false };
+    const v = { patente, zona, velocidad: vel, carga, estado, indice, columna: null, presente: false, seis: n === 6 };
     if (col) {
       v.columna = col.defecto;
       if (n === 6) {
@@ -460,15 +517,15 @@
     if (texto.charCodeAt(0) === 0xFEFF) return { abortado: 'El archivo empieza con un BOM (UTF-8 con firma): Java lo lee como parte del encabezado y tira IllegalArgumentException("Encabezado CSV incorrecto"). Guardalo como UTF-8 sin BOM.' };
     const ls = lineas(texto);
     const enc = ls.length ? ls[0] : null;
-    let sep, ancho;
+    let sep, ancho, mixto = false;
     if (enc === ENCABEZADO) { sep = ','; ancho = 5; }
-    else if (cfg.columna && enc === encabezadoNuevo(cfg)) { sep = cfg.separador; ancho = 6; }
+    else if (cfg.columna && enc === encabezadoNuevo(cfg)) { sep = cfg.separador; ancho = 6; mixto = !!cfg.anchoMixto; }
     else return { abortado: 'Encabezado CSV incorrecto: «' + (enc == null ? '(archivo vacío)' : enc) + '». Se esperaba «' + ENCABEZADO + '»' + (cfg.columna ? ' o «' + encabezadoNuevo(cfg) + '»' : '') + '. Java tira IllegalArgumentException y no procesa nada.' };
     const filas = [];
     for (let i = 1; i < ls.length; i++) {
       const f = { linea: i + 1, texto: ls[i] };
       const c = ls[i].split(sep);
-      if (c.length !== ancho) { f.resultado = 'Inválida'; f.motivo = MSG.ancho(cfg, ancho); }
+      if (mixto ? c.length !== 5 && c.length !== 6 : c.length !== ancho) { f.resultado = 'Inválida'; f.motivo = MSG.ancho(cfg, ancho, mixto); }
       else if (cfg.descartes.includes(trim(c[4]))) { f.resultado = 'Descartada'; f.motivo = 'Estado ' + trim(c[4]) + ': se descarta sin validar'; }
       else {
         const r = desdeCampos(c, cfg);
@@ -534,7 +591,8 @@
   const nombreConteo = cfg => cfg.conteo === 'columna' ? cfg.columna.nombre : cfg.conteo;
   function hayCambios(cfg) {
     return !!(cfg.columna || cfg.especiales.length || cfg.extras.length || cfg.conteo || cfg.restricciones.length || cfg.totales.length
-      || cfg.descartes.join() !== DESCARTES_BASE.join() || cfg.estados.join() !== ESTADOS_BASE.join() || cfg.archivo !== 'datos.csv');
+      || cfg.descartes.join() !== DESCARTES_BASE.join() || cfg.estados.join() !== ESTADOS_BASE.join() || cfg.archivo !== 'datos.csv'
+      || cfg.anchoMixto || cfg.columnaEnSubclase);
   }
 
   // ───────────────────────── Revisar y acomodar una configuración ─────────────────────────
@@ -550,13 +608,25 @@
       col.rango = col.rango || { min: null, minIncl: true, max: null, maxIncl: true };
       if (col.tipo !== 'entero') col.rango = { min: null, minIncl: true, max: null, maxIncl: true };
     }
+    cfg.anchoMixto = !!(cfg.anchoMixto && col);
+    cfg.columnaEnSubclase = !!(cfg.columnaEnSubclase && col);
+    if (cfg.columnaEnSubclase) {
+      // la subclase de las filas de seis campos va primera; las otras no se usan (lo avisa revisar)
+      let e = subclaseAncho(cfg);
+      if (!e) { e = { cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: [], topes: [], clase: '', etiqueta: '' }; cfg.especiales.unshift(e); }
+      else if (cfg.especiales[0] !== e) { cfg.especiales.splice(cfg.especiales.indexOf(e), 1); cfg.especiales.unshift(e); }
+      if (cfg.indiceNuevo) for (const k of ['v', 'c', 'x']) cfg.indiceNuevo[k] = Number.isFinite(Number(cfg.indiceNuevo[k])) ? Number(cfg.indiceNuevo[k]) : 0;
+    } else {
+      cfg.indiceNuevo = null;
+    }
     const usados = new Set(CLASES);
     for (const e of cfg.especiales) {
       let c = /^[A-Z][A-Za-z0-9_]*$/.test(e.clase || '') ? e.clase : e.cuando.op === 'igual' ? 'Vehiculo' + pascal(e.cuando.valor) : 'VehiculoCon' + cap(col ? col.nombre : 'Valor');
+      if (c === 'VehiculoCon' + cap(col ? col.nombre : 'Valor') && cfg.columnaEnSubclase && e.cuando.op !== 'ancho') c += 'Especial';
       if (!/^[A-Z]/.test(c)) c = 'Vehiculo' + c;
       while (usados.has(c)) c += 'Especial';
       usados.add(c); e.clase = c;
-      if (!e.etiqueta) e.etiqueta = e.cuando.op === 'igual' ? String(e.cuando.valor).toUpperCase() : 'CON_' + constante(col ? col.nombre : 'VALOR');
+      if (!e.etiqueta) e.etiqueta = e.cuando.op === 'igual' ? String(e.cuando.valor).toUpperCase() : e.cuando.op === 'ancho' ? 'FORMATO_NUEVO' : 'CON_' + constante(col ? col.nombre : 'VALOR');
     }
     if (!cfg.etiquetaBase) cfg.etiquetaBase = etiquetaBase(cfg);
     return cfg;
@@ -579,10 +649,18 @@
       if (e.topes.some(t => t.campo === 'columna') && !(col && col.tipo === 'entero')) av.push(e.clase + ': un tope sobre la columna necesita que sea entera.');
       if (e.cuando.campo === 'estado' && !cfg.estados.includes(String(e.cuando.valor))) av.push(e.clase + ' es para el estado ' + e.cuando.valor + ', que no está entre los válidos: no se va a usar nunca.');
       if (e.cuando.campo === 'columna' && e.cuando.op === 'igual' && col && col.valores.length && !col.valores.map(String).includes(String(e.cuando.valor))) av.push(e.clase + ' es para ' + col.nombre + ' = ' + e.cuando.valor + ', que no está entre los valores permitidos.');
-      if (!e.ops.length && !e.topes.length) av.push(e.clase + ' no cambia nada: sin costo distinto ni topes.');
+      if (!e.ops.length && !e.topes.length && !(cfg.columnaEnSubclase && e.cuando.op === 'ancho')) av.push(e.clase + ' no cambia nada: sin costo distinto ni topes.');
       for (const o of e.ops.concat(cfg.extras)) if (o.op === 'sumaPorCada' && !(o.cada > 0)) av.push('«Por cada» necesita un número mayor a 0.');
     }
     for (const r of cfg.restricciones) if (!cfg.estados.includes(r.estado)) av.push('La restricción para ' + r.estado + ' no se usa: no es un estado válido.');
+    if (cfg.columnaEnSubclase) {
+      if (cfg.especiales.length > 1) av.push('Con la columna en la subclase, solo se usa ' + cfg.especiales[0].clase + ' (las filas de seis campos); las otras subclases no se aplican.');
+      if (cfg.baseDesdeColumna) av.push('Con la columna en la subclase, el costo base no puede salir de la columna (VehiculoRuta no la tiene).');
+      if (cfg.extras.some(o => o.op === 'sumaPorCada')) av.push('Con la columna en la subclase, «por cada» va en la subclase, no en el costo de todos.');
+      if (cfg.conteo === 'columna' || cfg.totales.some(t => t.campo === 'columna')) av.push('Con la columna en la subclase, no se puede contar ni totalizar por la columna desde Flota (VehiculoRuta no la tiene): usá el conteo por tipo.');
+      if (cfg.indiceNuevo && col.tipo !== 'entero') av.push('La fórmula nueva del índice necesita una columna entera.');
+    } else if (cfg.indiceNuevo) av.push('La fórmula nueva del índice solo se usa con la columna en la subclase.');
+    if (cfg.especiales.some(e => e.cuando.op === 'ancho') && !cfg.columnaEnSubclase && !cfg.anchoMixto && col) av.push('«La fila trae seis campos» con un solo ancho por encabezado es lo mismo que «todas las filas nuevas».');
     if (cfg.conteo === 'columna' && !col) av.push('Elegiste contar por la columna nueva, pero no hay columna nueva.');
     if (cfg.conteo === 'tipo' && !cfg.especiales.length) av.push('El conteo por tipo necesita al menos una subclase.');
     for (const d of cfg.descartes) if (cfg.estados.includes(d)) av.push('El estado ' + d + ' está como válido y como descartado: se descarta (el parser lo mira primero).');
@@ -614,6 +692,7 @@
   const literal = (col, v) => col.tipo === 'entero' ? String(Number(v)) : j(v);
   function condJava(cuando, col) {
     if (cuando.op === 'presente') return 'presente';
+    if (cuando.op === 'ancho') return 'campos.length == 6';
     if (cuando.campo === 'estado') return j(cuando.valor) + '.equals(estado)';
     if (cuando.op === 'mayor') return col.nombre + ' > ' + Number(cuando.valor);
     return col.tipo === 'entero' ? col.nombre + ' == ' + Number(cuando.valor) : j(cuando.valor) + '.equals(' + col.nombre + ')';
@@ -647,13 +726,15 @@
             String encabezado = lector.readLine();
 `;
     if (col) s += `            String separador;
-            int columnas;
+            int columnas;${cfg.anchoMixto ? `
+            boolean admiteCinco = false;` : ''}
             if (ENCABEZADO.equals(encabezado)) {
                 separador = ",";
                 columnas = 5;
             } else if (ENCABEZADO_NUEVO.equals(encabezado)) {
                 separador = ${j(cfg.separador === '|' ? '\\|' : cfg.separador)};
-                columnas = 6;
+                columnas = 6;${cfg.anchoMixto ? `
+                admiteCinco = true;` : ''}
             } else {
                 throw new IllegalArgumentException("Encabezado CSV incorrecto");
             }
@@ -669,7 +750,14 @@
                 numeroLinea++;
                 filasLeidas++;
 `;
-    s += col ? `                String[] campos = linea.split(separador, -1);
+    s += col && cfg.anchoMixto ? `                String[] campos = linea.split(separador, -1);
+                if (campos.length != columnas && !(admiteCinco && campos.length == 5)) {
+                    errores.add(new ErrorParseo(numeroLinea, admiteCinco
+                            ? "La fila debe tener cinco o seis columnas"
+                            : "La fila debe tener exactamente " + columnas + " columnas"));
+                    continue;
+                }
+` : col ? `                String[] campos = linea.split(separador, -1);
                 if (campos.length != columnas) {
                     errores.add(new ErrorParseo(numeroLinea, "La fila debe tener exactamente " + columnas + " columnas"));
                     continue;
@@ -702,7 +790,245 @@
     return s;
   }
 
+  function generarVehiculoAncho(cfg) {
+    const col = cfg.columna, esp = subclaseAncho(cfg), N = col.nombre, T = tipoJava(col), estSet = cfg.estados.join() !== ESTADOS_BASE.join();
+    const nuevo = usaIndiceNuevo(cfg);
+    const PARAMS = `            String patente,
+            String zona,
+            int velocidadPromedio,
+            int cargaToneladas,
+            String estado,
+            int indiceDesgaste`;
+    let s = 'package ar.edu.backend;\n\n' + (estSet ? 'import java.util.Set;\n\n' : '');
+    s += `public class VehiculoRuta {\n`;
+    if (estSet) s += `    private static final Set<String> ESTADOS_VALIDOS = Set.of(${cfg.estados.map(j).join(', ')});\n\n`;
+    s += `    private final String patente;
+    private final String zona;
+    private final int velocidadPromedio;
+    private final int cargaToneladas;
+    private final String estado;
+    private final int indiceDesgaste;
+
+`;
+    if (nuevo) s += `    public VehiculoRuta(
+${PARAMS}) {
+        this(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste,
+                calcularIndiceDesgaste(velocidadPromedio, cargaToneladas));
+    }
+
+    /** Para las subclases que calculan el índice con otra fórmula: el índice recibido tiene que coincidir con el suyo. */
+    protected VehiculoRuta(
+${PARAMS},
+            int indiceCalculado) {
+`;
+    else s += `    public VehiculoRuta(
+${PARAMS}) {
+`;
+    s += `        this.patente = validarTexto(patente, "La patente no puede estar vacía");
+        this.zona = validarTexto(zona, "La zona no puede estar vacía");
+        if (velocidadPromedio <= 0 || velocidadPromedio >= 130) {
+            throw new IllegalArgumentException("La velocidad promedio debe ser mayor a 0 y menor a 130");
+        }
+        if (cargaToneladas > 45) {
+            throw new IllegalArgumentException("La carga no puede superar las 45 toneladas");
+        }
+        if (${estSet ? '!ESTADOS_VALIDOS.contains(estado)' : '!"EN_RUTA".equals(estado) && !"DEMORADO".equals(estado)'}) {
+            throw new IllegalArgumentException("Estado de vehículo inválido: " + estado);
+        }
+${nuevo ? '' : `        int indiceCalculado = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);
+`}        if (indiceDesgaste < 1 || indiceDesgaste > 90 || indiceDesgaste != indiceCalculado) {
+            throw new IllegalArgumentException("El índice de desgaste debe coincidir con el cálculo y estar entre 1 y 90");
+        }
+        this.velocidadPromedio = velocidadPromedio;
+        this.cargaToneladas = cargaToneladas;
+        this.estado = estado;
+        this.indiceDesgaste = indiceDesgaste;
+    }
+
+    /** Fábrica: decide el tipo por el ancho de la fila. Cinco campos, VehiculoRuta; seis, ${esp.clase}. */
+    public static VehiculoRuta desdeCampos(String[] campos) {
+        if (campos == null || (campos.length != 5 && campos.length != 6)) {
+            throw new IllegalArgumentException("La fila debe tener cinco o seis columnas");
+        }
+
+        String patente = limpiar(campos[0]);
+        String zona = limpiar(campos[1]);
+        int velocidadPromedio = convertirEntero(campos[2], "velocidad promedio");
+        int cargaToneladas = convertirEntero(campos[3], "carga en toneladas");
+        String estado = limpiar(campos[4]);
+        if (campos.length == 6) {
+`;
+    if (col.tipo === 'entero') {
+      s += `            int ${N} = convertirEntero(campos[5], ${j(N)});
+            int indice = ${nuevo ? `${esp.clase}.calcularIndiceDesgaste(velocidadPromedio, cargaToneladas, ${N})` : 'calcularIndiceDesgaste(velocidadPromedio, cargaToneladas)'};
+            return new ${esp.clase}(patente, zona, velocidadPromedio, cargaToneladas, estado, indice, ${N});
+`;
+    } else {
+      s += `            return new ${esp.clase}(patente, zona, velocidadPromedio, cargaToneladas, estado,
+                    calcularIndiceDesgaste(velocidadPromedio, cargaToneladas), limpiar(campos[5]));
+`;
+    }
+    s += `        }
+        int indiceDesgaste = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);
+        return new VehiculoRuta(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste);
+    }
+
+    private static int calcularIndiceDesgaste(int velocidadPromedio, int cargaToneladas) {
+        return (int) (velocidadPromedio * 0.6 + cargaToneladas * 0.4);
+    }
+
+    private static int convertirEntero(String valor, String nombreCampo) {
+        try {
+            return Integer.parseInt(limpiar(valor));
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("El campo " + nombreCampo + " debe ser un entero", exception);
+        }
+    }
+
+    private static String validarTexto(String valor, String mensaje) {
+        String texto = limpiar(valor);
+        if (texto.isEmpty()) {
+            throw new IllegalArgumentException(mensaje);
+        }
+        return texto;
+    }
+
+    private static String limpiar(String valor) {
+        if (valor == null) {
+            throw new IllegalArgumentException("Los campos no pueden ser nulos");
+        }
+        return valor.trim();
+    }
+
+    public int getCostoDesgasteOperativo() {
+`;
+    if (!cfg.extras.length) s += `        return 2000 * indiceDesgaste / 100;\n`;
+    else s += `        int costo = 2000 * indiceDesgaste / 100;\n${opsJava(cfg.extras, col, '        ')}\n        return costo;\n`;
+    s += `    }
+
+    public String getPatente() {
+        return patente;
+    }
+
+    public String getZona() {
+        return zona;
+    }
+
+    public int getVelocidadPromedio() {
+        return velocidadPromedio;
+    }
+
+    public int getCargaToneladas() {
+        return cargaToneladas;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public int getIndiceDesgaste() {
+        return indiceDesgaste;
+    }
+`;
+    if (cfg.conteo === 'tipo') s += `
+    /** Para el conteo por tipo: cada subclase dice cómo se llama. */
+    public String getTipo() {
+        return ${j(etiquetaBase(cfg))};
+    }
+`;
+    return s + '}\n';
+  }
+
+  function generarSubclaseAncho(e, cfg) {
+    const col = cfg.columna, N = col.nombre, T = tipoJava(col), K = constante(N), nuevo = usaIndiceNuevo(cfg), w = cfg.indiceNuevo;
+    const usaSet = col.valores.length || cfg.restricciones.length;
+    let s = 'package ar.edu.backend;\n\n' + (usaSet ? 'import java.util.Set;\n\n' : '');
+    s += `/** Vehículo ${quienEs(e, cfg)}${e.ops.length || e.topes.length ? ': ' + describirEspecial(e, cfg) : ''}. */
+public class ${e.clase} extends VehiculoRuta {
+`;
+    if (col.valores.length) s += `    private static final Set<${col.tipo === 'entero' ? 'Integer' : 'String'}> VALORES_${K} = Set.of(${col.valores.map(v => literal(col, v)).join(', ')});\n\n`;
+    s += `    private final ${T} ${N};
+
+    public ${e.clase}(
+            String patente,
+            String zona,
+            int velocidadPromedio,
+            int cargaToneladas,
+            String estado,
+            int indiceDesgaste,
+            ${T} ${N}) {
+        super(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste${nuevo ? `,
+                calcularIndiceDesgaste(velocidadPromedio, cargaToneladas, ${N})` : ''});
+`;
+    if (col.tipo === 'texto') {
+      s += `        if (${N} == null || ${N}.isEmpty()) {
+            throw new IllegalArgumentException(${j(MSG.vacio(N))});
+        }
+`;
+      if (col.valores.length) s += `        if (!VALORES_${K}.contains(${N})) {
+            throw new IllegalArgumentException("Valor de ${N} inválido: " + ${N});
+        }
+`;
+    } else {
+      if (col.valores.length) s += `        if (!VALORES_${K}.contains(${N})) {
+            throw new IllegalArgumentException("Valor de ${N} inválido: " + ${N});
+        }
+`;
+      if (tieneRango(col.rango)) {
+        const r = col.rango, c = [];
+        if (r.min != null) c.push(`${N} ${r.minIncl ? '<' : '<='} ${r.min}`);
+        if (r.max != null) c.push(`${N} ${r.maxIncl ? '>' : '>='} ${r.max}`);
+        s += `        if (${c.join(' || ')}) {
+            throw new IllegalArgumentException(${j(MSG.rango(N, r))});
+        }
+`;
+      }
+    }
+    for (const r of cfg.restricciones) s += `        if (${j(r.estado)}.equals(estado) && !Set.of(${unicos(r.valores).map(v => literal(col, v)).join(', ')}).contains(${N})) {
+            throw new IllegalArgumentException(${j(MSG.restriccion(r.estado, N))});
+        }
+`;
+    for (const t of e.topes) {
+      const x = t.campo === 'columna' ? N : campoJava[t.campo];
+      const mal = t.op === 'min' ? `${x} ${t.incl ? '<' : '<='} ${t.n}` : `${x} ${t.incl ? '>' : '>='} ${t.n}`;
+      s += `        if (${mal}) {
+            throw new IllegalArgumentException(${j(MSG.tope(e.clase, t))});
+        }
+`;
+    }
+    s += `        this.${N} = ${N};
+    }
+`;
+    if (nuevo) s += `
+    /** El índice de las filas nuevas: la fórmula ponderada, truncada a entero. */
+    static int calcularIndiceDesgaste(int velocidadPromedio, int cargaToneladas, int ${N}) {
+        return (int) (velocidadPromedio * ${pesoTxt(w.v)} + cargaToneladas * ${pesoTxt(w.c)} + ${N} * ${pesoTxt(w.x)});
+    }
+`;
+    s += `
+    public ${T} get${cap(N)}() {
+        return ${N};
+    }
+`;
+    if (e.ops.length) s += `
+    @Override
+    public int getCostoDesgasteOperativo() {
+        int costo = super.getCostoDesgasteOperativo();
+${opsJava(e.ops, col, '        ')}
+        return costo;
+    }
+`;
+    if (cfg.conteo === 'tipo') s += `
+    @Override
+    public String getTipo() {
+        return ${j(e.etiqueta)};
+    }
+`;
+    return s + '}\n';
+  }
+
   function generarVehiculo(cfg) {
+    if (cfg.columnaEnSubclase && cfg.columna) return generarVehiculoAncho(cfg);
     const col = cfg.columna, sub = cfg.especiales.length > 0, estSet = cfg.estados.join() !== ESTADOS_BASE.join();
     const T = col && tipoJava(col), N = col && col.nombre, G = col && 'get' + cap(N), K = col && constante(N);
     const PARAMS = `            String patente,
@@ -910,12 +1236,14 @@ ${col ? `        this.${N} = ${N};\n` : ''}    }
 
   function quienEs(e, cfg) {
     const N = cfg.columna && cfg.columna.nombre;
+    if (e.cuando.op === 'ancho') return `del formato nuevo (fila de seis campos, con ${N})`;
     if (e.cuando.op === 'presente') return `con un valor en ${N}`;
     if (e.cuando.op === 'mayor') return `con ${N} mayor a ${e.cuando.valor}`;
     return e.cuando.campo === 'estado' ? `en estado ${e.cuando.valor}` : `con ${N} ${e.cuando.valor}`;
   }
 
   function generarSubclase(e, cfg) {
+    if (cfg.columnaEnSubclase && cfg.columna && e.cuando.op === 'ancho') return generarSubclaseAncho(e, cfg);
     const col = cfg.columna, N = col && col.nombre, T = col && tipoJava(col);
     let s = `package ar.edu.backend;
 
@@ -1019,7 +1347,7 @@ public class App {
     const out = {};
     out['ParserVehiculos.java'] = generarParser(cfg);
     out['VehiculoRuta.java'] = generarVehiculo(cfg);
-    for (const e of cfg.especiales) out[e.clase + '.java'] = generarSubclase(e, cfg);
+    for (const e of cfg.columnaEnSubclase ? cfg.especiales.slice(0, 1) : cfg.especiales) out[e.clase + '.java'] = generarSubclase(e, cfg);
     if (cfg.conteo && originales && originales['Flota.java']) out['Flota.java'] = generarFlota(cfg, originales['Flota.java']);
     if (hayCambios(cfg)) out['App.java'] = generarApp(cfg);
     return out;
@@ -1030,6 +1358,7 @@ public class App {
     if (o.op === 'suma') return `${o.n >= 0 ? '+' : '−'} ${Math.abs(o.n)} USD`;
     if (o.op === 'porcentaje') return `${o.n >= 0 ? '+' : '−'} ${Math.abs(o.n)} % (× ${100 + o.n} / 100)`;
     if (o.op === 'multiplica') return `× ${o.n}`;
+    if (o.op === 'sumaPorCada' && Number(o.cada) === 1) return `+ ${o.n} USD por cada unidad de ${cfg.columna ? cfg.columna.nombre : 'la columna'}`;
     return `+ ${o.n} USD por cada ${o.cada} de ${cfg.columna ? cfg.columna.nombre : 'la columna'}`;
   }
   const signoTope = t => t.op === 'min' ? (t.incl ? '≥' : '>') : (t.incl ? '≤' : '<');
@@ -1079,10 +1408,18 @@ public class App {
 
     // 1) El encabezado nuevo: la columna y el separador
     let campos = null;
+    const conSiguiente = i => /:\s*$/.test(O[i]) && O[i + 1] ? O[i] + ' ' + O[i + 1] : O[i];   // «… es:» y el encabezado en la línea de abajo
+    O.forEach((o, i) => {   // «Formato del parcial: patente,…,pendientePromedio» (cuando el enunciado muestra los dos encabezados)
+      if (campos) return;
+      o = conSiguiente(i);
+      const m = o.match(/formato\s+(?:del\s+parcial|nuevo|evolucionado)\s*:\s*[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/i);
+      if (m) { campos = m[1].replace(/\s+/g, ''); nota('columna', o, 'El encabezado nuevo'); }
+    });
     O.forEach((o, i) => {
       if (campos) return;
+      o = conSiguiente(i);
       const m = o.match(/encabezado\s+(?:nuevo\s+|evolucionado\s+)?(?:del\s+archivo\s+|del\s+csv\s+)?(?:es|queda|pasa\s+a\s+ser)\s*:?\s*[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){3,})/i)
-        || (N[i].includes('encabezado') && o.match(/[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/));
+        || (sinTildes(o).toLowerCase().includes('encabezado') && o.match(/[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/));
       if (m) { campos = m[1].replace(/\s+/g, ''); nota('columna', o, 'El encabezado nuevo'); }
     });
     if (!campos && csvTexto) {
@@ -1166,6 +1503,8 @@ public class App {
         || (!col.valores.length && csvTexto && columnaNumerica(csvTexto, cfg));
       if (esEntero && !col.valores.length) col.tipo = 'entero';
       if (col.tipo === 'entero') {
+        const conRango = n => /entre\s+\d|mayor|menor|maximo|minimo|negativ|positiv|\bde\s+\d+\s+a\s+\d/.test(n);
+        const exactas = N.some((n, i) => i < finReglas && n.includes(cn) && conRango(n) && !otroCampo(n) && !esEjemplo(i));
         O.forEach((o, i) => {
           const n = N[i];
           if (i >= finReglas || otroCampo(n) || esEjemplo(i)) return;
@@ -1177,7 +1516,7 @@ public class App {
           }
           const m0 = n.match(/^(\d+)\s+(?:conserva|mantiene|es\s+(?:un|el)\s+(?:vehiculo|valor)\s+(?:sin|comun|normal))/);
           if (m0 && col.valores.length && !col.valores.includes(Number(m0[1]))) { col.valores.push(Number(m0[1])); nota('columna', o, 'Valor permitido: ' + m0[1]); }
-          if (!habla) return;
+          if (!habla || (exactas && !N[i].includes(cn))) return;
           let m;
           if ((m = n.match(new RegExp('mayor(?:es)?\\s+(?:o\\s+)?iguales?\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = true; nota('columna', o, 'Mínimo ' + r.min + ' (inclusive)'); }
           else if ((m = n.match(new RegExp('(?:mayor(?:es)?|superior(?:es)?)\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = false; nota('columna', o, 'Mayor a ' + r.min); }
@@ -1218,10 +1557,42 @@ public class App {
       if (col.tipo === 'entero' && typeof col.defecto !== 'number') col.defecto = col.valores.includes(0) || col.vacio === 'defecto' ? 0 : col.rango.min != null && col.rango.minIncl ? col.rango.min : 0;
     }
 
+    // 3b) Filas de cinco y seis campos bajo el encabezado nuevo, la jerarquía obligatoria y la fórmula ponderada
+    if (col) {
+      const im = N.findIndex(n => /se\s+admiten\s+filas\s+de\s+cinco\s+campos|detectar\s+el\s+formato\s+de\s+cada\s+fila\s+por\s+su\s+ancho|filas\s+de\s+cinco\s+(?:campos\s+)?(?:y|o)\s+(?:de\s+)?seis\s+campos|(?:tambien\s+)?(?:valen|se\s+aceptan|admite)\s+filas\s+de\s+cinco\s+campos/.test(n) && !/no\s+aceptar\s+filas\s+de\s+cinco/.test(n));
+      if (im >= 0) { cfg.anchoMixto = true; nota('columna', O[im], 'Bajo el encabezado nuevo valen filas de cinco y de seis campos'); }
+      const plano = sinTildes(texto || '').replace(/\s+/g, ' ');
+      const ih = N.findIndex(n => /mediante\s+herencia|jerarquia\s+(?:obligatoria|equivalente|requerida)|debe\s+extender\s+(?:directamente\s+)?a\s+vehiculoruta|extiende\s+(?:directamente\s+)?a\s+vehiculoruta/.test(n));
+      const clase = (plano.match(/\b(Vehiculo[A-Z]\w*)\s+debe\s+extender/) || plano.match(/[└├][─\-\s]*(Vehiculo[A-Z]\w*)/) || plano.match(/VehiculoRuta\s+(?:[└├─\-|>\s]+)(Vehiculo[A-Z]\w*)/) || plano.match(/(?:o\s+)?un\s+(Vehiculo[A-Z]\w*)\s+para\s+seis\s+campos/) || [])[1];
+      // la fórmula ponderada: indiceDesgaste = (velocidadPromedio × 0.50) + (cargaToneladas × 0.30) + (columna × 0.20)
+      const cn = sinTildes(col.nombre).toLowerCase();
+      const reF = /indice[\w ]{0,16}=\s*((?:\(\s*[A-Za-z][A-Za-z ]*?\s*[×x*·]\s*\d*[.,]?\d+\s*\)\s*\+?\s*){2,4})/gi;
+      let f;
+      while ((f = reF.exec(plano))) {
+        const w = {};
+        const ts = [...f[1].matchAll(/\(\s*([A-Za-z][A-Za-z ]*?)\s*[×x*·]\s*(\d*[.,]?\d+)\s*\)/g)].map(t => [t[1].replace(/\s+/g, '').toLowerCase(), Number(t[2].replace(',', '.'))]);
+        let ix = ts.findIndex(t => t[0] === cn);
+        if (ix < 0 && ts.length === 3) ix = ts.findIndex(t => t[0].startsWith(cn.slice(0, 6)) && !t[0].startsWith('velocidad') && !t[0].startsWith('carga'));
+        if (ix >= 0 && ts.length === 3) {
+          w.x = ts[ix][1];
+          const resto = ts.filter((_, k) => k !== ix);
+          const iv = resto.findIndex(t => t[0].startsWith('velocidad')), ic = resto.findIndex(t => t[0].startsWith('carga'));
+          w.v = resto[iv >= 0 ? iv : 0][1]; w.c = resto[ic >= 0 ? ic : (iv === 1 ? 0 : 1)][1];
+        }
+        if (w.x != null && w.v != null && w.c != null) { cfg.indiceNuevo = w; nota('indice', f[0].trim(), `Índice de las filas nuevas: (int)(velocidad × ${w.v} + carga × ${w.c} + ${col.nombre} × ${w.x})`); break; }
+      }
+      if (ih >= 0 || cfg.indiceNuevo || clase) {
+        cfg.columnaEnSubclase = true;
+        cfg.especiales.unshift({ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: [], topes: [], clase: clase && clase !== 'VehiculoRuta' ? clase : '', etiqueta: '' });
+        nota('especiales', ih >= 0 ? O[ih] : 'jerarquía', `La columna va en la subclase ${clase || 'VehiculoCon' + cap(col.nombre)} (filas de seis campos)`);
+        if (!cfg.anchoMixto) avisos.push('La columna va en una subclase, pero no encontré si bajo el encabezado nuevo valen también filas de cinco campos: revisalo en el paso 2.');
+      }
+    }
+
     // 4) El costo: la columna en lugar de los 2000, extras para todos y las subclases
     O.forEach((o, i) => {
       const n = N[i];
-      if (i < finReglas && col && col.tipo === 'entero' && /(reemplaza|en\s+lugar\s+de|en\s+vez\s+de|toma(?:r)?\s+el\s+valor|tome\s+el\s+valor|usar?\s+(?:el|ese|su)\s+valor|considerad[oa]s?\s+al\s+realizar\s+el\s+calculo|se\s+usa(?:n)?\s+(?:en|para)\s+el\s+(?:calculo|costo)|base\s+del\s+costo)/.test(n)
+      if (i < finReglas && col && col.tipo === 'entero' && !cfg.columnaEnSubclase && /(reemplaza|en\s+lugar\s+de|en\s+vez\s+de|toma(?:r)?\s+el\s+valor|tome\s+el\s+valor|usar?\s+(?:el|ese|su)\s+valor|considerad[oa]s?\s+al\s+realizar\s+el\s+calculo|se\s+usa(?:n)?\s+(?:en|para)\s+el\s+(?:calculo|costo)|base\s+del\s+costo)/.test(n)
         && /costo|calculo|2\.?000|facturacion/.test(n)) {
         cfg.baseDesdeColumna = true; nota('costo', o, 'El costo usa ' + col.nombre + ' en lugar de los 2000 USD');
       }
@@ -1231,6 +1602,10 @@ public class App {
     if (col && col.tipo === 'texto') for (const v of col.valores) sujetos.push({ cuando: { campo: 'columna', op: 'igual', valor: v }, palabra: v });
     for (const e of cfg.estados) sujetos.push({ cuando: { campo: 'estado', op: 'igual', valor: e }, palabra: e });
     const sujetoPorTexto = (n, c) => {
+      if (cfg.columnaEnSubclase) {
+        const e0 = cfg.especiales[0];
+        if ((e0.clase && c.includes(e0.clase)) || /formato\s+nuevo|filas?\s+nuevas?|seis\s+campos|la\s+subclase/.test(n)) return { cuando: e0.cuando };
+      }
       for (const w of mayusculas(c.replace(/[A-Z][A-Z0-9_]+\s+(?:solo|unicamente)\s+admi?n?ten?\s+[A-Z0-9_ ,]+/g, ' '))) { const s = sujetos.find(x => x.palabra === w); if (s) return s; }
       if (col && col.tipo === 'entero' && /asegurad|con\s+cobertura|plazos?\s+de|mayor\s+a\s+0|distint[oa]\s+de\s+0|valor\s+positivo/.test(n)) return { cuando: { campo: 'columna', op: 'mayor', valor: 0 } };
       if (col && col.vacio === 'defecto' && /presencia\s+de|con\s+(?:un\s+)?valor\s+en/.test(n)) return { cuando: { campo: 'columna', op: 'presente', valor: '' } };
@@ -1318,6 +1693,25 @@ public class App {
     return { cfg, evidencias: ev, avisos };
   }
 
+  /* Los números que el enunciado da como referencia: «70 filas leídas, 31 procesadas, 23 descartadas y 16 inválidas;
+     costo total 25095, por NORTE 9660…; 17 índices … menores a 55» */
+  function referencias(texto) {
+    const t = sinTildes(texto || '').replace(/\s+/g, ' '), out = [];
+    const re = /(\d+) (?:filas )?leidas,? (\d+) procesadas,? (\d+) descartadas,?(?: y)? (\d+) invalidas/gi;
+    let m;
+    while ((m = re.exec(t))) {
+      const r = { leidas: +m[1], procesadas: +m[2], descartadas: +m[3], invalidas: +m[4], texto: '' };
+      const cola = t.slice(m.index + m[0].length, m.index + m[0].length + 260).split(/(?=\d+ (?:filas )?leidas)/)[0];
+      let x;
+      if ((x = cola.match(/^[^.]*?\btotal (\d+)/i))) r.total = +x[1];
+      if ((x = cola.match(/^[^.]*?\bpor (?:zona |subestacion |region )?((?:[A-Z][A-Z0-9_-]* \d+(?:,? (?:y )?)?)+)/))) r.zonas = [...x[1].matchAll(/([A-Z][A-Z0-9_-]*) (\d+)/g)].map(z => [z[1], +z[2]]);
+      if ((x = cola.match(/^[^.]*?(\d+) (?:indices?|vehiculos?|transformadores?)[^.;\d]{0,60}?menor(?:es)? a (\d+)/i))) { r.menores = +x[1]; r.limite = +x[2]; }
+      r.texto = (m[0] + cola).split(/\. /)[0].trim();
+      out.push(r);
+    }
+    return out;
+  }
+
   function opsDe(n, col) {
     const ops = []; let m;
     const unidadCol = w => UNIDADES_CADA.test(w) || (col && partesNombre(col.nombre).concat(sinTildes(col.nombre).toLowerCase()).some(p => p.slice(0, 4) === w.slice(0, 4)));
@@ -1326,8 +1720,9 @@ public class App {
     else if ((m = n.match(new RegExp(NUM + '\\s*(?:usd|dolares?|pesos|u\\$s|\\$)\\s+(?:adicionales|mas|de\\s+recargo|extra|por\\s+(?:vehiculo|viaje|flete|fila))'))) || (m = n.match(new RegExp('(?:recargo|adicional|suma|agrega|cuesta)\\s+(?:fijo\\s+)?(?:de\\s+)?' + NUM + '\\s*(?:usd|dolares?|pesos|u\\$s|\\$)')))) ops.push({ op: 'suma', n: num(m[1]) });
     if ((m = n.match(new RegExp(NUM + '\\s*(?:%|por\\s*ciento)\\s*(?:mas|adicional|de\\s+recargo|extra|de\\s+aumento|sobre)'))) || (m = n.match(new RegExp('(?:recargo|aumento|incremento)\\s+del?\\s+' + NUM + '\\s*(?:%|por\\s*ciento)')))) ops.push({ op: 'porcentaje', n: num(m[1]) });
     else if ((m = n.match(new RegExp(NUM + '\\s*(?:%|por\\s*ciento)\\s*(?:menos|de\\s+descuento|de\\s+bonificacion)'))) || (m = n.match(new RegExp('(?:descuento|bonificacion)\\s+del?\\s+' + NUM + '\\s*(?:%|por\\s*ciento)')))) ops.push({ op: 'porcentaje', n: -num(m[1]) });
-    if (/\bel\s+doble\b|\bduplica/.test(n)) ops.push({ op: 'multiplica', n: 2 });
-    else if (/\bel\s+triple\b|\btriplica/.test(n)) ops.push({ op: 'multiplica', n: 3 });
+    const deCosto = /costo|cuesta|cobra|precio|importe/.test(n);
+    if (/\bel\s+doble\b/.test(n) || (/\bduplica/.test(n) && deCosto)) ops.push({ op: 'multiplica', n: 2 });
+    else if (/\bel\s+triple\b/.test(n) || (/\btriplica/.test(n) && deCosto)) ops.push({ op: 'multiplica', n: 3 });
     return ops;
   }
   function topesDe(n, col) {
@@ -1396,8 +1791,9 @@ public class App {
       }
       const r = cfg.restricciones.find(q => q.estado === est);
       if (r && !r.valores.map(String).includes(String(c))) c = r.valores[0];
-      if (col && col.vacio === 'defecto' && i % 7 === 3) c = '';
-      filas.push(i % 9 === 4 && col ? fila(vel, carga, est, ' ' + c + ' ') : fila(vel, carga, est, c));
+      if (col && col.vacio === 'defecto' && !cfg.columnaEnSubclase && i % 7 === 3) c = '';
+      if (col && cfg.anchoMixto && i % 4 === 1) filas.push(fila5(vel, carga, est));
+      else filas.push(i % 9 === 4 && col ? fila(vel, carga, est, ' ' + c + ' ') : fila(vel, carga, est, c));
     }
     const cv = elegir(vs);
     const malas = [];
@@ -1436,16 +1832,50 @@ public class App {
 
   return {
     CAMPOS, ENCABEZADO, ESTADOS_BASE, DESCARTES_BASE, FACTURACION, configBase, simular, generar, leerEnunciado, revisar, normalizar,
-    csvDePrueba, describirEspecial, describirOp, afectaFormatoViejo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
+    csvDePrueba, describirEspecial, describirOp, afectaFormatoViejo, referencias, pesoTxt, usaIndiceNuevo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
   };
 }));
 </script>
-<script>/* Enunciados de práctica sobre Flota Logística, escritos como los de la cátedra (Parciales 3K1 y 3K2, Simulacros 1 a 4).
+<script>window.EJEMPLOS_EXTRA = [{
+ "id": "i",
+ "titulo": "Pendiente del tramo (con su CSV)",
+ "estilo": "como el Recuperatorio 2 (Red Eléctrica): herencia por ancho y otra fórmula del índice",
+ "texto": "# Parcial: Flota Logística con Pendiente del Tramo\n\nTiempo orientativo: 50 minutos. Partir del proyecto 01-modelo-inicial y conservar sus comportamientos y pruebas existentes. El parcial extiende la lectura de telemetría incorporando la pendiente promedio del tramo que recorre cada vehículo.\n\nParcial de práctica: es hipotético, armado con el mismo cambio que el Recuperatorio 2 (Red Eléctrica, temperatura ambiente) sobre el preenunciado de Flota Logística.\n\n## Ejecución\n\nRequiere JDK 17, 21 o 25 y Maven 3.9.x. Desde la raíz del proyecto:\n\n    mvn test\n    java -cp target/classes ar.edu.backend.App datos/datos.csv\n    java -cp target/classes ar.edu.backend.App datos/datos-parcial.csv\n\nLa primera ejecución de Maven puede requerir Internet. Luego, validar también con mvn -o test. La aplicación no requiere dependencias externas en ejecución.\n\n## Formatos de entrada\n\nSe deben admitir los dos encabezados exactos:\n\n- Formato original: `patente,zona,velocidadPromedio,cargaToneladas,estado`\n- Formato del parcial: `patente,zona,velocidadPromedio,cargaToneladas,estado,pendientePromedio`\n\nCada archivo contiene un único encabezado. Bajo el encabezado original, cada fila debe tener cinco campos y usa el formato anterior. Bajo el encabezado nuevo, se admiten filas de cinco campos (formato anterior) y de seis campos (formato nuevo); detectar el formato de cada fila por su ancho. No aceptar anchos distintos de cinco o seis, ni repetir un encabezado en medio del archivo. Reutilizar el flujo de lectura y clasificación; no duplicar el parser.\n\nLos archivos son UTF-8. Cada registro ocupa una línea, con campos separados por coma y sin comas, comillas ni saltos de línea internos. Quitar espacios externos de cada campo. El uso de split(\",\", -1) conserva campos finales vacíos y es válido para este formato controlado.\n\nNo se exige unicidad de patentes. Cada fila válida cuenta como un viaje independiente. Las zonas distinguen mayúsculas y minúsculas.\n\n## Nueva columna y jerarquía obligatoria\n\nLa columna pendientePromedio es un valor entero en porcentaje y admite valores entre 0 y 30, inclusive. Un valor fuera de ese rango invalida la fila.\n\nLa nueva columna debe implementarse mediante herencia desde la jerarquía existente. Se requiere una jerarquía equivalente a:\n\n    VehiculoRuta\n    └── VehiculoConPendiente\n\nVehiculoRuta representa el formato original y conserva sus datos, invariantes y cálculo. Su método de fábrica desdeCampos(String[] campos) debe inspeccionar el ancho de la fila y crear un VehiculoRuta para cinco campos o un VehiculoConPendiente para seis campos. Toda decisión de tipo e instanciación ocurre en este método; el parser debe llamarlo y no crear directamente ninguna de las dos clases.\n\nVehiculoConPendiente debe extender directamente a VehiculoRuta, agregar y exponer la pendiente promedio, y validar su rango. No agregar una clase intermedia que duplique a VehiculoRuta. El parser debe almacenar los resultados como VehiculoRuta para que filtros, sumas y agrupamientos trabajen polimórficamente con ambos formatos.\n\nEl formato original de cinco columnas conserva el cálculo anterior. Para el formato nuevo, VehiculoConPendiente calcula el índice de desgaste con la fórmula indicada abajo. La conversión textual, la validación del índice y la construcción del objeto deben quedar en la lógica de dominio cercana a la clase que representa el viaje. El constructor de VehiculoRuta recibe el indiceDesgaste calculado y conserva su invariante: con el formato original, un índice que no coincide con la fórmula original es inválido (lo verifica un test existente); con el formato nuevo, el índice tiene que coincidir con la fórmula ponderada.\n\n## Validaciones, estados y cálculos\n\nSe conservan todas las reglas del preparcial:\n\n- patente y zona no pueden estar vacías.\n- velocidadPromedio debe ser un entero mayor a 0 y menor a 130.\n- cargaToneladas no puede ser mayor a 45.\n- El índice de desgaste calculado debe estar entre 1 y 90, inclusive.\n- EN_RUTA y DEMORADO se convierten en vehículos. Cualquier otro estado, excepto EN_DEPOSITO, es inválido.\n- Se verifica primero el ancho de la fila. Si el ancho es correcto, EN_DEPOSITO se descarta sin validar los demás campos, incluida la pendiente promedio.\n- Una fila vacía es inválida. Los errores de una fila no interrumpen la lectura de las restantes.\n\nPara el formato original se mantiene:\n\n    indiceDesgaste = (velocidadPromedio × 0.6) + (cargaToneladas × 0.4)\n\nPara las filas del formato nuevo se usa la fórmula ponderada:\n\n    indiceDesgaste = (velocidadPromedio × 0.50) + (cargaToneladas × 0.30) + (pendientePromedio × 0.20)\n\nEl índice se conserva como entero truncando la parte decimal hacia cero. Se valida el rango de 1 a 90 sobre ese entero. Por ejemplo, con velocidad promedio 70, carga 25 y pendiente 12, el índice nuevo es 44 (44.9 truncado); con el formato original y los mismos valores de velocidad y carga, es 52.\n\nEl costo por desgaste operativo no cambia: cada flete genera en promedio 2000 USD de facturación, y el costo es entero, sin redondeo:\n\n    costoDesgasteOperativo = 2000 × indiceDesgaste / 100\n\nEn Java, calcularlo como 2000 * indiceDesgaste / 100, en ese orden, usando división entera. En el ejemplo anterior, los costos son 880 USD para el formato nuevo y 1040 USD para el original.\n\nUn encabezado incorrecto debe abortar con IllegalArgumentException; los fallos de lectura deben propagar IOException. Los errores de filas inválidas registran el número físico de línea; el encabezado no cuenta como fila leída.\n\n## Resultado requerido\n\n1. Leer ambos formatos con el mismo flujo de clasificación y conservar la compatibilidad con el CSV original.\n2. Implementar la nueva columna con la jerarquía de herencia requerida y aplicar sus invariantes.\n3. Usar pendientePromedio en el índice de desgaste de las filas nuevas y conservar el cálculo anterior para las filas originales.\n4. Mantener el tratamiento de EN_DEPOSITO, estados desconocidos, errores por fila y encabezados inválidos.\n5. Hacer que Flota opere sobre VehiculoRuta e incluya los dos tipos en filtros, sumas y agrupamientos por zona.\n6. Conservar copia defensiva de las colecciones y getters explícitos. No agregar Lombok ni dependencias de ejecución.\n7. Actualizar App para que, sin argumentos, lea datos/datos-parcial.csv; si se pasa una ruta como argumento, debe usarla. Mostrar el resumen del parseo y el panorama.\n8. Conservar y pasar los tests existentes. Agregar pruebas para ambos encabezados, límites de la pendiente, fórmulas, costos, ancho incorrecto y descartes. JUnit 5 es la única dependencia y se usa solo en tests.\n\nEl CSV original debe seguir produciendo sus resultados de referencia: 60 filas leídas, 32 procesadas, 20 descartadas y 8 inválidas; costo total 31840, por zona SUR 8200, CENTRO 12440, NORTE 11200; 18 índices de desgaste menores a 55. Para el nuevo formato, verificar ambos límites de pendientePromedio y los ejemplos numéricos de esta consigna; no asumir que el índice o los agregados coinciden con los del archivo original.\n\nEl archivo de ejemplo combinado datos/datos-parcial.csv es corto: incluye 8 registros del archivo original (con sus casos testigo) y 14 líneas de prueba del nuevo formato, intercaladas bajo un único encabezado de seis columnas. Las filas originales de cinco campos conservan el cálculo anterior; las nuevas prueban ambos límites válidos de la pendiente, valores fuera de rango, un valor no numérico, índice fuera de rango, un índice que solo es válido con la fórmula nueva (trk-0112 contra trk-0005), descarte, estado desconocido, ancho incorrecto, línea vacía y un encabezado repetido.\n\nEl conjunto combinado debe producir 22 filas leídas, 9 procesadas, 2 descartadas y 11 inválidas; costo total 9340, por zona NORTE 3440, SUR 1360 y CENTRO 4540; 5 índices de desgaste menores a 55.\n\n## Preparación y entrega\n\nUsar el archivo combinado datos/datos-parcial.csv como entrada predeterminada. Incorporar o actualizar pruebas para cubrir los casos requeridos. Ejecutar:\n\n    mvn test\n    java -cp target/classes ar.edu.backend.App\n    java -cp target/classes ar.edu.backend.App datos/datos.csv\n\nEntregar el proyecto con pom.xml, src/ y datos/; excluir target/, .git/ y archivos del IDE. Incluir un texto breve DECISIONES.md (3–5 líneas) que indique cómo se resolvió la herencia y si quedó algo pendiente.\n",
+ "csv": "patente,zona,velocidadPromedio,cargaToneladas,estado,pendientePromedio\ntrk-0101,NORTE,70,25,EN_RUTA,12\ntrk-0012,NORTE,76,11,EN_RUTA\ntrk-0102,SUR,60,10,DEMORADO,0\ntrk-0005,NORTE,128,43,EN_RUTA\ntrk-0112,NORTE,128,43,EN_RUTA,10\ntrk-0104,NORTE,80,20,EN_RUTA,31\ntrk-0019,SUR,80,20,EN_DEPOSITO\ntrk-0107,NORTE,999,abc,EN_DEPOSITO,x\ntrk-0103,CENTRO,90,30,EN_RUTA,30\ntrk-0038,CENTRO,101,11,DEMORADO\ntrk-0108,SUR,70,20,PERDIDO,10\n\ntrk-0001,SUR,51,11,DEMORADO\ntrk-0105,SUR,75,15,DEMORADO,-1\ntrk-0109,CENTRO,70,20,EN_RUTA,10,extra\ntrk-0041,CENTRO,70,25,PERDIDO\ntrk-0106,CENTRO,2,-5,EN_RUTA,0\npatente,zona,velocidadPromedio,cargaToneladas,estado,pendientePromedio\ntrk-0004,CENTRO,92,12,EN_RUTA\ntrk-0110,NORTE,85,40,DEMORADO,diez\ntrk-0111,CENTRO, 64 , 18 , EN_RUTA , 25\ntrk-0009,NORTE,abc,20,EN_RUTA\n",
+ "esperado": {
+  "columna": {
+   "nombre": "pendientePromedio",
+   "tipo": "entero",
+   "rango": {
+    "min": 0,
+    "minIncl": true,
+    "max": 30,
+    "maxIncl": true
+   }
+  },
+  "anchoMixto": true,
+  "columnaEnSubclase": true,
+  "indiceNuevo": {
+   "v": 0.5,
+   "c": 0.3,
+   "x": 0.2
+  },
+  "especiales": [
+   {
+    "clase": "VehiculoConPendiente",
+    "ops": [],
+    "topes": []
+   }
+  ],
+  "conteo": null
+ }
+}];
+/* Enunciados de práctica sobre Flota Logística, escritos como los de la cátedra (Parciales 3K1 y 3K2, Simulacros 1 a 4).
    Son hipotéticos: sirven para probar el lector y para practicar. Cada uno trae lo que el lector tiene que entender. */
 (function (raiz, fabrica) {
-  if (typeof module === 'object' && module.exports) module.exports = fabrica();
-  else raiz.Ejemplos = fabrica();
-}(typeof self !== 'undefined' ? self : this, function () {
+  if (typeof module === 'object' && module.exports) module.exports = fabrica(raiz, true);
+  else raiz.Ejemplos = fabrica(raiz, false);
+}(typeof self !== 'undefined' ? self : this, function (raiz, enNode) {
   'use strict';
   const PIE = `
 Resultado requerido
@@ -1580,7 +2010,11 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
       esperado: { columna: null, estados: ['EN_RUTA', 'DEMORADO', 'EN_TALLER'], especiales: [{ clase: 'VehiculoEnTaller', ops: [{ op: 'multiplica', n: 2 }], topes: [{ campo: 'carga', op: 'max', n: 20, incl: true }] }], conteo: 'estado' },
     },
   ];
-  return E;
+  // Los parciales de práctica con su propio CSV (practica-pendiente/ejemplo.json): en la página los mete armar.py
+  let extra = [];
+  if (enNode) { try { extra = [require('./practica-pendiente/ejemplo.json')]; } catch (e) { extra = []; } }
+  else extra = (raiz && raiz.EJEMPLOS_EXTRA) || [];
+  return E.concat(extra);
 }));
 </script>
 <script>window.PROYECTO = {"datos/datos.csv": "patente,zona,velocidadPromedio,cargaToneladas,estado\ntrk-0001,SUR,51,11,DEMORADO\ntrk-0002,CENTRO,85,50,DEMORADO\ntrk-0003,NORTE,60,15,EN_DEPOSITO\ntrk-0004,CENTRO,92,12,EN_RUTA\ntrk-0005,NORTE,128,43,EN_RUTA\ntrk-0006,CENTRO,92,12,EN_RUTA\ntrk-0007,CENTRO,60,15,EN_DEPOSITO\ntrk-0008,SUR,999,-5,EN_DEPOSITO\ntrk-0009,NORTE,abc,20,EN_RUTA\ntrk-0010,CENTRO,60,15,EN_DEPOSITO\ntrk-0011,CENTRO,60,10,DEMORADO\ntrk-0012,NORTE,76,11,EN_RUTA\ntrk-0013,SUR,51,11,DEMORADO\ntrk-0014,NORTE,72,12,EN_RUTA\ntrk-0015,NORTE,60,15,EN_DEPOSITO\ntrk-0016,CENTRO,999,-5,EN_DEPOSITO\ntrk-0017,SUR,60,15,EN_DEPOSITO\n\ntrk-0019,SUR,80,20,EN_DEPOSITO\ntrk-0020,NORTE,51,11,EN_RUTA\ntrk-0021,NORTE,80,EN_RUTA\ntrk-0022,SUR,92,12,EN_RUTA\ntrk-0023,NORTE,92,12,DEMORADO\ntrk-0024,NORTE,92,12,EN_RUTA\ntrk-0025,CENTRO,92,12,DEMORADO\ntrk-0026,SUR,60,10,EN_RUTA\ntrk-0027,NORTE,62,12,DEMORADO\ntrk-0028,SUR,60,10,EN_RUTA\ntrk-0029,SUR,92,12,DEMORADO\ntrk-0030,NORTE,60,15,EN_DEPOSITO\ntrk-0031,CENTRO,60,15,EN_DEPOSITO\ntrk-0032,CENTRO,92,12,EN_RUTA\ntrk-0033,CENTRO,70,10,DEMORADO\ntrk-0034,NORTE,60,10,EN_RUTA\ntrk-0035,SUR,60,15,EN_DEPOSITO\ntrk-0036,NORTE,999,-5,EN_DEPOSITO\ntrk-0037,CENTRO,62,12,DEMORADO\ntrk-0038,CENTRO,101,11,DEMORADO\ntrk-0039,NORTE,60,15,EN_DEPOSITO\ntrk-0040,NORTE,92,12,EN_RUTA\ntrk-0041,CENTRO,70,25,PERDIDO\ntrk-0042,NORTE,60,15,EN_DEPOSITO\ntrk-0043,CENTRO,60,15,EN_DEPOSITO\ntrk-0044,SUR,62,12,EN_RUTA\ntrk-0045,NORTE,60,15,EN_DEPOSITO\ntrk-0046,,75,15,EN_RUTA\ntrk-0047,CENTRO,66,11,DEMORADO\ntrk-0048,SUR,56,11,EN_RUTA\ntrk-0049,CENTRO,60,15,EN_DEPOSITO\ntrk-0050,CENTRO,67,12,EN_RUTA\ntrk-0051,NORTE,60,15,EN_DEPOSITO\ntrk-0052,CENTRO,92,12,EN_RUTA\ntrk-0053,SUR,0,20,EN_RUTA\ntrk-0054,NORTE,60,15,EN_DEPOSITO\ntrk-0055,NORTE,67,12,DEMORADO\ntrk-0056,NORTE,92,12,EN_RUTA\ntrk-0057,SUR,92,12,DEMORADO\ntrk-0058,CENTRO,60,15,EN_DEPOSITO\ntrk-0059,NORTE,92,12,DEMORADO\ntrk-0060,CENTRO,60,10,EN_RUTA\n", "pom.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n  <modelVersion>4.0.0</modelVersion>\n\n  <groupId>ar.edu.backend</groupId>\n  <artifactId>modelo-inicial</artifactId>\n  <version>1.0-SNAPSHOT</version>\n\n  <name>modelo-inicial</name>\n\n  <properties>\n    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n    <maven.compiler.release>17</maven.compiler.release>\n  </properties>\n\n  <dependencyManagement>\n    <dependencies>\n      <dependency>\n        <groupId>org.junit</groupId>\n        <artifactId>junit-bom</artifactId>\n        <version>5.11.0</version>\n        <type>pom</type>\n        <scope>import</scope>\n      </dependency>\n    </dependencies>\n  </dependencyManagement>\n\n  <dependencies>\n    <dependency>\n      <groupId>org.junit.jupiter</groupId>\n      <artifactId>junit-jupiter</artifactId>\n      <scope>test</scope>\n    </dependency>\n  </dependencies>\n\n  <build>\n    <pluginManagement>\n      <plugins>\n        <plugin>\n          <artifactId>maven-clean-plugin</artifactId>\n          <version>3.4.0</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-resources-plugin</artifactId>\n          <version>3.3.1</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-compiler-plugin</artifactId>\n          <version>3.13.0</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-surefire-plugin</artifactId>\n          <version>3.3.0</version>\n        </plugin>\n        <plugin>\n          <artifactId>maven-jar-plugin</artifactId>\n          <version>3.4.2</version>\n        </plugin>\n      </plugins>\n    </pluginManagement>\n  </build>\n</project>\n", "src/main/java/ar/edu/backend/App.java": "package ar.edu.backend;\n\nimport java.io.IOException;\nimport java.nio.file.Path;\n\npublic class App {\n    public static void main(String[] args) throws IOException {\n        Path archivo = args.length == 0 ? Path.of(\"datos\", \"datos.csv\") : Path.of(args[0]);\n        ResultadoParseo resultado = new ParserVehiculos().parsear(archivo);\n        Flota flota = new Flota(resultado.getVehiculos());\n\n        System.out.println(resultado.getResumenErrores());\n        System.out.println(flota.panorama());\n    }\n}\n", "src/main/java/ar/edu/backend/ErrorParseo.java": "package ar.edu.backend;\n\npublic final class ErrorParseo {\n    private final int numeroLinea;\n    private final String motivo;\n\n    public ErrorParseo(int numeroLinea, String motivo) {\n        if (numeroLinea < 1) {\n            throw new IllegalArgumentException(\"El número de línea debe ser positivo\");\n        }\n        if (motivo == null || motivo.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"El motivo no puede estar vacío\");\n        }\n        this.numeroLinea = numeroLinea;\n        this.motivo = motivo;\n    }\n\n    public int getNumeroLinea() {\n        return numeroLinea;\n    }\n\n    public String getMotivo() {\n        return motivo;\n    }\n}\n", "src/main/java/ar/edu/backend/Flota.java": "package ar.edu.backend;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.LinkedHashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.function.Predicate;\n\npublic final class Flota {\n    private final List<VehiculoRuta> vehiculos;\n\n    public Flota(List<VehiculoRuta> vehiculos) {\n        if (vehiculos == null) {\n            throw new IllegalArgumentException(\"La lista de vehículos no puede ser nula\");\n        }\n        this.vehiculos = Collections.unmodifiableList(new ArrayList<>(vehiculos));\n    }\n\n    public int sumarCostoDesgasteOperativo(Predicate<VehiculoRuta> filtro) {\n        if (filtro == null) {\n            throw new IllegalArgumentException(\"El filtro no puede ser nulo\");\n        }\n        return vehiculos.stream()\n                .filter(filtro)\n                .mapToInt(VehiculoRuta::getCostoDesgasteOperativo)\n                .sum();\n    }\n\n    public int getCostoTotalDesgasteOperativo() {\n        return sumarCostoDesgasteOperativo(vehiculo -> true);\n    }\n\n    public Map<String, Integer> getCostoPorZona() {\n        Map<String, Integer> costos = new LinkedHashMap<>();\n        for (VehiculoRuta vehiculo : vehiculos) {\n            costos.merge(vehiculo.getZona(), vehiculo.getCostoDesgasteOperativo(), Integer::sum);\n        }\n        return Collections.unmodifiableMap(costos);\n    }\n\n    public long contarConIndiceDesgasteMenorA(int limite) {\n        return vehiculos.stream()\n                .filter(vehiculo -> vehiculo.getIndiceDesgaste() < limite)\n                .count();\n    }\n\n    public List<VehiculoRuta> getVehiculos() {\n        return vehiculos;\n    }\n\n    public String panorama() {\n        StringBuilder panorama = new StringBuilder()\n                .append(\"Costo total por desgaste operativo: \")\n                .append(getCostoTotalDesgasteOperativo());\n        for (Map.Entry<String, Integer> entrada : getCostoPorZona().entrySet()) {\n            panorama.append(System.lineSeparator())\n                    .append(entrada.getKey()).append(\": \").append(entrada.getValue());\n        }\n        return panorama.toString();\n    }\n}\n", "src/main/java/ar/edu/backend/ParserVehiculos.java": "package ar.edu.backend;\n\nimport java.io.BufferedReader;\nimport java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport java.util.ArrayList;\nimport java.util.List;\n\npublic final class ParserVehiculos {\n    private static final String ENCABEZADO = \"patente,zona,velocidadPromedio,cargaToneladas,estado\";\n\n    public ResultadoParseo parsear(Path archivo) throws IOException {\n        List<VehiculoRuta> vehiculos = new ArrayList<>();\n        List<ErrorParseo> errores = new ArrayList<>();\n        int filasLeidas = 0;\n        int filasDescartadas = 0;\n\n        try (BufferedReader lector = Files.newBufferedReader(archivo, StandardCharsets.UTF_8)) {\n            String encabezado = lector.readLine();\n            if (!ENCABEZADO.equals(encabezado)) {\n                throw new IllegalArgumentException(\"Encabezado CSV incorrecto\");\n            }\n\n            String linea;\n            int numeroLinea = 1;\n            while ((linea = lector.readLine()) != null) {\n                numeroLinea++;\n                filasLeidas++;\n                String[] campos = linea.split(\",\", -1);\n                if (campos.length != 5) {\n                    errores.add(new ErrorParseo(numeroLinea, \"La fila debe tener exactamente cinco columnas\"));\n                    continue;\n                }\n\n                String estado = campos[4].trim();\n                if (\"EN_DEPOSITO\".equals(estado)) {\n                    filasDescartadas++;\n                    continue;\n                }\n\n                try {\n                    vehiculos.add(VehiculoRuta.desdeCampos(campos));\n                } catch (IllegalArgumentException exception) {\n                    errores.add(new ErrorParseo(numeroLinea, exception.getMessage()));\n                }\n            }\n        }\n\n        return new ResultadoParseo(vehiculos, errores, filasLeidas, filasDescartadas);\n    }\n}\n", "src/main/java/ar/edu/backend/ResultadoParseo.java": "package ar.edu.backend;\n\nimport java.util.ArrayList;\nimport java.util.Collections;\nimport java.util.List;\n\npublic final class ResultadoParseo {\n    private final List<VehiculoRuta> vehiculos;\n    private final List<ErrorParseo> errores;\n    private final int filasLeidas;\n    private final int filasDescartadas;\n\n    public ResultadoParseo(\n            List<VehiculoRuta> vehiculos,\n            List<ErrorParseo> errores,\n            int filasLeidas,\n            int filasDescartadas) {\n        if (vehiculos == null || errores == null) {\n            throw new IllegalArgumentException(\"Las listas no pueden ser nulas\");\n        }\n        if (filasLeidas < 0 || filasDescartadas < 0 || filasDescartadas > filasLeidas\n                || vehiculos.size() + errores.size() + filasDescartadas != filasLeidas) {\n            throw new IllegalArgumentException(\"Los contadores no coinciden con las filas del resultado\");\n        }\n        this.vehiculos = Collections.unmodifiableList(new ArrayList<>(vehiculos));\n        this.errores = Collections.unmodifiableList(new ArrayList<>(errores));\n        this.filasLeidas = filasLeidas;\n        this.filasDescartadas = filasDescartadas;\n    }\n\n    public int getFilasLeidas() {\n        return filasLeidas;\n    }\n\n    public int getFilasProcesadas() {\n        return vehiculos.size();\n    }\n\n    public int getFilasDescartadas() {\n        return filasDescartadas;\n    }\n\n    public int getFilasInvalidas() {\n        return errores.size();\n    }\n\n    public List<VehiculoRuta> getVehiculos() {\n        return vehiculos;\n    }\n\n    public List<ErrorParseo> getErrores() {\n        return errores;\n    }\n\n    public String getResumenErrores() {\n        StringBuilder resumen = new StringBuilder()\n                .append(\"Filas leídas: \").append(filasLeidas).append(System.lineSeparator())\n                .append(\"Procesadas: \").append(getFilasProcesadas()).append(System.lineSeparator())\n                .append(\"Descartadas: \").append(filasDescartadas).append(System.lineSeparator())\n                .append(\"Inválidas: \").append(getFilasInvalidas()).append(System.lineSeparator())\n                .append(\"Vehículos con índice de desgaste menor a 55: \")\n                .append(new Flota(vehiculos).contarConIndiceDesgasteMenorA(55));\n\n        for (ErrorParseo error : errores) {\n            resumen.append(System.lineSeparator())\n                    .append(\"Línea \").append(error.getNumeroLinea()).append(\": \").append(error.getMotivo());\n        }\n        return resumen.toString();\n    }\n}\n", "src/main/java/ar/edu/backend/VehiculoRuta.java": "package ar.edu.backend;\n\npublic final class VehiculoRuta {\n    private final String patente;\n    private final String zona;\n    private final int velocidadPromedio;\n    private final int cargaToneladas;\n    private final String estado;\n    private final int indiceDesgaste;\n\n    public VehiculoRuta(\n            String patente,\n            String zona,\n            int velocidadPromedio,\n            int cargaToneladas,\n            String estado,\n            int indiceDesgaste) {\n        this.patente = validarTexto(patente, \"La patente no puede estar vacía\");\n        this.zona = validarTexto(zona, \"La zona no puede estar vacía\");\n        if (velocidadPromedio <= 0 || velocidadPromedio >= 130) {\n            throw new IllegalArgumentException(\"La velocidad promedio debe ser mayor a 0 y menor a 130\");\n        }\n        if (cargaToneladas > 45) {\n            throw new IllegalArgumentException(\"La carga no puede superar las 45 toneladas\");\n        }\n        if (!\"EN_RUTA\".equals(estado) && !\"DEMORADO\".equals(estado)) {\n            throw new IllegalArgumentException(\"Estado de vehículo inválido: \" + estado);\n        }\n        int indiceCalculado = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n        if (indiceDesgaste < 1 || indiceDesgaste > 90 || indiceDesgaste != indiceCalculado) {\n            throw new IllegalArgumentException(\"El índice de desgaste debe coincidir con el cálculo y estar entre 1 y 90\");\n        }\n        this.velocidadPromedio = velocidadPromedio;\n        this.cargaToneladas = cargaToneladas;\n        this.estado = estado;\n        this.indiceDesgaste = indiceDesgaste;\n    }\n\n    public static VehiculoRuta desdeCampos(String[] campos) {\n        if (campos == null || campos.length != 5) {\n            throw new IllegalArgumentException(\"La fila debe tener exactamente cinco columnas\");\n        }\n\n        String patente = limpiar(campos[0]);\n        String zona = limpiar(campos[1]);\n        int velocidadPromedio = convertirEntero(campos[2], \"velocidad promedio\");\n        int cargaToneladas = convertirEntero(campos[3], \"carga en toneladas\");\n        String estado = limpiar(campos[4]);\n        int indiceDesgaste = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n\n        return new VehiculoRuta(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste);\n    }\n\n    private static int calcularIndiceDesgaste(int velocidadPromedio, int cargaToneladas) {\n        return (int) (velocidadPromedio * 0.6 + cargaToneladas * 0.4);\n    }\n\n    private static int convertirEntero(String valor, String nombreCampo) {\n        try {\n            return Integer.parseInt(limpiar(valor));\n        } catch (NumberFormatException exception) {\n            throw new IllegalArgumentException(\"El campo \" + nombreCampo + \" debe ser un entero\", exception);\n        }\n    }\n\n    private static String validarTexto(String valor, String mensaje) {\n        String texto = limpiar(valor);\n        if (texto.isEmpty()) {\n            throw new IllegalArgumentException(mensaje);\n        }\n        return texto;\n    }\n\n    private static String limpiar(String valor) {\n        if (valor == null) {\n            throw new IllegalArgumentException(\"Los campos no pueden ser nulos\");\n        }\n        return valor.trim();\n    }\n\n    public int getCostoDesgasteOperativo() {\n        return 2000 * indiceDesgaste / 100;\n    }\n\n    public String getPatente() {\n        return patente;\n    }\n\n    public String getZona() {\n        return zona;\n    }\n\n    public int getVelocidadPromedio() {\n        return velocidadPromedio;\n    }\n\n    public int getCargaToneladas() {\n        return cargaToneladas;\n    }\n\n    public String getEstado() {\n        return estado;\n    }\n\n    public int getIndiceDesgaste() {\n        return indiceDesgaste;\n    }\n}\n", "src/test/java/ar/edu/backend/FlotaTest.java": "package ar.edu.backend;\n\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nimport static org.junit.jupiter.api.Assertions.assertThrows;\n\nimport java.util.ArrayList;\nimport java.util.List;\nimport org.junit.jupiter.api.Test;\n\nclass FlotaTest {\n    @Test\n    void filtraAgrupaYConservaCopiasDefensivas() {\n        VehiculoRuta norte = VehiculoRuta.desdeCampos(\n                new String[] {\"trk-1\", \"NORTE\", \"60\", \"10\", \"EN_RUTA\"});\n        VehiculoRuta sur = VehiculoRuta.desdeCampos(\n                new String[] {\"trk-2\", \"SUR\", \"80\", \"20\", \"DEMORADO\"});\n        List<VehiculoRuta> origen = new ArrayList<>(List.of(norte, sur));\n        Flota flota = new Flota(origen);\n\n        origen.clear();\n\n        assertEquals(2, flota.getVehiculos().size());\n        assertEquals(800, flota.sumarCostoDesgasteOperativo(\n                vehiculo -> vehiculo.getZona().equals(\"NORTE\")));\n        assertEquals(1920, flota.getCostoTotalDesgasteOperativo());\n        assertEquals(800, flota.getCostoPorZona().get(\"NORTE\"));\n        assertEquals(1120, flota.getCostoPorZona().get(\"SUR\"));\n        assertThrows(UnsupportedOperationException.class, () -> flota.getVehiculos().clear());\n        assertThrows(UnsupportedOperationException.class, () -> flota.getCostoPorZona().clear());\n    }\n}\n", "src/test/java/ar/edu/backend/ParserVehiculosTest.java": "package ar.edu.backend;\n\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nimport static org.junit.jupiter.api.Assertions.assertThrows;\n\nimport java.io.IOException;\nimport java.nio.charset.StandardCharsets;\nimport java.nio.file.Files;\nimport java.nio.file.Path;\nimport org.junit.jupiter.api.Test;\nimport org.junit.jupiter.api.io.TempDir;\n\nclass ParserVehiculosTest {\n    @Test\n    void procesaLosAgregadosDelArchivoDelEnunciado() throws IOException {\n        ResultadoParseo resultado = new ParserVehiculos().parsear(Path.of(\"datos\", \"datos.csv\"));\n        Flota flota = new Flota(resultado.getVehiculos());\n\n        assertEquals(60, resultado.getFilasLeidas());\n        assertEquals(32, resultado.getFilasProcesadas());\n        assertEquals(20, resultado.getFilasDescartadas());\n        assertEquals(8, resultado.getFilasInvalidas());\n        assertEquals(31840, flota.getCostoTotalDesgasteOperativo());\n        assertEquals(11200, flota.getCostoPorZona().get(\"NORTE\"));\n        assertEquals(12440, flota.getCostoPorZona().get(\"CENTRO\"));\n        assertEquals(8200, flota.getCostoPorZona().get(\"SUR\"));\n        assertEquals(18, flota.contarConIndiceDesgasteMenorA(55));\n    }\n\n    @Test\n    void registraLineasFisicasYDescartaDepositoAntesDeConvertir(@TempDir Path directorio)\n            throws IOException {\n        Path archivo = directorio.resolve(\"datos.csv\");\n        Files.writeString(\n                archivo,\n                \"patente,zona,velocidadPromedio,cargaToneladas,estado\\n\"\n                        + \"\\n\"\n                        + \" , ,no-numero,,EN_DEPOSITO\\n\"\n                        + \"trk-1,NORTE,60,10,EN_RUTA\\n\"\n                        + \"trk-2,NORTE,60,10,PERDIDO\\n\",\n                StandardCharsets.UTF_8);\n\n        ResultadoParseo resultado = new ParserVehiculos().parsear(archivo);\n\n        assertEquals(4, resultado.getFilasLeidas());\n        assertEquals(1, resultado.getFilasProcesadas());\n        assertEquals(1, resultado.getFilasDescartadas());\n        assertEquals(2, resultado.getFilasInvalidas());\n        assertEquals(2, resultado.getErrores().get(0).getNumeroLinea());\n        assertEquals(5, resultado.getErrores().get(1).getNumeroLinea());\n    }\n\n    @Test\n    void abortaConEncabezadoIncorrectoYPropagaErroresDeLectura(@TempDir Path directorio)\n            throws IOException {\n        Path archivo = directorio.resolve(\"mal.csv\");\n        Files.writeString(archivo, \"otro,encabezado\\n\", StandardCharsets.UTF_8);\n\n        assertThrows(IllegalArgumentException.class, () -> new ParserVehiculos().parsear(archivo));\n        assertThrows(\n                IOException.class,\n                () -> new ParserVehiculos().parsear(directorio.resolve(\"inexistente.csv\")));\n    }\n}\n", "src/test/java/ar/edu/backend/VehiculoRutaTest.java": "package ar.edu.backend;\n\nimport static org.junit.jupiter.api.Assertions.assertEquals;\nimport static org.junit.jupiter.api.Assertions.assertThrows;\n\nimport org.junit.jupiter.api.Test;\n\nclass VehiculoRutaTest {\n    @Test\n    void convierteCamposYCalculaIndiceYCosto() {\n        VehiculoRuta vehiculo = VehiculoRuta.desdeCampos(\n                new String[] {\" trk-0012 \", \" NORTE \", \"76\", \"11\", \"EN_RUTA\"});\n\n        assertEquals(\"trk-0012\", vehiculo.getPatente());\n        assertEquals(\"NORTE\", vehiculo.getZona());\n        assertEquals(50, vehiculo.getIndiceDesgaste());\n        assertEquals(1000, vehiculo.getCostoDesgasteOperativo());\n    }\n\n    @Test\n    void rechazaFilasFueraDeLasInvariantes() {\n        assertThrows(IllegalArgumentException.class, () -> VehiculoRuta.desdeCampos(\n                new String[] {\"trk-1\", \"NORTE\", \"0\", \"10\", \"EN_RUTA\"}));\n        assertThrows(IllegalArgumentException.class, () -> VehiculoRuta.desdeCampos(\n                new String[] {\"trk-1\", \"NORTE\", \"60\", \"46\", \"EN_RUTA\"}));\n        assertThrows(IllegalArgumentException.class, () -> VehiculoRuta.desdeCampos(\n                new String[] {\"trk-1\", \"NORTE\", \"60\", \"10\", \"PERDIDO\"}));\n        assertThrows(IllegalArgumentException.class, () -> new VehiculoRuta(\n                \"trk-1\", \"NORTE\", 60, 10, \"EN_RUTA\", 41));\n    }\n}\n"};</script>
@@ -1622,6 +2056,8 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
   $('#ejemplo').onchange = ev => {
     const e = EJ.find(x => x.id === ev.target.value); if (!e) return;
     ponerTexto(e.texto, 'Enunciado de práctica: ' + e.titulo);
+    if (e.csv) ponerCsv(e.csv, 'datos-parcial.csv · ' + e.titulo, 'ejemplo');
+    else if (S.csvOrigen === 'ejemplo') S.csv = '';
     leer();
   };
   $('#abrirEnun').onclick = () => $('#fEnun').click();
@@ -1701,7 +2137,7 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
   };
   function opcion(v, t, sel) { return `<option value="${esc(v)}"${String(v) === String(sel) ? ' selected' : ''}>${esc(t)}</option>`; }
   function sel(p, opciones, v, tipo) { return `<select data-p="${p}" data-t="${tipo || 'txt'}">${opciones.map(([a, b]) => opcion(a, b, v)).join('')}</select>`; }
-  function inp(p, v, tipo, ph, ancho) { return `<input type="${tipo === 'num' || tipo === 'numnull' ? 'number' : 'text'}" data-p="${p}" data-t="${tipo || 'txt'}" value="${esc(v == null ? '' : v)}"${ph ? ` placeholder="${esc(ph)}"` : ''}${ancho ? ` style="width:${ancho}"` : ''}>`; }
+  function inp(p, v, tipo, ph, ancho) { return `<input type="${tipo === 'num' || tipo === 'numnull' ? 'number" step="any' : 'text'}" data-p="${p}" data-t="${tipo || 'txt'}" value="${esc(v == null ? '' : v)}"${ph ? ` placeholder="${esc(ph)}"` : ''}${ancho ? ` style="width:${ancho}"` : ''}>`; }
   const quitar = p => `<button class="btn x" data-del="${p}" title="Quitar" aria-label="Quitar">✕</button>`;
 
   function opsHtml(base, ops, col) {
@@ -1723,14 +2159,17 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
     // Resumen en palabras
     const res = [];
     if (col) {
-      res.push(`Columna nueva <b>${esc(col.nombre)}</b> (${col.tipo === 'entero' ? 'entero' : 'texto'})${col.valores.length ? ': ' + esc(col.valores.join(', ')) : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ', ' + esc(M.textoRango(col.rango)) : ''}; separador «${esc(c.separador)}»; en el formato de cinco columnas vale <b>${esc(col.defecto)}</b>${col.vacio === 'defecto' ? '; vacío = sin valor' : ''}.`);
+      res.push(`Columna nueva <b>${esc(col.nombre)}</b> (${col.tipo === 'entero' ? 'entero' : 'texto'})${col.valores.length ? ': ' + esc(col.valores.join(', ')) : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ', ' + esc(M.textoRango(col.rango)) : ''}; separador «${esc(c.separador)}»${c.columnaEnSubclase ? '' : `; en el formato de cinco columnas vale <b>${esc(col.defecto)}</b>${col.vacio === 'defecto' ? '; vacío = sin valor' : ''}`}.`);
+      if (c.anchoMixto) res.push('Bajo el encabezado nuevo valen filas de cinco <b>y</b> de seis campos: el formato se ve fila por fila, por el ancho.');
+      if (c.columnaEnSubclase) res.push(`La columna vive en <b>${esc(lista_.especiales[0].clase)}</b> (extends VehiculoRuta), que se crea para las filas de seis campos; VehiculoRuta no la conoce.`);
+      if (c.columnaEnSubclase && c.indiceNuevo && col.tipo === 'entero') res.push(`Índice de las filas nuevas: <code class="k">(int) (velocidad × ${esc(M.pesoTxt(c.indiceNuevo.v))} + carga × ${esc(M.pesoTxt(c.indiceNuevo.c))} + ${esc(col.nombre)} × ${esc(M.pesoTxt(c.indiceNuevo.x))})</code>; las de cinco campos siguen con la fórmula original.`);
     }
     if (c.estados.join() !== M.ESTADOS_BASE.join()) res.push('Estados válidos: ' + esc(c.estados.join(', ')) + '.');
     if (c.descartes.join() !== M.DESCARTES_BASE.join()) res.push('Se descartan sin validar: ' + esc(c.descartes.join(', ')) + '.');
     for (const r of c.restricciones) res.push(`En el formato nuevo, ${esc(r.estado)} solo admite ${esc(r.valores.join(' o '))}.`);
     if (c.baseDesdeColumna && col) res.push(`El costo usa <b>${esc(col.nombre)}</b> en lugar de los 2000 USD.`);
     if (c.extras.length) res.push('Para todos: costo ' + esc(c.extras.map(o => M.describirOp(o, c)).join(', ')) + '.');
-    for (const e of lista_.especiales) res.push(`<b>${esc(e.clase)}</b>: ${esc(M.describirEspecial(e, lista_))}.`);
+    for (const e of lista_.especiales) if (e.ops.length || e.topes.length || e.cuando.op !== 'ancho') res.push(`<b>${esc(e.clase)}</b>: ${esc(M.describirEspecial(e, lista_))}.`);
     if (c.conteo) res.push('Conteo por ' + esc(c.conteo === 'columna' && col ? col.nombre : c.conteo) + '.');
     for (const t of c.totales) res.push('Total de los ' + esc(t.valor) + '.');
     if (M.hayCambios(c)) res.push(`El main usa <code class="k">datos/${esc(c.archivo)}</code>.`);
@@ -1750,9 +2189,15 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
         <div class="campo"><span>Tipo</span>${sel('columna.tipo', [['texto', 'texto (valores fijos)'], ['entero', 'entero']], col.tipo, 'rehacer')}</div>
         <div class="campo"><span>Valores válidos</span>${inp('columna.valores', col.valores.join(', '), 'lista', col.tipo === 'entero' ? 'vacío = cualquier entero' : 'GENERAL, REFRIGERADA')}</div>`;
       if (col.tipo === 'entero') h += `<div class="campo"><span>Rango</span><div class="mini">${sel('columna.rango.minIncl', [['1', '≥'], ['0', '>']], col.rango.minIncl ? '1' : '0', 'bool')}${inp('columna.rango.min', col.rango.min, 'numnull', 'sin mínimo')} y ${sel('columna.rango.maxIncl', [['1', '≤'], ['0', '<']], col.rango.maxIncl ? '1' : '0', 'bool')}${inp('columna.rango.max', col.rango.max, 'numnull', 'sin máximo')}</div></div>`;
-      h += `<div class="campo"><span>Vacío</span>${sel('columna.vacio', [['invalida', 'hace inválida la fila'], ['defecto', 'cuenta como sin valor']], col.vacio)}</div>
-        <div class="campo"><span>Formato viejo</span>${inp('columna.defecto', col.defecto, col.tipo === 'entero' ? 'num' : 'txt')}</div>
-        <div class="campo"><span>Separador</span>${sel('separador', [[',', 'coma ,'], [';', 'punto y coma ;'], ['|', 'barra |']], c.separador)}</div>
+      if (!c.columnaEnSubclase) h += `<div class="campo"><span>Vacío</span>${sel('columna.vacio', [['invalida', 'hace inválida la fila'], ['defecto', 'cuenta como sin valor']], col.vacio)}</div>
+        <div class="campo"><span>Formato viejo</span>${inp('columna.defecto', col.defecto, col.tipo === 'entero' ? 'num' : 'txt')}</div>`;
+      h += `<div class="campo"><span>Filas de 5</span><label class="ch"><input type="checkbox" data-p="anchoMixto" data-t="check"${c.anchoMixto ? ' checked' : ''}> bajo el encabezado nuevo también valen filas de cinco campos</label></div>
+        <div class="campo"><span>Herencia</span><label class="ch"><input type="checkbox" data-p="columnaEnSubclase" data-t="check"${c.columnaEnSubclase ? ' checked' : ''}> la columna va en una subclase (la de las filas de seis campos)</label></div>`;
+      if (c.columnaEnSubclase && col.tipo === 'entero') {
+        h += `<div class="campo"><span>Índice nuevo</span><label class="ch"><input type="checkbox" data-acc="indiceNuevo"${c.indiceNuevo ? ' checked' : ''}> otra fórmula para las filas de seis campos</label></div>`;
+        if (c.indiceNuevo) h += `<div class="mini" style="margin:-2px 0 8px">(int) ( velocidad × ${inp('indiceNuevo.v', c.indiceNuevo.v, 'num', '', '72px')} + carga × ${inp('indiceNuevo.c', c.indiceNuevo.c, 'num', '', '72px')} + ${esc(col.nombre)} × ${inp('indiceNuevo.x', c.indiceNuevo.x, 'num', '', '72px')} )</div>`;
+      }
+      h += `<div class="campo"><span>Separador</span>${sel('separador', [[',', 'coma ,'], [';', 'punto y coma ;'], ['|', 'barra |']], c.separador)}</div>
         <div class="nota">Encabezado nuevo: <code class="k">${esc(M.encabezadoNuevo(c))}</code></div>`;
     } else h += '<div class="vacio">Sin columna nueva: el CSV sigue con cinco columnas.</div>';
     h += '</div>';
@@ -1765,26 +2210,26 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
     </div>`;
 
     h += `<div class="bloque"><h3>Costo de todos ${'<button class="btn chico" data-add="extras" data-tpl="op">+ agregar</button>'}</h3>
-      <div class="campo"><span>Base</span>${col && col.tipo === 'entero' ? sel('baseDesdeColumna', [['0', '2000 USD fijos'], ['1', 'el valor de ' + col.nombre]], c.baseDesdeColumna ? '1' : '0', 'boolre') : '<span>2000 USD fijos</span>'}</div>
+      <div class="campo"><span>Base</span>${col && col.tipo === 'entero' && !c.columnaEnSubclase ? sel('baseDesdeColumna', [['0', '2000 USD fijos'], ['1', 'el valor de ' + col.nombre]], c.baseDesdeColumna ? '1' : '0', 'boolre') : '<span>2000 USD fijos</span>'}</div>
       <div class="nota" style="margin-bottom:6px">costo = base × índice / 100${c.extras.length ? ', y después:' : ''}</div>
       ${c.extras.length ? opsHtml('extras', c.extras, col) : ''}
     </div>`;
 
     h += `<div class="bloque"><h3>Conteo, totales y main</h3>
-      <div class="campo"><span>Conteo por</span>${sel('conteo', [['', 'sin conteo'], ['estado', 'estado'], ['zona', 'zona']].concat(col ? [['columna', col.nombre]] : []).concat(c.especiales.length ? [['tipo', 'tipo (común / subclase)']] : []), c.conteo || '', 'conteo')}</div>
+      <div class="campo"><span>Conteo por</span>${sel('conteo', [['', 'sin conteo'], ['estado', 'estado'], ['zona', 'zona']].concat(col && !c.columnaEnSubclase ? [['columna', col.nombre]] : []).concat(c.especiales.length ? [['tipo', 'tipo (común / subclase)']] : []), c.conteo || '', 'conteo')}</div>
       ${c.conteo === 'tipo' ? `<div class="campo"><span>Común se llama</span>${inp('etiquetaBase', c.etiquetaBase, 'txt', 'NORMAL')}</div>` : ''}
       <div class="campo"><span>CSV del main</span>${inp('archivo', c.archivo, 'txt', 'datos-parcial.csv')}</div>
       <h3 style="margin-top:12px">Totales aparte <button class="btn chico" data-add="totales" data-tpl="total">+ agregar</button></h3>
-      ${c.totales.length ? c.totales.map((t, i) => `<div class="mini">Total de ${sel('totales.' + i + '.campo', [['estado', 'estado']].concat(col ? [['columna', col.nombre]] : []), t.campo)} = ${inp('totales.' + i + '.valor', t.valor, 'txt', 'DEMORADO', '130px')}${quitar('totales.' + i)}</div>`).join('') : '<div class="vacio">Ninguno.</div>'}
+      ${c.totales.length ? c.totales.map((t, i) => `<div class="mini">Total de ${sel('totales.' + i + '.campo', [['estado', 'estado']].concat(col && !c.columnaEnSubclase ? [['columna', col.nombre]] : []), t.campo)} = ${inp('totales.' + i + '.valor', t.valor, 'txt', 'DEMORADO', '130px')}${quitar('totales.' + i)}</div>`).join('') : '<div class="vacio">Ninguno.</div>'}
     </div>`;
 
     h += `<div class="bloque ancho"><h3>Subclases (los que cuestan o se validan distinto) <button class="btn chico" data-add="especiales" data-tpl="esp">+ agregar</button></h3>`;
     if (!c.especiales.length) h += '<div class="vacio">Ninguna: todos son VehiculoRuta.</div>';
     c.especiales.forEach((e, i) => {
       const b = 'especiales.' + i, ok = lista_.especiales[i];
-      const cuandoOpc = [['estado-igual', 'estado ='], ...(col ? (col.tipo === 'texto' ? [['columna-igual', col.nombre + ' =']] : [['columna-igual', col.nombre + ' ='], ['columna-mayor', col.nombre + ' >']]) : []), ...(col && col.vacio === 'defecto' ? [['columna-presente', 'tiene valor en ' + col.nombre]] : [])];
+      const cuandoOpc = [['estado-igual', 'estado ='], ...(col ? (col.tipo === 'texto' ? [['columna-igual', col.nombre + ' =']] : [['columna-igual', col.nombre + ' ='], ['columna-mayor', col.nombre + ' >']]) : []), ...(col && col.vacio === 'defecto' ? [['columna-presente', 'tiene valor en ' + col.nombre]] : []), ...(col ? [['columna-ancho', 'la fila trae seis campos']] : [])];
       h += `<div class="item"><div class="cab-i"><b>${esc(ok.clase)}</b><span class="nota">extends VehiculoRuta</span><span style="margin-left:auto"></span>${quitar(b)}</div>
-        <div class="mini">Se usa cuando ${sel(b + '.cuando.clave', cuandoOpc, e.cuando.campo + '-' + e.cuando.op, 'cuando')}${e.cuando.op !== 'presente' ? inp(b + '.cuando.valor', e.cuando.valor, 'txt', '', '130px') : ''}
+        <div class="mini">Se usa cuando ${sel(b + '.cuando.clave', cuandoOpc, e.cuando.campo + '-' + e.cuando.op, 'cuando')}${e.cuando.op !== 'presente' && e.cuando.op !== 'ancho' ? inp(b + '.cuando.valor', e.cuando.valor, 'txt', '', '130px') : ''}
           · clase ${inp(b + '.clase', e.clase, 'txt', ok.clase, '170px')}${c.conteo === 'tipo' ? ' · en el conteo ' + inp(b + '.etiqueta', e.etiqueta, 'txt', ok.etiqueta, '120px') : ''}</div>
         <div class="reglas" style="margin-top:8px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
           <div><div class="nota">Costo: el normal y después <button class="btn chico" data-add="${b}.ops" data-tpl="op">+ agregar</button></div>${opsHtml(b + '.ops', e.ops, col)}</div>
@@ -1807,14 +2252,26 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
   });
   $('#reglas').addEventListener('change', ev => {
     const el = ev.target;
-    if (el.dataset.acc === 'columna') {
+    if (el.type === 'checkbox' && el.dataset.t === 'check') {
+      ponerRuta(el.dataset.p, el.checked);
+      if (el.dataset.p === 'columnaEnSubclase') {
+        if (el.checked) {
+          S.cfg.baseDesdeColumna = false;
+          if (S.cfg.conteo === 'columna') S.cfg.conteo = null;
+          S.cfg.totales = S.cfg.totales.filter(t => t.campo !== 'columna');
+          if (!S.cfg.especiales.some(e => e.cuando.op === 'ancho')) S.cfg.especiales.unshift({ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: [], topes: [], clase: '', etiqueta: '' });
+        } else { S.cfg.especiales = S.cfg.especiales.filter(e => e.cuando.op !== 'ancho'); S.cfg.indiceNuevo = null; if (S.cfg.conteo === 'tipo' && !S.cfg.especiales.length) S.cfg.conteo = null; }
+      }
+    } else if (el.dataset.acc === 'indiceNuevo') {
+      S.cfg.indiceNuevo = el.checked ? { v: 0.5, c: 0.3, x: 0.2 } : null;
+    } else if (el.dataset.acc === 'columna') {
       S.cfg.columna = el.checked ? { nombre: 'tipoCarga', tipo: 'texto', valores: ['GENERAL', 'REFRIGERADA'], rango: { min: null, minIncl: true, max: null, maxIncl: true }, vacio: 'invalida', defecto: 'GENERAL' } : null;
       if (!el.checked) { S.cfg.restricciones = []; S.cfg.baseDesdeColumna = false; S.cfg.especiales = S.cfg.especiales.filter(e => e.cuando.campo !== 'columna'); if (S.cfg.conteo === 'columna') S.cfg.conteo = null; S.cfg.totales = S.cfg.totales.filter(t => t.campo !== 'columna'); }
     } else if (el.tagName === 'SELECT') {
       const p = el.dataset.p, t = el.dataset.t;
       if (t === 'bool' || t === 'boolre') ponerRuta(p, el.value === '1');
       else if (t === 'signo') { const [op, inc] = el.value.split('-'); const base = p.replace(/\.signo$/, ''); ponerRuta(base + '.op', op); ponerRuta(base + '.incl', inc === '1'); }
-      else if (t === 'cuando') { const [campo, op] = el.value.split('-'); const base = p.replace(/\.clave$/, ''); const cu = leerRuta(base); cu.campo = campo; cu.op = op; if (op === 'presente') cu.valor = ''; else if (op === 'mayor') cu.valor = 0; else if (campo === 'estado' && !S.cfg.estados.includes(cu.valor)) cu.valor = S.cfg.estados[1] || 'DEMORADO'; else if (campo === 'columna' && S.cfg.columna && S.cfg.columna.valores.length && !S.cfg.columna.valores.map(String).includes(String(cu.valor))) cu.valor = S.cfg.columna.valores[0]; }
+      else if (t === 'cuando') { const [campo, op] = el.value.split('-'); const base = p.replace(/\.clave$/, ''); const cu = leerRuta(base); cu.campo = campo; cu.op = op; if (op === 'presente' || op === 'ancho') cu.valor = ''; else if (op === 'mayor') cu.valor = 0; else if (campo === 'estado' && !S.cfg.estados.includes(cu.valor)) cu.valor = S.cfg.estados[1] || 'DEMORADO'; else if (campo === 'columna' && S.cfg.columna && S.cfg.columna.valores.length && !S.cfg.columna.valores.map(String).includes(String(cu.valor))) cu.valor = S.cfg.columna.valores[0]; }
       else if (t === 'conteo') ponerRuta(p, el.value || null);
       else {
         ponerRuta(p, el.value);
@@ -1900,6 +2357,20 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
       <div class="tile mal"><div class="v">${r.invalidas}</div><div class="k">Inválidas</div></div>
       <div class="tile"><div class="v">${r.total}</div><div class="k">Costo total (USD)</div></div>
     </div>`;
+    const refs = M.referencias(S.texto);
+    let refsHtml = '';
+    if (refs.length) {
+      const vs = r.filas.filter(f => f.vehiculo).map(f => f.vehiculo);
+      refsHtml = '<div class="refs"><b>Lo que dice el enunciado</b>' + refs.map(x => {
+        if (x.leidas !== r.leidas) return `<div class="r otro">${x.leidas} leídas, ${x.procesadas} procesadas…: es de otro CSV (este tiene ${r.leidas} filas)</div>`;
+        const items = [['leídas', x.leidas, r.leidas], ['procesadas', x.procesadas, r.procesadas], ['descartadas', x.descartadas, r.descartadas], ['inválidas', x.invalidas, r.invalidas]];
+        if (x.total != null) items.push(['total', x.total, r.total]);
+        for (const [z, n] of x.zonas || []) { const e = r.porZona.find(q => q[0] === z); items.push([z, n, e ? e[1] : 0]); }
+        if (x.menores != null) items.push(['índice < ' + x.limite, x.menores, vs.filter(v => v.indice < x.limite).length]);
+        const mal = items.filter(([, a, b]) => a !== b);
+        return `<div class="r">${mal.length ? `<span class="mal">✗ ${mal.length} no coincide${mal.length > 1 ? 'n' : ''}</span>` : '<span class="ok">✓ coincide todo</span>'}${items.map(([k, a, b]) => `<span class="${a === b ? 'ok' : 'mal'}">${esc(k)} ${a}${a === b ? '' : ' (da ' + b + ')'}</span>`).join('')}</div>`;
+      }).join('') + '</div>';
+    }
     const tabs = [['salida', 'Salida del main'], ['filas', 'Fila por fila'], ['comparar', 'Comparar con tu salida']];
     let cuerpo = '';
     if (S.tab === 'salida') cuerpo = `<pre class="consola">${esc(r.salida)}</pre><div class="fila" style="margin-top:8px"><button class="btn chico" id="copiarSalida">Copiar</button><span class="nota">java -cp target/classes ar.edu.backend.App datos/${esc(cfgLista.archivo)}</span></div>`;
@@ -1912,7 +2383,7 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
       cuerpo = `<p class="nota" style="margin-bottom:8px">Corré tu programa con este mismo CSV y pegá acá lo que imprimió: te marco las líneas que no coinciden.</p>
         <textarea id="mia" rows="8" spellcheck="false" placeholder="Pegá la salida de tu App…">${esc(S.mia)}</textarea><div id="difRes" style="margin-top:10px"></div>`;
     }
-    el.innerHTML = tiles + `<div class="tabs">${tabs.map(([k, t]) => `<button data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>` + cuerpo;
+    el.innerHTML = tiles + refsHtml + `<div class="tabs">${tabs.map(([k, t]) => `<button data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>` + cuerpo;
     if (S.tab === 'comparar') { $('#mia').oninput = ev => { S.mia = ev.target.value; pintarDif(); guardar(); }; pintarDif(); }
     const cs = $('#copiarSalida'); if (cs) cs.onclick = () => copiar(r.salida, cs);
   }
@@ -1998,11 +2469,17 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
   }
   function decisiones() {
     const c = cfgLista, col = c.columna, L = ['# Decisiones', ''];
-    if (col) L.push(`- El parser elige separador y ancho según el encabezado (cinco columnas con coma, o seis con «${c.separador}») y conserva el orden del preparcial: ancho, descarte y recién después las validaciones. VehiculoRuta.desdeCampos arma el objeto de los dos formatos; en el de cinco columnas ${col.nombre} vale ${col.defecto}.`);
+    if (col && c.columnaEnSubclase) L.push(`- El parser elige separador y anchos según el encabezado (el original, solo cinco campos; el nuevo, ${c.anchoMixto ? 'cinco o seis, fila por fila' : 'seis'}) y conserva el orden del preparcial: ancho, descarte y recién después las validaciones.`);
+    else if (col) L.push(`- El parser elige separador y ancho según el encabezado (cinco columnas con coma, o seis con «${c.separador}»${c.anchoMixto ? ', y bajo el nuevo también cinco' : ''}) y conserva el orden del preparcial: ancho, descarte y recién después las validaciones. VehiculoRuta.desdeCampos arma el objeto de los dos formatos; en el de cinco columnas ${col.nombre} vale ${col.defecto}.`);
     else L.push('- Se mantiene un solo formato de cinco columnas y el orden del preparcial: ancho, descarte y validaciones.');
     if (c.descartes.join() !== M.DESCARTES_BASE.join() || c.estados.join() !== M.ESTADOS_BASE.join()) L.push(`- Estados válidos: ${c.estados.join(', ')}; se descartan sin validar: ${c.descartes.join(', ')}.`);
-    if (col) L.push(`- La validación de ${col.nombre} queda en el dominio (VehiculoRuta)${col.valores.length ? ': admite ' + col.valores.join(', ') : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ' y debe ser ' + M.textoRango(col.rango) : ''}.${c.baseDesdeColumna ? ' El costo toma ese valor en lugar de los 2000 USD fijos.' : ''}`);
-    if (c.especiales.length) L.push(`- Herencia: ${c.especiales.map(e => e.clase + ' (' + M.describirEspecial(e, c) + ')').join('; ')}. Cada subclase redefine getCostoDesgasteOperativo() a partir del costo común y valida sus topes después de super(...).`);
+    if (col && !c.columnaEnSubclase) L.push(`- La validación de ${col.nombre} queda en el dominio (VehiculoRuta)${col.valores.length ? ': admite ' + col.valores.join(', ') : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ' y debe ser ' + M.textoRango(col.rango) : ''}.${c.baseDesdeColumna ? ' El costo toma ese valor en lugar de los 2000 USD fijos.' : ''}`);
+    if (c.columnaEnSubclase) {
+      const e = c.especiales[0];
+      L.push(`- Herencia por ancho: VehiculoRuta.desdeCampos es la fábrica; con cinco campos crea un VehiculoRuta y con seis un ${e.clase}, que extiende directamente a VehiculoRuta, guarda ${col.nombre} y la valida en su constructor después de super(...). El parser guarda todo como VehiculoRuta, así que Flota suma, filtra y agrupa los dos tipos sin cambios.`);
+      if (c.indiceNuevo && col.tipo === 'entero') L.push(`- El índice de las filas nuevas usa la fórmula ponderada (${M.pesoTxt(c.indiceNuevo.v)}, ${M.pesoTxt(c.indiceNuevo.c)} y ${M.pesoTxt(c.indiceNuevo.x)}). ${e.clase} se lo pasa a un constructor protegido de VehiculoRuta para que lo verifique; el constructor público sigue exigiendo la fórmula original, como pide el test existente.`);
+      if (e.ops.length || e.topes.length) L.push(`- ${e.clase}: ${M.describirEspecial(e, c)}.`);
+    } else if (c.especiales.length) L.push(`- Herencia: ${c.especiales.map(e => e.clase + ' (' + M.describirEspecial(e, c) + ')').join('; ')}. Cada subclase redefine getCostoDesgasteOperativo() a partir del costo común y valida sus topes después de super(...).`);
     if (c.conteo || c.totales.length) L.push(`- Flota ${c.conteo ? 'agrega un conteo por ' + (c.conteo === 'columna' ? col.nombre : c.conteo) + ' (TreeMap, vacío si no hay vehículos)' : ''}${c.totales.length ? (c.conteo ? ' y ' : '') + 'el main usa sumarCostoDesgasteOperativo con un filtro para ' + c.totales.map(t => t.valor).join(', ') : ''}; el main usa datos/${c.archivo} por defecto y solo delega cálculos.`);
     L.push('- Pendiente: nada.');
     return L.join('\n') + '\n';

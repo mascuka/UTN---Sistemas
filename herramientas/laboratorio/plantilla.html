@@ -153,6 +153,10 @@
   .codigo .kw{color:var(--kw)} .codigo .s{color:var(--str)} .codigo .c{color:var(--com);font-style:italic} .codigo .nm{color:var(--num)}
   .cerrado{position:relative;border:1px dashed var(--line2);border-radius:12px;padding:26px;text-align:center}
   .cerrado p{color:var(--text2);margin-bottom:12px}
+  .refs{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:-4px 0 14px;font-size:.88rem;background:var(--bg)}
+  .refs b{font-weight:600}
+  .refs .r{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;margin-top:5px}
+  .refs .ok{color:var(--ok)} .refs .mal{color:var(--bad);font-weight:600} .refs .otro{color:var(--muted)}
   .pie{color:var(--muted);font-size:.82rem;margin-top:26px;text-align:center}
   .oculto{display:none!important}
   kbd,code.k{font:.82rem var(--mono);background:var(--hover);border-radius:5px;padding:0 5px;overflow-wrap:anywhere}
@@ -291,6 +295,8 @@
   $('#ejemplo').onchange = ev => {
     const e = EJ.find(x => x.id === ev.target.value); if (!e) return;
     ponerTexto(e.texto, 'Enunciado de práctica: ' + e.titulo);
+    if (e.csv) ponerCsv(e.csv, 'datos-parcial.csv · ' + e.titulo, 'ejemplo');
+    else if (S.csvOrigen === 'ejemplo') S.csv = '';
     leer();
   };
   $('#abrirEnun').onclick = () => $('#fEnun').click();
@@ -370,7 +376,7 @@
   };
   function opcion(v, t, sel) { return `<option value="${esc(v)}"${String(v) === String(sel) ? ' selected' : ''}>${esc(t)}</option>`; }
   function sel(p, opciones, v, tipo) { return `<select data-p="${p}" data-t="${tipo || 'txt'}">${opciones.map(([a, b]) => opcion(a, b, v)).join('')}</select>`; }
-  function inp(p, v, tipo, ph, ancho) { return `<input type="${tipo === 'num' || tipo === 'numnull' ? 'number' : 'text'}" data-p="${p}" data-t="${tipo || 'txt'}" value="${esc(v == null ? '' : v)}"${ph ? ` placeholder="${esc(ph)}"` : ''}${ancho ? ` style="width:${ancho}"` : ''}>`; }
+  function inp(p, v, tipo, ph, ancho) { return `<input type="${tipo === 'num' || tipo === 'numnull' ? 'number" step="any' : 'text'}" data-p="${p}" data-t="${tipo || 'txt'}" value="${esc(v == null ? '' : v)}"${ph ? ` placeholder="${esc(ph)}"` : ''}${ancho ? ` style="width:${ancho}"` : ''}>`; }
   const quitar = p => `<button class="btn x" data-del="${p}" title="Quitar" aria-label="Quitar">✕</button>`;
 
   function opsHtml(base, ops, col) {
@@ -392,14 +398,17 @@
     // Resumen en palabras
     const res = [];
     if (col) {
-      res.push(`Columna nueva <b>${esc(col.nombre)}</b> (${col.tipo === 'entero' ? 'entero' : 'texto'})${col.valores.length ? ': ' + esc(col.valores.join(', ')) : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ', ' + esc(M.textoRango(col.rango)) : ''}; separador «${esc(c.separador)}»; en el formato de cinco columnas vale <b>${esc(col.defecto)}</b>${col.vacio === 'defecto' ? '; vacío = sin valor' : ''}.`);
+      res.push(`Columna nueva <b>${esc(col.nombre)}</b> (${col.tipo === 'entero' ? 'entero' : 'texto'})${col.valores.length ? ': ' + esc(col.valores.join(', ')) : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ', ' + esc(M.textoRango(col.rango)) : ''}; separador «${esc(c.separador)}»${c.columnaEnSubclase ? '' : `; en el formato de cinco columnas vale <b>${esc(col.defecto)}</b>${col.vacio === 'defecto' ? '; vacío = sin valor' : ''}`}.`);
+      if (c.anchoMixto) res.push('Bajo el encabezado nuevo valen filas de cinco <b>y</b> de seis campos: el formato se ve fila por fila, por el ancho.');
+      if (c.columnaEnSubclase) res.push(`La columna vive en <b>${esc(lista_.especiales[0].clase)}</b> (extends VehiculoRuta), que se crea para las filas de seis campos; VehiculoRuta no la conoce.`);
+      if (c.columnaEnSubclase && c.indiceNuevo && col.tipo === 'entero') res.push(`Índice de las filas nuevas: <code class="k">(int) (velocidad × ${esc(M.pesoTxt(c.indiceNuevo.v))} + carga × ${esc(M.pesoTxt(c.indiceNuevo.c))} + ${esc(col.nombre)} × ${esc(M.pesoTxt(c.indiceNuevo.x))})</code>; las de cinco campos siguen con la fórmula original.`);
     }
     if (c.estados.join() !== M.ESTADOS_BASE.join()) res.push('Estados válidos: ' + esc(c.estados.join(', ')) + '.');
     if (c.descartes.join() !== M.DESCARTES_BASE.join()) res.push('Se descartan sin validar: ' + esc(c.descartes.join(', ')) + '.');
     for (const r of c.restricciones) res.push(`En el formato nuevo, ${esc(r.estado)} solo admite ${esc(r.valores.join(' o '))}.`);
     if (c.baseDesdeColumna && col) res.push(`El costo usa <b>${esc(col.nombre)}</b> en lugar de los 2000 USD.`);
     if (c.extras.length) res.push('Para todos: costo ' + esc(c.extras.map(o => M.describirOp(o, c)).join(', ')) + '.');
-    for (const e of lista_.especiales) res.push(`<b>${esc(e.clase)}</b>: ${esc(M.describirEspecial(e, lista_))}.`);
+    for (const e of lista_.especiales) if (e.ops.length || e.topes.length || e.cuando.op !== 'ancho') res.push(`<b>${esc(e.clase)}</b>: ${esc(M.describirEspecial(e, lista_))}.`);
     if (c.conteo) res.push('Conteo por ' + esc(c.conteo === 'columna' && col ? col.nombre : c.conteo) + '.');
     for (const t of c.totales) res.push('Total de los ' + esc(t.valor) + '.');
     if (M.hayCambios(c)) res.push(`El main usa <code class="k">datos/${esc(c.archivo)}</code>.`);
@@ -419,9 +428,15 @@
         <div class="campo"><span>Tipo</span>${sel('columna.tipo', [['texto', 'texto (valores fijos)'], ['entero', 'entero']], col.tipo, 'rehacer')}</div>
         <div class="campo"><span>Valores válidos</span>${inp('columna.valores', col.valores.join(', '), 'lista', col.tipo === 'entero' ? 'vacío = cualquier entero' : 'GENERAL, REFRIGERADA')}</div>`;
       if (col.tipo === 'entero') h += `<div class="campo"><span>Rango</span><div class="mini">${sel('columna.rango.minIncl', [['1', '≥'], ['0', '>']], col.rango.minIncl ? '1' : '0', 'bool')}${inp('columna.rango.min', col.rango.min, 'numnull', 'sin mínimo')} y ${sel('columna.rango.maxIncl', [['1', '≤'], ['0', '<']], col.rango.maxIncl ? '1' : '0', 'bool')}${inp('columna.rango.max', col.rango.max, 'numnull', 'sin máximo')}</div></div>`;
-      h += `<div class="campo"><span>Vacío</span>${sel('columna.vacio', [['invalida', 'hace inválida la fila'], ['defecto', 'cuenta como sin valor']], col.vacio)}</div>
-        <div class="campo"><span>Formato viejo</span>${inp('columna.defecto', col.defecto, col.tipo === 'entero' ? 'num' : 'txt')}</div>
-        <div class="campo"><span>Separador</span>${sel('separador', [[',', 'coma ,'], [';', 'punto y coma ;'], ['|', 'barra |']], c.separador)}</div>
+      if (!c.columnaEnSubclase) h += `<div class="campo"><span>Vacío</span>${sel('columna.vacio', [['invalida', 'hace inválida la fila'], ['defecto', 'cuenta como sin valor']], col.vacio)}</div>
+        <div class="campo"><span>Formato viejo</span>${inp('columna.defecto', col.defecto, col.tipo === 'entero' ? 'num' : 'txt')}</div>`;
+      h += `<div class="campo"><span>Filas de 5</span><label class="ch"><input type="checkbox" data-p="anchoMixto" data-t="check"${c.anchoMixto ? ' checked' : ''}> bajo el encabezado nuevo también valen filas de cinco campos</label></div>
+        <div class="campo"><span>Herencia</span><label class="ch"><input type="checkbox" data-p="columnaEnSubclase" data-t="check"${c.columnaEnSubclase ? ' checked' : ''}> la columna va en una subclase (la de las filas de seis campos)</label></div>`;
+      if (c.columnaEnSubclase && col.tipo === 'entero') {
+        h += `<div class="campo"><span>Índice nuevo</span><label class="ch"><input type="checkbox" data-acc="indiceNuevo"${c.indiceNuevo ? ' checked' : ''}> otra fórmula para las filas de seis campos</label></div>`;
+        if (c.indiceNuevo) h += `<div class="mini" style="margin:-2px 0 8px">(int) ( velocidad × ${inp('indiceNuevo.v', c.indiceNuevo.v, 'num', '', '72px')} + carga × ${inp('indiceNuevo.c', c.indiceNuevo.c, 'num', '', '72px')} + ${esc(col.nombre)} × ${inp('indiceNuevo.x', c.indiceNuevo.x, 'num', '', '72px')} )</div>`;
+      }
+      h += `<div class="campo"><span>Separador</span>${sel('separador', [[',', 'coma ,'], [';', 'punto y coma ;'], ['|', 'barra |']], c.separador)}</div>
         <div class="nota">Encabezado nuevo: <code class="k">${esc(M.encabezadoNuevo(c))}</code></div>`;
     } else h += '<div class="vacio">Sin columna nueva: el CSV sigue con cinco columnas.</div>';
     h += '</div>';
@@ -434,26 +449,26 @@
     </div>`;
 
     h += `<div class="bloque"><h3>Costo de todos ${'<button class="btn chico" data-add="extras" data-tpl="op">+ agregar</button>'}</h3>
-      <div class="campo"><span>Base</span>${col && col.tipo === 'entero' ? sel('baseDesdeColumna', [['0', '2000 USD fijos'], ['1', 'el valor de ' + col.nombre]], c.baseDesdeColumna ? '1' : '0', 'boolre') : '<span>2000 USD fijos</span>'}</div>
+      <div class="campo"><span>Base</span>${col && col.tipo === 'entero' && !c.columnaEnSubclase ? sel('baseDesdeColumna', [['0', '2000 USD fijos'], ['1', 'el valor de ' + col.nombre]], c.baseDesdeColumna ? '1' : '0', 'boolre') : '<span>2000 USD fijos</span>'}</div>
       <div class="nota" style="margin-bottom:6px">costo = base × índice / 100${c.extras.length ? ', y después:' : ''}</div>
       ${c.extras.length ? opsHtml('extras', c.extras, col) : ''}
     </div>`;
 
     h += `<div class="bloque"><h3>Conteo, totales y main</h3>
-      <div class="campo"><span>Conteo por</span>${sel('conteo', [['', 'sin conteo'], ['estado', 'estado'], ['zona', 'zona']].concat(col ? [['columna', col.nombre]] : []).concat(c.especiales.length ? [['tipo', 'tipo (común / subclase)']] : []), c.conteo || '', 'conteo')}</div>
+      <div class="campo"><span>Conteo por</span>${sel('conteo', [['', 'sin conteo'], ['estado', 'estado'], ['zona', 'zona']].concat(col && !c.columnaEnSubclase ? [['columna', col.nombre]] : []).concat(c.especiales.length ? [['tipo', 'tipo (común / subclase)']] : []), c.conteo || '', 'conteo')}</div>
       ${c.conteo === 'tipo' ? `<div class="campo"><span>Común se llama</span>${inp('etiquetaBase', c.etiquetaBase, 'txt', 'NORMAL')}</div>` : ''}
       <div class="campo"><span>CSV del main</span>${inp('archivo', c.archivo, 'txt', 'datos-parcial.csv')}</div>
       <h3 style="margin-top:12px">Totales aparte <button class="btn chico" data-add="totales" data-tpl="total">+ agregar</button></h3>
-      ${c.totales.length ? c.totales.map((t, i) => `<div class="mini">Total de ${sel('totales.' + i + '.campo', [['estado', 'estado']].concat(col ? [['columna', col.nombre]] : []), t.campo)} = ${inp('totales.' + i + '.valor', t.valor, 'txt', 'DEMORADO', '130px')}${quitar('totales.' + i)}</div>`).join('') : '<div class="vacio">Ninguno.</div>'}
+      ${c.totales.length ? c.totales.map((t, i) => `<div class="mini">Total de ${sel('totales.' + i + '.campo', [['estado', 'estado']].concat(col && !c.columnaEnSubclase ? [['columna', col.nombre]] : []), t.campo)} = ${inp('totales.' + i + '.valor', t.valor, 'txt', 'DEMORADO', '130px')}${quitar('totales.' + i)}</div>`).join('') : '<div class="vacio">Ninguno.</div>'}
     </div>`;
 
     h += `<div class="bloque ancho"><h3>Subclases (los que cuestan o se validan distinto) <button class="btn chico" data-add="especiales" data-tpl="esp">+ agregar</button></h3>`;
     if (!c.especiales.length) h += '<div class="vacio">Ninguna: todos son VehiculoRuta.</div>';
     c.especiales.forEach((e, i) => {
       const b = 'especiales.' + i, ok = lista_.especiales[i];
-      const cuandoOpc = [['estado-igual', 'estado ='], ...(col ? (col.tipo === 'texto' ? [['columna-igual', col.nombre + ' =']] : [['columna-igual', col.nombre + ' ='], ['columna-mayor', col.nombre + ' >']]) : []), ...(col && col.vacio === 'defecto' ? [['columna-presente', 'tiene valor en ' + col.nombre]] : [])];
+      const cuandoOpc = [['estado-igual', 'estado ='], ...(col ? (col.tipo === 'texto' ? [['columna-igual', col.nombre + ' =']] : [['columna-igual', col.nombre + ' ='], ['columna-mayor', col.nombre + ' >']]) : []), ...(col && col.vacio === 'defecto' ? [['columna-presente', 'tiene valor en ' + col.nombre]] : []), ...(col ? [['columna-ancho', 'la fila trae seis campos']] : [])];
       h += `<div class="item"><div class="cab-i"><b>${esc(ok.clase)}</b><span class="nota">extends VehiculoRuta</span><span style="margin-left:auto"></span>${quitar(b)}</div>
-        <div class="mini">Se usa cuando ${sel(b + '.cuando.clave', cuandoOpc, e.cuando.campo + '-' + e.cuando.op, 'cuando')}${e.cuando.op !== 'presente' ? inp(b + '.cuando.valor', e.cuando.valor, 'txt', '', '130px') : ''}
+        <div class="mini">Se usa cuando ${sel(b + '.cuando.clave', cuandoOpc, e.cuando.campo + '-' + e.cuando.op, 'cuando')}${e.cuando.op !== 'presente' && e.cuando.op !== 'ancho' ? inp(b + '.cuando.valor', e.cuando.valor, 'txt', '', '130px') : ''}
           · clase ${inp(b + '.clase', e.clase, 'txt', ok.clase, '170px')}${c.conteo === 'tipo' ? ' · en el conteo ' + inp(b + '.etiqueta', e.etiqueta, 'txt', ok.etiqueta, '120px') : ''}</div>
         <div class="reglas" style="margin-top:8px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
           <div><div class="nota">Costo: el normal y después <button class="btn chico" data-add="${b}.ops" data-tpl="op">+ agregar</button></div>${opsHtml(b + '.ops', e.ops, col)}</div>
@@ -476,14 +491,26 @@
   });
   $('#reglas').addEventListener('change', ev => {
     const el = ev.target;
-    if (el.dataset.acc === 'columna') {
+    if (el.type === 'checkbox' && el.dataset.t === 'check') {
+      ponerRuta(el.dataset.p, el.checked);
+      if (el.dataset.p === 'columnaEnSubclase') {
+        if (el.checked) {
+          S.cfg.baseDesdeColumna = false;
+          if (S.cfg.conteo === 'columna') S.cfg.conteo = null;
+          S.cfg.totales = S.cfg.totales.filter(t => t.campo !== 'columna');
+          if (!S.cfg.especiales.some(e => e.cuando.op === 'ancho')) S.cfg.especiales.unshift({ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: [], topes: [], clase: '', etiqueta: '' });
+        } else { S.cfg.especiales = S.cfg.especiales.filter(e => e.cuando.op !== 'ancho'); S.cfg.indiceNuevo = null; if (S.cfg.conteo === 'tipo' && !S.cfg.especiales.length) S.cfg.conteo = null; }
+      }
+    } else if (el.dataset.acc === 'indiceNuevo') {
+      S.cfg.indiceNuevo = el.checked ? { v: 0.5, c: 0.3, x: 0.2 } : null;
+    } else if (el.dataset.acc === 'columna') {
       S.cfg.columna = el.checked ? { nombre: 'tipoCarga', tipo: 'texto', valores: ['GENERAL', 'REFRIGERADA'], rango: { min: null, minIncl: true, max: null, maxIncl: true }, vacio: 'invalida', defecto: 'GENERAL' } : null;
       if (!el.checked) { S.cfg.restricciones = []; S.cfg.baseDesdeColumna = false; S.cfg.especiales = S.cfg.especiales.filter(e => e.cuando.campo !== 'columna'); if (S.cfg.conteo === 'columna') S.cfg.conteo = null; S.cfg.totales = S.cfg.totales.filter(t => t.campo !== 'columna'); }
     } else if (el.tagName === 'SELECT') {
       const p = el.dataset.p, t = el.dataset.t;
       if (t === 'bool' || t === 'boolre') ponerRuta(p, el.value === '1');
       else if (t === 'signo') { const [op, inc] = el.value.split('-'); const base = p.replace(/\.signo$/, ''); ponerRuta(base + '.op', op); ponerRuta(base + '.incl', inc === '1'); }
-      else if (t === 'cuando') { const [campo, op] = el.value.split('-'); const base = p.replace(/\.clave$/, ''); const cu = leerRuta(base); cu.campo = campo; cu.op = op; if (op === 'presente') cu.valor = ''; else if (op === 'mayor') cu.valor = 0; else if (campo === 'estado' && !S.cfg.estados.includes(cu.valor)) cu.valor = S.cfg.estados[1] || 'DEMORADO'; else if (campo === 'columna' && S.cfg.columna && S.cfg.columna.valores.length && !S.cfg.columna.valores.map(String).includes(String(cu.valor))) cu.valor = S.cfg.columna.valores[0]; }
+      else if (t === 'cuando') { const [campo, op] = el.value.split('-'); const base = p.replace(/\.clave$/, ''); const cu = leerRuta(base); cu.campo = campo; cu.op = op; if (op === 'presente' || op === 'ancho') cu.valor = ''; else if (op === 'mayor') cu.valor = 0; else if (campo === 'estado' && !S.cfg.estados.includes(cu.valor)) cu.valor = S.cfg.estados[1] || 'DEMORADO'; else if (campo === 'columna' && S.cfg.columna && S.cfg.columna.valores.length && !S.cfg.columna.valores.map(String).includes(String(cu.valor))) cu.valor = S.cfg.columna.valores[0]; }
       else if (t === 'conteo') ponerRuta(p, el.value || null);
       else {
         ponerRuta(p, el.value);
@@ -569,6 +596,20 @@
       <div class="tile mal"><div class="v">${r.invalidas}</div><div class="k">Inválidas</div></div>
       <div class="tile"><div class="v">${r.total}</div><div class="k">Costo total (USD)</div></div>
     </div>`;
+    const refs = M.referencias(S.texto);
+    let refsHtml = '';
+    if (refs.length) {
+      const vs = r.filas.filter(f => f.vehiculo).map(f => f.vehiculo);
+      refsHtml = '<div class="refs"><b>Lo que dice el enunciado</b>' + refs.map(x => {
+        if (x.leidas !== r.leidas) return `<div class="r otro">${x.leidas} leídas, ${x.procesadas} procesadas…: es de otro CSV (este tiene ${r.leidas} filas)</div>`;
+        const items = [['leídas', x.leidas, r.leidas], ['procesadas', x.procesadas, r.procesadas], ['descartadas', x.descartadas, r.descartadas], ['inválidas', x.invalidas, r.invalidas]];
+        if (x.total != null) items.push(['total', x.total, r.total]);
+        for (const [z, n] of x.zonas || []) { const e = r.porZona.find(q => q[0] === z); items.push([z, n, e ? e[1] : 0]); }
+        if (x.menores != null) items.push(['índice < ' + x.limite, x.menores, vs.filter(v => v.indice < x.limite).length]);
+        const mal = items.filter(([, a, b]) => a !== b);
+        return `<div class="r">${mal.length ? `<span class="mal">✗ ${mal.length} no coincide${mal.length > 1 ? 'n' : ''}</span>` : '<span class="ok">✓ coincide todo</span>'}${items.map(([k, a, b]) => `<span class="${a === b ? 'ok' : 'mal'}">${esc(k)} ${a}${a === b ? '' : ' (da ' + b + ')'}</span>`).join('')}</div>`;
+      }).join('') + '</div>';
+    }
     const tabs = [['salida', 'Salida del main'], ['filas', 'Fila por fila'], ['comparar', 'Comparar con tu salida']];
     let cuerpo = '';
     if (S.tab === 'salida') cuerpo = `<pre class="consola">${esc(r.salida)}</pre><div class="fila" style="margin-top:8px"><button class="btn chico" id="copiarSalida">Copiar</button><span class="nota">java -cp target/classes ar.edu.backend.App datos/${esc(cfgLista.archivo)}</span></div>`;
@@ -581,7 +622,7 @@
       cuerpo = `<p class="nota" style="margin-bottom:8px">Corré tu programa con este mismo CSV y pegá acá lo que imprimió: te marco las líneas que no coinciden.</p>
         <textarea id="mia" rows="8" spellcheck="false" placeholder="Pegá la salida de tu App…">${esc(S.mia)}</textarea><div id="difRes" style="margin-top:10px"></div>`;
     }
-    el.innerHTML = tiles + `<div class="tabs">${tabs.map(([k, t]) => `<button data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>` + cuerpo;
+    el.innerHTML = tiles + refsHtml + `<div class="tabs">${tabs.map(([k, t]) => `<button data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>` + cuerpo;
     if (S.tab === 'comparar') { $('#mia').oninput = ev => { S.mia = ev.target.value; pintarDif(); guardar(); }; pintarDif(); }
     const cs = $('#copiarSalida'); if (cs) cs.onclick = () => copiar(r.salida, cs);
   }
@@ -667,11 +708,17 @@
   }
   function decisiones() {
     const c = cfgLista, col = c.columna, L = ['# Decisiones', ''];
-    if (col) L.push(`- El parser elige separador y ancho según el encabezado (cinco columnas con coma, o seis con «${c.separador}») y conserva el orden del preparcial: ancho, descarte y recién después las validaciones. VehiculoRuta.desdeCampos arma el objeto de los dos formatos; en el de cinco columnas ${col.nombre} vale ${col.defecto}.`);
+    if (col && c.columnaEnSubclase) L.push(`- El parser elige separador y anchos según el encabezado (el original, solo cinco campos; el nuevo, ${c.anchoMixto ? 'cinco o seis, fila por fila' : 'seis'}) y conserva el orden del preparcial: ancho, descarte y recién después las validaciones.`);
+    else if (col) L.push(`- El parser elige separador y ancho según el encabezado (cinco columnas con coma, o seis con «${c.separador}»${c.anchoMixto ? ', y bajo el nuevo también cinco' : ''}) y conserva el orden del preparcial: ancho, descarte y recién después las validaciones. VehiculoRuta.desdeCampos arma el objeto de los dos formatos; en el de cinco columnas ${col.nombre} vale ${col.defecto}.`);
     else L.push('- Se mantiene un solo formato de cinco columnas y el orden del preparcial: ancho, descarte y validaciones.');
     if (c.descartes.join() !== M.DESCARTES_BASE.join() || c.estados.join() !== M.ESTADOS_BASE.join()) L.push(`- Estados válidos: ${c.estados.join(', ')}; se descartan sin validar: ${c.descartes.join(', ')}.`);
-    if (col) L.push(`- La validación de ${col.nombre} queda en el dominio (VehiculoRuta)${col.valores.length ? ': admite ' + col.valores.join(', ') : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ' y debe ser ' + M.textoRango(col.rango) : ''}.${c.baseDesdeColumna ? ' El costo toma ese valor en lugar de los 2000 USD fijos.' : ''}`);
-    if (c.especiales.length) L.push(`- Herencia: ${c.especiales.map(e => e.clase + ' (' + M.describirEspecial(e, c) + ')').join('; ')}. Cada subclase redefine getCostoDesgasteOperativo() a partir del costo común y valida sus topes después de super(...).`);
+    if (col && !c.columnaEnSubclase) L.push(`- La validación de ${col.nombre} queda en el dominio (VehiculoRuta)${col.valores.length ? ': admite ' + col.valores.join(', ') : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ' y debe ser ' + M.textoRango(col.rango) : ''}.${c.baseDesdeColumna ? ' El costo toma ese valor en lugar de los 2000 USD fijos.' : ''}`);
+    if (c.columnaEnSubclase) {
+      const e = c.especiales[0];
+      L.push(`- Herencia por ancho: VehiculoRuta.desdeCampos es la fábrica; con cinco campos crea un VehiculoRuta y con seis un ${e.clase}, que extiende directamente a VehiculoRuta, guarda ${col.nombre} y la valida en su constructor después de super(...). El parser guarda todo como VehiculoRuta, así que Flota suma, filtra y agrupa los dos tipos sin cambios.`);
+      if (c.indiceNuevo && col.tipo === 'entero') L.push(`- El índice de las filas nuevas usa la fórmula ponderada (${M.pesoTxt(c.indiceNuevo.v)}, ${M.pesoTxt(c.indiceNuevo.c)} y ${M.pesoTxt(c.indiceNuevo.x)}). ${e.clase} se lo pasa a un constructor protegido de VehiculoRuta para que lo verifique; el constructor público sigue exigiendo la fórmula original, como pide el test existente.`);
+      if (e.ops.length || e.topes.length) L.push(`- ${e.clase}: ${M.describirEspecial(e, c)}.`);
+    } else if (c.especiales.length) L.push(`- Herencia: ${c.especiales.map(e => e.clase + ' (' + M.describirEspecial(e, c) + ')').join('; ')}. Cada subclase redefine getCostoDesgasteOperativo() a partir del costo común y valida sus topes después de super(...).`);
     if (c.conteo || c.totales.length) L.push(`- Flota ${c.conteo ? 'agrega un conteo por ' + (c.conteo === 'columna' ? col.nombre : c.conteo) + ' (TreeMap, vacío si no hay vehículos)' : ''}${c.totales.length ? (c.conteo ? ' y ' : '') + 'el main usa sumarCostoDesgasteOperativo con un filtro para ' + c.totales.map(t => t.valor).join(', ') : ''}; el main usa datos/${c.archivo} por defecto y solo delega cálculos.`);
     L.push('- Pendiente: nada.');
     return L.join('\n') + '\n';

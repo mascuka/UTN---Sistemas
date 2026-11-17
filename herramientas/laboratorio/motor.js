@@ -35,6 +35,9 @@
       etiquetaBase: '',       // para el conteo por tipo: cómo se llama el vehículo común
       totales: [],            // [{ campo: 'estado'|'columna', valor }]: el main muestra el costo total de esos
       archivo: 'datos.csv',   // el CSV que usa el main por defecto
+      anchoMixto: false,      // bajo el encabezado nuevo también valen filas de cinco campos (el formato se ve fila por fila)
+      columnaEnSubclase: false,// la columna vive en la subclase de las filas de seis campos (VehiculoRuta no la conoce)
+      indiceNuevo: null,      // { v, c, x }: el índice de las filas de seis campos = (int)(velocidad × v + carga × c + columna × x)
     };
   }
 
@@ -59,7 +62,7 @@
   // ───────────────────────── Mensajes (los mismos en el Java) ─────────────────────────
   const NOMBRE_CAMPO = { carga: 'La carga', velocidad: 'La velocidad', indice: 'El índice de desgaste', columna: 'El valor de la columna nueva' };
   const MSG = {
-    ancho: (cfg, n) => cfg.columna ? `La fila debe tener exactamente ${n} columnas` : 'La fila debe tener exactamente cinco columnas',
+    ancho: (cfg, n, mixto) => mixto ? 'La fila debe tener cinco o seis columnas' : cfg.columna ? `La fila debe tener exactamente ${n} columnas` : 'La fila debe tener exactamente cinco columnas',
     entero: campo => `El campo ${campo} debe ser un entero`,
     patente: 'La patente no puede estar vacía',
     zona: 'La zona no puede estar vacía',
@@ -92,6 +95,7 @@
 
   function cumple(cuando, v) {
     if (cuando.op === 'presente') return v.presente;
+    if (cuando.op === 'ancho') return v.seis;
     const x = cuando.campo === 'estado' ? v.estado : v.columna;
     if (cuando.op === 'mayor') return typeof x === 'number' && x > Number(cuando.valor);
     return String(x) === String(cuando.valor);
@@ -111,7 +115,56 @@
   }
 
   /* Una fila ya partida y con el ancho correcto → el vehículo o el motivo por el que es inválida */
+  const pesoTxt = w => { const t = String(Number(w)); return /\.\d$/.test(t) ? t + '0' : /^\d+$/.test(t) ? t + '.0' : t; };
+  const indiceCon = (cfg, vel, carga, x) => { const w = cfg.indiceNuevo; return Math.trunc(vel * Number(w.v) + carga * Number(w.c) + x * Number(w.x)) | 0; };
+  const usaIndiceNuevo = cfg => !!(cfg.columnaEnSubclase && cfg.indiceNuevo && cfg.columna && cfg.columna.tipo === 'entero');
+  const subclaseAncho = cfg => cfg.especiales.find(e => e.cuando.op === 'ancho');
+
+  /* Herencia por ancho: una fila de cinco campos es un VehiculoRuta y una de seis, la subclase, que tiene la columna,
+     la valida en su constructor (después de super) y puede calcular el índice con otra fórmula */
+  function desdeCamposAncho(c, cfg) {
+    const col = cfg.columna, seis = c.length === 6, esp = subclaseAncho(cfg);
+    const patente = trim(c[0]), zona = trim(c[1]);
+    const vel = parseIntJava(trim(c[2]));
+    if (vel === null) return { error: MSG.entero('velocidad promedio') };
+    const carga = parseIntJava(trim(c[3]));
+    if (carga === null) return { error: MSG.entero('carga en toneladas') };
+    const estado = trim(c[4]);
+    let x = null, indice = Math.trunc(vel * 0.6 + carga * 0.4) | 0;
+    if (seis) {
+      if (col.tipo === 'entero') { x = parseIntJava(trim(c[5])); if (x === null) return { error: MSG.entero(col.nombre) }; }
+      if (usaIndiceNuevo(cfg)) indice = indiceCon(cfg, vel, carga, x);
+    }
+    const v = { patente, zona, velocidad: vel, carga, estado, indice, columna: x, presente: seis, seis };
+    if (patente === '') return { error: MSG.patente };
+    if (zona === '') return { error: MSG.zona };
+    if (vel <= 0 || vel >= 130) return { error: MSG.velocidad };
+    if (carga > 45) return { error: MSG.carga };
+    if (!cfg.estados.includes(estado)) return { error: MSG.estado(estado) };
+    if (indice < 1 || indice > 90) return { error: MSG.indice };
+    if (seis && esp) {
+      if (col.tipo === 'texto') {
+        const t = trim(c[5]);
+        if (t === '') return { error: MSG.vacio(col.nombre) };
+        if (col.valores.length && !col.valores.map(String).includes(t)) return { error: MSG.valor(col.nombre, t) };
+        v.columna = t;
+      } else {
+        if (col.valores.length && !col.valores.map(Number).includes(x)) return { error: MSG.valor(col.nombre, x) };
+        if (!enRango(x, col.rango)) return { error: MSG.rango(col.nombre, col.rango) };
+      }
+      for (const r of cfg.restricciones) if (r.estado === estado && !r.valores.map(String).includes(String(v.columna))) return { error: MSG.restriccion(estado, col.nombre) };
+      for (const t of esp.topes) if (!pasaTope(valorCampo(v, t.campo), t)) return { error: MSG.tope(esp.clase, t) };
+      v.clase = esp.clase; v.tipo = esp.etiqueta;
+    } else { v.clase = 'VehiculoRuta'; v.tipo = etiquetaBase(cfg); }
+    let costo = div(mul(FACTURACION, indice), 100);
+    costo = aplicar(costo, cfg.extras, v);
+    if (seis && esp) costo = aplicar(costo, esp.ops, v);
+    v.costo = costo;
+    return { vehiculo: v };
+  }
+
   function desdeCampos(c, cfg) {
+    if (cfg.columnaEnSubclase && cfg.columna) return desdeCamposAncho(c, cfg);
     const col = cfg.columna, n = c.length;
     const patente = trim(c[0]), zona = trim(c[1]);
     const vel = parseIntJava(trim(c[2]));
@@ -120,7 +173,7 @@
     if (carga === null) return { error: MSG.entero('carga en toneladas') };
     const estado = trim(c[4]);
     const indice = Math.trunc(vel * 0.6 + carga * 0.4) | 0;
-    const v = { patente, zona, velocidad: vel, carga, estado, indice, columna: null, presente: false };
+    const v = { patente, zona, velocidad: vel, carga, estado, indice, columna: null, presente: false, seis: n === 6 };
     if (col) {
       v.columna = col.defecto;
       if (n === 6) {
@@ -166,15 +219,15 @@
     if (texto.charCodeAt(0) === 0xFEFF) return { abortado: 'El archivo empieza con un BOM (UTF-8 con firma): Java lo lee como parte del encabezado y tira IllegalArgumentException("Encabezado CSV incorrecto"). Guardalo como UTF-8 sin BOM.' };
     const ls = lineas(texto);
     const enc = ls.length ? ls[0] : null;
-    let sep, ancho;
+    let sep, ancho, mixto = false;
     if (enc === ENCABEZADO) { sep = ','; ancho = 5; }
-    else if (cfg.columna && enc === encabezadoNuevo(cfg)) { sep = cfg.separador; ancho = 6; }
+    else if (cfg.columna && enc === encabezadoNuevo(cfg)) { sep = cfg.separador; ancho = 6; mixto = !!cfg.anchoMixto; }
     else return { abortado: 'Encabezado CSV incorrecto: «' + (enc == null ? '(archivo vacío)' : enc) + '». Se esperaba «' + ENCABEZADO + '»' + (cfg.columna ? ' o «' + encabezadoNuevo(cfg) + '»' : '') + '. Java tira IllegalArgumentException y no procesa nada.' };
     const filas = [];
     for (let i = 1; i < ls.length; i++) {
       const f = { linea: i + 1, texto: ls[i] };
       const c = ls[i].split(sep);
-      if (c.length !== ancho) { f.resultado = 'Inválida'; f.motivo = MSG.ancho(cfg, ancho); }
+      if (mixto ? c.length !== 5 && c.length !== 6 : c.length !== ancho) { f.resultado = 'Inválida'; f.motivo = MSG.ancho(cfg, ancho, mixto); }
       else if (cfg.descartes.includes(trim(c[4]))) { f.resultado = 'Descartada'; f.motivo = 'Estado ' + trim(c[4]) + ': se descarta sin validar'; }
       else {
         const r = desdeCampos(c, cfg);
@@ -240,7 +293,8 @@
   const nombreConteo = cfg => cfg.conteo === 'columna' ? cfg.columna.nombre : cfg.conteo;
   function hayCambios(cfg) {
     return !!(cfg.columna || cfg.especiales.length || cfg.extras.length || cfg.conteo || cfg.restricciones.length || cfg.totales.length
-      || cfg.descartes.join() !== DESCARTES_BASE.join() || cfg.estados.join() !== ESTADOS_BASE.join() || cfg.archivo !== 'datos.csv');
+      || cfg.descartes.join() !== DESCARTES_BASE.join() || cfg.estados.join() !== ESTADOS_BASE.join() || cfg.archivo !== 'datos.csv'
+      || cfg.anchoMixto || cfg.columnaEnSubclase);
   }
 
   // ───────────────────────── Revisar y acomodar una configuración ─────────────────────────
@@ -256,13 +310,25 @@
       col.rango = col.rango || { min: null, minIncl: true, max: null, maxIncl: true };
       if (col.tipo !== 'entero') col.rango = { min: null, minIncl: true, max: null, maxIncl: true };
     }
+    cfg.anchoMixto = !!(cfg.anchoMixto && col);
+    cfg.columnaEnSubclase = !!(cfg.columnaEnSubclase && col);
+    if (cfg.columnaEnSubclase) {
+      // la subclase de las filas de seis campos va primera; las otras no se usan (lo avisa revisar)
+      let e = subclaseAncho(cfg);
+      if (!e) { e = { cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: [], topes: [], clase: '', etiqueta: '' }; cfg.especiales.unshift(e); }
+      else if (cfg.especiales[0] !== e) { cfg.especiales.splice(cfg.especiales.indexOf(e), 1); cfg.especiales.unshift(e); }
+      if (cfg.indiceNuevo) for (const k of ['v', 'c', 'x']) cfg.indiceNuevo[k] = Number.isFinite(Number(cfg.indiceNuevo[k])) ? Number(cfg.indiceNuevo[k]) : 0;
+    } else {
+      cfg.indiceNuevo = null;
+    }
     const usados = new Set(CLASES);
     for (const e of cfg.especiales) {
       let c = /^[A-Z][A-Za-z0-9_]*$/.test(e.clase || '') ? e.clase : e.cuando.op === 'igual' ? 'Vehiculo' + pascal(e.cuando.valor) : 'VehiculoCon' + cap(col ? col.nombre : 'Valor');
+      if (c === 'VehiculoCon' + cap(col ? col.nombre : 'Valor') && cfg.columnaEnSubclase && e.cuando.op !== 'ancho') c += 'Especial';
       if (!/^[A-Z]/.test(c)) c = 'Vehiculo' + c;
       while (usados.has(c)) c += 'Especial';
       usados.add(c); e.clase = c;
-      if (!e.etiqueta) e.etiqueta = e.cuando.op === 'igual' ? String(e.cuando.valor).toUpperCase() : 'CON_' + constante(col ? col.nombre : 'VALOR');
+      if (!e.etiqueta) e.etiqueta = e.cuando.op === 'igual' ? String(e.cuando.valor).toUpperCase() : e.cuando.op === 'ancho' ? 'FORMATO_NUEVO' : 'CON_' + constante(col ? col.nombre : 'VALOR');
     }
     if (!cfg.etiquetaBase) cfg.etiquetaBase = etiquetaBase(cfg);
     return cfg;
@@ -285,10 +351,18 @@
       if (e.topes.some(t => t.campo === 'columna') && !(col && col.tipo === 'entero')) av.push(e.clase + ': un tope sobre la columna necesita que sea entera.');
       if (e.cuando.campo === 'estado' && !cfg.estados.includes(String(e.cuando.valor))) av.push(e.clase + ' es para el estado ' + e.cuando.valor + ', que no está entre los válidos: no se va a usar nunca.');
       if (e.cuando.campo === 'columna' && e.cuando.op === 'igual' && col && col.valores.length && !col.valores.map(String).includes(String(e.cuando.valor))) av.push(e.clase + ' es para ' + col.nombre + ' = ' + e.cuando.valor + ', que no está entre los valores permitidos.');
-      if (!e.ops.length && !e.topes.length) av.push(e.clase + ' no cambia nada: sin costo distinto ni topes.');
+      if (!e.ops.length && !e.topes.length && !(cfg.columnaEnSubclase && e.cuando.op === 'ancho')) av.push(e.clase + ' no cambia nada: sin costo distinto ni topes.');
       for (const o of e.ops.concat(cfg.extras)) if (o.op === 'sumaPorCada' && !(o.cada > 0)) av.push('«Por cada» necesita un número mayor a 0.');
     }
     for (const r of cfg.restricciones) if (!cfg.estados.includes(r.estado)) av.push('La restricción para ' + r.estado + ' no se usa: no es un estado válido.');
+    if (cfg.columnaEnSubclase) {
+      if (cfg.especiales.length > 1) av.push('Con la columna en la subclase, solo se usa ' + cfg.especiales[0].clase + ' (las filas de seis campos); las otras subclases no se aplican.');
+      if (cfg.baseDesdeColumna) av.push('Con la columna en la subclase, el costo base no puede salir de la columna (VehiculoRuta no la tiene).');
+      if (cfg.extras.some(o => o.op === 'sumaPorCada')) av.push('Con la columna en la subclase, «por cada» va en la subclase, no en el costo de todos.');
+      if (cfg.conteo === 'columna' || cfg.totales.some(t => t.campo === 'columna')) av.push('Con la columna en la subclase, no se puede contar ni totalizar por la columna desde Flota (VehiculoRuta no la tiene): usá el conteo por tipo.');
+      if (cfg.indiceNuevo && col.tipo !== 'entero') av.push('La fórmula nueva del índice necesita una columna entera.');
+    } else if (cfg.indiceNuevo) av.push('La fórmula nueva del índice solo se usa con la columna en la subclase.');
+    if (cfg.especiales.some(e => e.cuando.op === 'ancho') && !cfg.columnaEnSubclase && !cfg.anchoMixto && col) av.push('«La fila trae seis campos» con un solo ancho por encabezado es lo mismo que «todas las filas nuevas».');
     if (cfg.conteo === 'columna' && !col) av.push('Elegiste contar por la columna nueva, pero no hay columna nueva.');
     if (cfg.conteo === 'tipo' && !cfg.especiales.length) av.push('El conteo por tipo necesita al menos una subclase.');
     for (const d of cfg.descartes) if (cfg.estados.includes(d)) av.push('El estado ' + d + ' está como válido y como descartado: se descarta (el parser lo mira primero).');
@@ -320,6 +394,7 @@
   const literal = (col, v) => col.tipo === 'entero' ? String(Number(v)) : j(v);
   function condJava(cuando, col) {
     if (cuando.op === 'presente') return 'presente';
+    if (cuando.op === 'ancho') return 'campos.length == 6';
     if (cuando.campo === 'estado') return j(cuando.valor) + '.equals(estado)';
     if (cuando.op === 'mayor') return col.nombre + ' > ' + Number(cuando.valor);
     return col.tipo === 'entero' ? col.nombre + ' == ' + Number(cuando.valor) : j(cuando.valor) + '.equals(' + col.nombre + ')';
@@ -353,13 +428,15 @@
             String encabezado = lector.readLine();
 `;
     if (col) s += `            String separador;
-            int columnas;
+            int columnas;${cfg.anchoMixto ? `
+            boolean admiteCinco = false;` : ''}
             if (ENCABEZADO.equals(encabezado)) {
                 separador = ",";
                 columnas = 5;
             } else if (ENCABEZADO_NUEVO.equals(encabezado)) {
                 separador = ${j(cfg.separador === '|' ? '\\|' : cfg.separador)};
-                columnas = 6;
+                columnas = 6;${cfg.anchoMixto ? `
+                admiteCinco = true;` : ''}
             } else {
                 throw new IllegalArgumentException("Encabezado CSV incorrecto");
             }
@@ -375,7 +452,14 @@
                 numeroLinea++;
                 filasLeidas++;
 `;
-    s += col ? `                String[] campos = linea.split(separador, -1);
+    s += col && cfg.anchoMixto ? `                String[] campos = linea.split(separador, -1);
+                if (campos.length != columnas && !(admiteCinco && campos.length == 5)) {
+                    errores.add(new ErrorParseo(numeroLinea, admiteCinco
+                            ? "La fila debe tener cinco o seis columnas"
+                            : "La fila debe tener exactamente " + columnas + " columnas"));
+                    continue;
+                }
+` : col ? `                String[] campos = linea.split(separador, -1);
                 if (campos.length != columnas) {
                     errores.add(new ErrorParseo(numeroLinea, "La fila debe tener exactamente " + columnas + " columnas"));
                     continue;
@@ -408,7 +492,245 @@
     return s;
   }
 
+  function generarVehiculoAncho(cfg) {
+    const col = cfg.columna, esp = subclaseAncho(cfg), N = col.nombre, T = tipoJava(col), estSet = cfg.estados.join() !== ESTADOS_BASE.join();
+    const nuevo = usaIndiceNuevo(cfg);
+    const PARAMS = `            String patente,
+            String zona,
+            int velocidadPromedio,
+            int cargaToneladas,
+            String estado,
+            int indiceDesgaste`;
+    let s = 'package ar.edu.backend;\n\n' + (estSet ? 'import java.util.Set;\n\n' : '');
+    s += `public class VehiculoRuta {\n`;
+    if (estSet) s += `    private static final Set<String> ESTADOS_VALIDOS = Set.of(${cfg.estados.map(j).join(', ')});\n\n`;
+    s += `    private final String patente;
+    private final String zona;
+    private final int velocidadPromedio;
+    private final int cargaToneladas;
+    private final String estado;
+    private final int indiceDesgaste;
+
+`;
+    if (nuevo) s += `    public VehiculoRuta(
+${PARAMS}) {
+        this(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste,
+                calcularIndiceDesgaste(velocidadPromedio, cargaToneladas));
+    }
+
+    /** Para las subclases que calculan el índice con otra fórmula: el índice recibido tiene que coincidir con el suyo. */
+    protected VehiculoRuta(
+${PARAMS},
+            int indiceCalculado) {
+`;
+    else s += `    public VehiculoRuta(
+${PARAMS}) {
+`;
+    s += `        this.patente = validarTexto(patente, "La patente no puede estar vacía");
+        this.zona = validarTexto(zona, "La zona no puede estar vacía");
+        if (velocidadPromedio <= 0 || velocidadPromedio >= 130) {
+            throw new IllegalArgumentException("La velocidad promedio debe ser mayor a 0 y menor a 130");
+        }
+        if (cargaToneladas > 45) {
+            throw new IllegalArgumentException("La carga no puede superar las 45 toneladas");
+        }
+        if (${estSet ? '!ESTADOS_VALIDOS.contains(estado)' : '!"EN_RUTA".equals(estado) && !"DEMORADO".equals(estado)'}) {
+            throw new IllegalArgumentException("Estado de vehículo inválido: " + estado);
+        }
+${nuevo ? '' : `        int indiceCalculado = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);
+`}        if (indiceDesgaste < 1 || indiceDesgaste > 90 || indiceDesgaste != indiceCalculado) {
+            throw new IllegalArgumentException("El índice de desgaste debe coincidir con el cálculo y estar entre 1 y 90");
+        }
+        this.velocidadPromedio = velocidadPromedio;
+        this.cargaToneladas = cargaToneladas;
+        this.estado = estado;
+        this.indiceDesgaste = indiceDesgaste;
+    }
+
+    /** Fábrica: decide el tipo por el ancho de la fila. Cinco campos, VehiculoRuta; seis, ${esp.clase}. */
+    public static VehiculoRuta desdeCampos(String[] campos) {
+        if (campos == null || (campos.length != 5 && campos.length != 6)) {
+            throw new IllegalArgumentException("La fila debe tener cinco o seis columnas");
+        }
+
+        String patente = limpiar(campos[0]);
+        String zona = limpiar(campos[1]);
+        int velocidadPromedio = convertirEntero(campos[2], "velocidad promedio");
+        int cargaToneladas = convertirEntero(campos[3], "carga en toneladas");
+        String estado = limpiar(campos[4]);
+        if (campos.length == 6) {
+`;
+    if (col.tipo === 'entero') {
+      s += `            int ${N} = convertirEntero(campos[5], ${j(N)});
+            int indice = ${nuevo ? `${esp.clase}.calcularIndiceDesgaste(velocidadPromedio, cargaToneladas, ${N})` : 'calcularIndiceDesgaste(velocidadPromedio, cargaToneladas)'};
+            return new ${esp.clase}(patente, zona, velocidadPromedio, cargaToneladas, estado, indice, ${N});
+`;
+    } else {
+      s += `            return new ${esp.clase}(patente, zona, velocidadPromedio, cargaToneladas, estado,
+                    calcularIndiceDesgaste(velocidadPromedio, cargaToneladas), limpiar(campos[5]));
+`;
+    }
+    s += `        }
+        int indiceDesgaste = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);
+        return new VehiculoRuta(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste);
+    }
+
+    private static int calcularIndiceDesgaste(int velocidadPromedio, int cargaToneladas) {
+        return (int) (velocidadPromedio * 0.6 + cargaToneladas * 0.4);
+    }
+
+    private static int convertirEntero(String valor, String nombreCampo) {
+        try {
+            return Integer.parseInt(limpiar(valor));
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("El campo " + nombreCampo + " debe ser un entero", exception);
+        }
+    }
+
+    private static String validarTexto(String valor, String mensaje) {
+        String texto = limpiar(valor);
+        if (texto.isEmpty()) {
+            throw new IllegalArgumentException(mensaje);
+        }
+        return texto;
+    }
+
+    private static String limpiar(String valor) {
+        if (valor == null) {
+            throw new IllegalArgumentException("Los campos no pueden ser nulos");
+        }
+        return valor.trim();
+    }
+
+    public int getCostoDesgasteOperativo() {
+`;
+    if (!cfg.extras.length) s += `        return 2000 * indiceDesgaste / 100;\n`;
+    else s += `        int costo = 2000 * indiceDesgaste / 100;\n${opsJava(cfg.extras, col, '        ')}\n        return costo;\n`;
+    s += `    }
+
+    public String getPatente() {
+        return patente;
+    }
+
+    public String getZona() {
+        return zona;
+    }
+
+    public int getVelocidadPromedio() {
+        return velocidadPromedio;
+    }
+
+    public int getCargaToneladas() {
+        return cargaToneladas;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public int getIndiceDesgaste() {
+        return indiceDesgaste;
+    }
+`;
+    if (cfg.conteo === 'tipo') s += `
+    /** Para el conteo por tipo: cada subclase dice cómo se llama. */
+    public String getTipo() {
+        return ${j(etiquetaBase(cfg))};
+    }
+`;
+    return s + '}\n';
+  }
+
+  function generarSubclaseAncho(e, cfg) {
+    const col = cfg.columna, N = col.nombre, T = tipoJava(col), K = constante(N), nuevo = usaIndiceNuevo(cfg), w = cfg.indiceNuevo;
+    const usaSet = col.valores.length || cfg.restricciones.length;
+    let s = 'package ar.edu.backend;\n\n' + (usaSet ? 'import java.util.Set;\n\n' : '');
+    s += `/** Vehículo ${quienEs(e, cfg)}${e.ops.length || e.topes.length ? ': ' + describirEspecial(e, cfg) : ''}. */
+public class ${e.clase} extends VehiculoRuta {
+`;
+    if (col.valores.length) s += `    private static final Set<${col.tipo === 'entero' ? 'Integer' : 'String'}> VALORES_${K} = Set.of(${col.valores.map(v => literal(col, v)).join(', ')});\n\n`;
+    s += `    private final ${T} ${N};
+
+    public ${e.clase}(
+            String patente,
+            String zona,
+            int velocidadPromedio,
+            int cargaToneladas,
+            String estado,
+            int indiceDesgaste,
+            ${T} ${N}) {
+        super(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste${nuevo ? `,
+                calcularIndiceDesgaste(velocidadPromedio, cargaToneladas, ${N})` : ''});
+`;
+    if (col.tipo === 'texto') {
+      s += `        if (${N} == null || ${N}.isEmpty()) {
+            throw new IllegalArgumentException(${j(MSG.vacio(N))});
+        }
+`;
+      if (col.valores.length) s += `        if (!VALORES_${K}.contains(${N})) {
+            throw new IllegalArgumentException("Valor de ${N} inválido: " + ${N});
+        }
+`;
+    } else {
+      if (col.valores.length) s += `        if (!VALORES_${K}.contains(${N})) {
+            throw new IllegalArgumentException("Valor de ${N} inválido: " + ${N});
+        }
+`;
+      if (tieneRango(col.rango)) {
+        const r = col.rango, c = [];
+        if (r.min != null) c.push(`${N} ${r.minIncl ? '<' : '<='} ${r.min}`);
+        if (r.max != null) c.push(`${N} ${r.maxIncl ? '>' : '>='} ${r.max}`);
+        s += `        if (${c.join(' || ')}) {
+            throw new IllegalArgumentException(${j(MSG.rango(N, r))});
+        }
+`;
+      }
+    }
+    for (const r of cfg.restricciones) s += `        if (${j(r.estado)}.equals(estado) && !Set.of(${unicos(r.valores).map(v => literal(col, v)).join(', ')}).contains(${N})) {
+            throw new IllegalArgumentException(${j(MSG.restriccion(r.estado, N))});
+        }
+`;
+    for (const t of e.topes) {
+      const x = t.campo === 'columna' ? N : campoJava[t.campo];
+      const mal = t.op === 'min' ? `${x} ${t.incl ? '<' : '<='} ${t.n}` : `${x} ${t.incl ? '>' : '>='} ${t.n}`;
+      s += `        if (${mal}) {
+            throw new IllegalArgumentException(${j(MSG.tope(e.clase, t))});
+        }
+`;
+    }
+    s += `        this.${N} = ${N};
+    }
+`;
+    if (nuevo) s += `
+    /** El índice de las filas nuevas: la fórmula ponderada, truncada a entero. */
+    static int calcularIndiceDesgaste(int velocidadPromedio, int cargaToneladas, int ${N}) {
+        return (int) (velocidadPromedio * ${pesoTxt(w.v)} + cargaToneladas * ${pesoTxt(w.c)} + ${N} * ${pesoTxt(w.x)});
+    }
+`;
+    s += `
+    public ${T} get${cap(N)}() {
+        return ${N};
+    }
+`;
+    if (e.ops.length) s += `
+    @Override
+    public int getCostoDesgasteOperativo() {
+        int costo = super.getCostoDesgasteOperativo();
+${opsJava(e.ops, col, '        ')}
+        return costo;
+    }
+`;
+    if (cfg.conteo === 'tipo') s += `
+    @Override
+    public String getTipo() {
+        return ${j(e.etiqueta)};
+    }
+`;
+    return s + '}\n';
+  }
+
   function generarVehiculo(cfg) {
+    if (cfg.columnaEnSubclase && cfg.columna) return generarVehiculoAncho(cfg);
     const col = cfg.columna, sub = cfg.especiales.length > 0, estSet = cfg.estados.join() !== ESTADOS_BASE.join();
     const T = col && tipoJava(col), N = col && col.nombre, G = col && 'get' + cap(N), K = col && constante(N);
     const PARAMS = `            String patente,
@@ -616,12 +938,14 @@ ${col ? `        this.${N} = ${N};\n` : ''}    }
 
   function quienEs(e, cfg) {
     const N = cfg.columna && cfg.columna.nombre;
+    if (e.cuando.op === 'ancho') return `del formato nuevo (fila de seis campos, con ${N})`;
     if (e.cuando.op === 'presente') return `con un valor en ${N}`;
     if (e.cuando.op === 'mayor') return `con ${N} mayor a ${e.cuando.valor}`;
     return e.cuando.campo === 'estado' ? `en estado ${e.cuando.valor}` : `con ${N} ${e.cuando.valor}`;
   }
 
   function generarSubclase(e, cfg) {
+    if (cfg.columnaEnSubclase && cfg.columna && e.cuando.op === 'ancho') return generarSubclaseAncho(e, cfg);
     const col = cfg.columna, N = col && col.nombre, T = col && tipoJava(col);
     let s = `package ar.edu.backend;
 
@@ -725,7 +1049,7 @@ public class App {
     const out = {};
     out['ParserVehiculos.java'] = generarParser(cfg);
     out['VehiculoRuta.java'] = generarVehiculo(cfg);
-    for (const e of cfg.especiales) out[e.clase + '.java'] = generarSubclase(e, cfg);
+    for (const e of cfg.columnaEnSubclase ? cfg.especiales.slice(0, 1) : cfg.especiales) out[e.clase + '.java'] = generarSubclase(e, cfg);
     if (cfg.conteo && originales && originales['Flota.java']) out['Flota.java'] = generarFlota(cfg, originales['Flota.java']);
     if (hayCambios(cfg)) out['App.java'] = generarApp(cfg);
     return out;
@@ -736,6 +1060,7 @@ public class App {
     if (o.op === 'suma') return `${o.n >= 0 ? '+' : '−'} ${Math.abs(o.n)} USD`;
     if (o.op === 'porcentaje') return `${o.n >= 0 ? '+' : '−'} ${Math.abs(o.n)} % (× ${100 + o.n} / 100)`;
     if (o.op === 'multiplica') return `× ${o.n}`;
+    if (o.op === 'sumaPorCada' && Number(o.cada) === 1) return `+ ${o.n} USD por cada unidad de ${cfg.columna ? cfg.columna.nombre : 'la columna'}`;
     return `+ ${o.n} USD por cada ${o.cada} de ${cfg.columna ? cfg.columna.nombre : 'la columna'}`;
   }
   const signoTope = t => t.op === 'min' ? (t.incl ? '≥' : '>') : (t.incl ? '≤' : '<');
@@ -785,10 +1110,18 @@ public class App {
 
     // 1) El encabezado nuevo: la columna y el separador
     let campos = null;
+    const conSiguiente = i => /:\s*$/.test(O[i]) && O[i + 1] ? O[i] + ' ' + O[i + 1] : O[i];   // «… es:» y el encabezado en la línea de abajo
+    O.forEach((o, i) => {   // «Formato del parcial: patente,…,pendientePromedio» (cuando el enunciado muestra los dos encabezados)
+      if (campos) return;
+      o = conSiguiente(i);
+      const m = o.match(/formato\s+(?:del\s+parcial|nuevo|evolucionado)\s*:\s*[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/i);
+      if (m) { campos = m[1].replace(/\s+/g, ''); nota('columna', o, 'El encabezado nuevo'); }
+    });
     O.forEach((o, i) => {
       if (campos) return;
+      o = conSiguiente(i);
       const m = o.match(/encabezado\s+(?:nuevo\s+|evolucionado\s+)?(?:del\s+archivo\s+|del\s+csv\s+)?(?:es|queda|pasa\s+a\s+ser)\s*:?\s*[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){3,})/i)
-        || (N[i].includes('encabezado') && o.match(/[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/));
+        || (sinTildes(o).toLowerCase().includes('encabezado') && o.match(/[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/));
       if (m) { campos = m[1].replace(/\s+/g, ''); nota('columna', o, 'El encabezado nuevo'); }
     });
     if (!campos && csvTexto) {
@@ -872,6 +1205,8 @@ public class App {
         || (!col.valores.length && csvTexto && columnaNumerica(csvTexto, cfg));
       if (esEntero && !col.valores.length) col.tipo = 'entero';
       if (col.tipo === 'entero') {
+        const conRango = n => /entre\s+\d|mayor|menor|maximo|minimo|negativ|positiv|\bde\s+\d+\s+a\s+\d/.test(n);
+        const exactas = N.some((n, i) => i < finReglas && n.includes(cn) && conRango(n) && !otroCampo(n) && !esEjemplo(i));
         O.forEach((o, i) => {
           const n = N[i];
           if (i >= finReglas || otroCampo(n) || esEjemplo(i)) return;
@@ -883,7 +1218,7 @@ public class App {
           }
           const m0 = n.match(/^(\d+)\s+(?:conserva|mantiene|es\s+(?:un|el)\s+(?:vehiculo|valor)\s+(?:sin|comun|normal))/);
           if (m0 && col.valores.length && !col.valores.includes(Number(m0[1]))) { col.valores.push(Number(m0[1])); nota('columna', o, 'Valor permitido: ' + m0[1]); }
-          if (!habla) return;
+          if (!habla || (exactas && !N[i].includes(cn))) return;
           let m;
           if ((m = n.match(new RegExp('mayor(?:es)?\\s+(?:o\\s+)?iguales?\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = true; nota('columna', o, 'Mínimo ' + r.min + ' (inclusive)'); }
           else if ((m = n.match(new RegExp('(?:mayor(?:es)?|superior(?:es)?)\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = false; nota('columna', o, 'Mayor a ' + r.min); }
@@ -924,10 +1259,42 @@ public class App {
       if (col.tipo === 'entero' && typeof col.defecto !== 'number') col.defecto = col.valores.includes(0) || col.vacio === 'defecto' ? 0 : col.rango.min != null && col.rango.minIncl ? col.rango.min : 0;
     }
 
+    // 3b) Filas de cinco y seis campos bajo el encabezado nuevo, la jerarquía obligatoria y la fórmula ponderada
+    if (col) {
+      const im = N.findIndex(n => /se\s+admiten\s+filas\s+de\s+cinco\s+campos|detectar\s+el\s+formato\s+de\s+cada\s+fila\s+por\s+su\s+ancho|filas\s+de\s+cinco\s+(?:campos\s+)?(?:y|o)\s+(?:de\s+)?seis\s+campos|(?:tambien\s+)?(?:valen|se\s+aceptan|admite)\s+filas\s+de\s+cinco\s+campos/.test(n) && !/no\s+aceptar\s+filas\s+de\s+cinco/.test(n));
+      if (im >= 0) { cfg.anchoMixto = true; nota('columna', O[im], 'Bajo el encabezado nuevo valen filas de cinco y de seis campos'); }
+      const plano = sinTildes(texto || '').replace(/\s+/g, ' ');
+      const ih = N.findIndex(n => /mediante\s+herencia|jerarquia\s+(?:obligatoria|equivalente|requerida)|debe\s+extender\s+(?:directamente\s+)?a\s+vehiculoruta|extiende\s+(?:directamente\s+)?a\s+vehiculoruta/.test(n));
+      const clase = (plano.match(/\b(Vehiculo[A-Z]\w*)\s+debe\s+extender/) || plano.match(/[└├][─\-\s]*(Vehiculo[A-Z]\w*)/) || plano.match(/VehiculoRuta\s+(?:[└├─\-|>\s]+)(Vehiculo[A-Z]\w*)/) || plano.match(/(?:o\s+)?un\s+(Vehiculo[A-Z]\w*)\s+para\s+seis\s+campos/) || [])[1];
+      // la fórmula ponderada: indiceDesgaste = (velocidadPromedio × 0.50) + (cargaToneladas × 0.30) + (columna × 0.20)
+      const cn = sinTildes(col.nombre).toLowerCase();
+      const reF = /indice[\w ]{0,16}=\s*((?:\(\s*[A-Za-z][A-Za-z ]*?\s*[×x*·]\s*\d*[.,]?\d+\s*\)\s*\+?\s*){2,4})/gi;
+      let f;
+      while ((f = reF.exec(plano))) {
+        const w = {};
+        const ts = [...f[1].matchAll(/\(\s*([A-Za-z][A-Za-z ]*?)\s*[×x*·]\s*(\d*[.,]?\d+)\s*\)/g)].map(t => [t[1].replace(/\s+/g, '').toLowerCase(), Number(t[2].replace(',', '.'))]);
+        let ix = ts.findIndex(t => t[0] === cn);
+        if (ix < 0 && ts.length === 3) ix = ts.findIndex(t => t[0].startsWith(cn.slice(0, 6)) && !t[0].startsWith('velocidad') && !t[0].startsWith('carga'));
+        if (ix >= 0 && ts.length === 3) {
+          w.x = ts[ix][1];
+          const resto = ts.filter((_, k) => k !== ix);
+          const iv = resto.findIndex(t => t[0].startsWith('velocidad')), ic = resto.findIndex(t => t[0].startsWith('carga'));
+          w.v = resto[iv >= 0 ? iv : 0][1]; w.c = resto[ic >= 0 ? ic : (iv === 1 ? 0 : 1)][1];
+        }
+        if (w.x != null && w.v != null && w.c != null) { cfg.indiceNuevo = w; nota('indice', f[0].trim(), `Índice de las filas nuevas: (int)(velocidad × ${w.v} + carga × ${w.c} + ${col.nombre} × ${w.x})`); break; }
+      }
+      if (ih >= 0 || cfg.indiceNuevo || clase) {
+        cfg.columnaEnSubclase = true;
+        cfg.especiales.unshift({ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: [], topes: [], clase: clase && clase !== 'VehiculoRuta' ? clase : '', etiqueta: '' });
+        nota('especiales', ih >= 0 ? O[ih] : 'jerarquía', `La columna va en la subclase ${clase || 'VehiculoCon' + cap(col.nombre)} (filas de seis campos)`);
+        if (!cfg.anchoMixto) avisos.push('La columna va en una subclase, pero no encontré si bajo el encabezado nuevo valen también filas de cinco campos: revisalo en el paso 2.');
+      }
+    }
+
     // 4) El costo: la columna en lugar de los 2000, extras para todos y las subclases
     O.forEach((o, i) => {
       const n = N[i];
-      if (i < finReglas && col && col.tipo === 'entero' && /(reemplaza|en\s+lugar\s+de|en\s+vez\s+de|toma(?:r)?\s+el\s+valor|tome\s+el\s+valor|usar?\s+(?:el|ese|su)\s+valor|considerad[oa]s?\s+al\s+realizar\s+el\s+calculo|se\s+usa(?:n)?\s+(?:en|para)\s+el\s+(?:calculo|costo)|base\s+del\s+costo)/.test(n)
+      if (i < finReglas && col && col.tipo === 'entero' && !cfg.columnaEnSubclase && /(reemplaza|en\s+lugar\s+de|en\s+vez\s+de|toma(?:r)?\s+el\s+valor|tome\s+el\s+valor|usar?\s+(?:el|ese|su)\s+valor|considerad[oa]s?\s+al\s+realizar\s+el\s+calculo|se\s+usa(?:n)?\s+(?:en|para)\s+el\s+(?:calculo|costo)|base\s+del\s+costo)/.test(n)
         && /costo|calculo|2\.?000|facturacion/.test(n)) {
         cfg.baseDesdeColumna = true; nota('costo', o, 'El costo usa ' + col.nombre + ' en lugar de los 2000 USD');
       }
@@ -937,6 +1304,10 @@ public class App {
     if (col && col.tipo === 'texto') for (const v of col.valores) sujetos.push({ cuando: { campo: 'columna', op: 'igual', valor: v }, palabra: v });
     for (const e of cfg.estados) sujetos.push({ cuando: { campo: 'estado', op: 'igual', valor: e }, palabra: e });
     const sujetoPorTexto = (n, c) => {
+      if (cfg.columnaEnSubclase) {
+        const e0 = cfg.especiales[0];
+        if ((e0.clase && c.includes(e0.clase)) || /formato\s+nuevo|filas?\s+nuevas?|seis\s+campos|la\s+subclase/.test(n)) return { cuando: e0.cuando };
+      }
       for (const w of mayusculas(c.replace(/[A-Z][A-Z0-9_]+\s+(?:solo|unicamente)\s+admi?n?ten?\s+[A-Z0-9_ ,]+/g, ' '))) { const s = sujetos.find(x => x.palabra === w); if (s) return s; }
       if (col && col.tipo === 'entero' && /asegurad|con\s+cobertura|plazos?\s+de|mayor\s+a\s+0|distint[oa]\s+de\s+0|valor\s+positivo/.test(n)) return { cuando: { campo: 'columna', op: 'mayor', valor: 0 } };
       if (col && col.vacio === 'defecto' && /presencia\s+de|con\s+(?:un\s+)?valor\s+en/.test(n)) return { cuando: { campo: 'columna', op: 'presente', valor: '' } };
@@ -1024,6 +1395,25 @@ public class App {
     return { cfg, evidencias: ev, avisos };
   }
 
+  /* Los números que el enunciado da como referencia: «70 filas leídas, 31 procesadas, 23 descartadas y 16 inválidas;
+     costo total 25095, por NORTE 9660…; 17 índices … menores a 55» */
+  function referencias(texto) {
+    const t = sinTildes(texto || '').replace(/\s+/g, ' '), out = [];
+    const re = /(\d+) (?:filas )?leidas,? (\d+) procesadas,? (\d+) descartadas,?(?: y)? (\d+) invalidas/gi;
+    let m;
+    while ((m = re.exec(t))) {
+      const r = { leidas: +m[1], procesadas: +m[2], descartadas: +m[3], invalidas: +m[4], texto: '' };
+      const cola = t.slice(m.index + m[0].length, m.index + m[0].length + 260).split(/(?=\d+ (?:filas )?leidas)/)[0];
+      let x;
+      if ((x = cola.match(/^[^.]*?\btotal (\d+)/i))) r.total = +x[1];
+      if ((x = cola.match(/^[^.]*?\bpor (?:zona |subestacion |region )?((?:[A-Z][A-Z0-9_-]* \d+(?:,? (?:y )?)?)+)/))) r.zonas = [...x[1].matchAll(/([A-Z][A-Z0-9_-]*) (\d+)/g)].map(z => [z[1], +z[2]]);
+      if ((x = cola.match(/^[^.]*?(\d+) (?:indices?|vehiculos?|transformadores?)[^.;\d]{0,60}?menor(?:es)? a (\d+)/i))) { r.menores = +x[1]; r.limite = +x[2]; }
+      r.texto = (m[0] + cola).split(/\. /)[0].trim();
+      out.push(r);
+    }
+    return out;
+  }
+
   function opsDe(n, col) {
     const ops = []; let m;
     const unidadCol = w => UNIDADES_CADA.test(w) || (col && partesNombre(col.nombre).concat(sinTildes(col.nombre).toLowerCase()).some(p => p.slice(0, 4) === w.slice(0, 4)));
@@ -1032,8 +1422,9 @@ public class App {
     else if ((m = n.match(new RegExp(NUM + '\\s*(?:usd|dolares?|pesos|u\\$s|\\$)\\s+(?:adicionales|mas|de\\s+recargo|extra|por\\s+(?:vehiculo|viaje|flete|fila))'))) || (m = n.match(new RegExp('(?:recargo|adicional|suma|agrega|cuesta)\\s+(?:fijo\\s+)?(?:de\\s+)?' + NUM + '\\s*(?:usd|dolares?|pesos|u\\$s|\\$)')))) ops.push({ op: 'suma', n: num(m[1]) });
     if ((m = n.match(new RegExp(NUM + '\\s*(?:%|por\\s*ciento)\\s*(?:mas|adicional|de\\s+recargo|extra|de\\s+aumento|sobre)'))) || (m = n.match(new RegExp('(?:recargo|aumento|incremento)\\s+del?\\s+' + NUM + '\\s*(?:%|por\\s*ciento)')))) ops.push({ op: 'porcentaje', n: num(m[1]) });
     else if ((m = n.match(new RegExp(NUM + '\\s*(?:%|por\\s*ciento)\\s*(?:menos|de\\s+descuento|de\\s+bonificacion)'))) || (m = n.match(new RegExp('(?:descuento|bonificacion)\\s+del?\\s+' + NUM + '\\s*(?:%|por\\s*ciento)')))) ops.push({ op: 'porcentaje', n: -num(m[1]) });
-    if (/\bel\s+doble\b|\bduplica/.test(n)) ops.push({ op: 'multiplica', n: 2 });
-    else if (/\bel\s+triple\b|\btriplica/.test(n)) ops.push({ op: 'multiplica', n: 3 });
+    const deCosto = /costo|cuesta|cobra|precio|importe/.test(n);
+    if (/\bel\s+doble\b/.test(n) || (/\bduplica/.test(n) && deCosto)) ops.push({ op: 'multiplica', n: 2 });
+    else if (/\bel\s+triple\b/.test(n) || (/\btriplica/.test(n) && deCosto)) ops.push({ op: 'multiplica', n: 3 });
     return ops;
   }
   function topesDe(n, col) {
@@ -1102,8 +1493,9 @@ public class App {
       }
       const r = cfg.restricciones.find(q => q.estado === est);
       if (r && !r.valores.map(String).includes(String(c))) c = r.valores[0];
-      if (col && col.vacio === 'defecto' && i % 7 === 3) c = '';
-      filas.push(i % 9 === 4 && col ? fila(vel, carga, est, ' ' + c + ' ') : fila(vel, carga, est, c));
+      if (col && col.vacio === 'defecto' && !cfg.columnaEnSubclase && i % 7 === 3) c = '';
+      if (col && cfg.anchoMixto && i % 4 === 1) filas.push(fila5(vel, carga, est));
+      else filas.push(i % 9 === 4 && col ? fila(vel, carga, est, ' ' + c + ' ') : fila(vel, carga, est, c));
     }
     const cv = elegir(vs);
     const malas = [];
@@ -1142,6 +1534,6 @@ public class App {
 
   return {
     CAMPOS, ENCABEZADO, ESTADOS_BASE, DESCARTES_BASE, FACTURACION, configBase, simular, generar, leerEnunciado, revisar, normalizar,
-    csvDePrueba, describirEspecial, describirOp, afectaFormatoViejo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
+    csvDePrueba, describirEspecial, describirOp, afectaFormatoViejo, referencias, pesoTxt, usaIndiceNuevo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
   };
 }));
