@@ -84,6 +84,56 @@ Ejemplos: un vehículo con un índice de desgaste de 65 y una facturación de 30
 5. Conservar el comportamiento anterior y pasar los tests existentes y los nuevos. Puede agregar tests propios.
 {PIE}"""),
 
+    'E': dict(titulo='Caso E · Seguro de carga (como el Simulacro 4)', nota=NOTA, texto=f"""# Parcial práctico: seguro de carga
+{CABEZA}
+La empresa incorpora el seguro de la carga (cubre la mercadería ante robo o rotura durante el viaje). Se necesita procesar vehículos con y sin cobertura en una misma colección y obtener sus costos correctos.
+## Reglas nuevas
+El nuevo encabezado es `patente,zona,velocidadPromedio,cargaToneladas,estado,diasCobertura`. Conservar también el formato original de cinco columnas: todos esos vehículos son sin seguro. Cada fila debe tener el ancho indicado por su encabezado; no aceptar filas de cinco campos bajo un encabezado de seis, ni a la inversa.
+Para filas EN_RUTA o DEMORADO del nuevo formato, el sexto campo es un entero (tras quitar espacios externos):
+- 0 conserva todas las reglas anteriores y su costo. Es un vehículo sin seguro.
+- 30, 90 o 180 son plazos de cobertura. El vehículo queda asegurado: respeta las validaciones anteriores y suma una prima de 200 USD por cada 30 días sobre el costo de un vehículo sin seguro. La prima se aplica una sola vez por vehículo.
+- Un valor vacío, no numérico o un plazo distinto de 0/30/90/180 hace inválida la fila.
+Conservar la precedencia del preparcial: verificar ancho y después descartar EN_DEPOSITO sin validar velocidad, carga ni días de cobertura.
+## Resultado requerido
+1. Integrar la lectura de ambas versiones del CSV sin duplicar el proceso de carga.
+2. Hacer que `getCostoDesgasteOperativo()`, el costo total, los filtros por costo y los totales por zona reflejen la nueva regla.
+3. Incorporar en el colector un conteo por modalidad. Puede elegir el nombre y representación de esa operación; para una colección vacía debe dar un resultado vacío o conteos cero.
+4. Hacer que el main use por defecto el archivo del parcial y muestre resumen, cantidad de objetos, cantidades SIN_SEGURO/ASEGURADO, total y totales por zona. Seguir delegando cálculos.
+5. Conservar el comportamiento anterior y pasar los tests existentes y los nuevos. Puede agregar tests propios.
+{PIE}"""),
+
+    'F': dict(titulo='Caso F · Peajes (como el Simulacro 3)', nota=NOTA, texto=f"""# Parcial práctico: peajes
+{CABEZA}
+La empresa empieza a registrar los peajes que paga cada vehículo en el tramo.
+## Reglas nuevas
+El nuevo encabezado es `patente,zona,velocidadPromedio,cargaToneladas,estado,peajes`. Conservar también el formato original de cinco columnas: todos sus vehículos tienen 0 peajes. Cada fila debe tener el ancho indicado por su encabezado.
+Para vehículos con peajes (indicado por la presencia de un valor en la 6ta columna), la cantidad de peajes debe ser un entero entre 1 y 10. De lo contrario, la fila es inválida. Un sexto campo vacío equivale a 0 peajes.
+El costo por desgaste operativo de todos los vehículos suma 50 USD por cada peaje: `2000 × índice / 100 + 50 × peajes`.
+Ejemplos: con índice 40 y 3 peajes, el costo es 950; con el sexto campo vacío, 800; con 11 peajes, la fila es inválida.
+## Resultado requerido
+1. Integrar la lectura de ambas versiones del CSV sin duplicar el proceso de carga.
+2. Hacer que `getCostoDesgasteOperativo()`, el costo total, los filtros por costo y los totales por zona reflejen la nueva regla.
+3. Incorporar en el colector el total de peajes por zona. Puede elegir el nombre y representación de esa operación; para una colección vacía debe dar un resultado vacío.
+4. Hacer que el main use por defecto el archivo del parcial y muestre resumen, cantidad de objetos, peajes por zona, total y totales por zona. Seguir delegando cálculos.
+5. Conservar el comportamiento anterior y pasar los tests existentes y los nuevos. Puede agregar tests propios.
+{PIE}"""),
+
+    'G': dict(titulo='Caso G · Vehículos en el taller', nota=NOTA, texto=f"""# Parcial práctico: vehículos en el taller
+{CABEZA}
+El taller empieza a informar los vehículos que están en reparación, y la empresa corrige una regla del contrato del archivo.
+## Reglas nuevas
+El archivo conserva el encabezado y las cinco columnas del preparcial.
+Se incorpora el estado EN_TALLER: es un estado válido y debe incorporarse a la colección porque forma parte de la facturación. EN_RUTA y DEMORADO conservan el comportamiento del preparcial; EN_DEPOSITO se sigue descartando sin validar.
+La carga en toneladas ya no admite valores negativos: debe ser un entero entre 0 y 45, inclusive. Una carga negativa hace inválida la fila.
+Conservar la precedencia del preparcial: verificar ancho y después descartar EN_DEPOSITO sin validar los demás campos. Las filas inválidas se registran y la carga continúa.
+## Resultado requerido
+1. Mantener la lectura del CSV con un solo proceso de carga.
+2. Reflejar las nuevas reglas en la conversión de cada fila: los estados válidos y el rango de la carga.
+3. Incorporar en el colector un conteo por estado, que indique la cantidad de vehículos en cada estado procesado, incluido EN_TALLER. Para una colección vacía debe dar un resultado vacío o conteos cero.
+4. Hacer que el main use por defecto el archivo del parcial y muestre resumen, cantidades EN_RUTA/DEMORADO/EN_TALLER, total y totales por zona. Seguir delegando cálculos.
+5. Conservar el comportamiento anterior y pasar los tests existentes y los nuevos. Puede agregar tests propios.
+{PIE}"""),
+
     'P': dict(titulo='Preenunciado y operaciones nuevas', nota='Arriba, las reglas del preenunciado de Flota Logística (el texto de la cátedra). Abajo, un pedido hipotético escrito con las frases de los parciales: no te dan el nombre del método, lo elegís vos.', texto="""# Recuperatorio 1: Flota Logística
 El departamento de operaciones de una empresa de transporte recibe un CSV con información referida a la telemetría de sus camiones en ruta. El programa carga los datos de los vehículos y calcula el costo asociado al desgaste operativo.
 ## Contrato del archivo
@@ -160,6 +210,19 @@ MARCAS = {
     'r2.4': ('B', [_B_ENC, _B_SEXTO, _B_COSTO, _B_PREC]),
     'r2.5': ('C', [_C_CINCO, _C_MANT, _C_DEM]),
     'r2.6': ('D', [_ANCHO, _D_SEXTO, _D_COSTO]),
+    'r2.7': ('A', [_A_ENC, _A_VIEJO, _A_SEXTO]),
+    'r2.8': ('D', [_D_VIEJO, _D_SEXTO, _D_COSTO]),
+    'r2.9': ('G', ['Se incorpora el estado EN_TALLER: es un estado válido y debe incorporarse a la colección porque forma parte de la facturación.',
+                   'EN_DEPOSITO se sigue descartando sin validar.']),
+    'r2.10': ('G', ['La carga en toneladas ya no admite valores negativos: debe ser un entero entre 0 y 45, inclusive. Una carga negativa hace inválida la fila.',
+                    'Conservar la precedencia del preparcial: verificar ancho y después descartar EN_DEPOSITO sin validar los demás campos.']),
+    'r2.11': ('E', ['El nuevo encabezado es `patente,zona,velocidadPromedio,cargaToneladas,estado,diasCobertura`.',
+                    'Conservar también el formato original de cinco columnas: todos esos vehículos son sin seguro.',
+                    'Para filas EN_RUTA o DEMORADO del nuevo formato, el sexto campo es un entero (tras quitar espacios externos):',
+                    'Un valor vacío, no numérico o un plazo distinto de 0/30/90/180 hace inválida la fila.']),
+    'r2.12': ('F', ['Conservar también el formato original de cinco columnas: todos sus vehículos tienen 0 peajes.',
+                    'Para vehículos con peajes (indicado por la presencia de un valor en la 6ta columna), la cantidad de peajes debe ser un entero entre 1 y 10. De lo contrario, la fila es inválida. Un sexto campo vacío equivale a 0 peajes.',
+                    'El costo por desgaste operativo de todos los vehículos suma 50 USD por cada peaje: `2000 × índice / 100 + 50 × peajes`.']),
     # Parte 3: polimorfismo
     'r3.1': ('A', [_A_VIEJO, 'Un valor vacío o desconocido hace inválida la fila.', _A_GEN, _A_REF]),
     'r3.2': ('C', [_C_RUTA, _C_DEM, _C_COSTO]),

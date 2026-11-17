@@ -23,6 +23,7 @@ import json, os, re, shutil, sys, zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import enunciados   # los enunciados como los de la cátedra y lo que pide cada ejercicio
+import dominio      # más ejercicios de código para la parte 2 (columna nueva, estado nuevo, validación nueva)
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.normpath(os.path.join(AQUI, '..', '..', '..'))
@@ -534,6 +535,8 @@ P2 = [
     ], 'Resumen esperado: **leídas 12 · procesadas 5 · descartadas 1 · inválidas 6**.', base={'ParserVehiculos.java': D_PARSER, 'VehiculoRuta.java': D_RUTA, 'VehiculoConFacturacion.java': D_FAC}),
 ]
 
+P2[1:1] = dominio.ejercicios(ORIG, codigo, arch, ch, tabla, cambiar, H5)
+
 P3 = [
     codigo('r3.1', 'REFRIGERADA: 300 USD más y hasta 30 t', '`VehiculoRefrigerado.java` (archivo nuevo) y `VehiculoRuta`',
            'Si la 6.ª columna dice REFRIGERADA, el vehículo cuesta **300 USD más** que uno general con los mismos datos (una sola vez) y no puede llevar más de **30 t** (inclusive): validalo en el constructor de la subclase. '
@@ -849,10 +852,13 @@ PARTES = [
 
 
 CASOS = {
-    'Caso A': ['r0.1', 'r1.1', 'r2.3', 'r3.1', 'r4.2', 'r5.1'],
+    'Caso A': ['r0.1', 'r1.1', 'r2.7', 'r2.3', 'r3.1', 'r4.2', 'r5.1'],
     'Caso B': ['r0.2', 'r1.3', 'r2.1', 'r2.4', 'r4.6'],
     'Caso C': ['r0.3', 'r1.2', 'r2.5', 'r3.2'],
-    'Caso D': ['r0.4', 'r1.4', 'r2.6', 'r3.4', 'r4.1', 'r5.3'],
+    'Caso D': ['r0.4', 'r1.4', 'r2.8', 'r2.6', 'r3.4', 'r4.1', 'r5.3'],
+    'Caso E': ['r2.11'],
+    'Caso F': ['r2.12'],
+    'Caso G': ['r2.9', 'r2.10'],
     'Repaso': ['r3.3'],
 }   # el resto trabaja sobre el preenunciado tal cual
 
@@ -899,7 +905,7 @@ def marcar_punto_de_partida(partes):
 
 def main():
     caso = {id: c for c, ids in CASOS.items() for id in ids}
-    orden = {c: i for i, c in enumerate(['Preenunciado', 'Caso A', 'Caso B', 'Caso C', 'Caso D', 'Repaso'])}
+    orden = {c: i for i, c in enumerate(['Preenunciado', 'Caso A', 'Caso B', 'Caso C', 'Caso D', 'Caso E', 'Caso F', 'Caso G', 'Repaso'])}
     for p in PARTES:   # en cada parte, los casos en orden (A, B, C, D) y el repaso al final
         p['ejercicios'].sort(key=lambda e: orden[caso.get(e['id'], 'Preenunciado')])
     for p in PARTES:
