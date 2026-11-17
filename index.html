@@ -2984,7 +2984,12 @@ const MATERIAS = {
         herramientas: ["pasos"],
         practicaParcial: "practica/bk-recuperatorio/ejercicios.json",
         practicaParcialTarjeta: { titulo: "El recuperatorio por partes", detalle: "28 ejercicios sobre Flota Logística: dónde va cada cambio, dos formatos, la columna nueva, la subclase, el colector y el main; el caso D es el mismo cambio del Parcial 3K1" },
-        material: [],
+        // El laboratorio: un solo HTML sin internet (herramientas/laboratorio/armar.py) que lee un enunciado nuevo y un CSV
+        material: [
+          { n: 1, nombre: "Laboratorio del recuperatorio", nota: "Sin internet", detalle: "Le pasás un enunciado nuevo (PDF, .md o texto) y el CSV: saca las reglas nuevas, procesa el CSV fila por fila como Java, te muestra la salida del main y el Java resuelto para comparar con lo tuyo. Trae 8 enunciados de práctica al estilo de la cátedra", tipo: "HTML", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/laboratorio-flota.html" },
+          { n: 2, nombre: "Laboratorio para descargar", detalle: "El mismo archivo para guardarlo y abrirlo con doble clic, sin conexión", tipo: "HTML", bajar: true, url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/laboratorio-flota.html" },
+          { n: 3, nombre: "Preenunciado con el proyecto", detalle: "El proyecto 01-modelo-inicial de Flota Logística, el mismo que usa el laboratorio", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/01-preenunciado.zip" }
+        ],
         videos: []
       },
       {
@@ -5472,7 +5477,7 @@ function temasParcial(m, p){
         <div class="tm-cuerpo">
           <ul class="tm-cont">${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
           ${archivos.length ? `<div class="tm-lbl">Para leer</div><div class="tm-archs">${archivos.map(f => {
-            const pdf = esPdfLocal(f), bajar = /^(ZIP|INO)$/.test(f.tipo);
+            const pdf = esPdfLocal(f), bajar = /^(ZIP|INO)$/.test(f.tipo) || f.bajar;
             return `<a class="tm-arch" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>${pdf
               ? `<img class="mini" src="${esc(miniDe(f.url))}" alt="" loading="lazy" onload="this.classList.add('ok')" onerror="sinMini(this)">`
               : `<span class="badge">${esc(f.tipo || "LINK")}</span>`}<span><b>${esc(f.nombre)}</b>${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span></a>`;
@@ -5691,7 +5696,7 @@ const miniDe = url => "miniaturas/" + url.slice(9).replace(/\.pdf$/i, ".jpg");
 function sinMini(img){ img.replaceWith(Object.assign(document.createElement("span"), { className: "badge", textContent: "PDF" })); }
 const ICON_ESTRELLA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>';
 function filaArchivo(f, conNum){
-  const bajar = /^(ZIP|INO)$/.test(f.tipo);
+  const bajar = /^(ZIP|INO)$/.test(f.tipo) || f.bajar;
   const pdf = esPdfLocal(f);
   return `
     <a class="file${f.destacado ? " destacado" : ""}" href="${esc(f.url)}" ${bajar ? "download" : `target="_blank" rel="noopener"`}${pdf ? ` data-pdf="${esc(f.nombre)}"` : ""}>

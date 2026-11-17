@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorio Flota Logística</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232d8992'/%3E%3Cpath d='M14 40V24h22v16M36 30h8l6 6v4H36' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='22' cy='42' r='4' fill='white'/%3E%3Ccircle cx='44' cy='42' r='4' fill='white'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#fcfcfb; --card:#ffffff; --text:#1f1e1c; --text2:#46453f; --muted:#7c7b75;
+    --line:#e7e6e2; --line2:#d9d8d3; --accent:#2d8992; --accent-soft:#e4f3f5; --hover:#f1f0ec;
+    --ok:#3f7a55; --ok-soft:#e5efe7; --warn:#8a6a1c; --warn-soft:#f6edcf; --bad:#a3452d; --bad-soft:#f7e7e3;
+    --code-bg:#f6f5f1; --add:#e3f1e6; --add-l:#8cc7a0; --kw:#7a3e9d; --str:#3f7a55; --com:#8a877f; --num:#a3452d;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+    --sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,Consolas,monospace;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#262624; --card:#30302e; --text:#ece9e1; --text2:#cfcbc1; --muted:#a39f95;
+      --line:#3d3c39; --line2:#4a4945; --accent:#5fb8c3; --accent-soft:#17393d; --hover:#343331;
+      --ok:#8cc7a0; --ok-soft:#233328; --warn:#f2dfa6; --warn-soft:#463c1e; --bad:#f0a08c; --bad-soft:#46302b;
+      --code-bg:#272725; --add:#25382b; --add-l:#4f8a62; --kw:#d1a3ec; --str:#8cc7a0; --com:#8f8b82; --num:#f0a08c;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#262624; --card:#30302e; --text:#ece9e1; --text2:#cfcbc1; --muted:#a39f95;
+    --line:#3d3c39; --line2:#4a4945; --accent:#5fb8c3; --accent-soft:#17393d; --hover:#343331;
+    --ok:#8cc7a0; --ok-soft:#233328; --warn:#f2dfa6; --warn-soft:#463c1e; --bad:#f0a08c; --bad-soft:#46302b;
+    --code-bg:#272725; --add:#25382b; --add-l:#4f8a62; --kw:#d1a3ec; --str:#8cc7a0; --com:#8f8b82; --num:#f0a08c;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:15px}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+  button,input,select,textarea{font:inherit;color:inherit}
+  .env{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+  header.cab{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px}
+  .cab h1{font:500 1.9rem/1.15 var(--serif);letter-spacing:-.015em}
+  .cab p{color:var(--text2);margin-top:6px;max-width:64ch}
+  .cab .sello{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ok);background:var(--ok-soft);border-radius:99px;padding:2px 10px;margin-top:10px}
+  .tema{margin-left:auto;flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);cursor:pointer;display:grid;place-items:center;color:var(--muted)}
+  .tema:hover{color:var(--text);background:var(--hover)}
+  .tema svg{width:17px;height:17px}
+
+  .paso{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+  .paso>h2{display:flex;align-items:center;gap:10px;font:500 1.25rem var(--serif);margin-bottom:4px}
+  .paso>h2 .n{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font:600 .85rem var(--sans);flex:none}
+  .paso>.sub{color:var(--muted);font-size:.9rem;margin:0 0 14px 36px}
+  @media (max-width:640px){ .env{padding:18px 16px 60px} .paso{padding:16px} .paso>.sub{margin-left:0} .cab h1{font-size:1.5rem} }
+
+  .fila{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);background:var(--card);border-radius:9px;padding:7px 13px;cursor:pointer;font-size:.9rem;white-space:nowrap;transition:background .12s}
+  .btn:hover{background:var(--hover)}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.pri:hover{filter:brightness(1.06);background:var(--accent)}
+  :root[data-theme="dark"] .btn.pri{color:#10292c}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn.pri{color:#10292c} }
+  .btn.chico{padding:3px 9px;font-size:.8rem;border-radius:7px}
+  .btn.x{border:0;background:none;color:var(--muted);padding:2px 6px}
+  .btn.x:hover{color:var(--bad);background:var(--bad-soft)}
+  .btn svg{width:15px;height:15px}
+  select,input[type=text],input[type=number]{border:1px solid var(--line2);background:var(--bg);border-radius:8px;padding:5px 8px;font-size:.88rem;min-width:0}
+  input[type=number]{width:96px}
+  select,input{max-width:100%}
+  #ejemplo{flex:1 1 240px}
+  .cod-env>*,.reglas>*,.campo>*{min-width:0}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  textarea{width:100%;border:1px solid var(--line2);background:var(--bg);border-radius:10px;padding:10px 12px;font:.85rem/1.5 var(--mono);resize:vertical}
+  label.ch{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;cursor:pointer}
+  .nota{font-size:.85rem;color:var(--muted)}
+  .aviso{border-radius:10px;padding:9px 12px;font-size:.88rem;margin-top:10px;background:var(--warn-soft);color:var(--warn)}
+  .aviso.ok{background:var(--ok-soft);color:var(--ok)}
+  .aviso.mal{background:var(--bad-soft);color:var(--bad)}
+  .aviso ul{margin:4px 0 0 18px}
+  details.mas{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+  details.mas summary{cursor:pointer;color:var(--accent);font-size:.88rem;list-style:none}
+  details.mas summary::before{content:"▸ "} details.mas[open] summary::before{content:"▾ "}
+  .soltar{border:2px dashed var(--line2);border-radius:12px;padding:16px;text-align:center;color:var(--muted);font-size:.9rem;margin-top:10px}
+  .soltar.encima{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .estado-carga{font-size:.88rem;margin-top:8px;color:var(--text2)}
+  .estado-carga b{font-weight:600}
+
+  /* Reglas */
+  .reglas{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .bloque{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}
+  .bloque h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .bloque h3 .btn{margin-left:auto;text-transform:none;letter-spacing:0}
+  .bloque.ancho{grid-column:1/-1}
+  .campo{display:grid;grid-template-columns:120px 1fr;gap:6px 10px;align-items:center;margin-bottom:7px;font-size:.88rem}
+  .campo>span{color:var(--text2)}
+  @media (max-width:480px){ .campo{grid-template-columns:1fr} }
+  .item{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:var(--card)}
+  .item .cab-i{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .item .cab-i b{font-family:var(--mono);font-size:.9rem}
+  .mini{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0;font-size:.85rem}
+  .mini select,.mini input{font-size:.83rem;padding:3px 6px}
+  .vacio{color:var(--muted);font-size:.85rem;font-style:italic}
+  .resumen-reglas{margin:2px 0 12px;padding:0;list-style:none;display:grid;gap:4px}
+  .resumen-reglas li{font-size:.9rem;padding-left:22px;position:relative}
+  .resumen-reglas li::before{content:"✓";position:absolute;left:4px;color:var(--ok);font-weight:700}
+  .evid{font-size:.83rem;color:var(--muted);margin:0;padding:0;list-style:none}
+  .evid li{padding:6px 0;border-top:1px solid var(--line)}
+  .evid li b{color:var(--text2);font-weight:600}
+  .evid q{font-style:italic}
+
+  /* Resultado */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+  .tile{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+  .tile .v{font:600 1.5rem/1.2 var(--sans);font-variant-numeric:tabular-nums}
+  .tile .k{font-size:.8rem;color:var(--muted)}
+  .tile.ok .v{color:var(--ok)} .tile.mal .v{color:var(--bad)} .tile.desc .v{color:var(--muted)}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:12px;flex-wrap:wrap}
+  .tabs button{border:0;background:none;padding:8px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;font-size:.9rem}
+  .tabs button.on{color:var(--text);border-bottom-color:var(--accent);font-weight:500}
+  pre.consola{background:#1f1e1c;color:#e9e6dc;border-radius:10px;padding:14px 16px;font:.82rem/1.55 var(--mono);overflow:auto;max-height:520px;white-space:pre}
+  .tabla-env{overflow:auto;max-height:560px;border:1px solid var(--line);border-radius:10px}
+  table.filas{border-collapse:collapse;width:100%;font-size:.83rem}
+  table.filas th{position:sticky;top:0;background:var(--card);text-align:left;font-weight:600;color:var(--muted);padding:7px 10px;border-bottom:1px solid var(--line);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+  table.filas td{padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.filas td.l{color:var(--muted);font-variant-numeric:tabular-nums;width:1%}
+  table.filas td.t{font-family:var(--mono);white-space:pre;color:var(--text2)}
+  .badge{display:inline-block;border-radius:99px;padding:1px 9px;font-size:.76rem;font-weight:600;white-space:nowrap}
+  .badge.Procesada{background:var(--ok-soft);color:var(--ok)}
+  .badge.Inválida{background:var(--bad-soft);color:var(--bad)}
+  .badge.Descartada{background:var(--hover);color:var(--muted)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .chips button{border:1px solid var(--line2);background:var(--card);border-radius:99px;padding:3px 11px;font-size:.82rem;cursor:pointer}
+  .chips button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+  .dif{font:.82rem/1.55 var(--mono);border:1px solid var(--line);border-radius:10px;overflow:auto;max-height:460px}
+  .dif div{padding:1px 12px;white-space:pre}
+  .dif .igual{color:var(--muted)}
+  .dif .falta{background:var(--bad-soft);color:var(--bad)}
+  .dif .sobra{background:var(--warn-soft);color:var(--warn)}
+
+  /* Código */
+  .cod-env{display:grid;grid-template-columns:250px 1fr;gap:12px;align-items:start}
+  @media (max-width:760px){ .cod-env{grid-template-columns:1fr} }
+  .archivos{display:flex;flex-direction:column;gap:2px}
+  @media (max-width:760px){ .archivos{flex-direction:row;flex-wrap:wrap} }
+  .archivos button{display:flex;align-items:center;gap:6px;border:0;background:none;text-align:left;padding:6px 9px;border-radius:8px;cursor:pointer;font:.84rem var(--mono);color:var(--text2)}
+  .archivos button:hover{background:var(--hover)}
+  .archivos button.on{background:var(--accent-soft);color:var(--accent)}
+  .archivos button span.nom{min-width:0;overflow-wrap:anywhere}
+  .archivos button .et{margin-left:auto;flex:none;font:600 .68rem var(--sans);text-transform:uppercase;letter-spacing:.04em;border-radius:5px;padding:0 5px}
+  .et.nuevo{background:var(--ok-soft);color:var(--ok)} .et.cambia{background:var(--warn-soft);color:var(--warn)} .et.igual{color:var(--muted)}
+  .codigo{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;overflow:auto;max-height:640px;font:.8rem/1.55 var(--mono)}
+  .codigo .ln{display:flex;white-space:pre}
+  .codigo .ln i{flex:none;width:44px;text-align:right;padding-right:12px;color:var(--muted);font-style:normal;user-select:none;opacity:.7}
+  .codigo .ln.add{background:var(--add);box-shadow:inset 3px 0 0 var(--add-l)}
+  .codigo .kw{color:var(--kw)} .codigo .s{color:var(--str)} .codigo .c{color:var(--com);font-style:italic} .codigo .nm{color:var(--num)}
+  .cerrado{position:relative;border:1px dashed var(--line2);border-radius:12px;padding:26px;text-align:center}
+  .cerrado p{color:var(--text2);margin-bottom:12px}
+  .pie{color:var(--muted);font-size:.82rem;margin-top:26px;text-align:center}
+  .oculto{display:none!important}
+  kbd,code.k{font:.82rem var(--mono);background:var(--hover);border-radius:5px;padding:0 5px;overflow-wrap:anywhere}
+  .evid q,.estado-carga,.nota,.aviso{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div class="env">
+  <header class="cab">
+    <div>
+      <h1>Laboratorio del recuperatorio · Flota Logística</h1>
+      <p>El preenunciado ya está cargado. Le pasás un enunciado nuevo (PDF, Markdown o texto) y un CSV: el laboratorio busca las reglas nuevas con las frases que usa la cátedra, las aplica al CSV fila por fila y te muestra la salida del main y el Java resuelto.</p>
+      <span class="sello">● Funciona sin internet y sin IA: guardá esta página y abrila cuando quieras</span>
+    </div>
+    <button class="tema" id="tema" title="Cambiar tema" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+  </header>
+
+  <section class="paso" id="p1">
+    <h2><span class="n">1</span>El enunciado nuevo</h2>
+    <p class="sub">Abrí el PDF del parcial, pegá el texto o elegí uno de práctica. Después tocá «Leer reglas».</p>
+    <div class="fila">
+      <button class="btn" id="abrirEnun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Abrir PDF, .md o .txt</button>
+      <select id="ejemplo" aria-label="Enunciados de práctica"><option value="">… o un enunciado de práctica</option></select>
+      <button class="btn pri" id="leer">Leer reglas</button>
+      <input type="file" id="fEnun" accept=".pdf,.md,.txt,.markdown,text/plain,application/pdf" class="oculto">
+    </div>
+    <div class="soltar" id="soltarEnun">También podés soltar el archivo acá</div>
+    <div class="estado-carga" id="estadoEnun"></div>
+    <details class="mas" id="verTexto">
+      <summary>Ver y corregir el texto del enunciado</summary>
+      <textarea id="texto" rows="12" placeholder="Pegá acá el enunciado…"></textarea>
+    </details>
+    <details class="mas">
+      <summary>Qué tiene el preenunciado (lo que ya está hecho)</summary>
+      <div class="nota" style="margin-top:8px;line-height:1.6">
+        Encabezado exacto <code class="k">patente,zona,velocidadPromedio,cargaToneladas,estado</code>, cinco campos separados por coma, se quitan los espacios externos.
+        Velocidad &gt; 0 y &lt; 130 · carga ≤ 45 (las negativas no se validan) · estados <b>EN_RUTA</b> y <b>DEMORADO</b>; <b>EN_DEPOSITO</b> se descarta sin validar; cualquier otro es inválido.
+        Índice = (int)(velocidad × 0.6 + carga × 0.4), entre 1 y 90 · costo = 2000 × índice / 100 (entero).
+        Orden: ancho → descarte → validaciones. Las filas inválidas se registran con su línea física (el encabezado es la 1) y la carga sigue; un encabezado incorrecto aborta con IllegalArgumentException.
+        Con <code class="k">datos.csv</code>: 60 leídas, 32 procesadas, 20 descartadas, 8 inválidas; total 31840 (NORTE 11200, CENTRO 12440, SUR 8200); 18 con índice &lt; 55.
+      </div>
+    </details>
+  </section>
+
+  <section class="paso" id="p2">
+    <h2><span class="n">2</span>Las reglas nuevas</h2>
+    <p class="sub">Lo que entendí del enunciado. Revisalo y corregí lo que haga falta: todo se recalcula al toque.</p>
+    <div id="resumenReglas"></div>
+    <div id="avisos"></div>
+    <div class="reglas" id="reglas"></div>
+    <div class="fila" style="margin-top:12px">
+      <button class="btn chico" id="guardarReglas">Guardar estas reglas (.json)</button>
+      <button class="btn chico" id="abrirReglas">Abrir reglas guardadas</button>
+      <button class="btn chico" id="limpiarReglas">Volver al preenunciado</button>
+      <input type="file" id="fReglas" accept=".json,application/json" class="oculto">
+    </div>
+    <details class="mas" id="evidDet">
+      <summary>De qué frases saqué cada regla</summary>
+      <ul class="evid" id="evid"></ul>
+    </details>
+  </section>
+
+  <section class="paso" id="p3">
+    <h2><span class="n">3</span>El CSV</h2>
+    <p class="sub">El del parcial (datos-parcial.csv), el del preenunciado o uno de prueba armado con las reglas de arriba.</p>
+    <div class="fila">
+      <button class="btn" id="abrirCsv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h8"/></svg>Abrir CSV</button>
+      <button class="btn" id="usarDatos">Usar datos.csv del preenunciado</button>
+      <button class="btn" id="generarCsv">Generar un CSV de prueba</button>
+      <button class="btn chico" id="bajarCsv">Descargar el CSV</button>
+      <input type="file" id="fCsv" accept=".csv,text/csv,text/plain" class="oculto">
+    </div>
+    <div class="soltar" id="soltarCsv">O soltá el CSV acá</div>
+    <div class="estado-carga" id="estadoCsv"></div>
+    <details class="mas">
+      <summary>Ver y editar el CSV</summary>
+      <textarea id="csvTexto" rows="10" spellcheck="false"></textarea>
+    </details>
+  </section>
+
+  <section class="paso" id="p4">
+    <h2><span class="n">4</span>Qué da</h2>
+    <p class="sub">Lo mismo que imprime el main resuelto, calculado como Java (enteros, división entera, el índice con <code class="k">(int)</code>).</p>
+    <div id="resultado"></div>
+  </section>
+
+  <section class="paso" id="p5">
+    <h2><span class="n">5</span>La solución en Java</h2>
+    <p class="sub">Intentalo primero en tu proyecto y compará la salida en el paso 4. Las líneas resaltadas son las que cambian respecto del preenunciado.</p>
+    <div id="solucion"></div>
+  </section>
+
+  <p class="pie">Laboratorio offline · el lector busca frases típicas de los enunciados de la cátedra, no entiende cualquier texto: revisá siempre las reglas del paso 2.</p>
+</div>
+
+<script>/*@PDFJS@*/</script>
+<script>/*@WORKER@*/</script>
+<script>/*@MOTOR@*/</script>
+<script>/*@EJEMPLOS@*/</script>
+<script>window.PROYECTO = /*@PROYECTO@*/;</script>
+<script>
+(function () {
+  'use strict';
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const P = window.PROYECTO, M = window.Motor, EJ = window.Ejemplos || [];
+  const JAVA = 'src/main/java/ar/edu/backend/';
+  const originales = {};
+  for (const [r, t] of Object.entries(P)) if (r.startsWith(JAVA)) originales[r.slice(JAVA.length)] = t;
+  const DATOS = P['datos/datos.csv'];
+  const CLAVE = 'lab-flota-v1';
+
+  const S = { texto: '', origen: '', cfg: M.configBase(), evid: [], avisos: [], leido: false, csv: '', csvNombre: '', csvOrigen: '', tab: 'salida', filtro: 'Todas', verSol: false, archivo: 'ParserVehiculos.java', mia: '' };
+
+  // ───── Guardar en este navegador (solo comodidad) ─────
+  function guardar() {
+    try { localStorage.setItem(CLAVE, JSON.stringify({ texto: S.texto, origen: S.origen, cfg: S.cfg, evid: S.evid, avisos: S.avisos, leido: S.leido, csv: S.csv.length < 400000 ? S.csv : '', csvNombre: S.csvNombre, csvOrigen: S.csvOrigen, mia: S.mia })); } catch (e) { /* sin almacenamiento */ }
+  }
+  function recuperar() {
+    try { const d = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (d && d.cfg) Object.assign(S, d); } catch (e) { /* nada */ }
+  }
+
+  // ───── Tema ─────
+  (function () {
+    let t = null; try { t = localStorage.getItem('lab-tema'); } catch (e) {}
+    if (t) document.documentElement.dataset.theme = t;
+    $('#tema').onclick = () => {
+      const osc = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = osc ? 'light' : 'dark';
+      try { localStorage.setItem('lab-tema', document.documentElement.dataset.theme); } catch (e) {}
+    };
+  })();
+
+  // ───── 1 · El enunciado ─────
+  for (const e of EJ) { const o = document.createElement('option'); o.value = e.id; o.textContent = e.titulo + ' — ' + e.estilo; $('#ejemplo').appendChild(o); }
+  $('#ejemplo').onchange = ev => {
+    const e = EJ.find(x => x.id === ev.target.value); if (!e) return;
+    ponerTexto(e.texto, 'Enunciado de práctica: ' + e.titulo);
+    leer();
+  };
+  $('#abrirEnun').onclick = () => $('#fEnun').click();
+  $('#fEnun').onchange = ev => { const f = ev.target.files[0]; if (f) abrirEnunciado(f); ev.target.value = ''; };
+  soltable('#soltarEnun', abrirEnunciado);
+  $('#texto').oninput = ev => { S.texto = ev.target.value; S.origen = 'Texto editado a mano'; pintarEstadoEnun(); guardar(); };
+  $('#leer').onclick = () => leer();
+
+  function soltable(sel, fn) {
+    const z = $(sel);
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('encima'); });
+    z.addEventListener('dragleave', () => z.classList.remove('encima'));
+    z.addEventListener('drop', e => { e.preventDefault(); z.classList.remove('encima'); const f = e.dataTransfer.files[0]; if (f) fn(f); });
+  }
+  function ponerTexto(t, origen) { S.texto = t; S.origen = origen; $('#texto').value = t; pintarEstadoEnun(); guardar(); }
+  function pintarEstadoEnun(msg) {
+    const n = S.texto.trim() ? S.texto.trim().split(/\s+/).length : 0;
+    $('#estadoEnun').innerHTML = msg || (n ? `<b>${esc(S.origen || 'Enunciado')}</b> · ${n} palabras${S.leido ? '' : ' · todavía sin leer: tocá «Leer reglas»'}` : '<span class="nota">Todavía no cargaste ningún enunciado: el laboratorio usa el preenunciado tal cual.</span>');
+  }
+  async function abrirEnunciado(f) {
+    try {
+      if (/\.pdf$/i.test(f.name) || f.type === 'application/pdf') {
+        pintarEstadoEnun('Leyendo el PDF…');
+        const t = await textoDePdf(new Uint8Array(await f.arrayBuffer()));
+        if (!t.trim()) { pintarEstadoEnun('<span class="aviso mal">El PDF no tiene texto seleccionable (¿es una foto escaneada?). Copiá el texto a mano en «Ver y corregir el texto».</span>'); return; }
+        ponerTexto(t, f.name);
+      } else ponerTexto(await f.text(), f.name);
+      leer();
+    } catch (e) { pintarEstadoEnun('<span class="aviso mal">No pude abrir ' + esc(f.name) + ': ' + esc(e.message || e) + '</span>'); }
+  }
+  async function textoDePdf(datos) {
+    const lib = window.pdfjsLib;
+    if (!lib) throw new Error('falta el lector de PDF');
+    const doc = await lib.getDocument({ data: datos, isEvalSupported: false, disableFontFace: true, useSystemFonts: false }).promise;
+    const paginas = [];
+    for (let i = 1; i <= doc.numPages; i++) {
+      const pg = await doc.getPage(i), tc = await pg.getTextContent();
+      let t = '', ultY = null;
+      for (const it of tc.items) {
+        if (!('str' in it)) continue;
+        const y = it.transform ? it.transform[5] : null;
+        if (ultY !== null && y !== null && Math.abs(y - ultY) > 2 && !/\n$/.test(t)) t += '\n';
+        t += it.str;
+        if (it.hasEOL) t += '\n';
+        ultY = y;
+      }
+      paginas.push(t);
+    }
+    return paginas.join('\n\n').split('\n').filter(l => !/^\s*\d+\s*\/\s*\d+\s*$/.test(l)).join('\n')
+      .replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n');
+  }
+
+  function leer() {
+    if (!S.texto.trim()) { pintarEstadoEnun('<span class="aviso">Primero cargá o pegá un enunciado.</span>'); return; }
+    const r = M.leerEnunciado(S.texto, S.csv && S.csvOrigen === 'archivo' ? S.csv : '');
+    S.cfg = r.cfg; S.evid = r.evidencias; S.avisos = r.avisos; S.leido = true;
+    if (!S.csv || S.csvOrigen === 'prueba' || S.csvOrigen === 'preenunciado') generarPrueba(true);
+    pintarEstadoEnun(); pintarReglas(); recalcular(); guardar();
+    $('#p2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ───── 2 · Las reglas (formulario) ─────
+  const ruta = p => p.split('.').map(x => /^\d+$/.test(x) ? Number(x) : x);
+  function leerRuta(p) { return ruta(p).reduce((o, k) => o == null ? o : o[k], S.cfg); }
+  function ponerRuta(p, v) { const r = ruta(p), u = r.pop(); const o = r.reduce((o, k) => o[k], S.cfg); o[u] = v; }
+  const lista = s => String(s).split(/[,;\s]+/).map(x => x.trim()).filter(Boolean);
+  const NUEVOS = {
+    op: () => ({ op: 'suma', n: 100 }),
+    tope: () => ({ campo: 'carga', op: 'max', n: 30, incl: true }),
+    restr: () => ({ estado: S.cfg.estados[1] || 'DEMORADO', valores: S.cfg.columna && S.cfg.columna.valores.length ? [String(S.cfg.columna.valores[0])] : [] }),
+    total: () => ({ campo: 'estado', valor: 'DEMORADO' }),
+    esp: () => {
+      const c = S.cfg.columna;
+      const cuando = c && c.tipo === 'texto' && c.valores.length ? { campo: 'columna', op: 'igual', valor: c.valores[c.valores.length - 1] } : c && c.tipo === 'entero' ? { campo: 'columna', op: 'mayor', valor: 0 } : { campo: 'estado', op: 'igual', valor: 'DEMORADO' };
+      return { cuando, ops: [{ op: 'suma', n: 300 }], topes: [], clase: '', etiqueta: '' };
+    },
+  };
+  function opcion(v, t, sel) { return `<option value="${esc(v)}"${String(v) === String(sel) ? ' selected' : ''}>${esc(t)}</option>`; }
+  function sel(p, opciones, v, tipo) { return `<select data-p="${p}" data-t="${tipo || 'txt'}">${opciones.map(([a, b]) => opcion(a, b, v)).join('')}</select>`; }
+  function inp(p, v, tipo, ph, ancho) { return `<input type="${tipo === 'num' || tipo === 'numnull' ? 'number' : 'text'}" data-p="${p}" data-t="${tipo || 'txt'}" value="${esc(v == null ? '' : v)}"${ph ? ` placeholder="${esc(ph)}"` : ''}${ancho ? ` style="width:${ancho}"` : ''}>`; }
+  const quitar = p => `<button class="btn x" data-del="${p}" title="Quitar" aria-label="Quitar">✕</button>`;
+
+  function opsHtml(base, ops, col) {
+    if (!ops.length) return '<div class="vacio">Sin cambios en el costo.</div>';
+    return ops.map((o, i) => `<div class="mini">${sel(base + '.' + i + '.op', [['suma', 'suma USD fijos'], ['porcentaje', 'porcentaje (+/−)'], ['multiplica', 'multiplica por'], ['sumaPorCada', 'suma USD por cada…']].filter(x => x[0] !== 'sumaPorCada' || (col && col.tipo === 'entero') || o.op === 'sumaPorCada'), o.op, 'rehacer')}
+      ${inp(base + '.' + i + '.n', o.n, 'num')}${o.op === 'porcentaje' ? ' %' : ''}${o.op === 'sumaPorCada' ? ' por cada ' + inp(base + '.' + i + '.cada', o.cada, 'num') + ' de ' + esc(col ? col.nombre : 'la columna') : ''}
+      ${quitar(base + '.' + i)}</div>`).join('');
+  }
+  function topesHtml(base, topes, col) {
+    if (!topes.length) return '<div class="vacio">Sin topes propios.</div>';
+    const campos = [['carga', 'carga (t)'], ['velocidad', 'velocidad (km/h)'], ['indice', 'índice de desgaste']].concat(col && col.tipo === 'entero' ? [['columna', col.nombre]] : []);
+    return topes.map((t, i) => `<div class="mini">${sel(base + '.' + i + '.campo', campos, t.campo)}
+      ${sel(base + '.' + i + '.signo', [['max-1', '≤'], ['max-0', '<'], ['min-1', '≥'], ['min-0', '>']], t.op + '-' + (t.incl ? 1 : 0), 'signo')}
+      ${inp(base + '.' + i + '.n', t.n, 'num')}${quitar(base + '.' + i)}</div>`).join('');
+  }
+
+  function pintarReglas() {
+    const c = S.cfg, col = c.columna, lista_ = M.normalizar(JSON.parse(JSON.stringify(c)));
+    // Resumen en palabras
+    const res = [];
+    if (col) {
+      res.push(`Columna nueva <b>${esc(col.nombre)}</b> (${col.tipo === 'entero' ? 'entero' : 'texto'})${col.valores.length ? ': ' + esc(col.valores.join(', ')) : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ', ' + esc(M.textoRango(col.rango)) : ''}; separador «${esc(c.separador)}»; en el formato de cinco columnas vale <b>${esc(col.defecto)}</b>${col.vacio === 'defecto' ? '; vacío = sin valor' : ''}.`);
+    }
+    if (c.estados.join() !== M.ESTADOS_BASE.join()) res.push('Estados válidos: ' + esc(c.estados.join(', ')) + '.');
+    if (c.descartes.join() !== M.DESCARTES_BASE.join()) res.push('Se descartan sin validar: ' + esc(c.descartes.join(', ')) + '.');
+    for (const r of c.restricciones) res.push(`En el formato nuevo, ${esc(r.estado)} solo admite ${esc(r.valores.join(' o '))}.`);
+    if (c.baseDesdeColumna && col) res.push(`El costo usa <b>${esc(col.nombre)}</b> en lugar de los 2000 USD.`);
+    if (c.extras.length) res.push('Para todos: costo ' + esc(c.extras.map(o => M.describirOp(o, c)).join(', ')) + '.');
+    for (const e of lista_.especiales) res.push(`<b>${esc(e.clase)}</b>: ${esc(M.describirEspecial(e, lista_))}.`);
+    if (c.conteo) res.push('Conteo por ' + esc(c.conteo === 'columna' && col ? col.nombre : c.conteo) + '.');
+    for (const t of c.totales) res.push('Total de los ' + esc(t.valor) + '.');
+    if (M.hayCambios(c)) res.push(`El main usa <code class="k">datos/${esc(c.archivo)}</code>.`);
+    $('#resumenReglas').innerHTML = res.length ? '<ul class="resumen-reglas">' + res.map(x => `<li>${x}</li>`).join('') + '</ul>' : '<p class="nota" style="margin-bottom:10px">Sin reglas nuevas: es el preenunciado tal cual.</p>';
+    const av = S.leido ? S.avisos : [];
+    const viejo = M.afectaFormatoViejo(lista_);
+    const rev = M.revisar(lista_).concat(viejo ? [viejo] : []).filter(a => !av.includes(a));
+    const todos = av.concat(rev);
+    $('#avisos').innerHTML = todos.length ? `<div class="aviso"><b>Para revisar</b><ul>${todos.map(a => `<li>${esc(a)}</li>`).join('')}</ul></div>` : (S.leido ? '<div class="aviso ok">Encontré todo lo de abajo. Igual, compará con el enunciado antes de confiar.</div>' : '');
+    $('#evid').innerHTML = S.evid.length ? S.evid.map(e => `<li><b>${esc(e.que)}</b><br><q>${esc(e.oracion)}</q></li>`).join('') : '<li>Nada todavía.</li>';
+
+    // El formulario
+    let h = '';
+    h += `<div class="bloque"><h3>Columna nueva <label class="ch" style="margin-left:auto;text-transform:none;letter-spacing:0;color:var(--text)"><input type="checkbox" data-acc="columna"${col ? ' checked' : ''}> hay sexta columna</label></h3>`;
+    if (col) {
+      h += `<div class="campo"><span>Nombre</span>${inp('columna.nombre', col.nombre, 'txt', 'tipoCarga')}</div>
+        <div class="campo"><span>Tipo</span>${sel('columna.tipo', [['texto', 'texto (valores fijos)'], ['entero', 'entero']], col.tipo, 'rehacer')}</div>
+        <div class="campo"><span>Valores válidos</span>${inp('columna.valores', col.valores.join(', '), 'lista', col.tipo === 'entero' ? 'vacío = cualquier entero' : 'GENERAL, REFRIGERADA')}</div>`;
+      if (col.tipo === 'entero') h += `<div class="campo"><span>Rango</span><div class="mini">${sel('columna.rango.minIncl', [['1', '≥'], ['0', '>']], col.rango.minIncl ? '1' : '0', 'bool')}${inp('columna.rango.min', col.rango.min, 'numnull', 'sin mínimo')} y ${sel('columna.rango.maxIncl', [['1', '≤'], ['0', '<']], col.rango.maxIncl ? '1' : '0', 'bool')}${inp('columna.rango.max', col.rango.max, 'numnull', 'sin máximo')}</div></div>`;
+      h += `<div class="campo"><span>Vacío</span>${sel('columna.vacio', [['invalida', 'hace inválida la fila'], ['defecto', 'cuenta como sin valor']], col.vacio)}</div>
+        <div class="campo"><span>Formato viejo</span>${inp('columna.defecto', col.defecto, col.tipo === 'entero' ? 'num' : 'txt')}</div>
+        <div class="campo"><span>Separador</span>${sel('separador', [[',', 'coma ,'], [';', 'punto y coma ;'], ['|', 'barra |']], c.separador)}</div>
+        <div class="nota">Encabezado nuevo: <code class="k">${esc(M.encabezadoNuevo(c))}</code></div>`;
+    } else h += '<div class="vacio">Sin columna nueva: el CSV sigue con cinco columnas.</div>';
+    h += '</div>';
+
+    h += `<div class="bloque"><h3>Estados</h3>
+      <div class="campo"><span>Válidos</span>${inp('estados', c.estados.join(', '), 'lista')}</div>
+      <div class="campo"><span>Se descartan</span>${inp('descartes', c.descartes.join(', '), 'lista')}</div>
+      <h3 style="margin-top:12px">Restricciones del formato nuevo ${col ? '<button class="btn chico" data-add="restricciones" data-tpl="restr">+ agregar</button>' : ''}</h3>
+      ${col ? (c.restricciones.length ? c.restricciones.map((r, i) => `<div class="mini">Con ${sel('restricciones.' + i + '.estado', c.estados.map(e => [e, e]), r.estado)} solo ${inp('restricciones.' + i + '.valores', r.valores.join(', '), 'lista', 'valores', '130px')}${quitar('restricciones.' + i)}</div>`).join('') : '<div class="vacio">Ninguna.</div>') : '<div class="vacio">Necesitan la columna nueva.</div>'}
+    </div>`;
+
+    h += `<div class="bloque"><h3>Costo de todos ${'<button class="btn chico" data-add="extras" data-tpl="op">+ agregar</button>'}</h3>
+      <div class="campo"><span>Base</span>${col && col.tipo === 'entero' ? sel('baseDesdeColumna', [['0', '2000 USD fijos'], ['1', 'el valor de ' + col.nombre]], c.baseDesdeColumna ? '1' : '0', 'boolre') : '<span>2000 USD fijos</span>'}</div>
+      <div class="nota" style="margin-bottom:6px">costo = base × índice / 100${c.extras.length ? ', y después:' : ''}</div>
+      ${c.extras.length ? opsHtml('extras', c.extras, col) : ''}
+    </div>`;
+
+    h += `<div class="bloque"><h3>Conteo, totales y main</h3>
+      <div class="campo"><span>Conteo por</span>${sel('conteo', [['', 'sin conteo'], ['estado', 'estado'], ['zona', 'zona']].concat(col ? [['columna', col.nombre]] : []).concat(c.especiales.length ? [['tipo', 'tipo (común / subclase)']] : []), c.conteo || '', 'conteo')}</div>
+      ${c.conteo === 'tipo' ? `<div class="campo"><span>Común se llama</span>${inp('etiquetaBase', c.etiquetaBase, 'txt', 'NORMAL')}</div>` : ''}
+      <div class="campo"><span>CSV del main</span>${inp('archivo', c.archivo, 'txt', 'datos-parcial.csv')}</div>
+      <h3 style="margin-top:12px">Totales aparte <button class="btn chico" data-add="totales" data-tpl="total">+ agregar</button></h3>
+      ${c.totales.length ? c.totales.map((t, i) => `<div class="mini">Total de ${sel('totales.' + i + '.campo', [['estado', 'estado']].concat(col ? [['columna', col.nombre]] : []), t.campo)} = ${inp('totales.' + i + '.valor', t.valor, 'txt', 'DEMORADO', '130px')}${quitar('totales.' + i)}</div>`).join('') : '<div class="vacio">Ninguno.</div>'}
+    </div>`;
+
+    h += `<div class="bloque ancho"><h3>Subclases (los que cuestan o se validan distinto) <button class="btn chico" data-add="especiales" data-tpl="esp">+ agregar</button></h3>`;
+    if (!c.especiales.length) h += '<div class="vacio">Ninguna: todos son VehiculoRuta.</div>';
+    c.especiales.forEach((e, i) => {
+      const b = 'especiales.' + i, ok = lista_.especiales[i];
+      const cuandoOpc = [['estado-igual', 'estado ='], ...(col ? (col.tipo === 'texto' ? [['columna-igual', col.nombre + ' =']] : [['columna-igual', col.nombre + ' ='], ['columna-mayor', col.nombre + ' >']]) : []), ...(col && col.vacio === 'defecto' ? [['columna-presente', 'tiene valor en ' + col.nombre]] : [])];
+      h += `<div class="item"><div class="cab-i"><b>${esc(ok.clase)}</b><span class="nota">extends VehiculoRuta</span><span style="margin-left:auto"></span>${quitar(b)}</div>
+        <div class="mini">Se usa cuando ${sel(b + '.cuando.clave', cuandoOpc, e.cuando.campo + '-' + e.cuando.op, 'cuando')}${e.cuando.op !== 'presente' ? inp(b + '.cuando.valor', e.cuando.valor, 'txt', '', '130px') : ''}
+          · clase ${inp(b + '.clase', e.clase, 'txt', ok.clase, '170px')}${c.conteo === 'tipo' ? ' · en el conteo ' + inp(b + '.etiqueta', e.etiqueta, 'txt', ok.etiqueta, '120px') : ''}</div>
+        <div class="reglas" style="margin-top:8px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+          <div><div class="nota">Costo: el normal y después <button class="btn chico" data-add="${b}.ops" data-tpl="op">+ agregar</button></div>${opsHtml(b + '.ops', e.ops, col)}</div>
+          <div><div class="nota">Topes, además de las validaciones de siempre <button class="btn chico" data-add="${b}.topes" data-tpl="tope">+ agregar</button></div>${topesHtml(b + '.topes', e.topes, col)}</div>
+        </div></div>`;
+    });
+    h += '</div>';
+    $('#reglas').innerHTML = h;
+  }
+
+  // Cambios del formulario
+  $('#reglas').addEventListener('input', ev => {
+    const el = ev.target, p = el.dataset.p, t = el.dataset.t;
+    if (!p || el.tagName === 'SELECT') return;
+    if (t === 'num') { const v = el.value === '' ? 0 : Number(el.value); if (!Number.isFinite(v)) return; ponerRuta(p, v); }
+    else if (t === 'numnull') ponerRuta(p, el.value === '' ? null : Number(el.value));
+    else if (t === 'lista') { const v = lista(el.value); ponerRuta(p, p === 'columna.valores' && S.cfg.columna.tipo === 'entero' ? v.map(Number).filter(Number.isFinite) : v); }
+    else ponerRuta(p, el.value);
+    pintarResumenRapido(); recalcular(); guardar();
+  });
+  $('#reglas').addEventListener('change', ev => {
+    const el = ev.target;
+    if (el.dataset.acc === 'columna') {
+      S.cfg.columna = el.checked ? { nombre: 'tipoCarga', tipo: 'texto', valores: ['GENERAL', 'REFRIGERADA'], rango: { min: null, minIncl: true, max: null, maxIncl: true }, vacio: 'invalida', defecto: 'GENERAL' } : null;
+      if (!el.checked) { S.cfg.restricciones = []; S.cfg.baseDesdeColumna = false; S.cfg.especiales = S.cfg.especiales.filter(e => e.cuando.campo !== 'columna'); if (S.cfg.conteo === 'columna') S.cfg.conteo = null; S.cfg.totales = S.cfg.totales.filter(t => t.campo !== 'columna'); }
+    } else if (el.tagName === 'SELECT') {
+      const p = el.dataset.p, t = el.dataset.t;
+      if (t === 'bool' || t === 'boolre') ponerRuta(p, el.value === '1');
+      else if (t === 'signo') { const [op, inc] = el.value.split('-'); const base = p.replace(/\.signo$/, ''); ponerRuta(base + '.op', op); ponerRuta(base + '.incl', inc === '1'); }
+      else if (t === 'cuando') { const [campo, op] = el.value.split('-'); const base = p.replace(/\.clave$/, ''); const cu = leerRuta(base); cu.campo = campo; cu.op = op; if (op === 'presente') cu.valor = ''; else if (op === 'mayor') cu.valor = 0; else if (campo === 'estado' && !S.cfg.estados.includes(cu.valor)) cu.valor = S.cfg.estados[1] || 'DEMORADO'; else if (campo === 'columna' && S.cfg.columna && S.cfg.columna.valores.length && !S.cfg.columna.valores.map(String).includes(String(cu.valor))) cu.valor = S.cfg.columna.valores[0]; }
+      else if (t === 'conteo') ponerRuta(p, el.value || null);
+      else {
+        ponerRuta(p, el.value);
+        if (p === 'columna.tipo') { const c = S.cfg.columna; c.valores = el.value === 'entero' ? c.valores.map(Number).filter(Number.isFinite) : c.valores.map(String); c.defecto = el.value === 'entero' ? (Number(c.defecto) || 0) : String(c.defecto || c.valores[0] || ''); if (el.value !== 'entero') S.cfg.baseDesdeColumna = false; }
+        if (/\.op$/.test(p) && el.value === 'sumaPorCada') ponerRuta(p.replace(/\.op$/, '.cada'), leerRuta(p.replace(/\.op$/, '.cada')) || 30);
+      }
+    } else return;
+    pintarReglas(); recalcular(); guardar();
+  });
+  $('#reglas').addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    if (b.dataset.add) { leerRuta(b.dataset.add).push(NUEVOS[b.dataset.tpl]()); }
+    else if (b.dataset.del) { const r = b.dataset.del.split('.'), i = Number(r.pop()); leerRuta(r.join('.')).splice(i, 1); if (S.cfg.conteo === 'tipo' && !S.cfg.especiales.length) S.cfg.conteo = null; }
+    else return;
+    pintarReglas(); recalcular(); guardar();
+  });
+  let resumenT = null;
+  function pintarResumenRapido() { clearTimeout(resumenT); resumenT = setTimeout(() => { const f = document.activeElement, p = f && f.dataset ? f.dataset.p : null, pos = f && f.selectionStart; pintarReglas(); if (p) { const n = document.querySelector(`[data-p="${p}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} } } }, 700); }
+
+  $('#guardarReglas').onclick = () => bajar('reglas-flota.json', JSON.stringify({ tipo: 'laboratorio-flota', cfg: S.cfg, texto: S.texto }, null, 2), 'application/json');
+  $('#abrirReglas').onclick = () => $('#fReglas').click();
+  $('#fReglas').onchange = async ev => {
+    const f = ev.target.files[0]; ev.target.value = ''; if (!f) return;
+    try {
+      const d = JSON.parse(await f.text());
+      if (!d || !d.cfg || !Array.isArray(d.cfg.estados)) throw new Error('no es un archivo de reglas de este laboratorio');
+      S.cfg = Object.assign(M.configBase(), d.cfg); S.evid = []; S.avisos = []; S.leido = false;
+      if (typeof d.texto === 'string') ponerTexto(d.texto, f.name);
+      pintarReglas(); recalcular(); guardar();
+    } catch (e) { $('#avisos').innerHTML = `<div class="aviso mal">${esc(e.message)}</div>`; }
+  };
+  $('#limpiarReglas').onclick = () => { S.cfg = M.configBase(); S.evid = []; S.avisos = []; S.leido = false; pintarReglas(); recalcular(); guardar(); };
+
+  // ───── 3 · El CSV ─────
+  $('#abrirCsv').onclick = () => $('#fCsv').click();
+  $('#fCsv').onchange = async ev => { const f = ev.target.files[0]; ev.target.value = ''; if (f) ponerCsv(await f.text(), f.name, 'archivo'); };
+  soltable('#soltarCsv', async f => ponerCsv(await f.text(), f.name, 'archivo'));
+  $('#usarDatos').onclick = () => ponerCsv(DATOS, 'datos.csv del preenunciado', 'preenunciado');
+  $('#generarCsv').onclick = () => generarPrueba(false);
+  $('#bajarCsv').onclick = () => S.csv && bajar(/\.csv$/i.test(S.csvNombre) ? S.csvNombre : S.cfg.archivo, S.csv, 'text/csv');
+  $('#csvTexto').oninput = ev => { S.csv = ev.target.value; S.csvOrigen = S.csvOrigen === 'prueba' ? 'editado' : S.csvOrigen || 'editado'; pintarEstadoCsv(); recalcular(); guardar(); };
+  let semilla = 7;
+  function generarPrueba(silencioso) {
+    const c = M.normalizar(JSON.parse(JSON.stringify(S.cfg)));
+    if (!silencioso) semilla = (semilla * 31 + 11) % 100000;
+    ponerCsv(M.csvDePrueba(c, semilla), S.cfg.archivo + ' (de prueba)', 'prueba');
+  }
+  function ponerCsv(t, nombre, origen) { S.csv = t; S.csvNombre = nombre; S.csvOrigen = origen; $('#csvTexto').value = t; pintarEstadoCsv(); recalcular(); guardar(); }
+  function pintarEstadoCsv() {
+    if (!S.csv) { $('#estadoCsv').innerHTML = '<span class="nota">Sin CSV todavía.</span>'; return; }
+    const ls = S.csv.split(/\r\n|\r|\n/); if (ls[ls.length - 1] === '') ls.pop();
+    const nota = S.csvOrigen === 'prueba' ? ' · armado con las reglas del paso 2: filas buenas de cada tipo y una o más inválidas por cada regla' : '';
+    $('#estadoCsv').innerHTML = `<b>${esc(S.csvNombre)}</b> · ${ls.length} líneas (${Math.max(0, ls.length - 1)} filas de datos)${nota}<br><span class="nota">Encabezado: <code class="k">${esc(ls[0] || '')}</code></span>`;
+  }
+
+  // ───── 4 · El resultado ─────
+  let ultimo = null, cfgLista = null;
+  function recalcular() {
+    cfgLista = M.normalizar(JSON.parse(JSON.stringify(S.cfg)));
+    ultimo = S.csv ? M.simular(S.csv, cfgLista) : null;
+    pintarResultado(); pintarSolucion();
+  }
+  function pintarResultado() {
+    const r = ultimo, el = $('#resultado');
+    if (!r) { el.innerHTML = '<p class="nota">Cargá un CSV en el paso 3.</p>'; return; }
+    if (r.abortado) {
+      const enc = S.csv.split(/\r\n|\r|\n/)[0] || '';
+      const f = enc.split(/[,;|]/);
+      const ofrecer = f.length === 6 && f.slice(0, 5).join() === M.CAMPOS.join();
+      el.innerHTML = `<div class="aviso mal"><b>No arranca:</b> ${esc(r.abortado)}</div>${ofrecer ? `<div class="fila" style="margin-top:10px"><button class="btn" id="tomarCol">Tomar «${esc(f[5])}» del CSV como columna nueva</button></div>` : ''}`;
+      if (ofrecer) $('#tomarCol').onclick = () => {
+        const sep = enc.includes(';') ? ';' : enc.includes('|') ? '|' : ',';
+        const ya = S.cfg.columna;
+        S.cfg.columna = Object.assign(ya || { tipo: 'texto', valores: [], rango: { min: null, minIncl: true, max: null, maxIncl: true }, vacio: 'invalida', defecto: '' }, { nombre: f[5] });
+        S.cfg.separador = sep; pintarReglas(); recalcular(); guardar();
+      };
+      return;
+    }
+    const tiles = `<div class="tiles">
+      <div class="tile"><div class="v">${r.leidas}</div><div class="k">Filas leídas</div></div>
+      <div class="tile ok"><div class="v">${r.procesadas}</div><div class="k">Procesadas</div></div>
+      <div class="tile desc"><div class="v">${r.descartadas}</div><div class="k">Descartadas</div></div>
+      <div class="tile mal"><div class="v">${r.invalidas}</div><div class="k">Inválidas</div></div>
+      <div class="tile"><div class="v">${r.total}</div><div class="k">Costo total (USD)</div></div>
+    </div>`;
+    const tabs = [['salida', 'Salida del main'], ['filas', 'Fila por fila'], ['comparar', 'Comparar con tu salida']];
+    let cuerpo = '';
+    if (S.tab === 'salida') cuerpo = `<pre class="consola">${esc(r.salida)}</pre><div class="fila" style="margin-top:8px"><button class="btn chico" id="copiarSalida">Copiar</button><span class="nota">java -cp target/classes ar.edu.backend.App datos/${esc(cfgLista.archivo)}</span></div>`;
+    else if (S.tab === 'filas') {
+      const cant = { Todas: r.filas.length, Procesada: r.procesadas, Descartada: r.descartadas, Inválida: r.invalidas };
+      const fs = r.filas.filter(f => S.filtro === 'Todas' || f.resultado === S.filtro);
+      cuerpo = `<div class="chips">${['Todas', 'Procesada', 'Inválida', 'Descartada'].map(k => `<button data-filtro="${k}" class="${S.filtro === k ? 'on' : ''}">${k === 'Todas' ? 'Todas' : k + 's'} · ${cant[k]}</button>`).join('')}</div>
+        <div class="tabla-env"><table class="filas"><thead><tr><th>Línea</th><th>Fila</th><th>Resultado</th><th>Detalle</th></tr></thead><tbody>${fs.map(f => `<tr><td class="l">${f.linea}</td><td class="t">${esc(f.texto) || '<span class="nota">(vacía)</span>'}</td><td><span class="badge ${f.resultado}">${f.resultado}</span></td><td>${f.vehiculo ? `${esc(f.vehiculo.clase)} · índice ${f.vehiculo.indice} · costo <b>${f.vehiculo.costo}</b>` : esc(f.motivo)}</td></tr>`).join('')}</tbody></table></div>`;
+    } else {
+      cuerpo = `<p class="nota" style="margin-bottom:8px">Corré tu programa con este mismo CSV y pegá acá lo que imprimió: te marco las líneas que no coinciden.</p>
+        <textarea id="mia" rows="8" spellcheck="false" placeholder="Pegá la salida de tu App…">${esc(S.mia)}</textarea><div id="difRes" style="margin-top:10px"></div>`;
+    }
+    el.innerHTML = tiles + `<div class="tabs">${tabs.map(([k, t]) => `<button data-tab="${k}" class="${S.tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>` + cuerpo;
+    if (S.tab === 'comparar') { $('#mia').oninput = ev => { S.mia = ev.target.value; pintarDif(); guardar(); }; pintarDif(); }
+    const cs = $('#copiarSalida'); if (cs) cs.onclick = () => copiar(r.salida, cs);
+  }
+  $('#resultado').addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return;
+    if (b.dataset.tab) { S.tab = b.dataset.tab; pintarResultado(); }
+    if (b.dataset.filtro) { S.filtro = b.dataset.filtro; pintarResultado(); }
+  });
+  function lcs(a, b) {          // qué líneas de b están en a (en orden)
+    const n = a.length, m = b.length, T = new Uint16Array((n + 1) * (m + 1)), W = m + 1;
+    for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) T[i * W + j] = a[i] === b[j] ? T[(i + 1) * W + j + 1] + 1 : Math.max(T[(i + 1) * W + j], T[i * W + j + 1]);
+    const ops = []; let i = 0, j = 0;
+    while (i < n && j < m) { if (a[i] === b[j]) { ops.push(['=', a[i]]); i++; j++; } else if (T[(i + 1) * W + j] >= T[i * W + j + 1]) { ops.push(['-', a[i]]); i++; } else { ops.push(['+', b[j]]); j++; } }
+    while (i < n) ops.push(['-', a[i++]]); while (j < m) ops.push(['+', b[j++]]);
+    return ops;
+  }
+  function pintarDif() {
+    const d = $('#difRes'); if (!d) return;
+    const mia = S.mia.replace(/\r/g, '').split('\n').map(l => l.replace(/\s+$/, '')).filter((l, i, a) => !(l === '' && i === a.length - 1));
+    if (!S.mia.trim()) { d.innerHTML = ''; return; }
+    const esp = ultimo.salida.split('\n');
+    const ops = lcs(esp, mia);
+    const mal = ops.filter(o => o[0] !== '=').length;
+    d.innerHTML = (mal ? `<div class="aviso mal" style="margin:0 0 8px">${ops.filter(o => o[0] === '-').length} líneas esperadas no aparecen y ${ops.filter(o => o[0] === '+').length} sobran o difieren. En rojo lo que debería decir; en amarillo lo que dice tu programa.</div>` : '<div class="aviso ok" style="margin:0 0 8px">¡Coincide línea por línea!</div>')
+      + `<div class="dif">${ops.map(([k, l]) => `<div class="${k === '=' ? 'igual' : k === '-' ? 'falta' : 'sobra'}">${k === '=' ? '  ' : k === '-' ? '− ' : '+ '}${esc(l)}</div>`).join('')}</div>`;
+  }
+
+  // ───── 5 · La solución ─────
+  const KW = new Set('abstract boolean break case catch class continue default do double else enum extends final finally for if implements import instanceof int interface long new null package private protected public return static super switch this throw throws true false try void while var'.split(' '));
+  function resaltar(linea) {
+    let h = '', i = 0;
+    const re = /(\/\/.*$|\/\*.*?\*\/|\/\*.*$|^\s*\*.*$)|("(?:[^"\\]|\\.)*")|\b(\d+L?)\b|\b([A-Za-z_]\w*)\b|(@\w+)/g;
+    let m;
+    while ((m = re.exec(linea))) {
+      h += esc(linea.slice(i, m.index));
+      if (m[1]) h += `<span class="c">${esc(m[1])}</span>`;
+      else if (m[2]) h += `<span class="s">${esc(m[2])}</span>`;
+      else if (m[3]) h += `<span class="nm">${m[3]}</span>`;
+      else if (m[4]) h += KW.has(m[4]) ? `<span class="kw">${m[4]}</span>` : esc(m[4]);
+      else h += `<span class="kw">${esc(m[5])}</span>`;
+      i = m.index + m[0].length;
+    }
+    return h + esc(linea.slice(i));
+  }
+  function proyecto() {
+    const gen = M.generar(cfgLista, originales);
+    const archivos = [];
+    const orden = ['ParserVehiculos.java', 'VehiculoRuta.java', ...cfgLista.especiales.map(e => e.clase + '.java'), 'Flota.java', 'App.java', 'ResultadoParseo.java', 'ErrorParseo.java'];
+    for (const f of orden) {
+      if (archivos.some(a => a.nombre === f)) continue;
+      const nuevo = gen[f], viejo = originales[f];
+      if (nuevo == null && viejo == null) continue;
+      const texto = nuevo != null ? nuevo : viejo;
+      archivos.push({ nombre: f, texto, viejo, estado: viejo == null ? 'nuevo' : texto === viejo ? 'igual' : 'cambia' });
+    }
+    return archivos;
+  }
+  function pintarSolucion() {
+    const el = $('#solucion');
+    if (!S.verSol) {
+      el.innerHTML = `<div class="cerrado"><p>La solución está tapada para que primero la intentes vos.</p><button class="btn pri" id="mostrarSol">Mostrar la solución</button></div>`;
+      $('#mostrarSol').onclick = () => { S.verSol = true; pintarSolucion(); };
+      return;
+    }
+    const av = M.revisar(cfgLista), viejo = M.afectaFormatoViejo(cfgLista);
+    const arch = proyecto();
+    if (!arch.some(a => a.nombre === S.archivo)) S.archivo = arch[0].nombre;
+    const a = arch.find(x => x.nombre === S.archivo);
+    let agregadas = new Set();
+    if (a.estado === 'cambia') { const ops = lcs(a.viejo.split('\n'), a.texto.split('\n')); let j = 0; for (const [k] of ops) { if (k === '+') agregadas.add(j); if (k !== '-') j++; } }
+    else if (a.estado === 'nuevo') agregadas = new Set(a.texto.split('\n').map((_, i) => i));
+    const lineas = a.texto.replace(/\n$/, '').split('\n');
+    el.innerHTML = (av.length ? `<div class="aviso mal" style="margin:0 0 12px">Ojo: con estas reglas el Java puede no compilar o no tener sentido.<ul>${av.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : '')
+      + (viejo ? `<div class="aviso" style="margin:0 0 12px">${esc(viejo)}</div>` : '')
+      + `<div class="fila" style="margin-bottom:12px"><button class="btn pri" id="bajarZip">Descargar el proyecto resuelto (.zip)</button><button class="btn" id="copiarArch">Copiar ${esc(a.nombre)}</button><button class="btn chico" id="taparSol">Tapar</button></div>
+      <div class="cod-env"><div class="archivos">${arch.map(x => `<button data-arch="${esc(x.nombre)}" class="${x.nombre === a.nombre ? 'on' : ''}"><span class="nom">${esc(x.nombre)}</span><span class="et ${x.estado}">${x.estado === 'igual' ? 'igual' : x.estado}</span></button>`).join('')}</div>
+      <div class="codigo">${lineas.map((l, i) => `<div class="ln${agregadas.has(i) ? ' add' : ''}"><i>${i + 1}</i><span>${resaltar(l) || ' '}</span></div>`).join('')}</div></div>
+      <details class="mas"><summary>DECISIONES.md (para la entrega)</summary><pre class="consola" style="margin-top:8px;white-space:pre-wrap">${esc(decisiones())}</pre></details>`;
+    el.querySelectorAll('[data-arch]').forEach(b => b.onclick = () => { S.archivo = b.dataset.arch; pintarSolucion(); });
+    $('#copiarArch').onclick = ev => copiar(a.texto, ev.currentTarget);
+    $('#taparSol').onclick = () => { S.verSol = false; pintarSolucion(); };
+    $('#bajarZip').onclick = () => bajarZip(arch);
+  }
+  function decisiones() {
+    const c = cfgLista, col = c.columna, L = ['# Decisiones', ''];
+    if (col) L.push(`- El parser elige separador y ancho según el encabezado (cinco columnas con coma, o seis con «${c.separador}») y conserva el orden del preparcial: ancho, descarte y recién después las validaciones. VehiculoRuta.desdeCampos arma el objeto de los dos formatos; en el de cinco columnas ${col.nombre} vale ${col.defecto}.`);
+    else L.push('- Se mantiene un solo formato de cinco columnas y el orden del preparcial: ancho, descarte y validaciones.');
+    if (c.descartes.join() !== M.DESCARTES_BASE.join() || c.estados.join() !== M.ESTADOS_BASE.join()) L.push(`- Estados válidos: ${c.estados.join(', ')}; se descartan sin validar: ${c.descartes.join(', ')}.`);
+    if (col) L.push(`- La validación de ${col.nombre} queda en el dominio (VehiculoRuta)${col.valores.length ? ': admite ' + col.valores.join(', ') : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ' y debe ser ' + M.textoRango(col.rango) : ''}.${c.baseDesdeColumna ? ' El costo toma ese valor en lugar de los 2000 USD fijos.' : ''}`);
+    if (c.especiales.length) L.push(`- Herencia: ${c.especiales.map(e => e.clase + ' (' + M.describirEspecial(e, c) + ')').join('; ')}. Cada subclase redefine getCostoDesgasteOperativo() a partir del costo común y valida sus topes después de super(...).`);
+    if (c.conteo || c.totales.length) L.push(`- Flota ${c.conteo ? 'agrega un conteo por ' + (c.conteo === 'columna' ? col.nombre : c.conteo) + ' (TreeMap, vacío si no hay vehículos)' : ''}${c.totales.length ? (c.conteo ? ' y ' : '') + 'el main usa sumarCostoDesgasteOperativo con un filtro para ' + c.totales.map(t => t.valor).join(', ') : ''}; el main usa datos/${c.archivo} por defecto y solo delega cálculos.`);
+    L.push('- Pendiente: nada.');
+    return L.join('\n') + '\n';
+  }
+
+  // ───── Descargas ─────
+  function bajar(nombre, texto, tipo) {
+    const b = texto instanceof Blob ? texto : new Blob([texto], { type: (tipo || 'text/plain') + ';charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = nombre; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
+  function copiar(t, btn) {
+    const ok = () => { const v = btn.textContent; btn.textContent = '¡Copiado!'; setTimeout(() => btn.textContent = v, 1200); };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, () => {}); else { const x = document.createElement('textarea'); x.value = t; document.body.appendChild(x); x.select(); try { document.execCommand('copy'); ok(); } catch (e) {} x.remove(); }
+  }
+  const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  function zip(archivos) {           // ZIP sin comprimir (método 0), nombres en UTF-8
+    const enc = new TextEncoder(), partes = [], centro = []; let pos = 0;
+    const d = new Date(), fecha = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate(), hora = (d.getHours() << 11) | (d.getMinutes() << 5);
+    for (const [nombre, texto] of archivos) {
+      const n = enc.encode(nombre), dat = enc.encode(texto), crc = crc32(dat);
+      const h = new DataView(new ArrayBuffer(30));
+      h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(8, 0, true);
+      h.setUint16(10, hora, true); h.setUint16(12, fecha, true); h.setUint32(14, crc, true); h.setUint32(18, dat.length, true); h.setUint32(22, dat.length, true);
+      h.setUint16(26, n.length, true); h.setUint16(28, 0, true);
+      partes.push(new Uint8Array(h.buffer), n, dat);
+      const c = new DataView(new ArrayBuffer(46));
+      c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true); c.setUint16(10, 0, true);
+      c.setUint16(12, hora, true); c.setUint16(14, fecha, true); c.setUint32(16, crc, true); c.setUint32(20, dat.length, true); c.setUint32(24, dat.length, true);
+      c.setUint16(28, n.length, true); c.setUint32(42, pos, true);
+      centro.push(new Uint8Array(c.buffer), n);
+      pos += 30 + n.length + dat.length;
+    }
+    const tam = centro.reduce((s, x) => s + x.length, 0);
+    const f = new DataView(new ArrayBuffer(22));
+    f.setUint32(0, 0x06054b50, true); f.setUint16(8, archivos.length, true); f.setUint16(10, archivos.length, true); f.setUint32(12, tam, true); f.setUint32(16, pos, true);
+    return new Blob([...partes, ...centro, new Uint8Array(f.buffer)], { type: 'application/zip' });
+  }
+  function bajarZip(arch) {
+    const R = 'flota-resuelto/', lista_ = [];
+    for (const [r, t] of Object.entries(P)) if (!r.startsWith(JAVA)) lista_.push([R + r, t]);
+    for (const a of arch) lista_.push([R + JAVA + a.nombre, a.texto]);
+    if (S.csv && S.csvOrigen !== 'preenunciado' && cfgLista.archivo !== 'datos.csv') lista_.push([R + 'datos/' + cfgLista.archivo, S.csv]);
+    lista_.push([R + 'DECISIONES.md', decisiones()]);
+    bajar('flota-resuelto.zip', zip(lista_));
+  }
+
+  // ───── Arranque ─────
+  recuperar();
+  $('#texto').value = S.texto; $('#csvTexto').value = S.csv;
+  if (!S.csv) { S.csv = DATOS; S.csvNombre = 'datos.csv del preenunciado'; S.csvOrigen = 'preenunciado'; $('#csvTexto').value = S.csv; }
+  if (S.texto) $('#verTexto').open = false;
+  pintarEstadoEnun(); pintarReglas(); pintarEstadoCsv(); recalcular();
+  window.__lab = { S, recalcular, leer };   // para probar
+})();
+</script>
+</body>
+</html>
