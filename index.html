@@ -1632,6 +1632,20 @@
   .ejp-salida-v summary{cursor:pointer;font-size:.82rem;color:var(--muted);padding:2px 0}
   @media (max-width:600px){ .ejp-resp label{grid-template-columns:minmax(0,1fr) 118px 24px} .ejp-resp label.larga{grid-template-columns:minmax(0,1fr) 24px} .ejp-resp label.larga > span{grid-column:1 / -1} }
   .ejp-aviso{font-size:.78rem;color:var(--muted);margin:0}
+  .ejp-cita{margin:12px 0;border-left:3px solid var(--mark-l);background:var(--mark);color:var(--mark-t);border-radius:0 10px 10px 0;padding:8px 12px;font-size:.86rem;line-height:1.5}
+  .ejp-cita p{margin:3px 0}
+  .ejp-cita .linkbtn{margin-top:4px}
+  .ejp-doc-nota{font-size:.8rem;color:var(--muted);margin:0 0 8px;line-height:1.45}
+  .ejp-doc-ley{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);margin:0 0 8px}
+  .ejp-doc-ley i{width:22px;height:10px;border-radius:3px;background:var(--mark);box-shadow:0 0 0 1.5px var(--mark-l)}
+  .ejp-doc{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px 18px;font-size:.85rem;line-height:1.55;color:var(--text2)}
+  .ejp-doc h3{font:600 1.05rem var(--sans);color:var(--text);margin:0 0 8px}
+  .ejp-doc h4{font:600 .92rem var(--sans);color:var(--text);margin:14px 0 6px;padding-bottom:3px;border-bottom:1px solid var(--line)}
+  .ejp-doc p{margin:0 0 8px}
+  .ejp-doc ul,.ejp-doc ol{margin:0 0 8px;padding-left:20px;display:grid;gap:3px}
+  .ejp-doc code{font:.78rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--rojo);overflow-wrap:anywhere}
+  .ejp-doc mark{background:var(--mark);color:var(--mark-t);box-shadow:0 0 0 2px var(--mark-l);border-radius:3px;padding:0 2px}
+  .ejp-doc mark code{color:inherit;font-weight:600}
   .ejp-enun{margin:12px 0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
   .ejp-enun ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:.88rem;line-height:1.5}
   .ejp-guia{display:grid;gap:6px;margin:12px 0}
@@ -7309,7 +7323,7 @@ async function montarEjp(m, p, id, tipo = "pp"){
   }));
   const ests = urls.map(leerEst), junto = k => Object.assign({}, ...ests.map(e => e[k]));
   const claveUltimo = tipo === "practica" ? `isi-pp:practica:${m.n}/${p.id}` : null;
-  ejp = { m, p, tipo, partes, parteDe, claveUltimo,
+  ejp = { m, p, tipo, partes, parteDe, claveUltimo, docs: Object.assign({}, ...ds.map(d => d.enunciados || {})),
     fuentes: urls.map((url, f) => ({ clave: claveFuente(url), ultimo: ests[f].ultimo, ids: new Set(ds[f].partes.flatMap(x => x.ejercicios.map(e => e.id))), partes: new Set(ds[f].partes.map(x => x.id)) })),
     est: { codigo: junto("codigo"), resp: junto("resp"), marcas: junto("marcas"), azar: junto("azar"), hechos: ests.flatMap(e => e.hechos), leidas: ests.flatMap(e => e.leidas), ultimo: claveUltimo ? leerLocal(claveUltimo) : ests[0].ultimo } };
   if(p.carpetaProfe){
@@ -7591,7 +7605,7 @@ function pintarIzqWok(){
 function pintarIzqEjp(){
   const ej = ejp.ej, pa = parteEjp(ej);
   if(esWokwi(ej)) return pintarIzqWok();
-  const tabs = [["consigna", "Consigna"], ...(ej.csv ? [["csv", "CSV"]] : []), ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", "Pistas"]] : [])];
+  const tabs = [["consigna", "Consigna"], ...(docEj(ej) ? [["enun", "Enunciado"]] : []), ...(ej.csv ? [["csv", "CSV"]] : []), ...((ej.pasos || []).length ? [["pasos", "Pasos"]] : []), ...((ej.pistas || []).length ? [["pistas", "Pistas"]] : [])];
   if(!tabs.some(t => t[0] === ejp.tab)) ejp.tab = "consigna";
   $("#ejpIzq").innerHTML = `
     <div class="ejp-num">Ejercicio ${pa.ejercicios.indexOf(ej) + 1} de ${pa.ejercicios.length}${ej.tema ? ` · ${esc(ej.tema)}` : ""}<span id="ejpHecho"></span></div>
@@ -7601,6 +7615,33 @@ function pintarIzqEjp(){
     ${tabs.length > 1 ? `<div class="ejp-tabs">${tabs.map(([k, t]) => `<button class="${k === ejp.tab ? "on" : ""}" data-ejp-tab="${k}">${t}${k === "pistas" ? ` <small>${ejp.pista}/${ej.pistas.length}</small>` : ""}</button>`).join("")}</div>` : ""}
     <div class="ejp-cuerpo">${cuerpoIzqEjp()}</div>`;
   pintarHechoEjp();
+  if(ejp.tab === "enun"){   // el enunciado abre en lo que pide este ejercicio
+    const izq = $("#ejpIzq"), mk = izq.querySelector(".ejp-doc mark");
+    if(mk && izq.scrollHeight > izq.clientHeight + 4) izq.scrollTop += mk.getBoundingClientRect().top - izq.getBoundingClientRect().top - 110;
+    else if(mk) mk.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+}
+/* El enunciado de un ejercicio (escrito como los de la cátedra) con lo que pide ese ejercicio pintado */
+const docEj = ej => ej.marcas && ejp.docs && ejp.docs[ej.enunciadoDe];
+function docEjp(ej){
+  const d = docEj(ej), A = "\u0001", B = "\u0002";
+  const linea = t => {
+    for(const m of ej.marcas) t = t.split(m).join(A + m + B);
+    return esc(t).replace(/`([^`]+)`/g, "<code>$1</code>").split(A).join("<mark>").split(B).join("</mark>");
+  };
+  let h = "", lista = null;
+  const cerrar = () => { if(lista){ h += `</${lista}>`; lista = null; } };
+  for(const l of d.texto.split("\n")){
+    let m;
+    if((m = l.match(/^(#{1,2}) (.*)/))){ cerrar(); h += m[1].length === 1 ? `<h3>${linea(m[2])}</h3>` : `<h4>${linea(m[2])}</h4>`; }
+    else if((m = l.match(/^- (.*)/))){ if(lista !== "ul"){ cerrar(); h += "<ul>"; lista = "ul"; } h += `<li>${linea(m[1])}</li>`; }
+    else if((m = l.match(/^(\d+)\. (.*)/))){ if(lista !== "ol"){ cerrar(); h += `<ol start="${m[1]}">`; lista = "ol"; } h += `<li>${linea(m[2])}</li>`; }
+    else if(l.trim()){ cerrar(); h += `<p>${linea(l)}</p>`; }
+  }
+  cerrar();
+  return `<p class="ejp-doc-nota"><b>${esc(d.titulo)}.</b> ${esc(d.nota)}</p>
+    <p class="ejp-doc-ley"><i></i>Pintado: lo que pide este ejercicio</p>
+    <div class="ejp-doc">${h}</div>`;
 }
 function pintarHechoEjp(){
   const h = $("#ejpHecho");
@@ -7609,6 +7650,7 @@ function pintarHechoEjp(){
 function cuerpoIzqEjp(){
   const ej = ejp.ej;
   if(ejp.tab === "csv") return csvEjp(ej);
+  if(ejp.tab === "enun" && docEj(ej)) return docEjp(ej);
   if(ejp.tab === "pasos") return `<ol class="ejp-lista">${ej.pasos.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ol>`;
   if(ejp.tab === "pistas"){
     const ps = ej.pistas, n = ejp.pista;
@@ -7618,7 +7660,8 @@ function cuerpoIzqEjp(){
   const guia = parteEjp(ej).guia;
   const im = ej.imagen;
   return `${ej.caso ? `<span class="ejp-caso-n" title="Para ubicarlo en la guía de ejercicios">${ICON_LIBRO}${esc(ej.caso)}</span>` : ""}<div class="ejp-md">${mdBloque(ej.consigna || "")}</div>
-    ${ej.enunciado ? `<div class="ejp-enun"><div class="ejp-tabla-t">Lo que pide el enunciado</div><ul>${ej.enunciado.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
+    ${docEj(ej) ? `<div class="ejp-cita"><div class="ejp-tabla-t">Así lo pide el enunciado</div>${ej.marcas.length <= 4 ? ej.marcas.map(t => `<p>«${mdLinea(t)}»</p>`).join("") : `<p>${ej.marcas.length} partes del enunciado, pintadas.</p>`}<button class="linkbtn" data-ejp-tab="enun">Verlo en el enunciado completo →</button></div>` : ""}
+    ${ej.enunciado ? `<div class="ejp-enun"><div class="ejp-tabla-t">${docEj(ej) ? "En resumen" : "Lo que pide el enunciado"}</div><ul>${ej.enunciado.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
     ${guia && ej.tipo === "ubicacion" ? `<div class="ejp-guia"><div class="ejp-tabla-t">Cómo decidir dónde va</div>${guia.map(([t, d]) => `<div><b>${esc(t)}</b><span>${mdLinea(d)}</span></div>`).join("")}</div>` : ""}
     ${ej.tabla ? tablaEjp(ej.tabla) : ""}
     ${ej.datos ? `<p class="ejp-datos">${mdLinea(ej.datos)}</p>` : ""}

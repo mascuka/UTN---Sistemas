@@ -19,7 +19,10 @@ Desde la raíz del repo:
   python3 herramientas/parcial-por-partes/recuperatorio/armar.py
   python3 herramientas/parcial-por-partes/validar.py
 """
-import json, os, re, shutil, zipfile
+import json, os, re, shutil, sys, zipfile
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import enunciados   # los enunciados como los de la cátedra y lo que pide cada ejercicio
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RAIZ = os.path.normpath(os.path.join(AQUI, '..', '..', '..'))
@@ -890,7 +893,7 @@ def main():
     for p in PARTES:
         for e in p['ejercicios']:
             e['tema'] = caso.get(e['id'], 'Preenunciado')
-    datos = dict(grupo='Recuperatorio · Flota Logística', partes=PARTES)
+    datos = enunciados.aplicar(dict(grupo='Recuperatorio · Flota Logística', partes=PARTES))   # la pestaña Enunciado
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
     with open(SALIDA, 'w', encoding='utf-8') as f:
         json.dump(datos, f, ensure_ascii=False, indent=1)
