@@ -411,13 +411,13 @@
     if (col) {
       res.push(`Columna nueva <b>${esc(col.nombre)}</b> (${col.tipo === 'entero' ? 'entero' : 'texto'})${col.valores.length ? ': ' + esc(col.valores.join(', ')) : ''}${col.tipo === 'entero' && (col.rango.min != null || col.rango.max != null) ? ', ' + esc(M.textoRango(col.rango)) : ''}; separador «${esc(c.separador)}»${c.columnaEnSubclase ? '' : `; en el formato de cinco columnas vale <b>${esc(col.defecto)}</b>${col.vacio === 'defecto' ? '; vacío = sin valor' : ''}`}.`);
       if (c.anchoMixto) res.push('Bajo el encabezado nuevo valen filas de cinco <b>y</b> de seis campos: el formato se ve fila por fila, por el ancho.');
-      if (c.columnaEnSubclase) res.push(`La columna vive en <b>${esc(lista_.especiales[0].clase)}</b> (extends VehiculoRuta), que se crea para las filas de seis campos; VehiculoRuta no la conoce.`);
+      if (c.columnaEnSubclase) res.push(`La columna vive en <b>${esc(lista_.especiales[0].clase)}</b> (extends VehiculoRuta), que se crea para las filas de seis campos; VehiculoRuta no la conoce.${c.baseDesdeColumna && col.tipo === 'entero' ? ` El costo usa el gancho <code class="k">getFacturacionPorFlete()</code>: VehiculoRuta devuelve ${esc(col.defecto)} y ${esc(lista_.especiales[0].clase)} lo redefine con ${esc(col.nombre)}.` : ''}`);
       if (c.columnaEnSubclase && c.indiceNuevo && col.tipo === 'entero') res.push(`Índice de las filas nuevas: <code class="k">(int) (velocidad × ${esc(M.pesoTxt(c.indiceNuevo.v))} + carga × ${esc(M.pesoTxt(c.indiceNuevo.c))} + ${esc(col.nombre)} × ${esc(M.pesoTxt(c.indiceNuevo.x))})</code>; las de cinco campos siguen con la fórmula original.`);
     }
     if (c.estados.join() !== M.ESTADOS_BASE.join()) res.push('Estados válidos: ' + esc(c.estados.join(', ')) + '.');
     if (c.descartes.join() !== M.DESCARTES_BASE.join()) res.push('Se descartan sin validar: ' + esc(c.descartes.join(', ')) + '.');
     for (const r of c.restricciones) res.push(`En el formato nuevo, ${esc(r.estado)} solo admite ${esc(r.valores.join(' o '))}.`);
-    if (c.baseDesdeColumna && col) res.push(`El costo usa <b>${esc(col.nombre)}</b> en lugar de los 2000 USD.`);
+    if (c.baseDesdeColumna && col && !c.columnaEnSubclase) res.push(`El costo usa <b>${esc(col.nombre)}</b> en lugar de los 2000 USD.`);
     if (c.extras.length) res.push('Para todos: costo ' + esc(c.extras.map(o => M.describirOp(o, c)).join(', ')) + '.');
     for (const e of lista_.especiales) if (e.ops.length || e.topes.length || e.cuando.op !== 'ancho') res.push(`<b>${esc(e.clase)}</b>: ${esc(M.describirEspecial(e, lista_))}.`);
     if (c.conteo) res.push('Conteo por ' + esc(c.conteo === 'columna' && col ? col.nombre : c.conteo) + '.');
@@ -442,7 +442,7 @@
       if (!c.columnaEnSubclase) h += `<div class="campo"><span>Vacío</span>${sel('columna.vacio', [['invalida', 'hace inválida la fila'], ['defecto', 'cuenta como sin valor']], col.vacio)}</div>
         <div class="campo"><span>Formato viejo</span>${inp('columna.defecto', col.defecto, col.tipo === 'entero' ? 'num' : 'txt')}</div>`;
       h += `<div class="campo"><span>Filas de 5</span><label class="ch"><input type="checkbox" data-p="anchoMixto" data-t="check"${c.anchoMixto ? ' checked' : ''}> bajo el encabezado nuevo también valen filas de cinco campos</label></div>
-        <div class="campo"><span>Herencia</span><label class="ch"><input type="checkbox" data-p="columnaEnSubclase" data-t="check"${c.columnaEnSubclase ? ' checked' : ''}> la columna va en una subclase (la de las filas de seis campos)</label></div>`;
+        <div class="campo"><span>Herencia</span><label class="ch"><input type="checkbox" data-p="columnaEnSubclase" data-t="check"${c.columnaEnSubclase ? ' checked' : ''}> la columna va en una subclase (la de las filas de seis campos), que redefine lo que cambia: polimorfismo</label></div>`;
       if (c.columnaEnSubclase && col.tipo === 'entero') {
         h += `<div class="campo"><span>Índice nuevo</span><label class="ch"><input type="checkbox" data-acc="indiceNuevo"${c.indiceNuevo ? ' checked' : ''}> otra fórmula para las filas de seis campos</label></div>`;
         if (c.indiceNuevo) h += `<div class="mini" style="margin:-2px 0 8px">(int) ( velocidad × ${inp('indiceNuevo.v', c.indiceNuevo.v, 'num', '', '72px')} + carga × ${inp('indiceNuevo.c', c.indiceNuevo.c, 'num', '', '72px')} + ${esc(col.nombre)} × ${inp('indiceNuevo.x', c.indiceNuevo.x, 'num', '', '72px')} )</div>`;
@@ -460,7 +460,7 @@
     </div>`;
 
     h += `<div class="bloque"><h3>Costo de todos ${'<button class="btn chico" data-add="extras" data-tpl="op">+ agregar</button>'}</h3>
-      <div class="campo"><span>Base</span>${col && col.tipo === 'entero' && !c.columnaEnSubclase ? sel('baseDesdeColumna', [['0', '2000 USD fijos'], ['1', 'el valor de ' + col.nombre]], c.baseDesdeColumna ? '1' : '0', 'boolre') : '<span>2000 USD fijos</span>'}</div>
+      <div class="campo"><span>Base</span>${col && col.tipo === 'entero' ? sel('baseDesdeColumna', [['0', '2000 USD fijos'], ['1', 'el valor de ' + col.nombre + (c.columnaEnSubclase ? ' (gancho)' : '')]], c.baseDesdeColumna ? '1' : '0', 'boolre') : '<span>2000 USD fijos</span>'}</div>
       <div class="nota" style="margin-bottom:6px">costo = base × índice / 100${c.extras.length ? ', y después:' : ''}</div>
       ${c.extras.length ? opsHtml('extras', c.extras, col) : ''}
     </div>`;
@@ -506,10 +506,12 @@
       ponerRuta(el.dataset.p, el.checked);
       if (el.dataset.p === 'columnaEnSubclase') {
         if (el.checked) {
-          S.cfg.baseDesdeColumna = false;
+          const porCada = S.cfg.extras.filter(o => o.op === 'sumaPorCada');
+          S.cfg.extras = S.cfg.extras.filter(o => o.op !== 'sumaPorCada');
           if (S.cfg.conteo === 'columna') S.cfg.conteo = null;
           S.cfg.totales = S.cfg.totales.filter(t => t.campo !== 'columna');
-          if (!S.cfg.especiales.some(e => e.cuando.op === 'ancho')) S.cfg.especiales.unshift({ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: [], topes: [], clase: '', etiqueta: '' });
+          if (!S.cfg.especiales.some(e => e.cuando.op === 'ancho')) S.cfg.especiales.unshift({ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: porCada, topes: [], clase: '', etiqueta: '' });
+          else S.cfg.especiales.find(e => e.cuando.op === 'ancho').ops.push(...porCada);
         } else { S.cfg.especiales = S.cfg.especiales.filter(e => e.cuando.op !== 'ancho'); S.cfg.indiceNuevo = null; if (S.cfg.conteo === 'tipo' && !S.cfg.especiales.length) S.cfg.conteo = null; }
       }
     } else if (el.dataset.acc === 'indiceNuevo') {
@@ -728,7 +730,8 @@
       const e = c.especiales[0];
       L.push(`- Herencia por ancho: VehiculoRuta.desdeCampos es la fábrica; con cinco campos crea un VehiculoRuta y con seis un ${e.clase}, que extiende directamente a VehiculoRuta, guarda ${col.nombre} y la valida en su constructor después de super(...). El parser guarda todo como VehiculoRuta, así que Flota suma, filtra y agrupa los dos tipos sin cambios.`);
       if (c.indiceNuevo && col.tipo === 'entero') L.push(`- El índice de las filas nuevas usa la fórmula ponderada (${M.pesoTxt(c.indiceNuevo.v)}, ${M.pesoTxt(c.indiceNuevo.c)} y ${M.pesoTxt(c.indiceNuevo.x)}). ${e.clase} se lo pasa a un constructor protegido de VehiculoRuta para que lo verifique; el constructor público sigue exigiendo la fórmula original, como pide el test existente.`);
-      if (e.ops.length || e.topes.length) L.push(`- ${e.clase}: ${M.describirEspecial(e, c)}.`);
+      if (c.baseDesdeColumna && col.tipo === 'entero') L.push(`- El costo usa el gancho protegido getFacturacionPorFlete(): VehiculoRuta devuelve ${col.defecto} y ${e.clase} lo redefine con ${col.nombre}, así getCostoDesgasteOperativo() es uno solo y Flota no pregunta de qué tipo es cada vehículo.`);
+      if (e.ops.length || e.topes.length) L.push(`- ${e.clase}: ${M.describirEspecial(e, c)}${e.ops.length ? ' (redefine getCostoDesgasteOperativo() a partir de super)' : ''}.`);
     } else if (c.especiales.length) L.push(`- Herencia: ${c.especiales.map(e => e.clase + ' (' + M.describirEspecial(e, c) + ')').join('; ')}. Cada subclase redefine getCostoDesgasteOperativo() a partir del costo común y valida sus topes después de super(...).`);
     if (c.conteo || c.totales.length) L.push(`- Flota ${c.conteo ? 'agrega un conteo por ' + (c.conteo === 'columna' ? col.nombre : c.conteo) + ' (TreeMap, vacío si no hay vehículos)' : ''}${c.totales.length ? (c.conteo ? ' y ' : '') + 'el main usa sumarCostoDesgasteOperativo con un filtro para ' + c.totales.map(t => t.valor).join(', ') : ''}; el main usa datos/${c.archivo} por defecto y solo delega cálculos.`);
     L.push('- Pendiente: nada.');

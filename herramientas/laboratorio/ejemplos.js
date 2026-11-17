@@ -53,7 +53,7 @@ Los kilómetros deben ser un entero entre 0 y 5000 inclusive, después de quitar
 El costo por desgaste operativo de todos los vehículos suma 1 USD por cada 10 kilómetros recorridos (división entera).
 Conservar la precedencia del preparcial: verificar ancho y después descartar EN_DEPOSITO sin validar los demás campos.
 ${pie('Incorporar en el colector un conteo por zona.', '')}`,
-      esperado: { separador: ';', columna: { nombre: 'kilometros', tipo: 'entero', rango: { min: 0, minIncl: true, max: 5000, maxIncl: true }, defecto: 0 }, extras: [{ op: 'sumaPorCada', n: 1, cada: 10 }], conteo: 'zona' },
+      esperado: { separador: ';', columna: { nombre: 'kilometros', tipo: 'entero', rango: { min: 0, minIncl: true, max: 5000, maxIncl: true }, defecto: 0 }, extras: [], columnaEnSubclase: true, especiales: [{ clase: 'VehiculoConKilometros', ops: [{ op: 'sumaPorCada', n: 1, cada: 10 }], topes: [] }], conteo: 'zona' },
     },
     {
       id: 'c', titulo: 'Caso C · Mantenimiento y demoras', estilo: 'como el Simulacro 2 (estados nuevos)',
@@ -80,7 +80,7 @@ Para filas con el estado EN_RUTA o DEMORADO del nuevo formato, el sexto campo ad
 Debe conservar toda validación que esté previamente cargada en el preenunciado. Usted debe modificar para que la facturación sea considerada al realizar el cálculo del costo por desgaste operativo, para que tome el valor ingresado, sin alterar la estructura de objetos del preparcial.
 Ejemplos: un vehículo con un índice de desgaste de 65 y una facturación de 3000 USD tiene un costo por desgaste operativo de 1950 USD.
 ${pie('Incorporar en el colector un conteo por estado, que indique la cantidad de vehículos que se encuentran en cada estado procesado.', 'cantidades EN_RUTA/DEMORADO')}`,
-      esperado: { columna: { nombre: 'facturacion', tipo: 'entero', rango: { min: 2000, minIncl: true, max: 3800, maxIncl: false }, defecto: 2000 }, baseDesdeColumna: true, especiales: [], conteo: 'estado' },
+      esperado: { columna: { nombre: 'facturacion', tipo: 'entero', rango: { min: 2000, minIncl: true, max: 3800, maxIncl: false }, defecto: 2000 }, baseDesdeColumna: true, columnaEnSubclase: true, especiales: [{ clase: 'VehiculoConFacturacion', ops: [], topes: [] }], conteo: 'estado' },
     },
     {
       id: 'e', titulo: 'Seguro de carga', estilo: 'como el Simulacro 4 (protección de compras)',

@@ -59,9 +59,9 @@ if (proyecto) {
     }
     if (c.columna && si(0.4)) c.anchoMixto = true;
     if (c.columna && si(0.4)) {   // la columna en la subclase de las filas de seis campos, a veces con otra fórmula del índice
-      c.columnaEnSubclase = true; c.baseDesdeColumna = false;
+      c.columnaEnSubclase = true; c.baseDesdeColumna = c.columna.tipo === 'entero' && si(0.4);
       c.especiales = [{ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: si(0.5) ? [el([{ op: 'suma', n: 300 }, { op: 'porcentaje', n: 10 }])] : [], topes: si(0.4) ? [{ campo: 'carga', op: 'max', n: 30, incl: true }] : [], clase: '', etiqueta: '' }];
-      if (c.columna.tipo === 'entero') { c.columna.rango = { min: 0, minIncl: true, max: el([30, 60]), maxIncl: true }; c.columna.valores = []; if (si(0.7)) c.indiceNuevo = el([{ v: 0.5, c: 0.3, x: 0.2 }, { v: 0.55, c: 0.3, x: 0.15 }]); }
+      if (c.columna.tipo === 'entero') { c.columna.rango = c.baseDesdeColumna ? { min: 2000, minIncl: true, max: 3800, maxIncl: false } : { min: 0, minIncl: true, max: el([30, 60]), maxIncl: true }; c.columna.defecto = c.baseDesdeColumna ? 2000 : 0; c.columna.valores = []; if (si(0.7)) c.indiceNuevo = el([{ v: 0.5, c: 0.3, x: 0.2 }, { v: 0.55, c: 0.3, x: 0.15 }]); }
       if (c.conteo === 'columna') c.conteo = 'tipo';
     }
     if (si(0.3)) c.extras.push({ op: 'suma', n: 50 });

@@ -156,7 +156,8 @@
       for (const t of esp.topes) if (!pasaTope(valorCampo(v, t.campo), t)) return { error: MSG.tope(esp.clase, t) };
       v.clase = esp.clase; v.tipo = esp.etiqueta;
     } else { v.clase = 'VehiculoRuta'; v.tipo = etiquetaBase(cfg); }
-    let costo = div(mul(FACTURACION, indice), 100);
+    const base = cfg.baseDesdeColumna && col.tipo === 'entero' ? (seis && esp ? x : Number(col.defecto)) : FACTURACION;
+    let costo = div(mul(base, indice), 100);
     costo = aplicar(costo, cfg.extras, v);
     if (seis && esp) costo = aplicar(costo, esp.ops, v);
     v.costo = costo;
@@ -357,7 +358,6 @@
     for (const r of cfg.restricciones) if (!cfg.estados.includes(r.estado)) av.push('La restricción para ' + r.estado + ' no se usa: no es un estado válido.');
     if (cfg.columnaEnSubclase) {
       if (cfg.especiales.length > 1) av.push('Con la columna en la subclase, solo se usa ' + cfg.especiales[0].clase + ' (las filas de seis campos); las otras subclases no se aplican.');
-      if (cfg.baseDesdeColumna) av.push('Con la columna en la subclase, el costo base no puede salir de la columna (VehiculoRuta no la tiene).');
       if (cfg.extras.some(o => o.op === 'sumaPorCada')) av.push('Con la columna en la subclase, «por cada» va en la subclase, no en el costo de todos.');
       if (cfg.conteo === 'columna' || cfg.totales.some(t => t.campo === 'columna')) av.push('Con la columna en la subclase, no se puede contar ni totalizar por la columna desde Flota (VehiculoRuta no la tiene): usá el conteo por tipo.');
       if (cfg.indiceNuevo && col.tipo !== 'entero') av.push('La fórmula nueva del índice necesita una columna entera.');
@@ -604,10 +604,19 @@ ${nuevo ? '' : `        int indiceCalculado = calcularIndiceDesgaste(velocidadPr
 
     public int getCostoDesgasteOperativo() {
 `;
-    if (!cfg.extras.length) s += `        return 2000 * indiceDesgaste / 100;\n`;
-    else s += `        int costo = 2000 * indiceDesgaste / 100;\n${opsJava(cfg.extras, col, '        ')}\n        return costo;\n`;
+    const gancho = cfg.baseDesdeColumna && col.tipo === 'entero';
+    const baseJ = gancho ? 'getFacturacionPorFlete()' : '2000';
+    if (!cfg.extras.length) s += `        return ${baseJ} * indiceDesgaste / 100;\n`;
+    else s += `        int costo = ${baseJ} * indiceDesgaste / 100;\n${opsJava(cfg.extras, col, '        ')}\n        return costo;\n`;
     s += `    }
-
+`;
+    if (gancho) s += `
+    /** El gancho: la facturación por flete que usa el costo. ${esp.clase} lo redefine con la de su fila. */
+    protected int getFacturacionPorFlete() {
+        return ${Number(col.defecto)};
+    }
+`;
+    s += `
     public String getPatente() {
         return patente;
     }
@@ -709,6 +718,12 @@ public class ${e.clase} extends VehiculoRuta {
 `;
     s += `
     public ${T} get${cap(N)}() {
+        return ${N};
+    }
+`;
+    if (cfg.baseDesdeColumna && col.tipo === 'entero') s += `
+    @Override
+    protected int getFacturacionPorFlete() {
         return ${N};
     }
 `;
@@ -1294,7 +1309,7 @@ public class App {
     // 4) El costo: la columna en lugar de los 2000, extras para todos y las subclases
     O.forEach((o, i) => {
       const n = N[i];
-      if (i < finReglas && col && col.tipo === 'entero' && !cfg.columnaEnSubclase && /(reemplaza|en\s+lugar\s+de|en\s+vez\s+de|toma(?:r)?\s+el\s+valor|tome\s+el\s+valor|usar?\s+(?:el|ese|su)\s+valor|considerad[oa]s?\s+al\s+realizar\s+el\s+calculo|se\s+usa(?:n)?\s+(?:en|para)\s+el\s+(?:calculo|costo)|base\s+del\s+costo)/.test(n)
+      if (i < finReglas && col && col.tipo === 'entero' && /(reemplaza|en\s+lugar\s+de|en\s+vez\s+de|toma(?:r)?\s+el\s+valor|tome\s+el\s+valor|usar?\s+(?:el|ese|su)\s+valor|considerad[oa]s?\s+al\s+realizar\s+el\s+calculo|se\s+usa(?:n)?\s+(?:en|para)\s+el\s+(?:calculo|costo)|base\s+del\s+costo)/.test(n)
         && /costo|calculo|2\.?000|facturacion/.test(n)) {
         cfg.baseDesdeColumna = true; nota('costo', o, 'El costo usa ' + col.nombre + ' en lugar de los 2000 USD');
       }
@@ -1383,6 +1398,18 @@ public class App {
         else if (col && col.valores.map(String).includes(w)) { cfg.totales.push({ campo: 'columna', valor: w }); nota('totales', o, 'Total de los ' + w); }
       }
     });
+
+    // 5b) Polimorfismo: si la columna no tiene subclases propias, va en VehiculoCon<Columna> (las filas de seis campos)
+    if (col && !cfg.columnaEnSubclase && !cfg.especiales.length && cfg.conteo !== 'columna' && !cfg.totales.some(t => t.campo === 'columna') && col.vacio !== 'defecto') {
+      const porCada = cfg.extras.filter(o => o.op === 'sumaPorCada');
+      const sinEfecto = porCada.every(o => col.tipo === 'entero' && o.cada > 0 && Math.trunc(Number(col.defecto) / o.cada) * o.n === 0);
+      if (sinEfecto) {
+        cfg.columnaEnSubclase = true;
+        cfg.extras = cfg.extras.filter(o => o.op !== 'sumaPorCada');
+        cfg.especiales.unshift({ cuando: { campo: 'columna', op: 'ancho', valor: '' }, ops: porCada, topes: [], clase: '', etiqueta: '' });
+        nota('especiales', 'diseño', `Polimorfismo: ${col.nombre} va en VehiculoCon${cap(col.nombre)} (extends VehiculoRuta), que se crea para las filas de seis campos y redefine ${cfg.baseDesdeColumna ? 'el gancho getFacturacionPorFlete()' : porCada.length ? 'getCostoDesgasteOperativo()' : 'lo que cambie'}`);
+      }
+    }
 
     // 6) El archivo del main
     const arch = (texto || '').match(/\b(datos[\w-]*\.csv)\b/g);
