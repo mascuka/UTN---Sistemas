@@ -1632,6 +1632,14 @@
   .ejp-salida-v summary{cursor:pointer;font-size:.82rem;color:var(--muted);padding:2px 0}
   @media (max-width:600px){ .ejp-resp label{grid-template-columns:minmax(0,1fr) 118px 24px} .ejp-resp label.larga{grid-template-columns:minmax(0,1fr) 24px} .ejp-resp label.larga > span{grid-column:1 / -1} }
   .ejp-aviso{font-size:.78rem;color:var(--muted);margin:0}
+  .ejp-orig{font-size:.82rem;color:var(--ok);margin:8px 0 0}
+  .ejp-yahecho{margin:12px 0;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:8px 12px;font-size:.86rem;line-height:1.5}
+  .ejp-yahecho summary{cursor:pointer;list-style:none}
+  .ejp-yahecho summary::-webkit-details-marker{display:none}
+  .ejp-yahecho summary b{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:2px}
+  .ejp-yahecho .yh-arch{font:600 .78rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:8px 0 3px;color:var(--text)}
+  .ejp-yahecho pre{margin:0;font:.74rem/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 8px;overflow:auto;white-space:pre}
+  .ejp-yahecho pre .mas{color:var(--ok)} .ejp-yahecho pre .menos{color:var(--rojo)}
   .ejp-cita{margin:12px 0;border-left:3px solid var(--mark-l);background:var(--mark);color:var(--mark-t);border-radius:0 10px 10px 0;padding:8px 12px;font-size:.86rem;line-height:1.5}
   .ejp-cita p{margin:3px 0}
   .ejp-cita .linkbtn{margin-top:4px}
@@ -7661,6 +7669,8 @@ function cuerpoIzqEjp(){
   const guia = parteEjp(ej).guia;
   const im = ej.imagen;
   return `${ej.caso ? `<span class="ejp-caso-n" title="Para ubicarlo en la guía de ejercicios">${ICON_LIBRO}${esc(ej.caso)}</span>` : ""}<div class="ejp-md">${mdBloque(ej.consigna || "")}</div>
+    ${ej.deOriginal ? `<p class="ejp-orig">✓ El código arranca del preenunciado, tal cual lo tenés en tu proyecto.</p>` : ""}
+    ${ej.yaHecho ? `<details class="ejp-yahecho"><summary><b>El código no arranca igual al preenunciado</b>${mdLinea(ej.yaHecho.nota)} <span class="linkbtn">Ver qué cambia</span></summary>${ej.yaHecho.cambios.map(c => `<div class="yh-arch">${esc(c.archivo)}${c.nuevo ? " · archivo nuevo, ya escrito" : " · respecto del preenunciado"}</div>${c.lineas ? `<pre>${c.lineas.map(l => `<span class="${l[0] === "+" ? "mas" : "menos"}">${esc(l[0] === "+" ? "+ " + l.slice(1) : "− " + l.slice(1))}</span>`).join("\n")}</pre>` : ""}`).join("")}</details>` : ""}
     ${docEj(ej) ? `<div class="ejp-cita"><div class="ejp-tabla-t">Así lo pide el enunciado</div>${ej.marcas.length <= 4 ? ej.marcas.map(t => `<p>«${mdLinea(t)}»</p>`).join("") : `<p>${ej.marcas.length} partes del enunciado, pintadas.</p>`}<button class="linkbtn" data-ejp-tab="enun">Verlo en el enunciado completo →</button></div>` : ""}
     ${ej.enunciado ? `<div class="ejp-enun"><div class="ejp-tabla-t">${docEj(ej) ? "En resumen" : "Lo que pide el enunciado"}</div><ul>${ej.enunciado.map(t => `<li>${mdLinea(t)}</li>`).join("")}</ul></div>` : ""}
     ${guia && ej.tipo === "ubicacion" ? `<div class="ejp-guia"><div class="ejp-tabla-t">Cómo decidir dónde va</div>${guia.map(([t, d]) => `<div><b>${esc(t)}</b><span>${mdLinea(d)}</span></div>`).join("")}</div>` : ""}

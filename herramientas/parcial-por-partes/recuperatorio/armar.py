@@ -133,35 +133,6 @@ def flota_con(*metodos, base=None):
 assert flota_con(M_TIPO) == A_FLOTA, 'la Flota del caso A tiene que salir igual'
 assert flota_con(M_KM := B_FLOTA.split('    public long contarConIndiceDesgasteMenorA')[1].split('\n\n', 1)[1].split('    public List<VehiculoRuta> getVehiculos')[0].rstrip('\n') + '\n') == B_FLOTA
 
-APP_LOGICA = '''package ar.edu.backend;
-
-import java.io.IOException;
-import java.nio.file.Path;
-
-public class App {
-    public static void main(String[] args) throws IOException {
-        Path archivo = args.length == 0 ? Path.of("datos", "datos.csv") : Path.of(args[0]);
-        ResultadoParseo resultado = new ParserVehiculos().parsear(archivo);
-        Flota flota = new Flota(resultado.getVehiculos());
-
-        int demorados = 0;
-        VehiculoRuta masCaro = null;
-        for (VehiculoRuta vehiculo : resultado.getVehiculos()) {
-            if (vehiculo.getEstado().equals("DEMORADO")) {
-                demorados++;
-            }
-            if (masCaro == null || vehiculo.getCostoDesgasteOperativo() > masCaro.getCostoDesgasteOperativo()) {
-                masCaro = vehiculo;
-            }
-        }
-
-        System.out.println(resultado.getResumenErrores());
-        System.out.println("DEMORADO: " + demorados);
-        System.out.println("Mayor costo: " + (masCaro == null ? "-" : masCaro.getPatente()));
-        System.out.println(flota.panorama());
-    }
-}
-'''
 APP_DELEGA = '''package ar.edu.backend;
 
 import java.io.IOException;
@@ -814,9 +785,10 @@ P5 = [
         String s = salida(p.toString());
         contiene(s, "Objetos: 3"); contiene(s, "GENERAL: 1"); contiene(s, "REFRIGERADA: 2"); contiene(s, "Costo total por desgaste operativo: 3160"); contiene(s, "Inválidas: 1");
 ''', base={'ParserVehiculos.java': A_PARSER, 'VehiculoRuta.java': A_RUTA, 'VehiculoRefrigerado.java': A_REF}),
-    codigo('r5.2', 'sacar la lógica del main', '`App` y `Flota`',
-           'Este main **calcula**: cuenta los DEMORADO y busca el de mayor costo con un `for`. Pasá esas cuentas a `Flota` (`contarPorEstado()` y `getMayorCosto()`, como en la parte 4) y que el main solo las llame e imprima lo mismo.',
-           [arch('App.java', APP_LOGICA, APP_DELEGA), arch('Flota.java', ORIG['Flota.java'], flota_con(M_ESTADO, M_MAYOR))],
+    codigo('r5.2', 'el main muestra más, sin cuentas', '`App` y `Flota`',
+           'Partí del main del preenunciado (el mismo de tu proyecto). Hacé que, además del resumen y el panorama, muestre la **cantidad de vehículos DEMORADO** y la **patente del de mayor costo**, entre el resumen y el panorama: `DEMORADO: …` y `Mayor costo: …`. '
+           '**Sin cuentas en el main**: el conteo por estado y el de mayor costo van en `Flota` (como en la parte 4) y el main solo los llama.',
+           [arch('App.java', ORIG['App.java'], APP_DELEGA), arch('Flota.java', ORIG['Flota.java'], flota_con(M_ESTADO, M_MAYOR))],
            [ch(r'\bfor\s*\(', 'Sin `for` en el main', 'El main no tiene que recorrer: el `for` va en `Flota`', 'App.java', 'noContiene'),
             ch(r'contarPorEstado\s*\(', 'Usa el conteo por estado', 'Llamá a `flota.contarPorEstado()`', 'App.java'),
             ch(r'getMayorCosto\s*\(', 'Usa el de mayor costo', 'Llamá a `flota.getMayorCosto()`', 'App.java'),
@@ -824,8 +796,8 @@ P5 = [
             ch(r'Optional<VehiculoRuta>\s+getMayorCosto\s*\(\s*\)', 'El mayor, en la Flota', 'Falta `public Optional<VehiculoRuta> getMayorCosto()` en `Flota`', 'Flota.java'),
             ch(r'orElse\s*\(|isPresent\s*\(|ifPresent', 'Contempla la flota vacía', 'El `Optional` puede estar vacío: usá `map(...).orElse("-")`', 'App.java')],
            ['En `Flota`: `contarPorEstado()` (groupingBy + counting) y `getMayorCosto()` (max + comparingInt).',
-            'En el main: `flota.contarPorEstado().getOrDefault("DEMORADO", 0L)`.', '`flota.getMayorCosto().map(VehiculoRuta::getPatente).orElse("-")`.', 'Borrá el `for` y las variables auxiliares.'],
-           ['Regla del parcial: si en el main hay un `for`, un `stream` o una cuenta, va en otra clase.', 'La salida tiene que ser la misma de antes.'],
+            'En el main: `flota.contarPorEstado().getOrDefault("DEMORADO", 0L)`.', '`flota.getMayorCosto().map(VehiculoRuta::getPatente).orElse("-")`.', 'Imprimilos después de `getResumenErrores()` y antes de `panorama()`.'],
+           ['Regla del parcial: si en el main hay un `for`, un `stream` o una cuenta, va en otra clase.', 'Importá `java.util.Map` en `App` si guardás el conteo en una variable.'],
            csv=tabla(H5, ['a,NORTE,60,10,EN_RUTA', 'b,SUR,60,10,DEMORADO', 'c,SUR,101,11,DEMORADO']),
            csvNota='Con estas filas: `DEMORADO: 2` y `Mayor costo: c` (1300). Total **2900**.',
            datos='Con el CSV del preenunciado: `DEMORADO: 14` y `Mayor costo: trk-0038`, más el resumen y el panorama de siempre.',
@@ -885,6 +857,46 @@ CASOS = {
 }   # el resto trabaja sobre el preenunciado tal cual
 
 
+# Cuando un ejercicio de un caso arranca con un paso anterior del caso ya hecho, se avisa (con las líneas que cambian
+# respecto del preenunciado). Los ejercicios del preenunciado tienen que arrancar del código original, tal cual.
+YA_HECHO = {
+    'r1.1': 'Del caso A ya está hecho lo del dominio (partes 2 y 3): `VehiculoRuta` ya no es `final`, lee la 6.ª columna y crea un `VehiculoRefrigerado`. Acá solo cambiás el parser.',
+    'r1.3': 'Del caso B ya está hecho lo del dominio (parte 2): `VehiculoRuta` tiene `kilometros`, acepta 5 o 6 campos y suma `km / 10` al costo. Acá solo cambiás el parser.',
+    'r1.4': 'Del caso D ya está hecho lo del dominio (parte 3): `VehiculoRuta` acepta 5 o 6 campos, crea un `VehiculoConFacturacion` con 6 y tiene el gancho. Acá solo cambiás el parser.',
+    'r3.1': 'Del caso A ya está hecho que `desdeCampos` acepte 5 o 6 campos (lo que pide la parte 1 para la 6.ª columna).',
+    'r3.4': 'Del caso D ya está hecho que `desdeCampos` acepte 5 o 6 campos (lo que pide la parte 1 para la 6.ª columna).',
+    'r4.2': 'Del caso A ya están hechas las partes 1 a 3: `VehiculoRuta` ya no es `final`, lee `tipoCarga` y crea un `VehiculoRefrigerado` (que ya está escrito).',
+    'r4.6': 'Del caso B ya está hecho `VehiculoRuta` con `kilometros` (la parte 2).',
+    'r5.1': '`Flota` ya tiene `contarPorTipoCarga()` (la parte 4 del caso A).',
+    'r5.3': '`Flota` ya tiene `contarPorEstado()` (la parte 4 del caso D).',
+}
+
+
+def marcar_punto_de_partida(partes):
+    import difflib
+    for p in partes:
+        for e in p['ejercicios']:
+            if e['tipo'] != 'codigo':
+                continue
+            cambios = []
+            for a in e['archivos']:
+                ini = a.get('inicial') or ''
+                if a['nombre'] in ORIG:
+                    o = ORIG[a['nombre']]
+                    if ini.strip() != o.strip():
+                        lineas = [l for l in difflib.unified_diff(o.split('\n'), ini.split('\n'), lineterm='', n=0)
+                                  if l[:1] in '+-' and not l.startswith(('+++', '---')) and l[1:].strip()]
+                        cambios.append(dict(archivo=a['nombre'], lineas=lineas))
+                elif ini and 'Archivo nuevo' not in ini:
+                    cambios.append(dict(archivo=a['nombre'], nuevo=True))
+            if cambios:
+                assert e['tema'] != 'Preenunciado', (e['id'], 'un ejercicio del preenunciado tiene que arrancar del código original')
+                assert e['id'] in YA_HECHO, (e['id'], 'falta decir qué viene hecho')
+                e['yaHecho'] = dict(nota=YA_HECHO[e['id']], cambios=cambios)
+            else:
+                e['deOriginal'] = True
+
+
 def main():
     caso = {id: c for c, ids in CASOS.items() for id in ids}
     orden = {c: i for i, c in enumerate(['Preenunciado', 'Caso A', 'Caso B', 'Caso C', 'Caso D', 'Repaso'])}
@@ -893,6 +905,7 @@ def main():
     for p in PARTES:
         for e in p['ejercicios']:
             e['tema'] = caso.get(e['id'], 'Preenunciado')
+    marcar_punto_de_partida(PARTES)
     datos = enunciados.aplicar(dict(grupo='Recuperatorio · Flota Logística', partes=PARTES))   # la pestaña Enunciado
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
     with open(SALIDA, 'w', encoding='utf-8') as f:
