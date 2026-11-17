@@ -841,7 +841,7 @@ PARTES = [
     dict(n=1, id='r-formatos', titulo='Lectura de dos formatos (Parser)', corto='Lectura de dos formatos', pestana='CSV',
          explicacion='El parser reconoce dos cabeceras y la primera línea define cuántas columnas (y qué separador) tiene que tener **cada** fila. Un **solo loop** para los dos formatos. El orden es siempre: ancho → descarte → validaciones.', ejercicios=P1),
     dict(n=2, id='r-dominio', titulo='Columna nueva en el dominio', corto='Columna nueva en el dominio', pestana='Dominio',
-         explicacion='Atributo + getter nuevos; constructor nuevo, con el viejo **delegando** con `this(...)`; `desdeCampos` acepta los dos anchos y lee la columna nueva **solo si existe**. Las validaciones nuevas van acá. Y practicá cómo se clasifica cada fila: el índice se trunca con `(int)` y la carga negativa no se valida.', ejercicios=P2),
+         explicacion='Atributo + getter nuevos; constructor nuevo, con el viejo **delegando** con `this(...)`; `desdeCampos` acepta los dos anchos y lee la columna nueva **solo si existe**. Las validaciones nuevas van acá: valores fijos, rangos, valores permitidos y columnas opcionales.', ejercicios=P2),
     dict(n=3, id='r-polimorfismo', titulo='Cálculo distinto con polimorfismo', corto='Polimorfismo', pestana='Polimorfismo',
          explicacion='Cuando el dato nuevo cambia un **cálculo para algunos**, una subclase redefine el método (`@Override`) y reutiliza el del padre con `super`. `desdeCampos` decide qué clase crear. **En este preenunciado `VehiculoRuta` es `final`: hay que sacárselo.** `Flota` no cambia ni usa `instanceof`.', ejercicios=P3),
     dict(n=4, id='r-colector', titulo='Operación nueva en el colector', corto='Colector', pestana='Colector',
@@ -903,7 +903,22 @@ def marcar_punto_de_partida(partes):
                 e['deOriginal'] = True
 
 
+# Solo ejercicios con pantalla de código: los de clasificar filas y los de «¿dónde va cada cambio?» quedan escritos
+# (P0, clasif(...)) pero no se publican. Con False vuelven, con su parte 0.
+SOLO_CODIGO = True
+
+
 def main():
+    if SOLO_CODIGO:
+        for p in PARTES:
+            for e in p['ejercicios']:
+                if e['tipo'] != 'codigo':
+                    PRUEBA.pop(e['id'], None)
+            p['ejercicios'] = [e for e in p['ejercicios'] if e['tipo'] == 'codigo']
+        PARTES[:] = [p for p in PARTES if p['ejercicios']]
+        for d in os.listdir(PRUEBAS):   # las pruebas de los que ya no están
+            if d.startswith('r') and d not in PRUEBA and os.path.isdir(os.path.join(PRUEBAS, d)):
+                shutil.rmtree(os.path.join(PRUEBAS, d))
     caso = {id: c for c, ids in CASOS.items() for id in ids}
     orden = {c: i for i, c in enumerate(['Preenunciado', 'Caso A', 'Caso B', 'Caso C', 'Caso D', 'Caso E', 'Caso F', 'Caso G', 'Repaso'])}
     for p in PARTES:   # en cada parte, los casos en orden (A, B, C, D) y el repaso al final

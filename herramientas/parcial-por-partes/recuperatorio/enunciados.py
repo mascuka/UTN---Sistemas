@@ -248,6 +248,8 @@ def aplicar(datos):
     datos['enunciados'] = DOCS
     ejercicios = {e['id']: e for p in datos['partes'] for e in p['ejercicios']}
     for id, (doc, marcas) in MARCAS.items():
+        if id not in ejercicios:   # un ejercicio que no se publica
+            continue
         texto = DOCS[doc]['texto']
         for m in marcas:
             assert m in texto, (id, m[:60])
