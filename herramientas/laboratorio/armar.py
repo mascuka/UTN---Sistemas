@@ -1,7 +1,10 @@
 """Arma el laboratorio offline de Flota Logística: un solo HTML con todo adentro (motor, ejemplos, pdf.js y el proyecto
 del preenunciado). Uso: python3 -I herramientas/laboratorio/armar.py  (desde la raíz del repo)."""
+import datetime
+import hashlib
 import json
 import pathlib
+import re
 import zipfile
 
 RAIZ = pathlib.Path(__file__).resolve().parents[2]
@@ -41,8 +44,20 @@ def main():
     for marca, texto in partes.items():
         assert html.count(marca) == 1, marca
         html = html.replace(marca, script(texto))
+    # La versión: un resumen del contenido (cambia solo si cambia algo) y la fecha (hora de Argentina). El sitio enlaza
+    # el archivo con ?v=versión, así el navegador no da una copia vieja guardada en la caché al abrirlo o descargarlo.
+    version = hashlib.sha1(html.encode()).hexdigest()[:7]
+    previa = SALIDA.read_text('utf-8') if SALIDA.exists() else ''
+    m = re.search(r'Versión del (\d\d/\d\d/\d{4}) · ' + version, previa)
+    fecha = m.group(1) if m else datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-3))).strftime('%d/%m/%Y')
+    html = html.replace('@@FECHA@@', fecha).replace('@@VERSION@@', version)
     SALIDA.write_text(html, 'utf-8')
-    print(SALIDA.relative_to(RAIZ), f'{len(html.encode()) / 1024:.0f} KB')
+    indice = RAIZ / 'index.html'
+    texto = indice.read_text('utf-8')
+    nuevo = re.sub(r'(recuperatorio-1/laboratorio-flota\.html)(\?v=\w+)?"', r'\1?v=' + version + '"', texto)
+    if nuevo != texto:
+        indice.write_text(nuevo, 'utf-8')
+    print(SALIDA.relative_to(RAIZ), f'{len(html.encode()) / 1024:.0f} KB', 'versión', version, fecha)
 
 
 if __name__ == '__main__':

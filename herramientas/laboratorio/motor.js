@@ -1389,7 +1389,7 @@ public class App {
     if (arch) { const a = arch.find(x => x !== 'datos.csv'); if (a) cfg.archivo = a; }
 
     normalizar(cfg);
-    if (!col && !cfg.especiales.length && !cfg.extras.length && cfg.descartes.length === 1 && cfg.estados.length === 2) avisos.push('No encontré reglas nuevas. ¿Es un enunciado del parcial? Podés cargarlas a mano.');
+    if (!col && !cfg.especiales.length && !cfg.extras.length && cfg.descartes.length === 1 && cfg.estados.length === 2) avisos.push('No encontré reglas nuevas. ¿Es un enunciado del parcial? Podés cargarlas a mano; si el enunciado tiene una forma nueva, fijate que tengas la última versión del laboratorio (la fecha está arriba de todo).');
     for (const a of revisar(cfg)) avisos.push(a);
     const v = afectaFormatoViejo(cfg); if (v) avisos.push(v);
     return { cfg, evidencias: ev, avisos };

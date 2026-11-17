@@ -41,6 +41,7 @@
   .cab h1{font:500 1.9rem/1.15 var(--serif);letter-spacing:-.015em}
   .cab p{color:var(--text2);margin-top:6px;max-width:64ch}
   .cab .sello{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:var(--ok);background:var(--ok-soft);border-radius:99px;padding:2px 10px;margin-top:10px}
+  .cab .version{display:inline-block;font-size:.78rem;color:var(--muted);margin:10px 0 0 8px}
   .tema{margin-left:auto;flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);cursor:pointer;display:grid;place-items:center;color:var(--muted)}
   .tema:hover{color:var(--text);background:var(--hover)}
   .tema svg{width:17px;height:17px}
@@ -170,6 +171,7 @@
       <h1>Laboratorio del recuperatorio · Flota Logística</h1>
       <p>El preenunciado ya está cargado. Le pasás un enunciado nuevo (PDF, Markdown o texto) y un CSV: el laboratorio busca las reglas nuevas con las frases que usa la cátedra, las aplica al CSV fila por fila y te muestra la salida del main y el Java resuelto.</p>
       <span class="sello">● Funciona sin internet y sin IA: guardá esta página y abrila cuando quieras</span>
+      <span class="version" title="Si algo no anda, fijate en el sitio si hay una versión más nueva y volvé a descargarla">Versión del @@FECHA@@ · @@VERSION@@</span>
     </div>
     <button class="tema" id="tema" title="Cambiar tema" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
   </header>
@@ -267,16 +269,25 @@
   const originales = {};
   for (const [r, t] of Object.entries(P)) if (r.startsWith(JAVA)) originales[r.slice(JAVA.length)] = t;
   const DATOS = P['datos/datos.csv'];
-  const CLAVE = 'lab-flota-v1';
+  const CLAVE = 'lab-flota-v1', VERSION = '@@VERSION@@';
 
   const S = { texto: '', origen: '', cfg: M.configBase(), evid: [], avisos: [], leido: false, csv: '', csvNombre: '', csvOrigen: '', tab: 'salida', filtro: 'Todas', verSol: false, archivo: 'ParserVehiculos.java', mia: '' };
 
   // ───── Guardar en este navegador (solo comodidad) ─────
   function guardar() {
-    try { localStorage.setItem(CLAVE, JSON.stringify({ texto: S.texto, origen: S.origen, cfg: S.cfg, evid: S.evid, avisos: S.avisos, leido: S.leido, csv: S.csv.length < 400000 ? S.csv : '', csvNombre: S.csvNombre, csvOrigen: S.csvOrigen, mia: S.mia })); } catch (e) { /* sin almacenamiento */ }
+    try { localStorage.setItem(CLAVE, JSON.stringify({ version: VERSION, texto: S.texto, origen: S.origen, cfg: S.cfg, evid: S.evid, avisos: S.avisos, leido: S.leido, csv: S.csv.length < 400000 ? S.csv : '', csvNombre: S.csvNombre, csvOrigen: S.csvOrigen, mia: S.mia })); } catch (e) { /* sin almacenamiento */ }
   }
   function recuperar() {
-    try { const d = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (d && d.cfg) Object.assign(S, d); } catch (e) { /* nada */ }
+    try {
+      const d = JSON.parse(localStorage.getItem(CLAVE) || 'null');
+      if (d && d.cfg) {
+        const otra = d.version !== VERSION;
+        delete d.version; Object.assign(S, d);
+        S.cfg = Object.assign(M.configBase(), S.cfg);
+        return otra && S.leido && !!S.texto.trim();   // lo guardó otra versión: hay que volver a leer el enunciado
+      }
+    } catch (e) { /* nada */ }
+    return false;
   }
 
   // ───── Tema ─────
@@ -349,13 +360,13 @@
       .replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n');
   }
 
-  function leer() {
+  function leer(sinMover) {
     if (!S.texto.trim()) { pintarEstadoEnun('<span class="aviso">Primero cargá o pegá un enunciado.</span>'); return; }
     const r = M.leerEnunciado(S.texto, S.csv && S.csvOrigen === 'archivo' ? S.csv : '');
     S.cfg = r.cfg; S.evid = r.evidencias; S.avisos = r.avisos; S.leido = true;
     if (!S.csv || S.csvOrigen === 'prueba' || S.csvOrigen === 'preenunciado') generarPrueba(true);
     pintarEstadoEnun(); pintarReglas(); recalcular(); guardar();
-    $('#p2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!sinMover) $('#p2').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // ───── 2 · Las reglas (formulario) ─────
@@ -768,11 +779,12 @@
   }
 
   // ───── Arranque ─────
-  recuperar();
+  const releer = recuperar();
   $('#texto').value = S.texto; $('#csvTexto').value = S.csv;
   if (!S.csv) { S.csv = DATOS; S.csvNombre = 'datos.csv del preenunciado'; S.csvOrigen = 'preenunciado'; $('#csvTexto').value = S.csv; }
   if (S.texto) $('#verTexto').open = false;
   pintarEstadoEnun(); pintarReglas(); pintarEstadoCsv(); recalcular();
+  if (releer) leer(true);   // el lector de esta versión puede entender más que el de la que guardó
   window.__lab = { S, recalcular, leer };   // para probar
 })();
 </script>
