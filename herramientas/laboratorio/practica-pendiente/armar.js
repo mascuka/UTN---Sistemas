@@ -1,12 +1,9 @@
 /* Parcial de práctica «Flota Logística con pendiente del tramo»: el mismo cambio del Recuperatorio 2 (Red Eléctrica,
    temperatura ambiente) llevado a Flota. Escribe el enunciado (Markdown y PDF), un datos-parcial.csv corto y los números
    de referencia, que salen de la simulación del laboratorio (y se verifican con Java en probar.js).
-   El Markdown y el ejemplo para el laboratorio (ejemplo.json) quedan acá; el PDF y el CSV, en el material del recuperatorio.
+   El armado común (Markdown, ejemplo.json, CSV y PDF) está en ../practica-comun.js.
    Uso: node herramientas/laboratorio/practica-pendiente/armar.js [carpeta de salida] [--pdf]   (el PDF necesita Playwright) */
-const fs = require('fs'), path = require('path');
-const M = require('../motor.js');
-const SALIDA = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : path.join(__dirname, '../../../material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-pendiente');
-const ORIGINAL = fs.readFileSync(path.join(__dirname, 'datos-original.csv'), 'utf8');
+const { armar } = require('../practica-comun.js');
 
 // 8 filas del datos.csv del preenunciado (con sus casos testigo) y 14 del formato nuevo, intercaladas
 const CSV = `patente,zona,velocidadPromedio,cargaToneladas,estado,pendientePromedio
@@ -139,63 +136,11 @@ Entregar el proyecto con pom.xml, src/ y datos/; excluir target/, .git/ y archiv
 `;
 }
 
-const cfg = M.normalizar(M.leerEnunciado(enunciado({ leidas: 0, procesadas: 0, descartadas: 0, invalidas: 0, total: 0, porZona: [['NORTE', 0]], menor55: 0 }, { leidas: 0, procesadas: 0, descartadas: 0, invalidas: 0, total: 0, porZona: [['NORTE', 0]], menor55: 0 })).cfg);
-const r0 = M.simular(ORIGINAL, cfg), r = M.simular(CSV, cfg);
-if (r0.abortado || r.abortado) { console.error(r0.abortado || r.abortado, JSON.stringify(cfg.columna)); process.exit(1); }
-const md = enunciado(r0, r);
-fs.mkdirSync(SALIDA, { recursive: true });
-fs.writeFileSync(path.join(__dirname, 'enunciado-parcial.md'), md);
-fs.writeFileSync(path.join(SALIDA, 'datos-parcial.csv'), CSV);
-fs.writeFileSync(path.join(__dirname, 'ejemplo.json'), JSON.stringify({
-  id: 'i', titulo: 'Pendiente del tramo (con su CSV)', estilo: 'como el Recuperatorio 2 (Red Eléctrica): herencia por ancho y otra fórmula del índice',
-  texto: md, csv: CSV,
-  esperado: { columna: { nombre: 'pendientePromedio', tipo: 'entero', rango: { min: 0, minIncl: true, max: 30, maxIncl: true } }, anchoMixto: true, columnaEnSubclase: true, indiceNuevo: { v: 0.5, c: 0.3, x: 0.2 }, especiales: [{ clase: 'VehiculoConPendiente', ops: [], topes: [] }], conteo: null },
-}, null, 1) + '\n');
-module.exports = { md, CSV, cfg };
-console.log('original:', r0.leidas, r0.procesadas, r0.descartadas, r0.invalidas, r0.total, '· combinado:', r.leidas, r.procesadas, r.descartadas, r.invalidas, r.total, JSON.stringify(r.porZona), r.menor55);
-
-if (process.argv.includes('--pdf')) {
-  // Como los de la cátedra: el Markdown impreso con Chrome, con el nombre del archivo y la fecha arriba y el número de página abajo
-  const { chromium } = require(process.env.PLAYWRIGHT || '/opt/node-tools/node_modules/playwright');
-  const esc = t => t.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
-  const enLinea = t => esc(t).replace(/`([^`]+)`/g, '<code>$1</code>');
-  let html = '', lista = null, codigo = [];
-  const cerrar = () => { if (lista) { html += `</${lista}>`; lista = null; } if (codigo.length) { html += `<pre>${esc(codigo.join('\n'))}</pre>`; codigo = []; } };
-  for (const l of md.split('\n')) {
-    if (/^ {4}/.test(l)) { if (lista) { html += `</${lista}>`; lista = null; } codigo.push(l.slice(4)); continue; }
-    if (codigo.length && l.trim() === '') continue;
-    if (codigo.length) { html += `<pre>${esc(codigo.join('\n'))}</pre>`; codigo = []; }
-    let m;
-    if ((m = l.match(/^(#+) (.*)/))) { cerrar(); html += `<h${m[1].length}>${enLinea(m[2])}</h${m[1].length}>`; }
-    else if ((m = l.match(/^- (.*)/))) { if (lista !== 'ul') { cerrar(); html += '<ul>'; lista = 'ul'; } html += `<li>${enLinea(m[1])}</li>`; }
-    else if ((m = l.match(/^\d+\. (.*)/))) { if (lista !== 'ol') { cerrar(); html += '<ol>'; lista = 'ol'; } html += `<li>${enLinea(m[1])}</li>`; }
-    else if (l.trim()) { cerrar(); html += `<p>${enLinea(l)}</p>`; }
-    else cerrar();
-  }
-  cerrar();
-  (async () => {
-    const b = await chromium.launch(process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {});
-    const pg = await b.newPage();
-    await pg.setContent(`<!doctype html><html><head><meta charset="utf-8"><title>enunciado-parcial.md</title><style>
-      body{font:10.5pt/1.5 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;color:#1f2328}
-      h1{font-size:18pt;border-bottom:1px solid #d1d9e0;padding-bottom:6px;margin:0 0 10px} h2{font-size:13.5pt;border-bottom:1px solid #d1d9e0;padding-bottom:4px;margin:18px 0 8px}
-      p{margin:0 0 8px} ul,ol{margin:0 0 8px 22px;padding:0} li{margin:2px 0}
-      code{font:9pt ui-monospace,Menlo,Consolas,monospace;background:#eff1f3;border-radius:4px;padding:1px 4px}
-      pre{font:9pt/1.45 ui-monospace,Menlo,Consolas,monospace;background:#f6f8fa;border-radius:6px;padding:9px 12px;margin:0 0 10px;white-space:pre-wrap}
-    </style></head><body>${html}</body></html>`);
-    const archivo = path.join(SALIDA, 'enunciado-parcial.pdf');
-    await pg.pdf({ path: archivo, format: 'A4', margin: { top: '1.6cm', bottom: '1.6cm', left: '1.8cm', right: '1.8cm' }, displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size:8px;width:100%;padding:0 1.8cm;color:#555">enunciado-parcial.md<span style="float:right">2026-11-17</span></div>',
-      footerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#555"><span class="pageNumber"></span>/<span class="totalPages"></span></div>' });
-    await b.close();
-    // sin metadatos (con pymupdf), salvo el título
-    require('child_process').execFileSync('python3', ['-I', '-c', `import sys, pymupdf as fitz
-d = fitz.open(sys.argv[1])
-d.set_metadata({'title': 'Parcial de práctica · Flota Logística con pendiente del tramo', 'author': '', 'subject': '', 'keywords': '', 'creator': '', 'producer': ''})
-d.del_xml_metadata()
-d.save(sys.argv[1] + '.tmp', garbage=3, deflate=True)
-`, archivo]);
-    fs.renameSync(archivo + '.tmp', archivo);
-    console.log('PDF:', path.relative(process.cwd(), archivo));
-  })();
-}
+armar({
+  carpeta: __dirname, material: 'practica-pendiente', csv: CSV, enunciado,
+  tituloPdf: 'Parcial de práctica · Flota Logística con pendiente del tramo',
+  ejemplo: {
+    id: 'i', titulo: 'Pendiente del tramo (con su CSV)', estilo: 'como el Recuperatorio 2 (Red Eléctrica): herencia por ancho y otra fórmula del índice',
+    esperado: { columna: { nombre: 'pendientePromedio', tipo: 'entero', rango: { min: 0, minIncl: true, max: 30, maxIncl: true } }, anchoMixto: true, columnaEnSubclase: true, indiceNuevo: { v: 0.5, c: 0.3, x: 0.2 }, especiales: [{ clase: 'VehiculoConPendiente', ops: [], topes: [] }], conteo: null },
+  },
+});

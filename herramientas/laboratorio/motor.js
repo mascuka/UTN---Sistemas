@@ -404,7 +404,7 @@
       if (o.op === 'suma') return `${ind}costo = costo + ${o.n};`;
       if (o.op === 'porcentaje') return `${ind}costo = costo * ${100 + o.n} / 100;`;
       if (o.op === 'multiplica') return `${ind}costo = costo * ${o.n};`;
-      return `${ind}costo = costo + ${o.n} * (get${cap(col.nombre)}() / ${o.cada});`;
+      return Number(o.cada) === 1 ? `${ind}costo = costo + ${o.n} * get${cap(col.nombre)}();` : `${ind}costo = costo + ${o.n} * (get${cap(col.nombre)}() / ${o.cada});`;
     }).join('\n');
   }
   const campoJava = { carga: 'cargaToneladas', velocidad: 'velocidadPromedio', indice: 'indiceDesgaste' };

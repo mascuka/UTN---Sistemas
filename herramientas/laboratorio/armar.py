@@ -37,7 +37,8 @@ def main():
         '/*@PDFJS@*/': (AQUI / 'vendor/pdfjs/pdf.min.js').read_text('utf-8'),
         '/*@WORKER@*/': (AQUI / 'vendor/pdfjs/pdf.worker.min.js').read_text('utf-8'),
         '/*@MOTOR@*/': (AQUI / 'motor.js').read_text('utf-8'),
-        '/*@EJEMPLOS@*/': 'window.EJEMPLOS_EXTRA = [' + (AQUI / 'practica-pendiente/ejemplo.json').read_text('utf-8').strip() + '];\n'
+        '/*@EJEMPLOS@*/': 'window.EJEMPLOS_EXTRA = [' + ','.join(f.read_text('utf-8').strip() for f in sorted(
+                              AQUI.glob('practica-*/ejemplo.json'), key=lambda f: json.loads(f.read_text('utf-8'))['id'])) + '];\n'
                           + (AQUI / 'ejemplos.js').read_text('utf-8'),
         '/*@PROYECTO@*/': json.dumps(proyecto(), ensure_ascii=False),
     }

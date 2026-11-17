@@ -138,9 +138,13 @@ ${pie('Incorporar en el colector un conteo por estado.', 'cantidades EN_RUTA/DEM
       esperado: { columna: null, estados: ['EN_RUTA', 'DEMORADO', 'EN_TALLER'], especiales: [{ clase: 'VehiculoEnTaller', ops: [{ op: 'multiplica', n: 2 }], topes: [{ campo: 'carga', op: 'max', n: 20, incl: true }] }], conteo: 'estado' },
     },
   ];
-  // Los parciales de práctica con su propio CSV (practica-pendiente/ejemplo.json): en la página los mete armar.py
+  // Los parciales de práctica con su propio CSV (practica-*/ejemplo.json): en la página los mete armar.py
   let extra = [];
-  if (enNode) { try { extra = [require('./practica-pendiente/ejemplo.json')]; } catch (e) { extra = []; } }
+  if (enNode) {
+    const fs = require('fs'), path = require('path');
+    extra = fs.readdirSync(__dirname).filter(d => d.startsWith('practica-') && fs.existsSync(path.join(__dirname, d, 'ejemplo.json'))).sort()
+      .map(d => require(path.join(__dirname, d, 'ejemplo.json'))).sort((a, b) => a.id.localeCompare(b.id));
+  }
   else extra = (raiz && raiz.EJEMPLOS_EXTRA) || [];
   return E.concat(extra);
 }));
