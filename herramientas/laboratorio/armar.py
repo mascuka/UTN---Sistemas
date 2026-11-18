@@ -102,6 +102,8 @@ def main():
     fecha = m.group(1) if m else datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-3))).strftime('%d/%m/%Y')
     html = html.replace('@@FECHA@@', fecha).replace('@@VERSION@@', version)
     SALIDA.write_text(html, 'utf-8')
+    # La versión publicada, aparte: la página abierta desde el sitio la consulta y avisa si quedó vieja
+    (SALIDA.parent / 'laboratorio-version.txt').write_text(version + '\n', 'utf-8')
     indice = RAIZ / 'index.html'
     texto = indice.read_text('utf-8')
     nuevo = re.sub(r'(recuperatorio-1/laboratorio-flota\.html)(\?v=\w+)?"', r'\1?v=' + version + '"', texto)

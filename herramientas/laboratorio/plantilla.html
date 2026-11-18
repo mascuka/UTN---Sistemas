@@ -164,6 +164,8 @@
   .s-estado{font-size:.86rem;color:var(--text2);margin:0 0 12px;line-height:1.5}
   .s-estado .ok{color:var(--ok)} .s-estado .mal{color:var(--bad);font-weight:600}
   .pie a{color:inherit}
+  .aviso-version{border:1px solid var(--warn);background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:.92rem}
+  .aviso-version a{color:inherit;font-weight:700}
   #bQuery{width:100%;min-height:96px}
   #p6 > .sub{margin-left:0;padding-left:0}
   .b-nota{font-size:.86rem;color:var(--text2);margin:10px 0}
@@ -933,7 +935,17 @@
   });
   pintarEstadoEnun(); pintarReglas(); pintarEstadoCsv(); recalcular();
   if (releer) leer(true);   // el lector de esta versión puede entender más que el de la que guardó
-  window.__lab = { S, recalcular, leer, buscar };   // para probar
+  window.__lab = { S, recalcular, leer, buscar };
+  // Abierta desde el sitio: si hay una versión más nueva publicada, avisa (una pestaña o un enlace viejo muestran la anterior)
+  if (/^https?:$/.test(location.protocol)) fetch('laboratorio-version.txt?t=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.text() : '').then(v => {
+      v = v.trim();
+      if (!/^[0-9a-f]{7}$/.test(v) || v === VERSION) return;
+      const d = document.createElement('div');
+      d.className = 'aviso-version';
+      d.innerHTML = `Hay una versión más nueva del laboratorio (${v}). <a href="laboratorio-flota.html?v=${v}">Actualizar</a>`;
+      document.querySelector('.env').prepend(d);
+    }).catch(() => {});   // para probar
 })();
 </script>
 </body>
