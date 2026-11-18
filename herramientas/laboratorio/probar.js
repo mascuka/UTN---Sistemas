@@ -85,7 +85,8 @@ if (proyecto) {
   cfgs.forEach((cfg, k) => {
     const dir = path.join(tmp, 'c' + k), cls = path.join(dir, 'cls'); fs.mkdirSync(cls, { recursive: true });
     const todos = Object.assign({}, originales), gen = M.generar(cfg, originales);
-    for (const [f, t] of Object.entries(gen)) todos[f] = M.marcarCambios(originales[f], t);   // con las marcas: tienen que ser solo comentarios
+    // una vez con las marcas y otra sin ningún comentario (la vista simple): las dos tienen que compilar y dar lo mismo
+    for (const [f, t] of Object.entries(gen)) todos[f] = k % 2 ? M.sinComentarios(M.marcarCambios(originales[f], t)) : M.marcarCambios(originales[f], t);
     for (const [f, t] of Object.entries(todos)) fs.writeFileSync(path.join(dir, f), t);
     let mal = '';
     try { execFileSync('javac', ['-encoding', 'UTF-8', '-d', cls, ...Object.keys(todos).map(f => path.join(dir, f))], { stdio: 'pipe' }); }

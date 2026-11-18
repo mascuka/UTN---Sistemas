@@ -1567,6 +1567,34 @@ public class App {
     return [col ? encabezadoNuevo(cfg) : ENCABEZADO].concat(todas).join('\n') + '\n';
   }
 
+  // ───────────────────────── Sin comentarios (la vista simple) ─────────────────────────
+  // Saca los comentarios del Java: las líneas que son solo comentario (de una línea, javadoc o bloque) y el «//» del
+  // final de una línea, sin tocar lo que está entre comillas.
+  function cortarComentario(l) {
+    let enTexto = false;
+    for (let i = 0; i < l.length; i++) {
+      const ch = l[i];
+      if (enTexto) { if (ch === '\\') i++; else if (ch === '"') enTexto = false; }
+      else if (ch === '"') enTexto = true;
+      else if (ch === "'") i += l[i + 1] === '\\' ? 3 : 2;
+      else if (ch === '/' && l[i + 1] === '/') return l.slice(0, i).replace(/\s+$/, '');
+    }
+    return l;
+  }
+  function sinComentarios(texto) {
+    if (texto == null) return texto;
+    const out = [];
+    let enBloque = false;
+    for (const l of texto.replace(/\r/g, '').split('\n')) {
+      const t = l.trim();
+      if (enBloque) { if (t.includes('*/')) enBloque = false; continue; }
+      if (t.startsWith('//')) continue;
+      if (t.startsWith('/*')) { if (!t.includes('*/')) enBloque = true; continue; }
+      out.push(cortarComentario(l));
+    }
+    return out.join('\n');
+  }
+
   // ───────────────────────── Las marcas de los cambios, como se hacen a mano ─────────────────────────
   /* Compara el archivo del preenunciado con el resuelto y deja comentarios: «// NUEVO» en las líneas agregadas, «// MOD»
      en las que reemplazan a otras (con las originales arriba, «// ANTES: …», si son pocas) y «// SACADO: …» donde se borró
@@ -1616,6 +1644,6 @@ public class App {
 
   return {
     CAMPOS, ENCABEZADO, ESTADOS_BASE, DESCARTES_BASE, FACTURACION, configBase, simular, generar, leerEnunciado, revisar, normalizar,
-    csvDePrueba, marcarCambios, describirEspecial, describirOp, afectaFormatoViejo, referencias, pesoTxt, usaIndiceNuevo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
+    csvDePrueba, marcarCambios, sinComentarios, describirEspecial, describirOp, afectaFormatoViejo, referencias, pesoTxt, usaIndiceNuevo, encabezadoNuevo, textoRango, hayCambios, etiquetaBase, signoTope, oraciones,
   };
 }));
