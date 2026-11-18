@@ -873,9 +873,19 @@
     const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = nombre; document.body.appendChild(a); a.click();
     setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
   }
+  /* Copiar: primero de la forma clásica (anda también abierta desde el archivo, sin internet) y, si el navegador no la
+     deja, con el portapapeles moderno. Si no se puede de ninguna, lo dice en el botón. */
   function copiar(t, btn) {
-    const ok = () => { const v = btn.textContent; btn.textContent = '¡Copiado!'; setTimeout(() => btn.textContent = v, 1200); };
-    if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, () => {}); else { const x = document.createElement('textarea'); x.value = t; document.body.appendChild(x); x.select(); try { document.execCommand('copy'); ok(); } catch (e) {} x.remove(); }
+    const v = btn.textContent, mostrar = m => { btn.textContent = m; setTimeout(() => btn.textContent = v, 1200); };
+    const x = document.createElement('textarea');
+    x.value = t; x.setAttribute('readonly', ''); x.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(x); x.select();
+    let hecho = false;
+    try { hecho = document.execCommand('copy'); } catch (e) { /* no la deja */ }
+    x.remove(); btn.focus();
+    if (hecho) return mostrar('¡Copiado!');
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => mostrar('¡Copiado!'), () => mostrar('No pude copiar'));
+    else mostrar('No pude copiar');
   }
   const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
   function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
