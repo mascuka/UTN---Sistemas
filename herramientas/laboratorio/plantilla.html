@@ -279,6 +279,7 @@
     <h2>Buscador de preguntas</h2>
     <p class="sub" id="bSub"></p>
     <textarea id="bQuery" rows="4" spellcheck="false" placeholder="Pegá la pregunta (con el código y las opciones, si querés)…"></textarea>
+    <div class="fila" style="margin-top:8px"><button class="btn" id="bBorrar">Borrar</button></div>
     <div id="bRes"></div>
   </section>
 
@@ -903,6 +904,7 @@
   $('#bSub').textContent = `${PR.length} preguntas: los cuestionarios 1 a 5 y las del 1.er parcial (el parcial real, el proyecto, los simulacros, los apuntes y las de escribir). Las correctas, en verde.`;
   let bTimer = null;
   $('#bQuery').addEventListener('input', () => { clearTimeout(bTimer); bTimer = setTimeout(pintarBusqueda, 120); });
+  $('#bBorrar').onclick = () => { clearTimeout(bTimer); $('#bQuery').value = ''; pintarBusqueda(); $('#bQuery').focus(); };
 
   // ───── Arranque ─────
   const releer = recuperar();
