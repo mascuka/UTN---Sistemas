@@ -89,7 +89,9 @@ def main():
                               AQUI.glob('practica-*/ejemplo.json'), key=lambda f: json.loads(f.read_text('utf-8'))['id'])) + '];\n'
                           + (AQUI / 'ejemplos.js').read_text('utf-8'),
         '/*@PROYECTO@*/': json.dumps(proyecto(), ensure_ascii=False),
-        '/*@PREGUNTAS@*/': 'window.PREGUNTAS = ' + json.dumps(preguntas(), ensure_ascii=False) + ';',
+        '/*@PREGUNTAS@*/': 'window.PREGUNTAS = ' + json.dumps(preguntas(), ensure_ascii=False) + ';\n'
+                           # el archivo de base del cuadro «Comparar archivo»: solo su tamaño y su huella, no el archivo
+                           + 'window.BASE_COMPARAR = ' + json.dumps(json.loads((AQUI / 'comparar-base.json').read_text('utf-8'))) + ';',
     }
     for marca, texto in partes.items():
         assert html.count(marca) == 1, marca

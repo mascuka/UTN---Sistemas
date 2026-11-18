@@ -164,6 +164,10 @@
   .s-estado{font-size:.86rem;color:var(--text2);margin:0 0 12px;line-height:1.5}
   .s-estado .ok{color:var(--ok)} .s-estado .mal{color:var(--bad);font-weight:600}
   .pie a{color:inherit}
+  .comparar{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin-bottom:16px;background:var(--card);overflow:hidden}
+  .comparar .c-tit{font-weight:600;white-space:nowrap}
+  .comparar .c-res{font-weight:700;white-space:nowrap}
+  .comparar .c-res.ok{color:var(--ok)} .comparar .c-res.mal{color:var(--bad)}
   .aviso-version{border:1px solid var(--warn);background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:.92rem}
   .aviso-version a{color:inherit;font-weight:700}
   #bQuery{width:100%;min-height:96px}
@@ -191,6 +195,12 @@
 </head>
 <body>
 <div class="env">
+  <div class="comparar" id="comparar">
+    <span class="c-tit">Comparar archivo</span>
+    <button class="btn chico" id="cElegir">Elegir archivo</button>
+    <span class="c-res" id="cRes"></span>
+    <input type="file" id="fComparar" class="oculto">
+  </div>
   <header class="cab">
     <div>
       <h1>Laboratorio del recuperatorio · Flota Logística</h1>
@@ -859,6 +869,27 @@
     lista_.push([R + 'DECISIONES.md', decisiones()]);
     bajar('flota-resuelto.zip', zip(lista_));
   }
+
+  // ───── Comparar archivo: ¿es igual al de base? (mismo tamaño y misma huella SHA-256; sin ella, CRC32) ─────
+  const BASE = window.BASE_COMPARAR;
+  async function comparar(f) {
+    const r = $('#cRes');
+    r.className = 'c-res'; r.textContent = '…';
+    const datos = new Uint8Array(await f.arrayBuffer());
+    let igual = datos.length === BASE.bytes;
+    if (igual) {
+      try {
+        const h = new Uint8Array(await crypto.subtle.digest('SHA-256', datos));
+        igual = [...h].map(b => b.toString(16).padStart(2, '0')).join('') === BASE.sha256;
+      } catch (e) { igual = crc32(datos).toString(16).padStart(8, '0') === BASE.crc32; }
+    }
+    r.className = 'c-res ' + (igual ? 'ok' : 'mal');
+    r.textContent = igual ? '✓ Igual' : '✗ Distinto';
+  }
+  $('#cElegir').onclick = () => $('#fComparar').click();
+  $('#fComparar').onchange = ev => { const f = ev.target.files[0]; ev.target.value = ''; if (f) comparar(f); };
+  $('#comparar').addEventListener('dragover', e => e.preventDefault());
+  $('#comparar').addEventListener('drop', e => { e.preventDefault(); e.stopPropagation(); const f = e.dataTransfer.files[0]; if (f) comparar(f); });
 
   // ───── Buscador de preguntas (cuestionarios 1 a 5 y las del 1.er parcial) ─────
   const PR = window.PREGUNTAS || [];
