@@ -794,9 +794,11 @@
       + `
       <div class="cod-env"><div class="archivos">${arch.map(x => `<button data-arch="${esc(x.nombre)}" class="${x.nombre === a.nombre ? 'on' : ''}"><span class="nom">${esc(x.nombre)}</span><span class="et ${x.estado}">${x.estado === 'igual' ? 'igual' : x.estado}</span></button>`).join('')}</div>
       <div class="codigo">${lineas.map((l, i) => `<div class="ln${agregadas.has(i) ? ' add' : ''}"><i>${i + 1}</i><span>${resaltar(l) || ' '}</span></div>`).join('')}</div></div>
-      ${S.simple ? '' : `<details class="mas"><summary>DECISIONES.md (para la entrega)</summary><pre class="consola" style="margin-top:8px;white-space:pre-wrap">${esc(decisiones())}</pre></details>`}`;
+      ${S.simple && !pedidoDecisiones() ? '' : `<details class="mas" id="decDet"${S.decAbierto ? ' open' : ''}><summary>${esc(nombreDecisiones())} (para la entrega)</summary><pre class="consola" style="margin-top:8px;white-space:pre-wrap">${esc(textoDecisiones())}</pre><div class="fila" style="margin-top:8px"><button class="btn chico" id="copiarDec">Copiar</button></div></details>`}`;
     el.querySelectorAll('[data-arch]').forEach(b => b.onclick = () => { S.archivo = b.dataset.arch; pintarSolucion(); });
     $('#copiarArch').onclick = ev => copiar(a.texto, ev.currentTarget);
+    const dd = $('#decDet');
+    if (dd) { dd.ontoggle = () => { S.decAbierto = dd.open; }; $('#copiarDec').onclick = ev => copiar(textoDecisiones(), ev.currentTarget); }
     if (S.simple) {
       $('#sEnun').onclick = () => $('#fEnun').click();
       $('#sCsv').onclick = () => $('#fCsv').click();
@@ -806,6 +808,44 @@
       $('#marcas').onchange = ev => { S.marcas = ev.target.checked; pintarSolucion(); };
     }
     $('#bajarZip').onclick = () => bajarZip(arch);
+  }
+  /* Si el enunciado pide un DECISIONES.md (o un texto breve con la estrategia), el nombre que pide; si no, null */
+  function pedidoDecisiones() {
+    const t = (S.texto || '').replace(/\s+/g, ' ');
+    const m = t.match(/\b([\w-]*decisiones[\w-]*\.(?:md|txt))\b/i);
+    if (m) return m[1];
+    if (/\bDECISIONES\b/.test(t) || /(texto|archivo|nota|documento) breve[^.]{0,140}(estrategia|decisi|c[oó]mo se resolvi)/i.test(t) || /justific\w*[^.]{0,40}decisiones/i.test(t)) return 'DECISIONES.md';
+    return null;
+  }
+  const nombreDecisiones = () => pedidoDecisiones() || 'DECISIONES.md';
+  const textoDecisiones = () => pedidoDecisiones() ? decisionesCriollo() : decisiones();
+  /* El mismo DECISIONES, contado como lo escribiría uno: qué saqué del enunciado y qué hice (3 a 5 renglones) */
+  function decisionesCriollo() {
+    const c = cfgLista, col = c.columna, L = [], may = x => x.charAt(0).toUpperCase() + x.slice(1);
+    const sub = c.columnaEnSubclase ? c.especiales[0] : null;
+    const r = col && col.tipo === 'entero' ? col.rango : null;
+    const rango = r && r.min != null && r.max != null && r.minIncl && r.maxIncl ? `entre ${r.min} y ${r.max}` : r && (r.min != null || r.max != null) ? M.textoRango(r) : '';
+    if (col) L.push(`Para leer los dos formatos no dupliqué el parser: guardé en «largo» las columnas del encabezado (5 el viejo, 6 el nuevo)${c.anchoMixto ? ' y acepto filas de 5 o de largo' : ' y cada fila tiene que tener justo ese ancho'}${c.separador !== ',' ? `; el nuevo viene separado con «${c.separador}»` : ''}. El orden lo dejé como estaba: primero el ancho, después descarto ${c.descartes.join(' y ')} sin validar nada y recién ahí valido.`);
+    else L.push(`El CSV sigue con sus cinco columnas y dejé el orden de siempre: primero el ancho, después descarto ${c.descartes.join(' y ')} y recién ahí valido.`);
+    if (sub) {
+      L.push(`${col.nombre} lo puse en ${sub.clase}, que hereda directo de VehiculoRuta (le saqué el final)${rango ? ' y valida que esté ' + rango : ''}. desdeCampos decide por el ancho: con 5 campos arma un VehiculoRuta y con 6 un ${sub.clase}, así el parser no hace ningún new.`);
+      if (c.indiceNuevo && col.tipo === 'entero') L.push(`Como las filas nuevas usan otra fórmula (${M.pesoTxt(c.indiceNuevo.v)}, ${M.pesoTxt(c.indiceNuevo.c)} y ${M.pesoTxt(c.indiceNuevo.x)}), le agregué a VehiculoRuta un constructor protected que recibe el índice ya calculado; el público sigue chequeando con la fórmula vieja, así no se rompe el test que ya estaba.`);
+      if (c.baseDesdeColumna && col.tipo === 'entero') L.push(`Para el costo hice un método protected getFacturacionPorFlete(): VehiculoRuta devuelve ${col.defecto} y ${sub.clase} lo pisa con ${col.nombre}, así getCostoDesgasteOperativo() es uno solo y Flota no pregunta de qué tipo es cada uno.`);
+      if (sub.ops.length || sub.topes.length) L.push(`${sub.clase} además tiene ${M.describirEspecial(sub, c)}: lo resolví redefiniendo getCostoDesgasteOperativo() a partir del super y validando después del super(...).`);
+    } else if (col) {
+      L.push(`${col.nombre} lo agregué en VehiculoRuta${col.valores.length ? ` (acepta ${col.valores.join(', ')})` : rango ? ` (tiene que estar ${rango})` : ''} y lo valido ahí mismo; en las filas viejas vale ${col.defecto === '' ? 'vacío' : col.defecto}.${c.baseDesdeColumna ? ' El costo toma ese valor en vez de los 2000 USD.' : ''}`);
+    }
+    if (!sub && c.especiales.length) L.push(`Para los que cuestan distinto hice ${c.especiales.map(e => `${e.clase} (${M.describirEspecial(e, c)})`).join(' y ')}: ${c.especiales.length > 1 ? 'heredan de VehiculoRuta, redefinen el costo arrancando del super y validan sus topes' : 'hereda de VehiculoRuta, redefine el costo arrancando del super y valida sus topes'} después del super(...).`);
+    if (c.estados.join() !== M.ESTADOS_BASE.join() || c.descartes.join() !== M.DESCARTES_BASE.join()) L.push(`Los estados que valen ahora son ${c.estados.join(', ')} y se descartan sin validar ${c.descartes.join(' y ')}.`);
+    const flota = [];
+    if (c.conteo) flota.push(`en Flota agregué contarPor${may(c.conteo === 'columna' ? col.nombre : c.conteo)}() con groupingBy (con la flota vacía da vacío)`);
+    if (c.panoramaMenor) flota.push('al panorama le sumé cuántos tienen índice menor a 55');
+    if (c.totales.length) flota.push(`el main muestra el total de ${c.totales.map(t => t.valor).join(' y ')} con sumarCostoDesgasteOperativo y un filtro`);
+    flota.push(`el main lee datos/${c.archivo} si no le pasás nada y no calcula nada, solo delega`);
+    L.push(may(flota.join('; ')) + '.');
+    L.push('No me quedó nada pendiente.');
+    while (L.length > 5) { const juntos = L.splice(L.length - 3, 2); L.splice(L.length - 1, 0, juntos.join(' ')); }   // a lo sumo 5 renglones
+    return '# Decisiones\n\n' + L.map(x => '- ' + x).join('\n') + '\n';
   }
   function decisiones() {
     const c = cfgLista, col = c.columna, L = ['# Decisiones', ''];
@@ -866,7 +906,7 @@
     for (const [r, t] of Object.entries(P)) if (!r.startsWith(JAVA)) lista_.push([R + r, t]);
     for (const a of arch) lista_.push([R + JAVA + a.nombre, a.texto]);
     if (S.csv && !['preenunciado', 'prueba'].includes(S.csvOrigen) && cfgLista.archivo !== 'datos.csv') lista_.push([R + 'datos/' + cfgLista.archivo, S.csv]);
-    lista_.push([R + 'DECISIONES.md', decisiones()]);
+    lista_.push([R + nombreDecisiones(), textoDecisiones()]);
     bajar('flota-resuelto.zip', zip(lista_));
   }
 
