@@ -105,5 +105,12 @@ if (proyecto) {
   fs.rmSync(tmp, { recursive: true, force: true });
   console.log(`${cfgs.length} configuraciones compiladas y corridas con Java`);
 }
+// La prueba de aguante (variantes.js): los mismos enunciados reescritos de muchas formas tienen que leerse igual
+{
+  const r = require('child_process').spawnSync(process.execPath, [path.join(__dirname, 'variantes.js')], { encoding: 'utf8' });
+  const lineas = (r.stdout || '').trim().split('\n');
+  console.log((r.status ? '✗ ' : '✓ ') + 'Aguante: ' + lineas[0]);
+  if (r.status) { fallas++; for (const l of lineas.slice(1)) console.log('    ' + l); }
+}
 console.log(fallas ? `${fallas} con problemas` : 'TODO BIEN');
 process.exit(fallas ? 1 : 0);

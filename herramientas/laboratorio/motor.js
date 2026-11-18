@@ -1101,7 +1101,7 @@ public class App {
     const t = texto.replace(/\r/g, '').replace(/^[ \t]*[\u2022\u25AA\u25E6\u25CF\u25A0\u2013\u2014\uF000-\uF8FF·]+[ \t]*/gm, '- ').replace(/[ \t]+/g, ' ');
     // Un renglón en blanco separa párrafos, salvo que lo que sigue arranque en minúscula (en los PDF, un `código` suele
     // quedar en su propio renglón: «El nuevo encabezado es␤␤patente,zona,…»)
-    return t.replace(/\n\s*\n(?=\s*[a-zñáéíóú`])/g, ' ').split(/(?<=[.;:!?])\s+(?=[A-ZÁÉÍÓÚÑ0-9¿"«(`-])|\n{2,}|\n(?=\s*(?:\d+[.)]|[-*])\s)/)
+    return t.replace(/\n\s*\n(?=\s*[a-zñáéíóú`≥≤<>])/g, ' ').split(/(?<=[.;:!?])\s+(?=[A-ZÁÉÍÓÚÑ0-9¿"«(`-])|\n{2,}|\n(?=\s*(?:\d+[.)]|[-*])\s)/)
       .map(s => s.replace(/\s+/g, ' ').replace(/^- /, '').trim()).filter(Boolean);
   }
   const mayusculas = s => (s.match(/\b[A-Z][A-Z0-9_]+\b/g) || []).filter(w => !PALABRAS_NO.has(w) && !/^\d/.test(w) && w.length > 1);
@@ -1114,7 +1114,24 @@ public class App {
   const partesNombre = nombre => sinTildes(nombre).replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().split(/[\s_]+/)
     .filter(p => p.length >= 4 && !['patente', 'zona', 'velocidad', 'promedio', 'carga', 'toneladas', 'estado'].includes(p));
 
+  /* Lo que suelen romper los PDF, arreglado antes de leer: palabras cortadas con guion al final del renglón, espacios
+     duros, el encabezado del CSV partido o con espacios en el medio, y las comillas tipográficas alrededor de código. */
+  const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const ENCABEZADO_FLEX = new RegExp(ENCABEZADO.split('').map(escRe).join('[ \\t]*(?:\\r?\\n[ \\t]*)?'), 'g');
+  function prepararTexto(t) {
+    t = String(t || '').replace(/\u00a0/g, ' ').replace(/\*\*([^*\n]+)\*\*/g, '$1');
+    t = t.replace(/([a-záéíóúñ])-[ \t]*\r?\n[ \t]*([a-záéíóúñ])/g, '$1$2');
+    t = t.replace(ENCABEZADO_FLEX, ENCABEZADO);
+    // la columna nueva cortada en dos renglones: se junta solo si el nombre entero aparece en otro lado del enunciado
+    t = t.replace(new RegExp(escRe(ENCABEZADO) + '([,;|])\\s*([A-Za-z_]\\w*)[ \\t]*\\r?\\n[ \\t]*(\\w+)', 'g'), (m, sep, a, b) =>
+      new RegExp('\\b' + escRe(a + b) + '\\b').test(t.replace(m, ' ')) ? ENCABEZADO + sep + a + b : m);
+    // y recién con el encabezado ya entero, las comillas tipográficas alrededor de código pasan a ser `código`
+    t = t.replace(/[“"«]([^”"»\s]{3,})[”"»]/g, (m, x) => /[,;|()]|[a-z][A-Z]/.test(x) ? '`' + x + '`' : m);
+    return t;
+  }
+
   function leerEnunciado(texto, csvTexto) {
+    texto = prepararTexto(texto);
     const cfg = configBase(), ev = [], avisos = [];
     const nota = (clave, oracion, que) => ev.push({ clave, oracion, que });
     const O = oraciones(texto || '');
@@ -1139,8 +1156,9 @@ public class App {
     O.forEach((o, i) => {
       if (campos) return;
       o = conSiguiente(i);
-      const m = o.match(/encabezado\s+(?:nuevo\s+|evolucionado\s+)?(?:del\s+archivo\s+|del\s+csv\s+)?(?:es|queda|pasa\s+a\s+ser)\s*:?\s*[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){3,})/i)
-        || (sinTildes(o).toLowerCase().includes('encabezado') && o.match(/[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/));
+      const esNuevo = x => x && x[1].replace(/\s+/g, '') !== ENCABEZADO;
+      let m = o.match(/(?:encabezado|cabecera)\s+(?:(?:nuevo|nueva|evolucionad[oa])\s*)?(?:del\s+archivo\s+|del\s+csv\s+)?(?:(?:es|queda|pasa\s+a\s+ser)\s*:?|:)\s*[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){3,})/i);
+      if (!esNuevo(m)) m = /encabezado|cabecera/.test(sinTildes(o).toLowerCase()) ? [...o.matchAll(/[`"«]?([A-Za-z_]\w*(?:\s*[,;|]\s*[A-Za-z_]\w*){4,})/g)].find(esNuevo) : null;
       if (m) { campos = m[1].replace(/\s+/g, ''); nota('columna', o, 'El encabezado nuevo'); }
     });
     if (!campos && csvTexto) {
@@ -1220,11 +1238,11 @@ public class App {
         }
       });
       // ¿Entero?
-      const esEntero = O.some((o, i) => i < finReglas && hablaDeCol(N[i]) && /\bentero|numeric|un\s+numero|un\s+importe|valores?\s+mayores|valores?\s+menores|mayores?\s+(?:o\s+)?iguales?|entre\s+\d|de\s+\d+\s+a\s+\d+|\d+\s*,\s*\d+\s*(?:,\s*\d+\s*)*(?:o|y)\s*\d+|\d+(?:\s*\/\s*\d+){2,}/.test(N[i]))
+      const esEntero = O.some((o, i) => i < finReglas && hablaDeCol(N[i]) && /\bentero|numeric|un\s+numero|un\s+importe|valores?\s+mayores|valores?\s+menores|mayores?\s+(?:o\s+)?iguales?|entre\s+\d|de\s+\d+\s+a\s+\d+|\d+\s*,\s*\d+\s*(?:,\s*\d+\s*)*(?:o|y)\s*\d+|\d+(?:\s*\/\s*\d+){2,}|(?:rango|intervalo)\s+(?:de\s+)?[\[(]?\s*\d|[≥≤]\s*\d|(?:no|ni)\s+(?:puede\s+ser\s+)?(?:menor|mayor|inferior|superior)/.test(N[i]))
         || (!col.valores.length && csvTexto && columnaNumerica(csvTexto, cfg));
       if (esEntero && !col.valores.length) col.tipo = 'entero';
       if (col.tipo === 'entero') {
-        const conRango = n => /entre\s+\d|mayor|menor|maximo|minimo|negativ|positiv|\bde\s+\d+\s+a\s+\d/.test(n);
+        const conRango = n => /entre\s+\d|mayor|menor|maximo|minimo|negativ|positiv|\bde\s+\d+\s+a\s+\d|(?:rango|intervalo)\s+(?:de\s+)?[\[(]?\s*\d|[≥≤<>]\s*\d|superar|inferior|superior/.test(n);
         const exactas = N.some((n, i) => i < finReglas && n.includes(cn) && conRango(n) && !otroCampo(n) && !esEjemplo(i));
         O.forEach((o, i) => {
           const n = N[i];
@@ -1238,12 +1256,30 @@ public class App {
           const m0 = n.match(/^(\d+)\s+(?:conserva|mantiene|es\s+(?:un|el)\s+(?:vehiculo|valor)\s+(?:sin|comun|normal))/);
           if (m0 && col.valores.length && !col.valores.includes(Number(m0[1]))) { col.valores.push(Number(m0[1])); nota('columna', o, 'Valor permitido: ' + m0[1]); }
           if (!habla || (exactas && !N[i].includes(cn))) return;
-          let m;
-          if ((m = n.match(new RegExp('mayor(?:es)?\\s+(?:o\\s+)?iguales?\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = true; nota('columna', o, 'Mínimo ' + r.min + ' (inclusive)'); }
-          else if ((m = n.match(new RegExp('(?:mayor(?:es)?|superior(?:es)?)\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = false; nota('columna', o, 'Mayor a ' + r.min); }
-          if ((m = n.match(new RegExp('menor(?:es)?\\s+(?:o\\s+)?iguales?\\s+(?:a|que)\\s+' + NUM)))) { r.max = num(m[1]); r.maxIncl = true; nota('columna', o, 'Máximo ' + r.max + ' (inclusive)'); }
-          else if ((m = n.match(new RegExp('(?:menor(?:es)?|inferior(?:es)?)\\s+(?:a|que)\\s+' + NUM)))) { r.max = num(m[1]); r.maxIncl = false; nota('columna', o, 'Menor a ' + r.max); }
-          if ((m = n.match(new RegExp('entre\\s+' + NUM + '\\s+y\\s+' + NUM + '(\\s+\\(?(?:inclusive|ambos\\s+inclusive|exclusive|excluyente|sin\\s+incluir)\\)?)?'))) || (m = n.match(new RegExp('\\bde(?:sde)?\\s+' + NUM + '\\s+(?:a|hasta)\\s+' + NUM + '(\\s+\\(?(?:inclusive|exclusive|excluyente|sin\\s+incluir)\\)?)?')))) {
+          let m, n2 = n.replace(/(\d)\s*%/g, '$1');
+          // «no (puede ser) menor a 0 ni mayor a 100», «no puede superar 100», «no inferior a 0»: son inclusive y al derecho
+          const negada = (re, f) => { const x = n2.match(re); if (x) { f(num(x[1])); n2 = n2.replace(x[0], ' '); } };
+          const VERBO = '(?:puede\\s+ser\\s+|debe\\s+ser\\s+|es\\s+|sea\\s+|podra\\s+ser\\s+)?';
+          negada(new RegExp('\\b(?:no|ni)\\s+' + VERBO + '(?:menor|inferior)(?:es)?\\s+(?:a|que)\\s+' + NUM), x => { r.min = x; r.minIncl = true; nota('columna', o, 'Mínimo ' + x + ' (inclusive)'); });
+          negada(new RegExp('\\b(?:no|ni)\\s+' + VERBO + '(?:mayor|superior)(?:es)?\\s+(?:a|que)\\s+' + NUM), x => { r.max = x; r.maxIncl = true; nota('columna', o, 'Máximo ' + x + ' (inclusive)'); });
+          negada(new RegExp('\\b(?:no|ni)\\s+(?:puede\\s+|debe\\s+|podra\\s+)?(?:superar|exceder|pasar\\s+de)\\s+(?:los\\s+|las\\s+|el\\s+|la\\s+)?' + NUM), x => { r.max = x; r.maxIncl = true; nota('columna', o, 'Máximo ' + x + ' (inclusive)'); });
+          negada(new RegExp('\\b(?:no|ni)\\s+(?:puede\\s+|debe\\s+|podra\\s+)?bajar\\s+de\\s+(?:los\\s+|las\\s+)?' + NUM), x => { r.min = x; r.minIncl = true; nota('columna', o, 'Mínimo ' + x + ' (inclusive)'); });
+          // Con símbolos: «≥ 0 y ≤ 100», «0 ≤ x ≤ 100», «>= 1»
+          if ((m = n2.match(new RegExp('(?:≥|>=)\\s*' + NUM))) || (m = n2.match(new RegExp(NUM + '\\s*(?:≤|<=)\\s*[a-z]')))) { r.min = num(m[1]); r.minIncl = true; nota('columna', o, 'Mínimo ' + r.min + ' (inclusive)'); n2 = n2.replace(m[0], ' '); }
+          else if ((m = n2.match(new RegExp('>\\s*' + NUM))) || (m = n2.match(new RegExp(NUM + '\\s*<\\s*[a-z]')))) { r.min = num(m[1]); r.minIncl = false; nota('columna', o, 'Mayor a ' + r.min); n2 = n2.replace(m[0], ' '); }
+          if ((m = n2.match(new RegExp('(?:≤|<=)\\s*' + NUM)))) { r.max = num(m[1]); r.maxIncl = true; nota('columna', o, 'Máximo ' + r.max + ' (inclusive)'); n2 = n2.replace(m[0], ' '); }
+          else if ((m = n2.match(new RegExp('<\\s*' + NUM)))) { r.max = num(m[1]); r.maxIncl = false; nota('columna', o, 'Menor a ' + r.max); n2 = n2.replace(m[0], ' '); }
+          // «en el rango 0–100», «rango de 0 a 100», «[0, 100]»
+          if ((m = n2.match(new RegExp('(?:rango|intervalo)\\s+(?:de\\s+|es\\s+|:\\s*)?[\\[(]?\\s*' + NUM + '\\s*(?:[–—-]|\\.\\.|,|\\s+a\\s+|\\s+y\\s+)\\s*' + NUM + '\\s*[\\])]?(\\s*\\(?(?:inclusive|ambos\\s+inclusive|exclusive|excluyente|sin\\s+incluir)\\)?)?'))) || (m = n2.match(new RegExp('\\[\\s*' + NUM + '\\s*[,;]\\s*' + NUM + '\\s*\\]()')))) {
+            const exc = m[3] && /exclu|sin/.test(m[3]);
+            r.min = num(m[1]); r.max = num(m[2]); r.minIncl = !exc; r.maxIncl = !exc;
+            nota('columna', o, `Entre ${r.min} y ${r.max} (${exc ? 'exclusive' : 'inclusive'})`); n2 = n2.replace(m[0], ' ');
+          }
+          if ((m = n2.match(new RegExp('mayor(?:es)?\\s+(?:o\\s+)?iguales?\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = true; nota('columna', o, 'Mínimo ' + r.min + ' (inclusive)'); }
+          else if ((m = n2.match(new RegExp('(?:mayor(?:es)?|superior(?:es)?)\\s+(?:a|que)\\s+' + NUM)))) { r.min = num(m[1]); r.minIncl = false; nota('columna', o, 'Mayor a ' + r.min); }
+          if ((m = n2.match(new RegExp('menor(?:es)?\\s+(?:o\\s+)?iguales?\\s+(?:a|que)\\s+' + NUM)))) { r.max = num(m[1]); r.maxIncl = true; nota('columna', o, 'Máximo ' + r.max + ' (inclusive)'); }
+          else if ((m = n2.match(new RegExp('(?:menor(?:es)?|inferior(?:es)?)\\s+(?:a|que)\\s+' + NUM)))) { r.max = num(m[1]); r.maxIncl = false; nota('columna', o, 'Menor a ' + r.max); }
+          if ((m = n2.match(new RegExp('entre\\s+' + NUM + '\\s+y\\s+' + NUM + '(\\s+\\(?(?:inclusive|ambos\\s+inclusive|exclusive|excluyente|sin\\s+incluir)\\)?)?'))) || (m = n2.match(new RegExp('\\bde(?:sde)?\\s+' + NUM + '\\s+(?:a|hasta)\\s+' + NUM + '(\\s+\\(?(?:inclusive|exclusive|excluyente|sin\\s+incluir)\\)?)?')))) {
             const exc = m[3] && /exclu|sin/.test(m[3]);
             r.min = num(m[1]); r.max = num(m[2]); r.minIncl = !exc; r.maxIncl = !exc;
             nota('columna', o, `Entre ${r.min} y ${r.max} (${exc ? 'exclusive' : 'inclusive'})`);
@@ -1289,9 +1325,17 @@ public class App {
       const cn = sinTildes(col.nombre).toLowerCase();
       const reF = /indice[\w ]{0,16}=\s*((?:\(\s*[A-Za-z][A-Za-z ]*?\s*[×x*·]\s*\d*[.,]?\d+\s*\)\s*\+?\s*){2,4})/gi;
       let f;
-      while ((f = reF.exec(plano))) {
+      const terminos = [];   // los (nombre, peso) de cada fórmula encontrada
+      while ((f = reF.exec(plano)))
+        terminos.push([f[0], [...f[1].matchAll(/\(\s*([A-Za-z][A-Za-z ]*?)\s*[×x*·]\s*(\d*[.,]?\d+)\s*\)/g)].map(t => [t[1].replace(/\s+/g, '').toLowerCase(), Number(t[2].replace(',', '.'))])]);
+      if (!terminos.some(([, ts]) => ts.length === 3)) {   // «0.50 × velocidadPromedio + 0.30 × cargaToneladas + …» o «velocidadPromedio * 0.50 + …»
+        const reF2 = /indice[\w ]{0,16}=\s*(.{5,220}?)(?=\.\s+[A-Z¿]|\s+indice\w*\s*=|\s=|$)/gi;
+        while ((f = reF2.exec(plano)))
+          terminos.push([f[0], [...f[1].matchAll(/(\d*[.,]?\d+)\s*[×*·]\s*([A-Za-z][A-Za-z]*(?: [a-z]+)?)|([A-Za-z][A-Za-z]*(?: [a-z]+)?)\s*[×*·]\s*(\d*[.,]?\d+)/g)]
+            .map(t => t[1] ? [t[2].replace(/\s+/g, '').toLowerCase(), Number(t[1].replace(',', '.'))] : [t[3].replace(/\s+/g, '').toLowerCase(), Number(t[4].replace(',', '.'))])]);
+      }
+      for (const [frase, ts] of terminos) {
         const w = {};
-        const ts = [...f[1].matchAll(/\(\s*([A-Za-z][A-Za-z ]*?)\s*[×x*·]\s*(\d*[.,]?\d+)\s*\)/g)].map(t => [t[1].replace(/\s+/g, '').toLowerCase(), Number(t[2].replace(',', '.'))]);
         let ix = ts.findIndex(t => t[0] === cn);
         if (ix < 0 && ts.length === 3) ix = ts.findIndex(t => t[0].startsWith(cn.slice(0, 6)) && !t[0].startsWith('velocidad') && !t[0].startsWith('carga'));
         if (ix >= 0 && ts.length === 3) {
@@ -1300,7 +1344,7 @@ public class App {
           const iv = resto.findIndex(t => t[0].startsWith('velocidad')), ic = resto.findIndex(t => t[0].startsWith('carga'));
           w.v = resto[iv >= 0 ? iv : 0][1]; w.c = resto[ic >= 0 ? ic : (iv === 1 ? 0 : 1)][1];
         }
-        if (w.x != null && w.v != null && w.c != null) { cfg.indiceNuevo = w; nota('indice', f[0].trim(), `Índice de las filas nuevas: (int)(velocidad × ${w.v} + carga × ${w.c} + ${col.nombre} × ${w.x})`); break; }
+        if (w.x != null && w.v != null && w.c != null) { cfg.indiceNuevo = w; nota('indice', frase.trim(), `Índice de las filas nuevas: (int)(velocidad × ${w.v} + carga × ${w.c} + ${col.nombre} × ${w.x})`); break; }
       }
       if (ih >= 0 || cfg.indiceNuevo || clase) {
         cfg.columnaEnSubclase = true;
@@ -1338,7 +1382,12 @@ public class App {
       if (i >= finReglas) return;
       if (/:\s*$/.test(o) || /^para\s/.test(n)) contexto = sujetoPorTexto(n, C[i]);
       if (esEjemplo(i)) return;
-      const ops = opsDe(n, col), topes = topesDe(n, col);
+      // un tope sobre la columna igual a su propio rango es el rango (ya leído), no una regla de una subclase
+      // ni las reglas de siempre del preparcial repetidas (índice de 1 a 90, carga hasta 45, velocidad mayor a 0 y menor a 130)
+      const deSiempre = t => (t.campo === 'indice' && ((t.op === 'max' && t.n === 90 && t.incl) || (t.op === 'min' && t.n === 1 && t.incl)))
+        || (t.campo === 'carga' && t.op === 'max' && t.n === 45 && t.incl)
+        || (t.campo === 'velocidad' && ((t.op === 'max' && t.n === 130 && !t.incl) || (t.op === 'min' && t.n === 0 && !t.incl)));
+      const ops = opsDe(n, col), topes = topesDe(n, col).filter(t => !deSiempre(t) && !(t.campo === 'columna' && col && col.tipo === 'entero' && (t.op === 'max' ? col.rango.max === t.n : col.rango.min === t.n)));
       if (!ops.length && !topes.length) return;
       let s = sujetoPorTexto(n, C[i]);
       if (!s && i > 0 && col && col.tipo === 'entero' && /asegurad|cobertura|plazos?\s+de/.test(N[i - 1])) s = { cuando: { campo: 'columna', op: 'mayor', valor: 0 } };
@@ -1451,6 +1500,7 @@ public class App {
 
   function opsDe(n, col) {
     const ops = []; let m;
+    n = n.replace(/(?:usd|u\$s|\$)\s*(\d[\d.,_]*)/g, '$1 usd');
     const unidadCol = w => UNIDADES_CADA.test(w) || (col && partesNombre(col.nombre).concat(sinTildes(col.nombre).toLowerCase()).some(p => p.slice(0, 4) === w.slice(0, 4)));
     if ((m = n.match(new RegExp('(?:prima|recargo|suma|agrega|cuesta|cobra|adicional)\\D{0,30}?' + NUM + '\\s*(?:usd|dolares?|pesos|centavos|u\\$s|\\$)?\\s+(?:adicionales\\s+|mas\\s+|extra\\s+)?por\\s+cada\\s+' + NUM)))) ops.push({ op: 'sumaPorCada', n: num(m[1]), cada: num(m[2]) });
     else if ((m = n.match(new RegExp('(?:prima|recargo|suma|agrega|cuesta|cobra|adicional)\\D{0,30}?' + NUM + '\\s*(?:usd|dolares?|pesos|centavos|u\\$s|\\$)?\\s+(?:adicionales\\s+|mas\\s+|extra\\s+)?(?:por\\s+cada|por|cada)\\s+(?:un[oa]?\\s+)?(?:de\\s+)?(?:los\\s+|las\\s+)?([a-z]+)'))) && unidadCol(m[2])) ops.push({ op: 'sumaPorCada', n: num(m[1]), cada: 1 });
