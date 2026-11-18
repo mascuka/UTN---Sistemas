@@ -164,6 +164,25 @@
   .s-estado{font-size:.86rem;color:var(--text2);margin:0 0 12px;line-height:1.5}
   .s-estado .ok{color:var(--ok)} .s-estado .mal{color:var(--bad);font-weight:600}
   .pie a{color:inherit}
+  #bQuery{width:100%;min-height:96px}
+  #p6 > .sub{margin-left:0;padding-left:0}
+  .b-nota{font-size:.86rem;color:var(--text2);margin:10px 0}
+  .bq{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px;background:var(--bg)}
+  .bq-f{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .bq-f span{font-size:.74rem;color:var(--text2);border:1px solid var(--line);border-radius:99px;padding:1px 9px}
+  .bq-en{font-weight:600;white-space:pre-line;overflow-wrap:anywhere}
+  .bq-code{font:.84rem/1.45 ui-monospace,Menlo,Consolas,monospace;background:var(--bg2,rgba(127,127,127,.08));border-radius:8px;padding:9px 12px;margin:10px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+  .bq-op{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+  .bq-op li{display:flex;gap:10px;align-items:baseline;border:1px solid var(--line);border-radius:8px;padding:7px 10px;overflow-wrap:anywhere}
+  .bq-op li .l{font-weight:700;color:var(--muted);min-width:1em}
+  .bq-op li.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+  .bq-op li.ok .l{color:var(--ok)}
+  .bq-op li .tic{margin-left:auto;font-weight:700}
+  .bq-mod{margin-top:10px;border:1px solid var(--ok);background:var(--ok-soft);border-radius:8px;padding:9px 12px;overflow-wrap:anywhere}
+  .bq-mod b:first-child{display:block;color:var(--ok);margin-bottom:4px}
+  .bq-ex{margin-top:8px;font-size:.88rem;color:var(--text2)}
+  .bq-ex summary{cursor:pointer}
+  .bq code, .bq-mod code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em}
   kbd,code.k{font:.82rem var(--mono);background:var(--hover);border-radius:5px;padding:0 5px;overflow-wrap:anywhere}
   .evid q,.estado-carga,.nota,.aviso{overflow-wrap:anywhere}
 </style>
@@ -187,6 +206,7 @@
       <button class="btn" id="abrirEnun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg>Abrir PDF, .md o .txt</button>
       <select id="ejemplo" aria-label="Enunciados de práctica"><option value="">… o un enunciado de práctica</option></select>
       <button class="btn pri" id="leer">Leer reglas</button>
+      <button class="btn chico" id="borrarTodo">Borrar todo</button>
       <input type="file" id="fEnun" accept=".pdf,.md,.txt,.markdown,text/plain,application/pdf" class="oculto">
     </div>
     <div class="soltar" id="soltarEnun">También podés soltar el archivo acá</div>
@@ -255,6 +275,13 @@
     <div id="solucion"></div>
   </section>
 
+  <section class="paso" id="p6">
+    <h2>Buscador de preguntas</h2>
+    <p class="sub" id="bSub"></p>
+    <textarea id="bQuery" rows="4" spellcheck="false" placeholder="Pegá la pregunta (con el código y las opciones, si querés)…"></textarea>
+    <div id="bRes"></div>
+  </section>
+
   <p class="pie" id="pie">Laboratorio offline · el lector busca frases típicas de los enunciados de la cátedra, no entiende cualquier texto: revisá siempre las reglas del paso 2.</p>
 </div>
 
@@ -263,6 +290,7 @@
 <script>/*@MOTOR@*/</script>
 <script>/*@EJEMPLOS@*/</script>
 <script>window.PROYECTO = /*@PROYECTO@*/;</script>
+<script>/*@PREGUNTAS@*/</script>
 <script>
 (function () {
   'use strict';
@@ -319,6 +347,15 @@
   soltable('#soltarEnun', abrirEnunciado);
   $('#texto').oninput = ev => { S.texto = ev.target.value; S.origen = 'Texto editado a mano'; pintarEstadoEnun(); guardar(); };
   $('#leer').onclick = () => leer();
+  $('#borrarTodo').onclick = () => borrarTodo();
+  // Borrar: vuelve al preenunciado (sin enunciado, con su datos.csv) y olvida lo guardado, para cargar otro parcial
+  function borrarTodo() {
+    Object.assign(S, { texto: '', origen: '', cfg: M.configBase(), evid: [], avisos: [], leido: false, mia: '', archivo: 'ParserVehiculos.java',
+      csv: DATOS, csvNombre: 'datos.csv del preenunciado', csvOrigen: 'preenunciado' });
+    $('#texto').value = ''; $('#csvTexto').value = S.csv; $('#ejemplo').value = '';
+    try { localStorage.removeItem(CLAVE); } catch (e) { /* sin almacenamiento */ }
+    pintarEstadoEnun(); pintarReglas(); pintarEstadoCsv(); recalcular();
+  }
 
   function soltable(sel, fn) {
     const z = $(sel);
@@ -739,7 +776,7 @@
     el.innerHTML = (av.length ? `<div class="aviso mal" style="margin:0 0 12px">Ojo: con estas reglas el Java puede no compilar o no tener sentido.<ul>${av.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : '')
       + (viejo ? `<div class="aviso" style="margin:0 0 12px">${esc(viejo)}</div>` : '')
       + (S.simple
-        ? `<div class="fila" style="margin-bottom:10px"><button class="btn" id="sEnun">Cargar enunciado</button><button class="btn" id="sCsv">Cargar CSV</button><button class="btn pri" id="bajarZip">Descargar ZIP</button><button class="btn" id="copiarArch">Copiar ${esc(a.nombre)}</button></div><div class="s-estado">${estadoSimple()}</div>`
+        ? `<div class="fila" style="margin-bottom:10px"><button class="btn" id="sEnun">Cargar enunciado</button><button class="btn" id="sCsv">Cargar CSV</button><button class="btn pri" id="bajarZip">Descargar ZIP</button><button class="btn" id="copiarArch">Copiar ${esc(a.nombre)}</button><button class="btn" id="sBorrar">Borrar</button></div><div class="s-estado">${estadoSimple()}</div>`
         : `<div class="fila" style="margin-bottom:12px"><button class="btn pri" id="bajarZip">Descargar el proyecto resuelto (.zip)</button><button class="btn" id="copiarArch">Copiar ${esc(a.nombre)}</button><button class="btn chico" id="taparSol">Tapar</button><label class="ch"><input type="checkbox" id="marcas"${S.marcas ? ' checked' : ''}> marcar los cambios con comentarios (// NUEVO, // MOD, // ANTES)</label></div>`)
       + `
       <div class="cod-env"><div class="archivos">${arch.map(x => `<button data-arch="${esc(x.nombre)}" class="${x.nombre === a.nombre ? 'on' : ''}"><span class="nom">${esc(x.nombre)}</span><span class="et ${x.estado}">${x.estado === 'igual' ? 'igual' : x.estado}</span></button>`).join('')}</div>
@@ -750,6 +787,7 @@
     if (S.simple) {
       $('#sEnun').onclick = () => $('#fEnun').click();
       $('#sCsv').onclick = () => $('#fCsv').click();
+      $('#sBorrar').onclick = borrarTodo;
     } else {
       $('#taparSol').onclick = () => { S.verSol = false; pintarSolucion(); };
       $('#marcas').onchange = ev => { S.marcas = ev.target.checked; pintarSolucion(); };
@@ -819,6 +857,53 @@
     bajar('flota-resuelto.zip', zip(lista_));
   }
 
+  // ───── Buscador de preguntas (cuestionarios 1 a 5 y las del 1.er parcial) ─────
+  const PR = window.PREGUNTAS || [];
+  const VACIAS = new Set('de la el en y a que los las un una es se del por con al lo para su o como le si'.split(' '));   // «no» cuenta: «Hay que…» y «No hay que…» son distintas
+  const planoB = t => String(t || '').replace(/<[^>]*>/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&[a-z]+;|&#\d+;/g, ' ')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const palabras = t => planoB(t).split(' ').filter(w => (w.length > 1 || /\d/.test(w)) && !VACIAS.has(w));
+  const IDX = PR.map(p => ({ todo: new Set(palabras([p.en, p.code, (p.op || []).map(o => o[0]).join(' '), p.modelo].join(' '))), en: new Set(palabras(p.en + ' ' + p.code)) }));
+  const DF = new Map();
+  for (const x of IDX) for (const w of x.todo) DF.set(w, (DF.get(w) || 0) + 1);
+  const peso = w => Math.log(1 + PR.length / DF.get(w));
+  /* Cuánto se parece cada pregunta a lo pegado: qué parte de las palabras pegadas tiene (pesadas por lo raras que
+     son) y, para desempatar, que su enunciado no tenga palabras de más. */
+  function buscar(q) {
+    if (planoB(q).split(' ').filter(Boolean).length < 2) return null;
+    const ws = [...new Set(palabras(q))].filter(w => DF.has(w));   // las que no están en ninguna pregunta no dicen nada
+    if (!ws.length) return [];
+    const Q = new Set(ws), total = ws.reduce((s, w) => s + peso(w), 0);
+    return IDX.map((x, i) => {
+      let todo = 0, en = 0, enTotal = 0, enEsta = 0;
+      for (const w of ws) { if (x.todo.has(w)) todo += peso(w); if (x.en.has(w)) en += peso(w); }
+      for (const w of x.en) { enTotal += peso(w); if (Q.has(w)) enEsta += peso(w); }
+      const cob = todo / total;
+      return { i, cob, nota: cob + 0.15 * en / total + 0.3 * (enTotal ? enEsta / enTotal : 0) };
+    }).sort((a, b) => b.nota - a.nota);
+  }
+  function preguntaHtml(p) {
+    const L = 'abcdefghijklmnop';
+    let h = `<div class="bq"><div class="bq-f">${p.f.map(f => `<span>${esc(f)}</span>`).join('')}</div><div class="bq-en">${p.en}</div>`;
+    if (p.code) h += `<pre class="bq-code">${esc(p.code)}</pre>`;
+    if (p.tipo === 'modelo') h += `<div class="bq-mod"><b>Respuesta (para escribir)</b>${p.modelo}</div>`;
+    else h += '<ol class="bq-op">' + p.op.map(([t, ok], i) => `<li class="${ok ? 'ok' : ''}"><span class="l">${L[i]}</span><span>${t}</span>${ok ? '<span class="tic">✓</span>' : ''}</li>`).join('') + '</ol>';
+    if (p.ex) h += `<details class="bq-ex"><summary>Por qué</summary><div>${p.ex}</div></details>`;
+    return h + '</div>';
+  }
+  function pintarBusqueda() {
+    const q = $('#bQuery').value, el = $('#bRes');
+    if (!q.trim()) { el.innerHTML = ''; return; }
+    const r = buscar(q);
+    if (!r) { el.innerHTML = '<p class="b-nota">Escribí un poco más de la pregunta.</p>'; return; }
+    if (!r.length || r[0].cob < 0.45) { el.innerHTML = '<p class="b-nota">No la encontré en los cuestionarios 1 a 5 ni en las del 1.er parcial.</p>'; return; }
+    const van = r.filter(x => x.cob >= 0.45 && x.nota >= r[0].nota - 0.25).slice(0, 4);
+    el.innerHTML = van.map(x => preguntaHtml(PR[x.i])).join('') + (van.length > 1 ? '<p class="b-nota">Hay más de una parecida: la primera es la que más coincide.</p>' : '');
+  }
+  $('#bSub').textContent = `${PR.length} preguntas: los cuestionarios 1 a 5 y las del 1.er parcial (el parcial real, el proyecto, los simulacros, los apuntes y las de escribir). Las correctas, en verde.`;
+  let bTimer = null;
+  $('#bQuery').addEventListener('input', () => { clearTimeout(bTimer); bTimer = setTimeout(pintarBusqueda, 120); });
+
   // ───── Arranque ─────
   const releer = recuperar();
   $('#texto').value = S.texto; $('#csvTexto').value = S.csv;
@@ -846,7 +931,7 @@
   });
   pintarEstadoEnun(); pintarReglas(); pintarEstadoCsv(); recalcular();
   if (releer) leer(true);   // el lector de esta versión puede entender más que el de la que guardó
-  window.__lab = { S, recalcular, leer };   // para probar
+  window.__lab = { S, recalcular, leer, buscar };   // para probar
 })();
 </script>
 </body>
