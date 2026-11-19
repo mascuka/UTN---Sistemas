@@ -1,0 +1,166 @@
+[
+ {
+  "esp": true,
+  "f": [
+   "Recuperatorio 3K1 · 18/11/2026"
+  ],
+  "tipo": "una",
+  "en": "¿Por qué Flota puede sumar costos y agrupar por zona una colección de tipo <code>List&lt;VehiculoRuta&gt;</code> que contiene objetos de ambos formatos?",
+  "op": [
+   [
+    "Porque Flota debe comprobar el tipo de cada elemento y duplicar el cálculo para cada clase.",
+    false
+   ],
+   [
+    "Porque ambos objetos comparten la abstracción VehiculoRuta y los agregados consumen sus operaciones comunes, aprovechando el polimorfismo.",
+    true
+   ],
+   [
+    "Porque la herencia copia los elementos de la subclase dentro de la lista y elimina el porcentaje adicional.",
+    false
+   ],
+   [
+    "Porque toda colección <code>List&lt;VehiculoRuta&gt;</code> convierte automáticamente sus elementos en objetos de VehiculoRutaConTramoSinPavimentar.",
+    false
+   ]
+  ],
+  "ex": "La cátedra: «VehiculoRutaConTramoSinPavimentar es un VehiculoRuta. La fábrica entrega ambos tipos mediante la abstracción común; Flota usa sus operaciones compartidas sin necesitar conocer ni convertir el subtipo». Una lista no convierte sus elementos: cada objeto sigue siendo de su clase y responde con su propio método."
+ },
+ {
+  "esp": true,
+  "f": [
+   "Recuperatorio 3K1 · 18/11/2026"
+  ],
+  "tipo": "una",
+  "en": "Una fila nueva contiene velocidad promedio 76, carga 11 toneladas y 30 % de recorrido por caminos sin pavimentar. Según la fórmula del parcial, truncando el índice hacia cero y calculando el costo con división entera, ¿qué valores se obtienen?",
+  "op": [
+   [
+    "Índice 49 y costo 0 USD, calculando primero 49 / 100 con división entera.",
+    false
+   ],
+   [
+    "Índice 50 y costo 1000 USD, aplicando la fórmula del formato original.",
+    false
+   ],
+   [
+    "Índice 49.6 y costo 992 USD, conservando el decimal del índice.",
+    false
+   ],
+   [
+    "Índice 49 y costo 980 USD.",
+    true
+   ]
+  ],
+  "ex": "76 × 0.55 + 11 × 0.30 + 30 × 0.15 = 41.8 + 3.3 + 4.5 = 49.6, que se trunca a <b>49</b>. Costo: 2000 × 49 / 100 = <b>980</b> USD; primero se multiplica y después se divide (si se divide primero, 49 / 100 da 0 con división entera)."
+ },
+ {
+  "esp": true,
+  "f": [
+   "Recuperatorio 3K1 · 18/11/2026"
+  ],
+  "tipo": "una",
+  "en": "¿Qué diseño de clases cumple el modelo requerido para el porcentaje del recorrido sin pavimentar?",
+  "op": [
+   [
+    "VehiculoRuta extiende a VehiculoRutaConTramoSinPavimentar para obligar a que todas las mediciones tengan el campo nuevo.",
+    false
+   ],
+   [
+    "VehiculoRutaConTramoSinPavimentar extiende directamente a VehiculoRuta, agrega porcentajeRutaSinPAvimentar como propiedad privada y valida el rango al construirlo.",
+    true
+   ],
+   [
+    "Flota almacena el porcentaje en un mapa externo, sin cambiar la jerarquía de VehiculoRuta.",
+    false
+   ],
+   [
+    "VehiculoRutaConTramoSinPavimentar es independiente y ParserVehiculos hereda de ella para reutilizar sus campos.",
+    false
+   ]
+  ],
+  "ex": "La cátedra: «VehiculoRuta representa los datos comunes y el formato anterior. VehiculoRutaConTramoSinPavimentar lo extiende directamente, mantiene la nueva propiedad encapsulada y verifica el rango de 0 a 100 inclusive»."
+ },
+ {
+  "esp": false,
+  "f": [
+   "Recuperatorio 3K1 · 18/11/2026"
+  ],
+  "tipo": "una",
+  "en": "¿Qué se busca lograr al agrupar funcionalidad coherente dentro de un mismo microservicio?",
+  "op": [
+   [
+    "Cohesión alta y menor acoplamiento entre servicios.",
+    true
+   ],
+   [
+    "Separación de la lógica de negocio de los datos.",
+    false
+   ],
+   [
+    "Reducción de los niveles de seguridad.",
+    false
+   ],
+   [
+    "Mayor dependencia entre capas internas del backend.",
+    false
+   ]
+  ],
+  "ex": "Un microservicio junta lo que cambia por la misma razón (<b>alta cohesión</b>) y se comunica poco con los demás (<b>bajo acoplamiento</b>): se puede desplegar y escalar solo, sin arrastrar a los otros."
+ },
+ {
+  "esp": false,
+  "f": [
+   "Recuperatorio 3K1 · 18/11/2026"
+  ],
+  "tipo": "una",
+  "en": "¿El método toString se encuentra en todas las clases aun si no es declarado?",
+  "op": [
+   [
+    "Sí, ya que todas las clases de Java heredan de Object, el cual tiene definido su propio toString()",
+    true
+   ],
+   [
+    "Sí, ya que todas las clases de Java tienen por defecto los métodos básicos de una clase",
+    false
+   ],
+   [
+    "No, ya que si no la defino en la clase entonces Java no la encuentra",
+    false
+   ]
+  ],
+  "ex": "Toda clase hereda (directa o indirectamente) de <code>Object</code>, que define <code>toString()</code>, <code>equals()</code> y <code>hashCode()</code>. Si no lo redefinís, imprime algo como <code>VehiculoRuta@1b6d3586</code>."
+ },
+ {
+  "esp": false,
+  "f": [
+   "Recuperatorio 3K1 · 18/11/2026"
+  ],
+  "tipo": "varias",
+  "en": "¿Cuál es la regla de la herencia simple?",
+  "op": [
+   [
+    "A nivel gráfico UML existe más de una flecha que parte desde la clase derivada hacia alguna super clase",
+    false
+   ],
+   [
+    "Una clase puede tener una y solo una super clase directa",
+    true
+   ],
+   [
+    "Una clase puede tener una o más super clases directas",
+    false
+   ]
+  ],
+  "ex": "Herencia simple: un solo <code>extends</code> (una flecha en UML). Java solo admite herencia simple de clases; lo múltiple se logra con interfaces."
+ },
+ {
+  "esp": true,
+  "f": [
+   "Recuperatorio 3K1 · 18/11/2026"
+  ],
+  "tipo": "modelo",
+  "en": "Una empresa recibe un viaje del formato original con velocidad promedio 76 y carga 11 toneladas, y otro viaje que además informa 30 % de recorrido por caminos sin pavimentar. El formato original usa índice = velocidadPromedio × 0.6 + cargaToneladas × 0.4; el nuevo usa índice = velocidadPromedio × 0.55 + cargaToneladas × 0.30 + porcentajeRutaSinPAvimentar × 0.15. El índice se trunca a entero, debe quedar entre 1 y 90, y el costo es 2000 × índice / 100 con división entera (multiplicar antes de dividir). Calcule el índice y costo de ambos viajes. Luego explique cómo resolvería el diseño usando la jerarquía VehiculoRuta / VehiculoRutaConTramoSinPavimentar: qué clase conserva cada dato e invariante, dónde se decide qué tipo crear y cómo Flota puede procesar ambos tipos. Compare brevemente con una solución sin herencia e indique qué duplicaciones o estrategias alternativas (por ejemplo, composición) tendría que considerar.",
+  "modelo": "<b>Cálculos.</b> Original (76, 11): 76 × 0.6 + 11 × 0.4 = 45.6 + 4.4 = 50 → índice <b>50</b>, costo 2000 × 50 / 100 = <b>1000 USD</b>. Nuevo (76, 11, 30 %): 41.8 + 3.3 + 4.5 = 49.6 → índice <b>49</b>, costo 2000 × 49 / 100 = <b>980 USD</b>. Los dos quedan entre 1 y 90.<br><b>Datos e invariantes.</b> VehiculoRuta (sin <code>final</code>) conserva lo común: patente, zona, velocidad, carga, estado e índice, y valida textos no vacíos, velocidad mayor a 0 y menor a 130, carga hasta 45, estado válido e índice entre 1 y 90. VehiculoRutaConTramoSinPavimentar extiende directamente a VehiculoRuta, agrega el porcentaje (privado, con getter), valida que esté entre 0 y 100 y calcula el índice con la fórmula ponderada.<br><b>Dónde se decide el tipo.</b> En la fábrica <code>VehiculoRuta.desdeCampos</code>, por el ancho de la fila: 5 campos → VehiculoRuta, 6 → la subclase. El parser solo la llama.<br><b>Flota.</b> Guarda una <code>List&lt;VehiculoRuta&gt;</code> y usa las operaciones comunes (<code>getCostoDesgasteOperativo()</code>, <code>getZona()</code>, <code>getIndiceDesgaste()</code>): suma, filtra y agrupa los dos tipos sin <code>instanceof</code> (polimorfismo).<br><b>Sin herencia.</b> Habría que repetir los datos y validaciones comunes en otra clase, o meter el porcentaje como campo opcional con <code>if</code> por formato en el cálculo y en Flota: duplicación y más acoplamiento. Alternativa: composición, por ejemplo VehiculoRuta con una estrategia de cálculo del índice (fórmula original o con tramo) o un objeto opcional TramoSinPavimentar; evita la jerarquía, pero suma una interfaz y obliga a validar la combinación.",
+  "ex": ""
+ }
+]

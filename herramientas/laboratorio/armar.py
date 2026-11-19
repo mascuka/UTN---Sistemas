@@ -43,8 +43,9 @@ def plano(t):
 
 
 def preguntas():
-    """El banco del buscador: los cuestionarios 01 a 05 y todas las preguntas del 1.er parcial (las de la guía única:
-    el parcial real, el proyecto, los simulacros, los apuntes y las de escribir). Todo en HTML; las repetidas, una vez."""
+    """El banco del buscador: los cuestionarios 01 a 05, todas las preguntas del 1.er parcial (las de la guía única:
+    el parcial real, el proyecto, los simulacros, los apuntes y las de escribir) y las de preguntas-extra.json (como
+    las del recuperatorio). Todo en HTML; las repetidas, una vez."""
     banco, vistas = [], {}
     for c in json.loads(CUESTIONARIOS.read_text('utf-8'))['cuestionarios']:
         if c['n'] not in ('01', '02', '03', '04', '05'):
@@ -67,6 +68,9 @@ def preguntas():
             else:
                 d['op'] = [[t, bool(v)] for t, v in p['op']]
             banco.append(d)
+    # las que se van sumando a mano (preguntas-extra.json): «esp» = específica de un parcial
+    for p in json.loads((AQUI / 'preguntas-extra.json').read_text('utf-8')):
+        banco.append({'code': '', 'ex': '', **{k: v for k, v in p.items() if k != 'esp' or v}})
     unicas = []
     for d in banco:
         clave = plano(d['en']) + '|' + plano(d['code']) + '|' + '|'.join(sorted(plano(t) + ('+' if v else '-') for t, v in d.get('op', []))) + plano(d.get('modelo'))

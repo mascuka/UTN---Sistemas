@@ -176,6 +176,7 @@
   .bq{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px;background:var(--bg)}
   .bq-f{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
   .bq-f span{font-size:.74rem;color:var(--text2);border:1px solid var(--line);border-radius:99px;padding:1px 9px}
+  .bq-f span.esp{color:var(--warn);background:var(--warn-soft);border-color:var(--warn);font-weight:600}
   .bq-en{font-weight:600;white-space:pre-line;overflow-wrap:anywhere}
   .bq-code{font:.84rem/1.45 ui-monospace,Menlo,Consolas,monospace;background:var(--bg2,rgba(127,127,127,.08));border-radius:8px;padding:9px 12px;margin:10px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
   .bq-op{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
@@ -968,7 +969,7 @@
   }
   function preguntaHtml(p) {
     const L = 'abcdefghijklmnop';
-    let h = `<div class="bq"><div class="bq-f">${p.f.map(f => `<span>${esc(f)}</span>`).join('')}</div><div class="bq-en">${p.en}</div>`;
+    let h = `<div class="bq"><div class="bq-f">${p.esp ? '<span class="esp">Específica de un parcial</span>' : ''}${p.f.map(f => `<span>${esc(f)}</span>`).join('')}</div><div class="bq-en">${p.en}</div>`;
     if (p.code) h += `<pre class="bq-code">${esc(p.code)}</pre>`;
     if (p.tipo === 'modelo') h += `<div class="bq-mod"><b>Respuesta (para escribir)</b>${p.modelo}</div>`;
     else h += '<ol class="bq-op">' + p.op.map(([t, ok], i) => `<li class="${ok ? 'ok' : ''}"><span class="l">${L[i]}</span><span>${t}</span>${ok ? '<span class="tic">✓</span>' : ''}</li>`).join('') + '</ol>';
@@ -984,7 +985,7 @@
     const van = r.filter(x => x.cob >= 0.45 && x.nota >= r[0].nota - 0.25).slice(0, 4);
     el.innerHTML = van.map(x => preguntaHtml(PR[x.i])).join('') + (van.length > 1 ? '<p class="b-nota">Hay más de una parecida: la primera es la que más coincide.</p>' : '');
   }
-  $('#bSub').textContent = `${PR.length} preguntas: los cuestionarios 1 a 5 y las del 1.er parcial (el parcial real, el proyecto, los simulacros, los apuntes y las de escribir). Las correctas, en verde.`;
+  $('#bSub').textContent = `${PR.length} preguntas: los cuestionarios 1 a 5 y las del 1.er parcial y su recuperatorio (el parcial real, el proyecto, los simulacros, los apuntes y las de escribir). Las correctas, en verde.`;
   let bTimer = null;
   $('#bQuery').addEventListener('input', () => { clearTimeout(bTimer); bTimer = setTimeout(pintarBusqueda, 120); });
   $('#bBorrar').onclick = () => { clearTimeout(bTimer); $('#bQuery').value = ''; pintarBusqueda(); $('#bQuery').focus(); };
