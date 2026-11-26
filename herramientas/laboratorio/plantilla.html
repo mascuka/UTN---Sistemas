@@ -944,7 +944,10 @@
     try { if (S.pre) localStorage.setItem(PRE_CLAVE, JSON.stringify({ pre: S.pre, ediciones: S.ediciones, archivoPre: S.archivoPre, textoPre: S.textoPre })); else localStorage.removeItem(PRE_CLAVE); }
     catch (e) { /* sin almacenamiento o sin lugar: sigue andando, pero no se recuerda */ }
   }
+  const TITULO = document.querySelector('.cab h1').textContent, TITULO_PAG = document.title;
   function pintarPre(msg) {
+    document.querySelector('.cab h1').textContent = S.pre ? 'Laboratorio · ' + S.pre.nombre : TITULO;
+    document.title = S.pre ? 'Laboratorio · ' + S.pre.nombre : TITULO_PAG;
     $('#preNombre').innerHTML = msg || (S.pre ? '<b>' + esc(S.pre.nombre) + '</b>' : 'Flota Logística (viene incluido)');
     $('#preFlota').classList.toggle('oculto', !S.pre);
   }
@@ -1023,6 +1026,7 @@
     partes.push('CSV: <b>' + esc(csvCargado() ? S.csvNombre : (p.csv || '—') + ' del proyecto') + '</b>');
     const c = chequeoGenerico();
     if (c) { const mal = c.items.filter(x => !x.ok).length; partes.push(mal ? `<span class="mal">✗ ${mal} número${mal > 1 ? 's' : ''} no coincide${mal > 1 ? 'n' : ''} con los ${c.origen}</span>` : `<span class="ok">✓ da los números ${c.origen}</span>`); }
+    else if (S.texto.trim() && !M.referencias(S.texto).length) partes.push('el enunciado no trae números para comparar');
     const ed = Object.keys(S.ediciones).length;
     if (ed) partes.push(ed + ' archivo' + (ed > 1 ? 's' : '') + ' editado' + (ed > 1 ? 's' : ''));
     return partes.join(' · ');
