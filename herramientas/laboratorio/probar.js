@@ -112,5 +112,12 @@ if (proyecto) {
   console.log((r.status ? '✗ ' : '✓ ') + 'Aguante: ' + lineas[0]);
   if (r.status) { fallas++; for (const l of lineas.slice(1)) console.log('    ' + l); }
 }
+// La guía de un parcial cualquiera (probar-guia.js): con las consignas de los simulacros tiene que encontrar lo que piden
+{
+  const r = require('child_process').spawnSync(process.execPath, [path.join(__dirname, 'probar-guia.js')], { encoding: 'utf8' });
+  const lineas = (r.stdout || '').trim().split('\n');
+  console.log((r.status ? '✗ ' : '✓ ') + 'Guía: ' + lineas[lineas.length - 1].replace(/^✓\s*/, ''));
+  if (r.status) { fallas++; for (const l of lineas.slice(0, -1)) console.log('    ' + l); }
+}
 console.log(fallas ? `${fallas} con problemas` : 'TODO BIEN');
 process.exit(fallas ? 1 : 0);

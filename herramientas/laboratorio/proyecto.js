@@ -47,7 +47,8 @@
      enunciado ni de una solución; si no hay pom.xml, la que tiene src/main/java. */
   function elegir(archivos, nombreZip) {
     const rutas = Object.keys(archivos).filter(r => !/(^|\/)(target|\.git|\.idea|\.vscode|out|bin)\//.test(r));
-    const otraCosa = r => /enunciado|parcial|soluci|resuelto|resuelta|propuesta|respuesta/i.test(r);
+    // la solución va última; el enunciado del parcial, después del preenunciado («Preenunciado» también dice «enunciado»)
+    const otraCosa = r => /soluci|resuelt|propuesta|respuesta/i.test(r) ? 2 : /pre-?enunciado|pre-?parcial|modelo-inicial/i.test(r) ? 0 : /enunciado|parcial/i.test(r) ? 1 : 0;
     let raices = rutas.filter(r => /(^|\/)pom\.xml$/.test(r)).map(r => r.slice(0, r.length - 'pom.xml'.length));
     if (!raices.length) raices = [...new Set(rutas.filter(r => /(^|\/)src\/main\/java\//.test(r)).map(r => r.slice(0, r.search(/src\/main\/java\//))))];
     if (!raices.length) {
