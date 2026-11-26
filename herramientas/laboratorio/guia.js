@@ -205,8 +205,8 @@
   // ───────── La guía ─────────
   function armar(proyecto, texto, csv) {
     const c = analizarCodigo(proyecto.fuentes);
-    const pasos = [];
-    if (!texto || !String(texto).trim()) return { codigo: c, pasos, columnas: [] };
+    const pasos = [], plan = {};
+    if (!texto || !String(texto).trim()) return { codigo: c, pasos, columnas: [], plan: null };
     const pars = parrafos(texto), os = oraciones(pars), plano = pars.join(' '), planoB = bajo(plano);
     const lugar = l => l && { archivo: l.archivo, linea: l.n, texto: l.texto.trim() };
     const lugares = ls => ls.filter(Boolean).map(lugar).filter((x, i, a) => a.findIndex(y => y.archivo === x.archivo && y.linea === x.linea) === i);
@@ -250,7 +250,7 @@
         cita: otroFormato && (otroFormato.t.includes(nuevo) ? otroFormato.t.slice(otroFormato.t.indexOf(nuevo) + nuevo.length).replace(/^\s*[.:]?\s*/, '') : otroFormato.t), lugares: lugares([c.enc, ...c.usosEnc]),
         codigo: `String encabezado = lector.readLine();\nint largo;\nif ("${c.enc.valor}".equals(encabezado)) {\n    largo = ${c.viejos.length};\n} else if ("${nuevo}".equals(encabezado)) {\n    largo = ${fs.length};\n} else {\n    throw new IllegalArgumentException("${msj}");\n}`,
       });
-      const mixto = /admiten\s+filas\s+de\s+\w+\s+campos[^.]*y\s+de\s+\w+\s+campos|formato\s+de\s+cada\s+fila\s+por\s+su\s+ancho/.test(planoB);
+      const mixto = plan.mixto = /admiten\s+filas\s+de\s+\w+\s+campos[^.]*y\s+de\s+\w+\s+campos|formato\s+de\s+cada\s+fila\s+por\s+su\s+ancho/.test(planoB);
       if (c.controlesAncho.length) {
         const enParser = c.controlesAncho.filter(l => l.archivo === c.enc.archivo), otros = c.controlesAncho.filter(l => !enParser.includes(l));
         pasos.push({
@@ -345,7 +345,7 @@
         const fuera = regla ? 'inválido si ' + condicionFuera('x', regla).replace(/x /g, '').replace(/ \|\| /g, ' o ') : '';
         const desc = [esTexto ? valores.join(' / ') : numeros.length ? tipo + ': ' + numeros.join(' / ') : tipo + (fuera ? ', ' + fuera : ''), presencia ? 'decide si viene vacía' : '', soloEstados.length ? 'para ' + soloEstados.join(', ') : ''].filter(Boolean).join(' · ');
         vals = esTexto ? valores : numeros;
-        columnas.push({ col, i, tipo, valores: vals, normal, porDefecto, presencia, soloEstados, leer });
+        columnas.push({ col, i, tipo, valores: vals, normal, porDefecto, presencia, soloEstados, leer, regla, decimal, textoCol, esTexto, numeros });
         pasos.push({
           clave: 'columna', valor: col, titulo: `La columna nueva «${col}» (${desc})`,
           detalle: presencia ? 'Lo que decide es si la columna trae un valor o viene vacía; en el formato viejo no viene.'
@@ -403,7 +403,8 @@
       const k = columnas.find(x => x.valores.length >= 2 && x.normal !== undefined) || columnas.find(x => x.presencia) || columnas.find(x => x.tipo !== 'String' && x.normal !== undefined) || (sinAlterar ? columnas.find(x => x.tipo !== 'String') : null);
       if (k) {
         const otros = k.presencia ? [] : k.valores.filter(v => v !== k.normal);
-        const nombre = etiquetas ? E + pascal(etiquetas[2]) : otros.length === 1 && isNaN(Number(otros[0])) ? E + pascal(otros[0]) : E + 'Con' + capital(camel(k.col));
+        const raizE = (E.match(/^[A-Z][a-z0-9]*/) || [E])[0];   // JuegoMesa → Juego: «JuegoCooperativo», como se dice
+        const nombre = etiquetas ? raizE + pascal(etiquetas[2]) : otros.length === 1 && isNaN(Number(otros[0])) ? raizE + pascal(otros[0]) : raizE + 'Con' + capital(camel(k.col));
         const raizEt = etiquetas ? new RegExp(escRe(etiquetas[2].replace(/[aeo]$/i, '')), 'i') : null;
         if (!c.clases.has(nombre)) clasesNuevas.push({ nombre, padre: c.entidad, opcional: true, col: k, porFormato: !k.valores.length && !k.presencia && k.normal === undefined, cita: [...new Set(citaDe(otros.length ? otros : [k.col], raizEt))].slice(0, 4).join(' ') });
       }
@@ -437,6 +438,7 @@
         else if (f && (m = regla.match(/(\d[\d._]*)\s+(?:pesos|centavos|usd|dolares|\$)?\s*por\s+cada\s+(?!\d)\w+/))) cuenta = `comun + ${num(m[1])} * ${f};   // ${m[1]} por cada uno`;
         else if ((m = regla.match(/(\d[\d._]*)\s+(?:pesos|centavos|usd|dolares|\$)?\s*adicionales/))) cuenta = `comun + ${num(m[1])};`;
         else if (f && (m = (x.cita || '').match(new RegExp('\\+\\s*\\(?\\s*' + escRe(propios[0].col) + '\\s*([*/])\\s*(\\d+(?:\\.\\d+)?)\\s*\\)?')))) cuenta = `comun + ${f} ${m[1]} ${m[2]};   // según la fórmula del enunciado`;
+        x.cuenta = /←/.test(cuenta) ? null : cuenta.replace(/;.*$/s, '').trim(); x.propios = propios;
         cod = `${c.paquete ? 'package ' + c.paquete + ';\n\n' : ''}public class ${x.nombre} extends ${x.padre} {\n` + propios.map(y => `\n    private final ${y.tipo} ${camel(y.col)};\n`).join('') +
           `\n    public ${x.nombre}(${ps}) {\n        super(${params.map(p => p[1]).join(', ')});\n` + propios.map(y => `        this.${camel(y.col)} = ${camel(y.col)};\n`).join('') + '    }\n' +
           (calc ? `\n    @Override\n    public ${calc.tipo} ${calc.nombre}() {\n        ${calc.tipo} comun = super.${calc.nombre}();\n        return ${cuenta}\n    }\n` : '') + '}\n';
@@ -475,6 +477,7 @@
         cod = `// en ${c.colector.clase} (import java.util.Map; import java.util.TreeMap;)\npublic Map<String, Integer> ${metodo}() {\n    Map<String, Integer> cantidades = new TreeMap<>();\n    for (${E} ${e1} : ${c.colector.campo}) {\n        cantidades.merge(${col && columnas.some(k => k.col === col && k.tipo !== 'String') ? 'String.valueOf(' + valor + ')' : valor}, 1, Integer::sum);\n    }\n    return cantidades;\n}`;
         const k = col && columnas.find(y => y.col === col);
         const sub = k && clasesNuevas.find(x => x.col === k && lodiceLaClase.has(k.col));
+        plan.conteo = { col: col || null, metodo, porTipo: !col && !!(nueva && etiquetas), sub: sub ? sub.nombre : null, normal: k ? k.normal : null };
         if (sub) cod += `\n\n// el dato lo dice la clase: en ${E}\npublic String get${capital(camel(col))}() {\n    return "${k.normal}";\n}\n\n// y en ${sub.nombre}\n@Override\npublic String get${capital(camel(col))}() {\n    return "${k.valores.find(v => v !== k.normal)}";\n}`;
       }
       pasos.push({ clave: 'requerido', titulo: 'Lo que pide «Resultado requerido»', detalle: c.colector ? `Agrupar, contar o sumar va en ${c.colector.clase}; el main solo muestra.` : 'La lógica va en las clases, no en el main.', lista: requerido, lugares: lugares([c.colector]), codigo: cod });
@@ -498,7 +501,12 @@
       ls.push('- Pendiente: nada (o anotá acá lo que te quedó).');
       pasos.push({ clave: 'decisiones', titulo: 'DECISIONES.md (un borrador para ajustar)', detalle: 'Sale de los pasos de arriba: cambialo según lo que hiciste de verdad.', cita: (os.find(o => /DECISIONES/.test(o.t)) || {}).t, lugares: [], codigo: '# Decisiones\n\n' + ls.slice(0, 6).join('\n') + '\n', archivo: 'DECISIONES.md' });
     }
-    return { codigo: c, pasos, encabezadoNuevo: nuevo, columnas };
+    Object.assign(plan, {
+      sepN, clasesNuevas, enBase, lodiceLaClase: [...lodiceLaClase], estadosNuevos: pasos.filter(p => p.clave === 'estado').map(p => p.valor), descartesNuevos: pasos.filter(p => p.clave === 'descarte').map(p => p.valor),
+      requerido, etiquetas: etiquetas ? [etiquetas[1], etiquetas[2]] : null, csvNuevo, calc, oraciones: os.map(o => o.t), otroFormato: otroFormato ? otroFormato.t : null,
+      pideDecisiones: (plano.match(/\b((?:DECISIONES|README|LEEME|LEAME)(?:\.md|\.txt)?)\b/i) || [])[1] || null,
+    });
+    return { codigo: c, pasos, encabezadoNuevo: nuevo, columnas, plan };
   }
 
   return { armar, analizarCodigo, parrafos };

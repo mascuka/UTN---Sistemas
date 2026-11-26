@@ -170,34 +170,10 @@
   .comparar .c-res.ok{color:var(--ok)} .comparar .c-res.mal{color:var(--bad)}
   .comparar .c-pre{color:var(--text2);min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .comparar .c-pre .mal{color:var(--bad);font-weight:600}
+  @media (max-width:560px){ .comparar{flex-wrap:wrap;row-gap:6px} .comparar .c-pre{flex-basis:calc(100% - 120px)} }
   .editor{width:100%;min-height:440px;font:.84rem/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre;overflow:auto;tab-size:4;resize:vertical}
   .consola .err{color:#f0a08c}
   .g-nota{font-size:.86rem;color:var(--text2);margin:10px 0}
-  .guia{border:1px solid var(--line);border-radius:12px;background:var(--card);margin:0 0 14px}
-  .guia>summary{cursor:pointer;padding:11px 14px;font-weight:600;font-size:.95rem;list-style:none}
-  .guia>summary::-webkit-details-marker{display:none}
-  .guia>summary::before{content:'▸';display:inline-block;width:1.1em;color:var(--muted);transition:transform .15s}
-  .guia[open]>summary::before{transform:rotate(90deg)}
-  .guia .g-sub{font-weight:400;color:var(--muted);font-size:.84rem;margin-left:6px}
-  .g-pasos{list-style:none;margin:0;padding:0 14px 12px;counter-reset:paso}
-  .g-paso{border-top:1px solid var(--line);padding:11px 0 10px 30px;position:relative;counter-increment:paso}
-  .g-paso::before{content:counter(paso);position:absolute;left:0;top:11px;width:21px;height:21px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font:600 .78rem/21px var(--sans);text-align:center}
-  .g-paso.hecho::before{content:'✓';background:var(--ok-soft);color:var(--ok)}
-  .g-paso.hecho .g-tit{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line2)}
-  .g-tit{font-weight:600;font-size:.92rem;display:flex;gap:10px;align-items:baseline;justify-content:space-between}
-  .g-tit label{font-weight:400;font-size:.78rem;color:var(--muted);white-space:nowrap;cursor:pointer;display:flex;gap:4px;align-items:center}
-  .g-det{font-size:.86rem;color:var(--text2);margin:4px 0 0}
-  .g-cita{margin:7px 0 0;padding:6px 10px;border-left:3px solid var(--line2);color:var(--text2);font-size:.84rem;background:var(--bg);border-radius:0 8px 8px 0;max-height:7.5em;overflow:auto}
-  .g-datos{font-size:.82rem;color:var(--muted);margin:5px 0 0}
-  .g-lista{margin:6px 0 0 18px;font-size:.85rem;color:var(--text2)} .g-lista li{margin:2px 0}
-  .g-ej{margin:7px 0 0;background:var(--bg);border:1px dashed var(--line2);border-radius:8px;padding:7px 10px;font:.8rem/1.45 var(--mono);white-space:pre-wrap;color:var(--text2)}
-  .g-lug{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:7px;font-size:.8rem;color:var(--muted)}
-  .g-ir{font:.78rem var(--mono);border:1px solid var(--line2);background:var(--bg);color:var(--accent);border-radius:999px;padding:2px 9px;cursor:pointer}
-  .g-ir:hover{background:var(--accent-soft)}
-  .g-cod{position:relative;margin-top:8px}
-  .g-cod pre{margin:0;background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font:.8rem/1.5 var(--mono);overflow:auto;max-height:300px;white-space:pre}
-  .g-cod .fila{margin-top:6px}
-  .g-vacia{padding:0 14px 12px;font-size:.86rem;color:var(--text2)}
   .aviso-version{border:1px solid var(--warn);background:var(--warn-soft);color:var(--warn);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:.92rem}
   .aviso-version a{color:inherit;font-weight:700}
   #bQuery{width:100%;min-height:96px}
@@ -229,15 +205,9 @@
   <div class="comparar" id="preBox">
     <span class="c-tit">Preenunciado</span>
     <span class="c-pre" id="preNombre">Flota Logística (viene incluido)</span>
-    <button class="btn chico" id="preCargar">Cargar otro (.zip)</button>
+    <button class="btn chico" id="preCargar">Cargar preenunciado (.zip)</button>
     <button class="btn chico oculto" id="preFlota">Volver a Flota</button>
     <input type="file" id="fPre" accept=".zip,application/zip" class="oculto">
-  </div>
-  <div class="comparar" id="comparar">
-    <span class="c-tit">Comparar archivo</span>
-    <button class="btn chico" id="cElegir">Elegir archivo</button>
-    <span class="c-res" id="cRes"></span>
-    <input type="file" id="fComparar" class="oculto">
   </div>
   <header class="cab">
     <div>
@@ -655,7 +625,7 @@
 
   // ───── 3 · El CSV ─────
   $('#abrirCsv').onclick = () => $('#fCsv').click();
-  $('#fCsv').onchange = async ev => { const f = ev.target.files[0]; ev.target.value = ''; if (f) { ponerCsv(await f.text(), f.name, 'archivo'); if (S.pre) { pintarSolucion(); correr(); } else if (S.simple && S.texto.trim()) leer(true); } };
+  $('#fCsv').onchange = async ev => { const f = ev.target.files[0]; ev.target.value = ''; if (f) { ponerCsv(await f.text(), f.name, 'archivo'); if (S.pre) pintarSolucion(); else if (S.simple && S.texto.trim()) leer(true); } };
   soltable('#soltarCsv', async f => ponerCsv(await f.text(), f.name, 'archivo'));
   $('#usarDatos').onclick = () => ponerCsv(DATOS, 'datos.csv del preenunciado', 'preenunciado');
   $('#generarCsv').onclick = () => generarPrueba(false);
@@ -995,45 +965,46 @@
         } catch (e) { /* ese documento no se pudo leer */ }
       }
       guardarPre(); aplicarVista(); pintarPre(); recalcular();
-      correr();
     } catch (e) { pintarPre('<span class="mal">' + esc(e.message || String(e)) + '</span>'); }
   }
   $('#preCargar').onclick = () => $('#fPre').click();
   $('#fPre').onchange = ev => { const f = ev.target.files[0]; ev.target.value = ''; if (f) cargarPreenunciado(f); };
   $('#preFlota').onclick = () => { S.pre = null; S.ediciones = {}; S.corrida = null; S.textoPre = ''; guardarPre(); aplicarVista(); pintarPre(); recalcular(); };
   const nombreCorto = r => r.split('/').pop();
-  const textoPre = r => r in S.ediciones ? S.ediciones[r] : S.pre.fuentes[r];
-  const esNuevo = r => !(r in S.pre.fuentes);
-  const etiquetaArchivo = r => esNuevo(r) ? 'nuevo' : r in S.ediciones ? 'editado' : r === S.pre.archivoMain ? 'main' : 'original';
-  function claseNueva() {
-    const n = (prompt('Nombre de la clase nueva (por ejemplo ServidorConIngresos):') || '').trim().replace(/\.java$/, '');
-    if (!n) return;
-    if (!/^[A-Z][A-Za-z0-9_]*$/.test(n)) { alert('El nombre de una clase empieza con mayúscula y lleva solo letras, números o _.'); return; }
-    const main = S.pre.archivoMain, dir = main.slice(0, main.lastIndexOf('/') + 1), ruta = dir + n + '.java';
-    if (ruta in S.pre.fuentes || ruta in S.ediciones) { alert('Ya hay una clase ' + n + '.'); return; }
-    const paquete = (S.pre.fuentes[main].match(/^\s*package\s+([\w.]+)\s*;/m) || [])[1];
-    S.ediciones[ruta] = (paquete ? 'package ' + paquete + ';\n\n' : '') + 'public class ' + n + ' {\n\n}\n';
-    S.archivoPre = ruta; guardarPre(); pintarSolucion();
-  }
   function csvCargado() { return S.csv && ['archivo', 'ejemplo', 'editado'].includes(S.csvOrigen); }
-  function correr() {
-    const p = S.pre;
-    const fuentes = Object.fromEntries(Object.entries({ ...p.fuentes, ...S.ediciones }).filter(([x]) => /\.java$/.test(x))), archivos = { ...p.datos };
+  /* La solución de un preenunciado cualquiera (resolver.js): el código con los cambios que pide el enunciado. Se arma
+     de nuevo solo si cambia el enunciado o el CSV, y se corre su main con el CSV para mostrar que compila y anda. */
+  let solMemo = { k: null, r: null };
+  function solucionGenerica() {
+    const p = S.pre, csv = csvCargado() ? S.csv : null;
+    const k = [p.nombre, Object.keys(p.fuentes).join(), S.texto.length, S.texto.slice(0, 400), S.texto.slice(-200), csv ? csv.length + csv.slice(0, 300) : ''].join('|');
+    if (solMemo.k !== k) {
+      let r;
+      if (!S.texto.trim()) r = { fuentes: { ...p.fuentes }, nuevos: [], avisos: [], hecho: [], plan: null };
+      else { try { r = Resolver.resolver({ fuentes: p.fuentes }, S.texto, csv); } catch (e) { r = { fuentes: { ...p.fuentes }, nuevos: [], avisos: ['No pude armar la solución: ' + (e && e.message || e)], hecho: [], plan: null }; } }
+      const pide = r.plan && r.plan.pideDecisiones;
+      r.decisiones = pide ? { nombre: /\.\w+$/.test(pide) ? pide : pide + '.md', texto: Resolver.decisiones(r) } : null;
+      r.corrida = correrGenerico(r.fuentes);
+      solMemo = { k, r };
+    }
+    return solMemo.r;
+  }
+  function correrGenerico(todas) {
+    const p = S.pre, fuentes = Object.fromEntries(Object.entries(todas).filter(([x]) => /\.java$/.test(x))), archivos = { ...p.datos };
     let args = [], csv = p.csv;
     if (csvCargado()) {
       csv = 'datos/' + (S.csvNombre || 'datos-parcial.csv').replace(/^.*[\\/]/, '').replace(/[^\w.-]+/g, '_');
       archivos[csv] = S.csv;
-      if (p.usaArgs) args = [csv]; else if (p.csv) { archivos[p.csv] = S.csv; csv = p.csv; }
+      const main = Object.values(fuentes).find(t => /static\s+void\s+main\s*\(/.test(t)) || '';
+      for (const m of main.matchAll(/"([^"]*\.csv)"/g)) archivos[m[1].replace(/^\.\//, '')] = S.csv;   // la ruta por defecto del main, por si no lee args
+      if (p.usaArgs) args = [csv];
     }
     let r;
     try { r = JavaMini.ejecutar({ fuentes, archivos, args, idioma: 'es-AR' }); }
     catch (e) { r = { salida: '', error: e && e.message ? e.message : String(e), codigo: -1, noCompila: true }; }
-    S.corrida = Object.assign(r, { csv });
-    const g = $('#gSalida'); if (g) g.innerHTML = salidaGenerica(); else pintarSolucion();
-    const st = $('.s-estado'); if (st) st.innerHTML = estadoGenerico();
+    return Object.assign(r, { csv });
   }
-  function chequeoGenerico() {
-    const r = S.corrida;
+  function chequeoGenerico(r) {
     if (!r || !r.salida) return null;
     for (const [t, origen] of [[S.texto, 'del enunciado'], [S.textoPre, 'del preenunciado']]) {
       if (!t || !t.trim()) continue;
@@ -1045,147 +1016,55 @@
     }
     return null;
   }
-  function estadoGenerico() {
-    const p = S.pre, partes = ['main <code class="k">' + esc(p.main.split('.').pop()) + '</code>'];
-    partes.push(S.texto.trim() ? 'enunciado: <b>' + esc(S.origen || 'cargado') + '</b>' : 'sin enunciado');
-    partes.push('CSV: <b>' + esc(csvCargado() ? S.csvNombre : (p.csv || '—') + ' del proyecto') + '</b>');
-    const c = chequeoGenerico();
-    if (c) { const mal = c.items.filter(x => !x.ok).length; partes.push(mal ? `<span class="mal">✗ ${mal} número${mal > 1 ? 's' : ''} no coincide${mal > 1 ? 'n' : ''} con los ${c.origen}</span>` : `<span class="ok">✓ da los números ${c.origen}</span>`); }
-    else if (S.texto.trim() && !M.referencias(S.texto).length) partes.push('el enunciado no trae números para comparar');
-    const ed = Object.keys(S.ediciones).length;
-    if (ed) partes.push(ed + ' archivo' + (ed > 1 ? 's' : '') + ' editado' + (ed > 1 ? 's' : ''));
+  function estadoGenerico(sol) {
+    if (!S.texto.trim()) return 'Cargá el enunciado del parcial y su CSV: acá aparece el código resuelto, con lo nuevo marcado.';
+    const r = sol.corrida, partes = ['enunciado: <b>' + esc(S.origen || 'cargado') + '</b>', 'CSV: <b>' + esc(csvCargado() ? S.csvNombre : 'el del proyecto') + '</b>'];
+    const c = chequeoGenerico(r);
+    if (r.noCompila) partes.push('<span class="mal">✗ no compila</span>');
+    else if (r.error && !r.noSoportado) partes.push('<span class="mal">✗ el main termina con error</span>');
+    else if (c) { const mal = c.items.filter(x => !x.ok).length; partes.push(mal ? `<span class="mal">✗ ${mal} número${mal > 1 ? 's' : ''} no coincide${mal > 1 ? 'n' : ''} con los ${c.origen}</span>` : `<span class="ok">✓ da los números ${c.origen}</span>`); }
+    else if (!r.noSoportado) partes.push('<span class="ok">✓ compila y corre</span>');
     return partes.join(' · ');
   }
-  function salidaGenerica() {
-    const r = S.corrida;
-    if (!r) return '<p class="g-nota">Tocá «▶ Correr» para ejecutar el main del preenunciado con el CSV.</p>';
-    let h = '';
-    if (r.noCompila) h += '<div class="aviso mal" style="margin:10px 0 0"><b>No compila</b> (según el ejecutor del laboratorio): ' + esc(r.error) + '</div>';
-    else if (r.noSoportado) h += '<div class="aviso" style="margin:10px 0 0">' + esc(r.error) + '. Esa parte probala con Java en tu compu.</div>';
-    const gu = guiaActual();
-    if (r.error && !r.noCompila && csvCargado() && gu && gu.encabezadoNuevo && !Object.keys(S.ediciones).some(x => /\.java$/.test(x)) && (S.csv.replace(/^\uFEFF/, '').split(/\r?\n/)[0] || '').trim() === gu.encabezadoNuevo)
-      h += `<div class="aviso" style="margin:10px 0 0"><b>Es lo esperado.</b> El código del preenunciado todavía no acepta el CSV del parcial: trae el encabezado nuevo, de ${gu.encabezadoNuevo.split(/[,;|]/).length} columnas. Eso es justamente lo que hay que resolver: seguí la guía de arriba y volvé a tocar «▶ Correr».</div>`;
-    if (!r.noCompila) {
-      h += `<p class="g-nota">Salida del main con <b>${esc(r.csv || 'su CSV')}</b>${r.codigo > 0 ? ' · terminó con error' : ''}:</p>`;
-      h += '<pre class="consola">' + esc(r.salida || '') + (r.error && !r.noSoportado ? '<span class="err">' + esc(r.error) + '</span>' : '') + (r.salida || r.error ? '' : '(no imprimió nada)') + '</pre>';
-      h += '<div class="fila" style="margin-top:8px"><button class="btn chico" id="gCopiarSalida">Copiar la salida</button></div>';
-    }
-    const c = chequeoGenerico();
-    if (c) h += '<div class="refs" style="margin-top:10px"><b>Los números ' + c.origen + '</b><div class="r">' + (c.items.every(x => x.ok) ? '<span class="ok">✓ coincide todo</span>' : '<span class="mal">✗ hay diferencias</span>')
-      + c.items.map(x => `<span class="${x.ok ? 'ok' : 'mal'}">${esc(x.nombre)} ${x.esperado}${x.ok ? '' : ' (da ' + (x.da === null ? '—' : x.da) + ')'}</span>`).join('') + '</div></div>';
-    setTimeout(() => { const b = $('#gCopiarSalida'); if (b) b.onclick = ev => copiar((S.corrida.salida || '') + (S.corrida.error || ''), ev.currentTarget); });
-    return h;
-  }
-  // ───── La guía del parcial: sale del enunciado, del CSV y del código (nunca de los tests) ─────
-  let guiaMemo = { k: null, g: null };
-  function guiaActual() {
-    if (!S.pre || !S.texto || !S.texto.trim() || typeof Guia === 'undefined') return null;
-    const csv = csvCargado() ? S.csv : null;
-    const k = [S.pre.nombre, Object.keys(S.pre.fuentes).length, S.texto.length, S.texto.slice(0, 300), csv ? csv.length + csv.slice(0, 300) : ''].join('|');
-    if (guiaMemo.k !== k) {
-      let g;
-      try { g = Guia.armar({ fuentes: S.pre.fuentes }, S.texto, csv); } catch (e) { g = { pasos: [], error: String(e && e.message || e) }; }
-      guiaMemo = { k, g };
-    }
-    return guiaMemo.g;
-  }
-  const claveHecho = p => p.clave + ':' + (p.valor || p.titulo);
-  const subGuia = g => { const n = g.pasos.filter(p => S.guiaHecho[claveHecho(p)]).length; return `${g.pasos.length} pasos${n ? ' · ' + n + ' hecho' + (n > 1 ? 's' : '') : ''} · sale del enunciado${csvCargado() ? ', del CSV' : ''} y del código`; };
-  function guiaHtml() {
-    if (!S.texto || !S.texto.trim()) return '<details class="guia" open><summary>Guía para el parcial</summary><p class="g-vacia">Cargá el enunciado del parcial (y su CSV nuevo) y acá aparecen los pasos: qué cambiar, en qué archivo y en qué línea, con lo que dice el enunciado.</p></details>';
-    const g = guiaActual();
-    if (!g || !g.pasos.length) return '<details class="guia" open><summary>Guía para el parcial</summary><p class="g-vacia">No encontré en el enunciado reglas nuevas para cruzar con el código (un encabezado nuevo, columnas, estados…). Leelo con calma, cambiá el código y probá con «▶ Correr».</p></details>';
-    const h = S.guiaHecho;
-    return `<details class="guia" id="guia"${S.guiaCerrada ? '' : ' open'}><summary>Guía para este parcial <span class="g-sub">${subGuia(g)}</span></summary><ol class="g-pasos">` + g.pasos.map((p, i) => `<li class="g-paso${h[claveHecho(p)] ? ' hecho' : ''}">
-      <div class="g-tit"><span>${esc(p.titulo)}</span><label><input type="checkbox" data-hecho="${i}"${h[claveHecho(p)] ? ' checked' : ''}> hecho</label></div>
-      ${p.detalle ? `<p class="g-det">${esc(p.detalle)}</p>` : ''}${p.cita ? `<blockquote class="g-cita">${esc(p.cita)}</blockquote>` : ''}${p.datos ? `<p class="g-datos">${esc(p.datos)}</p>` : ''}
-      ${p.lista ? `<ol class="g-lista">${p.lista.map(x => `<li>${esc(x)}</li>`).join('')}</ol>` : ''}${p.ejemplo ? `<pre class="g-ej">${esc(p.ejemplo)}</pre>` : ''}
-      ${p.lugares && p.lugares.length ? `<div class="g-lug">Dónde:${p.lugares.map(l => `<button class="g-ir" data-ir="${esc(l.archivo)}" data-linea="${l.linea}" title="${esc(l.texto)}">${esc(nombreCorto(l.archivo))}:${l.linea}</button>`).join('')}</div>` : ''}
-      ${p.codigo ? `<div class="g-cod"><pre>${esc(p.codigo)}</pre><div class="fila"><button class="btn chico" data-copiar="${i}">Copiar</button>${p.archivo ? `<button class="btn chico" data-agregar="${i}">Agregar ${esc(p.archivo)} al proyecto</button>` : ''}</div></div>` : ''}
-    </li>`).join('') + '</ol></details>';
-  }
-  // marca la línea en el editor (la del original: si ya editaste arriba, puede correrse un poco)
-  function irALinea(ed, n) {
-    const ls = ed.value.split('\n');
-    let ini = 0;
-    for (let k = 0; k < n - 1 && k < ls.length; k++) ini += ls[k].length + 1;
-    ed.focus(); ed.setSelectionRange(ini, ini + (ls[n - 1] || '').length);
-    ed.scrollTop = Math.max(0, (n - 6) * (parseFloat(getComputedStyle(ed).lineHeight) || 19));
-    ed.scrollIntoView({ block: 'nearest' });
+  // los archivos para mostrar: los que cambian y los nuevos primero, con su estado
+  function archivosGenericos(sol) {
+    const p = S.pre, lista = [];
+    for (const [r, t] of Object.entries(sol.fuentes)) lista.push({ nombre: r, texto: t, viejo: p.fuentes[r], estado: !(r in p.fuentes) ? 'nuevo' : t === p.fuentes[r] ? 'igual' : 'cambia' });
+    if (sol.decisiones) lista.push({ nombre: sol.decisiones.nombre, texto: sol.decisiones.texto, estado: 'nuevo' });
+    const orden = { cambia: 0, nuevo: 1, igual: 2 };
+    return lista.sort((a, b) => (orden[a.estado] - orden[b.estado]) || (b.nombre === p.archivoMain) - (a.nombre === p.archivoMain) || nombreCorto(a.nombre).localeCompare(nombreCorto(b.nombre)));
   }
   function pintarGenerico() {
-    const el = $('#solucion'), p = S.pre;
-    const rutas = [...new Set(Object.keys(p.fuentes).concat(Object.keys(S.ediciones)))].sort((a, b) => (b === p.archivoMain) - (a === p.archivoMain) || nombreCorto(a).localeCompare(nombreCorto(b)));
-    if (!rutas.includes(S.archivoPre)) S.archivoPre = rutas[0];
-    const r = S.archivoPre, editado = r in S.ediciones;
-    el.innerHTML = `<div class="fila" style="margin-bottom:10px"><button class="btn" id="sEnun">Cargar enunciado</button><button class="btn" id="sCsv">Cargar CSV</button><button class="btn pri" id="gCorrer">▶ Correr</button><button class="btn" id="bajarZip">Descargar ZIP</button><button class="btn" id="copiarArch">Copiar ${esc(nombreCorto(r))}</button><button class="btn" id="sBorrar">Borrar</button></div>
-      <div class="s-estado">${estadoGenerico()}</div>
-      ${guiaHtml()}
-      <div class="cod-env"><div class="archivos">${rutas.map(x => `<button data-arch="${esc(x)}" class="${x === r ? 'on' : ''}"><span class="nom">${esc(nombreCorto(x))}</span><span class="et ${esNuevo(x) ? 'nuevo' : x in S.ediciones ? 'cambia' : 'igual'}">${etiquetaArchivo(x)}</span></button>`).join('')}<button class="btn chico" id="gNueva" style="margin-top:8px">+ Clase nueva</button></div>
-      <div><textarea class="editor" id="gEditor" spellcheck="false" wrap="off" aria-label="Código de ${esc(nombreCorto(r))}">${esc(textoPre(r))}</textarea>${editado ? `<div class="fila" style="margin-top:6px"><button class="btn chico" id="gRestaurar">${esNuevo(r) ? (/\.java$/.test(r) ? 'Sacar esta clase' : 'Sacar este archivo') : 'Volver al original de este archivo'}</button></div>` : ''}</div></div>
-      <div id="gSalida">${salidaGenerica()}</div>`;
+    const el = $('#solucion'), p = S.pre, sol = solucionGenerica(), arch = archivosGenericos(sol);
+    if (!arch.some(a => a.nombre === S.archivoPre)) S.archivoPre = arch[0].nombre;
+    const a = arch.find(x => x.nombre === S.archivoPre);
+    let agregadas = new Set();
+    if (a.estado === 'cambia') { const ops = lcs(a.viejo.replace(/\r/g, '').split('\n'), a.texto.split('\n')); let j = 0; for (const [k] of ops) { if (k === '+') agregadas.add(j); if (k !== '-') j++; } }
+    else if (a.estado === 'nuevo') agregadas = new Set(a.texto.split('\n').map((_, i) => i));
+    const lineas = a.texto.replace(/\n$/, '').split('\n'), r = sol.corrida;
+    el.innerHTML = `<div class="fila" style="margin-bottom:10px"><button class="btn" id="sEnun">Cargar enunciado</button><button class="btn" id="sCsv">Cargar CSV</button><button class="btn pri" id="bajarZip">Descargar ZIP</button><button class="btn" id="copiarArch">Copiar ${esc(nombreCorto(a.nombre))}</button><button class="btn" id="sBorrar">Borrar</button></div>
+      <div class="s-estado">${estadoGenerico(sol)}</div>
+      ${sol.avisos.length ? `<div class="aviso" style="margin:0 0 12px">Esto revisalo vos:<ul>${sol.avisos.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : ''}
+      <div class="cod-env"><div class="archivos">${arch.map(x => `<button data-arch="${esc(x.nombre)}" class="${x.nombre === a.nombre ? 'on' : ''}"><span class="nom">${esc(nombreCorto(x.nombre))}</span><span class="et ${x.estado}">${x.estado}</span></button>`).join('')}</div>
+      <div class="codigo">${lineas.map((l, i) => `<div class="ln${agregadas.has(i) ? ' add' : ''}"><i>${i + 1}</i><span>${/\.java$/.test(a.nombre) ? resaltar(l) || ' ' : esc(l) || ' '}</span></div>`).join('')}</div></div>
+      ${S.texto.trim() || csvCargado() ? `<details class="mas" id="gSal"${S.verSalida ? ' open' : ''}><summary>Salida del main con ${esc(r.csv || 'su CSV')}</summary><pre class="consola" style="margin-top:8px">${esc(r.salida || '')}${r.error ? '<span class="err">' + esc(r.error) + '</span>' : ''}${r.salida || r.error ? '' : '(no imprimió nada)'}</pre></details>` : ''}`;
     el.querySelectorAll('[data-arch]').forEach(b => b.onclick = () => { S.archivoPre = b.dataset.arch; guardarPre(); pintarSolucion(); });
-    const ed = $('#gEditor');
-    let t = null;
-    ed.oninput = () => {
-      if (!esNuevo(r) && ed.value === p.fuentes[r]) delete S.ediciones[r]; else S.ediciones[r] = ed.value;
-      clearTimeout(t); t = setTimeout(guardarPre, 400);
-    };
-    ed.onblur = () => { const bt = el.querySelector(`[data-arch="${CSS.escape(r)}"] .et`); if (bt) { bt.textContent = etiquetaArchivo(r); bt.className = 'et ' + (esNuevo(r) ? 'nuevo' : r in S.ediciones ? 'cambia' : 'igual'); } };
-    $('#gNueva').onclick = claseNueva;
-    ed.onkeydown = ev => { if (ev.key === 'Tab' && !ev.shiftKey) { ev.preventDefault(); const i = ed.selectionStart; ed.setRangeText('    ', i, ed.selectionEnd, 'end'); ed.oninput(); } };
-    const rest = $('#gRestaurar'); if (rest) rest.onclick = () => { if (esNuevo(r) && !confirm('¿Sacar ' + (/\.java$/.test(r) ? 'la clase ' : '') + nombreCorto(r) + '?')) return; delete S.ediciones[r]; guardarPre(); pintarSolucion(); };
-    $('#gCorrer').onclick = () => { guardarPre(); correr(); };
-    // la guía: ir al lugar, copiar el código, marcar hecho
-    const gd = $('#guia'), gg = guiaActual();
-    if (gd) gd.ontoggle = () => { S.guiaCerrada = !gd.open; guardarPre(); };
-    el.querySelectorAll('[data-ir]').forEach(b => b.onclick = () => { S.archivoPre = b.dataset.ir; S.irA = Number(b.dataset.linea); guardarPre(); pintarSolucion(); });
-    if (gg) {
-      el.querySelectorAll('[data-copiar]').forEach(b => b.onclick = ev => copiar(gg.pasos[b.dataset.copiar].codigo, ev.currentTarget));
-      el.querySelectorAll('[data-agregar]').forEach(b => b.onclick = () => { const x = gg.pasos[b.dataset.agregar]; if (!(x.archivo in S.ediciones)) S.ediciones[x.archivo] = x.codigo; S.archivoPre = x.archivo; guardarPre(); pintarSolucion(); });
-      el.querySelectorAll('[data-hecho]').forEach(b => b.onchange = () => {
-        const k = claveHecho(gg.pasos[b.dataset.hecho]);
-        if (b.checked) S.guiaHecho[k] = 1; else delete S.guiaHecho[k];
-        guardarPre(); b.closest('.g-paso').classList.toggle('hecho', b.checked);
-        const sub = el.querySelector('.guia .g-sub'); if (sub) sub.textContent = subGuia(gg);
-      });
-    }
-    if (S.irA) { const n = S.irA; S.irA = null; irALinea(ed, n); }
+    const gs = $('#gSal'); if (gs) gs.ontoggle = () => { S.verSalida = gs.open; };
     $('#sEnun').onclick = () => $('#fEnun').click();
     $('#sCsv').onclick = () => $('#fCsv').click();
     $('#sBorrar').onclick = borrarTodo;
-    $('#copiarArch').onclick = ev => copiar(textoPre(r), ev.currentTarget);
+    $('#copiarArch').onclick = ev => copiar(a.texto, ev.currentTarget);
     $('#bajarZip').onclick = () => {
-      const R = (p.nombre || 'proyecto').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w-]+/g, '-').replace(/^-|-$/g, '').toLowerCase() + '/', lista_ = [];
+      const R = (p.nombre || 'proyecto').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w-]+/g, '-').replace(/^-|-$/g, '').toLowerCase() + '/', lista_ = [];
       if (p.pom) lista_.push([R + 'pom.xml', p.pom]);
-      for (const x of new Set(Object.keys(p.fuentes).concat(Object.keys(S.ediciones)))) lista_.push([R + x, textoPre(x)]);
+      for (const [x, v] of Object.entries(sol.fuentes)) lista_.push([R + x, v]);
       for (const [x, v] of Object.entries(p.tests || {})) lista_.push([R + x, v]);
       for (const [x, v] of Object.entries(p.datos)) lista_.push([R + x, v]);
       if (csvCargado()) lista_.push([R + 'datos/' + (S.csvNombre || 'datos-parcial.csv').replace(/^.*[\\/]/, '').replace(/[^\w.-]+/g, '_'), S.csv]);
+      if (sol.decisiones) lista_.push([R + sol.decisiones.nombre, sol.decisiones.texto]);
       bajar(R.slice(0, -1) + '.zip', zip(lista_));
     };
   }
-
-  // ───── Comparar archivo: ¿es igual al de base? (mismo tamaño y misma huella SHA-256; sin ella, CRC32) ─────
-  const BASE = window.BASE_COMPARAR;
-  async function comparar(f) {
-    const r = $('#cRes');
-    r.className = 'c-res'; r.textContent = '…';
-    const datos = new Uint8Array(await f.arrayBuffer());
-    let igual = datos.length === BASE.bytes;
-    if (igual) {
-      try {
-        const h = new Uint8Array(await crypto.subtle.digest('SHA-256', datos));
-        igual = [...h].map(b => b.toString(16).padStart(2, '0')).join('') === BASE.sha256;
-      } catch (e) { igual = crc32(datos).toString(16).padStart(8, '0') === BASE.crc32; }
-    }
-    r.className = 'c-res ' + (igual ? 'ok' : 'mal');
-    r.textContent = igual ? '✓ Igual' : '✗ Distinto';
-  }
-  $('#cElegir').onclick = () => $('#fComparar').click();
-  $('#fComparar').onchange = ev => { const f = ev.target.files[0]; ev.target.value = ''; if (f) comparar(f); };
-  $('#comparar').addEventListener('dragover', e => e.preventDefault());
-  $('#comparar').addEventListener('drop', e => { e.preventDefault(); e.stopPropagation(); const f = e.dataTransfer.files[0]; if (f) comparar(f); });
 
   // ───── Buscador de preguntas (cuestionarios 1 a 5 y las del 1.er parcial) ─────
   const PR = window.PREGUNTAS || [];
@@ -1244,7 +1123,7 @@
   const PIE = $('#pie').innerHTML;
   function aplicarVista() {
     document.body.classList.toggle('simple', S.simple);
-    if (S.pre) { S.simple = true; document.body.classList.add('simple'); $('#pie').innerHTML = 'Con un preenunciado propio: editá el código, tocá «▶ Correr» y compará con los números del enunciado. Todo sin internet.'; return; }
+    if (S.pre) { S.simple = true; document.body.classList.add('simple'); $('#pie').innerHTML = 'Con un preenunciado propio: cargá el enunciado y el CSV del parcial y te muestra el código resuelto, con lo nuevo marcado. Todo sin internet.'; return; }
     $('#pie').innerHTML = S.simple ? '<a href="#" id="cambiarVista">Ver el laboratorio completo (reglas, CSV y salida)</a>' : PIE + ' · <a href="#" id="cambiarVista">Volver a la vista simple</a>';
     $('#cambiarVista').onclick = ev => {
       ev.preventDefault(); S.simple = !S.simple;

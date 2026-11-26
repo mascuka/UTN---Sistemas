@@ -89,14 +89,12 @@ def main():
         '/*@PDFJS@*/': (AQUI / 'vendor/pdfjs/pdf.min.js').read_text('utf-8'),
         '/*@WORKER@*/': (AQUI / 'vendor/pdfjs/pdf.worker.min.js').read_text('utf-8'),
         '/*@MOTOR@*/': (AQUI / 'motor.js').read_text('utf-8'),
-        '/*@JAVA@*/': (AQUI / 'java.js').read_text('utf-8') + '\n' + (AQUI / 'proyecto.js').read_text('utf-8') + '\n' + (AQUI / 'guia.js').read_text('utf-8'),
+        '/*@JAVA@*/': (AQUI / 'java.js').read_text('utf-8') + '\n' + (AQUI / 'proyecto.js').read_text('utf-8') + '\n' + (AQUI / 'guia.js').read_text('utf-8') + '\n' + (AQUI / 'resolver.js').read_text('utf-8'),
         '/*@EJEMPLOS@*/': 'window.EJEMPLOS_EXTRA = [' + ','.join(f.read_text('utf-8').strip() for f in sorted(
                               AQUI.glob('practica-*/ejemplo.json'), key=lambda f: json.loads(f.read_text('utf-8'))['id'])) + '];\n'
                           + (AQUI / 'ejemplos.js').read_text('utf-8'),
         '/*@PROYECTO@*/': json.dumps(proyecto(), ensure_ascii=False),
-        '/*@PREGUNTAS@*/': 'window.PREGUNTAS = ' + json.dumps(preguntas(), ensure_ascii=False) + ';\n'
-                           # el archivo de base del cuadro «Comparar archivo»: solo su tamaño y su huella, no el archivo
-                           + 'window.BASE_COMPARAR = ' + json.dumps(json.loads((AQUI / 'comparar-base.json').read_text('utf-8'))) + ';',
+        '/*@PREGUNTAS@*/': 'window.PREGUNTAS = ' + json.dumps(preguntas(), ensure_ascii=False) + ';',
     }
     for marca, texto in partes.items():
         assert html.count(marca) == 1, marca
