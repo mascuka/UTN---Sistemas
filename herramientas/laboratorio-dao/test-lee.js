@@ -123,7 +123,11 @@
             return sym('call', { obj: o, n: m, args, kws });
           }
           if (o.k === 'clase') return sym('callClase', { clase: o.n, n: m, args });
-          if (o.k === 'sym') (R.metodosSueltos || (R.metodosSueltos = new Set())).add(m);
+          // un método sobre algo que devolvió otro método (local = empresa.mas_rentable(); local.tipo()) es de una entidad;
+          // sobre lo que devuelve una función del main (hospital = main.cargarHospital()), de lo que arma esa función;
+          // sobre un nombre que no es del ejercicio (Path(__file__).resolve()), no es nada
+          if (o.k === 'sym' && o.op === 'modcall') (R.metodosDeMain || (R.metodosDeMain = [])).push({ m, fn: o.n, args });
+          else if (o.k === 'sym' && o.op !== 'nombre' && o.op !== 'llamada') (R.metodosSueltos || (R.metodosSueltos = new Set())).add(m);
           return sym('call', { obj: o, n: m, args, kws });
         }
         return sym('llamada', { args });

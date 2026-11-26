@@ -92,7 +92,7 @@
   <header class="cab">
     <div>
       <h1>Laboratorio DAO · Recuperatorio</h1>
-      <span class="sello">● Funciona sin internet</span><span class="version">Versión del 26/11/2026 · ccd570b</span>
+      <span class="sello">● Funciona sin internet</span><span class="version">Versión del 26/11/2026 · 279ae68</span>
     </div>
     <button class="tema" id="tema" title="Cambiar tema" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
   </header>
@@ -714,7 +714,11 @@
             return sym('call', { obj: o, n: m, args, kws });
           }
           if (o.k === 'clase') return sym('callClase', { clase: o.n, n: m, args });
-          if (o.k === 'sym') (R.metodosSueltos || (R.metodosSueltos = new Set())).add(m);
+          // un método sobre algo que devolvió otro método (local = empresa.mas_rentable(); local.tipo()) es de una entidad;
+          // sobre lo que devuelve una función del main (hospital = main.cargarHospital()), de lo que arma esa función;
+          // sobre un nombre que no es del ejercicio (Path(__file__).resolve()), no es nada
+          if (o.k === 'sym' && o.op === 'modcall') (R.metodosDeMain || (R.metodosDeMain = [])).push({ m, fn: o.n, args });
+          else if (o.k === 'sym' && o.op !== 'nombre' && o.op !== 'llamada') (R.metodosSueltos || (R.metodosSueltos = new Set())).add(m);
           return sym('call', { obj: o, n: m, args, kws });
         }
         return sym('llamada', { args });
@@ -829,7 +833,7 @@
   const sinTildes = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '');
   const bajo = s => sinTildes(s).toLowerCase();
   const capital = s => s ? s[0].toUpperCase() + s.slice(1) : s;
-  const palabrasDe = n => String(n).replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/_/g, ' ').toLowerCase().split(/\s+/).filter(Boolean).map(bajo);
+  const palabrasDe = n => String(n).replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/([A-Z])([A-Z][a-z])/g, '$1 $2').replace(/_/g, ' ').toLowerCase().split(/\s+/).filter(Boolean).map(bajo);
   const snake = s => bajo(s).replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
   const singular = w => w.replace(/(?<=[^aeiou])es$/, '').replace(/(?<=[aeiou])s$/, '');
   const plural = w => /[aeiou]$/.test(w) ? w + 's' : w + 'es';
@@ -872,7 +876,7 @@
   const oraciones = t => t.replace(/\n(?!\s*\n)/g, ' ').split(/(?<=[.;!?])\s+|\n\s*\n/).map(s => s.trim()).filter(Boolean);
 
   // ───────── Resolver
-  function resolver({ enunciado, csvs, tests }) {
+  function resolver({ enunciado, csvs, tests, carpetaCsv }) {
     const avisos = [];
     const T = TestLee.analizar(tests || {});
     for (const e of T.errores) avisos.push('Del test: ' + e);
@@ -894,7 +898,8 @@
       const pref = entidades.length > 1 ? palabrasDe(entidades[0]).filter((w, i) => entidades.every(n => palabrasDe(n)[i] === w)) : [];
       baseN = pref.length ? pref.map(capital).join('') : tipoDe ? capital(singular(bajo(tipoDe))) : 'Entidad';
     }
-    const subsN = entidades.filter(n => n !== baseN && T.clases[n].ctores.length);
+    const componentes = entidades.filter(n => n !== baseN && !T.clases[n].bases.has(baseN) && T.objetos.some(o => o.clase !== n && o.args.some(a => a && a.k === 'obj' && a.clase === n)));
+    const subsN = entidades.filter(n => n !== baseN && T.clases[n].ctores.length && !componentes.includes(n));
     if (!subsN.length) avisos.push('El test no construye ninguna clase: no sé qué clases armar.');
     const modDe = n => (T.clases[n] && T.clases[n].mod) || null;
     const unArchivo = (() => { const ms = [...new Set(Object.values(T.imports))]; return ms.length === 1 && nombres.length > 1 ? ms[0] : null; })();
@@ -928,6 +933,14 @@
       return 'str';
     };
 
+    const infoCsv = {};
+    for (const n of csvNombres) {
+      const t = csvs[n].replace(/^\uFEFF/, '').replace(/\r/g, ''), ls = t.split('\n').filter(l => l.trim());
+      const sp = (ls[0] || '').includes(';') && !(ls[0] || '').includes(',') ? ';' : ',';
+      const pr = ls.length ? ls[0].split(sp).map(x => x.trim()) : [];
+      const enc = pr.length > 1 && pr.every(x => /^[A-Za-z_][\w ]*$/.test(x)) && !pr.every(x => /^(true|false|si|no)$/i.test(x));
+      infoCsv[n] = { n, sep: sp, primera: pr, conEncabezado: enc, filas: (enc ? ls.slice(1) : ls).map(l => l.split(sp).map(x => x.trim())), texto: t };
+    }
     // ── la estructura del CSV que describe el enunciado (o su encabezado)
     let estructura = null;
     const gEst = grupos.find(g => g.length >= 3 && g.some(x => /^tipo\b/i.test(x.texto)) && g.length >= nCols - 1);
@@ -954,13 +967,53 @@
     const valorTipoDe = n => Object.keys(tipoDeSub).find(k => tipoDeSub[k] === n);
     const etiquetaDe = n => { const k = valorTipoDe(n); return k ? etiquetasTipo[k] : bajo(palabrasDe(n).slice(-1)[0]); };
 
+    const mismoValor = (x, y) => x && y && (x === y || (x.k !== 'obj' && y.k !== 'obj' && x.k === y.k && x.v === y.v));
+    function nombresDelTest(n) {
+      const votos = [];
+      for (const a of T.asserts) {
+        const sa = a.a;
+        if (!(sa.k === 'sym' && sa.op === 'attr' && sa.obj && sa.obj.k === 'obj' && sa.obj.clase === n) || !['==', 'is'].includes(a.op)) continue;
+        const b = a.b.k === 'approx' ? a.b.v : a.b;
+        let pos = sa.obj.args.map((x, i) => mismoValor(x, b) ? i : -1).filter(i => i >= 0);
+        // 4.0 y 4 valen lo mismo, pero si el test escribe uno con decimales y el otro no, son datos distintos
+        if (pos.length > 1 && b.k === 'num') { const p2 = pos.filter(i => !!sa.obj.args[i].real === !!b.real); if (p2.length === 1) pos = p2; }
+        if (pos.length === 1) { const v = votos[pos[0]] || (votos[pos[0]] = {}); v[sa.n] = (v[sa.n] || 0) + 1; }
+      }
+      return Array.from(votos, v => v ? Object.entries(v).sort((x, y) => y[1] - x[1])[0][0] : null);
+    }
+    // el valor por defecto de un parámetro que a veces no se pasa: el que espera el test («.habitual is False») o el vacío del tipo
+    function porDefecto(n, j, nombre, tipo) {
+      const sin = T.objetos.filter(o => o.clase === n && o.args.length <= j);
+      if (!sin.length) return undefined;
+      for (const a of T.asserts) if (a.a.k === 'sym' && a.a.op === 'attr' && a.a.n === nombre && sin.includes(a.a.obj) && ['==', 'is'].includes(a.op)) return a.b;
+      return tipo === 'bool' ? { k: 'bool', v: false } : tipo === 'str' ? { k: 'str', v: '' } : tipo === 'obj' ? { k: 'none' } : { k: 'num', v: 0 };
+    }
+    // cada clase con su CSV, si hay uno por clase: por el nombre del archivo y por las columnas
+    const csvDe = {};
+    const variosCsv = Object.values(infoCsv).filter(x => x.conEncabezado).length > 1 && !estructura.some(x => /^tipo\b/i.test(x));
+    if (variosCsv) {
+      const clasesCsv = subsN.concat(componentes);
+      const puntos = (n, info) => {
+        const fw = bajo(info.n.replace(/\.csv$/i, '')).split(/[^a-z0-9]+/).map(singular), cw = palabrasDe(n).map(singular);
+        let p = cw.filter(w => fw.includes(w)).length * 3 - fw.filter(w => !cw.includes(w)).length;
+        const nt = nombresDelTest(n).filter(Boolean).map(x => palabrasDe(x).filter(w => !VACIAS.has(w)));
+        const hw = info.primera.map(h => bajo(h).split(/[^a-z0-9]+/));
+        p += nt.filter(ws => hw.some(h => ws.every(w => h.includes(w)))).length;
+        return p;
+      };
+      const libres = Object.values(infoCsv).filter(x => x.conEncabezado);
+      for (const n of clasesCsv.slice().sort((a, b) => Math.max(...libres.map(i => puntos(b, i))) - Math.max(...libres.map(i => puntos(a, i))))) {
+        const mejor = libres.map(i => [i, puntos(n, i)]).sort((a, b) => b[1] - a[1])[0];
+        if (mejor && mejor[1] > 0) { csvDe[n] = mejor[0].n; libres.splice(libres.indexOf(mejor[0]), 1); }
+      }
+    }
     // ── los campos de cada clase: cuántos (el test), cómo se llaman (contrato, encabezado o enunciado) y de qué tipo
     const muestra = n => (T.clases[n] && T.clases[n].ctores[0]) ? T.clases[n].ctores[0].args : [];
     const aridad = n => { const cs = T.clases[n] ? T.clases[n].ctores : []; return cs.length ? Math.max(...cs.map(c => c.args.length + Object.keys(c.kws).length)) : 0; };
     // columnas del CSV para cada subclase: las comunes y las propias («Si es una casa, …; si es un departamento, …»)
     const colsDe = {};   // sub → [{ i (columna del CSV), etiqueta }]
-    for (const n of subsN) colsDe[n] = [];
-    estructura.forEach((e, i) => {
+    for (const n of subsN.concat(componentes)) colsDe[n] = csvDe[n] ? infoCsv[csvDe[n]].primera.map((h, i) => ({ i, etiqueta: h, csv: csvDe[n] })) : [];
+    if (!variosCsv) estructura.forEach((e, i) => {
       if (i === iTipo) return;
       const partes = e.split(/;\s*(?=si\s)/i);
       if (/^si\s+es\b/i.test(e) || partes.length > 1) {
@@ -982,29 +1035,37 @@
       return snake(ws.slice(0, 2).join(' ')) || 'dato';
     };
     const campos = {};   // clase → [{ n, tipo, col }]
-    for (const n of subsN) {
+    for (const n of subsN.concat(componentes)) {
       const k = aridad(n), cols = colsDe[n];
       let ns = contrato[n] ? contrato[n].params.slice() : null;
+      const delTest = nombresDelTest(n);
       if (!ns && conEncabezado && cols.length === k) ns = cols.map(c => primera[c.i]);
       if (!ns) ns = cols.map(c => nombreDeEtiqueta(c.etiqueta));
       if (ns.length !== k) { if (ns.length > k) ns = ns.slice(0, k); else while (ns.length < k) ns.push('dato' + (ns.length + 1)); }
+      if (!contrato[n]) delTest.forEach((x, j) => { if (x && j < k) ns[j] = x; });
+      // si un nombre quedó repetido, el que no vino del test se renombra
+      ns = ns.map((x, j) => ns.indexOf(x) !== j && !delTest[j] ? x + '_' + (j + 1) : x);
       // qué columna del CSV es cada parámetro: por nombre; si no, en orden; y se mira que los valores del test se parezcan
       const asign = ns.map(() => null), libres = cols.slice();
       ns.forEach((p, j) => {
         const pw = palabrasDe(p);
-        const c = libres.find(c => { const ew = bajo(c.etiqueta).split(/[^a-z0-9]+/); return pw.every(w => ew.some(x => x === w || singular(x) === singular(w) || (SINONIMOS[x] || []).includes(w))); }) || libres.find(c => conEncabezado && primera[c.i] === p);
+        const pw2 = pw.filter(w => !VACIAS.has(w));
+        const c = libres.find(c => { const ew = bajo(c.etiqueta).split(/[^a-z0-9]+/); return pw2.every(w => ew.some(x => x === w || singular(x) === singular(w) || (SINONIMOS[x] || []).includes(w))); }) || libres.find(c => conEncabezado && primera[c.i] === p);
         if (c) { asign[j] = c; libres.splice(libres.indexOf(c), 1); }
       });
-      ns.forEach((p, j) => { if (!asign[j] && libres.length) asign[j] = libres.shift(); });
       const args = muestra(n);
+      // un objeto que se pasa adentro (el paciente de la atención) no es una columna
+      ns.forEach((p, j) => { if (!asign[j] && libres.length && !(args[j] && args[j].k === 'obj')) asign[j] = libres.shift(); });
       campos[n] = ns.map((p, j) => {
-        const c = asign[j], vs = c ? columna(c.i) : [];
+        const c = asign[j], vs = c ? (c.csv ? infoCsv[c.csv].filas.map(f => f[c.i]).filter(x => x != null && x !== '') : columna(c.i)) : [];
+        if (args[j] && args[j].k === 'obj') return { n: p, tipo: 'obj', clase: args[j].clase, col: null, etiqueta: p, defecto: porDefecto(n, j, p, 'obj') };
         let tipo = c ? tipoCol(vs, c.etiqueta) : 'str';
         const a = args[j];
         if (a && a.k === 'bool') tipo = 'bool';
         else if (a && a.k === 'str' && tipo !== 'str') tipo = 'str';
         if (tipo === 'int' && /float|importe|monto|precio|facturaci|\$/.test(bajo(c ? c.etiqueta : ''))) tipo = 'float';
-        return { n: p, tipo, col: c ? c.i : null, etiqueta: c ? c.etiqueta : p };
+        if (a && a.k === 'num' && a.real && tipo === 'int') tipo = 'float';
+        return { n: p, tipo, col: c ? c.i : null, csv: c ? c.csv : null, etiqueta: c ? c.etiqueta : p, defecto: porDefecto(n, j, p, tipo) };
       });
     }
     // la base se queda con los campos que comparten todas las subclases (en el mismo lugar y con el mismo nombre)
@@ -1014,9 +1075,48 @@
       for (let j = 0; j < c0.length; j++) if (subsN.every(n => campos[n][j] && campos[n][j].n === c0[j].n)) comunes.push(c0[j]); else break;
     }
     if (contrato[baseN]) { const k = contrato[baseN].params.length; comunes.splice(k); }
+    else if (T.clases[baseN] && T.clases[baseN].ctores.length) { const k = Math.max(...T.clases[baseN].ctores.map(c => c.args.length)); if (k < comunes.length) comunes.splice(k); }
     campos[baseN] = comunes;
     const propios = n => campos[n].slice(comunes.length);
     const todosCampos = n => campos[n] || [];
+
+    // ── los valores posibles de un dato («el síntoma que prevalece (1: “corazon”, 2: “pulmon”, 3: “otras”)») y lo que no
+    // puede valer («el cupón de descuento debe ser 0 o positivo»): de quién es el dato, por el nombre
+    const clasesConDatos = [baseN, ...componentes, ...subsN];
+    function duenio(frase, soloTipo) {
+      let mejor = null;
+      for (const n of clasesConDatos) {
+        const c = campoDe(frase, n, soloTipo);
+        if (!c) continue;
+        const p = puntosCampo(frase, c);
+        if (!mejor || p > mejor.p) mejor = { n: comunes.includes(c) ? baseN : n, c, p };
+      }
+      return mejor && mejor.p >= 2 ? mejor : null;
+    }
+    const etiquetas = {};      // clase → { campo: { '1': 'corazon', … } }
+    const validaciones = {};   // clase → [{ campo, valores | minimo, exc }]
+    const raisesDe = n => T.raises.filter(r => r.v && r.v.k === 'obj' && (r.v.clase === n || (n === baseN && subsN.includes(r.v.clase))));
+    for (const m of texto.matchAll(/\(([^()]*?\d+\s*[:=]\s*[“"«][^()]*?)\)/g)) {
+      const vals = {};
+      for (const x of m[1].matchAll(/(\d+)\s*[:=]\s*[“"«]([^”"»]+)[”"»]/g)) vals[x[1]] = x[2].trim();
+      if (Object.keys(vals).length < 2) continue;
+      const antes = texto.slice(Math.max(0, m.index - 150), m.index).split(/[.;:]\s|\n/).pop();
+      const d = duenio(antes, ['int']);
+      if (!d) continue;
+      (etiquetas[d.n] || (etiquetas[d.n] = {}))[d.c.n] = vals;
+      d.c.etiquetas = vals;
+      if (d.n === baseN) for (const sb of subsN) for (const c of campos[sb]) if (c.n === d.c.n) c.etiquetas = vals;
+      // si el test espera un error con un valor que no es de la lista, el constructor lo rechaza
+      const j = (campos[d.n] || []).indexOf(d.c);
+      const malos = raisesDe(d.n).filter(r => { const a = r.v.args[j]; return a && !(a.k === 'num' && String(a.v) in vals); });
+      if (malos.length) (validaciones[d.n] || (validaciones[d.n] = [])).push({ campo: d.c.n, valores: Object.keys(vals).map(Number), exc: malos[0].exc || 'ValueError' });
+    }
+    for (const o of ors) {
+      const m = bajo(o).match(/\b(?:el|la|los|las)\s+([a-z ]+?)\s+(?:debe|deben)\s+ser\s+(?:0|cero)\s+o\s+positiv|\b(?:el|la|los|las)\s+([a-z ]+?)\s+no\s+(?:puede|pueden)\s+ser\s+negativ/);
+      if (!m) continue;
+      const d = duenio(m[1] || m[2], ['int', 'float']);
+      if (d && !(validaciones[d.n] || []).some(v => v.campo === d.c.n)) (validaciones[d.n] || (validaciones[d.n] = [])).push({ campo: d.c.n, minimo: 0, exc: 'ValueError' });
+    }
 
     // ── los métodos de las entidades y sus reglas
     const metodosEnt = {};   // clase → { nombre: [candidatos IR] }
@@ -1035,20 +1135,29 @@
         const cls = o.split(/;\s*|\.\s+(?=[A-ZÁÉÍÓÚ])/);
         for (const c of cls) if (hablaDe(c, n) && !subsN.some(x => x !== n && hablaDe(c, x) && !formasDe(n).some(f => formasDe(x).includes(f)) && etiquetaDe(x).length > etiquetaDe(n).length && bajo(c).includes(etiquetaDe(x)))) out.push(c);
       }
+      // un párrafo que arranca nombrando a una sola subclase (y no es una lista) habla de ella entero
+      const estricto = (o, x) => formasDe(x).some(f => new RegExp('(^|[^a-z])' + f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es)?(?![a-z])').test(bajo(o)));
+      for (const par of texto.split(/\n\s*\n/)) {
+        if ((par.match(/^\s*(?:[-*•]|\d+[.)])\s/gm) || []).length > 1) continue;
+        const os2 = oraciones(par);
+        if (os2.length < 2 || delCsv(os2[0]) || !estricto(os2[0], n) || subsN.some(x => x !== n && os2.some(o => estricto(o, x)))) continue;
+        for (const o of os2.slice(1)) if (!out.includes(o) && !delCsv(o)) out.push(o);
+      }
       if (contrato[n]) out.push(contrato[n].linea.replace(/^.*?\)\s*[—–-]\s*/, ''));
       return out;
     };
     // a qué campo se refiere una palabra o frase del enunciado
-    function campoDe(frase, n, soloTipo) {
+    function puntosCampo(frase, c) {
       const fw = bajo(frase).split(/[^a-z0-9]+/).filter(w => w && !VACIAS.has(w));
+      const cw = palabrasDe(c.n).concat(bajo(c.etiqueta || '').split(/[^a-z0-9]+/).filter(w => w.length > 3 && !VACIAS.has(w)));
+      let p = 0;
+      for (const w of fw) for (const x of cw) { if (x === w || singular(x) === singular(w)) p += 2; else if ((SINONIMOS[w] || []).includes(x) || (SINONIMOS[x] || []).includes(w)) p += 1; else if (w.length >= 5 && x.length >= 5 && (x.startsWith(w.slice(0, 5)) || w.startsWith(x.slice(0, 5)))) p += 1; }
+      return p;
+    }
+    function campoDe(frase, n, soloTipo) {
       const cs = todosCampos(n).filter(c => !soloTipo || soloTipo.includes(c.tipo));
       let mejor = null, pm = 0;
-      for (const c of cs) {
-        const cw = palabrasDe(c.n).concat(bajo(c.etiqueta || '').split(/[^a-z0-9]+/).filter(w => w.length > 3 && !VACIAS.has(w)));
-        let p = 0;
-        for (const w of fw) for (const x of cw) { if (x === w || singular(x) === singular(w)) p += 2; else if ((SINONIMOS[w] || []).includes(x) || (SINONIMOS[x] || []).includes(w)) p += 1; else if (w.length >= 5 && x.length >= 5 && (x.startsWith(w.slice(0, 5)) || w.startsWith(x.slice(0, 5)))) p += 1; }
-        if (p > pm) { pm = p; mejor = c; }
-      }
+      for (const c of cs) { const p = puntosCampo(frase, c); if (p > pm) { pm = p; mejor = c; } }
       return mejor;
     }
     // ── IR: { t:'campo'|'num'|'bin'|'met'|'si'|'cmp'|'no'|'super'|'cadena' }
@@ -1059,6 +1168,8 @@
       const fr = fraseDe(sub).map(bajo);
       const cands = [];
       const conBase = () => { const c = todosCampos(sub).find(c => /base/.test(c.n)) || todosCampos(sub).find(c => /base/.test(bajo(c.etiqueta || ''))); return c ? C(c.n) : null; };
+      const ps = pasosDe(sub);
+      if (ps) cands.push(ps);
       let inicio = null, sumas = [], factor = null, deOtra = null;
       for (const f0 of fr) {
         const f = f0.replace(/\s+/g, ' ');
@@ -1109,6 +1220,37 @@
       if (plata.length >= 2) cands.push(plata.slice(1).reduce((a, c) => B('+', a, C(c.n)), C(plata[0].n)));
       return cands;
     }
+    function condicion(t, sub) {
+      let m = t.match(/(?:el|la|los|las)?\s*([a-z ]+?)\s+(?:sea|es|sean|son)\s+igual(?:es)?\s+(?:a|que)\s+(\d+)/);
+      if (m) { const c = campoDe(m[1], sub, ['int', 'float', 'str']); if (c) return CMP('==', C(c.n), N(num(m[2]))); }
+      m = t.match(/([a-z]+)\s+(?:sea|es|este|esta)\s+[“"«]?([a-z]+)/);
+      if (m) {
+        const own = campoDe(m[2], sub, ['bool']); if (own) return C(own.n);
+        for (const c of todosCampos(sub).filter(c => c.tipo === 'obj')) { const b = campoDe(m[2], c.clase, ['bool']); if (b) return { t: 'de', obj: c.n, n: b.n }; }
+      }
+      return null;
+    }
+    function pasosDe(sub) {
+      let inicio = null;
+      const pasos = [];
+      for (const f0 of fraseDe(sub).map(bajo)) {
+        const f = f0.replace(/\s+/g, ' ');
+        const ap = f.match(/a\s+partir\s+(?:del|de\s+la|de\s+los|de\s+las|de)\s+([a-z ]+?)(?=[.,;(]|$)/);
+        if (ap && !inicio) { const c = campoDe(ap[1], sub, ['int', 'float']); if (c) inicio = C(c.n); }
+        const rd = f.match(/(?:realiza|aplica|hace|resta)\w*\s+el\s+descuento\s+del?\s+([a-z ]+?)(?=[.,;(]|\s+cuyo|$)/);
+        if (rd && !/%/.test(f)) { const c = campoDe(rd[1], sub, ['int', 'float']); if (c) pasos.push({ cond: null, op: '-', v: C(c.n) }); }
+        for (const cl of f.split(/;\s*/)) {
+          const pc = cl.match(/(\d+(?:[.,]\d+)?)\s*%/);
+          if (!pc) continue;
+          const condTxt = (cl.match(/(?:\bsi|en\s+caso\s+(?:de\s+)?que)\s+(.+?)\s+(?:se\s+le|se\s+les|se\s|,)/) || [])[1];
+          const cond = condTxt ? condicion(condTxt, sub) : null;
+          if (condTxt && !cond) continue;
+          const v = num(pc[1]), mas = /\bmas\b|increment|recargo|aument/.test(cl) && !/descuento/.test(cl);
+          pasos.push({ cond, op: '*', v: N(Math.round((1 + (mas ? v : -v) / 100) * 1e6) / 1e6) });
+        }
+      }
+      return inicio && pasos.some(p => p.cond) ? { t: 'pasos', inicio, pasos } : null;
+    }
     // los métodos que devuelven verdadero o falso: «es rentable si su índice es mayor a 50»
     function booleano(metodo, sub, helper) {
       const fr = fraseDe(sub).map(bajo).join(' ; ');
@@ -1149,7 +1291,10 @@
       for (const m of nombresMet) {
         let cands = [];
         if (m === 'tipo' || /^(get_)?tipo$/.test(m)) { const v = contratoTipo(sub) ?? Number(valorTipoDe(sub)); if (!isNaN(v)) cands = [N(v)]; }
-        else if (/^(es|esta|tiene|puede)_/.test(m)) cands = booleano(m, sub, (auxiliares.find(a => palabrasDe(m).some(w => a.n.includes(w.slice(0, 6)))) || auxiliares[0] || {}).n);
+        else if (/^(es|esta|tiene|puede)$/.test(palabrasDe(m)[0])) {
+          cands = booleano(m, sub, (auxiliares.find(a => palabrasDe(m).some(w => a.n.includes(w.slice(0, 6)))) || auxiliares[0] || {}).n);
+          if (!cands.length) { const c = condicion(palabrasDe(m).slice(1).join(' ') + ' sea ' + palabrasDe(m).slice(-1)[0], sub); if (c) cands = [c]; }
+        }
         else cands = numerico(m, m, sub);
         metodosEnt[sub][m] = cands;
       }
@@ -1165,30 +1310,61 @@
     const pedidos = gMet.map(x => { const m = x.texto.match(/^([^:]{2,80}):\s*(.*)$/); return { titulo: m ? m[1] : x.texto.replace(/\.$/, ''), desc: m ? m[2] : '', todo: x.texto }; })
       .filter(p => !/polimorfismo/i.test(p.todo));
     const parecido = (nm, p) => { const ws = palabrasDe(nm).filter(w => !VACIAS.has(w)); const pw = bajo(p.titulo + ' ' + p.desc).split(/[^a-z0-9]+/); return ws.filter(w => pw.some(x => x === w || singular(x) === singular(w) || x.startsWith(w.slice(0, 5)) && w.length >= 5)).length / Math.max(1, ws.length); };
-    const metodosCol = col ? Object.keys(col.metodos).filter(m => m !== agregarN) : [];
+    const delMain = (T.metodosDeMain || []).filter(x => colectorN && bajo(x.fn).includes(bajo(colectorN))).map(x => x.m);
+    const metodosCol = col ? [...new Set(Object.keys(col.metodos).concat(delMain))].filter(m => m !== agregarN) : [];
+    // los datos del colector («Del Hospital sólo interesa registrar la razón social»): los que recibe su constructor
+    if (col && col.ctores.length) {
+      const k = Math.max(...col.ctores.map(c => c.args.length));
+      const ns = contrato[colectorN] ? contrato[colectorN].params.slice(0, k) : nombresDelTest(colectorN).slice(0, k);
+      campos[colectorN] = Array.from({ length: k }, (_, j) => { const a = col.ctores[0].args[j]; return { n: ns[j] || (j ? 'dato' + (j + 1) : 'nombre'), tipo: a && a.k === 'num' ? (a.real ? 'float' : 'int') : a && a.k === 'bool' ? 'bool' : 'str' }; });
+    } else if (col) campos[colectorN] = [];
+    const paramsDe = m => { const ll = col && col.metodos[m] ? col.metodos[m].llamadas : []; return ll.length ? Math.max(...ll.map(x => x.args.length)) : 0; };
+    // un renglón que nombra al método tal cual («- importe_promedio_atenciones: debe calcular…»)
+    const exacto = {};
+    const tituloExacto = (x, m) => { const mm = x.match(/^(?:[-*•]|\d+[.)])?\s*`?([A-Za-z_][\w]*)`?(?:\(\))?\s*:\s*(.+)$/); return mm && mm[1] === m; };
     for (const m of metodosCol) {
-      if (pedidos.some(p => parecido(m, p) >= 0.6)) continue;
+      const lineas = texto.split('\n').map(x => x.trim());
+      const ex = lineas.find(x => tituloExacto(x, m));
+      if (!ex && pedidos.some(p => parecido(m, p) >= 0.6)) continue;
       const ws = palabrasDe(m).filter(w => !VACIAS.has(w));
-      const l = texto.split('\n').map(x => x.trim()).find(x => { const mm = x.match(/^([^:]{3,60}):\s*(.+)$/); if (!mm) return false; const tw = bajo(mm[1]).split(/[^a-z0-9]+/); return ws.every(w => tw.some(t => t === w || singular(t) === singular(w) || t.startsWith(w.slice(0, 5)))); });
+      const l = ex || lineas.find(x => { const mm = x.match(/^([^:]{3,60}):\s*(.+)$/); if (!mm) return false; const tw = bajo(mm[1]).split(/[^a-z0-9]+/); return ws.every(w => tw.some(t => t === w || singular(t) === singular(w) || t.startsWith(w.slice(0, 5)))); });
       if (l) {
         const ls2 = texto.split('\n').map(x => x.trim()), i0 = ls2.indexOf(l);
         let desc = l.match(/^([^:]{3,60}):\s*(.+)$/)[2];
-        for (let i = i0 + 1; i < ls2.length; i++) { const x = ls2[i]; if (/^[A-ZÁÉÍÓÚ][^:.]{2,60}:\s/.test(x)) break; if (!x) { if (/[.:]$/.test(desc)) break; continue; } desc += ' ' + x; }
-        pedidos.push({ titulo: l.match(/^([^:]{3,60}):/)[1], desc, todo: l });
+        for (let i = i0 + 1; i < ls2.length; i++) { const x = ls2[i]; if (/^[A-ZÁÉÍÓÚ][^:.]{2,60}:\s/.test(x) || /^(?:[-*•]|\d+[.)])\s/.test(x) || /^#/.test(x)) break; if (!x) { if (/[.:]$/.test(desc)) break; continue; } desc += ' ' + x; }
+        const pd = { titulo: l.match(/^([^:]{3,60}):/)[1].replace(/^(?:[-*•]|\d+[.)])\s*/, '').replace(/`/g, ''), desc, todo: l };
+        pedidos.push(pd);
+        if (ex) exacto[m] = pd;
       }
     }
     // a qué pedido corresponde cada método del test (por las palabras)
     const metCol = [];
     const usados = new Set();
+    for (const m of Object.keys(exacto)) usados.add(exacto[m]);
     for (const m of metodosCol) {
+      if (exacto[m]) { metCol.push({ n: m, pedido: exacto[m] }); continue; }
       const p = pedidos.map(p => [p, parecido(m, p)]).filter(([p]) => !usados.has(p)).sort((a, b) => b[1] - a[1])[0];
       if (p && p[1] > 0) { usados.add(p[0]); metCol.push({ n: m, pedido: p[0] }); } else metCol.push({ n: m, pedido: { titulo: m.replace(/_/g, ' '), desc: '' } });
     }
     for (const p of pedidos) if (!usados.has(p)) metCol.push({ n: snake(p.titulo.split(/\s+/).filter(w => !VACIAS.has(bajo(w))).join(' ')), pedido: p, sinTest: true });
     // qué hace cada uno
-    const metodoCalc = nombresMet.filter(m => !/^(es|esta|tiene|puede)_|^tipo$/.test(m));
+    const metodoCalc = nombresMet.filter(m => !/^(es|esta|tiene|puede)$/.test(palabrasDe(m)[0]) && !/^tipo$/.test(m));
     const calcDe = frase => { const f = bajo(frase); return metodoCalc.find(m => palabrasDe(m).some(w => w.length > 3 && f.includes(singular(w).slice(0, 6)))) || (/(total|suma|recaud|import|gast|alquiler|ganancia)/.test(f) ? metodoCalc[0] : null); };
     const subDe = frase => subsN.find(n => formasDe(n).some(fm => fm.length >= 4 && new RegExp('(^|[^a-z])' + fm).test(bajo(frase))));
+    // «la suma de los importes de las consultas» es el dato importe; «el promedio de los importes a cobrar», el método
+    const deClases = new Set(subsN.concat(componentes, [baseN]).flatMap(n => palabrasDe(n).concat(palabrasDe(n).map(plural))));
+    const tocan = (ws, cw) => cw.filter(w => !VACIAS.has(w)).filter(w => ws.some(x => x === w || singular(x) === singular(w) || w.length >= 5 && x.startsWith(w.slice(0, 5)))).length;
+    function queCuenta(frase, sub) {
+      const ws = bajo(frase).split(/[^a-z0-9]+/).filter(w => w && !VACIAS.has(w) && !deClases.has(w));
+      let mejor = null, pm = 0;
+      for (const m of metodoCalc) { const p = tocan(ws, palabrasDe(m)); if (p > pm) { pm = p; mejor = MET(m); } }
+      for (const c of todosCampos(sub || subsN[0]).filter(c => c.tipo === 'int' || c.tipo === 'float')) {
+        const p = Math.max(tocan(ws, palabrasDe(c.n)), tocan(ws, bajo(c.etiqueta || '').split(/[^a-z0-9]+/)));
+        if (p > pm && p >= 2) { pm = p; mejor = C(c.n); }
+      }
+      return mejor;
+    }
+    const booleanos = nombresMet.filter(m => /^(es|esta|tiene|puede)$/.test(palabrasDe(m)[0]));
     for (const mc of metCol) {
       const f = bajo(mc.pedido.titulo + ': ' + mc.pedido.desc), fd = bajo(mc.pedido.desc || mc.pedido.titulo);
       const filtro = [];
@@ -1205,6 +1381,20 @@
       }
       for (const m of fd.matchAll(/que\s+(?:posean|tengan|cuenten\s+con)\s+([a-z]+)/g)) { const c = campoDe(m[1], s || subsN[0], ['bool']); if (c) filtro.push({ t: 'campo', n: c.n }); }
       if (/no\s+rentable|menor\s+al\s+exigido/.test(f)) { const mb = nombresMet.find(m => /^es_/.test(m)); if (mb) filtro.push({ t: 'no', e: MET(mb) }); }
+      // «para un paciente habitual»: el método que dice si lo es (esPacienteHabitual)
+      for (const mb of booleanos) {
+        const ws = palabrasDe(mb).slice(1).filter(w => !VACIAS.has(w));
+        if (!ws.length || filtro.some(x => x.e && x.e.n === mb) || !ws.every(w => new RegExp('(^|[^a-z])' + singular(w).slice(0, 6)).test(fd))) continue;
+        const neg = new RegExp('\\bno\\s+(?:sea[n]?\\s+|es\\s+|son\\s+)?' + singular(ws.slice(-1)[0]).slice(0, 6)).test(fd);
+        filtro.push(neg ? { t: 'no', e: MET(mb) } : { t: 'met', e: MET(mb) });
+      }
+      // «entre dos valores recibidos como parámetros»
+      const np = paramsDe(mc.n);
+      if (np >= 2 && /\bentre\b/.test(fd)) {
+        const qq = (fd.match(/(?:cuyo|cuya|con)\s+([a-z ]+?)\s+(?:se\s+encuentre|este|esté|sea|quede)\w*\s+entre/) || [])[1];
+        mc.params = ['minimo', 'maximo'];
+        filtro.push({ t: 'entre', e: queCuenta(qq || fd, s) || (metodoCalc[0] ? MET(metodoCalc[0]) : null), a: 0, b: 1 });
+      } else if (np) mc.params = Array.from({ length: np }, (_, j) => 'valor' + (j + 1));
       if (/\bsuma\b|\btotal\b|recaudaci/.test(f) && !/cantidad/.test(bajo(mc.pedido.titulo)) && !/\bmas\b|\bmayor\b|\bmenor\b|\bpor\s+[a-z]+$/.test(bajo(mc.pedido.titulo))) mc.tipo = 'suma';
       if ((/cantidad/.test(bajo(mc.pedido.titulo)) && !/(mayor|menor)\s+cantidad/.test(bajo(mc.pedido.titulo))) || /^cantidad|^contar|^cuantos/.test(mc.n)) mc.tipo = 'cuenta';
       const pm = bajo(mc.pedido.titulo).match(/^([a-z]+)\s+por\s+([a-z]+)$/);
@@ -1227,16 +1417,64 @@
         const cs = partes.map(x => campoDe(x, s || subsN[0])).filter(Boolean);
         mc.devuelve = cs.length ? cs.map(c => c.n) : null;
       }
+      if (/\bpromedio\b/.test(f)) mc.tipo = 'promedio';
+      // «el código de la primera atención … o 0 si no existe ninguna»
+      if (/\bprimer[oa]?\b/.test(fd) && !mc.tipo) {
+        mc.tipo = 'primero';
+        const dv = (fd.match(/(?:retorn|devuelv|informe|mostr)\w*\s+(?:el|la)?\s*([a-z ]+?)\s+(?:del?|de\s+la)\s+(?:primer[oa]?)/) || [])[1];
+        const c = dv ? campoDe(dv, s || subsN[0]) : null;
+        mc.devuelve = c ? [c.n] : null;
+        const sino = fd.match(/\bo\s+(-?\d+)\s+si\s+no\b/);
+        mc.sino = sino ? N(num(sino[1])) : null;
+      }
+      // «atencionesMedicas()»: la lista de una sola subclase
+      if (!mc.tipo && !mc.pedido.desc && s) { mc.tipo = 'lista'; }
+      if (!mc.tipo) { const sl = subsN.find(n => palabrasDe(mc.n).map(singular).join(' ').includes(palabrasDe(n).map(singular).join(' '))); if (sl && !mc.pedido.desc) { mc.tipo = 'lista'; if (!filtro.length) filtro.push({ t: 'es', n: sl }); } }
       if (!mc.tipo) mc.tipo = 'suma';
-      if (mc.tipo === 'suma') mc.expr = (() => { const m = calcDe(f); return m ? MET(m) : null; })();
+      if (mc.tipo === 'suma' || mc.tipo === 'promedio') mc.expr = (() => {
+        const tras = (f.match(/(?:suma|promedio|total)\s+de\s+(.*)$/) || [])[1];
+        const q = tras ? queCuenta(tras.split(/\b(?:cuyo|cuya|que|entre|por\s+aquell)/)[0], s) : null;
+        if (q) return q;
+        const m = calcDe(f); return m ? MET(m) : null;
+      })();
       mc.filtro = filtro;
     }
 
+    const usaCol = new Set();
+    for (const mc of metCol) { const sinEs = !(mc.filtro || []).some(f => f.t === 'es'); for (const x of [mc.expr, mc.clave, ...(mc.filtro || []).map(f => f.e)]) if (x && x.t === 'met' && sinEs) usaCol.add(x.n); }
+    for (const m of nombresMet) {
+      const en = subsN.filter(sb => metodosTest(sb).includes(m));
+      if (en.length !== 1 || (T.metodosSueltos && T.metodosSueltos.has(m)) || usaCol.has(m) || auxiliares.some(a => JSON.stringify(a.ir).includes('"' + m + '"'))) continue;
+      for (const sb of subsN) if (sb !== en[0] && !(metodosEnt[sb][m] || []).length) delete metodosEnt[sb][m];
+    }
+    // el texto de cada objeto si el test no da uno exacto: el nombre de la clase, sus datos y sus cuentas (con dos decimales)
+    const legible = n => palabrasDe(n).map(capital).join(' ');
+    const partesStr = n => {
+      const ps = [{ lit: legible(n) + ' ' }];
+      todosCampos(n).forEach((c, i) => { if (i) ps.push({ lit: ' - ' + palabrasDe(c.n).join(' ') + ': ' }); ps.push({ campo: c }); });
+      for (const m of Object.keys(metodosEnt[n] || {}).filter(m => metodoCalc.includes(m))) ps.push({ lit: ' - ' + palabrasDe(m).join(' ') + ': ' }, { met: m });
+      return ps;
+    };
+    const strPartes = Object.fromEntries(subsN.concat(componentes).map(n => [n, partesStr(n)]));
+
     // ── comprobar el modelo contra cada assert del test (sin Python) y elegir la lectura que cumple
-    const modelo = { baseN, subsN, campos, comunes, metodosEnt, auxiliares, colectorN: nColectorFinal, listaN, agregarN, metCol, strDe: {}, tipoDeSub, etiquetasTipo, sep, conEncabezado, csvPrincipal, csvs, unArchivo, modDe, textoCsv: csvT };
+    // la carpeta de los CSV: la que dice el enunciado («se encuentran en la carpeta data/») o la del ZIP
+    const mc0 = enunciado && String(enunciado).match(/\bcarpeta\s+(?:`([A-Za-z_][\w-]*)\/?`|[“"']([A-Za-z_][\w-]*)\/?[”"']|([A-Za-z_][\w-]*)\/(?![\w]))/);
+    const carpeta = carpetaCsv || (mc0 ? mc0[1] || mc0[2] || mc0[3] : null);
+    const modelo = { baseN, subsN, componentes, campos, comunes, metodosEnt, auxiliares, colectorN: nColectorFinal, listaN, agregarN, metCol, strDe: {}, tipoDeSub, etiquetasTipo, sep, conEncabezado, csvPrincipal, csvs, unArchivo, modDe, textoCsv: csvT,
+      etiquetas, validaciones, strPartes, mainUsa: Object.fromEntries(Object.entries(T.mainUsa).map(([f, us]) => [f, Math.max(0, ...us.map(u => u.args.length))])), variosCsv, csvDe, infoCsv, carpeta,
+      llamadasCol: col ? Object.fromEntries(Object.entries(col.metodos).map(([m, x]) => [m, x.llamadas[0] ? x.llamadas[0].args.map(TestLee.texto) : []])) : {} };
     const elegido = {};   // sub.metodo → IR
-    for (const sub of subsN) for (const m of nombresMet) elegido[sub + '.' + m] = (metodosEnt[sub][m] || [])[0] || null;
-    const valorCampo = (o, c) => { if (!campos[o.clase]) return null; const i = campos[o.clase].findIndex(x => x.n === c); const a = o.args[i]; return a ? (a.k === 'num' ? a.v : a.k === 'bool' ? a.v : a.k === 'str' ? a.v : null) : null; };
+    for (const sub of subsN) for (const m of Object.keys(metodosEnt[sub])) elegido[sub + '.' + m] = (metodosEnt[sub][m] || [])[0] || null;
+    const valorCampo = (o, c) => {
+      if (!o || o.k !== 'obj') return null;
+      if (o.attrs && c in o.attrs) { const a = o.attrs[c]; return a.k === 'obj' ? a : a.k === 'num' || a.k === 'bool' || a.k === 'str' ? a.v : null; }
+      if (!campos[o.clase]) return null;
+      const i = campos[o.clase].findIndex(x => x.n === c);
+      let a = o.args[i];
+      if (a === undefined && i >= 0) a = campos[o.clase][i].defecto;
+      return a ? (a.k === 'obj' ? a : a.k === 'num' || a.k === 'bool' || a.k === 'str' ? a.v : null) : null;
+    };
     function evalIR(ir, o) {
       if (!ir) return undefined;
       switch (ir.t) {
@@ -1248,6 +1486,13 @@
         case 'si': return evalIR(ir.c, o) ? evalIR(ir.a, o) : evalIR(ir.b, o);
         case 'cmp': { const a = evalIR(ir.a, o), b = evalIR(ir.b, o); return ir.op === '>' ? a > b : ir.op === '<' ? a < b : ir.op === '>=' ? a >= b : ir.op === '<=' ? a <= b : a === b; }
         case 'no': return !evalIR(ir.e, o);
+        case 'de': return valorCampo(valorCampo(o, ir.obj), ir.n);
+        case 'pasos': {
+          let v = evalIR(ir.inicio, o);
+          if (v == null) return undefined;
+          for (const p of ir.pasos) { if (p.cond && !evalIR(p.cond, o)) continue; const x = evalIR(p.v, o); if (x == null) return undefined; v = p.op === '*' ? v * x : p.op === '-' ? v - x : v + x; }
+          return v;
+        }
         default: return undefined;
       }
     }
@@ -1256,11 +1501,15 @@
       const a = auxiliares.find(x => x.n === n); if (a) return evalIR(a.ir, o);
       return undefined;
     }
-    function filtrar(lista, filtro) {
-      return lista.filter(o => filtro.every(f => f.t === 'es' ? o.clase === f.n : f.t === 'campo' ? !!valorCampo(o, f.n) : f.t === 'no' ? !evalIR(f.e, o) : f.t === 'cmp' ? (f.op === '>' ? evalIR(f.e, o) > f.v : evalIR(f.e, o) < f.v) : true));
+    function filtrar(lista, filtro, args) {
+      const arg = i => valorPy((args || [])[i]);
+      return lista.filter(o => filtro.every(f => f.t === 'es' ? o.clase === f.n : f.t === 'campo' ? !!valorCampo(o, f.n) : f.t === 'no' ? !evalIR(f.e, o) : f.t === 'met' ? !!evalIR(f.e, o) : f.t === 'entre' ? (v => v >= arg(f.a) && v <= arg(f.b))(evalIR(f.e, o)) : f.t === 'cmp' ? (f.op === '>' ? evalIR(f.e, o) > f.v : evalIR(f.e, o) < f.v) : true));
     }
-    function llamarCol(o, mc) {
-      const lista = filtrar(o.agregados, mc.filtro || []);
+    function llamarCol(o, mc, args) {
+      const lista = filtrar(o.agregados, mc.filtro || [], args);
+      if (mc.tipo === 'promedio') return lista.length ? lista.reduce((s, x) => s + (evalIR(mc.expr, x) || 0), 0) / lista.length : 0;
+      if (mc.tipo === 'primero') return lista.length ? (mc.devuelve ? valorCampo(lista[0], mc.devuelve[0]) : lista[0]) : (mc.sino ? mc.sino.v : null);
+      if (mc.tipo === 'lista') return { k: 'lista', items: lista };
       if (mc.tipo === 'suma') return lista.reduce((s, x) => s + (evalIR(mc.expr, x) || 0), 0);
       if (mc.tipo === 'cuenta') return lista.length;
       if (mc.tipo === 'max' || mc.tipo === 'min') {
@@ -1280,16 +1529,21 @@
       if (v.op === 'call') {
         const o = valorTest(v.obj);
         if (!o || o.k !== 'obj') return undefined;
-        if (o.clase === colectorN) { const mc = metCol.find(x => x.n === v.n); return mc ? llamarCol(o, mc) : undefined; }
+        if (o.clase === colectorN) { const mc = metCol.find(x => x.n === v.n); return mc ? llamarCol(o, mc, v.args) : undefined; }
         return llamarMet(o, v.n);
       }
-      if (v.op === 'attr') { const o = valorTest(v.obj); if (o && o.k === 'obj') { if (o.clase === colectorN && v.n === listaN) return { k: 'lista', items: o.agregados }; return valorCampo(o, v.n); } return undefined; }
+      if (v.op === 'attr') { const o = valorTest(v.obj); if (o && o.k === 'obj') { if (o.clase === colectorN && v.n === listaN) return { k: 'lista', items: o.agregados }; if (o.clase === colectorN) { const i = (campos[colectorN] || []).findIndex(c => c.n === v.n); return i >= 0 ? valorPy(o.args[i]) : undefined; } return valorCampo(o, v.n); } return undefined; }
       if (v.op === 'len') { const a = valorTest(v.a); return a && a.k === 'lista' ? a.items.length : undefined; }
       if (v.op === 'isinstance') { const o = valorTest(v.a); return o && o.k === 'obj' ? (o.clase === v.c || v.c === baseN) : undefined; }
       if (v.op === 'str') { const o = valorTest(v.a); return o && o.k === 'obj' && modelo.strDe[o.clase] ? modelo.strDe[o.clase](o) : undefined; }
       return undefined;
     }
-    const igual = (a, b, approx) => { if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b) <= (approx ? Math.max(1e-6 * Math.abs(b), 1e-9) : 1e-9); return a === b; };
+    const igual = (a, b, approx) => {
+      if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b) <= (approx ? Math.max(1e-6 * Math.abs(b), 1e-9) : 1e-9);
+      // una lista del modelo contra una del test: los mismos objetos, en el mismo orden
+      if (a && a.k === 'lista' && b && b.k === 'list') return a.items.length === b.items.length && a.items.every((x, i) => x === b.items[i]);
+      return a === b;
+    };
     function comprobar(soloDe) {
       let ok = 0, total = 0;
       const fallan = [];
@@ -1302,6 +1556,11 @@
           if (der === undefined) continue;
           if (izq === undefined) { if (a.a.k === 'sym' && a.a.op === 'call' && a.a.obj && a.a.obj.k === 'obj') { total++; fallan.push(a); } continue; }
           bien = igual(izq, der, a.b.k === 'approx'); if (a.op === '!=' || a.op === 'is not') bien = !bien;
+        } else if (a.op === 'in' || a.op === 'not in') {
+          // «"900.00" in str(atencion)»
+          const aguja = valorPy(a.a), pajar = valorTest(a.b);
+          if (typeof aguja !== 'string' || typeof pajar !== 'string') continue;
+          bien = pajar.includes(aguja); if (a.op === 'not in') bien = !bien;
         } else if (a.op === 'truthy' || a.op === 'falsy') { if (izq === undefined) continue; bien = a.op === 'truthy' ? !!izq : !izq; }
         else if (['>', '<', '>=', '<='].includes(a.op)) { const der = valorPy(a.b); if (izq === undefined || der == null) continue; bien = a.op === '>' ? izq > der : a.op === '<' ? izq < der : a.op === '>=' ? izq >= der : izq <= der; }
         else continue;
@@ -1311,7 +1570,7 @@
     }
     // para cada método de cada subclase: la primera lectura que cumple sus asserts
     const assertDe = (sub, m) => a => a.a.k === 'sym' && a.a.op === 'call' && a.a.n === m && a.a.obj && a.a.obj.k === 'obj' && a.a.obj.clase === sub;
-    for (const sub of subsN) for (const m of nombresMet) {
+    for (const sub of subsN) for (const m of Object.keys(metodosEnt[sub])) {
       const cands = metodosEnt[sub][m] || [];
       const r0 = comprobar(assertDe(sub, m));
       if (r0.total && r0.ok === r0.total) continue;
@@ -1346,11 +1605,25 @@
       const partes = toks.map(tk => { const x = valores.find(x => String(x.v) === tk && !usadas.has(x)); if (x) usadas.add(x); return x && x.e; });
       if (partes.every(Boolean)) { modelo.strFmt = partes; modelo.strDe = Object.fromEntries(subsN.map(n => [n, oo => modelo.strFmt.map(p => String(evalIR(p, oo))).join(' ')])); }
     }
+    if (!modelo.strFmt) {
+      const valorStr = (o, p) => {
+        if (p.lit != null) return p.lit;
+        if (p.met) { const v = llamarMet(o, p.met); return typeof v === 'number' ? v.toFixed(2) : String(v); }
+        const c = p.campo, v = valorCampo(o, c.n);
+        if (v && v.k === 'obj') return modelo.strDe[v.clase] ? modelo.strDe[v.clase](v) : '';
+        if (c.etiquetas) return c.etiquetas[v] != null ? c.etiquetas[v] : String(v);
+        if (c.tipo === 'bool') return v ? 'sí' : 'no';
+        if (c.tipo === 'float' && typeof v === 'number') return v.toFixed(2);
+        return String(v);
+      };
+      for (const n of Object.keys(strPartes)) modelo.strDe[n] = o => strPartes[n].map(p => valorStr(o, p)).join('');
+      if (colectorN) modelo.strDe[colectorN] = o => [o.args[0] ? String(valorPy(o.args[0])) : colectorN].concat(o.agregados.map(x => modelo.strDe[x.clase] ? modelo.strDe[x.clase](x) : '')).join('\n');
+    }
     const comprobacion = comprobar();
     if (comprobacion.total && comprobacion.ok < comprobacion.total) avisos.push(`El modelo no cumple ${comprobacion.total - comprobacion.ok} de las ${comprobacion.total} comprobaciones del test: revisá esos métodos.`);
     modelo.elegido = elegido;
     const archivos = escribir(modelo);
-    return { archivos, avisos, comprobacion: { ok: comprobacion.ok, total: comprobacion.total, fallan: comprobacion.fallan.map(a => `línea ${a.l}: ${TestLee.texto(a.a)} ${a.op} ${a.b ? TestLee.texto(a.b) : ''}`) }, modelo, test: T };
+    return { archivos, avisos, carpetaCsv: carpeta, comprobacion: { ok: comprobacion.ok, total: comprobacion.total, fallan: comprobacion.fallan.map(a => `línea ${a.l}: ${TestLee.texto(a.a)} ${a.op} ${a.b ? TestLee.texto(a.b) : ''}`) }, modelo, test: T };
   }
   // otras lecturas de una regla: el límite incluido o no, el redondeo del porcentaje
   function variantes(cands) {
@@ -1376,12 +1649,54 @@
         case 'si': return `(${py(ir.a, yo)} if ${py(ir.c, yo)} else ${py(ir.b, yo)})`;
         case 'cmp': return `${py(ir.a, yo)} ${ir.op} ${py(ir.b, yo)}`;
         case 'no': return `not ${py(ir.e, yo)}`;
+        case 'de': return `${yo}.${ir.obj}.${ir.n}`;
         default: return '0';
       }
+    };
+    // un método: una línea con el return o, si la cuenta va en pasos, cada paso con su if
+    const cuerpoMetodo = (ir, sangria) => {
+      if (!ir) return [sangria + 'return None  # no está en el enunciado: completalo'];
+      if (ir.t !== 'pasos') return [sangria + 'return ' + py(ir)];
+      const v = palabrasDe(ir.inicio.n || 'importe')[0] || 'importe', ls = [`${sangria}${v} = ${py(ir.inicio)}`];
+      ir.pasos.forEach((p, i) => {
+        const op = p.op === '*' ? '*=' : p.op === '-' ? '-=' : '+=';
+        if (!p.cond) { ls.push(`${sangria}${v} ${op} ${py(p.v)}`); return; }
+        const ant = ir.pasos[i - 1], mismo = ant && ant.cond && ant.cond.t === 'cmp' && p.cond.t === 'cmp' && JSON.stringify(ant.cond.a) === JSON.stringify(p.cond.a);
+        ls.push(`${sangria}${mismo ? 'elif' : 'if'} ${py(p.cond)}:`, `${sangria}    ${v} ${op} ${py(p.v)}`);
+      });
+      ls.push(`${sangria}return ${v}`);
+      return ls;
     };
     const prec = op => op === '+' || op === '-' ? 1 : 2;
     const metodosDe = sub => Object.keys(M.metodosEnt[sub] || {});
     const todosMet = [...new Set(M.subsN.flatMap(metodosDe))];
+    // en la base, abstractos, solo los que tienen todas las subclases
+    const abstractos = todosMet.filter(m => M.subsN.every(sb => metodosDe(sb).includes(m)));
+    // «SINTOMAS = {1: "corazon", …}»: el nombre de cada valor, para mostrarlo
+    const constante = c => { const ws = palabrasDe(c); ws[0] = plural(ws[0]); return ws.join('_').toUpperCase(); };
+    const etiquetasDe = n => Object.entries((M.etiquetas || {})[n] || {});
+    const constantesDe = n => etiquetasDe(n).map(([c, vals]) => `${constante(c)} = {${Object.entries(vals).map(([k, v]) => `${k}: ${JSON.stringify(v)}`).join(', ')}}`);
+    const validar = n => ((M.validaciones || {})[n] || []).flatMap(v => v.valores
+      ? [`        if ${v.campo} not in ${etiquetasDe(n).some(([c]) => c === v.campo) ? constante(v.campo) : '(' + v.valores.join(', ') + ')'}:`, `            raise ${v.exc}("${palabrasDe(v.campo).join(' ')} inválido: " + str(${v.campo}))`]
+      : [`        if ${v.campo} < ${v.minimo}:`, `            raise ${v.exc}("${palabrasDe(v.campo).join(' ')} no puede ser negativo: " + str(${v.campo}))`]);
+    const valorPyTxt = d => !d ? 'None' : d.k === 'bool' ? (d.v ? 'True' : 'False') : d.k === 'str' ? JSON.stringify(d.v) : d.k === 'num' ? String(d.v) : 'None';
+    // los parámetros del constructor: los últimos que el test a veces no pasa llevan su valor por defecto
+    const params = cs => { let desde = cs.length; while (desde > 0 && cs[desde - 1].defecto) desde--; return cs.map((c, j) => j >= desde ? `${c.n}=${valorPyTxt(c.defecto)}` : c.n); };
+    const legible = n => palabrasDe(n).map(capital).join(' ');
+    const strLegible = n => {
+      const ps = (M.strPartes || {})[n];
+      if (!ps) return null;
+      const t = ps.map(p => {
+        if (p.lit != null) return p.lit.replace(/[{}]/g, x => x + x);
+        if (p.met) return `{self.${p.met}():.2f}`;
+        const c = p.campo;
+        if (c.etiquetas) return `{${constante(c.n)}.get(self.${c.n}, self.${c.n})}`;
+        if (c.tipo === 'bool') return `{'sí' if self.${c.n} else 'no'}`;
+        if (c.tipo === 'float') return `{self.${c.n}:.2f}`;
+        return `{self.${c.n}}`;
+      }).join('');
+      return ['', '    def __str__(self):', `        return f"${t}"`];
+    };
     const comunesN = M.comunes.map(c => c.n);
     const imports = new Set();
     const bloques = {};   // módulo → [texto]
@@ -1390,33 +1705,56 @@
     const nombreLegible = n => n.replace(/_/g, ' ');
     // la base
     {
-      const ls = ['from abc import ABC, abstractmethod', '', '', `class ${M.baseN}(ABC):`, `    def __init__(self, ${comunesN.join(', ')}):`];
+      const ls = ['from abc import ABC, abstractmethod', '', '', `class ${M.baseN}(ABC):`, `    def __init__(self, ${params(M.comunes).join(', ')}):`];
+      ls.push(...validar(M.baseN));
       for (const c of comunesN) ls.push(`        self.${c} = ${c}`);
       if (!comunesN.length) ls[ls.length - 1] = '    def __init__(self):', ls.push('        pass');
-      for (const m of todosMet) { ls.push('', '    @abstractmethod', `    def ${m}(self):`, `        """Cada tipo lo calcula a su manera (polimorfismo)."""`); }
+      for (const m of abstractos) { ls.push('', '    @abstractmethod', `    def ${m}(self):`, `        """Cada tipo lo calcula a su manera (polimorfismo)."""`); }
       for (const a of M.auxiliares) ls.push('', `    def ${a.n}(self):`, `        return ${py(a.ir)}`);
       if (M.strFmt) ls.push('', '    def __str__(self):', `        return f"${M.strFmt.map(p => '{' + py(p) + '}').join(' ')}"`);
-      else ls.push('', '    def __str__(self):', `        return f"{type(self).__name__}: ${comunesN.slice(0, 3).map(c => '{self.' + c + '}').join(' · ')}"`);
+      else if (!M.strPartes) ls.push('', '    def __str__(self):', `        return f"{type(self).__name__}: ${comunesN.slice(0, 3).map(c => '{self.' + c + '}').join(' · ')}"`);
       poner(M.baseN, ls.join('\n'));
     }
     // las subclases
     for (const sub of M.subsN) {
       const pr = M.campos[sub].slice(M.comunes.length).map(c => c.n);
-      const ls = [`class ${sub}(${M.baseN}):`, `    def __init__(self, ${comunesN.concat(pr).join(', ')}):`, `        super().__init__(${comunesN.join(', ')})`];
+      const ls = [`class ${sub}(${M.baseN}):`, `    def __init__(self, ${params(M.campos[sub]).join(', ')}):`, `        super().__init__(${comunesN.join(', ')})`];
+      ls.push(...validar(sub));
       for (const c of pr) ls.push(`        self.${c} = ${c}`);
-      for (const m of metodosDe(sub)) { const ir = M.elegido[sub + '.' + m]; ls.push('', `    def ${m}(self):`, `        return ${ir ? py(ir) : 'None  # no está en el enunciado: completalo'}`); }
+      for (const m of metodosDe(sub)) ls.push('', `    def ${m}(self):`, ...cuerpoMetodo(M.elegido[sub + '.' + m], '        '));
+      if (!M.strFmt) ls.push(...(strLegible(sub) || []));
       poner(sub, ls.join('\n'));
+    }
+    for (const n of M.componentes || []) {
+      const cs = M.campos[n] || [];
+      const ls = [`class ${n}:`, `    def __init__(self${cs.length ? ', ' + params(cs).join(', ') : ''}):`];
+      ls.push(...validar(n));
+      for (const c of cs) ls.push(`        self.${c.n} = ${c.n}`);
+      if (!cs.length) ls.push('        pass');
+      ls.push(...(strLegible(n) || []));
+      poner(n, ls.join('\n'));
     }
     // la colección
     {
-      const L = M.listaN, ls = [`class ${M.colectorN}:`, '    def __init__(self):', `        self.${L} = []`, '', `    def ${M.agregarN}(self, ${snake(M.baseN)}):`, `        self.${L}.append(${snake(M.baseN)})`];
+      const datosCol = (M.campos[M.colectorN] || []).map(c => c.n);
+      const L = M.listaN, ls = [`class ${M.colectorN}:`, `    def __init__(self${datosCol.map(c => ', ' + c).join('')}):`, ...datosCol.map(c => `        self.${c} = ${c}`), `        self.${L} = []`, '', `    def ${M.agregarN}(self, ${snake(M.baseN)}):`, `        self.${L}.append(${snake(M.baseN)})`];
       const v = snake(M.baseN)[0];
-      const cond = f => f.t === 'es' ? `isinstance(${v}, ${f.n})` : f.t === 'campo' ? `${v}.${f.n}` : f.t === 'no' ? `not ${py(f.e, v)}` : f.t === 'cmp' ? `${py(f.e, v)} ${f.op} ${f.v}` : 'True';
+      let mcAct = null;
+      const cond = f => f.t === 'es' ? `isinstance(${v}, ${f.n})` : f.t === 'campo' ? `${v}.${f.n}` : f.t === 'no' ? `not ${py(f.e, v)}` : f.t === 'met' ? py(f.e, v) : f.t === 'entre' ? `${mcAct.params[f.a]} <= ${py(f.e, v)} <= ${mcAct.params[f.b]}` : f.t === 'cmp' ? `${py(f.e, v)} ${f.op} ${f.v}` : 'True';
       const donde = filtro => filtro.length ? ' if ' + filtro.map(cond).join(' and ') : '';
       for (const mc of M.metCol) {
-        ls.push('', `    def ${mc.n}(self):`);
+        mcAct = mc;
+        ls.push('', `    def ${mc.n}(self${(mc.params || []).map(x => ', ' + x).join('')}):`);
         const f = mc.filtro || [];
-        if (mc.tipo === 'suma') ls.push(`        return sum(${mc.expr ? py(mc.expr, v) : '0'} for ${v} in self.${L}${donde(f)})`);
+        if (mc.tipo === 'promedio') ls.push(`        valores = [${mc.expr ? py(mc.expr, v) : '0'} for ${v} in self.${L}${donde(f)}]`, '        if not valores:', '            return 0', '        return sum(valores) / len(valores)');
+        else if (mc.tipo === 'primero') {
+          ls.push(`        for ${v} in self.${L}:`);
+          const ret = mc.devuelve ? `${v}.${mc.devuelve[0]}` : v;
+          if (f.length) ls.push(`            if ${f.map(cond).join(' and ')}:`, `                return ${ret}`); else ls.push(`            return ${ret}`);
+          ls.push(`        return ${mc.sino ? py(mc.sino) : 'None'}`);
+        }
+        else if (mc.tipo === 'lista') ls.push(`        return [${v} for ${v} in self.${L}${donde(f)}]`);
+        else if (mc.tipo === 'suma') ls.push(`        return sum(${mc.expr ? py(mc.expr, v) : '0'} for ${v} in self.${L}${donde(f)})`);
         else if (mc.tipo === 'cuenta') ls.push(`        return len([${v} for ${v} in self.${L}${donde(f)}])`);
         else if (mc.tipo === 'max' || mc.tipo === 'min') {
           ls.push(`        candidatos = [${v} for ${v} in self.${L}${donde(f)}]`, '        if not candidatos:', '            return None', `        elegido = ${mc.tipo}(candidatos, key=lambda ${v}: ${mc.clave ? py(mc.clave, v) : '0'})`);
@@ -1428,6 +1766,7 @@
           ls.push(`            resultado[${v}.${k}] = resultado.get(${v}.${k}, 0) + ${mc.valor ? v + '.' + mc.valor.n : '1'}`, '        return resultado');
         }
       }
+      if (M.strPartes && !M.strFmt) ls.push('', '    def __str__(self):', `        lineas = [${datosCol.length ? `str(self.${datosCol[0]})` : JSON.stringify(M.colectorN)}]`, `        lineas += [str(${v}) for ${v} in self.${L}]`, '        return "\\n".join(lineas)');
       poner(M.colectorN, ls.join('\n'));
     }
     // el main: lee el CSV y muestra cada resultado
@@ -1443,11 +1782,12 @@
       lee.push(`            ${i === 0 ? 'if' : i === tipos.length - 1 ? 'else' : 'elif'}${i === tipos.length - 1 && i > 0 ? '' : ` datos[${iTipo}].strip() == "${k}"`}:`, `                ${snake(M.colectorN)}.${M.agregarN}(${sub}(${args.join(', ')}))`);
     });
     if (!tipos.length && M.subsN.length) lee.push(`            ${snake(M.colectorN)}.${M.agregarN}(${M.subsN[0]}(${M.campos[M.subsN[0]].map(c => conv(c, `datos[${c.col}]`)).join(', ')}))`);
-    const main = ['def main():', `    ${snake(M.colectorN)} = ${M.colectorN}()`, `    leer_${M.listaN}("${archivoCsv}", ${snake(M.colectorN)})`, `    print("Cantidad de ${M.listaN.replace(/_/g, ' ')}:", len(${snake(M.colectorN)}.${M.listaN}))`];
+    const rutaCsv = M.carpeta ? `os.path.join(os.path.dirname(os.path.abspath(__file__)), "${M.carpeta}", "${archivoCsv}")` : `"${archivoCsv}"`;
+    const main = ['def main():', `    ${snake(M.colectorN)} = ${M.colectorN}()`, `    leer_${M.listaN}(${rutaCsv}, ${snake(M.colectorN)})`, `    print("Cantidad de ${M.listaN.replace(/_/g, ' ')}:", len(${snake(M.colectorN)}.${M.listaN}))`];
     for (const mc of M.metCol) main.push(`    print("${capital(nombreLegible(mc.pedido && mc.pedido.titulo ? bajo(mc.pedido.titulo) : mc.n)).replace(/"/g, '')}:", ${snake(M.colectorN)}.${mc.n}())`);
     main.push('', '', 'if __name__ == "__main__":', '    main()');
     // armar los archivos: uno solo (si el test importa todo de un módulo) o uno por clase
-    const orden = [M.baseN, ...M.subsN, M.colectorN];
+    const orden = [M.baseN, ...M.subsN, ...(M.componentes || []), M.colectorN];
     const modulos = [...new Set(orden.map(modulo))];
     const claseDeMod = m => orden.filter(n => modulo(n) === m);
     for (const m of modulos) {
@@ -1464,14 +1804,89 @@
       if (!tieneABC) cuerpo = cuerpo;
       else cuerpo = cuerpo.replace('from abc import ABC, abstractmethod\n\n\n', '');
       const top = (tieneABC ? ['from abc import ABC, abstractmethod'] : []).concat(cab);
-      archivos[m + '.py'] = (top.length ? top.join('\n') + '\n\n\n' : '') + cuerpo + '\n';
+      const cts = ns.flatMap(constantesDe);
+      archivos[m + '.py'] = (top.length ? top.join('\n') + '\n\n' + (cts.length ? '' : '\n') : '') + (cts.length ? cts.join('\n') + '\n\n\n' : '') + cuerpo + '\n';
     }
     // el main va en el mismo archivo si es uno solo; si no, en main.py
     const usa = [...new Set([M.colectorN, ...M.subsN])];
+    if (M.variosCsv || Object.keys(M.mainUsa || {}).length) { archivos['main.py'] = mainConFunciones(M, modulo); return archivos; }
+    const conOs = M.carpeta ? 'import os\n\n' : '';
     if (M.unArchivo) archivos[M.unArchivo + '.py'] = archivos[M.unArchivo + '.py'].replace(/\n$/, '') + '\n\n\n' + lee.join('\n') + '\n\n\n' + main.join('\n') + '\n';
-    else archivos['main.py'] = usa.map(n => `from ${modulo(n)} import ${n}`).sort().join('\n') + '\n\n\n' + lee.join('\n') + '\n\n\n' + main.join('\n') + '\n';
+    else archivos['main.py'] = conOs + usa.map(n => `from ${modulo(n)} import ${n}`).sort().join('\n') + '\n\n\n' + lee.join('\n') + '\n\n\n' + main.join('\n') + '\n';
     return archivos;
   }
+
+  // ───────── El main con una función por cosa que se carga (lo que pide el test o, si no, lo que hace falta)
+  function mainConFunciones(M, modulo) {
+    const mismo = (a, b) => a === b || a === b + 's' || b === a + 's' || a === plural(b) || b === plural(a) || singular(a) === singular(b);
+    const igualNombre = (ws, n) => { const cw = palabrasDe(n); return ws.length === cw.length && ws.every((w, i) => mismo(w, cw[i])); };
+    const fns = Object.keys(M.mainUsa || {});
+    const resto = f => palabrasDe(f.replace(/^(cargar|leer|crear|armar|obtener|get|load)_?/i, ''));
+    const clases = M.subsN.concat(M.componentes || []);
+    const fnDe = n => fns.find(f => igualNombre(resto(f), n)) || 'cargar' + palabrasDe(n).map(w => capital(plural(w))).join('');
+    const fnCol = fns.find(f => igualNombre(resto(f), M.colectorN)) || 'cargar' + M.colectorN;
+    const fnBool = fns.find(f => /bool/i.test(f)) || 'aBooleano';
+    const var_ = n => { const f = fns.find(f => igualNombre(resto(f), n)); if (f) { const r = f.replace(/^(cargar|leer|crear|armar|obtener|get|load)_?/i, ''); return r[0].toLowerCase() + r.slice(1); } return palabrasDe(n).map((w, i) => i ? capital(plural(w)) : plural(w)).join(''); };
+    const posFn = n => { const i = fns.findIndex(f => igualNombre(resto(f), n)); return i < 0 ? 1e9 : i; };
+    M = { ...M, subsN: M.subsN.slice().sort((a, b) => posFn(a) - posFn(b)) };
+    const info = n => M.csvDe[n] ? M.infoCsv[M.csvDe[n]] : null;
+    const conv = (c, x) => c.tipo === 'int' ? `int(${x})` : c.tipo === 'float' ? `float(${x})` : c.tipo === 'bool' ? `${fnBool}(${x})` : `${x}.strip()`;
+    // la clase de adentro se carga en un diccionario por la columna que la une con la de afuera («codigo_atencion» ↔ «codigo»)
+    const clave = {};
+    for (const n of M.componentes || []) {
+      const ic = info(n); if (!ic) continue;
+      const usadas = new Set((M.campos[n] || []).map(c => c.col));
+      const libres = ic.primera.map((h, i) => ({ h, i })).filter(x => !usadas.has(x.i));
+      const duenios = M.subsN.filter(sb => (M.campos[sb] || []).some(c => c.tipo === 'obj' && c.clase === n));
+      for (const sb of duenios) {
+        const is = info(sb); if (!is) continue;
+        let mejor = null;
+        for (const l of libres) for (const [j, h] of is.primera.entries()) { const p = palabrasDe(l.h).filter(w => palabrasDe(h).some(x => mismo(x, w))).length; if (p && (!mejor || p > mejor.p)) mejor = { p, i: l.i, j }; }
+        if (mejor) { clave[n] = { i: mejor.i, tipo: /^-?\d+$/.test((ic.filas[0] || [])[mejor.i] || '') ? 'int' : 'str' }; clave[sb + '>' + n] = mejor.j; }
+      }
+    }
+    const ls = ['import os', ''];
+    const imp = {};
+    for (const n of clases.concat([M.colectorN])) (imp[modulo(n)] || (imp[modulo(n)] = [])).push(n);
+    ls.push(...Object.keys(imp).sort().map(m => `from ${m} import ${imp[m].sort().join(', ')}`), '');
+    ls.push(M.carpeta ? `CARPETA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "${M.carpeta}")` : 'CARPETA = os.path.dirname(os.path.abspath(__file__))', '', '');
+    ls.push(`def ${fnBool}(texto):`, '    return str(texto).strip().lower() in ("true", "1", "si", "sí", "verdadero")', '', '');
+    ls.push('def leerFilas(nombre, separador=",", conTitulos=True):', '    with open(os.path.join(CARPETA, nombre), encoding="utf-8") as archivo:', '        filas = [linea.strip().split(separador) for linea in archivo if linea.strip()]', '    return filas[1:] if conTitulos else filas', '', '');
+    const cargables = clases.filter(n => info(n));
+    const orden = (M.componentes || []).filter(n => info(n)).concat(M.subsN.filter(n => info(n)));
+    const recibe = n => (M.campos[n] || []).filter(c => c.tipo === 'obj' && clave[c.clase]).map(c => c.clase);
+    for (const n of orden) {
+      const ic = info(n), lee = `leerFilas("${ic.n}"${ic.sep !== ',' ? `, "${ic.sep}"` : ''}${ic.conEncabezado ? '' : ', conTitulos=False'})`;
+      const pide = recibe(n), conParam = M.mainUsa[fnDe(n)] > 0;
+      ls.push(`def ${fnDe(n)}(${conParam ? pide.map(var_).join(', ') : ''}):`);
+      if (!conParam) for (const c of pide) ls.push(`    ${var_(c)} = ${fnDe(c)}()`);
+      const args = (M.campos[n] || []).map(c => c.tipo === 'obj' ? (clave[c.clase] ? `${var_(c.clase)}[${clave[c.clase].tipo === 'int' ? `int(datos[${clave[n + '>' + c.clase]}])` : `datos[${clave[n + '>' + c.clase]}].strip()`}]` : 'None') : c.col == null ? valorPyTxtM(c.defecto) : conv(c, `datos[${c.col}]`));
+      const obj = `${n}(${args.join(', ')})`;
+      if (clave[n]) {
+        const k = clave[n].tipo === 'int' ? `int(datos[${clave[n].i}])` : `datos[${clave[n].i}].strip()`;
+        ls.push(`    ${var_(n)} = {}`, `    for datos in ${lee}:`, `        ${var_(n)}[${k}] = ${obj}`, `    return ${var_(n)}`, '', '');
+      } else ls.push(`    ${var_(n)} = []`, `    for datos in ${lee}:`, `        ${var_(n)}.append(${obj})`, `    return ${var_(n)}`, '', '');
+    }
+    // el colector: con sus datos (de ejemplo: el nombre de la clase) y todo lo cargado
+    const vc = snake(M.colectorN), datosCol = M.campos[M.colectorN] || [];
+    ls.push(`def ${fnCol}():`, `    ${vc} = ${M.colectorN}(${datosCol.map(c => c.tipo === 'str' ? JSON.stringify(M.colectorN) : c.tipo === 'bool' ? 'False' : '0').join(', ')})`);
+    const cargados = new Set();
+    for (const n of M.subsN.filter(n => info(n))) for (const c of recibe(n)) if (!cargados.has(c) && M.mainUsa[fnDe(n)] > 0) { ls.push(`    ${var_(c)} = ${fnDe(c)}()`); cargados.add(c); }
+    for (const n of M.subsN.filter(n => info(n))) ls.push(`    for ${snake(M.baseN)} in ${fnDe(n)}(${M.mainUsa[fnDe(n)] > 0 ? recibe(n).map(var_).join(', ') : ''}):`, `        ${vc}.${M.agregarN}(${snake(M.baseN)})`);
+    ls.push(`    return ${vc}`, '', '');
+    // lo que la función principal muestra: los métodos pedidos (los que reciben valores, con los del test, de ejemplo)
+    ls.push('def main():', `    ${vc} = ${fnCol}()`, `    print("Cantidad de ${palabrasDe(M.listaN).join(' ')}:", len(${vc}.${M.listaN}))`);
+    for (const mc of M.metCol) {
+      if (mc.tipo === 'lista') continue;
+      const ej = (M.llamadasCol || {})[mc.n] || [];
+      const args = (mc.params || []).map((x, i) => ej[i] || '0').join(', ');
+      ls.push(`    print("${capital(bajo(mc.pedido && mc.pedido.titulo ? mc.pedido.titulo : mc.n).replace(/_/g, ' ').replace(/"/g, ''))}:", ${vc}.${mc.n}(${args}))${args ? '   # valores de ejemplo' : ''}`);
+    }
+    ls.push('', '', 'if __name__ == "__main__":', '    main()', '');
+    void cargables;
+    return ls.join('\n');
+  }
+  const valorPyTxtM = d => !d ? 'None' : d.k === 'bool' ? (d.v ? 'True' : 'False') : d.k === 'str' ? JSON.stringify(d.v) : d.k === 'num' ? String(d.v) : 'None';
 
   return { resolver, limpiar, items };
 });
@@ -1481,11 +1896,11 @@
   'use strict';
   const $ = s => document.querySelector(s);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-  const VERSION = 'ccd570b';
+  const VERSION = '279ae68';
   const CLAVE = 'lab-dao';
-  const S = { enun: null, csvs: {}, tests: {}, archivo: null };
+  const S = { enun: null, csvs: {}, tests: {}, archivo: null, carpeta: null };
   try { const d = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (d) Object.assign(S, d); } catch (e) { /* sin almacenamiento */ }
-  const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify({ enun: S.enun, csvs: S.csvs, tests: S.tests, archivo: S.archivo })); } catch (e) { /* lleno o bloqueado */ } };
+  const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify({ enun: S.enun, csvs: S.csvs, tests: S.tests, archivo: S.archivo, carpeta: S.carpeta })); } catch (e) { /* lleno o bloqueado */ } };
 
   // ───── Tema
   (function () {
@@ -1534,6 +1949,9 @@
     if (enun) S.enun = { nombre: enun.split('/').pop(), texto: await textoDe(enun, a[enun]) };
     for (const r of rutas) if (/\.csv$/i.test(r)) S.csvs[r.split('/').pop()] = deco(a[r]);
     for (const r of rutas) if (/(^|\/)test[^/]*\.py$/i.test(r)) S.tests[r.split('/').pop()] = deco(a[r]);
+    // si los CSV vienen en su propia carpeta (data/), el programa los busca ahí
+    const rc = rutas.find(r => /\.csv$/i.test(r)), dirDe = r => r.split('/').slice(0, -1).join('/');
+    S.carpeta = rc && enun && dirDe(rc) !== dirDe(enun) && dirDe(rc).startsWith(dirDe(enun)) ? dirDe(rc).slice(dirDe(enun).length).replace(/^\//, '') || null : null;
     guardar(); pintar();
   }
   $('#bEnun').onclick = () => $('#fEnun').click();
@@ -1567,10 +1985,10 @@
   let memo = { k: null, r: null };
   function solucion() {
     if (!S.enun || !Object.keys(S.tests).length) return null;
-    const k = JSON.stringify([S.enun.texto.length, S.enun.texto.slice(0, 200), Object.entries(S.csvs).map(([n, t]) => n + t.length), Object.entries(S.tests).map(([n, t]) => n + t.length + t.slice(-100))]);
+    const k = JSON.stringify([S.enun.texto.length, S.enun.texto.slice(0, 200), Object.entries(S.csvs).map(([n, t]) => n + t.length), Object.entries(S.tests).map(([n, t]) => n + t.length + t.slice(-100)), S.carpeta]);
     if (memo.k !== k) {
       let r;
-      try { r = Dao.resolver({ enunciado: S.enun.texto, csvs: S.csvs, tests: S.tests }); }
+      try { r = Dao.resolver({ enunciado: S.enun.texto, csvs: S.csvs, tests: S.tests, carpetaCsv: S.carpeta || undefined }); }
       catch (e) { r = { archivos: {}, avisos: ['No pude armar la solución: ' + (e && e.message || e)], comprobacion: { ok: 0, total: 0, fallan: [] } }; }
       memo = { k, r };
     }
@@ -1625,19 +2043,19 @@
     const lineas = r.archivos[S.archivo].replace(/\n$/, '').split('\n');
     h += `<div class="cod-env"><div class="archivos">${nombres.map(n => `<button data-arch="${esc(n)}" class="${n === S.archivo ? 'on' : ''}">${esc(n)}</button>`).join('')}</div>
       <div class="codigo">${lineas.map((l, i) => `<div class="ln"><i>${i + 1}</i><span>${resaltar(l) || ' '}</span></div>`).join('')}</div></div>
-      <p class="nota">Para probarlo: poné estos archivos junto al CSV y al test, y corré <code>python -m pytest</code> (los tests) y <code>python ${esc(nombres.includes('main.py') ? 'main.py' : nombres[0])}</code> (los resultados). «Descargar ZIP» trae todo junto.</p>`;
+      <p class="nota">Para probarlo: poné estos archivos junto al test${r.carpetaCsv ? `, los CSV en la carpeta <code>${esc(r.carpetaCsv)}/</code>` : ' y al CSV'}, y corré <code>python -m pytest</code> (los tests) y <code>python ${esc(nombres.includes('main.py') ? 'main.py' : nombres[0])}</code> (los resultados). «Descargar ZIP» trae todo junto.</p>`;
     el.innerHTML = h;
     el.querySelectorAll('[data-arch]').forEach(b => b.onclick = () => { S.archivo = b.dataset.arch; guardar(); pintar(); });
     $('#bCopiar').textContent = 'Copiar ' + S.archivo;
   }
   $('#bCopiar').onclick = ev => { const r = solucion(); if (r && r.archivos[S.archivo]) copiar(r.archivos[S.archivo], ev.currentTarget); };
-  $('#bBorrar').onclick = () => { S.enun = null; S.csvs = {}; S.tests = {}; S.archivo = null; memo = { k: null, r: null }; guardar(); pintar(); $('#bCopiar').textContent = 'Copiar'; };
+  $('#bBorrar').onclick = () => { S.enun = null; S.csvs = {}; S.tests = {}; S.archivo = null; S.carpeta = null; memo = { k: null, r: null }; guardar(); pintar(); $('#bCopiar').textContent = 'Copiar'; };
   $('#bBajar').onclick = () => {
     const r = solucion();
     if (!r || !Object.keys(r.archivos).length) return;
     const R = 'parcial-dao/', lista = [];
     for (const [n, t] of Object.entries(r.archivos)) lista.push([R + n, t]);
-    for (const [n, t] of Object.entries(S.csvs)) lista.push([R + n, t]);
+    for (const [n, t] of Object.entries(S.csvs)) lista.push([R + (r.carpetaCsv ? r.carpetaCsv + '/' : '') + n, t]);
     for (const [n, t] of Object.entries(S.tests)) lista.push([R + n, t]);
     bajar('parcial-dao.zip', zip(lista));
   };

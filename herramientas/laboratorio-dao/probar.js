@@ -6,7 +6,7 @@ const fs = require('fs'), path = require('path'), os = require('os'), { spawnSyn
 const P = require('../laboratorio/proyecto.js'), D = require('./dao.js');
 const DIR = path.join(__dirname, '../../material/desarrollo-de-aplicaciones-con-objetos/p1/parcial');
 // lo que tiene que pasar con cada uno (los que todavía no resuelve quedan anotados como tales)
-const ESPERADO = { '03-parcial-4k3-transporte-de-pasajeros.zip': 'todo', '04-simulacro-la-fabrica.zip': 'todo', '07-modelo-la-inmobiliaria.zip': 'todo', '08-modelo-el-supermercado.zip': 'todo' };
+const ESPERADO = { '03-parcial-4k3-transporte-de-pasajeros.zip': 'todo', '04-simulacro-la-fabrica.zip': 'todo', '05-simulacro-hospital.zip': 'todo', '07-modelo-la-inmobiliaria.zip': 'todo', '08-modelo-el-supermercado.zip': 'todo' };
 const conPytest = spawnSync('python3', ['-m', 'pytest', '--version'], { encoding: 'utf8' }).status === 0;
 const deco = b => P.decodificar(b);
 let mal = 0;
@@ -27,7 +27,11 @@ let mal = 0;
     let py = '';
     if (conPytest) {
       const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dao-'));
-      for (const [n, t] of Object.entries({ ...r.archivos, ...csvs, ...tests })) fs.writeFileSync(path.join(dir, n), t);
+      // los CSV van en la carpeta que dice el enunciado (data/), si dice una
+      const dCsv = path.join(dir, r.carpetaCsv || '.');
+      fs.mkdirSync(dCsv, { recursive: true });
+      for (const [n, t] of Object.entries({ ...r.archivos, ...tests })) fs.writeFileSync(path.join(dir, n), t);
+      for (const [n, t] of Object.entries(csvs)) fs.writeFileSync(path.join(dCsv, n), t);
       const pt = spawnSync('python3', ['-m', 'pytest', '-q', '-p', 'no:cacheprovider'], { cwd: dir, encoding: 'utf8' });
       const mn = spawnSync('python3', [r.archivos['main.py'] ? 'main.py' : Object.keys(r.archivos)[0]], { cwd: dir, encoding: 'utf8' });
       py = ` · pytest: ${(pt.stdout.match(/\d+ (?:passed|failed)[^\n]*?(?= in )/g) || ['?']).pop()}${mn.status ? ' · el main falla' : ''}`;

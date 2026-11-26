@@ -127,9 +127,9 @@
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const VERSION = '@@VERSION@@';
   const CLAVE = 'lab-dao';
-  const S = { enun: null, csvs: {}, tests: {}, archivo: null };
+  const S = { enun: null, csvs: {}, tests: {}, archivo: null, carpeta: null };
   try { const d = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (d) Object.assign(S, d); } catch (e) { /* sin almacenamiento */ }
-  const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify({ enun: S.enun, csvs: S.csvs, tests: S.tests, archivo: S.archivo })); } catch (e) { /* lleno o bloqueado */ } };
+  const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify({ enun: S.enun, csvs: S.csvs, tests: S.tests, archivo: S.archivo, carpeta: S.carpeta })); } catch (e) { /* lleno o bloqueado */ } };
 
   // ───── Tema
   (function () {
@@ -178,6 +178,9 @@
     if (enun) S.enun = { nombre: enun.split('/').pop(), texto: await textoDe(enun, a[enun]) };
     for (const r of rutas) if (/\.csv$/i.test(r)) S.csvs[r.split('/').pop()] = deco(a[r]);
     for (const r of rutas) if (/(^|\/)test[^/]*\.py$/i.test(r)) S.tests[r.split('/').pop()] = deco(a[r]);
+    // si los CSV vienen en su propia carpeta (data/), el programa los busca ahí
+    const rc = rutas.find(r => /\.csv$/i.test(r)), dirDe = r => r.split('/').slice(0, -1).join('/');
+    S.carpeta = rc && enun && dirDe(rc) !== dirDe(enun) && dirDe(rc).startsWith(dirDe(enun)) ? dirDe(rc).slice(dirDe(enun).length).replace(/^\//, '') || null : null;
     guardar(); pintar();
   }
   $('#bEnun').onclick = () => $('#fEnun').click();
@@ -211,10 +214,10 @@
   let memo = { k: null, r: null };
   function solucion() {
     if (!S.enun || !Object.keys(S.tests).length) return null;
-    const k = JSON.stringify([S.enun.texto.length, S.enun.texto.slice(0, 200), Object.entries(S.csvs).map(([n, t]) => n + t.length), Object.entries(S.tests).map(([n, t]) => n + t.length + t.slice(-100))]);
+    const k = JSON.stringify([S.enun.texto.length, S.enun.texto.slice(0, 200), Object.entries(S.csvs).map(([n, t]) => n + t.length), Object.entries(S.tests).map(([n, t]) => n + t.length + t.slice(-100)), S.carpeta]);
     if (memo.k !== k) {
       let r;
-      try { r = Dao.resolver({ enunciado: S.enun.texto, csvs: S.csvs, tests: S.tests }); }
+      try { r = Dao.resolver({ enunciado: S.enun.texto, csvs: S.csvs, tests: S.tests, carpetaCsv: S.carpeta || undefined }); }
       catch (e) { r = { archivos: {}, avisos: ['No pude armar la solución: ' + (e && e.message || e)], comprobacion: { ok: 0, total: 0, fallan: [] } }; }
       memo = { k, r };
     }
@@ -269,19 +272,19 @@
     const lineas = r.archivos[S.archivo].replace(/\n$/, '').split('\n');
     h += `<div class="cod-env"><div class="archivos">${nombres.map(n => `<button data-arch="${esc(n)}" class="${n === S.archivo ? 'on' : ''}">${esc(n)}</button>`).join('')}</div>
       <div class="codigo">${lineas.map((l, i) => `<div class="ln"><i>${i + 1}</i><span>${resaltar(l) || ' '}</span></div>`).join('')}</div></div>
-      <p class="nota">Para probarlo: poné estos archivos junto al CSV y al test, y corré <code>python -m pytest</code> (los tests) y <code>python ${esc(nombres.includes('main.py') ? 'main.py' : nombres[0])}</code> (los resultados). «Descargar ZIP» trae todo junto.</p>`;
+      <p class="nota">Para probarlo: poné estos archivos junto al test${r.carpetaCsv ? `, los CSV en la carpeta <code>${esc(r.carpetaCsv)}/</code>` : ' y al CSV'}, y corré <code>python -m pytest</code> (los tests) y <code>python ${esc(nombres.includes('main.py') ? 'main.py' : nombres[0])}</code> (los resultados). «Descargar ZIP» trae todo junto.</p>`;
     el.innerHTML = h;
     el.querySelectorAll('[data-arch]').forEach(b => b.onclick = () => { S.archivo = b.dataset.arch; guardar(); pintar(); });
     $('#bCopiar').textContent = 'Copiar ' + S.archivo;
   }
   $('#bCopiar').onclick = ev => { const r = solucion(); if (r && r.archivos[S.archivo]) copiar(r.archivos[S.archivo], ev.currentTarget); };
-  $('#bBorrar').onclick = () => { S.enun = null; S.csvs = {}; S.tests = {}; S.archivo = null; memo = { k: null, r: null }; guardar(); pintar(); $('#bCopiar').textContent = 'Copiar'; };
+  $('#bBorrar').onclick = () => { S.enun = null; S.csvs = {}; S.tests = {}; S.archivo = null; S.carpeta = null; memo = { k: null, r: null }; guardar(); pintar(); $('#bCopiar').textContent = 'Copiar'; };
   $('#bBajar').onclick = () => {
     const r = solucion();
     if (!r || !Object.keys(r.archivos).length) return;
     const R = 'parcial-dao/', lista = [];
     for (const [n, t] of Object.entries(r.archivos)) lista.push([R + n, t]);
-    for (const [n, t] of Object.entries(S.csvs)) lista.push([R + n, t]);
+    for (const [n, t] of Object.entries(S.csvs)) lista.push([R + (r.carpetaCsv ? r.carpetaCsv + '/' : '') + n, t]);
     for (const [n, t] of Object.entries(S.tests)) lista.push([R + n, t]);
     bajar('parcial-dao.zip', zip(lista));
   };
