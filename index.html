@@ -75,6 +75,7 @@
   .lado-pie .l-av circle{fill:none;stroke-width:4}
   .lado-pie b{display:block;font-weight:500;font-size:.84rem}
   .lado-pie small{display:block;color:var(--muted);font-size:.78rem}
+  .lado-pie .l-plan{font-size:.72rem;opacity:.8;margin-top:1px}
   .lado-velo{display:none}
 
   /* ---------- Arriba: en el celular, el menú; adentro de un parcial, sus pestañas ---------- */
@@ -112,7 +113,6 @@
     .pvolver{margin:4px 10px 4px -4px;height:30px;font-size:.84rem;font-weight:500}
     .pv-l:not(.sin-abr){display:none}
   }
-  .pie{max-width:1560px;margin:40px auto 0;font-size:.8rem;color:var(--muted)}
 
   /* ---------- Principal ---------- */
   main{padding:30px 40px 40px;min-width:0}
@@ -669,7 +669,6 @@
   }
   @media (max-width:760px){
     main{padding:18px 16px}
-    .pie{margin-top:28px}
     h1{font-size:1.6rem}
     .pl-thumb{width:100px}
   }
@@ -2262,7 +2261,6 @@
 
 <main>
   <div id="app"></div>
-  <p class="pie" id="pie"></p>
 </main>
 
 <!-- Reloj del modo simulacro cuando se está en otra página -->
@@ -4575,7 +4573,7 @@ function renderLado(m){
     </div>
     <a class="lado-pie" data-go="plan" href="#/plan" title="Tu avance en la carrera">
       <span class="l-av"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" stroke="var(--hover)"/><circle cx="18" cy="18" r="14" stroke="var(--accent)" stroke-linecap="round" stroke-dasharray="${(p.pct / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg></span>
-      <span><b>Tu avance · ${p.pct}%</b><small>${p.matHechas} de ${p.matTotal} materias</small></span></a>`;
+      <span><b>Tu avance · ${p.pct}%</b><small>${p.matHechas} de ${p.matTotal} materias</small><small class="l-plan">${esc(CARRERA.plan)} · ${esc(CARRERA.pie)}</small></span></a>`;
 }
 function renderBarra(m){
   const [a, b] = ruta.split("/");
@@ -10823,8 +10821,6 @@ function render(arriba = true){
   app.className = m ? "angosto" : ruta === "cronograma" ? "ancho" : "";
   // Al cambiar de página el contenido aparece con un fundido corto (al marcar materias no)
   if(arriba){ app.classList.remove("entra"); void app.offsetWidth; app.classList.add("entra"); }
-  $("#pie").className = "pie " + app.className;
-  $("#pie").textContent = `${CARRERA.plan} · ${CARRERA.pie}`;
   pintarSync();
   tituloPagina = titulo;
   document.title = titulo;
