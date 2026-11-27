@@ -963,7 +963,7 @@
   .pt-cab h1{margin-bottom:4px}
   .pt-cab-f{display:flex;align-items:flex-start;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
   .pt-cab-f .mt-acc{margin-top:6px}
-  .pt-cab p{color:var(--muted);font-size:.92rem;line-height:1.5;max-width:760px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pt-cab p{color:var(--muted);font-size:.92rem;line-height:1.5;max-width:760px}
   .pt-intro{color:var(--text2);font-size:.92rem;line-height:1.55;max-width:760px;margin:-8px 0 18px}
   .pt-h2{font:400 1.35rem var(--serif);margin:0 0 6px}
   .pt-fuentes{display:inline-flex;gap:4px;padding:4px;background:var(--hover);border-radius:11px;margin:-6px 0 18px}
@@ -977,8 +977,8 @@
   .tm-bloque h3 .tm-n{width:auto;font-size:1.05rem;color:var(--muted)}
   .tm-bloque ul{margin:0;padding-left:18px;font-size:.88rem;line-height:1.55;color:var(--text2)}
   .tm-bloque li + li{margin-top:3px}
-  .tm-bloque p{margin:0;font-size:.9rem;line-height:1.6;color:var(--text2)}
-  .tm-plano + .mt-h2{margin-top:26px}
+  .tm-uno h3{font-size:.92rem}
+  .tm-uno ul + h3{margin-top:12px}
   .tm-tema{border-bottom:1px solid var(--line)}
   .tm-tema summary{display:flex;align-items:center;gap:14px;padding:12px 4px;cursor:pointer;list-style:none}
   .tm-tema summary::-webkit-details-marker{display:none}
@@ -2815,7 +2815,7 @@ const MATERIAS = {
         titulo: "1º Parcial",
         quiz: "quiz/backend-1er-parcial.json",
         herramientas: ["pasos", "csv", "streams"],
-        descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones y streams).",
+        descripcion: "Parcial único: entra la introducción al backend y Java (plataforma, POO, colecciones y streams). Es en computadora, sin acceso a internet y sin uso de IA: antes te dan un preenunciado y, en el parcial, el enunciado con un nuevo archivo CSV para resolver en 45 minutos, y un cuestionario con preguntas de los cuestionarios y preguntas propias del parcial que estás haciendo.",
         secciones: ["teorico", "parcial"],
         nombres: { parcial: "Parciales / Simulacros" },
         quizEn: "parcial",          // el quiz y el paso a paso se muestran arriba de esta sección
@@ -2855,7 +2855,6 @@ const MATERIAS = {
         ],
         temas: {
           plano: true,
-          como: { titulo: "Cómo es el parcial", texto: "Es un parcial en computadora, sin acceso a internet y sin uso de IA. Antes te dan un preenunciado (un proyecto que ya funciona, para estudiar). El día del parcial te dan el enunciado con un nuevo archivo CSV, para resolver en 45 minutos, y un cuestionario con preguntas de los cuestionarios y preguntas propias del parcial que estás haciendo." },
           titulo: "Temas que entran",
           unidades: [
             { titulo: "Introducción", contenidos: ["Capa de backend y su organización interna", "Microservicios y endpoints (APIs REST)", "Tecnologías de la materia: Java, Maven, H2 / PostgreSQL"] },
@@ -3035,7 +3034,7 @@ const MATERIAS = {
       {
         id: "tpi",
         titulo: "TPI",
-        descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway, seguridad y el despliegue con Docker, logs y monitoreo.",
+        descripcion: "Trabajo práctico integrador. Es acumulativo: entra todo lo del 1º Parcial más ORM y JPA, Spring, Spring Data, API Gateway, seguridad y el despliegue con Docker, logs y monitoreo. Tiene una entrega inicial, con corrección de pares, y una final con coloquio oral: contás el problema y la solución, mostrás Postman nombrando las reglas de negocio y te piden que muestres en el código dónde está cada cosa. Se aprueba con 6 o más entre la rúbrica y el coloquio (o en la re-entrega).",
         secciones: ["teorico", "tpi"],
         // Pestaña "Mi TPI": nuestra entrega (repo, Postman, links, notas) y cómo prepararse para la defensa.
         // Lo que se escribe ahí se guarda en aprobadas.json ("entregas") con la clave de GitHub
@@ -3059,7 +3058,6 @@ const MATERIAS = {
         },
         temas: {
           plano: true,
-          como: { titulo: "Cómo es el TPI", texto: "Es un trabajo práctico integrador con dos entregas: una inicial, con corrección de pares, y una final con coloquio. El coloquio es oral: contás el problema y la solución, mostrás Postman nombrando las reglas de negocio y después te piden que muestres en el código dónde está cada cosa. Hay que sacar 6 o más entre la rúbrica y el coloquio (o en la re-entrega)." },
           titulo: "Temas que entran",
           unidades: [
             { titulo: "Todo lo del 1º Parcial", contenidos: ["Es acumulativo: introducción al backend, Java, POO, colecciones y streams, más los temas nuevos de abajo"] },
@@ -5526,18 +5524,19 @@ function temasParcial(m, p){
   const t = p.temas;
   if(!t || !t.unidades || !t.unidades.length) return "";
   const plural = (n, x) => `${n} ${x}${n === 1 ? "" : "s"}`;
-  // Sin material ni videos por tema no hay nada que desplegar: van todos a la vista (con «plano: true», siempre así).
-  // Con «como», arriba va cómo es la evaluación
+  // Sin material ni videos por tema no hay nada que desplegar: van todos a la vista. Con «plano: true», siempre así y en
+  // una sola tarjeta: cada tema con su título y sus viñetas
   const conMaterial = !t.plano && t.unidades.some(u => { const x = materialDeTema(p, u.titulo); return x.archivos.length || x.videos.length; });
-  const como = t.como ? `
-    <h2 class="mt-h2">${esc(t.como.titulo || "Cómo es")}</h2>
-    <div class="tm-plano"><section class="tm-bloque"><p>${esc(t.como.texto)}</p></section></div>` : "";
-  if(!conMaterial) return `${como}
+  if(t.plano) return `
+    <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
+    <div class="tm-plano"><section class="tm-bloque tm-uno">${t.unidades.map(u => `
+      <h3>${esc(u.titulo)}</h3><ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul>`).join("")}</section></div>`;
+  if(!conMaterial) return `
     <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
     <div class="tm-plano">${t.unidades.map((u, i) => `
       <section class="tm-bloque"><h3><span class="tm-n">${i + 1}</span>${esc(u.titulo)}</h3>
         <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul></section>`).join("")}</div>`;
-  return `${como}
+  return `
     <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
     <div class="tm-lista">${t.unidades.map((u, i) => {
       const { archivos, videos } = materialDeTema(p, u.titulo);
