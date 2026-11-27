@@ -4721,14 +4721,17 @@ const tabMiTpi = p => p.defensa ? [{ go: "/mi", t: "Mi TPI", on: d => d[0] === "
 /* La parte que se está viendo (un parcial o una sección de la materia) */
 const parteDe = (c, b) => c && b ? c.parciales.find(x => x.id === b) || (c.secciones || []).find(x => x.id === b) : null;
 /* Arriba de cada pestaña: el nombre de la parte y su descripción corta */
-const cabParte = p => `<div class="pt-cab"><h1>${esc(p.titulo)}</h1>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}</div>`;
+/* La descripción de la parte va una sola vez: en la pestaña Temas si la tiene; si no, en todas */
+const tieneTemas = p => !!(p.temas && p.temas.unidades && p.temas.unidades.length);
+const descParte = (p, enTemas) => p.descripcion && (enTemas || !tieneTemas(p)) ? `<p>${esc(p.descripcion)}</p>` : "";
+const cabParte = (p, enTemas) => `<div class="pt-cab"><h1>${esc(p.titulo)}</h1>${descParte(p, enTemas)}</div>`;
 /* La cabecera de una parte. Si la materia es esa sola parte (no tiene página propia), lleva a la derecha lo de la materia:
    «Se puede rendir libre» y cómo se aprueba */
-function cabDe(m, p){
+function cabDe(m, p, enTemas){
   const c = MATERIAS[m.n];
-  if(parteUnica(c) !== p) return cabParte(p);
+  if(parteUnica(c) !== p) return cabParte(p, enTemas);
   const acc = `${m.libre ? `<span class="mt-pill mt-libre" title="${esc(TXT_LIBRE)}">Se puede rendir libre</span>` : ""}${c.condiciones ? aprobacion(c.condiciones) : ""}`;
-  return `<div class="pt-cab"><div class="pt-cab-f"><h1>${esc(p.titulo)}</h1>${acc ? `<div class="mt-acc">${acc}</div>` : ""}</div>${p.descripcion ? `<p>${esc(p.descripcion)}</p>` : ""}</div>`;
+  return `<div class="pt-cab"><div class="pt-cab-f"><h1>${esc(p.titulo)}</h1>${acc ? `<div class="mt-acc">${acc}</div>` : ""}</div>${descParte(p, enTemas)}</div>`;
 }
 /* …y en su primera pestaña, abajo, las comisiones */
 function pieUnica(m, p, tab){
@@ -5494,7 +5497,7 @@ function montarMiTpi(m, p){
   pintarMiEstado();
 }
 function viewParcial(m, p){
-  return `${cabParte(p)}<div class="mt-main pc">${temasParcial(m, p) || `<div class="empty">Este parcial no tiene los temas cargados.</div>`}</div>`;
+  return `${cabParte(p, true)}<div class="mt-main pc">${temasParcial(m, p) || `<div class="empty">Este parcial no tiene los temas cargados.</div>`}</div>`;
 }
 const normal = x => String(x).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
 function materialDeTema(p, titulo){
@@ -5552,7 +5555,7 @@ function iconoSeccion(id){
 }
 /* Una parte de una sola página (secciones: []) o una sección de la materia: Material, Videos o Temas */
 function viewSeccionMateria(m, x, tab){
-  return `${cabDe(m, x)}
+  return `${cabDe(m, x, tab === "temas")}
     ${tab === "videos" ? `<div id="tabBody"></div>` : tab === "temas" ? `<div class="mt-main pc">${temasParcial(m, x)}</div>` : `<div id="tabBody">${filesList(x.material || [])}</div>`}
     ${pieUnica(m, x, tab)}`;
 }
