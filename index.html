@@ -453,6 +453,13 @@
   .file:hover .go,.file:focus-visible .go{opacity:1}
   .file .go-t{display:none}
   @media (hover:none){ .file .go{opacity:1} }
+  /* Una herramienta que se abre acá o se descarga: una sola fila con los dos botones al costado */
+  .file.doble:hover{background:transparent}
+  .file .dos{display:flex;gap:6px;flex-shrink:0}
+  .file .dos a{border:1px solid var(--line2);border-radius:8px;padding:6px 11px;font-size:.82rem;font-weight:600;color:var(--text2);background:var(--card);white-space:nowrap;transition:background .12s}
+  .file .dos a:hover{background:var(--hover);color:var(--text)}
+  .file .dos a.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .file .dos a.pri:hover{filter:brightness(.95);background:var(--accent);color:#fff}
   .tag.nota{margin-left:6px;vertical-align:1px;background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
   .file .name small{display:block;font-size:.8rem;font-weight:400;color:var(--muted);margin-top:1px}
   /* El archivo más importante de la sección: borde de color, fondo suave y un cartel */
@@ -648,6 +655,8 @@
     .file .name small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:.76rem}
     .file .go{font-size:1rem}
     .file .go-t{display:none}
+    .file.doble{flex-wrap:wrap}
+    .file.doble .dos{width:100%;justify-content:flex-end}
     .file .mini{width:32px;height:42px;margin:-3px 0}
     .badge{min-width:32px;font-size:.62rem;padding:3px 4px}
     .fnum{font-size:.75rem;min-width:16px}
@@ -2806,6 +2815,9 @@ const MATERIAS = {
         quizEn: "parcial",          // el quiz y el paso a paso se muestran arriba de esta sección
         herramientasParcial: ["pasos"],   // herramientas que van arriba de Parciales (no en la Práctica)
         practicaParcial: "practica/bk-parcial/ejercicios.json",   // "El parcial por partes": las 6 partes con ejercicios de todos los parciales
+        // "El recuperatorio por partes" (ruta …/pr): casos hipotéticos sobre el preenunciado de Flota, con las mismas partes
+        // (practica/bk-recuperatorio, armado con herramientas/parcial-por-partes/recuperatorio/armar.py)
+        practicaRec: { url: "practica/bk-recuperatorio/ejercicios.json", titulo: "El recuperatorio por partes", detalle: "24 ejercicios de código sobre Flota Logística, todos con editor: dos formatos en el parser, la columna nueva en el dominio, la subclase, el colector y el main; el caso D es el mismo cambio del Parcial 3K1" },
         // Práctica por partes: lo que trae el preenunciado (practica/bk-practica) y lo que agrega el parcial (los mismos
         // ejercicios de "El parcial por partes"), cada parte con su explicación antes de practicar y el resumen en PDF a mano.
         practicaPartes: {
@@ -2945,38 +2957,55 @@ const MATERIAS = {
             { grupo: "Para estudiar", descripcion: "Todas las preguntas, con su respuesta.", archivos: [
               { n: 1, nombre: "Guía única del 1º parcial", detalle: "Todas las preguntas, con multiple choice: el parcial real tal cual salió, cómo corrige el profe la parte práctica, preguntas sobre el proyecto, Cuestionario 05, teoría y simulacros, con la respuesta correcta y el porqué (35 págs.)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/guia-unica-1er-parcial.pdf" }
             ] },
+            { grupo: "Herramienta de estudio", descripcion: "Funciona sin internet: le cargás el enunciado y el CSV de cualquier parcial y te da el Java resuelto.", archivos: [
+              { n: 2, nombre: "Laboratorio del parcial", nota: "Sin internet", detalle: "Cargás el enunciado y el CSV (o el ZIP de cualquier parcial) y te da el Java resuelto, con lo nuevo marcado y el DECISIONES.md si lo pide. Abajo, el buscador con las 204 preguntas de los cuestionarios y del parcial", tipo: "HTML", descargar: "laboratorio-flota.html", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/laboratorio-flota.html?v=f9b43b6" }
+            ] },
             { grupo: "Parciales y simulacros", descripcion: "Tocá uno para ver sus archivos. Para practicar, hacé cada simulacro en 45 minutos.", filas: true, partes: [
               { titulo: "Parcial 3K1 · 2026", tema: "Cloud Center", detalle: "Telemetría de servidores; el día del parcial, el ingreso promedio por servidor (19/09/2026)", archivos: [
-                { n: 2, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: el sistema de servidores para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/preenunciado.pdf" },
-                { n: 3, nombre: "Enunciado", detalle: "El cambio a programar en el parcial (45 min). Corregido: el ejemplo decía 877 USD y la cuenta da 845", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/enunciado.pdf" },
-                { n: 4, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
-                { n: 5, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos-parcial.csv y los tests nuevos. Corregido para seguir la consigna tal cual: el test venía suelto, sin su carpeta, y el CSV con otro nombre (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
-                { n: 6, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia, probada con los 12 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
+                { n: 3, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: el sistema de servidores para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/preenunciado.pdf" },
+                { n: 4, nombre: "Enunciado", detalle: "El cambio a programar en el parcial (45 min). Corregido: el ejemplo decía 877 USD y la cuenta da 845", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/enunciado.pdf" },
+                { n: 5, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/01-preenunciado.zip" },
+                { n: 6, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos-parcial.csv y los tests nuevos. Corregido para seguir la consigna tal cual: el test venía suelto, sin su carpeta, y el CSV con otro nombre (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/02-enunciado.zip" },
+                { n: 7, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia, probada con los 12 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k1/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Parcial 3K2 · 2026", tema: "Central de envíos", detalle: "Paquetes, peso neto y costo por zona; el día del parcial, los envíos PRIORITARIO (17/09/2026)", archivos: [
-                { n: 7, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: la central de envíos para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/preenunciado.pdf" },
-                { n: 8, nombre: "Enunciado", detalle: "Los envíos prioritarios: 400 pesos más y hasta 5000 g (45 min)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/enunciado.pdf" },
-                { n: 9, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/01-preenunciado.zip" },
-                { n: 10, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos-parcial.csv y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/02-enunciado.zip" },
-                { n: 11, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (EnvioPrioritario), probada con los 15 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/03-solucion-propuesta.zip" }
+                { n: 8, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: la central de envíos para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/preenunciado.pdf" },
+                { n: 9, nombre: "Enunciado", detalle: "Los envíos prioritarios: 400 pesos más y hasta 5000 g (45 min)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/enunciado.pdf" },
+                { n: 10, nombre: "Preenunciado con el proyecto", detalle: "El PDF y el proyecto 01-modelo-inicial para abrir y ejecutar", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/01-preenunciado.zip" },
+                { n: 11, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos-parcial.csv y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/02-enunciado.zip" },
+                { n: 12, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (EnvioPrioritario), probada con los 15 tests (los viejos y los nuevos) y con los mismos comandos que usa el profe para corregir", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k2/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Parcial 3K8 · 2026", tema: "Fintech", detalle: "El mismo que se dio como Simulacro 1 en 3K1: solicitudes de crédito, score y tasa; el día del parcial, el nivel de morosidad", archivos: [
-                { n: 12, nombre: "Preenunciado", detalle: "Corregido: los comandos y el nombre de una clase", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/preenunciado.pdf" },
-                { n: 13, nombre: "Enunciado", detalle: "Corregido: dónde copiar los tests, el comando y qué muestra el main", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/enunciado.pdf" },
-                { n: 14, nombre: "Todo el parcial", detalle: "El proyecto, el CSV del parcial y los tests nuevos. Corregido: el test de la cátedra no compilaba y uno de sus casos contradecía la consigna (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
-                { n: 15, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: sin herencia (solo cambian las validaciones), probada con 18 tests (los de la cátedra, con el test nuevo corregido, y los propios). En DECISIONES.md está el porqué de cada decisión", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k8/03-solucion-propuesta.zip" }
+                { n: 13, nombre: "Preenunciado", detalle: "Corregido: los comandos y el nombre de una clase", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/preenunciado.pdf" },
+                { n: 14, nombre: "Enunciado", detalle: "Corregido: dónde copiar los tests, el comando y qué muestra el main", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1/enunciado.pdf" },
+                { n: 15, nombre: "Todo el parcial", detalle: "El proyecto, el CSV del parcial y los tests nuevos. Corregido: el test de la cátedra no compilaba y uno de sus casos contradecía la consigna (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-1.zip" },
+                { n: 16, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: sin herencia (solo cambian las validaciones), probada con 18 tests (los de la cátedra, con el test nuevo corregido, y los propios). En DECISIONES.md está el porqué de cada decisión", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/parcial-3k8/03-solucion-propuesta.zip" }
+              ] },
+              { titulo: "Recuperatorio · 2026", tema: "Flota Logística", detalle: "Telemetría de vehículos; el día del recuperatorio, el porcentaje del recorrido sin pavimentar. Abajo, la chuleta y dos parciales de práctica sobre el mismo proyecto", archivos: [
+                { n: 17, nombre: "Preenunciado", detalle: "Lo que se da el día anterior: la flota de vehículos para estudiar", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/preenunciado.pdf" },
+                { n: 18, nombre: "Enunciado", detalle: "El tramo sin pavimentar: la sexta columna con herencia obligatoria y otra fórmula del índice (45 min)", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/enunciado.pdf" },
+                { n: 19, nombre: "Preenunciado con el proyecto", detalle: "El proyecto 01-modelo-inicial para abrir y ejecutar (el mismo que trae el laboratorio)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/01-preenunciado.zip" },
+                { n: 20, nombre: "Enunciado con el CSV y el test nuevo", detalle: "El enunciado, datos/datos-parcial.csv y el test nuevo de la cátedra (EvolucionFlotaTest), como los dio la cátedra", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/02-enunciado.zip" },
+                { n: 21, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: la armó el laboratorio con el enunciado y el CSV (VehiculoRutaConTramoSinPavimentar con un constructor protegido para el índice nuevo) y está probada con 19 tests: los 6 del preenunciado, los 5 de la cátedra y 8 nuestros con lo que pide el punto 8. Da los números del enunciado y trae DECISIONES.md", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/03-solucion-propuesta.zip" },
+                { n: 22, nombre: "Preenunciado comentado: lo que te pueden pedir", nota: "Chuleta", detalle: "El mismo proyecto con plantillas comentadas en cada clase, listas para descomentar: conteos, mapeos, filtros, máximo, promedios, ordenar y agrupar en Flota; columna nueva, subclase, gancho y tipo en VehiculoRuta; dos encabezados en el parser y el main. Cada una con la frase del enunciado y el import que le falta. Más CHULETA.md con la tabla «si dice… tocá…». Compila y pasa los tests", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/01-modelo-inicial-comentado.zip" },
+                { n: 23, nombre: "Parcial de práctica · Pendiente del tramo", nota: "Hipotético", detalle: "El mismo cambio que el Recuperatorio 2 de la otra comisión (Red Eléctrica), llevado a Flota: la columna nueva entra en otra fórmula del índice, con herencia obligatoria y filas de cinco y seis campos bajo el mismo encabezado. También está en el laboratorio, con su CSV", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-pendiente/enunciado-parcial.pdf" },
+                { n: 24, nombre: "datos-parcial.csv del parcial de práctica", detalle: "Corto: 22 filas, 8 del preenunciado y 14 del formato nuevo con un caso de cada regla", tipo: "CSV", bajar: true, url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-pendiente/datos-parcial.csv" },
+                { n: 25, nombre: "Solución propuesta del parcial de práctica", nota: "Hecha por nosotros", detalle: "VehiculoConPendiente con un constructor protegido para el índice nuevo; probada con mvn test (los 6 tests del preenunciado y 8 nuevos) y con los números del enunciado", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-pendiente/solucion-propuesta.zip" },
+                { n: 26, nombre: "Parcial de práctica 2 · Viajes con acoplado", nota: "Hipotético", detalle: "Para hacer de 0 sobre el preenunciado: 6.ª columna entera con rango, un tipo nuevo con tope de velocidad y recargo por tonelada (subclase), conteo por modalidad y el main del parcial. Es lo que más se repite en 3K1, 3K2, Simulacro 4 y Recuperatorio 2. También está en el laboratorio", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/enunciado-parcial.pdf" },
+                { n: 27, nombre: "datos-parcial.csv del parcial de práctica 2", detalle: "26 filas con el encabezado nuevo: los límites 0 y 20, 90 y 91 km/h, el tope que solo afecta al acoplado y una fila inválida por cada regla", tipo: "CSV", bajar: true, url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/datos-parcial.csv" },
+                { n: 28, nombre: "Solución propuesta del parcial de práctica 2", nota: "Hecha por nosotros", detalle: "VehiculoConAcoplado extiende VehiculoRuta, getTipo() para el conteo sin instanceof; probada con mvn test (6 tests del preenunciado y 7 nuevos) y con los números del enunciado", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/solucion-propuesta.zip" }
               ] },
               { titulo: "Simulacro 2 · 3K3", tema: "Taller de reparaciones", detalle: "Órdenes de reparación; en el parcial se agregan las EXPRESS, la garantía y los repuestos", archivos: [
-                { n: 16, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/preenunciado.pdf" },
-                { n: 17, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/enunciado.pdf" },
-                { n: 18, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación. Corregido: el test nuevo no compilaba contra el proyecto inicial y sus filas tenían una columna menos (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
-                { n: 19, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (ReparacionExpress), probada con los tests viejos, los nuevos y los ejemplos de la consigna", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/03-solucion-propuesta.zip" }
+                { n: 29, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/preenunciado.pdf" },
+                { n: 30, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/enunciado.pdf" },
+                { n: 31, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación. Corregido: el test nuevo no compilaba contra el proyecto inicial y sus filas tenían una columna menos (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
+                { n: 32, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (ReparacionExpress), probada con los tests viejos, los nuevos y los ejemplos de la consigna", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Simulacro 3 · 3K4", tema: "Juegos de mesa", detalle: "Catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", archivos: [
-                { n: 20, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
-                { n: 21, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
-                { n: 22, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
-                { n: 23, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (JuegoCooperativo), con los nombres de métodos que exige el test nuevo; pasan los tests viejos y los nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/03-solucion-propuesta.zip" }
+                { n: 33, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
+                { n: 34, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
+                { n: 35, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
+                { n: 36, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (JuegoCooperativo), con los nombres de métodos que exige el test nuevo; pasan los tests viejos y los nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/03-solucion-propuesta.zip" }
               ] },
               { titulo: "Simulacro 4 · 3K7", tema: "Tarjetas de crédito", detalle: "Liquidación de consumos; en el parcial se agrega la protección de compras. Tiene modo simulacro y la solución", 
                 // Modo simulacro: con reloj, el enunciado al empezar y la solución al terminar
@@ -2988,38 +3017,12 @@ const MATERIAS = {
                   control: "Para corregirte: copiá los tests nuevos al proyecto y corré mvn test; tienen que pasar los viejos y los nuevos. Después mirá la solución."
                 },
                 archivos: [
-                { n: 24, nombre: "Todo el simulacro", detalle: "El preenunciado, el enunciado, el proyecto, el CSV del parcial y la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
+                { n: 37, nombre: "Todo el simulacro", detalle: "El preenunciado, el enunciado, el proyecto, el CSV del parcial y la solución", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-4.zip" }
               ] }
             ] }
           ],
           videos: []
         }
-      },
-      // Recuperatorio 1 · Flota Logística: solo práctica. El preenunciado no trae tareas: El recuperatorio por partes
-      // (practica/bk-recuperatorio, armado con herramientas/parcial-por-partes/recuperatorio/armar.py) son casos hipotéticos
-      // sobre ese proyecto, con las mismas partes que El parcial por partes, y el paso a paso del parcial
-      {
-        id: "rec",
-        titulo: "Recuperatorio",
-        descripcion: "Recuperatorio 1 · Flota Logística. El preenunciado no trae tareas: acá practicás los cambios que pueden pedir el día del examen, en casos hipotéticos sobre el mismo proyecto.",
-        secciones: [],
-        herramientas: ["pasos"],
-        practicaParcial: "practica/bk-recuperatorio/ejercicios.json",
-        practicaParcialTarjeta: { titulo: "El recuperatorio por partes", detalle: "24 ejercicios de código sobre Flota Logística, todos con editor: dos formatos en el parser, la columna nueva en el dominio, la subclase, el colector y el main; el caso D es el mismo cambio del Parcial 3K1" },
-        // El laboratorio: un solo HTML sin internet (herramientas/laboratorio/armar.py) que lee un enunciado nuevo y un CSV
-        material: [
-          { n: 1, nombre: "Laboratorio del recuperatorio", nota: "Sin internet", detalle: "Cargás el enunciado (PDF, .md o texto) y el CSV y te da el Java resuelto, listo para copiar o bajar en un ZIP; con «Borrar» empezás otro. Arriba, «Preenunciado»: cargás el ZIP de cualquier parcial y, con su enunciado y su CSV, te muestra el código resuelto con lo nuevo marcado (y el DECISIONES.md si lo pide), corrido sin internet con un ejecutor que da la misma salida que Java. Abajo, un buscador con las 204 preguntas de los cuestionarios 1 a 5, del 1.er parcial y su recuperatorio: pegás la pregunta y te marca en verde la correcta. Al pie está el laboratorio completo (reglas, salida fila por fila y 10 enunciados de práctica)", tipo: "HTML", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/laboratorio-flota.html?v=f9b43b6" },
-          { n: 2, nombre: "Laboratorio para descargar", detalle: "El mismo archivo para guardarlo y abrirlo con doble clic, sin conexión. Si ya lo tenías, volvé a bajarlo cuando cambie la fecha de versión (está arriba de todo en el laboratorio)", tipo: "HTML", bajar: "laboratorio-flota.html", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/laboratorio-flota.html?v=f9b43b6" },
-          { n: 3, nombre: "Preenunciado con el proyecto", detalle: "El proyecto 01-modelo-inicial de Flota Logística, el mismo que usa el laboratorio", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/01-preenunciado.zip" },
-          { n: 4, nombre: "Preenunciado comentado: lo que te pueden pedir", nota: "Chuleta", detalle: "El mismo proyecto con plantillas comentadas en cada clase, listas para descomentar: conteos, mapeos, filtros, máximo, promedios, ordenar y agrupar en Flota; columna nueva, subclase, gancho y tipo en VehiculoRuta; dos encabezados en el parser y el main. Cada una con la frase del enunciado y el import que le falta. Más CHULETA.md con la tabla «si dice… tocá…». Compila y pasa los tests", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/01-modelo-inicial-comentado.zip" },
-          { n: 5, nombre: "Parcial de práctica · Pendiente del tramo", nota: "Hipotético", detalle: "El mismo cambio que el Recuperatorio 2 de la otra comisión (Red Eléctrica), llevado a Flota: la columna nueva entra en otra fórmula del índice, con herencia obligatoria y filas de cinco y seis campos bajo el mismo encabezado. También está en el laboratorio, con su CSV", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-pendiente/enunciado-parcial.pdf" },
-          { n: 6, nombre: "datos-parcial.csv del parcial de práctica", detalle: "Corto: 22 filas, 8 del preenunciado y 14 del formato nuevo con un caso de cada regla", tipo: "CSV", bajar: true, url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-pendiente/datos-parcial.csv" },
-          { n: 7, nombre: "Solución propuesta del parcial de práctica", nota: "Hecha por nosotros", detalle: "VehiculoConPendiente con un constructor protegido para el índice nuevo; probada con mvn test (los 6 tests del preenunciado y 8 nuevos) y con los números del enunciado", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-pendiente/solucion-propuesta.zip" },
-          { n: 8, nombre: "Parcial de práctica 2 · Viajes con acoplado", nota: "Lo más probable", detalle: "Para hacer de 0 sobre el preenunciado: 6.ª columna entera con rango, un tipo nuevo con tope de velocidad y recargo por tonelada (subclase), conteo por modalidad y el main del parcial. Es lo que más se repite en 3K1, 3K2, Simulacro 4 y Recuperatorio 2. También está en el laboratorio", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/enunciado-parcial.pdf" },
-          { n: 9, nombre: "datos-parcial.csv del parcial de práctica 2", detalle: "26 filas con el encabezado nuevo: los límites 0 y 20, 90 y 91 km/h, el tope que solo afecta al acoplado y una fila inválida por cada regla", tipo: "CSV", bajar: true, url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/datos-parcial.csv" },
-          { n: 10, nombre: "Solución propuesta del parcial de práctica 2", nota: "Hecha por nosotros", detalle: "VehiculoConAcoplado extiende VehiculoRuta, getTipo() para el conteo sin instanceof; probada con mvn test (6 tests del preenunciado y 7 nuevos) y con los números del enunciado", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/solucion-propuesta.zip" }
-        ],
-        videos: []
       },
       {
         id: "tpi",
@@ -3261,8 +3264,7 @@ const MATERIAS = {
         descripcion: "El recuperatorio del 1º Parcial: el mismo formato (enunciado, CSV y tests de pytest) y se programa todo desde cero.",
         secciones: [],
         material: [
-          { n: 1, nombre: "Laboratorio del recuperatorio", nota: "Sin internet", detalle: "Cargás el enunciado (PDF, .md o .txt), el CSV y el test (o el ZIP del parcial con todo) y te arma el programa entero en Python: la clase base abstracta, las subclases con su cálculo, la colección con los métodos que pide y el main que lee el CSV. Los nombres los toma del test, las reglas del enunciado y los tipos del CSV, y antes de mostrarlo lo prueba contra cada assert del test. Se copia o se baja en un ZIP listo para correr con pytest", tipo: "HTML", url: "material/desarrollo-de-aplicaciones-con-objetos/recuperatorio/laboratorio-dao.html?v=279ae68" },
-          { n: 2, nombre: "Laboratorio para descargar", detalle: "El mismo archivo para guardarlo y abrirlo con doble clic, sin conexión. Si ya lo tenías, volvé a bajarlo cuando cambie la fecha de versión (está arriba de todo en el laboratorio)", tipo: "HTML", bajar: "laboratorio-dao.html", url: "material/desarrollo-de-aplicaciones-con-objetos/recuperatorio/laboratorio-dao.html?v=279ae68" }
+          { n: 1, nombre: "Laboratorio del recuperatorio", nota: "Sin internet", detalle: "Cargás el enunciado, el CSV y el test (o el ZIP del parcial) y te arma el programa entero en Python: las clases, la colección y el main. Antes de mostrarlo lo prueba contra cada assert del test, y lo bajás en un ZIP listo para correr con pytest", tipo: "HTML", descargar: "laboratorio-dao.html", url: "material/desarrollo-de-aplicaciones-con-objetos/recuperatorio/laboratorio-dao.html?v=279ae68" }
         ],
         videos: []
       },
@@ -4691,7 +4693,7 @@ const tieneHerramientas = p => !!p.quiz || herramientasParte(p).length > 0;
 function pestanasDe(p){
   const una = (p.secciones && !p.secciones.length) || !!p.material;
   const deParcial = d => d[0] === "h" && (!p.practicaTemas || (p.herramientasParcial || []).includes(d[1]));
-  const enHerr = d => d[0] === "quiz" || d[0] === "pp" || deParcial(d);
+  const enHerr = d => d[0] === "quiz" || d[0] === "pp" || d[0] === "pr" || deParcial(d);
   const temas = p.temas && p.temas.unidades && p.temas.unidades.length ? [{ go: "/temas", t: "Temas", on: d => d[0] === "temas" }] : [];
   if(una){
     const vids = (p.videos || []).length, arch = cantArchivos(p.material || []);
@@ -5738,6 +5740,12 @@ const miniDe = url => "miniaturas/" + url.slice(9).replace(/\.pdf$/i, ".jpg");
 function sinMini(img){ img.replaceWith(Object.assign(document.createElement("span"), { className: "badge", textContent: "PDF" })); }
 const ICON_ESTRELLA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>';
 function filaArchivo(f, conNum){
+  if(f.descargar) return `
+    <div class="file doble">
+      ${f.n || conNum ? `<span class="fnum">${f.n ? String(f.n).padStart(2, "0") : ""}</span>` : ""}<span class="badge">${esc(f.tipo || "HTML")}</span>
+      <span class="name">${esc(f.nombre)}${f.nota ? ` <span class="tag nota">${esc(f.nota)}</span>` : ""}${f.detalle ? `<small>${esc(f.detalle)}</small>` : ""}</span>
+      <span class="dos"><a class="pri" href="${esc(f.url)}" target="_blank" rel="noopener">Abrir ↗</a><a href="${esc(f.url)}" download="${esc(f.descargar)}">Descargar ↓</a></span>
+    </div>`;
   const bajar = /^(ZIP|INO)$/.test(f.tipo) || f.bajar;
   const pdf = esPdfLocal(f);
   return `
@@ -6466,6 +6474,7 @@ function parcialBox(m, p){
       <span class="pr-t">${porSec.length && !hs.length && !p.practicaParcial ? "¿Qué querés practicar?" : "Herramientas para practicar"}</span>
       ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
       ${p.practicaParcial ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pp">${ICON_CODIGO}<span><b>${esc((p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</b><small>${esc((p.practicaParcialTarjeta || {}).detalle || "Cada parte del parcial con ejemplos de todos los parciales y simulacros")}</small></span></span>` : ""}
+      ${p.practicaRec ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pr">${ICON_CODIGO}<span><b>${esc(p.practicaRec.titulo)}</b><small>${esc(p.practicaRec.detalle || "")}</small></span></span>` : ""}
       ${porSec.map(x => `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz/${slugQz(x.t)}">${ICON_LAPIZ}<span><b>${esc(x.nombre || x.t)}</b><small>${esc(x.d || "")}</small></span></span>`).join("")}
       ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${porSec.length ? ICON_LAPIZ : ICON_QUIZ}<span><b>${esc(p.quizNombre || "Quiz")}</b><small>${esc(p.quizDetalle || "Preguntas de parciales, con la corrección al instante")}</small></span></span>` : ""}
     </div>`;
@@ -7321,7 +7330,7 @@ function viewEjp(m, p, tipo = "pp"){
         <div class="ejp-cab-der">${r ? `<a class="ejp-pdf" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" target="_blank" rel="noopener">${ICON_DOC}<span>${esc(r.etiqueta || "Resumen en PDF")}</span>${r.paginas ? `<small>${r.paginas} págs.</small>` : ""}</a>` : ""}${p.practicaPartes.sinProgreso ? "" : `<div class="ejp-prog" id="ejpProg"></div>`}</div></div>
       ${(p.practicaPartes.enlaces || []).length ? `<div class="ejp-herr"><span>Para hacerlo de verdad</span>${p.practicaPartes.enlaces.map(enlaceHtml).join("")}</div>` : ""}` : `
       <div class="crumbs"><span data-go="m${m.n}/${p.id}${kp ? `/${kp}/material` : ""}">‹ ${esc(kp ? nombreSec(p, kp) : p.titulo)}</span></div>
-      <div class="ejp-cab"><h1>${esc((p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</h1><div class="ejp-prog" id="ejpProg"></div></div>`;
+      <div class="ejp-cab"><h1>${esc(tipo === "pr" ? p.practicaRec.titulo : (p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</h1><div class="ejp-prog" id="ejpProg"></div></div>`;
   return `
     <div class="ejp">${cab}
       <div class="ejp-partes" id="ejpPartes"></div>
@@ -7334,7 +7343,7 @@ function viewEjp(m, p, tipo = "pp"){
     </div>`;
 }
 async function montarEjp(m, p, id, tipo = "pp"){
-  const urls = tipo === "practica" ? p.practicaPartes.fuentes : [p.practicaParcial];
+  const urls = tipo === "practica" ? p.practicaPartes.fuentes : tipo === "pr" ? [p.practicaRec.url] : [p.practicaParcial];
   let ds;
   try { ds = await Promise.all(urls.map(cargarEjercicio)); }
   catch(e){ const c = $("#ejpIzq"); if(c) c.innerHTML = `<div class="empty">No se pudieron cargar los ejercicios. Probá recargar la página.</div>`; return; }
@@ -7378,7 +7387,7 @@ function entrarParte(pa, mover = true){
 }
 /* La dirección cambia sin recargar y sin sumar pasos al "atrás" */
 function rutaEjp(x){
-  const r = `m${ejp.m.n}/${ejp.p.id}/${ejp.tipo === "practica" ? "practica" : "pp"}/${x}`;
+  const r = `m${ejp.m.n}/${ejp.p.id}/${ejp.tipo === "practica" ? "practica" : ejp.tipo === "pr" ? "pr" : "pp"}/${x}`;
   if(ruta !== r){ ruta = r; history.replaceState(history.state, "", "#/" + r); }
 }
 const subirEjp = () => { const w = $("#ejpPartes"); if(w.getBoundingClientRect().top < 0) w.scrollIntoView({ block: "start" }); };
@@ -10889,11 +10898,11 @@ function render(arriba = true){
     montarQuiz(m, p, d);
     const x = d && (p.quizSecciones || []).find(x => slugQz(x.t) === d);
     titulo = `${x ? x.nombre || x.t : "Quiz"} · ${p.titulo} · ${m.nombre}`;
-  } else if(p && c === "pp" && p.practicaParcial){
-    ruta = `${a}/${b}/pp${d ? "/" + d : ""}`;
-    app.innerHTML = viewEjp(m, p, "pp");
-    montarEjp(m, p, d, "pp");
-    titulo = `El parcial por partes · ${p.titulo} · ${m.nombre}`;
+  } else if(p && (c === "pp" && p.practicaParcial || c === "pr" && p.practicaRec)){
+    ruta = `${a}/${b}/${c}${d ? "/" + d : ""}`;
+    app.innerHTML = viewEjp(m, p, c);
+    montarEjp(m, p, d, c);
+    titulo = `${c === "pr" ? p.practicaRec.titulo : "El parcial por partes"} · ${p.titulo} · ${m.nombre}`;
   } else if(p && c === "practica" && p.practicaPartes && !(d && (p.practica || []).some(e => e.id === d))){
     // La Práctica por partes; los ejercicios de a pasos con Java (p.practica) siguen en su dirección de siempre
     ruta = `${a}/${b}/practica${d ? "/" + d : ""}`;
