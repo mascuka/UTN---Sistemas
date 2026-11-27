@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """El recuperatorio por partes (Backend, Recuperatorio 1 · Flota Logística): practica/bk-recuperatorio/ejercicios.json.
 
-El preenunciado no tiene tareas: el día del recuperatorio piden cambios. Acá van casos hipotéticos sobre el mismo
+Primero, el recuperatorio de verdad (tramo sin pavimentar, noviembre de 2026; su solución en codigo/R), un ejercicio por parte.
+El preenunciado no tiene tareas: el día del recuperatorio piden cambios. También van casos hipotéticos sobre el mismo
 proyecto, con las mismas partes que El parcial por partes (0 Consigna, 1 CSV, 2 Dominio, 3 Polimorfismo, 4 Colector y
 5 Main), para cubrir lo que tomaron en los parciales y simulacros:
   A · tipo de carga (5 → 6 columnas): GENERAL o REFRIGERADA; la refrigerada cuesta 300 USD más y lleva hasta 30 t.
@@ -831,6 +832,172 @@ P5 = [
 ''', base={'ParserVehiculos.java': D_PARSER, 'VehiculoRuta.java': D_RUTA, 'VehiculoConFacturacion.java': D_FAC}),
 ]
 
+
+# ───────────────────────── El recuperatorio de verdad (tramo sin pavimentar, noviembre de 2026)
+# La solución completa está en codigo/R (la armó el laboratorio y pasa el test de la cátedra). Lo de la parte 2 (la
+# subclase con el porcentaje, todavía con la fórmula vieja) sale de cambiarle a esa solución la parte 3.
+R_RUTA, R_SUB, R_PARSER, R_FLOTA, R_APP = (cod('R', n) for n in ('VehiculoRuta.java', 'VehiculoRutaConTramoSinPavimentar.java', 'ParserVehiculos.java', 'Flota.java', 'App.java'))
+HR = H5 + ',porcentajeRutaSinPAvimentar'
+R_RUTA_P2 = cambiar(ORIG['VehiculoRuta.java'],
+    ('public final class VehiculoRuta', 'public class VehiculoRuta'),
+    ('if (campos == null || campos.length != 5) {\n            throw new IllegalArgumentException("La fila debe tener exactamente cinco columnas");',
+     'if (campos == null || (campos.length != 5 && campos.length != 6)) {\n            throw new IllegalArgumentException("La fila debe tener cinco o seis columnas");'),
+    ('        int indiceDesgaste = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n',
+     '        int indiceDesgaste = calcularIndiceDesgaste(velocidadPromedio, cargaToneladas);\n'
+     '        if (campos.length == 6) {\n'
+     '            int porcentajeRutaSinPAvimentar = convertirEntero(campos[5], "porcentajeRutaSinPAvimentar");\n'
+     '            return new VehiculoRutaConTramoSinPavimentar(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste, porcentajeRutaSinPAvimentar);\n'
+     '        }\n'))
+R_SUB_P2 = """package ar.edu.backend;
+
+public class VehiculoRutaConTramoSinPavimentar extends VehiculoRuta {
+    private final int porcentajeRutaSinPAvimentar;
+
+    public VehiculoRutaConTramoSinPavimentar(
+            String patente,
+            String zona,
+            int velocidadPromedio,
+            int cargaToneladas,
+            String estado,
+            int indiceDesgaste,
+            int porcentajeRutaSinPAvimentar) {
+        super(patente, zona, velocidadPromedio, cargaToneladas, estado, indiceDesgaste);
+        if (porcentajeRutaSinPAvimentar < 0 || porcentajeRutaSinPAvimentar > 100) {
+            throw new IllegalArgumentException("El campo porcentajeRutaSinPAvimentar debe ser mayor o igual a 0 y menor o igual a 100");
+        }
+        this.porcentajeRutaSinPAvimentar = porcentajeRutaSinPAvimentar;
+    }
+
+    public int getPorcentajeRutaSinPAvimentar() {
+        return porcentajeRutaSinPAvimentar;
+    }
+}
+"""
+R_BASE = {'VehiculoRuta.java': R_RUTA, 'VehiculoRutaConTramoSinPavimentar.java': R_SUB}
+
+P1.append(codigo('r1.5', 'Encabezado nuevo con filas de 5 y de 6 (`porcentajeRutaSinPAvimentar`)', '`ParserVehiculos.parsear` (mirá `VehiculoRuta`, que ya acepta 5 o 6 campos)',
+    'El parser del recuperatorio. Hay que aceptar **los dos encabezados**. Con el original, cada fila tiene **5** campos, como siempre. Con el nuevo (el mismo más `,porcentajeRutaSinPAvimentar`), '
+    'se admiten filas de **5 y de 6** campos: el formato de cada fila lo dice su ancho. Cualquier otro ancho es inválido, y otro encabezado sigue tirando `IllegalArgumentException`. Un solo loop: no se duplica el parser.',
+    [arch('ParserVehiculos.java', ORIG['ParserVehiculos.java'], R_PARSER), arch('VehiculoRuta.java', R_RUTA, solo=True)],
+    [ch(r'porcentajeRutaSinPAvimentar', 'El encabezado nuevo', 'Falta el encabezado nuevo, con `porcentajeRutaSinPAvimentar`', 'ParserVehiculos.java'),
+     ch(r'campos\.length\s*!=\s*(?!5\b)\w+', 'El ancho depende del encabezado', 'Compará el largo con una variable que diga el encabezado, no solo con 5', 'ParserVehiculos.java'),
+     ch(r'=\s*6\s*;|\?\s*6\b|:\s*6\b', 'Ancho 6 para el encabezado nuevo', 'Falta el ancho 6 para el encabezado nuevo', 'ParserVehiculos.java'),
+     ch(r'\bwhile\s*\(', 'Un solo loop', 'Usá un solo `while` para los dos formatos', 'ParserVehiculos.java', 'cuenta', veces=1),
+     ch(r'throw\s+new\s+IllegalArgumentException', 'Otro encabezado sigue abortando', 'Con otro encabezado hay que tirar `IllegalArgumentException`', 'ParserVehiculos.java'),
+     ch(r'new\s+VehiculoRuta(ConTramoSinPavimentar)?\s*\(', 'El parser no crea vehículos', 'El parser no crea las clases: llama a `VehiculoRuta.desdeCampos`', 'ParserVehiculos.java', 'noContiene')],
+    ['Una constante para el encabezado nuevo: `ENCABEZADO + ",porcentajeRutaSinPAvimentar"`.', 'Después de leer la primera línea, guardá el ancho máximo: 5 con el original, 6 con el nuevo, o la excepción.',
+     'En el loop, una fila es válida si tiene 5 campos **o** el ancho del encabezado: `campos.length != 5 && campos.length != largo`.'],
+    ['Con el encabezado original `largo` es 5: la condición queda en «distinto de 5», como antes.', 'Es distinto del 3K1: ahí, bajo el encabezado de 6, una fila de 5 era inválida. Acá vale.',
+     'Un encabezado repetido en el medio no hace falta buscarlo aparte: cae como fila inválida (`velocidadPromedio` no es un número).', 'EN_DEPOSITO se sigue descartando después de mirar el ancho.'],
+    tabla(HR, ['trk-1,NORTE,76,11,EN_RUTA', 'trk-2,SUR,76,11,EN_RUTA,30', 'trk-3,SUR,76,11', 'trk-4,SUR,76,11,EN_RUTA,30,x', 'trk-5,SUR,999,-5,EN_DEPOSITO,500'], ['porcentajeRutaSinPAvimentar']),
+    'trk-1 (5 campos) y trk-2 (6) se procesan · trk-3 (4) y trk-4 (7) son **inválidas** · trk-5 se **descarta** sin mirar el 500. Leídas 5 · procesadas 2 · descartadas 1 · inválidas 2.',
+    prueba=f"""        ResultadoParseo r = leer("{HR}", "trk-1,NORTE,76,11,EN_RUTA", "trk-2,SUR,76,11,EN_RUTA,30", "trk-3,SUR,76,11", "trk-4,SUR,76,11,EN_RUTA,30,x", "trk-5,SUR,999,-5,EN_DEPOSITO,500");
+        igual(5, r.getFilasLeidas(), "leídas"); igual(2, r.getFilasProcesadas(), "procesadas"); igual(1, r.getFilasDescartadas(), "descartadas"); igual(2, r.getFilasInvalidas(), "inválidas");
+        igual(4, r.getErrores().get(0).getNumeroLinea(), "la fila de 4 campos está en la línea 4");
+        ResultadoParseo viejo = leer("{H5}", "trk-1,NORTE,76,11,EN_RUTA", "trk-2,NORTE,76,11,EN_RUTA,30");
+        igual(1, viejo.getFilasProcesadas(), "formato original"); igual(1, viejo.getFilasInvalidas(), "6 campos bajo el encabezado original");
+        igual(1, leer("{HR}", "trk-1,NORTE,76,11,EN_RUTA", "{HR}").getFilasInvalidas(), "el encabezado repetido es inválido");
+        lanza(() -> leer("otra,cabecera"), "otro encabezado");
+""", base={'VehiculoRutaConTramoSinPavimentar.java': R_SUB}))
+
+P2.append(codigo('r2.13', 'La subclase con el porcentaje (`VehiculoRutaConTramoSinPavimentar`)', '`VehiculoRutaConTramoSinPavimentar.java` (archivo nuevo) y `VehiculoRuta`',
+    'La columna nueva va con **herencia**, como pide el recuperatorio: `VehiculoRutaConTramoSinPavimentar` extiende **directamente** a `VehiculoRuta`, guarda el porcentaje con su getter y valida que esté **entre 0 y 100, inclusive**. '
+    '`desdeCampos` mira el ancho: con 5 campos crea un `VehiculoRuta`, con 6 lee el porcentaje y crea la subclase (y con otro ancho, la excepción). Por ahora el índice sigue con la fórmula de siempre: la nueva es la parte 3.',
+    [arch('VehiculoRuta.java', ORIG['VehiculoRuta.java'], R_RUTA_P2), arch('VehiculoRutaConTramoSinPavimentar.java', STUB('VehiculoRutaConTramoSinPavimentar'), R_SUB_P2)],
+    [ch(r'class\s+VehiculoRutaConTramoSinPavimentar\s+extends\s+VehiculoRuta\b', 'Hereda directo de VehiculoRuta', 'Falta `class VehiculoRutaConTramoSinPavimentar extends VehiculoRuta`', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'\bfinal\s+class\s+VehiculoRuta\b', '`VehiculoRuta` se puede heredar', 'Sacale el `final` a `VehiculoRuta`', 'VehiculoRuta.java', 'noContiene'),
+     ch(r'private\s+final\s+int\s+porcentajeRutaSinPAvimentar\s*;', 'El atributo, privado y final', 'Falta `private final int porcentajeRutaSinPAvimentar;`', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'public\s+int\s+getPorcentajeRutaSinPAvimentar\s*\(\s*\)', 'El getter', 'Falta `getPorcentajeRutaSinPAvimentar()`', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'>\s*100', 'El tope de 100', 'Validá que no pase de 100', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'<\s*0\b', 'Sin negativos', 'Validá que no sea negativo', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'campos\.length\s*==\s*6', 'Mira el ancho', '`desdeCampos` tiene que mirar si hay 6 campos', 'VehiculoRuta.java'),
+     ch(r'new\s+VehiculoRutaConTramoSinPavimentar\s*\(', 'Crea la subclase', 'Con 6 campos, `desdeCampos` crea un `VehiculoRutaConTramoSinPavimentar`', 'VehiculoRuta.java')],
+    ['Sacale el `final` a `VehiculoRuta`.', 'En el archivo nuevo: `public class VehiculoRutaConTramoSinPavimentar extends VehiculoRuta`, con el atributo y su getter.',
+     'Su constructor recibe lo mismo que el de `VehiculoRuta` más el porcentaje, llama a `super(...)` y después valida `< 0 || > 100`.',
+     'En `desdeCampos`: aceptá 5 o 6 campos; si hay 6, `convertirEntero(campos[5], ...)` y devolvé la subclase.'],
+    ['`super(...)` tiene que ser la primera línea del constructor: la validación del porcentaje va después.', '0 y 100 son válidos (inclusive); -1 y 101 no.',
+     'El parser no cambia en esta parte: sigue llamando a `desdeCampos` y guarda todo como `VehiculoRuta`.'],
+    tabla(HR, ['A,NORTE,76,11,EN_RUTA,0', 'B,SUR,76,11,EN_RUTA,100', 'C,SUR,76,11,EN_RUTA,101', 'D,SUR,76,11,EN_RUTA,abc', 'E,SUR,76,11,EN_RUTA'], ['porcentajeRutaSinPAvimentar']),
+    'A y B son de la subclase (0 y 100 valen) · C (101) y D (no es un número) son **inválidas** · E (5 campos) es un `VehiculoRuta` común.',
+    prueba="""        VehiculoRuta va = v("A", "NORTE", "76", "11", "EN_RUTA", "0");
+        igual(true, va instanceof VehiculoRutaConTramoSinPavimentar, "6 campos crea la subclase");
+        igual(VehiculoRuta.class, VehiculoRutaConTramoSinPavimentar.class.getSuperclass(), "hereda directo de VehiculoRuta");
+        igual(0, ((VehiculoRutaConTramoSinPavimentar) va).getPorcentajeRutaSinPAvimentar(), "el porcentaje");
+        igual(100, ((VehiculoRutaConTramoSinPavimentar) v("B", "SUR", "76", "11", "EN_RUTA", "100")).getPorcentajeRutaSinPAvimentar(), "100 es válido");
+        lanza(() -> v("C", "SUR", "76", "11", "EN_RUTA", "101"), "101 está fuera de rango");
+        lanza(() -> v("C", "SUR", "76", "11", "EN_RUTA", "-1"), "-1 está fuera de rango");
+        lanza(() -> v("D", "SUR", "76", "11", "EN_RUTA", "abc"), "no es un número");
+        igual(VehiculoRuta.class, v("E", "SUR", "76", "11", "EN_RUTA").getClass(), "5 campos crea un VehiculoRuta");
+        lanza(() -> v("F", "SUR", "76", "11"), "4 campos");
+"""))
+
+P3.append(codigo('r3.5', 'El índice nuevo en la subclase', '`VehiculoRutaConTramoSinPavimentar` y `VehiculoRuta`',
+    'En el formato nuevo el índice de desgaste se calcula con **otra fórmula**: `(velocidadPromedio × 0.55) + (cargaToneladas × 0.30) + (porcentajeRutaSinPAvimentar × 0.15)`, truncado a entero. '
+    'El formato original sigue con la de siempre. El constructor de `VehiculoRuta` **recibe** el índice ya calculado y no lo recalcula: hoy el público lo compara con la fórmula vieja, así que la subclase necesita otro camino. '
+    'El costo no cambia (`2000 * índice / 100`). Con velocidad 76, carga 11 y 30 %: índice nuevo **49**; con el formato original, **50**.',
+    [arch('VehiculoRuta.java', R_RUTA_P2, R_RUTA), arch('VehiculoRutaConTramoSinPavimentar.java', R_SUB_P2, R_SUB)],
+    [ch(r'0\.55', 'El 0.55 de la velocidad', 'Falta el `0.55` de la fórmula nueva', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'0\.30?\b', 'El 0.30 de la carga', 'Falta el `0.30` de la fórmula nueva', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'0\.15', 'El 0.15 del porcentaje', 'Falta el `0.15` de la fórmula nueva', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'\(\s*int\s*\)', 'Trunca a entero', 'El índice se trunca con `(int)`', 'VehiculoRutaConTramoSinPavimentar.java'),
+     ch(r'protected\s+VehiculoRuta\s*\(', 'Un constructor para las subclases', 'Agregá en `VehiculoRuta` un constructor `protected` que reciba el índice de la subclase', 'VehiculoRuta.java'),
+     ch(r'0\.6\b', 'La fórmula vieja sigue', 'No borres la fórmula original (0.6 y 0.4): es la del formato viejo', 'VehiculoRuta.java'),
+     ch(r'instanceof', 'Sin `instanceof`', 'Resolvelo con la subclase, sin `instanceof`', tipo='noContiene')],
+    ['En la subclase: `static int calcularIndiceDesgaste(int velocidad, int carga, int porcentaje)` con `(int) (velocidad * 0.55 + carga * 0.30 + porcentaje * 0.15)`.',
+     'En `VehiculoRuta`: un constructor `protected` que reciba también el índice calculado y haga todas las validaciones con ese; el público llama a ese con la fórmula vieja (`this(...)`).',
+     'La subclase llama al `protected` con su fórmula.', 'En `desdeCampos`, con 6 campos, el índice sale de la fórmula de la subclase.'],
+    ['Así no se rompe el test viejo: el constructor público sigue chequeando la fórmula de siempre.', 'Ojo con `0.30` y `0.3`: es lo mismo.',
+     '`Flota` no cambia: suma `getCostoDesgasteOperativo()` de todos, sean de la clase que sean.'],
+    tabla(HR, ['A,NORTE,76,11,EN_RUTA,30', 'B,NORTE,76,11,EN_RUTA', 'C,SUR,40,10,DEMORADO,0', 'D,SUR,40,10,DEMORADO,100'], ['porcentajeRutaSinPAvimentar']),
+    'A → 41.8 + 3.3 + 4.5 = 49.6 → **49** (costo **980**) · B → **50** (costo **1000**) · C → 22 + 3 + 0 = **25** · D → 22 + 3 + 15 = **40**.',
+    prueba="""        VehiculoRuta va = v("A", "NORTE", "76", "11", "EN_RUTA", "30");
+        igual(49, va.getIndiceDesgaste(), "índice nuevo (49.6 truncado)"); igual(980, va.getCostoDesgasteOperativo(), "costo del nuevo");
+        VehiculoRuta vb = v("B", "NORTE", "76", "11", "EN_RUTA");
+        igual(50, vb.getIndiceDesgaste(), "índice original"); igual(1000, vb.getCostoDesgasteOperativo(), "costo del original");
+        igual(25, v("C", "SUR", "40", "10", "DEMORADO", "0").getIndiceDesgaste(), "con 0 %");
+        igual(40, v("D", "SUR", "40", "10", "DEMORADO", "100").getIndiceDesgaste(), "con 100 %");
+        igual(1980, new Flota(List.of(va, vb)).getCostoTotalDesgasteOperativo(), "la flota suma los dos");
+        anda(() -> new VehiculoRuta("X", "NORTE", 76, 11, "EN_RUTA", 50), "el constructor público con la fórmula vieja");
+        lanza(() -> new VehiculoRuta("X", "NORTE", 76, 11, "EN_RUTA", 49), "el público sigue chequeando la fórmula vieja");
+""", base={'ParserVehiculos.java': R_PARSER}))
+
+P4.append(codigo('r4.8', 'La cantidad con índice menor a 55, en el panorama', '`Flota` → `panorama()`',
+    'El recuperatorio pide que `Flota.panorama()` incluya la **cantidad de vehículos con índice de desgaste menor a 55** (con el CSV combinado da 20). `Flota` ya sabe contarlos: reutilizalo, no lo calcules de nuevo. '
+    'Tiene que andar igual con los dos tipos de vehículo, sin preguntar de qué clase es cada uno.',
+    [arch('Flota.java', ORIG['Flota.java'], R_FLOTA)],
+    [ch(r'contarConIndiceDesgasteMenorA\s*\(\s*55\s*\)', 'Reutiliza el conteo', 'En `panorama()`, llamá a `contarConIndiceDesgasteMenorA(55)`', 'Flota.java'),
+     ch(r'getCostoPorZona\s*\(', 'Siguen los costos por zona', 'No saques los costos por zona del panorama', 'Flota.java'),
+     ch(r'instanceof', 'Sin `instanceof`', '`Flota` trabaja con `VehiculoRuta`: no preguntes la clase', 'Flota.java', 'noContiene')],
+    ['Al final de `panorama()`, agregá una línea más con `System.lineSeparator()`.', 'El texto, por ejemplo: `"Vehículos con índice de desgaste menor a 55: " + contarConIndiceDesgasteMenorA(55)`.'],
+    ['`contarConIndiceDesgasteMenorA` ya estaba en el preenunciado: el colector no cambia, solo se muestra un dato más.', 'El 55 es «menor a», no «menor o igual».'],
+    tabla(HR, ['A,NORTE,76,11,EN_RUTA,30', 'B,NORTE,100,40,EN_RUTA', 'C,SUR,40,10,DEMORADO,0'], ['porcentajeRutaSinPAvimentar']),
+    'A (**49**) y C (**25**) tienen índice menor a 55 · B tiene **76**. El panorama muestra **2**.',
+    prueba="""        Flota f = new Flota(List.of(v("A", "NORTE", "76", "11", "EN_RUTA", "30"), v("B", "NORTE", "100", "40", "EN_RUTA"), v("C", "SUR", "40", "10", "DEMORADO", "0")));
+        String p = f.panorama();
+        if (!java.util.regex.Pattern.compile("55\\\\D{0,6}2\\\\b").matcher(p).find()) throw new AssertionError("el panorama no muestra los 2 con índice menor a 55:\\n" + p);
+        contiene(p, "NORTE: " + (980 + 1520)); contiene(p, "SUR: 500");
+        igual(true, new Flota(List.of()).panorama().contains("55"), "con la flota vacía también");
+""", base=R_BASE))
+
+P5.append(codigo('r5.4', 'El main del recuperatorio', '`App` → `main`',
+    'El main del recuperatorio: sin argumentos lee `datos/datos-parcial.csv`; si le pasan una ruta, usa esa. Muestra el resumen del parseo, la cantidad de objetos y el panorama (que ya trae los costos por zona y la cantidad con índice menor a 55). '
+    'No calcula nada: solo llama métodos.',
+    [arch('App.java', ORIG['App.java'], R_APP), arch('Flota.java', R_FLOTA, solo=True)],
+    [ch(r'datos-parcial\.csv', 'El CSV del examen por defecto', 'La ruta por defecto tiene que ser `datos/datos-parcial.csv`', 'App.java'),
+     ch(r'args\.length', 'Usa la ruta del argumento', 'Si viene un argumento, usá esa ruta (`args.length`)', 'App.java'),
+     ch(r'getVehiculos\s*\(\s*\)\s*\.size\s*\(\s*\)', 'La cantidad de objetos', 'Mostrá cuántos objetos se crearon: `resultado.getVehiculos().size()`', 'App.java'),
+     ch(r'panorama\s*\(', 'El panorama', 'Mostrá `flota.panorama()`', 'App.java'),
+     ch(r'\bfor\s*\(|\.stream\s*\(', 'El main no calcula', 'Sacá el `for` o el `stream` del main: eso va en `Flota`', 'App.java', 'noContiene')],
+    ['Cambiá la ruta por defecto: `Path.of("datos", "datos-parcial.csv")`.', 'Imprimí `"Objetos: " + resultado.getVehiculos().size()`.', 'Dejá el resumen y el `panorama()`.'],
+    ['Con `datos/datos.csv` como argumento tiene que seguir dando los números del preenunciado (32 procesadas, costo 31840).', 'Con el combinado: 35 procesadas, costo 34800 y 20 con índice menor a 55.'],
+    csv=tabla(HR, ['a,NORTE,76,11,EN_RUTA,30', 'b,NORTE,76,11,EN_RUTA', 'c,SUR,40,10,DEMORADO,0', 'd,SUR,40,10,DEMORADO,101'], ['porcentajeRutaSinPAvimentar']),
+    csvNota='a **980** · b **1000** · c **500** · d es **inválida** (101). Total **2480**.',
+    datos='Con esas 4 filas: `Objetos: 3`, el total 2480 y los 3 con índice menor a 55.',
+    prueba="""        java.nio.file.Path p = csv(\"""" + HR + """\", "a,NORTE,76,11,EN_RUTA,30", "b,NORTE,76,11,EN_RUTA", "c,SUR,40,10,DEMORADO,0", "d,SUR,40,10,DEMORADO,101");
+        String s = salida(p.toString());
+        contiene(s, "Objetos: 3"); contiene(s, "Costo total por desgaste operativo: 2480"); contiene(s, "Inválidas: 1"); contiene(s, "menor a 55: 3");
+""", base={'ParserVehiculos.java': R_PARSER, 'VehiculoRuta.java': R_RUTA, 'VehiculoRutaConTramoSinPavimentar.java': R_SUB}))
+
 PARTES = [
     dict(n=0, id='r-ubicar', titulo='¿Dónde va cada cambio?', corto='Leer la consigna', pestana='Consigna',
          explicacion='El recuperatorio no trae tareas en el preenunciado: el día del examen piden cambios. Antes de escribir código, ubicá cada pedido: la forma del CSV va en el **Parser**; el dato nuevo, sus validaciones y cálculos, en el **dominio** (`VehiculoRuta`); conteos y totales, en el **colector** (`Flota`); mostrar, en el **Main** (`App`).',
@@ -852,6 +1019,7 @@ PARTES = [
 
 
 CASOS = {
+    'Recuperatorio': ['r1.5', 'r2.13', 'r3.5', 'r4.8', 'r5.4'],   # el de verdad (tramo sin pavimentar)
     'Caso A': ['r0.1', 'r1.1', 'r2.7', 'r2.3', 'r3.1', 'r4.2', 'r5.1'],
     'Caso B': ['r0.2', 'r1.3', 'r2.1', 'r2.4', 'r4.6'],
     'Caso C': ['r0.3', 'r1.2', 'r2.5', 'r3.2'],
@@ -866,6 +1034,9 @@ CASOS = {
 # Cuando un ejercicio de un caso arranca con un paso anterior del caso ya hecho, se avisa (con las líneas que cambian
 # respecto del preenunciado). Los ejercicios del preenunciado tienen que arrancar del código original, tal cual.
 YA_HECHO = {
+    'r1.5': 'Del recuperatorio ya está hecho lo del dominio (partes 2 y 3): `VehiculoRuta` acepta 5 o 6 campos y con 6 crea un `VehiculoRutaConTramoSinPavimentar`. Acá solo cambiás el parser.',
+    'r3.5': 'De la parte 2 ya está hecha la subclase con el porcentaje y su rango, y `desdeCampos` la crea con 6 campos; todavía usa la fórmula vieja.',
+    'r5.4': '`Flota.panorama()` ya muestra cuántos tienen índice menor a 55 (la parte 4).',
     'r1.1': 'Del caso A ya está hecho lo del dominio (partes 2 y 3): `VehiculoRuta` ya no es `final`, lee la 6.ª columna y crea un `VehiculoRefrigerado`. Acá solo cambiás el parser.',
     'r1.3': 'Del caso B ya está hecho lo del dominio (parte 2): `VehiculoRuta` tiene `kilometros`, acepta 5 o 6 campos y suma `km / 10` al costo. Acá solo cambiás el parser.',
     'r1.4': 'Del caso D ya está hecho lo del dominio (parte 3): `VehiculoRuta` acepta 5 o 6 campos, crea un `VehiculoConFacturacion` con 6 y tiene el gancho. Acá solo cambiás el parser.',
@@ -920,7 +1091,7 @@ def main():
             if d.startswith('r') and d not in PRUEBA and os.path.isdir(os.path.join(PRUEBAS, d)):
                 shutil.rmtree(os.path.join(PRUEBAS, d))
     caso = {id: c for c, ids in CASOS.items() for id in ids}
-    orden = {c: i for i, c in enumerate(['Preenunciado', 'Caso A', 'Caso B', 'Caso C', 'Caso D', 'Caso E', 'Caso F', 'Caso G', 'Repaso'])}
+    orden = {c: i for i, c in enumerate(['Recuperatorio', 'Preenunciado', 'Caso A', 'Caso B', 'Caso C', 'Caso D', 'Caso E', 'Caso F', 'Caso G', 'Repaso'])}
     for p in PARTES:   # en cada parte, los casos en orden (A, B, C, D) y el repaso al final
         p['ejercicios'].sort(key=lambda e: orden[caso.get(e['id'], 'Preenunciado')])
     for p in PARTES:

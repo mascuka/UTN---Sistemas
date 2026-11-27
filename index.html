@@ -974,6 +974,8 @@
   .tm-bloque h3 .tm-n{width:auto;font-size:1.05rem;color:var(--muted)}
   .tm-bloque ul{margin:0;padding-left:18px;font-size:.88rem;line-height:1.55;color:var(--text2)}
   .tm-bloque li + li{margin-top:3px}
+  .tm-bloque p{margin:0;font-size:.9rem;line-height:1.6;color:var(--text2)}
+  .tm-plano + .mt-h2{margin-top:26px}
   .tm-tema{border-bottom:1px solid var(--line)}
   .tm-tema summary{display:flex;align-items:center;gap:14px;padding:12px 4px;cursor:pointer;list-style:none}
   .tm-tema summary::-webkit-details-marker{display:none}
@@ -2814,14 +2816,14 @@ const MATERIAS = {
         nombres: { parcial: "Parciales / Simulacros" },
         quizEn: "parcial",          // el quiz y el paso a paso se muestran arriba de esta sección
         herramientasParcial: ["pasos"],   // herramientas que van arriba de Parciales (no en la Práctica)
-        practicaParcial: "practica/bk-parcial/ejercicios.json",   // "El parcial por partes": las 6 partes con ejercicios de todos los parciales
-        // "El recuperatorio por partes" (ruta …/pr): casos hipotéticos sobre el preenunciado de Flota, con las mismas partes
-        // (practica/bk-recuperatorio, armado con herramientas/parcial-por-partes/recuperatorio/armar.py)
-        practicaRec: { url: "practica/bk-recuperatorio/ejercicios.json", titulo: "El recuperatorio por partes", detalle: "24 ejercicios de código sobre Flota Logística, todos con editor: dos formatos en el parser, la columna nueva en el dominio, la subclase, el colector y el main; el caso D es el mismo cambio del Parcial 3K1" },
+        // "El parcial por partes": las 6 partes con ejercicios de todos los parciales. El recuperatorio es un parcial más: sus
+        // ejercicios (practica/bk-recuperatorio, de herramientas/parcial-por-partes/recuperatorio/armar.py) van dentro de las
+        // mismas partes; cada archivo guarda su avance
+        practicaParcial: ["practica/bk-parcial/ejercicios.json", "practica/bk-recuperatorio/ejercicios.json"],
         // Práctica por partes: lo que trae el preenunciado (practica/bk-practica) y lo que agrega el parcial (los mismos
         // ejercicios de "El parcial por partes"), cada parte con su explicación antes de practicar y el resumen en PDF a mano.
         practicaPartes: {
-          fuentes: ["practica/bk-practica/ejercicios.json", "practica/bk-parcial/ejercicios.json"],
+          fuentes: ["practica/bk-practica/ejercicios.json", "practica/bk-parcial/ejercicios.json", "practica/bk-recuperatorio/ejercicios.json"],
           resumen: { nombre: "Resumen de lo básico · guía rápida", url: "material/backend-de-aplicaciones/p1/parcial/guia-rapida-para-el-parcial-windows.pdf", paginas: 16 }
         },
         // Los ejercicios de a pasos con Java que corre en el navegador (practica/java/, practica/bk-p1/*.json) siguen en
@@ -2848,6 +2850,8 @@ const MATERIAS = {
           {"id": "bk-simulacro-4", "titulo": "Simulacro 4 · Protección de compras", "origen": "Simulacro · 3K7 · Tarjetas de crédito", "detalle": "Otro dominio, el mismo esquema de parcial: el consumo asegurado con herencia, los dos formatos, el conteo por modalidad y el main.", "pasos": 6, "grupo": "parcial", "tema": "parcial", "url": "practica/bk-p1/05-bk-simulacro-4.json"}
         ],
         temas: {
+          plano: true,
+          como: { titulo: "Cómo es el parcial", texto: "Es un parcial en computadora, sin acceso a internet y sin uso de IA. Antes te dan un preenunciado (un proyecto que ya funciona, para estudiar). El día del parcial te dan el enunciado con un nuevo archivo CSV, para resolver en 45 minutos, y un cuestionario con preguntas de los cuestionarios y preguntas propias del parcial que estás haciendo." },
           titulo: "Temas que entran",
           unidades: [
             { titulo: "Introducción", contenidos: ["Capa de backend y su organización interna", "Microservicios y endpoints (APIs REST)", "Tecnologías de la materia: Java, Maven, H2 / PostgreSQL"] },
@@ -2995,19 +2999,19 @@ const MATERIAS = {
                 { n: 27, nombre: "datos-parcial.csv del parcial de práctica 2", detalle: "26 filas con el encabezado nuevo: los límites 0 y 20, 90 y 91 km/h, el tope que solo afecta al acoplado y una fila inválida por cada regla", tipo: "CSV", bajar: true, url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/datos-parcial.csv" },
                 { n: 28, nombre: "Solución propuesta del parcial de práctica 2", nota: "Hecha por nosotros", detalle: "VehiculoConAcoplado extiende VehiculoRuta, getTipo() para el conteo sin instanceof; probada con mvn test (6 tests del preenunciado y 7 nuevos) y con los números del enunciado", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/recuperatorio-1/practica-acoplado/solucion-propuesta.zip" }
               ] },
-              { titulo: "Simulacro 2 · 3K3", tema: "Taller de reparaciones", detalle: "Órdenes de reparación; en el parcial se agregan las EXPRESS, la garantía y los repuestos", archivos: [
+              { titulo: "Simulacro 2 · 3K3 · 2026", tema: "Taller de reparaciones", detalle: "Órdenes de reparación; en el parcial se agregan las EXPRESS, la garantía y los repuestos", archivos: [
                 { n: 29, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/preenunciado.pdf" },
                 { n: 30, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/enunciado.pdf" },
                 { n: 31, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial, los tests nuevos y la verificación. Corregido: el test nuevo no compilaba contra el proyecto inicial y sus filas tenían una columna menos (en CORRECCIONES.md)", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2.zip" },
                 { n: 32, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (ReparacionExpress), probada con los tests viejos, los nuevos y los ejemplos de la consigna", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-2/03-solucion-propuesta.zip" }
               ] },
-              { titulo: "Simulacro 3 · 3K4", tema: "Juegos de mesa", detalle: "Catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", archivos: [
+              { titulo: "Simulacro 3 · 3K4 · 2026", tema: "Juegos de mesa", detalle: "Catálogo y puntuación ajustada; en el parcial se agregan los juegos cooperativos", archivos: [
                 { n: 33, nombre: "Preenunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/preenunciado.pdf" },
                 { n: 34, nombre: "Enunciado", tipo: "PDF", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/enunciado.pdf" },
                 { n: 35, nombre: "Todo el simulacro", detalle: "El proyecto, el CSV del parcial y los tests nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3.zip" },
                 { n: 36, nombre: "Solución propuesta", nota: "Hecha por nosotros", detalle: "No es oficial: resuelta con herencia (JuegoCooperativo), con los nombres de métodos que exige el test nuevo; pasan los tests viejos y los nuevos", tipo: "ZIP", url: "material/backend-de-aplicaciones/p1/parcial/simulacros/simulacro-3/03-solucion-propuesta.zip" }
               ] },
-              { titulo: "Simulacro 4 · 3K7", tema: "Tarjetas de crédito", detalle: "Liquidación de consumos; en el parcial se agrega la protección de compras. Tiene modo simulacro y la solución", 
+              { titulo: "Simulacro 4 · 3K7 · 2026", tema: "Tarjetas de crédito", detalle: "Liquidación de consumos; en el parcial se agrega la protección de compras. Tiene modo simulacro y la solución", 
                 // Modo simulacro: con reloj, el enunciado al empezar y la solución al terminar
                 simulacro: {
                   id: "bk-s4", titulo: "Simulacro 4 · Tarjetas de crédito", minutos: 45,
@@ -3050,6 +3054,8 @@ const MATERIAS = {
           ]
         },
         temas: {
+          plano: true,
+          como: { titulo: "Cómo es el TPI", texto: "Es un trabajo práctico integrador con dos entregas: una inicial, con corrección de pares, y una final con coloquio. El coloquio es oral: contás el problema y la solución, mostrás Postman nombrando las reglas de negocio y después te piden que muestres en el código dónde está cada cosa. Hay que sacar 6 o más entre la rúbrica y el coloquio (o en la re-entrega)." },
           titulo: "Temas que entran",
           unidades: [
             { titulo: "Todo lo del 1º Parcial", contenidos: ["Es acumulativo: introducción al backend, Java, POO, colecciones y streams, más los temas nuevos de abajo"] },
@@ -4693,7 +4699,7 @@ const tieneHerramientas = p => !!p.quiz || herramientasParte(p).length > 0;
 function pestanasDe(p){
   const una = (p.secciones && !p.secciones.length) || !!p.material;
   const deParcial = d => d[0] === "h" && (!p.practicaTemas || (p.herramientasParcial || []).includes(d[1]));
-  const enHerr = d => d[0] === "quiz" || d[0] === "pp" || d[0] === "pr" || deParcial(d);
+  const enHerr = d => d[0] === "quiz" || d[0] === "pp" || deParcial(d);
   const temas = p.temas && p.temas.unidades && p.temas.unidades.length ? [{ go: "/temas", t: "Temas", on: d => d[0] === "temas" }] : [];
   if(una){
     const vids = (p.videos || []).length, arch = cantArchivos(p.material || []);
@@ -5503,14 +5509,18 @@ function temasParcial(m, p){
   const t = p.temas;
   if(!t || !t.unidades || !t.unidades.length) return "";
   const plural = (n, x) => `${n} ${x}${n === 1 ? "" : "s"}`;
-  // Sin material ni videos por tema no hay nada que desplegar: van todos a la vista
-  const conMaterial = t.unidades.some(u => { const x = materialDeTema(p, u.titulo); return x.archivos.length || x.videos.length; });
-  if(!conMaterial) return `
+  // Sin material ni videos por tema no hay nada que desplegar: van todos a la vista (con «plano: true», siempre así).
+  // Con «como», arriba va cómo es la evaluación
+  const conMaterial = !t.plano && t.unidades.some(u => { const x = materialDeTema(p, u.titulo); return x.archivos.length || x.videos.length; });
+  const como = t.como ? `
+    <h2 class="mt-h2">${esc(t.como.titulo || "Cómo es")}</h2>
+    <div class="tm-plano"><section class="tm-bloque"><p>${esc(t.como.texto)}</p></section></div>` : "";
+  if(!conMaterial) return `${como}
     <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
     <div class="tm-plano">${t.unidades.map((u, i) => `
       <section class="tm-bloque"><h3><span class="tm-n">${i + 1}</span>${esc(u.titulo)}</h3>
         <ul>${u.contenidos.map(c => `<li>${esc(c)}</li>`).join("")}</ul></section>`).join("")}</div>`;
-  return `
+  return `${como}
     <h2 class="mt-h2">${esc(t.titulo || "Temas que entran")}</h2>
     <div class="tm-lista">${t.unidades.map((u, i) => {
       const { archivos, videos } = materialDeTema(p, u.titulo);
@@ -6474,7 +6484,6 @@ function parcialBox(m, p){
       <span class="pr-t">${porSec.length && !hs.length && !p.practicaParcial ? "¿Qué querés practicar?" : "Herramientas para practicar"}</span>
       ${hs.map(h => `<span class="pr-btn" data-go="m${m.n}/${p.id}/h/${h}">${ICON_TOOL}<span><b>${esc(HERRAMIENTAS[h].titulo)}</b><small>${esc(HERRAMIENTAS[h].corto)}</small></span></span>`).join("")}
       ${p.practicaParcial ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pp">${ICON_CODIGO}<span><b>${esc((p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</b><small>${esc((p.practicaParcialTarjeta || {}).detalle || "Cada parte del parcial con ejemplos de todos los parciales y simulacros")}</small></span></span>` : ""}
-      ${p.practicaRec ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/pr">${ICON_CODIGO}<span><b>${esc(p.practicaRec.titulo)}</b><small>${esc(p.practicaRec.detalle || "")}</small></span></span>` : ""}
       ${porSec.map(x => `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz/${slugQz(x.t)}">${ICON_LAPIZ}<span><b>${esc(x.nombre || x.t)}</b><small>${esc(x.d || "")}</small></span></span>`).join("")}
       ${p.quiz ? `<span class="pr-btn" data-go="m${m.n}/${p.id}/quiz">${porSec.length ? ICON_LAPIZ : ICON_QUIZ}<span><b>${esc(p.quizNombre || "Quiz")}</b><small>${esc(p.quizDetalle || "Preguntas de parciales, con la corrección al instante")}</small></span></span>` : ""}
     </div>`;
@@ -7330,7 +7339,7 @@ function viewEjp(m, p, tipo = "pp"){
         <div class="ejp-cab-der">${r ? `<a class="ejp-pdf" href="${esc(r.url)}" data-pdf="${esc(r.nombre)}" target="_blank" rel="noopener">${ICON_DOC}<span>${esc(r.etiqueta || "Resumen en PDF")}</span>${r.paginas ? `<small>${r.paginas} págs.</small>` : ""}</a>` : ""}${p.practicaPartes.sinProgreso ? "" : `<div class="ejp-prog" id="ejpProg"></div>`}</div></div>
       ${(p.practicaPartes.enlaces || []).length ? `<div class="ejp-herr"><span>Para hacerlo de verdad</span>${p.practicaPartes.enlaces.map(enlaceHtml).join("")}</div>` : ""}` : `
       <div class="crumbs"><span data-go="m${m.n}/${p.id}${kp ? `/${kp}/material` : ""}">‹ ${esc(kp ? nombreSec(p, kp) : p.titulo)}</span></div>
-      <div class="ejp-cab"><h1>${esc(tipo === "pr" ? p.practicaRec.titulo : (p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</h1><div class="ejp-prog" id="ejpProg"></div></div>`;
+      <div class="ejp-cab"><h1>${esc((p.practicaParcialTarjeta || {}).titulo || "El parcial por partes")}</h1><div class="ejp-prog" id="ejpProg"></div></div>`;
   return `
     <div class="ejp">${cab}
       <div class="ejp-partes" id="ejpPartes"></div>
@@ -7343,18 +7352,23 @@ function viewEjp(m, p, tipo = "pp"){
     </div>`;
 }
 async function montarEjp(m, p, id, tipo = "pp"){
-  const urls = tipo === "practica" ? p.practicaPartes.fuentes : tipo === "pr" ? [p.practicaRec.url] : [p.practicaParcial];
+  const urls = tipo === "practica" ? p.practicaPartes.fuentes : [].concat(p.practicaParcial);
   let ds;
   try { ds = await Promise.all(urls.map(cargarEjercicio)); }
   catch(e){ const c = $("#ejpIzq"); if(c) c.innerHTML = `<div class="empty">No se pudieron cargar los ejercicios. Probá recargar la página.</div>`; return; }
   if(!$("#ejpWs")) return;   // se cambió de página mientras cargaba
-  // Las partes de todos los archivos, numeradas de corrido (con un solo archivo, con su número de siempre)
+  // Las partes de todos los archivos, numeradas de corrido (con un solo archivo, con su número de siempre). Una parte con
+  // el mismo título que otra de un archivo anterior se suma a esa: el recuperatorio es un parcial más
   const partes = [], parteDe = new Map();
   ds.forEach((d, f) => d.partes.forEach(x => {
+    const igual = partes.find(pa => pa.f !== f && pa.titulo === x.titulo);
+    if(igual){ igual.ejercicios = igual.ejercicios.concat(x.ejercicios); x.ejercicios.forEach(e => parteDe.set(e, igual)); return; }
     const pa = { ...x, f, grupo: ds.length > 1 ? d.grupo : null, num: ds.length > 1 ? partes.length + 1 : x.n };
     partes.push(pa);
     pa.ejercicios.forEach(e => parteDe.set(e, pa));
   }));
+  // Si todas las partes son de un mismo archivo (las otras se sumaron a esas), van con su número de siempre y sin grupo
+  if(new Set(partes.map(x => x.f)).size === 1) partes.forEach(x => { x.num = x.n; x.grupo = null; });
   const ests = urls.map(leerEst), junto = k => Object.assign({}, ...ests.map(e => e[k]));
   const claveUltimo = tipo === "practica" ? `isi-pp:practica:${m.n}/${p.id}` : null;
   ejp = { m, p, tipo, partes, parteDe, claveUltimo, docs: Object.assign({}, ...ds.map(d => d.enunciados || {})),
@@ -7387,7 +7401,7 @@ function entrarParte(pa, mover = true){
 }
 /* La dirección cambia sin recargar y sin sumar pasos al "atrás" */
 function rutaEjp(x){
-  const r = `m${ejp.m.n}/${ejp.p.id}/${ejp.tipo === "practica" ? "practica" : ejp.tipo === "pr" ? "pr" : "pp"}/${x}`;
+  const r = `m${ejp.m.n}/${ejp.p.id}/${ejp.tipo === "practica" ? "practica" : "pp"}/${x}`;
   if(ruta !== r){ ruta = r; history.replaceState(history.state, "", "#/" + r); }
 }
 const subirEjp = () => { const w = $("#ejpPartes"); if(w.getBoundingClientRect().top < 0) w.scrollIntoView({ block: "start" }); };
@@ -10898,11 +10912,11 @@ function render(arriba = true){
     montarQuiz(m, p, d);
     const x = d && (p.quizSecciones || []).find(x => slugQz(x.t) === d);
     titulo = `${x ? x.nombre || x.t : "Quiz"} · ${p.titulo} · ${m.nombre}`;
-  } else if(p && (c === "pp" && p.practicaParcial || c === "pr" && p.practicaRec)){
-    ruta = `${a}/${b}/${c}${d ? "/" + d : ""}`;
-    app.innerHTML = viewEjp(m, p, c);
-    montarEjp(m, p, d, c);
-    titulo = `${c === "pr" ? p.practicaRec.titulo : "El parcial por partes"} · ${p.titulo} · ${m.nombre}`;
+  } else if(p && c === "pp" && p.practicaParcial){
+    ruta = `${a}/${b}/pp${d ? "/" + d : ""}`;
+    app.innerHTML = viewEjp(m, p, "pp");
+    montarEjp(m, p, d, "pp");
+    titulo = `El parcial por partes · ${p.titulo} · ${m.nombre}`;
   } else if(p && c === "practica" && p.practicaPartes && !(d && (p.practica || []).some(e => e.id === d))){
     // La Práctica por partes; los ejercicios de a pasos con Java (p.practica) siguen en su dirección de siempre
     ruta = `${a}/${b}/practica${d ? "/" + d : ""}`;
