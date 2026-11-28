@@ -1933,6 +1933,8 @@
   .cr-pk-vacio{padding:10px;color:var(--muted);font-size:.86rem}
   .cr-ayuda{color:var(--muted);font-size:.84rem;line-height:1.6;margin:12px 0 14px}
   .cr-ver .cr-ayuda{margin-top:0}
+  .cr-ayuda.cr-aviso{background:var(--rojo-f);color:var(--rojo);border-radius:10px;padding:8px 12px;margin-top:-6px}
+  .cr-ayuda.cr-aviso b{font-weight:600}
   .cr-ayuda svg{width:15px;height:15px;vertical-align:-3px;margin-right:6px}
   .cr-mues{display:inline-block;width:22px;height:12px;border-radius:4px;vertical-align:-1px}
   .cr-mues.opcion{border:1.5px dashed var(--muted)}
@@ -10258,6 +10260,17 @@ const claveDia = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2,
 const hoyClave = () => claveDia(new Date());
 const deClave = k => { const [a, m, d] = k.split("-").map(Number); return new Date(a, m - 1, d); };
 const cuatriActual = () => { const d = new Date(); return `${d.getFullYear()}-${d.getMonth() < 7 ? 1 : 2}`; };
+// El cuatrimestre de un día, con la misma regla: de enero a julio, el 1º
+const cuatriDe = k => { const [a, m] = k.split("-").map(Number); return `${a}-${m <= 7 ? 1 : 2}`; };
+/* Lo anotado de una materia que no está en el cronograma de ese cuatrimestre no va en el calendario (al guardar el cronograma
+   se borra). Lo que no es de una materia ("Otros") y lo de un cuatrimestre sin cronograma se ve siempre */
+const fechaVigente = (x, dia) => { if(!x.k) return true; const cr = cronoGuardado(cuatriDe(dia)); return !cr || x.k in cr.materias; };
+// Las fechas de ese cuatrimestre cuya materia no está entre las que quedan: { materia: cuántas } (con visibles, solo las que se ven hoy)
+function fechasFuera(q, quedan, visibles){
+  const r = {};
+  for(const [d, l] of Object.entries(fechas)) if(cuatriDe(d) === q) l.forEach(x => { if(x.k && !quedan[x.k] && (!visibles || fechaVigente(x, d))) r[x.k] = (r[x.k] || 0) + 1; });
+  return r;
+}
 const cronoGuardado = q => cronogramas[q] || null;
 /* Una materia por su clave: el número de la web o "x:ABR" (electivas que están en los horarios pero no en el plan) */
 function infoMat(k){
@@ -10424,10 +10437,13 @@ function pintarCuerpoCr(){
   const ayuda = CR.eligiendo
     ? `Tocá una comisión para quedarte con esa. Las <span class="cr-mues opcion"></span> se pueden elegir; las <span class="cr-mues choca"></span> se pisan con algo que ya elegiste.${conReco ? ` <span class="cr-reco-ley">${marcaReco({ si: true })} recomendada · ${marcaReco({ si: false })} no, según lo que cargaste de las comisiones</span>` : ""}`
     : Object.keys(elegidas).length ? `Sumá otra materia o tocá una que ya elegiste para cambiarle la comisión.` : `Empezá eligiendo una materia: se marcan todas sus comisiones en la grilla.`;
+  // Si sacaste una materia que tiene fechas anotadas, avisa que al guardar se van del calendario
+  const fuera = Object.entries(fechasFuera(CR.q, elegidas, true)), nFuera = fuera.reduce((t, [, n]) => t + n, 0);
+  const avisoFuera = nFuera ? `<p class="cr-ayuda cr-aviso">Al guardar, ${nFuera === 1 ? "la fecha anotada" : `las ${nFuera} fechas anotadas`} de ${fuera.map(([k]) => { const i = infoMat(k); return `<b>${esc(i ? i.abr || i.nombre : k)}</b>`; }).join(", ").replace(/, ([^,]*)$/, " y $1")} también se ${nFuera === 1 ? "borra" : "borran"} del calendario.</p>` : "";
   el.innerHTML = `
     <div class="cr-bandeja">${chips}${eligiendo}
       <span class="cr-sumar"><button class="cr-chip sug" data-cr="picker">${ICON_MAS}Materia</button>${CR.picker ? pickerCr(ofertas, elegidas) : ""}</span></div>
-    <p class="cr-ayuda">${ayuda}</p>
+    <p class="cr-ayuda">${ayuda}</p>${avisoFuera}
     <div class="cr-scroll">${grillaCr(bs, { t0: 7 * 60 + 45, t1: 23 * 60 + 15, px: .76, dias, compacta: false })}</div>`;
   if(CR.picker){ const f = $("#crFiltro"); if(f){ f.focus(); f.setSelectionRange(f.value.length, f.value.length); } }
 }
@@ -10521,9 +10537,9 @@ const mesesCuatri = q => { const [a, c] = q.split("-").map(Number); return (c ==
 /* Lo que hay un día: lo anotado ese día y las fechas tentativas que lo cubren (se guardan en su primer día, con "hasta";
    los sábados y domingos del medio no se pintan). Primero lo fijo; tent marca lo tentativo */
 function fechasDelDia(k){
-  const r = (fechas[k] || []).map((x, i) => ({ x, dia: k, i, tent: !!x.hasta }));
+  const r = (fechas[k] || []).map((x, i) => ({ x, dia: k, i, tent: !!x.hasta })).filter(({ x }) => fechaVigente(x, k));
   const finde = [0, 6].includes(deClave(k).getDay());
-  if(!finde) Object.entries(fechas).forEach(([d, l]) => { if(d < k) l.forEach((x, i) => { if(x.hasta && x.hasta >= k) r.push({ x, dia: d, i, tent: true }); }); });
+  if(!finde) Object.entries(fechas).forEach(([d, l]) => { if(d < k) l.forEach((x, i) => { if(x.hasta && x.hasta >= k && fechaVigente(x, d)) r.push({ x, dia: d, i, tent: true }); }); });
   return r.sort((p, q) => p.tent - q.tent);
 }
 const masDias = (k, n) => { const f = deClave(k); f.setDate(f.getDate() + n); return claveDia(f); };
@@ -10549,7 +10565,7 @@ function mesCr(a, m){
 }
 function proximasFechas(n = 5, soloFacu = false){
   const hoy = hoyClave();
-  return Object.keys(fechas).sort().flatMap(k => fechas[k].map((x, i) => ({ ...x, dia: k, i }))).filter(x => (x.hasta || x.dia) >= hoy && !(soloFacu && x.tipo === "Otros")).slice(0, n);
+  return Object.keys(fechas).sort().flatMap(k => fechas[k].map((x, i) => ({ ...x, dia: k, i }))).filter(x => (x.hasta || x.dia) >= hoy && !(soloFacu && x.tipo === "Otros") && fechaVigente(x, x.dia)).slice(0, n);
 }
 const faltaTexto = k => { const dd = Math.round((deClave(k) - deClave(hoyClave())) / 864e5); return dd === 0 ? "hoy" : dd === 1 ? "mañana" : `en ${dd} días`; };
 function filaFecha(x, boton = "", corto = false){
@@ -10627,6 +10643,14 @@ function guardarCrono(){
   const antes = cronoGuardado(CR.q), q = CR.q;
   if(Object.keys(CR.borrador).length) cronogramas[q] = { materias: CR.borrador, guardado: hoyClave() };
   else delete cronogramas[q];
+  // Una materia que sale del cronograma sale también del calendario: se borra lo anotado de ella en ese cuatrimestre
+  if(Object.keys(fechasFuera(q, CR.borrador)).length){
+    for(const d of Object.keys(fechas)) if(cuatriDe(d) === q){
+      const l = fechas[d].filter(x => !x.k || CR.borrador[x.k]);
+      if(l.length) fechas[d] = l; else delete fechas[d];
+    }
+    CR.sel = null;
+  }
   if(leerLocal(CLAVE_TOKEN)){
     // Las materias pasan a "Cursando" (o dejan de estarlo) solo con el cronograma del cuatrimestre actual,
     // pero el de cualquier cuatrimestre se guarda en GitHub
