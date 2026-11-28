@@ -4723,7 +4723,7 @@ const GITHUB = { usuario: "mascuka", repo: "UTN---Sistemas", rama: "main", archi
    Firestore, en usuarios/{uid}, como texto JSON en el campo "datos" (Firestore no guarda listas dentro de listas, y los
    bloques del cronograma lo son). Las reglas (firestore.rules) dejan que cada uno lea y escriba solo lo suyo.
    La configuración de la app web no es secreta. Sin apiKey, la página sigue como antes: aprobadas.json en GitHub con la clave. */
-const FIREBASE = { apiKey: "", authDomain: "utn---organizador.firebaseapp.com", projectId: "utn---organizador", appId: "" };
+const FIREBASE = { apiKey: "AIzaSyDUyOcVC4zbJ6i5Ljxr3WAVFa_yxnS5tcA", authDomain: "utn---organizador.firebaseapp.com", projectId: "utn---organizador", storageBucket: "utn---organizador.firebasestorage.app", messagingSenderId: "468623714150", appId: "1:468623714150:web:e4c86934e616caa7cbcaa7" };
 const FB_VER = "10.12.2";
 const conCuentas = () => !!FIREBASE.apiKey;
 const CLAVE_UID = "isi-uid";   // de quién es la copia de este navegador: el uid de la cuenta, o "local" (sin entrar)
