@@ -1,13 +1,34 @@
 rules_version = '2';
 // Reglas de la base Firestore del proyecto utn---organizador (se pegan en Firebase → Firestore → Reglas).
-// Cada usuario lee y escribe solo su documento, usuarios/{su uid}. El dueño de la página, además, puede leer todos
-// (la lista de usuarios), sin poder modificarlos. En Firebase va su mail real; acá no, porque el repo es público.
+// La página es como un Drive compartido: para verla hay que tener acceso, y el acceso lo da el dueño (queda hasta que lo saque).
+// En Firebase va el mail real del dueño; acá no, porque el repo es público.
 service cloud.firestore {
   match /databases/{database}/documents {
+    function esDueno() {
+      return request.auth != null && request.auth.token.email_verified == true
+        && request.auth.token.email == "MAIL_DEL_DUEÑO";
+    }
+    function tieneAcceso() {
+      return esDueno() || (request.auth != null
+        && get(/databases/$(database)/documents/accesos/$(request.auth.uid)).data.permitido == true);
+    }
+    // Lo de cada uno (avance, cronograma, fechas, notas): solo su dueño y con acceso. El dueño de la página lo puede leer
     match /usuarios/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
-      allow read: if request.auth != null && request.auth.token.email_verified == true
-                  && request.auth.token.email == "MAIL_DEL_DUEÑO";
+      allow read, write: if request.auth != null && request.auth.uid == uid && tieneAcceso();
+      allow read: if esDueno();
+    }
+    // Quién tiene acceso: cada uno ve el suyo; solo el dueño lo da o lo saca
+    match /accesos/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow read, write: if esDueno();
+    }
+    // Los pedidos de acceso, con un mensaje de hasta 500 letras: cada uno el suyo; el dueño los lee y los borra al decidir
+    match /pedidos/{uid} {
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['nombre', 'email', 'mensaje', 'cuando'])
+        && request.resource.data.mensaje is string && request.resource.data.mensaje.size() <= 500;
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow read, delete: if esDueno();
     }
   }
 }

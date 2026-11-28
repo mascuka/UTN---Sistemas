@@ -82,6 +82,32 @@
   .l-usu{background:none;border:0;padding:3px;color:var(--muted);cursor:pointer;display:grid;place-items:center;border-radius:6px;flex:none}
   .l-usu:hover{background:var(--hover);color:var(--text)}
   .l-usu svg{width:16px;height:16px}
+  .l-usu{position:relative}
+  .l-badge{position:absolute;top:-5px;right:-6px;min-width:16px;height:16px;border-radius:8px;background:#d1453b;color:#fff;font-size:.62rem;font-style:normal;font-weight:700;display:grid;place-items:center;padding:0 4px;line-height:1}
+  /* La puerta: sin cuenta o sin permiso, solo esto */
+  body.con-puerta > :not(.puerta):not(dialog){display:none !important}
+  body.con-puerta{padding-left:0}
+  .puerta{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:var(--bg);padding:16px;overflow-y:auto}
+  .puerta[hidden]{display:none}
+  .pu-caja{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px 28px 26px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 1px 2px rgba(30,25,15,.05)}
+  .pu-logo{width:52px;height:52px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center}
+  .pu-logo svg{width:28px;height:28px}
+  .pu-ic{width:56px;height:56px;border-radius:50%;background:var(--hover);color:var(--text2);display:grid;place-items:center}
+  .pu-ic svg{width:26px;height:26px}
+  .pu-caja h1{font-family:var(--serif);font-weight:500;font-size:1.6rem;margin:4px 0 0}
+  .pu-sub{color:var(--muted);font-size:.95rem;line-height:1.55}
+  .pu-caja textarea{width:100%;min-height:84px;resize:vertical;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:.92rem;text-align:left;line-height:1.45}
+  .pu-caja textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .pu-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-weight:500;cursor:pointer}
+  .pu-btn:hover{background:var(--hover)}
+  .pu-btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+  .pu-btn.pri:hover{filter:brightness(1.08);background:var(--brand)}
+  .pu-btn:disabled{opacity:.6;cursor:default}
+  .pu-btn svg{width:18px;height:18px}
+  .pu-msg{min-height:1.2em;font-size:.84rem;color:var(--rojo);line-height:1.45}
+  .pu-msg:empty{display:none}
+  .pu-quien{font-size:.82rem;color:var(--muted);line-height:1.5;margin-top:2px}
+  .pu-tuyo{width:100%;text-align:left;font-size:.88rem;color:var(--text2);background:var(--hover);border-radius:10px;padding:10px 12px;font-style:italic;white-space:pre-wrap;overflow-wrap:anywhere}
   /* Usuarios registrados (solo el dueño) y el cartel mientras se mira a otro */
   dialog#usuarios{margin:auto;max-width:520px;width:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;padding:20px 20px 16px;background:var(--card);color:var(--text);font-size:.9rem;line-height:1.5}
   dialog#usuarios::backdrop{background:rgba(0,0,0,.4)}
@@ -89,9 +115,25 @@
   .us-sub{color:var(--muted);font-size:.84rem}
   .us-lista{display:flex;flex-direction:column;gap:6px;margin:12px 0;overflow-y:auto;max-height:60vh}
   .us-msg{color:var(--muted);font-size:.86rem;padding:8px 2px}
-  .us-f{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;font:inherit;color:var(--text)}
-  .us-f:hover{background:var(--hover)}
+  .us-h{font-size:.74rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:8px 2px 0}
+  .us-h:first-child{margin-top:0}
+  .us-f{display:flex;align-items:center;gap:6px;width:100%;border:1px solid var(--line);border-radius:10px;padding:3px 8px 3px 3px}
   .us-f.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .us-ver{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:none;border:0;padding:6px 7px;border-radius:8px;cursor:pointer;font:inherit;color:var(--text);text-align:left}
+  .us-ver:hover{background:var(--hover)}
+  .us-ver:disabled{cursor:default}
+  .us-ver:disabled:hover{background:none}
+  .us-f.sin .us-ver{opacity:.55}
+  .us-tog{flex:none;font:inherit;font-size:.76rem;border:1px solid var(--line);background:var(--card);color:var(--text2);border-radius:999px;padding:5px 11px;cursor:pointer;white-space:nowrap}
+  .us-tog:hover{background:var(--hover)}
+  .us-tog.dar{background:var(--accent);border-color:var(--accent);color:#fff}
+  .us-tog:disabled{opacity:.6;cursor:default}
+  .us-ped{border:1px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+  .us-ped-top{display:flex;align-items:center;gap:10px}
+  .us-msj{font-size:.88rem;color:var(--text2);font-style:italic;white-space:pre-wrap;overflow-wrap:anywhere;padding-left:38px}
+  .us-acc{display:flex;justify-content:flex-end;gap:8px}
+  .us-acc .us-tog{font-size:.8rem}
+  @media (max-width:480px){ .us-av small{display:none} .us-msj{padding-left:0} }
   .us-f .l-ini{width:28px;height:28px;font-size:.8rem}
   .us-n{flex:1;min-width:0}
   .us-n b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2262,6 +2304,9 @@
 </head>
 <body>
 
+<!-- La puerta: entrar con Google y, sin permiso, pedir acceso (como un Drive compartido) -->
+<div class="puerta" id="puerta" hidden></div>
+
 <!-- Barra lateral: Inicio, Cronograma, Plan de la carrera y las materias que cursás (en el celular, un menú) -->
 <aside class="lado" id="lado" aria-label="Navegación"></aside>
 <div class="lado-velo" id="ladoVelo"></div>
@@ -2312,7 +2357,7 @@
 
 <dialog id="usuarios" aria-labelledby="usuariosTit">
   <h2 id="usuariosTit">Usuarios registrados</h2>
-  <p class="us-sub">Tocá uno para ver su avance, su cronograma y sus fechas (solo lectura).</p>
+  <p class="us-sub">Tocá una cuenta para ver su avance, su cronograma y sus fechas (solo lectura). El acceso que das queda para siempre, hasta que lo saques.</p>
   <div class="us-lista" id="usuariosLista"></div>
   <div class="config-btns"><span style="flex:1"></span><button id="cerrarUsuarios" class="pill">Cerrar</button></div>
 </dialog>
@@ -4620,7 +4665,7 @@ function filaCuenta(){
   if(!conCuentas() || !cuentaLista) return "";
   if(!usuario) return `<button class="l-cuenta l-entrar" data-config>${ICON_GOOGLE}Entrar con Google</button>`;
   const nom = usuario.displayName || usuario.email || "Tu cuenta";
-  return `<div class="l-cuenta"><span class="l-ini" aria-hidden="true">${esc(nom.trim()[0].toUpperCase())}</span><span class="l-cn" title="${esc(usuario.email || nom)}">${esc(nom)}</span>${esAdmin ? `<button class="l-usu" data-usuarios title="Usuarios registrados" aria-label="Usuarios registrados">${ICON_USUARIOS}</button>` : ""}<button class="linkbtn" data-salir>Salir</button></div>`;
+  return `<div class="l-cuenta"><span class="l-ini" aria-hidden="true">${esc(nom.trim()[0].toUpperCase())}</span><span class="l-cn" title="${esc(usuario.email || nom)}">${esc(nom)}</span>${esAdmin ? `<button class="l-usu" data-usuarios title="${pedidosPend ? `Usuarios · ${pedidosPend} ${pedidosPend === 1 ? "pide" : "piden"} acceso` : "Usuarios"}" aria-label="Usuarios${pedidosPend ? `, ${pedidosPend} ${pedidosPend === 1 ? "pedido" : "pedidos"} de acceso` : ""}">${ICON_USUARIOS}${pedidosPend ? `<i class="l-badge">${pedidosPend}</i>` : ""}</button>` : ""}<button class="linkbtn" data-salir>Salir</button></div>`;
 }
 const ICON_USUARIOS = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>`;
 const ICON_GOOGLE = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.2c0-.8-.1-1.4-.2-2.1H12v4h5.9c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3.3-4.6 3.3-7.6z"/><path fill="#34A853" d="M12 23c2.9 0 5.3-1 7.1-2.6l-3.4-2.6c-1 .6-2.2 1-3.7 1-2.8 0-5.2-1.9-6.1-4.5H2.4v2.7C4.2 20.6 7.8 23 12 23z"/><path fill="#FBBC05" d="M5.9 14.3c-.2-.6-.4-1.3-.4-2.3s.1-1.6.4-2.3V7H2.4C1.5 8.5 1 10.2 1 12s.5 3.5 1.4 5l3.5-2.7z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3 .5 4.1 1.6l3-3C17.3 2.2 14.9 1 12 1 7.8 1 4.2 3.4 2.4 7l3.5 2.7C6.8 7.3 9.2 5.4 12 5.4z"/></svg>`;
@@ -4740,6 +4785,8 @@ const CLAVE_UID = "isi-uid";   // de quién es la copia de este navegador: el ui
 let fb = null, usuario = null, cuentaLista = false;   // los módulos de Firebase, la cuenta con la que se entró y si ya se sabe
 let esAdmin = false;   // la cuenta del dueño de la página: ve la lista de usuarios y el avance de cada uno
 let viendo = null;     // mirando el avance de otro (solo lectura): { uid, nombre, propio: lo tuyo, para volver }
+let puertaError = "", timerPedido = null;   // la puerta (entrar / pedir acceso) y la espera de un pedido
+let listaUsuarios = [], listaPedidos = [], pedidosPend = 0;   // lo que ve el dueño en «Usuarios»
 const HASH_ADMIN = "cbab009b3f0d56c224feac54ec741a11100abb607f1fbb8e0d33dff24b6bbf34";   // SHA-256 del mail del dueño
 /* ¿Se puede guardar? Con cuentas, habiendo entrado (y no mirando a otro); si no, con la clave de GitHub */
 function puedeGuardar(){ if(viendo) return false; return conCuentas() ? !!usuario : !!leerLocal(CLAVE_TOKEN); }
@@ -5044,7 +5091,7 @@ function prepararCuentas(){
 }
 async function arrancarCuentas(){
   try { await cargarFirebase(); }
-  catch(e){ cuentaLista = true; estadoSync = "error"; errorSync = "No se pudo conectar con las cuentas; se muestra lo guardado en este navegador."; refrescar(); return; }
+  catch(e){ cuentaLista = true; estadoSync = "error"; errorSync = "No se pudo conectar con las cuentas."; puertaError = "No se pudo conectar con las cuentas. Revisá la conexión y probá de nuevo."; puerta("error"); return; }
   fb.auth.getRedirectResult(fb.A).catch(e => { estadoSync = "error"; errorSync = mensajeCuenta(e); pintarSync(); });
   fb.auth.onAuthStateChanged(fb.A, u => cambioDeCuenta(u));
 }
@@ -5053,11 +5100,31 @@ async function cambioDeCuenta(u){
   usuario = u; cuentaLista = true;
   try { esAdmin = !!(u && u.email && u.emailVerified && await sha256(u.email.trim().toLowerCase()) === HASH_ADMIN); } catch(e){ esAdmin = false; }
   const dueno = leerLocal(CLAVE_UID);
+  clearInterval(timerPedido);
   if(!u){
     // Salió (o nunca entró): lo de la cuenta no queda en este navegador
     if(dueno !== "local"){ ponerDatos({}); guardarCopia(); guardarLocal(CLAVE_SIN_SUBIR, null); guardarLocal(CLAVE_UID, "local"); }
-    estadoSync = "sin-clave"; refrescar(); return;
+    estadoSync = "sin-clave"; puerta("entrar"); refrescar(); return;
   }
+  // ¿Tiene acceso? El dueño siempre; los demás, si en accesos/{uid} dice permitido (lo da el dueño, y queda)
+  if(!esAdmin){
+    let estado = null;
+    try {
+      const a = await fb.fs.getDoc(refAcceso(u.uid));
+      if(!(a.exists() && a.data().permitido === true)){
+        const p = await fb.fs.getDoc(refPedido(u.uid));
+        estado = p.exists() ? "pedido" : a.exists() ? "rechazado" : "sin-acceso";
+      }
+    } catch(e){ estado = /permission/.test((e && e.code) || "") ? "sin-acceso" : "error"; puertaError = mensajeCuenta(e); }
+    if(estado){
+      if(dueno !== u.uid && dueno !== "local"){ ponerDatos({}); guardarCopia(); guardarLocal(CLAVE_SIN_SUBIR, null); guardarLocal(CLAVE_UID, "local"); }
+      puerta(estado);
+      if(estado === "pedido") esperarAcceso();
+      return;
+    }
+  }
+  puerta(null);
+  if(esAdmin) cargarUsuarios().then(() => refrescar()).catch(() => {});   // el numerito de pedidos (y los que ya tenían cuenta quedan con acceso)
   estadoSync = "cargando"; refrescar();
   try {
     const snap = await fb.fs.getDoc(refUsuario());
@@ -5102,14 +5169,14 @@ function mensajeCuenta(e){
   return `No se pudo usar la cuenta (${c}).`;
 }
 async function entrar(){
-  const msg = $("#cuentaMsg");
+  const msg = !$("#puerta").hidden && $("#puertaMsg") ? $("#puertaMsg") : $("#cuentaMsg");
   msg.textContent = "";
   try {
     await cargarFirebase();
     const p = new fb.auth.GoogleAuthProvider();
     p.setCustomParameters({ prompt: "select_account" });
     await fb.auth.signInWithPopup(fb.A, p);
-    $("#cuenta").close();
+    if($("#cuenta").open) $("#cuenta").close();
   } catch(e){
     const c = (e && e.code) || "";
     if(/popup-closed-by-user|cancelled-popup-request/.test(c)) return;
@@ -5121,23 +5188,105 @@ async function entrar(){
 async function salir(){
   if(fb) await fb.auth.signOut(fb.A);
 }
+/* ---------- La puerta ----------
+   Sin cuenta: «Entrar con Google». Con cuenta y sin permiso: «Necesitás acceso» con un mensaje opcional para el dueño
+   y «Pedir acceso» (va a pedidos/{uid}); pedido: «Pedido enviado», y la página se abre sola cuando te lo dan */
+const refAcceso = uid => fb.fs.doc(fb.db, "accesos", uid);
+const refPedido = uid => fb.fs.doc(fb.db, "pedidos", uid);
+const ICON_CANDADO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>`;
+const ICON_ENVIADO = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 10 14"/><path d="M21 3l-7 18-4-7-7-4 18-7z"/></svg>`;
+function puerta(estado){
+  const el = $("#puerta");
+  document.body.classList.toggle("con-puerta", !!estado);
+  el.hidden = !estado;
+  if(!estado){ el.innerHTML = ""; return; }
+  const nom = usuario ? usuario.displayName || usuario.email || "" : "";
+  const quien = usuario ? `<p class="pu-quien">Entraste como <b>${esc(nom)}</b>${usuario.email && usuario.displayName ? `<br>${esc(usuario.email)}` : ""} · <button class="linkbtn" data-puerta="cambiar">Cambiar de cuenta</button></p>` : "";
+  const logo = `<div class="pu-logo">${LOGO}</div>`, msg = `<p class="pu-msg" id="puertaMsg" role="alert">${estado === "error" ? esc(puertaError) : ""}</p>`;
+  const pedir = (sub) => `<div class="pu-ic">${ICON_CANDADO}</div><h1>Necesitás acceso</h1><p class="pu-sub">${sub}</p>
+    <textarea id="puertaMsj" maxlength="500" placeholder="Mensaje (opcional): soy …, de la comisión …" aria-label="Mensaje para el dueño de la página"></textarea>
+    <button class="pu-btn pri" data-puerta="pedir">Pedir acceso</button>${msg}${quien}`;
+  const C = {
+    cargando: `${logo}<p class="pu-sub">Cargando…</p>`,
+    entrar: `${logo}<h1>Ingeniería en Sistemas</h1><p class="pu-sub">Para ver la página, entrá con tu cuenta de Google.</p><button class="pu-btn" data-puerta="entrar">${ICON_GOOGLE}Entrar con Google</button>${msg}`,
+    "sin-acceso": pedir("Pedí acceso al dueño de la página o cambiá a una cuenta que lo tenga. Una vez que te lo da, te queda para siempre."),
+    rechazado: pedir("No tenés acceso con esta cuenta. Si querés, podés volver a pedirlo."),
+    pedido: `<div class="pu-ic">${ICON_ENVIADO}</div><h1>Pedido enviado</h1><p class="pu-sub">Cuando te den acceso, esta página se abre sola. También podés cerrarla y volver a entrar más tarde con esta cuenta.</p>${quien}`,
+    error: `${logo}<h1>No se pudo entrar</h1>${msg}<button class="pu-btn" data-puerta="reintentar">Probar de nuevo</button>${quien}`
+  };
+  el.innerHTML = `<div class="pu-caja">${C[estado] || C.cargando}</div>`;
+}
+async function pedirAcceso(){
+  const b = $('[data-puerta="pedir"]'), out = $("#puertaMsg"), mensaje = ($("#puertaMsj").value || "").trim().slice(0, 500);
+  b.disabled = true; out.textContent = "";
+  try {
+    await fb.fs.setDoc(refPedido(usuario.uid), { nombre: usuario.displayName || "", email: usuario.email || "", mensaje, cuando: fb.fs.serverTimestamp() });
+    puerta("pedido"); esperarAcceso();
+  } catch(e){ b.disabled = false; out.textContent = mensajeCuenta(e); }
+}
+/* Con el pedido hecho, cada 20 segundos se fija si ya le dieron acceso (o si lo rechazaron) */
+function esperarAcceso(){
+  clearInterval(timerPedido);
+  timerPedido = setInterval(async () => {
+    if(document.hidden || !usuario || !fb) return;
+    try {
+      const a = await fb.fs.getDoc(refAcceso(usuario.uid));
+      if(!a.exists()) return;
+      clearInterval(timerPedido);
+      if(a.data().permitido === true) cambioDeCuenta(usuario); else puerta("rechazado");
+    } catch(e){}
+  }, 20000);
+}
+function accionPuerta(a){
+  if(a === "entrar") entrar();
+  else if(a === "pedir") pedirAcceso();
+  else if(a === "cambiar") salir();
+  else if(a === "reintentar") location.reload();
+}
+
 /* ---------- Usuarios (solo el dueño) ----------
-   La lista de todas las cuentas, con su avance; tocando una se ve la página con lo de esa persona, sin poder modificarlo.
-   Las reglas dejan que solo el mail del dueño lea todas (firestore.rules) */
-let listaUsuarios = [];
+   Los pedidos de acceso (con su mensaje: «Dar acceso» o «Rechazar», y el pedido se borra) y todas las cuentas con su
+   avance y un botón para sacarles o devolverles el acceso (quedan en la lista). Tocando una se ve la página con lo de
+   esa persona, sin poder modificarlo. Las reglas dejan que solo el mail del dueño lea todo y dé permisos (firestore.rules) */
+async function cargarUsuarios(){
+  const col = n => fb.fs.getDocs(fb.fs.collection(fb.db, n));
+  const fecha = t => t && t.toDate ? t.toDate() : null;
+  const [us, ac, pe] = await Promise.all([col("usuarios"), col("accesos"), col("pedidos")]);
+  const acc = new Map(ac.docs.map(d => [d.id, d.data()]));
+  // Los que ya tenían cuenta antes de que hubiera permisos quedan con acceso, sin tener que pedirlo
+  for(const d of us.docs) if(!acc.has(d.id) && d.id !== usuario.uid){
+    const x = d.data(), v = { permitido: true, nombre: x.nombre || "", email: x.email || "", cuando: fb.fs.serverTimestamp() };
+    await fb.fs.setDoc(refAcceso(d.id), v); acc.set(d.id, v);
+  }
+  const m = new Map();
+  us.docs.forEach(d => { const x = d.data(); let datos = null; try { datos = JSON.parse(x.datos || "{}"); } catch(e){}
+    m.set(d.id, { uid: d.id, nombre: x.nombre || "", email: x.email || "", datos, cuando: fecha(x.actualizado) }); });
+  acc.forEach((a, uid) => { const x = m.get(uid) || { uid, nombre: a.nombre || "", email: a.email || "", datos: null, cuando: null }; x.permitido = a.permitido === true; m.set(uid, x); });
+  if(m.has(usuario.uid)) m.get(usuario.uid).permitido = true;
+  const yo = x => x.uid === usuario.uid ? 0 : 1;
+  listaUsuarios = [...m.values()].sort((a, b) => yo(a) - yo(b) || (b.permitido === true) - (a.permitido === true) || (b.cuando || 0) - (a.cuando || 0));
+  listaPedidos = pe.docs.map(d => { const x = d.data(); return { uid: d.id, nombre: x.nombre || "", email: x.email || "", mensaje: x.mensaje || "", cuando: fecha(x.cuando) }; })
+    .sort((a, b) => (a.cuando || 0) - (b.cuando || 0));
+  pedidosPend = listaPedidos.length;
+}
 async function abrirUsuarios(){
   if(!esAdmin) return;
   const el = $("#usuariosLista");
   el.innerHTML = `<p class="us-msg">Cargando…</p>`;
   $("#usuarios").showModal();
+  try { await cargarUsuarios(); pintarUsuarios(); refrescar(); }
+  catch(e){ el.innerHTML = `<p class="us-msg">${esc(/permission/.test((e && e.code) || "") ? "Las reglas de Firestore no dejan ver la lista: falta publicar las reglas nuevas." : mensajeCuenta(e))}</p>`; }
+}
+/* Dar o sacar el acceso (queda guardado para siempre, hasta que lo cambies); si había un pedido, se borra con su mensaje */
+async function decidir(uid, dar, boton){
+  const x = listaPedidos.find(y => y.uid === uid) || listaUsuarios.find(y => y.uid === uid) || {};
+  if(boton) boton.disabled = true;
   try {
-    const r = await fb.fs.getDocs(fb.fs.collection(fb.db, "usuarios"));
-    listaUsuarios = r.docs.map(d => { const x = d.data(); let datos = {}; try { datos = JSON.parse(x.datos || "{}"); } catch(e){}
-      const cuando = x.actualizado && x.actualizado.toDate ? x.actualizado.toDate() : null;
-      return { uid: d.id, nombre: x.nombre || "", email: x.email || "", datos, cuando }; })
-      .sort((a, b) => (b.cuando || 0) - (a.cuando || 0));
-    pintarUsuarios();
-  } catch(e){ el.innerHTML = `<p class="us-msg">${esc(/permission/.test(e.code || "") ? "Las reglas de Firestore no dejan ver la lista: falta la regla del dueño." : mensajeCuenta(e))}</p>`; }
+    await fb.fs.setDoc(refAcceso(uid), { permitido: !!dar, nombre: x.nombre || "", email: x.email || "", cuando: fb.fs.serverTimestamp() });
+    if(listaPedidos.some(y => y.uid === uid)) await fb.fs.deleteDoc(refPedido(uid));
+    await cargarUsuarios();
+    pintarUsuarios(); refrescar();
+  } catch(e){ if(boton) boton.disabled = false; $("#usuariosLista").insertAdjacentHTML("afterbegin", `<p class="us-msg">${esc(mensajeCuenta(e))}</p>`); }
 }
 /* El avance de otra persona, con el mismo cálculo que «Tu avance» */
 function avanceDe(lista){
@@ -5145,19 +5294,32 @@ function avanceDe(lista){
   aprobadas = new Set(lista || []);
   try { return progreso(); } finally { aprobadas = mias; }
 }
+const diaCorto = d => d ? `${d.getDate()} ${MESES[d.getMonth()].slice(0, 3)}` : "";
+const inicial = t => esc((String(t || "?").trim()[0] || "?").toUpperCase());
 function pintarUsuarios(){
   const actual = viendo ? viendo.uid : usuario && usuario.uid;
-  $("#usuariosTit").textContent = `Usuarios registrados (${listaUsuarios.length})`;
-  $("#usuariosLista").innerHTML = listaUsuarios.map(x => {
-    const yo = usuario && x.uid === usuario.uid, p = avanceDe(yo && viendo ? viendo.propio.aprobadas : x.datos.aprobadas), nom = x.nombre || x.email || "Sin nombre";
-    const fecha = x.cuando ? `${x.cuando.getDate()} ${MESES[x.cuando.getMonth()].slice(0, 3)}` : "";
-    return `<button class="us-f ${x.uid === actual ? "on" : ""}" data-ver-uid="${esc(x.uid)}"><span class="l-ini" aria-hidden="true">${esc(nom.trim()[0].toUpperCase())}</span>
-      <span class="us-n"><b>${esc(nom)}${yo ? " · vos" : ""}</b><small>${esc(x.email)}${fecha ? ` · ${fecha}` : ""}</small></span>
-      <span class="us-av">${p.pct}%<small>${p.matHechas} de ${p.matTotal}</small></span></button>`;
-  }).join("") || `<p class="us-msg">Todavía no hay nadie.</p>`;
+  $("#usuariosTit").textContent = "Usuarios";
+  const pedidos = listaPedidos.map(x => { const nom = x.nombre || x.email || "Sin nombre"; return `
+    <div class="us-ped"><div class="us-ped-top"><span class="l-ini" aria-hidden="true">${inicial(nom)}</span>
+      <span class="us-n"><b>${esc(nom)}</b><small>${esc(x.email)}${x.cuando ? ` · pidió el ${diaCorto(x.cuando)}` : ""}</small></span></div>
+      ${x.mensaje ? `<p class="us-msj">«${esc(x.mensaje)}»</p>` : ""}
+      <div class="us-acc"><button class="us-tog" data-decidir="${esc(x.uid)}" data-dar="0">Rechazar</button><button class="us-tog dar" data-decidir="${esc(x.uid)}" data-dar="1">Dar acceso</button></div></div>`; }).join("");
+  const filas = listaUsuarios.map(x => {
+    const yo = usuario && x.uid === usuario.uid, nom = x.nombre || x.email || "Sin nombre";
+    const datos = yo && viendo ? viendo.propio : x.datos, p = datos ? avanceDe(datos.aprobadas) : null;
+    const sub = [esc(x.email), x.permitido ? (x.cuando ? diaCorto(x.cuando) : "") : "sin acceso"].filter(Boolean).join(" · ");
+    return `<div class="us-f ${x.uid === actual ? "on" : ""} ${x.permitido ? "" : "sin"}">
+      <button class="us-ver" data-ver-uid="${esc(x.uid)}" ${datos ? "" : "disabled"} title="${datos ? "Ver su avance" : "Todavía no cargó nada"}"><span class="l-ini" aria-hidden="true">${inicial(nom)}</span>
+        <span class="us-n"><b>${esc(nom)}${yo ? " · vos" : ""}</b><small>${sub}</small></span>
+        ${p ? `<span class="us-av">${p.pct}%<small>${p.matHechas} de ${p.matTotal}</small></span>` : ""}</button>
+      ${yo ? "" : `<button class="us-tog ${x.permitido ? "" : "dar"}" data-decidir="${esc(x.uid)}" data-dar="${x.permitido ? 0 : 1}">${x.permitido ? "Quitar acceso" : "Dar acceso"}</button>`}</div>`;
+  }).join("");
+  $("#usuariosLista").innerHTML = (pedidos ? `<h3 class="us-h">Piden acceso (${listaPedidos.length})</h3>${pedidos}` : "")
+    + `<h3 class="us-h">Cuentas (${listaUsuarios.length})</h3>${filas || `<p class="us-msg">Todavía no hay nadie.</p>`}`;
 }
 function verUsuario(uid){
   const x = listaUsuarios.find(y => y.uid === uid);
+  if(x && !x.datos && x.uid !== (usuario && usuario.uid)) return;   // no cargó nada todavía
   $("#usuarios").close();
   if(!x || (usuario && uid === usuario.uid)){ volverAMio(); return; }
   if(!viendo) viendo = { propio: JSON.parse(JSON.stringify(datosPropios())) };
@@ -11115,6 +11277,10 @@ function render(arriba = true){
 
 /* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) */
 document.addEventListener("click", e => {
+  const pu = e.target.closest("[data-puerta]");
+  if(pu){ accionPuerta(pu.dataset.puerta); return; }
+  const de = e.target.closest("[data-decidir]");
+  if(de){ decidir(de.dataset.decidir, de.dataset.dar === "1", de); return; }
   if(e.target.closest("[data-config]")){ pedirCuenta(); return; }
   if(e.target.closest("[data-salir]")){ salir(); return; }
   if(e.target.closest("[data-usuarios]")){ abrirUsuarios(); return; }
@@ -11272,7 +11438,7 @@ async function sha256(t){
   return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
 }
 function iniciar(){
-  if(conCuentas()) prepararCuentas();
+  if(conCuentas()){ prepararCuentas(); puerta("cargando"); }
   render();
   if(conCuentas()) arrancarCuentas(); else cargarAprobadas();
 }
