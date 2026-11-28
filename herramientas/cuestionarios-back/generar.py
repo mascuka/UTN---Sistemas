@@ -3,10 +3,13 @@
 # y abajo el recuadro beige con la respuesta correcta, el porqué y la corrección si estaba mal.
 #
 # Los datos están en preguntas.json (una entrada por cuestionario, con sus preguntas ya resueltas).
-# Uso: python3 herramientas/cuestionarios-back/generar.py [--fuente CARPETA] [--solo 01,05]
+# Uso: python3 herramientas/cuestionarios-back/generar.py [--fuente CARPETA] [--solo 01,05] [--datos OTRO.json]
 #   --fuente: carpeta con open-sans-latin-{400,600,700}-normal.woff2 (de @fontsource/open-sans). Sin eso usa DejaVu Sans.
-# Necesita Chromium (el de Playwright) y pymupdf. Escribe en material/backend-de-aplicaciones/cuestionarios/.
-import argparse, html, json, os, shutil, subprocess, tempfile
+#   --datos: los cuestionarios de otra materia (por ejemplo herramientas/cuestionarios-dao/preguntas.json). Arriba del JSON
+#            van "materia", "destino" (la carpeta de los PDF, desde la raíz) y, si se quiere, "codigoEnLinea": true
+#            para que lo que está entre `acentos graves` salga como código.
+# Necesita Chromium (el de Playwright) y pymupdf. Escribe en material/backend-de-aplicaciones/cuestionarios/ (o en "destino").
+import argparse, html, json, os, re, shutil, subprocess, tempfile
 import pymupdf
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -78,6 +81,12 @@ def fuentes(carpeta):
 
 def e(t): return html.escape(t, quote=False)
 
+EN_LINEA = False   # "codigoEnLinea" del JSON: `así` sale como código
+
+def tx(t):
+    t = e(t)
+    return re.sub(r'`([^`]+)`', r'<code>\1</code>', t) if EN_LINEA else t
+
 def coma(x): return f'{x:.2f}'.replace('.', ',')
 
 def opcion(p, i, t):
@@ -87,31 +96,31 @@ def opcion(p, i, t):
     if marcada: icono = TILDE if correcta else CRUZ
     elif correcta and p['estado'] != 'Correcta': icono = ' ' + FALTA
     letra = '' if p['vf'] else f'<span class="letra">{LETRAS[i]}.</span>'
-    return f'<div class="op"><span class="marca {tipo}{" si" if marcada else ""}"></span>{letra}<span class="txt">{e(t)}{icono}</span></div>'
+    return f'<div class="op"><span class="marca {tipo}{" si" if marcada else ""}"></span>{letra}<span class="txt">{tx(t)}{icono}</span></div>'
 
 def correcta(p):
     ok = p['ok']
-    if p['vf']: return f"La respuesta correcta es «{e(p['op'][ok[0]])}»."
-    partes = [f"{LETRAS[i]}. {e(p['op'][i].rstrip('.'))}" for i in ok]
+    if p['vf']: return f"La respuesta correcta es «{tx(p['op'][ok[0]])}»."
+    partes = [f"{LETRAS[i]}. {tx(p['op'][i].rstrip('.'))}" for i in ok]
     if len(ok) == 1: return 'La respuesta correcta es: <b>' + partes[0] + '</b>'
     return 'Las respuestas correctas son: <b>' + '</b> · <b>'.join(partes) + '</b>'
 
 def pregunta(p, n, anio_intento):
     tuyo = p['origen'] == str(anio_intento)
     chip = f'<span class="chip tuyo">Tu {"otro " if p.get("otro") else ""}intento {p["origen"]}</span>' if tuyo else f'<span class="chip otro">Cuestionario {p["origen"]}</span>'
-    pts, mx = p['puntos']
+    puntua = f'<div>Puntúa {coma(p["puntos"][0])} sobre {coma(p["puntos"][1])}</div>' if p.get('puntos') else ''
     info = (f'<div class="info"><div><div class="num">Pregunta<b>{n}</b></div><div class="est">{p["estado"]}</div>'
-            f'<div>Puntúa {coma(pts)} sobre {coma(mx)}</div></div>{chip}</div>')
-    cuerpo = f'<div class="en">{e(p["en"])}</div>'
+            f'{puntua}</div>{chip}</div>')
+    cuerpo = f'<div class="en">{tx(p["en"])}</div>'
     if p.get('codigo'): cuerpo += '<pre>' + e('\n'.join(p['codigo'])) + '</pre>'
     cuerpo += '<div class="sel">' + ('Seleccione una o más de una:' if p['varias'] else 'Seleccione una:') + '</div>'
     cuerpo += ''.join(opcion(p, i, t) for i, t in enumerate(p['op']))
-    out = f'<p class="rc">{correcta(p)}</p><p class="pq"><b>Por qué:</b> {e(p["ex"])}</p>'
-    if p.get('corr'): out += f'<p class="corr"><b>Corrección:</b> {e(p["corr"])}</p>'
-    if p.get('ojo'): out += f'<p class="ojo"><b>Ojo:</b> {e(p["ojo"])}</p>'
+    out = f'<p class="rc">{correcta(p)}</p><p class="pq"><b>Por qué:</b> {tx(p["ex"])}</p>'
+    if p.get('corr'): out += f'<p class="corr"><b>Corrección:</b> {tx(p["corr"])}</p>'
+    if p.get('ojo'): out += f'<p class="ojo"><b>Ojo:</b> {tx(p["ojo"])}</p>'
     return f'<div class="q">{info}<div class="form">{cuerpo}</div><div class="out">{out}</div></div>'
 
-def documento(c, css_fuentes):
+def documento(c, css_fuentes, materia='Backend de Aplicaciones'):
     ps = c['preguntas']
     anio = c['intento']['anio'] if c['intento'] else None
     # Primero tu intento; después, del otro intento (c['otro'], las preguntas con "otro"), solo las que no estaban
@@ -121,7 +130,8 @@ def documento(c, css_fuentes):
         mias = [p for p in ps if p['origen'] == str(anio) and not p.get('otro')]
         otras = [p for p in ps if p['origen'] == str(anio) and p.get('otro')]
         grupos.append((f'Tu intento {anio}', mias))
-        filas.append((f'Tu intento {anio}', f"{len(mias)} preguntas · {c['intento']['nota']} · {con_corr(mias)} con corrección"))
+        nota = c['intento'].get('nota') or (f'las {len(mias)} bien' if not con_corr(mias) else f'{len(mias) - con_corr(mias)} bien')
+        filas.append((f'Tu intento {anio}', f"{len(mias)} preguntas · {nota} · {con_corr(mias)} con corrección"))
         if otras:
             grupos.append((f'Tu otro intento {anio}: las que no estaban', otras))
             ya = c['otro']['preguntas'] - len(otras)
@@ -142,7 +152,7 @@ def documento(c, css_fuentes):
             cuerpo += pregunta(p, n, anio)
     return (f'<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Cuestionario {c["n"]} · {e(c["titulo"])}</title>'
             f'<style>{css_fuentes}{CSS}</style></head><body>'
-            f'<div class="sup">Backend de Aplicaciones · Cuestionario {c["n"]}</div><h1>{e(c["titulo"])}</h1>'
+            f'<div class="sup">{e(materia)}{" · " + e(c["unidad"]) if c.get("unidad") else ""} · Cuestionario {c["n"]}</div><h1>{e(c["titulo"])}</h1>'
             f'<table class="res">{tabla}</table>{cuerpo}</body></html>')
 
 def imprimir(html_path, pdf_path):
@@ -155,17 +165,23 @@ def main():
     ap.add_argument('--fuente')
     ap.add_argument('--solo')
     ap.add_argument('--html', help='dejar también el HTML en esta carpeta, para revisarlo')
-    ap.add_argument('--salida', default=DESTINO, help='carpeta donde quedan los PDF')
+    ap.add_argument('--salida', help='carpeta donde quedan los PDF (si no, la del JSON o la de Backend)')
+    ap.add_argument('--datos', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'preguntas.json'))
     a = ap.parse_args()
     if not CHROMIUM: raise SystemExit('No encuentro Chromium (poné su ruta en la variable CHROMIUM).')
-    datos = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'preguntas.json')))
+    global EN_LINEA
+    datos = json.load(open(a.datos))
+    EN_LINEA = bool(datos.get('codigoEnLinea'))
+    materia = datos.get('materia', 'Backend de Aplicaciones')
+    a.salida = a.salida or (os.path.join(RAIZ, datos['destino']) if datos.get('destino') else DESTINO)
+    os.makedirs(a.salida, exist_ok=True)
     solo = set(a.solo.split(',')) if a.solo else None
     css_f = fuentes(os.path.abspath(a.fuente) if a.fuente else None)
     with tempfile.TemporaryDirectory() as tmp:
         for c in datos['cuestionarios']:
             if solo and c['n'] not in solo: continue
             h = os.path.join(tmp, c['n'] + '.html')
-            open(h, 'w').write(documento(c, css_f))
+            open(h, 'w').write(documento(c, css_f, materia))
             if a.html: shutil.copy(h, os.path.join(a.html, c['n'] + '.html'))
             crudo = os.path.join(tmp, c['n'] + '.pdf')
             imprimir(h, crudo)

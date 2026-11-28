@@ -1,0 +1,481 @@
+{
+ "materia": "Desarrollo de Aplicaciones con Objetos",
+ "destino": "material/desarrollo-de-aplicaciones-con-objetos/cuestionarios",
+ "codigoEnLinea": true,
+ "cuestionarios": [
+  {
+   "n": "01",
+   "archivo": "cuestionario-01-programacion-estructurada.pdf",
+   "titulo": "Repaso de programación estructurada",
+   "unidad": "Programación estructurada y funcional",
+   "intento": {
+    "anio": 2026,
+    "nota": null
+   },
+   "otro": null,
+   "preguntas": [
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print(bool(0))`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "None",
+      "True",
+      "0",
+      "False",
+      "Error"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`bool()` convierte a lógico, y el 0 es «falsy»: da `False`. También son falsos el `0.0`, la cadena vacía `\"\"`, `None` y las colecciones vacías (`[]`, `{}`, `()`); todo lo demás es verdadero."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de `print([0] * 3)`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "[0, 0, 0]",
+      "[0, 3]",
+      "Error",
+      "[3]"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "Una lista por un entero repite la lista: `[0] * 3` es `[0] + [0] + [0]`, o sea `[0, 0, 0]`. Es la forma corta de armar una lista de n ceros (por ejemplo, contadores)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué longitud tiene la lista creada con `lista = [0] * 20`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "2 elementos",
+      "20 elementos, del 0 al 19",
+      "20 elementos, todos con valor 0",
+      "0 elementos"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`[0] * 20` repite 20 veces el 0: `len(lista)` es 20 y todos valen 0. «Del 0 al 19» son los índices (o lo que daría `list(range(20))`), no los valores."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué método se utiliza para verificar si todos los caracteres de una cadena son alfabéticos?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "isalpha()",
+      "alpha_chars()",
+      "letters_only()",
+      "is_alpha()",
+      "alphabetic()"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`cadena.isalpha()` da `True` si la cadena no está vacía y todos sus caracteres son letras (acepta tildes y ñ: `\"Ñandú\".isalpha()` es `True`; `\"ab1\".isalpha()` es `False`). Las otras no existen. Sus parientes: `isdigit()`, `isalnum()`, `isspace()`, `isupper()` e `islower()`."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print(sum([1, 2, 3]))`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "\"123\"",
+      "[1, 2, 3]",
+      "None",
+      "6",
+      "Error"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`sum()` suma los elementos de un iterable de números: 1 + 2 + 3 = 6. No concatena: con una lista de cadenas da error (para unirlas está `\"\".join(lista)`)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `bool(\"\")`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "None",
+      "False",
+      "True",
+      "\"\"",
+      "Error"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "La cadena vacía es «falsy»: `bool(\"\")` es `False`. Cualquier cadena con algo adentro es `True`, aunque sea un espacio (`\" \"`) o `\"0\"`."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print(float(\"3.14\"))`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "Error",
+      "3.14",
+      "None",
+      "3",
+      "\"3.14\""
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`float()` convierte la cadena en el número 3.14, y `print` lo muestra sin comillas. Daría error (`ValueError`) con algo que no es un número, como `float(\"3,14\")` con coma o `float(\"abc\")`."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print([x * 2 for x in [1, 2, 3]])`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "[2, 2, 2]",
+      "Error",
+      "[1, 2, 3]",
+      "[1, 1, 2, 2, 3, 3]",
+      "[2, 4, 6]"
+     ],
+     "marcadas": [
+      4
+     ],
+     "ok": [
+      4
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "La lista por comprensión aplica `x * 2` a cada elemento: 1→2, 2→4 y 3→6. Es lo mismo que `list(map(lambda x: x * 2, [1, 2, 3]))`."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de las siguientes opciones es un operador de comparación en Python?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "<~",
+      "==",
+      "&>",
+      "!==",
+      "||"
+     ],
+     "marcadas": [
+      1
+     ],
+     "ok": [
+      1
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`==` compara si dos valores son iguales. Los de comparación son `==`, `!=`, `<`, `>`, `<=` y `>=` (y también `is`, `is not`, `in` y `not in`). `!==` es de JavaScript y `||` es el «o» de C y Java: en Python se escribe `or`."
+    },
+    {
+     "origen": "2026",
+     "en": "La condición `if 0 < nota <= 10:` es equivalente a:",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "`if nota > 0 and nota <= 10:`",
+      "`if nota > 0 or nota <= 10:`",
+      "`if 0 < nota or nota <= 10:`",
+      "`if nota < 0 or nota > 10:`"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "Python deja encadenar comparaciones: `a < b <= c` significa `a < b and b <= c`. Con `or`, casi cualquier nota daría verdadero (la b y la c son la misma), y la d pregunta lo contrario: si la nota está fuera del rango."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print([x for x in range(3)])`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "[0, 1, 2]",
+      "range(3)",
+      "{0, 1, 2}",
+      "(0, 1, 2)",
+      "[1, 2, 3]"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`range(3)` va del 0 al 2 (el 3 no entra) y los corchetes arman una lista: `[0, 1, 2]`. Con llaves sería un conjunto, y con paréntesis, un generador (no una tupla)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print(17 // 3)`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "5",
+      "6.0",
+      "Error",
+      "5.0",
+      "6"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`//` es la división entera: 17 / 3 da 5,67 y `//` se queda con el piso, 5. Entre dos enteros da un `int` (5); si alguno es `float`, da 5.0 (`17.0 // 3`). El resto, `17 % 3`, es 2."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print(\"Hola\"[1:3])`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "\"Hol\"",
+      "\"Ho\"",
+      "\"ol\"",
+      "\"la\"",
+      "\"ola\""
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "El rebanado `[1:3]` toma desde el índice 1 hasta el 3 sin incluirlo, o sea los índices 1 y 2: H=0, o=1, l=2, a=3. Da `\"ol\"` (y `print` lo muestra sin comillas)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué imprime el siguiente código?",
+     "codigo": [
+      "print(f\"{3.14159:.2f}\")"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "3.1",
+      "3.14159",
+      "3.14",
+      "3.141"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "En la f-string, `:.2f` muestra el número con 2 decimales y redondea: 3.14. Ojo con la d: con `:.3f` saldría 3.142, no 3.141, porque redondea en vez de cortar."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es la redacción preferida para evaluar si una bandera booleana `existe` es falsa?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "`if existe is False:`",
+      "`if existe == False:`",
+      "`if not existe:`",
+      "`if existe != True:`"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "Lo que recomienda la guía de estilo de Python (PEP 8) es usar la variable sola: `if not existe:`. Comparar con `== False` o `!= True` anda, pero sobra, y `is False` solo es verdadero si vale exactamente el objeto `False`."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Qué método se utiliza para verificar si una cadena termina con una subcadena específica?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "endswith()",
+      "final()",
+      "suffix()",
+      "ends_with()",
+      "finishes()"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`cadena.endswith(fin)` devuelve `True` o `False`: `\"datos.csv\".endswith(\".csv\")` es `True`. Su par es `startswith()`. También acepta una tupla: `nombre.endswith((\".csv\", \".txt\"))`."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `list(\"ABC\")`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "('A', 'B', 'C')",
+      "[\"ABC\"]",
+      "\"ABC\"",
+      "[\"A\", \"B\", \"C\"]",
+      "Error"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`list()` recorre lo que le pasan, y una cadena se recorre de a un carácter: `['A', 'B', 'C']`. La a es lo que daría `tuple(\"ABC\")`, y para tener `[\"ABC\"]` hay que escribir la lista con corchetes."
+    },
+    {
+     "origen": "2026",
+     "en": "En el siguiente bucle `for`, ¿qué valores tomará la variable `fruta`?",
+     "codigo": [
+      "frutas = [\"manzana\", \"banana\"]",
+      "for fruta in frutas:",
+      "    print(fruta)"
+     ],
+     "varias": false,
+     "vf": false,
+     "op": [
+      "0 y 1",
+      "\"fruta\" dos veces",
+      "primero \"manzana\" y luego \"banana\"",
+      "\"frutas\" dos veces"
+     ],
+     "marcadas": [
+      2
+     ],
+     "ok": [
+      2
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "El `for` recorre los elementos de la lista, no sus índices: `fruta` vale \"manzana\" en la primera vuelta y \"banana\" en la segunda. Para tener 0 y 1 se usa `range(len(frutas))` o `enumerate(frutas)`.",
+     "ojo": "en el campus el código está en una sola línea, separado con «;»; acá va en tres líneas, como se escribe de verdad (un `for` después de un «;» da error)."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál de los siguientes no es un tipo de dato en Python?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "bool",
+      "list",
+      "str",
+      "char",
+      "float"
+     ],
+     "marcadas": [
+      3
+     ],
+     "ok": [
+      3
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "Python no tiene `char`: un carácter suelto es un `str` de largo 1 (`type(\"A\")` es `str`). `bool`, `list`, `str` y `float` sí son tipos."
+    },
+    {
+     "origen": "2026",
+     "en": "¿Cuál es el resultado de: `print(chr(65))`?",
+     "codigo": null,
+     "varias": false,
+     "vf": false,
+     "op": [
+      "\"A\"",
+      "Error",
+      "None",
+      "\"65\"",
+      "65"
+     ],
+     "marcadas": [
+      0
+     ],
+     "ok": [
+      0
+     ],
+     "puntos": null,
+     "estado": "Correcta",
+     "ex": "`chr()` devuelve el carácter de un código Unicode (el mismo que en ASCII para los básicos): el 65 es la A, y `print` la muestra sin comillas. La inversa es `ord(\"A\")`, que da 65."
+    }
+   ]
+  }
+ ]
+}
