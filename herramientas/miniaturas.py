@@ -68,6 +68,10 @@ for raiz, _, archivos in os.walk("material"):
         validas.add(jpg)
         if not todas and os.path.exists(jpg) and os.path.getmtime(jpg) >= os.path.getmtime(pdf):
             continue
+        # Cifrado (herramientas/cifrado/): se deja la miniatura que haya; para hacerla, primero cifrar.py --abrir
+        with open(pdf, "rb") as f:
+            if f.read(4) == b"ISI1":
+                continue
         miniatura(pdf, jpg)
         hechas += 1
 for raiz, _, archivos in os.walk("miniaturas"):

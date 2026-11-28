@@ -243,6 +243,22 @@ Siempre está «Cambiar de cuenta». Mientras hay puerta, el resto de la página
 - **En la página**: abajo de «Tu avance» en la barra va quién entró con «Salir» (y, para el dueño, el ícono de usuarios), o «Entrar con Google». En Inicio y en el cronograma hay una invitación a entrar si no entraste. El diálogo `#cuenta` abre la ventana de Google (`signInWithPopup`; si el navegador la bloquea, `signInWithRedirect`). `mensajeCuenta` traduce los errores (reglas, dominio no autorizado, Google sin activar, base sin crear, sin conexión).
 - **En Firebase**: Google activado en Authentication, `mascuka.github.io` en los dominios autorizados, la base Firestore creada y las reglas publicadas.
 
+## Archivos cifrados
+Los PDF, ZIP y demás de `material/` están **cifrados** en el repo: quien los baje de GitHub o con el link directo recibe un archivo ilegible. Solo se abren dentro de la página, con una cuenta que tenga acceso.
+- **Formato** (`herramientas/cifrado/cifrar.js`, con WebCrypto como el navegador): `ISI1` · largo de la llave envuelta (2 bytes) · llave AES-256 envuelta con RSA-OAEP SHA-256 · IV (12 bytes) · AES-GCM. Cada archivo tiene su propia llave AES al azar.
+- **La llave**: el par RSA de 3072 bits lo creó una sola vez el navegador del dueño (`crearLlaves`). La **privada** está en Firestore (`llaves/archivos`) y las reglas solo se la dan a quien tiene acceso. La **pública** está en `llaves/publica` (cualquiera la puede leer) y en el repo, en `cifrado/publica.json` y en `CIFRADO.n` de `index.html`. Desde la página nadie las puede cambiar ni borrar. Mientras `CIFRADO.n` está vacío, no hay nada cifrado y el navegador del dueño puede crear la llave.
+- **Cómo se abren** (`sw.js`, un *service worker*): al entrar con acceso, la página importa la llave privada sin poder exportarla y la deja en IndexedDB (`isi-cifrado`); al salir o sin acceso, la borra (`prepararLlave`, `olvidarLlave`). El service worker atiende cada pedido a `material/`, sea del visor, de una pestaña nueva, de una descarga o del ZIP de la materia: si el archivo está cifrado, lo descifra y lo entrega como el original; si no, lo pasa tal cual. Sin llave contesta «Necesitás acceso».
+- **Quedan sin cifrar**: los `*-version.txt` de los laboratorios (la página los consulta sola), las miniaturas y lo que está fuera de `material/` (los JSON de práctica, los quiz, `index.html`).
+- **Los originales** están en el repo **privado** `UTN---Sistemas-originales`, con `manifiesto.json` (ruta → SHA-256 del original). Las herramientas (los laboratorios, `validar.py`, las miniaturas…) necesitan los originales.
+
+**Cómo se trabaja**, desde la raíz y con los originales clonados al lado (`../UTN---Sistemas-originales`):
+1. `node herramientas/cifrado/cifrar.js --abrir` pone los originales en `material/`.
+2. Se usan las herramientas y se suman o cambian archivos en `material/` como siempre.
+3. Antes de cada commit: `node herramientas/cifrado/cifrar.js`. Lo que no cambió vuelve a quedar como estaba en el repo, sin cifrarlo de nuevo; lo nuevo o cambiado se guarda en los originales y se cifra; lo borrado se borra también de los originales.
+4. Hacer commit en los dos repos.
+
+`--revisar` avisa si quedó algo sin cifrar, y `--instalar` pone un gancho de git que no deja hacer commit de un archivo de `material/` sin cifrar. `miniaturas.py` saltea los PDF cifrados: para una miniatura nueva, primero `--abrir`.
+
 ## Cuestionarios (Backend y DAO)
 Los PDF de `material/backend-de-aplicaciones/cuestionarios/` no son las capturas del campus: se arman con `herramientas/cuestionarios-back/` y copian el estilo de la revisión del intento. Arriba de cada pregunta va la cabecera gris (número, estado y puntaje) y después el recuadro azul con las opciones: la tilde verde en lo bien marcado, la cruz roja en lo mal marcado y «faltaba» en lo que había que marcar. Abajo, el recuadro beige con la respuesta correcta, el «Por qué», la «Corrección» si estaba mal y un «Ojo» cuando la clave del campus es discutible. Cada cuestionario tiene primero el intento 2026, después las preguntas del otro intento 2026 que no estaban en el primero (si lo hay) y al final las de 2023 y 2025 que no se repiten, ubicadas por tema. Por ejemplo, el JDBC del 05 de 2023 va al 06 y el Spring Data del 07 de 2023 va al 08. Las preguntas repetidas y las que tenían la clave del campus equivocada o dudosa no se agregaron.
 

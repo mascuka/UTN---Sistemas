@@ -4780,6 +4780,10 @@ const GITHUB = { usuario: "mascuka", repo: "UTN---Sistemas", rama: "main", archi
    La configuración de la app web no es secreta. Sin apiKey, la página sigue como antes: aprobadas.json en GitHub con la clave. */
 const FIREBASE = { apiKey: "AIzaSyDUyOcVC4zbJ6i5Ljxr3WAVFa_yxnS5tcA", authDomain: "utn---organizador.firebaseapp.com", projectId: "utn---organizador", storageBucket: "utn---organizador.firebasestorage.app", messagingSenderId: "468623714150", appId: "1:468623714150:web:e4c86934e616caa7cbcaa7" };
 const FB_VER = "10.12.2";
+/* Los archivos de material/ van cifrados en el repo (herramientas/cifrado/) y los abre sw.js con la llave que da Firebase.
+   CIFRADO.n es el módulo de la llave pública con la que se cifraron; vacío mientras no haya llave (la primera vez,
+   el navegador del dueño la crea y la guarda en Firebase: llaves/archivos y llaves/publica) */
+const CIFRADO = { n: "" };
 const conCuentas = () => !!FIREBASE.apiKey;
 const CLAVE_UID = "isi-uid";   // de quién es la copia de este navegador: el uid de la cuenta, o "local" (sin entrar)
 let fb = null, usuario = null, cuentaLista = false;   // los módulos de Firebase, la cuenta con la que se entró y si ya se sabe
@@ -5104,7 +5108,7 @@ async function cambioDeCuenta(u){
   if(!u){
     // Salió (o nunca entró): lo de la cuenta no queda en este navegador
     if(dueno !== "local"){ ponerDatos({}); guardarCopia(); guardarLocal(CLAVE_SIN_SUBIR, null); guardarLocal(CLAVE_UID, "local"); }
-    estadoSync = "sin-clave"; puerta("entrar"); refrescar(); return;
+    estadoSync = "sin-clave"; puerta("entrar"); olvidarLlave(); refrescar(); return;
   }
   // ¿Tiene acceso? El dueño siempre; los demás, si en accesos/{uid} dice permitido (lo da el dueño, y queda)
   if(!esAdmin){
@@ -5118,12 +5122,13 @@ async function cambioDeCuenta(u){
     } catch(e){ estado = /permission/.test((e && e.code) || "") ? "sin-acceso" : "error"; puertaError = mensajeCuenta(e); }
     if(estado){
       if(dueno !== u.uid && dueno !== "local"){ ponerDatos({}); guardarCopia(); guardarLocal(CLAVE_SIN_SUBIR, null); guardarLocal(CLAVE_UID, "local"); }
-      puerta(estado);
+      puerta(estado); olvidarLlave();
       if(estado === "pedido") esperarAcceso();
       return;
     }
   }
   puerta(null);
+  prepararLlave();
   if(esAdmin) cargarUsuarios().then(() => refrescar()).catch(() => {});   // el numerito de pedidos (y los que ya tenían cuenta quedan con acceso)
   estadoSync = "cargando"; refrescar();
   try {
@@ -5188,6 +5193,52 @@ async function entrar(){
 async function salir(){
   if(fb) await fb.auth.signOut(fb.A);
 }
+/* ---------- Archivos cifrados ----------
+   sw.js descifra lo que se pide de material/. La llave privada está en Firestore (llaves/archivos) y solo la puede leer
+   quien tiene acceso: acá se importa sin poder exportarla y se deja en IndexedDB (isi-cifrado) para el service worker.
+   Al salir o sin acceso, se borra */
+function idbLlaves(modo, f){
+  return new Promise((ok, mal) => {
+    const r = indexedDB.open("isi-cifrado", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("llaves");
+    r.onerror = () => mal(r.error);
+    r.onsuccess = () => { const tx = r.result.transaction("llaves", modo), q = f(tx.objectStore("llaves")); tx.oncomplete = () => ok(q && q.result); tx.onerror = () => mal(tx.error); };
+  });
+}
+async function avisarAlSW(llave){
+  if(!("serviceWorker" in navigator)) return;
+  const reg = await navigator.serviceWorker.getRegistration();
+  [navigator.serviceWorker.controller, reg && reg.active].filter(Boolean).forEach(w => w.postMessage({ tipo: "llave", llave }));
+}
+async function prepararLlave(){
+  if(!("serviceWorker" in navigator) || !window.indexedDB || !window.crypto || !crypto.subtle) return;
+  try {
+    const snap = await fb.fs.getDoc(fb.fs.doc(fb.db, "llaves", "archivos"));
+    let jwk = snap.exists() ? JSON.parse(snap.data().privada) : null;
+    // La primera vez (sin llave en Firebase y sin archivos cifrados todavía), la crea el navegador del dueño
+    if(!jwk && esAdmin && !CIFRADO.n) jwk = await crearLlaves();
+    if(!jwk) return;
+    if(CIFRADO.n && jwk.n !== CIFRADO.n){ estadoSync = "error"; errorSync = "La llave de Firebase no es la de los archivos: no se van a poder abrir."; pintarSync(); return; }
+    const { kty, n, e, d, p, q, dp, dq, qi } = jwk;
+    const llave = await crypto.subtle.importKey("jwk", { kty, n, e, d, p, q, dp, dq, qi, alg: "RSA-OAEP-256" }, { name: "RSA-OAEP", hash: "SHA-256" }, false, ["decrypt"]);
+    await idbLlaves("readwrite", s => s.put(llave, "archivos"));
+    await avisarAlSW(llave);
+  } catch(e){ console.warn("No se pudo preparar la llave de los archivos", e); }
+}
+/* Una sola vez: el par de llaves (RSA-OAEP de 3072 bits). Las reglas no dejan volver a crearlas ni cambiarlas */
+async function crearLlaves(){
+  const par = await crypto.subtle.generateKey({ name: "RSA-OAEP", modulusLength: 3072, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, true, ["encrypt", "decrypt"]);
+  const priv = await crypto.subtle.exportKey("jwk", par.privateKey), pub = await crypto.subtle.exportKey("jwk", par.publicKey);
+  await fb.fs.setDoc(fb.fs.doc(fb.db, "llaves", "archivos"), { privada: JSON.stringify(priv), creada: fb.fs.serverTimestamp() });
+  await fb.fs.setDoc(fb.fs.doc(fb.db, "llaves", "publica"), { publica: JSON.stringify({ kty: pub.kty, n: pub.n, e: pub.e, alg: pub.alg }), creada: fb.fs.serverTimestamp() });
+  return priv;
+}
+async function olvidarLlave(){
+  if(!window.indexedDB) return;
+  try { await idbLlaves("readwrite", s => s.delete("archivos")); } catch(e){}
+  avisarAlSW(null).catch(() => {});
+}
+
 /* ---------- La puerta ----------
    Sin cuenta: «Entrar con Google». Con cuenta y sin permiso: «Necesitás acceso» con un mensaje opcional para el dueño
    y «Pedir acceso» (va a pedidos/{uid}); pedido: «Pedido enviado», y la página se abre sola cuando te lo dan */
@@ -11439,6 +11490,7 @@ async function sha256(t){
 }
 function iniciar(){
   if(conCuentas()){ prepararCuentas(); puerta("cargando"); }
+  if(conCuentas() && "serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
   render();
   if(conCuentas()) arrancarCuentas(); else cargarAprobadas();
 }

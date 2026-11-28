@@ -22,6 +22,12 @@ service cloud.firestore {
       allow read: if request.auth != null && request.auth.uid == uid;
       allow read, write: if esDueno();
     }
+    // La llave de los archivos cifrados de material/: la privada, solo para quien tiene acceso; la pública, para cualquiera.
+    // Las crea una sola vez el navegador del dueño, y desde la página nadie las puede cambiar ni borrar
+    match /llaves/{id} {
+      allow read: if id == "publica" || tieneAcceso();
+      allow create: if esDueno();
+    }
     // Los pedidos de acceso, con un mensaje de hasta 500 letras: cada uno el suyo; el dueño los lee y los borra al decidir
     match /pedidos/{uid} {
       allow create, update: if request.auth != null && request.auth.uid == uid
