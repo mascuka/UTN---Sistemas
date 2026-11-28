@@ -1,0 +1,10 @@
+rules_version = '2';
+// Reglas de la base Firestore del proyecto utn---organizador (se pegan en Firebase → Firestore → Reglas).
+// Cada usuario lee y escribe solo su documento, usuarios/{su uid}; nadie puede ver lo de otro.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /usuarios/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}

@@ -76,6 +76,15 @@
   .lado-pie b{display:block;font-weight:500;font-size:.84rem}
   .lado-pie small{display:block;color:var(--muted);font-size:.78rem}
   .lado-pie .l-plan{font-size:.72rem;opacity:.8;margin-top:1px}
+  /* La cuenta (Firebase): quién entró y Salir, o el botón para entrar */
+  .l-cuenta{display:flex;align-items:center;gap:8px;padding:6px 8px 2px;font-size:.8rem;color:var(--muted)}
+  .l-cuenta .l-ini{width:22px;height:22px;border-radius:50%;background:var(--hover);color:var(--text);display:grid;place-items:center;font-size:.72rem;font-weight:600;flex:none}
+  .l-cuenta .l-cn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .l-cuenta .linkbtn{font-size:.78rem;flex:none}
+  button.l-entrar{width:100%;justify-content:center;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer;font:inherit;font-size:.82rem;padding:7px 10px;margin-top:6px}
+  button.l-entrar:hover{background:var(--hover)}
+  button.l-entrar svg{width:15px;height:15px;flex:none}
+  .in-cuenta{font-size:.86rem;color:var(--muted);margin:-4px 0 16px;line-height:1.5}
   .lado-velo{display:none}
 
   /* ---------- Arriba: en el celular, el menú; adentro de un parcial, sus pestañas ---------- */
@@ -870,9 +879,9 @@
   .dot.ok{background:var(--ok)}
   .dot.err{background:var(--error)}
   .linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-  dialog#config{margin:auto;max-width:560px;width:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:var(--card);color:var(--text);font-size:.9rem;line-height:1.5}
-  dialog#config::backdrop{background:rgba(0,0,0,.4)}
-  dialog#config h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:8px}
+  dialog#config, dialog#cuenta{margin:auto;max-width:560px;width:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;padding:22px 24px;background:var(--card);color:var(--text);font-size:.9rem;line-height:1.5}
+  dialog#config::backdrop, dialog#cuenta::backdrop{background:rgba(0,0,0,.4)}
+  dialog#config h2, dialog#cuenta h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:8px}
   dialog#config ol{padding-left:20px;margin:12px 0;display:flex;flex-direction:column;gap:6px}
   dialog#config a{color:var(--accent);text-decoration:underline}
   dialog#config code{font-size:.85em;background:var(--hover);padding:1px 5px;border-radius:4px}
@@ -2286,6 +2295,17 @@
     <span style="flex:1"></span>
     <button id="cerrarConfig" class="pill">Cancelar</button>
     <button id="guardarToken" class="pill primary">Guardar clave</button>
+  </div>
+</dialog>
+
+<dialog id="cuenta">
+  <h2>Entrá con tu cuenta</h2>
+  <p>Con tu cuenta de Google se guardan tu avance, el cronograma, las fechas y las notas, y los ves igual en la compu y en el celular. Cada uno ve solo lo suyo: el material es el mismo para todos.</p>
+  <p class="config-msg" id="cuentaMsg"></p>
+  <div class="config-btns">
+    <span style="flex:1"></span>
+    <button id="cerrarCuenta" class="pill">Cancelar</button>
+    <button id="entrarGoogle" class="pill primary">Entrar con Google</button>
   </div>
 </dialog>
 
@@ -4583,8 +4603,17 @@ function renderLado(m){
     </div>
     <a class="lado-pie" data-go="plan" href="#/plan" title="Tu avance en la carrera">
       <span class="l-av"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" stroke="var(--hover)"/><circle cx="18" cy="18" r="14" stroke="var(--accent)" stroke-linecap="round" stroke-dasharray="${(p.pct / 100 * C).toFixed(1)} ${C.toFixed(1)}"/></svg></span>
-      <span><b>Tu avance · ${p.pct}%</b><small>${p.matHechas} de ${p.matTotal} materias</small><small class="l-plan">${esc(CARRERA.plan)} · ${esc(CARRERA.pie)}</small></span></a>`;
+      <span><b>Tu avance · ${p.pct}%</b><small>${p.matHechas} de ${p.matTotal} materias</small><small class="l-plan">${esc(CARRERA.plan)} · ${esc(CARRERA.pie)}</small></span></a>
+    ${filaCuenta()}`;
 }
+/* Con cuentas: quién entró (y Salir) o el botón para entrar. Hasta saber si hay alguien, nada */
+function filaCuenta(){
+  if(!conCuentas() || !cuentaLista) return "";
+  if(!usuario) return `<button class="l-cuenta l-entrar" data-config>${ICON_GOOGLE}Entrar con Google</button>`;
+  const nom = usuario.displayName || usuario.email || "Tu cuenta";
+  return `<div class="l-cuenta"><span class="l-ini" aria-hidden="true">${esc(nom.trim()[0].toUpperCase())}</span><span class="l-cn" title="${esc(usuario.email || nom)}">${esc(nom)}</span><button class="linkbtn" data-salir>Salir</button></div>`;
+}
+const ICON_GOOGLE = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.2c0-.8-.1-1.4-.2-2.1H12v4h5.9c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3.3-4.6 3.3-7.6z"/><path fill="#34A853" d="M12 23c2.9 0 5.3-1 7.1-2.6l-3.4-2.6c-1 .6-2.2 1-3.7 1-2.8 0-5.2-1.9-6.1-4.5H2.4v2.7C4.2 20.6 7.8 23 12 23z"/><path fill="#FBBC05" d="M5.9 14.3c-.2-.6-.4-1.3-.4-2.3s.1-1.6.4-2.3V7H2.4C1.5 8.5 1 10.2 1 12s.5 3.5 1.4 5l3.5-2.7z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3 .5 4.1 1.6l3-3C17.3 2.2 14.9 1 12 1 7.8 1 4.2 3.4 2.4 7l3.5 2.7C6.8 7.3 9.2 5.4 12 5.4z"/></svg>`;
 function renderBarra(m){
   const [a, b] = ruta.split("/");
   const tit = m ? m.nombre : a === "cronograma" ? "Cronograma" : a === "plan" || a === "nivel" ? "Plan de la carrera" : "Inicio";
@@ -4689,6 +4718,25 @@ window.addEventListener("resize", medirBarra);
    solo en tu navegador, nunca en el repo. Sin clave, la página muestra lo
    que está guardado en GitHub pero no puede cambiarlo. */
 const GITHUB = { usuario: "mascuka", repo: "UTN---Sistemas", rama: "main", archivo: "aprobadas.json" };
+/* ---------- Cuentas (Firebase) ----------
+   Cada uno entra con su cuenta de Google y lo suyo (avance, cronograma, fechas, notas, años y comisiones) se guarda en
+   Firestore, en usuarios/{uid}, como texto JSON en el campo "datos" (Firestore no guarda listas dentro de listas, y los
+   bloques del cronograma lo son). Las reglas (firestore.rules) dejan que cada uno lea y escriba solo lo suyo.
+   La configuración de la app web no es secreta. Sin apiKey, la página sigue como antes: aprobadas.json en GitHub con la clave. */
+const FIREBASE = { apiKey: "", authDomain: "utn---organizador.firebaseapp.com", projectId: "utn---organizador", appId: "" };
+const FB_VER = "10.12.2";
+const conCuentas = () => !!FIREBASE.apiKey;
+const CLAVE_UID = "isi-uid";   // de quién es la copia de este navegador: el uid de la cuenta, o "local" (sin entrar)
+let fb = null, usuario = null, cuentaLista = false;   // los módulos de Firebase, la cuenta con la que se entró y si ya se sabe
+/* ¿Se puede guardar? Con cuentas, habiendo entrado; si no, con la clave de GitHub */
+function puedeGuardar(){ return conCuentas() ? !!usuario : !!leerLocal(CLAVE_TOKEN); }
+/* Lo que se pide para guardar: entrar con Google o la clave de GitHub */
+function pedirCuenta(){
+  if(!conCuentas()) return abrirConfig();
+  if(usuario) return subirCuenta();   // ya entraste: el botón del aviso de error vuelve a intentar guardar
+  $("#cuentaMsg").textContent = estadoSync === "error" ? errorSync : "";
+  $("#cuenta").showModal();
+}
 const CLAVE_APROBADAS = "isi-aprobadas";   // copia local, para mostrar rápido al abrir
 const CLAVE_TOKEN = "isi-github-token";
 const guardarLocal = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch(e){} };
@@ -4723,7 +4771,7 @@ const comisionDe = x => estadoDe(idDe(x)) ? comisionPropia(x) || anios.comNivele
 const comisionValida = v => { const t = String(v).trim().toUpperCase().replace(/\s+/g, ""); return /^[A-Z0-9-]{1,10}$/.test(t) ? t : null; };
 /* Cambia la comisión de un año de la carrera ("nivel:1") o de una materia (su id); vacío la borra */
 function ponerComision(clave, txt){
-  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  if(!puedeGuardar()){ pedirCuenta(); return false; }
   const v = comisionValida(txt), [donde, k] = clave.startsWith("nivel:") ? ["comNiveles", clave.slice(6)] : ["comMaterias", clave];
   if(v) anios[donde][k] = v; else delete anios[donde][k];
   programarSubida();
@@ -4731,7 +4779,7 @@ function ponerComision(clave, txt){
 }
 /* Cambia el año de un año de la carrera ("n1") o de una materia (su id); vacío lo borra */
 function ponerAnio(clave, txt){
-  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  if(!puedeGuardar()){ pedirCuenta(); return false; }
   const v = anioValido(txt), [donde, k] = clave.startsWith("nivel:") ? ["niveles", clave.slice(6)] : ["materias", clave];
   if(v) anios[donde][k] = v; else delete anios[donde][k];
   programarSubida();
@@ -4803,16 +4851,27 @@ async function cargarAprobadas(){
   refrescar();
 }
 
-async function subirAprobadas(reintento = true){
-  estadoSync = "guardando"; pintarSync();
-  const lista = [...aprobadas].sort();
+/* Todo lo tuyo en un objeto: lo que va a aprobadas.json o a tu cuenta */
+function datosPropios(){
   const ordenar = o => Object.fromEntries(Object.keys(o).sort().map(k => [k, o[k]]));
   // Los estados son de las que no están aprobadas; las notas, de las aprobadas
   const est = ordenar(Object.fromEntries(Object.entries(estados).filter(([id]) => !aprobadas.has(id))));
   const nts = ordenar(Object.fromEntries(Object.entries(notas).filter(([id]) => aprobadas.has(id))));
+  return { aprobadas: [...aprobadas].sort(), estados: est, notas: nts, cronogramas, fechas, notasCursada, entregas: ordenar(entregas), anios: { niveles: ordenar(anios.niveles), materias: ordenar(anios.materias), comNiveles: ordenar(anios.comNiveles), comMaterias: ordenar(anios.comMaterias) } };
+}
+/* Pone en la página lo de una persona (de su cuenta o de aprobadas.json); con {} queda todo vacío */
+function ponerDatos(d){
+  aprobadas = new Set(d.aprobadas || []);
+  estados = d.estados || {}; notas = d.notas || {};
+  cronogramas = d.cronogramas || {}; fechas = d.fechas || {}; notasCursada = d.notasCursada || {};
+  entregas = d.entregas || {}; anios = Object.assign(aniosVacio(), d.anios || {});
+}
+async function subirAprobadas(reintento = true){
+  if(conCuentas()) return subirCuenta();
+  estadoSync = "guardando"; pintarSync();
   const cuerpo = {
     message: "Actualizar materias, cronograma y fechas",
-    content: b64enc(JSON.stringify({ aprobadas: lista, estados: est, notas: nts, cronogramas, fechas, notasCursada, entregas: ordenar(entregas), anios: { niveles: ordenar(anios.niveles), materias: ordenar(anios.materias), comNiveles: ordenar(anios.comNiveles), comMaterias: ordenar(anios.comMaterias) } }, null, 2) + "\n"),
+    content: b64enc(JSON.stringify(datosPropios(), null, 2) + "\n"),
     branch: GITHUB.rama
   };
   if(shaRemoto) cuerpo.sha = shaRemoto;
@@ -4860,7 +4919,7 @@ function programarSubida(){
 /* Cambia el estado de una materia: "" (nada), "cursando", "regular" o "aprobada".
    Tocar el estado que ya tiene lo saca */
 function ponerEstado(id, e){
-  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  if(!puedeGuardar()){ pedirCuenta(); return false; }
   if(e === estadoDe(id)) e = "";
   aprobadas.delete(id);
   delete estados[id];
@@ -4871,7 +4930,7 @@ function ponerEstado(id, e){
 }
 /* La nota con la que se aprobó (1 a 10); vacío la borra */
 function ponerNota(id, txt){
-  if(!leerLocal(CLAVE_TOKEN)){ abrirConfig(); return false; }
+  if(!puedeGuardar()){ pedirCuenta(); return false; }
   const v = Math.round(parseFloat(String(txt).replace(",", ".")));
   if(v >= 1 && v <= 10) notas[id] = v; else delete notas[id];
   programarSubida();
@@ -4879,6 +4938,13 @@ function ponerNota(id, txt){
 }
 
 function textoSync(){
+  if(conCuentas()) switch(estadoSync){
+    case "cargando":  return `<span class="dot"></span>Leyendo tu cuenta…`;
+    case "guardando": return `<span class="dot"></span>Guardando en tu cuenta…`;
+    case "ok":        return `<span class="dot ok"></span>Guardado en tu cuenta`;
+    case "sin-clave": return `<span class="dot"></span>Sin entrar: lo que cargás queda solo en este navegador`;
+    default:          return `<span class="dot err"></span>${esc(errorSync)}`;
+  }
   switch(estadoSync){
     case "cargando":  return `<span class="dot"></span>Leyendo de GitHub…`;
     case "guardando": return `<span class="dot"></span>Guardando en GitHub…`;
@@ -4890,7 +4956,7 @@ function textoSync(){
 /* Solo se muestra un aviso si algo falla al leer o guardar en GitHub */
 function pintarSync(){
   const el = $("#sync");
-  if(el) el.innerHTML = estadoSync === "error" ? `${textoSync()} <button class="linkbtn" data-config>Clave de GitHub</button>` : "";
+  if(el) el.innerHTML = estadoSync === "error" ? `${textoSync()} <button class="linkbtn" data-config>${conCuentas() ? (usuario ? "Reintentar" : "Entrar") : "Clave de GitHub"}</button>` : "";
 }
 
 /* ---------- Ventana para cargar / borrar la clave ---------- */
@@ -4935,6 +5001,96 @@ function borrarToken(){
   estadoSync = "sin-clave";
   $("#config").close();
   pintarSync();
+}
+
+/* ---------- Cuentas: entrar, salir, leer y guardar ---------- */
+async function cargarFirebase(){
+  if(fb) return fb;
+  const u = m => `https://www.gstatic.com/firebasejs/${FB_VER}/firebase-${m}.js`;
+  const [app, auth, fs] = await Promise.all([import(u("app")), import(u("auth")), import(u("firestore-lite"))]);
+  const a = app.initializeApp(FIREBASE);
+  fb = { auth, fs, A: auth.getAuth(a), db: fs.getFirestore(a) };
+  return fb;
+}
+const refUsuario = () => fb.fs.doc(fb.db, "usuarios", usuario.uid);
+/* La copia de antes de las cuentas no tiene dueño y puede ser de otra persona (antes se leía aprobadas.json para todos):
+   no se usa. Se llama antes de pintar la página, para que no aparezca un segundo */
+function prepararCuentas(){
+  if(leerLocal(CLAVE_UID)) return;
+  ponerDatos({}); guardarCopia();
+  guardarLocal(CLAVE_SIN_SUBIR, null);
+  guardarLocal(CLAVE_UID, "local");
+}
+async function arrancarCuentas(){
+  try { await cargarFirebase(); }
+  catch(e){ cuentaLista = true; estadoSync = "error"; errorSync = "No se pudo conectar con las cuentas; se muestra lo guardado en este navegador."; refrescar(); return; }
+  fb.auth.getRedirectResult(fb.A).catch(e => { estadoSync = "error"; errorSync = mensajeCuenta(e); pintarSync(); });
+  fb.auth.onAuthStateChanged(fb.A, u => cambioDeCuenta(u));
+}
+async function cambioDeCuenta(u){
+  usuario = u; cuentaLista = true;
+  const dueno = leerLocal(CLAVE_UID);
+  if(!u){
+    // Salió (o nunca entró): lo de la cuenta no queda en este navegador
+    if(dueno !== "local"){ ponerDatos({}); guardarCopia(); guardarLocal(CLAVE_SIN_SUBIR, null); guardarLocal(CLAVE_UID, "local"); }
+    estadoSync = "sin-clave"; refrescar(); return;
+  }
+  estadoSync = "cargando"; refrescar();
+  try {
+    const snap = await fb.fs.getDoc(refUsuario());
+    const remoto = snap.exists() ? JSON.parse(snap.data().datos || "{}") : null;
+    if(dueno === u.uid && leerLocal(CLAVE_SIN_SUBIR)){ await subirCuenta(); refrescar(); return; }   // lo de este navegador es lo más nuevo
+    if(remoto){ ponerDatos(remoto); guardarCopia(); guardarLocal(CLAVE_UID, u.uid); estadoSync = "ok"; refrescar(); return; }
+    // La primera vez: si este navegador tiene la clave de GitHub (el dueño de la página), se trae lo de aprobadas.json;
+    // si no, queda lo que se armó en este navegador sin entrar
+    if(leerLocal(CLAVE_TOKEN)){
+      const r = await leerRemoto();
+      ponerDatos({ aprobadas: r.lista, estados: r.estados, notas: r.notas, cronogramas: r.cronogramas, fechas: r.fechas, notasCursada: r.notasCursada, entregas: r.entregas, anios: r.anios });
+    } else if(dueno !== "local") ponerDatos({});
+    guardarLocal(CLAVE_UID, u.uid);
+    await subirCuenta();
+  } catch(e){ estadoSync = "error"; errorSync = mensajeCuenta(e); }
+  refrescar();
+}
+async function subirCuenta(){
+  if(!usuario || !fb){ guardarCopia(); return; }
+  estadoSync = "guardando"; pintarSync();
+  try {
+    await fb.fs.setDoc(refUsuario(), { datos: JSON.stringify(datosPropios()), actualizado: fb.fs.serverTimestamp() });
+    guardarLocal(CLAVE_SIN_SUBIR, null);
+    estadoSync = "ok";
+  } catch(e){ estadoSync = "error"; errorSync = mensajeCuenta(e); }
+  pintarSync();
+}
+function mensajeCuenta(e){
+  const c = (e && e.code) || "";
+  if(/permission-denied/.test(c)) return "La base de datos no dejó guardar: revisá las reglas de Firestore.";
+  if(/unauthorized-domain/.test(c)) return "Este sitio no está autorizado: agregalo en Firebase → Authentication → Configuración → Dominios autorizados.";
+  if(/operation-not-allowed/.test(c)) return "Entrar con Google no está activado en Firebase (Authentication → Método de acceso).";
+  if(/popup-blocked/.test(c)) return "El navegador bloqueó la ventana para entrar: permití las ventanas emergentes y probá de nuevo.";
+  if(/not-found|failed-precondition/.test(c)) return "Falta crear la base de datos en Firebase (Firestore Database → Crear base de datos).";
+  if(/unavailable|network/.test(c) || !c) return "No se pudo conectar: lo que cargues queda en este navegador y se sube después.";
+  return `No se pudo usar la cuenta (${c}).`;
+}
+async function entrar(){
+  const msg = $("#cuentaMsg");
+  msg.textContent = "";
+  try {
+    await cargarFirebase();
+    const p = new fb.auth.GoogleAuthProvider();
+    p.setCustomParameters({ prompt: "select_account" });
+    await fb.auth.signInWithPopup(fb.A, p);
+    $("#cuenta").close();
+  } catch(e){
+    const c = (e && e.code) || "";
+    if(/popup-closed-by-user|cancelled-popup-request/.test(c)) return;
+    // Sin ventanas emergentes (algunos celulares): se entra yendo a Google y volviendo
+    if(/popup-blocked|operation-not-supported/.test(c)){ try { await fb.auth.signInWithRedirect(fb.A, new fb.auth.GoogleAuthProvider()); return; } catch(e2){ e = e2; } }
+    msg.textContent = mensajeCuenta(e);
+  }
+}
+async function salir(){
+  if(fb) await fb.auth.signOut(fb.A);
 }
 
 const TOTAL_CREDITOS = 20;
@@ -10194,6 +10350,7 @@ function viewInicio(){
     <div class="in in-cal">
       <h1 class="in-saludo"><span class="l-logo">${LOGO}</span>${saludo}</h1>
       <p class="in-bajada">${esc(bajada)}</p>
+      ${conCuentas() && cuentaLista && !usuario ? `<p class="in-cuenta"><button class="linkbtn" data-config>Entrá con Google</button> para guardar tu avance, tu cronograma y tus fechas. Cada uno ve solo lo suyo.</p>` : ""}
       <h2 class="in-h2">Lo que viene<a data-go="cronograma" href="#/cronograma">Ver cronograma</a></h2>
       <div class="in-viene">
         ${calendarioInicio()}
@@ -10370,7 +10527,7 @@ function viewCronograma(){
   if(!CR.edit && !guardado){ CR.edit = true; CR.auto = true; CR.borrador = {}; }
   const [anio, c] = CR.q.split("-");
   const otro = `${anio}-${c === "1" ? 2 : 1}`;
-  const sinClave = !leerLocal(CLAVE_TOKEN);
+  const sinClave = conCuentas() ? cuentaLista && !usuario : !leerLocal(CLAVE_TOKEN);
   return `
     <div class="cr ${CR.edit ? "cr-editando" : "cr-ver"}">
       <section class="cr-zona">
@@ -10383,7 +10540,7 @@ function viewCronograma(){
         </div>
         <div class="sync" id="sync"></div>
         <div id="crCuerpo"><div class="empty">Cargando los horarios…</div></div>
-        ${!CR.edit && sinClave ? `<p class="cr-nota-clave">Guardado en este navegador. Para verlo también en el celular, <button class="linkbtn" data-config>conectá tu clave de GitHub</button>.</p>` : ""}
+        ${!CR.edit && sinClave ? `<p class="cr-nota-clave">Guardado en este navegador. Para verlo también en el celular, ${conCuentas() ? `<button class="linkbtn" data-config>entrá con Google</button>` : `<button class="linkbtn" data-config>conectá tu clave de GitHub</button>`}.</p>` : ""}
       </section>
       <aside class="cr-cal" id="crCal">${calendarioCr()}</aside>
     </div>`;
@@ -10509,7 +10666,7 @@ function ponerNotaCursada(el){
   if(x === "promo" && n.promo == null) el.value = promo != null ? fmtNota(promo) : "";
   document.querySelectorAll(`.nt-in[data-nt-k="${k}"]:not(.promo)`).forEach(c => { c.classList.remove("llega", "no-llega"); const cl = claseNota(n[c.dataset.ntI], promo); if(cl) c.classList.add(cl); });
   guardarCopia();
-  if(leerLocal(CLAVE_TOKEN)) programarSubida();
+  if(puedeGuardar()) programarSubida();
 }
 
 /* En el celular, guardado: un día a la vez */
@@ -10636,7 +10793,7 @@ function ubicarPop(){
 }
 function guardarFechas(){
   guardarCopia();
-  if(leerLocal(CLAVE_TOKEN)) programarSubida();
+  if(puedeGuardar()) programarSubida();
 }
 /* Guarda el cronograma; las materias pasan a "Cursando" (con la clave de GitHub) */
 function guardarCrono(){
@@ -10651,7 +10808,7 @@ function guardarCrono(){
     }
     CR.sel = null;
   }
-  if(leerLocal(CLAVE_TOKEN)){
+  if(puedeGuardar()){
     // Las materias pasan a "Cursando" (o dejan de estarlo) solo con el cronograma del cuatrimestre actual,
     // pero el de cualquier cuatrimestre se guarda en GitHub
     if(q === cuatriActual()){
@@ -10866,7 +11023,8 @@ function render(arriba = true){
 
 /* Un solo manejador de clics para todo lo que tenga data-go (cambia el link) */
 document.addEventListener("click", e => {
-  if(e.target.closest("[data-config]")){ abrirConfig(); return; }
+  if(e.target.closest("[data-config]")){ pedirCuenta(); return; }
+  if(e.target.closest("[data-salir]")){ salir(); return; }
   const pdf = e.target.closest("a[data-pdf]");
   if(pdf && e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey){
     e.preventDefault();
@@ -10954,6 +11112,8 @@ document.addEventListener("change", e => { if(e.target.id === "calHasta") CR.for
 $("#guardarToken").addEventListener("click", guardarToken);
 $("#borrarToken").addEventListener("click", borrarToken);
 $("#cerrarConfig").addEventListener("click", () => $("#config").close());
+$("#entrarGoogle").addEventListener("click", entrar);
+$("#cerrarCuenta").addEventListener("click", () => $("#cuenta").close());
 $("#visorAnt").addEventListener("click", () => moverVisor(-1));
 $("#visorSig").addEventListener("click", () => moverVisor(1));
 $("#visorCerrar").addEventListener("click", () => $("#visor").close());
@@ -11019,8 +11179,9 @@ async function sha256(t){
 function iniciar(){
   document.body.classList.remove("locked");
   $("#lock").hidden = true;
+  if(conCuentas()) prepararCuentas();
   render();
-  cargarAprobadas();
+  if(conCuentas()) arrancarCuentas(); else cargarAprobadas();
 }
 if(leerLocal(CLAVE_ENTRADA) === HASH_CLAVE){
   iniciar();
