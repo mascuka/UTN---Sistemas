@@ -31,7 +31,7 @@
     }
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{font-size:15px;scroll-padding-top:calc(var(--barra-h, 0px) + 14px)}
+  html{font-size:16px;scroll-padding-top:calc(var(--barra-h, 0px) + 14px)}
   body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding-left:var(--lado-w);-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   [data-go]{cursor:pointer;user-select:none}
@@ -78,7 +78,30 @@
   .lado-pie .l-plan{font-size:.72rem;opacity:.8;margin-top:1px}
   /* La cuenta (Firebase): quién entró y Salir, o el botón para entrar */
   .l-cuenta{display:flex;align-items:center;gap:8px;padding:6px 8px 2px;font-size:.8rem;color:var(--muted)}
-  .l-cuenta .l-ini{width:22px;height:22px;border-radius:50%;background:var(--hover);color:var(--text);display:grid;place-items:center;font-size:.72rem;font-weight:600;flex:none}
+  .l-ini{width:22px;height:22px;border-radius:50%;background:var(--hover);color:var(--text);display:grid;place-items:center;font-size:.72rem;font-weight:600;flex:none}
+  .l-usu{background:none;border:0;padding:3px;color:var(--muted);cursor:pointer;display:grid;place-items:center;border-radius:6px;flex:none}
+  .l-usu:hover{background:var(--hover);color:var(--text)}
+  .l-usu svg{width:16px;height:16px}
+  /* Usuarios registrados (solo el dueño) y el cartel mientras se mira a otro */
+  dialog#usuarios{margin:auto;max-width:520px;width:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;padding:20px 20px 16px;background:var(--card);color:var(--text);font-size:.9rem;line-height:1.5}
+  dialog#usuarios::backdrop{background:rgba(0,0,0,.4)}
+  dialog#usuarios h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;margin-bottom:2px}
+  .us-sub{color:var(--muted);font-size:.84rem}
+  .us-lista{display:flex;flex-direction:column;gap:6px;margin:12px 0;overflow-y:auto;max-height:60vh}
+  .us-msg{color:var(--muted);font-size:.86rem;padding:8px 2px}
+  .us-f{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:1px solid var(--line);border-radius:10px;padding:8px 10px;cursor:pointer;font:inherit;color:var(--text)}
+  .us-f:hover{background:var(--hover)}
+  .us-f.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .us-f .l-ini{width:28px;height:28px;font-size:.8rem}
+  .us-n{flex:1;min-width:0}
+  .us-n b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .us-n small{display:block;color:var(--muted);font-size:.76rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .us-av{text-align:right;font-weight:600;flex:none;font-variant-numeric:tabular-nums}
+  .us-av small{display:block;font-weight:400;color:var(--muted);font-size:.72rem}
+  .viendo{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:40;background:var(--text);color:var(--bg);border-radius:999px;padding:7px 8px 7px 16px;font-size:.84rem;display:flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(0,0,0,.22);width:max-content;max-width:calc(100% - 32px)}
+  .viendo[hidden]{display:none}
+  .viendo b{font-weight:600}
+  .viendo button{background:var(--bg);color:var(--text);border:0;border-radius:999px;padding:5px 12px;font:inherit;font-size:.8rem;cursor:pointer;white-space:nowrap;flex:none}
   .l-cuenta .l-cn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .l-cuenta .linkbtn{font-size:.78rem;flex:none}
   button.l-entrar{width:100%;justify-content:center;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);cursor:pointer;font:inherit;font-size:.82rem;padding:7px 10px;margin-top:6px}
@@ -809,10 +832,11 @@
     .estrella.ing .star-svg{width:58px;height:58px}
     .halo{width:80px;height:80px}
     .chispa.c1{right:-2px}
-    .cam-n b{font-size:.74rem}
-    .estrella.ing b{font-size:.8rem}
-    .cam-n small{font-size:.6rem}
-    .cam-aca{font-size:.56rem;padding:1px 6px;top:-20px}
+    /* En px: en el celular el camino va justo, así queda igual que con la letra de antes */
+    .cam-n b{font-size:11px}
+    .estrella.ing b{font-size:12px}
+    .cam-n small{font-size:9px}
+    .cam-aca{font-size:8.4px;padding:1px 6px;top:-20px}
     .cam-n .largo{display:none}
     .cam-n .corto{display:inline}
   }
@@ -856,19 +880,6 @@
   .nada{color:var(--line)}
   .num.ok{background:var(--ok-soft);color:var(--ok)}
   .hc{text-align:center}
-
-  /* Contraseña de entrada */
-  body.locked > header, body.locked > main, body.locked > .lado{display:none}
-  body.locked{padding-left:0}
-  .lock{position:fixed;inset:0;display:grid;place-items:center;background:var(--bg);padding:16px;z-index:50}
-  .lock[hidden]{display:none}
-  .lock-box{width:100%;max-width:320px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-  .lock-logo{width:52px;height:52px;border-radius:12px;background:var(--brand);color:#fff;display:grid;place-items:center}
-  .lock-logo svg{width:34px;height:34px}
-  .lock-box h2{font-family:var(--serif);font-weight:500;font-size:1.3rem}
-  #lockPass{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;text-align:center}
-  .lock-msg{min-height:1.2em;font-size:.82rem;color:var(--error)}
-  .lock-box .pill{cursor:pointer;font:inherit;font-size:.88rem;padding:8px 22px}
 
   /* Guardado en GitHub */
   .sync{font-size:.78rem;color:var(--muted);margin:-18px 0 22px 2px;line-height:1.6}
@@ -2251,16 +2262,6 @@
 </head>
 <body>
 
-<div class="lock" id="lock" hidden>
-  <form class="lock-box" id="lockForm">
-    <div class="lock-logo" id="lockLogo"></div>
-    <h2>Ingeniería en Sistemas</h2>
-    <input id="lockPass" type="password" placeholder="Contraseña" autocomplete="current-password" autofocus>
-    <p class="lock-msg" id="lockMsg"></p>
-    <button class="pill primary" type="submit">Entrar</button>
-  </form>
-</div>
-
 <!-- Barra lateral: Inicio, Cronograma, Plan de la carrera y las materias que cursás (en el celular, un menú) -->
 <aside class="lado" id="lado" aria-label="Navegación"></aside>
 <div class="lado-velo" id="ladoVelo"></div>
@@ -2308,6 +2309,14 @@
     <button id="entrarGoogle" class="pill primary">Entrar con Google</button>
   </div>
 </dialog>
+
+<dialog id="usuarios" aria-labelledby="usuariosTit">
+  <h2 id="usuariosTit">Usuarios registrados</h2>
+  <p class="us-sub">Tocá uno para ver su avance, su cronograma y sus fechas (solo lectura).</p>
+  <div class="us-lista" id="usuariosLista"></div>
+  <div class="config-btns"><span style="flex:1"></span><button id="cerrarUsuarios" class="pill">Cerrar</button></div>
+</dialog>
+<div class="viendo" id="viendo" hidden></div>
 
 <dialog id="visor" class="visor" aria-label="Visor de PDF">
   <div class="visor-bar">
@@ -4611,8 +4620,9 @@ function filaCuenta(){
   if(!conCuentas() || !cuentaLista) return "";
   if(!usuario) return `<button class="l-cuenta l-entrar" data-config>${ICON_GOOGLE}Entrar con Google</button>`;
   const nom = usuario.displayName || usuario.email || "Tu cuenta";
-  return `<div class="l-cuenta"><span class="l-ini" aria-hidden="true">${esc(nom.trim()[0].toUpperCase())}</span><span class="l-cn" title="${esc(usuario.email || nom)}">${esc(nom)}</span><button class="linkbtn" data-salir>Salir</button></div>`;
+  return `<div class="l-cuenta"><span class="l-ini" aria-hidden="true">${esc(nom.trim()[0].toUpperCase())}</span><span class="l-cn" title="${esc(usuario.email || nom)}">${esc(nom)}</span>${esAdmin ? `<button class="l-usu" data-usuarios title="Usuarios registrados" aria-label="Usuarios registrados">${ICON_USUARIOS}</button>` : ""}<button class="linkbtn" data-salir>Salir</button></div>`;
 }
+const ICON_USUARIOS = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></svg>`;
 const ICON_GOOGLE = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.2c0-.8-.1-1.4-.2-2.1H12v4h5.9c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3.3-4.6 3.3-7.6z"/><path fill="#34A853" d="M12 23c2.9 0 5.3-1 7.1-2.6l-3.4-2.6c-1 .6-2.2 1-3.7 1-2.8 0-5.2-1.9-6.1-4.5H2.4v2.7C4.2 20.6 7.8 23 12 23z"/><path fill="#FBBC05" d="M5.9 14.3c-.2-.6-.4-1.3-.4-2.3s.1-1.6.4-2.3V7H2.4C1.5 8.5 1 10.2 1 12s.5 3.5 1.4 5l3.5-2.7z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3 .5 4.1 1.6l3-3C17.3 2.2 14.9 1 12 1 7.8 1 4.2 3.4 2.4 7l3.5 2.7C6.8 7.3 9.2 5.4 12 5.4z"/></svg>`;
 function renderBarra(m){
   const [a, b] = ruta.split("/");
@@ -4728,10 +4738,20 @@ const FB_VER = "10.12.2";
 const conCuentas = () => !!FIREBASE.apiKey;
 const CLAVE_UID = "isi-uid";   // de quién es la copia de este navegador: el uid de la cuenta, o "local" (sin entrar)
 let fb = null, usuario = null, cuentaLista = false;   // los módulos de Firebase, la cuenta con la que se entró y si ya se sabe
-/* ¿Se puede guardar? Con cuentas, habiendo entrado; si no, con la clave de GitHub */
-function puedeGuardar(){ return conCuentas() ? !!usuario : !!leerLocal(CLAVE_TOKEN); }
+let esAdmin = false;   // la cuenta del dueño de la página: ve la lista de usuarios y el avance de cada uno
+let viendo = null;     // mirando el avance de otro (solo lectura): { uid, nombre, propio: lo tuyo, para volver }
+const HASH_ADMIN = "cbab009b3f0d56c224feac54ec741a11100abb607f1fbb8e0d33dff24b6bbf34";   // SHA-256 del mail del dueño
+/* ¿Se puede guardar? Con cuentas, habiendo entrado (y no mirando a otro); si no, con la clave de GitHub */
+function puedeGuardar(){ if(viendo) return false; return conCuentas() ? !!usuario : !!leerLocal(CLAVE_TOKEN); }
+/* Con cuentas, modificar algo pide entrar; mirando a otro, no se puede. Devuelve true si no se puede */
+function sinPermiso(){
+  if(!conCuentas() || puedeGuardar()) return false;
+  pedirCuenta();
+  return true;
+}
 /* Lo que se pide para guardar: entrar con Google o la clave de GitHub */
 function pedirCuenta(){
+  if(viendo) return;   // mirando a otro: es solo lectura
   if(!conCuentas()) return abrirConfig();
   if(usuario) return subirCuenta();   // ya entraste: el botón del aviso de error vuelve a intentar guardar
   $("#cuentaMsg").textContent = estadoSync === "error" ? errorSync : "";
@@ -4900,6 +4920,7 @@ async function subirAprobadas(reintento = true){
 }
 
 function guardarCopia(){
+  if(viendo) return;   // lo de otro no se copia en este navegador
   guardarLocal(CLAVE_APROBADAS, JSON.stringify([...aprobadas]));
   guardarLocal(CLAVE_ESTADOS, JSON.stringify({ estados, notas }));
   guardarLocal(CLAVE_CRONO, JSON.stringify(cronogramas));
@@ -4914,7 +4935,7 @@ function programarSubida(){
   guardarCopia();
   estadoSync = "guardando";
   clearTimeout(timerGuardar);
-  timerGuardar = setTimeout(() => subirAprobadas(), 1500);   // junta varios clicks en un solo guardado
+  timerGuardar = setTimeout(() => subirAprobadas(), 300);   // casi en el acto (junta los clics muy seguidos)
 }
 /* Cambia el estado de una materia: "" (nada), "cursando", "regular" o "aprobada".
    Tocar el estado que ya tiene lo saca */
@@ -5028,7 +5049,9 @@ async function arrancarCuentas(){
   fb.auth.onAuthStateChanged(fb.A, u => cambioDeCuenta(u));
 }
 async function cambioDeCuenta(u){
+  if(viendo){ viendo = null; mostrarViendo(); }
   usuario = u; cuentaLista = true;
+  try { esAdmin = !!(u && u.email && u.emailVerified && await sha256(u.email.trim().toLowerCase()) === HASH_ADMIN); } catch(e){ esAdmin = false; }
   const dueno = leerLocal(CLAVE_UID);
   if(!u){
     // Salió (o nunca entró): lo de la cuenta no queda en este navegador
@@ -5040,7 +5063,12 @@ async function cambioDeCuenta(u){
     const snap = await fb.fs.getDoc(refUsuario());
     const remoto = snap.exists() ? JSON.parse(snap.data().datos || "{}") : null;
     if(dueno === u.uid && leerLocal(CLAVE_SIN_SUBIR)){ await subirCuenta(); refrescar(); return; }   // lo de este navegador es lo más nuevo
-    if(remoto){ ponerDatos(remoto); guardarCopia(); guardarLocal(CLAVE_UID, u.uid); estadoSync = "ok"; refrescar(); return; }
+    if(remoto){
+      ponerDatos(remoto); guardarCopia(); guardarLocal(CLAVE_UID, u.uid); estadoSync = "ok";
+      const d = snap.data();
+      if(d.email !== (u.email || "") || d.nombre !== (u.displayName || "")) await subirCuenta();   // para la lista de usuarios
+      refrescar(); return;
+    }
     // La primera vez: si este navegador tiene la clave de GitHub (el dueño de la página), se trae lo de aprobadas.json;
     // si no, queda lo que se armó en este navegador sin entrar
     if(leerLocal(CLAVE_TOKEN)){
@@ -5053,10 +5081,11 @@ async function cambioDeCuenta(u){
   refrescar();
 }
 async function subirCuenta(){
+  if(viendo) return;   // nunca se guarda lo de otro
   if(!usuario || !fb){ guardarCopia(); return; }
   estadoSync = "guardando"; pintarSync();
   try {
-    await fb.fs.setDoc(refUsuario(), { datos: JSON.stringify(datosPropios()), actualizado: fb.fs.serverTimestamp() });
+    await fb.fs.setDoc(refUsuario(), { datos: JSON.stringify(datosPropios()), nombre: usuario.displayName || "", email: usuario.email || "", actualizado: fb.fs.serverTimestamp() });
     guardarLocal(CLAVE_SIN_SUBIR, null);
     estadoSync = "ok";
   } catch(e){ estadoSync = "error"; errorSync = mensajeCuenta(e); }
@@ -5091,6 +5120,66 @@ async function entrar(){
 }
 async function salir(){
   if(fb) await fb.auth.signOut(fb.A);
+}
+/* ---------- Usuarios (solo el dueño) ----------
+   La lista de todas las cuentas, con su avance; tocando una se ve la página con lo de esa persona, sin poder modificarlo.
+   Las reglas dejan que solo el mail del dueño lea todas (firestore.rules) */
+let listaUsuarios = [];
+async function abrirUsuarios(){
+  if(!esAdmin) return;
+  const el = $("#usuariosLista");
+  el.innerHTML = `<p class="us-msg">Cargando…</p>`;
+  $("#usuarios").showModal();
+  try {
+    const r = await fb.fs.getDocs(fb.fs.collection(fb.db, "usuarios"));
+    listaUsuarios = r.docs.map(d => { const x = d.data(); let datos = {}; try { datos = JSON.parse(x.datos || "{}"); } catch(e){}
+      const cuando = x.actualizado && x.actualizado.toDate ? x.actualizado.toDate() : null;
+      return { uid: d.id, nombre: x.nombre || "", email: x.email || "", datos, cuando }; })
+      .sort((a, b) => (b.cuando || 0) - (a.cuando || 0));
+    pintarUsuarios();
+  } catch(e){ el.innerHTML = `<p class="us-msg">${esc(/permission/.test(e.code || "") ? "Las reglas de Firestore no dejan ver la lista: falta la regla del dueño." : mensajeCuenta(e))}</p>`; }
+}
+/* El avance de otra persona, con el mismo cálculo que «Tu avance» */
+function avanceDe(lista){
+  const mias = aprobadas;
+  aprobadas = new Set(lista || []);
+  try { return progreso(); } finally { aprobadas = mias; }
+}
+function pintarUsuarios(){
+  const actual = viendo ? viendo.uid : usuario && usuario.uid;
+  $("#usuariosTit").textContent = `Usuarios registrados (${listaUsuarios.length})`;
+  $("#usuariosLista").innerHTML = listaUsuarios.map(x => {
+    const yo = usuario && x.uid === usuario.uid, p = avanceDe(yo && viendo ? viendo.propio.aprobadas : x.datos.aprobadas), nom = x.nombre || x.email || "Sin nombre";
+    const fecha = x.cuando ? `${x.cuando.getDate()} ${MESES[x.cuando.getMonth()].slice(0, 3)}` : "";
+    return `<button class="us-f ${x.uid === actual ? "on" : ""}" data-ver-uid="${esc(x.uid)}"><span class="l-ini" aria-hidden="true">${esc(nom.trim()[0].toUpperCase())}</span>
+      <span class="us-n"><b>${esc(nom)}${yo ? " · vos" : ""}</b><small>${esc(x.email)}${fecha ? ` · ${fecha}` : ""}</small></span>
+      <span class="us-av">${p.pct}%<small>${p.matHechas} de ${p.matTotal}</small></span></button>`;
+  }).join("") || `<p class="us-msg">Todavía no hay nadie.</p>`;
+}
+function verUsuario(uid){
+  const x = listaUsuarios.find(y => y.uid === uid);
+  $("#usuarios").close();
+  if(!x || (usuario && uid === usuario.uid)){ volverAMio(); return; }
+  if(!viendo) viendo = { propio: JSON.parse(JSON.stringify(datosPropios())) };
+  Object.assign(viendo, { uid, nombre: x.nombre || x.email || "Sin nombre" });
+  clearTimeout(timerGuardar);
+  ponerDatos(JSON.parse(JSON.stringify(x.datos)));
+  CR.edit = false; CR.sel = null; CR.mes = null;
+  mostrarViendo(); refrescar();
+}
+function volverAMio(){
+  if(!viendo) return;
+  const propio = viendo.propio;
+  viendo = null;
+  ponerDatos(propio);
+  CR.edit = false; CR.sel = null; CR.mes = null;
+  mostrarViendo(); refrescar();
+}
+/* El cartel de abajo mientras se mira a otro */
+function mostrarViendo(){
+  const el = $("#viendo");
+  el.hidden = !viendo;
+  el.innerHTML = viendo ? `<span>Estás viendo el avance de <b>${esc(viendo.nombre)}</b> · solo lectura</span><button data-volver>Volver a lo mío</button>` : "";
 }
 
 const TOTAL_CREDITOS = 20;
@@ -10655,6 +10744,7 @@ function tablaNotas(ks){
   </section>`;
 }
 function ponerNotaCursada(el){
+  if(sinPermiso()){ refrescar(); return; }
   const k = el.dataset.ntK, x = el.dataset.ntI, txt = el.value.trim();
   const v = Math.round(parseFloat(txt.replace(",", ".")) * 100) / 100;
   const q = (notasCursada[CR.q] = notasCursada[CR.q] || {}), n = (q[k] = q[k] || {});
@@ -10826,9 +10916,9 @@ function clicCrono(el, e){
   if(["picker", "eligiendo", "elegir", "cambiar", "quitar"].includes(acc)) CR.auto = false;
   switch(acc){
     case "cuatri": CR.q = el.dataset.q; CR.edit = false; CR.eligiendo = null; CR.picker = false; CR.mes = null; CR.sel = null; CR.dia = null; refrescar(); return;
-    case "editar": CR.edit = true; CR.borrador = JSON.parse(JSON.stringify((cronoGuardado(CR.q) || { materias: {} }).materias)); refrescar(); return;
+    case "editar": if(sinPermiso()) return; CR.edit = true; CR.borrador = JSON.parse(JSON.stringify((cronoGuardado(CR.q) || { materias: {} }).materias)); refrescar(); return;
     case "cancelar": CR.edit = false; CR.eligiendo = null; CR.picker = false; refrescar(); return;
-    case "guardar": guardarCrono(); return;
+    case "guardar": if(sinPermiso()) return; guardarCrono(); return;
     case "picker": CR.picker = !CR.picker; CR.filtro = ""; pintarCuerpoCr(); return;
     case "eligiendo": CR.eligiendo = el.dataset.k; CR.picker = false; pintarCuerpoCr(); return;
     case "soltar": CR.eligiendo = null; pintarCuerpoCr(); return;
@@ -10845,7 +10935,7 @@ function clicCrono(el, e){
     case "dia-tab": CR.dia = +el.dataset.d; pintarCuerpoCr(); return;
     case "mes": CR.mes += +el.dataset.d; pintarCalendario(); return;
     case "mes-ir": CR.mes = Math.min(+el.dataset.i, mesesCuatri(CR.q).length - 2); pintarCalendario(); return;
-    case "dia": CR.sel = CR.sel === el.dataset.dia ? null : el.dataset.dia; CR.form = { tipo: "Parcial", k: null, tent: false, hasta: null };
+    case "dia": if(sinPermiso()) return; CR.sel = CR.sel === el.dataset.dia ? null : el.dataset.dia; CR.form = { tipo: "Parcial", k: null, tent: false, hasta: null };
       { const [a, m] = el.dataset.dia.split("-").map(Number), i = mesesCuatri(CR.q).findIndex(([aa, mm]) => aa === a && mm === m - 1); if(i >= 0 && (i < CR.mes || i > CR.mes + 1)) CR.mes = Math.min(i, mesesCuatri(CR.q).length - 2); }
       pintarCalendario(); if($("#calNombre")) $("#calNombre").focus(); return;
     case "cerrar-pop": CR.sel = null; pintarCalendario(); return;
@@ -10859,12 +10949,14 @@ function clicCrono(el, e){
       pintarCalendario(); return;
     }
     case "borrar-fecha": {
+      if(sinPermiso()) return;
       const dia = el.dataset.dia || CR.sel, l = fechas[dia] || [];
       l.splice(+el.dataset.i, 1);
       if(!l.length) delete fechas[dia];
       guardarFechas(); pintarCalendario(); return;
     }
     case "anotar": {
+      if(sinPermiso()) return;
       const num = CR.form.tipo === "Parcial" ? CR.form.num || proximoParcial(CR.form.k) : null;
       const nombre = ($("#calNombre").value || "").trim() || (num ? `${num}º Parcial` : CR.form.tipo);
       const nueva = { k: CR.form.tipo === "Otros" ? "" : CR.form.k || "", tipo: CR.form.tipo, nombre };
@@ -11025,6 +11117,10 @@ function render(arriba = true){
 document.addEventListener("click", e => {
   if(e.target.closest("[data-config]")){ pedirCuenta(); return; }
   if(e.target.closest("[data-salir]")){ salir(); return; }
+  if(e.target.closest("[data-usuarios]")){ abrirUsuarios(); return; }
+  const vu = e.target.closest("[data-ver-uid]");
+  if(vu){ verUsuario(vu.dataset.verUid); return; }
+  if(e.target.closest("[data-volver]")){ volverAMio(); return; }
   const pdf = e.target.closest("a[data-pdf]");
   if(pdf && e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey){
     e.preventDefault();
@@ -11053,6 +11149,7 @@ document.addEventListener("click", e => {
   if(im){ mesIni = +im.dataset.inMes ? mesIni + +im.dataset.inMes : 0; const c = $(".ic"); if(c) c.outerHTML = calendarioInicio(); return; }
   const idia = e.target.closest("[data-in-dia]");
   if(idia){
+    if(sinPermiso()) return;
     const k = idia.dataset.inDia, [a, m] = k.split("-").map(Number);
     CR.q = `${a}-${m - 1 < 7 ? 1 : 2}`; CR.edit = false; CR.eligiendo = null; CR.picker = false; CR.dia = null;
     CR.sel = k; CR.form = { tipo: "Parcial", k: null, tent: false, hasta: null };
@@ -11114,6 +11211,7 @@ $("#borrarToken").addEventListener("click", borrarToken);
 $("#cerrarConfig").addEventListener("click", () => $("#config").close());
 $("#entrarGoogle").addEventListener("click", entrar);
 $("#cerrarCuenta").addEventListener("click", () => $("#cuenta").close());
+$("#cerrarUsuarios").addEventListener("click", () => $("#usuarios").close());
 $("#visorAnt").addEventListener("click", () => moverVisor(-1));
 $("#visorSig").addEventListener("click", () => moverVisor(1));
 $("#visorCerrar").addEventListener("click", () => $("#visor").close());
@@ -11167,40 +11265,18 @@ window.addEventListener("resize", () => {
   }, 150);
 });
 
-/* ---------- Contraseña de entrada ----------
-   Es solo para que no entre cualquiera por el link: el repo es público.
-   Se guarda el hash SHA-256 de la contraseña, no la contraseña. */
-const HASH_CLAVE = "b493d48364afe44d11c0165cf470a4164d1e2609911ef998be868d46ade3de4e";
-const CLAVE_ENTRADA = "isi-entrada";
+/* ---------- Al abrir la página ----------
+   Entra cualquiera y ve todo el material; lo propio (avance, cronograma, fechas, notas) es de cada cuenta */
 async function sha256(t){
   const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
   return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
 }
 function iniciar(){
-  document.body.classList.remove("locked");
-  $("#lock").hidden = true;
   if(conCuentas()) prepararCuentas();
   render();
   if(conCuentas()) arrancarCuentas(); else cargarAprobadas();
 }
-if(leerLocal(CLAVE_ENTRADA) === HASH_CLAVE){
-  iniciar();
-} else {
-  document.body.classList.add("locked");
-  $("#lock").hidden = false;
-  $("#lockLogo").innerHTML = LOGO;
-  $("#lockPass").focus();
-  $("#lockForm").addEventListener("submit", async e => {
-    e.preventDefault();
-    if(await sha256($("#lockPass").value) === HASH_CLAVE){
-      guardarLocal(CLAVE_ENTRADA, HASH_CLAVE);
-      iniciar();
-    } else {
-      $("#lockMsg").textContent = "Contraseña incorrecta.";
-      $("#lockPass").select();
-    }
-  });
-}
+iniciar();
 </script>
 </body>
 </html>
